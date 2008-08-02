@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights FAQ</title>
+    <title>OpenFlights: FAQ</title>
     <link rel="stylesheet" href="style_reset.css" type="text/css">
     <link rel="stylesheet" href="openflights.css" type="text/css">
   </head>
@@ -13,7 +13,7 @@
 	<div id="contentContainer">
 	  <div id="nonmap">
 	    
-	    <h1>OpenFlights FAQ</h1>
+	    <h1>Frequently Asked Questions (FAQ)</h1>
 	    
 	    <h2>General</h2>
 	    
@@ -21,22 +21,35 @@
 	    
 	    <p>In a nutshell, it's a tool that lets you map your flights around the world, search and filter them in all sorts of interesting ways, and calculate statistics automatically.</p>
 
+	    <h4>What can I do with OpenFlights?</h4>
+
+	    Quite a few things:
+	    <ul>
+	      <li>Track exactly how much time you've spent sitting on a plane.</li>
+	      <li>See at a glance where you've been and where you're going.</li>
+	      <li>Rapidly search your flight history: now when did I go to the Bahamas, and on what airline?</li>
+	      <li>Share your flights and trips with friends.</li>
+	    </ul>
+
 	    <h4>Why is OpenFlights better than other similar services?</h4>
 
-	    Lots of reasons!
+	    Well, as far as we know there actually isn't anything <i>quite</i> like OpenFlights out there, but here are some things that separate us from the putative competition:
 	    <ul>
 	      <li>OpenFlights has a <b>way cool map</b>.  You can pan, zoom, select, scroll and explore all you like!</li>
 	      <li>OpenFlights is <b>user-friendly and efficient</b>.  Everything's on the same page!</li>
 	      <li>OpenFlights <b>works in realtime</b>.  Make any change, and you'll see it right then and there.</li>
 	      <li>OpenFlights <b>supports trips</b>.  You can join up any flights together into a trip, which you can then display on its own page and even share with friends.</li>
 	      <li>OpenFlights is <b>free in spirit</b>.  We don't try to lock you in: it's easy to import your data <i>and</i> export copies for safekeeping.</li>
-	      <li>OpenFlights is <b>free as in beer</b>.  Using the website costs you absolutely nothing, although we reserve the right to nag users for donations if they <i>really</i> get into it &mdash; gotta pay the bandwidth bill somehow.</li>
-	      <li>OpenFlights is <b>free as in speech</b>.  All our source code and (public) data is licensed under the <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="http://sourceforge.net/projects/openflights">SourceForge</a>, so you can set up your own copy or just use the bits you like.</li>
+	      <li>OpenFlights is <b>free software</b>.  All our source code and (public) data is licensed under the <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="http://sourceforge.net/projects/openflights">SourceForge</a>, so you can set up your own copy or just use the bits you like.</li>
 	    </ul>
 
-	    <h4>That's nice, but are you sure this thing will scale?</h4>
+	    <h4>How much does it cost?</h4>
 
-	    <p>Yes!  The heavy lifting of drawing the maps is handled by your browser, not any central server.  The database is built to scale and has been stress-tested by loading over 100,000 flights, but key operations still took under 0.1 seconds each.</p>
+	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so OpenFlights.org reserves the right to add (unobstrusive) advertising to the site and to nag heavy users for donations.</p>
+
+	    <h4>Are you sure this thing will scale?</h4>
+
+	    <p>Yes!  The heavy lifting of drawing the maps is handled by your browser, not any central server.  The database is built to scale up and has been stress-tested by loading in over 100,000 flights, but key operations still took under 0.1 seconds each.</p>
 
 	    <h2>Features and bugs</h2>
 	    
@@ -59,9 +72,9 @@
 	      <li><b>Full public launch.</b></li>
 	    </ol>
 
-	    <h4>When?</h4>
+	    <h4>When are you launching?</h4>
 	    
-	    <p>When it's ready.</p>
+	    <p>When it's ready.  If you'd like to be notified, send mail to <i>info at openflights dot org>/i>.</p>
 
 	    <h4>Can I get a map centred on Australia or the Americas instead of Europe?</h4>
 	    
@@ -73,21 +86,23 @@
 	    
 	    <h4>Why aren't the flight paths curved?</h4>
 	    
-	    <p>That would be hard to draw fast, so we cheat and use straight lines.  The actual distances, though, are calculated correctly as <a href="http://en.wikipedia.org/en/Great-circle_distance">great circle distances</a>.</p>
+	    <p>That would be hard to draw fast, so we cheat and use straight lines.  We're looking into seeing if we can do curved paths in the future, but it's not a priority.</p>
+
+	    <p>The distances for the statistics, though, are calculated correctly as <a href="http://en.wikipedia.org/en/Great-circle_distance">great circle distances</a>.</p>
 	    
 	    <h4>Are those flight times estimates accurate?</h4>
 	    
-	    <p>We currently use a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation.</p>
+	    <p>We currently use a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p>
 	    
-	    <h4>You need to implement cool feature X, and fix terrible bug Y!</h4>
+	    <h4>You really need to implement cool feature X, and fix terrible bug Y, and do it <i>right now</i>!</h4>
 	    
 	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!</p>
 	    
 	    <h2>Technical jibber-jabber</h2>
 	    
-	    <h4>Howdja make that spiffy-keen map?</h4>
+	    <h4>Did you really code that map all by yourself?</h4>
 	    
-	    <p>All credit goes to <a http="http://openlayers.org">OpenLayers</a>.</p>
+	    <p>No sir, the credit goes to <a http="http://openlayers.org">OpenLayers</a>.  We just added the fluff on top.</p>
 	    
 	    <h4>And the rest of it?</h4>
 	    
@@ -100,11 +115,6 @@
 	    <p>Airline data (c. 5000 airlines) was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.</p>
 	    
 	    <p>Raw data, cooked data and recipes can be found in the SourceForge SVN repository under <i>data</i>.</p>
-	    
-<!-- Created: Fri Aug  1 02:25:28 SGT 2008 -->
-<!-- hhmts start -->
-Last modified: Sat Aug  2 21:03:10 SGT 2008
-<!-- hhmts end -->
 	    
 	  </div>
 	</div> 
