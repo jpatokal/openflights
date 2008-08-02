@@ -92,14 +92,14 @@
 
 #filter { 
   max-width: 220px;
-  margin: 10px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   padding: 10px;
   //border: 1px #003a6b solid;
 }
 
 #statsbox { 
   max-width: 220px;
-  margin: 10px 0px 0px 0px;
+  margin: 00px 0px 0px 0px;
   padding: 10px;
   //border: 1px #003a6b solid;
 }
