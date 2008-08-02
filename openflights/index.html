@@ -61,12 +61,14 @@
 	    </div>
 	    
 	    <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh()'>
+	    <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter()'>
 	  </form>
 	    
 	  </div>
 
-	  <div id="stats">
-	    <i>Loading...</i>
+	  <div id="statsbox">
+	    <div id="stats"></div>
+            <div id="ajaxstatus" style="visibility: hidden;"><br><img src="img/ajax-wait.gif" height=32 width=32/></div>
 	  </div>
 
           <div id="maptitle">
@@ -78,15 +80,15 @@
    <div id="result">
 <p><h2>OpenFlights Map Quick Reference</h2></p>
 <p>
-<b>View airport</b>: Click on an airport <img src="img/icon_plane-15x15.png">.<br>
-<b>Move around</b>: Use <img src="img/north-mini.png"><img src="img/west-mini.png"><img src="img/east-mini.png"><img src="img/south-mini.png"> buttons (top left) or click and drag your mouse.<br>
-<b>Zoom in/out</b>: Use <img src="img/zoom-plus-mini.png"><img src="img/zoom-minus-mini.png">, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="img/zoom-world-mini.png">.<br>
+<b>View airport</b>: Click on an airport <img src="img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
+<b>Move around</b>: Use <img src="img/north-mini.png" height=18 width=18><img src="img/west-mini.png" height=18 width=18><img src="img/east-mini.png" height=18 width=18><img src="img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
+<b>Zoom in/out</b>: Use <img src="img/zoom-plus-mini.png" height=18 width=18><img src="img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="img/zoom-world-mini.png" height=18 width=18>.<br>
 <b>Select region</b>: Click on <img src="img/drag-rectangle-off.png" width=18 height=18>, then draw a rectangle.  Click on <img src="img/panning-hand-off.png" width=18 height=18> to return to normal (panning) mode.<br>
-<b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="img/layer-switcher-maximize.png">.<br>
-<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="img/layer-switcher-maximize.png">.
+<b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="img/layer-switcher-maximize.png" height=18 width=18>.<br>
+<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="img/layer-switcher-maximize.png" height=18 width=18>.
 </p>
-   </div>
-   </div> <!-- end mainContainer -->
+      </div>
+    </div> <!-- end mainContainer -->
 
   </body>
 </html>
