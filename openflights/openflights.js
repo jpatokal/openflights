@@ -4,7 +4,7 @@
  */
 
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
-var trid = 0, alid = 0, initializing = true;
+var trid = 0, alid = 0, apid = 0, initializing = true;
 var helptext;
 var resultHistory = new Array();
 
@@ -141,7 +141,11 @@ function drawLine(lineLayer, x1, y1, x2, y2, flight) {
 }
 
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count) {
-  var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;	
+  var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
+  desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_AIRPORT + "\"," + apid + ", \"" + desc + "\")'>";
+  desc = "<img src=\"img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
+
+
   var iconfile, size;
   if(count > 4) {
     iconfile = 'img/icon_plane-25x25.png';
@@ -166,6 +170,8 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   marker.apid = apid;
 
   var markerClick = function (evt) {
+    closePopup();
+
     if (this.popup == null) {
       this.popup = this.createPopup(this.closeBox);
       map.addPopup(this.popup);
@@ -174,7 +180,6 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
       this.popup.toggle();
     }
     if(this.popup.visible()) {
-      xmlhttpPost(URL_AIRPORT, apid, desc);
       currentPopup = this.popup;
     } else {
       popResult();
@@ -227,16 +232,19 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_STATS) {
 	updateStats(self.xmlHttpReq.responseText);
       }
+      document.getElementById("ajaxstatus").style.visibility = 'hidden';
     }
   }
   
-  if(strURL == URL_MAP) {
-    document.getElementById("stats").innerHTML = "<I>Loading...</I>";
-  }
   if(strURL == URL_AIRPORT) {
+    // Don't reload the current airport
+    if(id == apid) {
+      return;
+    }
+    apid = id;
     pushResult();
-    document.getElementById("result").innerHTML = "<I>Searching...</I>";
   }
+  document.getElementById("ajaxstatus").style.visibility = 'visible';
   self.xmlHttpReq.send(getquerystring(id));
 }
 
@@ -263,9 +271,9 @@ function updateFilter(str) {
   var airlineselect = createSelect("Airlines", "All airlines", alid, airlines.split("\t"));
   document.getElementById("filter_airlineselect").innerHTML = airlineselect;
 
-  if(trid == 0) {
+  /*  if(trid == 0) {
     document.getElementById("maptitle").innerHTML = "";
-  }
+    } */
 }
 
 
@@ -286,7 +294,7 @@ function createSelect(name, allopts, id, rows) {
     var url = col[2];
     if(col[0] == id) {
       selected = " SELECTED";
-      document.getElementById("maptitle").innerHTML = name + " <small>(<a href=\"" + url + "\">link</a>)<small>";
+      //      document.getElementById("maptitle").innerHTML = name + " <small>(<a href=\"" + url + "\">link</a>)<small>";
     } else {
       selected = "";
     }
@@ -347,10 +355,11 @@ function updateAirport(str, desc) {
     var rows = str.split("\t");
     for (r in rows) {
       var col = rows[r].split(",");
-      // src_iata, dst_iata, flight code, date
-      table += "<tr><td>" + col[0] + "</td><td>" + col[1] + "</td><td>" + col[2] + "</td><td>" + col[3] +
-	"</td><td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
-	"</td><td>" + col[8] + "</td><td>" + col[9] + "</td></tr>";
+      // src_iata, src_apid, dst_iata, dst_apid, flight code, date
+      table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
+	"<td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
+	"<td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
+	"</td><td>" + col[8] + "</td><td>" + col[9] + "</td><td>" + col[10] + "</td><td>" + col[11] + "</td></tr>";
     }
     table += "</table>";
   }
@@ -408,20 +417,19 @@ function updateStats(str) {
 }
 
 // Given apid, find the matching airport marker and pop it up
-function selectAirport(apid, desc) {
+function selectAirport(apid) {
   var markers = airportLayer.markers;
   var found = false;
   for(m in markers) {
     if(markers[m].apid == apid) {
       markers[m].events.triggerEvent("mousedown");
       found = true;
+      break;
     }
   }
   if (!found) {
     if(confirm("This airport is currently filtered out. Clear filter?")) {
-      var tr_select = document.forms['filterform'].Trips;
-      tr_select.selectedIndex = 0;
-      selectAirline(0);
+      clearFilter();
     }
   }
 }
@@ -444,18 +452,28 @@ function pushResult() {
 function popResult() {
   if(resultHistory.length > 0) {
     document.getElementById("result").innerHTML = resultHistory.pop();
-    if(currentPopup) {
-      currentPopup.hide();
-    }
+    apid = 0;
   }
+}
+
+function closePopup() {
+  // close any previous popups
+  if(currentPopup && currentPopup != this.popup) {
+    currentPopup.hide();
+    currentPopup = null;
+  }
+}
+
+function clearFilter() {
+  var tr_select = document.forms['filterform'].Trips;
+  tr_select.selectedIndex = 0;
+  selectAirline(0);
 }
 
 // Refresh user's display after change in filter
 // (loads new flight data and stats, but does not update filter options)
 function refresh() {
-  if(currentPopup) {
-    currentPopup.hide();
-  }
+  closePopup();
   xmlhttpPost(URL_MAP, 0, false);
 }
 
