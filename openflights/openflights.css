@@ -1,0 +1,357 @@
+/* ---------------------------------------------------------------------------- */
+/* You are free to modify and use this CSS layout in accordance with the        */
+/* Creative Commons 3.0 licence (see links to details of the license below) as  */
+/* long as you include this comment, the link to the license, and it's          */
+/* attribution.                                                                 */
+/*                                                                              */
+/* This CSS layout is licensed under the Creative Commons 3.0 licence.          */
+/* Abstract: http://creativecommons.org/licenses/by/3.0/us/                     */
+/* Full License: http://creativecommons.org/licenses/by/3.0/us/legalcode        */
+/*                                                                              */
+/* By: Ryan Chapin, Nuts &amp; Bolts Interactive, Inc. http://nbinteractive.com */
+/* Version: 1.0                                                                 */
+/* Date: 2008-03-24                                                             */
+/*                                                                              */
+/* If you'd like to contact Ryan with questions or comments, please go to:      */
+/* http://nbinteractive.com/contactryan.html                                    */
+/* ---------------------------------------------------------------------------- */
+
+/* ============================================================================ */
+/* Layout Styles */	
+#mainContainer
+	{
+	min-width: 740px;
+	padding: 0;
+	margin: 0;
+	}
+
+/* You must include some sort of border on this rule.  Otherwise IE 6.0 will not */
+/* render the background image or color properly.                                */
+#sideBarContentWrapper
+        {
+	background-position: right;
+        }
+
+#contentContainer
+        {
+        float: left;
+        width: 100%;
+        }
+
+#nonmap
+	{
+	margin-right: 240px;
+	padding: 10px;
+        height: 65%;
+	}
+
+#map
+	{
+	margin-right: 240px;
+	padding: 0px;
+        height: 65%;
+	}
+
+#maptitle { 
+    left: 3em;
+    top: 0.5em;
+    display: block;
+    position: absolute;
+    font-size:1.5em;
+} 
+
+#sideBar
+	{
+	float: left;
+	width: 240px;
+	margin-left: -240px;
+	}
+
+/* IE 6.0: For some reason, if you just specify padding here it'll add 10 px  */
+/* to the entire layout and cause the page to scroll horizontally. So we have */
+/* to specify the width and then set a margin on it.  The width is equal to   */
+/* the width of the column, 190px - the 10px margin * 2                       */
+#sideBar p
+        {
+        margin: 10px auto;
+        width: 220px;
+        }
+
+#sideBarContentWrapper > #sideBar p
+        {
+        padding: 10px;
+        margin: 0;
+        }
+
+#control{
+  max-width: 220px;
+  margin: 10px 10px 0px 0px;
+  padding: 10px;
+  //border: 1px #003a6b solid;
+}
+
+#filter { 
+  max-width: 220px;
+  margin: 10px 0px 0px 0px;
+  padding: 10px;
+  //border: 1px #003a6b solid;
+}
+
+#stats { 
+  max-width: 220px;
+  margin: 10px 0px 0px 0px;
+  padding: 10px;
+  //border: 1px #003a6b solid;
+}
+
+/* We have to include some sort of height attribute for IE 6 and 7 to render  */
+/* the columns background properly, and prevent additional, unwanted          */
+/* whitespace from being rendered.                                            */
+#result
+	{
+	height: 1%;
+	margin: 0;
+	padding: 5px 10px;
+	clear: both;
+	}
+
+/* OpenLayers default stuff starts here */
+
+div.olLayerDiv {
+   -moz-user-select: none;
+   text-align: left;
+}
+
+.olLayerGoogleCopyright {
+    left: 2px;
+    bottom: 2px;  
+}
+.olLayerGooglePoweredBy {
+    left: 2px;
+    bottom: 15px;   
+}
+.olControlAttribution {
+    font-size: smaller; 
+    right: 3px; 
+    bottom: 4.5em; 
+    position: absolute; 
+    display: block;
+}
+.olControlScale {
+    right: 3px;
+    bottom: 3em;
+    display: block;
+    position: absolute;
+    font-size: smaller;
+}
+.olControlScaleLine {
+   left: 10px;
+   bottom: 15px;
+   font-size: xx-small;
+}
+.olControlScaleLineBottom {
+   border: solid 2px black;
+   border-bottom: none;
+   margin-top:-2px;
+   text-align: center;
+}
+.olControlScaleLineTop {
+   border: solid 2px black;
+   border-top: none;
+   text-align: center;
+}
+
+.olControlPermalink {
+    right: 3px;
+    bottom: 1.5em;
+    display: block;
+    position: absolute;
+    font-size: smaller;
+} 
+
+div.olControlMousePosition {
+    bottom: 0em;
+    right: 3px;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: smaller;
+}
+
+.olControlOverviewMapContainer {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.olControlOverviewMapElement {
+    padding: 10px 18px 10px 10px;
+    background-color: #00008B;
+    -moz-border-radius: 1em 0 0 0;
+}
+
+.olControlOverviewMapMinimizeButton {
+    right: 0px;
+    bottom: 80px;
+}    
+
+.olControlOverviewMapMaximizeButton {
+    right: 0px;
+    bottom: 80px;
+}
+
+.olControlOverviewMapExtentRectangle {
+    overflow: hidden;
+    background-image: url("img/blank.gif");
+    cursor: move;
+    border: 2px dotted red;
+}
+.olControlOverviewMapRectReplacement {
+    overflow: hidden;
+    cursor: move;
+    background-image: url("./img/overview_replacement.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.olLayerGeoRSSDescription {
+    float:left;
+    width:100%;
+    overflow:auto;
+    font-size:1.0em;
+}
+.olLayerGeoRSSClose {
+    float:right;
+    color:gray;
+    font-size:1.2em;
+    margin-right:6px;
+    font-family:sans-serif;
+}
+.olLayerGeoRSSTitle {
+    float:left;font-size:1.2em;
+}
+
+.olPopupContent {
+    padding:5px;
+    overflow: auto;
+}    
+.olControlNavToolbar { 
+    width:0px;
+    height:0px;
+}    
+.olControlNavToolbar div { 
+  display:block;
+  width:  28px;
+  height: 28px;
+  top: 200px;
+  left: 6px;
+  position: relative;
+}
+
+.olControlNavigationHistory {
+   background-image: url("img/navigation_history.png");
+   background-repeat: no-repeat;
+   width:  24px;
+   height: 24px;
+
+}
+.olControlNavigationHistoryPreviousItemActive { 
+  background-position: 0px 0px;
+}
+.olControlNavigationHistoryPreviousItemInactive { 
+   background-position: 0px -24px;
+}
+.olControlNavigationHistoryNextItemActive { 
+   background-position: -24px 0px;
+}
+.olControlNavigationHistoryNextItemInactive { 
+   background-position: -24px -24px;
+}
+
+.olControlNavToolbar .olControlNavigationItemActive { 
+  background-image: url("img/panning-hand-on.png");
+  background-repeat: no-repeat;
+}
+.olControlNavToolbar .olControlNavigationItemInactive { 
+  background-image: url("img/panning-hand-off.png");
+  background-repeat: no-repeat;
+}
+.olControlNavToolbar .olControlZoomBoxItemActive { 
+  background-image: url("img/drag-rectangle-on.png");
+  background-color: orange;
+  background-repeat: no-repeat;
+}
+.olControlNavToolbar .olControlZoomBoxItemInactive { 
+  background-image: url("img/drag-rectangle-off.png");
+  background-repeat: no-repeat;
+}
+.olControlEditingToolbar  {
+    float:right;
+    right: 0px;
+    height: 30px; 
+    width: 200px;
+}
+.olControlEditingToolbar div { 
+  background-image: url("img/editing_tool_bar.png");
+  background-repeat: no-repeat;
+  float:right;
+  width:  24px;
+  height: 24px;
+  margin: 5px;
+}
+.olControlEditingToolbar .olControlNavigationItemActive { 
+  background-position: -103px -23px; 
+}
+.olControlEditingToolbar .olControlNavigationItemInactive { 
+  background-position: -103px -0px; 
+}
+.olControlEditingToolbar .olControlDrawFeaturePointItemActive { 
+  background-position: -77px -23px; 
+}
+.olControlEditingToolbar .olControlDrawFeaturePointItemInactive { 
+  background-position: -77px -0px; 
+}
+.olControlEditingToolbar .olControlDrawFeaturePathItemInactive { 
+  background-position: -51px 0px; 
+}
+.olControlEditingToolbar .olControlDrawFeaturePathItemActive { 
+  background-position: -51px -23px; 
+}
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemInactive { 
+  background-position: -26px 0px; 
+}
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemActive { 
+  background-position: -26px -23px ;                                                                   
+}
+.olControlSaveFeaturesItemActive { 
+    background-image: url(img/save_features_on.png);
+    background-repeat: no-repeat;
+    background-position: 0px 1px;
+}
+.olControlSaveFeaturesItemInactive { 
+    background-image: url(img/save_features_off.png);
+    background-repeat: no-repeat;
+    background-position: 0px 1px;
+}
+
+.olHandlerBoxZoomBox {
+    border: 2px solid red;
+    position: absolute;
+    background-color: white;
+    opacity: 0.50;
+    font-size: 1px;
+    filter: alpha(opacity=50);
+}   
+
+/* 
+ * Due to current limitations in the OpenLayers code, you can only
+ * replace this image with another image which is 17px x 17px. 
+ */   
+.olPopupCloseBox {
+  background: url("img/close.gif") no-repeat;
+  cursor: pointer;
+}
+
+.olControlNoSelect {
+ -moz-user-select: none;
+}

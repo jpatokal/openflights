@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>OpenFlights input</title>
+
+<script language="Javascript">
+function xmlhttpPost(strURL) {
+    var xmlHttpReq = false;
+    var self = this;
+    // Mozilla/Safari
+    if (window.XMLHttpRequest) {
+        self.xmlHttpReq = new XMLHttpRequest();
+    }
+    // IE
+    else if (window.ActiveXObject) {
+        self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    self.xmlHttpReq.open('POST', strURL, true);
+    self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    self.xmlHttpReq.onreadystatechange = function() {
+        if (self.xmlHttpReq.readyState == 4) {
+            updatepage(self.xmlHttpReq.responseText);
+        }
+    }
+    self.xmlHttpReq.send(getquerystring());
+}
+
+function getquerystring() {
+    var form = document.forms['f1'];
+    qstr = 'src=' + escape(form.src_iata.value) + '&' +
+      'dst=' + escape(form.dst_iata.value) + '&' +
+      'number=' + escape(form.number.value);
+    return qstr;
+}
+
+function updatepage(str){
+    document.getElementById("result").innerHTML = str;
+}
+</script>
+
+  </head>
+
+  <body onload="init()">
+    <h1>OpenFlights input</h1>
+
+<form id='f1'>
+Date <input type="text" name="date" size="40" value=""/><br/>
+Source airport (IATA) <input type="text" name="src_iata" size="40" value=""/><br/>
+Destination airport (IATA) <input type="text" name="dst_iata" size="40" value=""/><br/>
+Flight number <i>or</i> airline code (IATA) <input type="text" name="number" size="40" value=""/><br/>
+
+<input value="Submit" type="button" onclick='JavaScript:xmlhttpPost("/input.php")'>
+
+<div id="result"></div>
+
+</form>
+  </body>
+</html>
