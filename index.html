@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><title>OpenFlights (ALPHA)</title>
+    <link rel="stylesheet" href="style_reset.css" type="text/css">
+    <link rel="stylesheet" href="openflights.css" type="text/css">
+    <link rel="stylesheet" href="sortable.css" type="text/css">
+    <script src="OpenLayers.js"></script>
+    <script type="text/javascript" src="sortable.js"></script>
+    <script type="text/javascript" src="openflights.js"></script>
+  </head>
+
+  <body onload="init()">
+
+    <div id="mainContainer">
+      <div id="sideBarContentWrapper">
+	<div id="contentContainer">
+	  <div id="map" class="smallmap"></div>
+	</div>
+
+
+	<div id="sideBar">
+	  <!--#include virtual="/sidebar.html" -->
+
+<!--
+	  <div id="control">
+
+	    <form name="login">
+	    <table cellspacing="5" cellpadding="0" border="0" width="200">
+	      <tr><td>Username</td><td>
+		  <input type="Text" name="name" align="top" size="10">
+		</td>
+	      </tr><tr>
+		<td align=right>Password</td><td>
+		  <input type="password" name="pw" align="top" size="10">	    
+		</td>
+	      </tr><tr>
+		<td></td>
+		<td>
+		  <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/map.php")'>
+		</td>
+	      </tr></table>
+	  </form></br>	    
+	  <small>Sorry &mdash; not open to the public yet. Please mail <i>info at openflights dot org</i> for any enquiries.</small>
+	  </div>
+-->
+
+	  <div id="filter">
+	    <b>Filter</b><br>
+	    <form id='filterform'>
+<!--	      <input type="radio" name="type" value="none" id="airportToggle"
+		onclick="toggleControl(this);" checked="checked" />
+	    <label for="airportToggle">Airports</label>
+	    <input type="radio" name="type" value="select" id="selectToggle"
+	      onclick="toggleControl(this);" />
+	    <label for="selectToggle">Flights</label>
+-->
+	    <div id="filter_tripselect">
+	      Trips <select name="Trips"><option value="">All flights</option></select>
+            </div>
+	    <div id="filter_airlineselect">
+	      Airlines <select name="Airlines"><option value="">All airlines</option></select>
+	    </div>
+	    
+	    <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh()'>
+	  </form>
+	    
+	  </div>
+
+	  <div id="stats">
+	    <i>Loading...</i>
+	  </div>
+
+          <div id="maptitle">
+          </div>
+	  
+	</div> <!-- end sidebar -->
+      </div> <!-- end sidebarwrapper -->
+
+   <div id="result">
+<p><h2>OpenFlights Map Quick Reference</h2></p>
+<p>
+<b>View airport</b>: Click on an airport <img src="img/icon_plane-15x15.png">.<br>
+<b>Move around</b>: Use <img src="img/north-mini.png"><img src="img/west-mini.png"><img src="img/east-mini.png"><img src="img/south-mini.png"> buttons (top left) or click and drag your mouse.<br>
+<b>Zoom in/out</b>: Use <img src="img/zoom-plus-mini.png"><img src="img/zoom-minus-mini.png">, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="img/zoom-world-mini.png">.<br>
+<b>Select region</b>: Click on <img src="img/drag-rectangle-off.png" width=18 height=18>, then draw a rectangle.  Click on <img src="img/panning-hand-off.png" width=18 height=18> to return to normal (panning) mode.<br>
+<b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="img/layer-switcher-maximize.png">.<br>
+<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="img/layer-switcher-maximize.png">.
+</p>
+   </div>
+   </div> <!-- end mainContainer -->
+
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>OpenFlights FAQ</title>
+    <link rel="stylesheet" href="style_reset.css" type="text/css">
+    <link rel="stylesheet" href="openflights.css" type="text/css">
+  </head>
+
+  <body>
+    <div id="mainContainer">
+      <div id="sideBarContentWrapper">
+	  
+	<div id="contentContainer">
+	  <div id="nonmap">
+	    
+	    <h1>OpenFlights FAQ</h1>
+	    
+	    <h2>General</h2>
+	    
+	    <h4>What is OpenFlights?</h4>
+	    
+	    <p>In a nutshell, it's a tool that lets you map your flights around the world, search and filter them in all sorts of interesting ways, and calculate statistics automatically.</p>
+
+	    <h4>Why is OpenFlights better than other similar services?</h4>
+
+	    Lots of reasons!
+	    <ul>
+	      <li>OpenFlights has a <b>way cool map</b>.  You can pan, zoom, select, scroll and explore all you like!</li>
+	      <li>OpenFlights is <b>user-friendly and efficient</b>.  Everything's on the same page!</li>
+	      <li>OpenFlights <b>works in realtime</b>.  Make any change, and you'll see it right then and there.</li>
+	      <li>OpenFlights <b>supports trips</b>.  You can join up any flights together into a trip, which you can then display on its own page and even share with friends.</li>
+	      <li>OpenFlights is <b>free in spirit</b>.  We don't try to lock you in: it's easy to import your data <i>and</i> export copies for safekeeping.</li>
+	      <li>OpenFlights is <b>free as in beer</b>.  Using the website costs you absolutely nothing, although we reserve the right to nag users for donations if they <i>really</i> get into it &mdash; gotta pay the bandwidth bill somehow.</li>
+	      <li>OpenFlights is <b>free as in speech</b>.  All our source code and (public) data is licensed under the <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="http://sourceforge.net/projects/openflights">SourceForge</a>, so you can set up your own copy or just use the bits you like.</li>
+	    </ul>
+
+	    <h4>That's nice, but are you sure this thing will scale?</h4>
+
+	    <p>Yes!  The heavy lifting of drawing the maps is handled by your browser, not any central server.  The database is built to scale and has been stress-tested by loading over 100,000 flights, but key operations still took under 0.1 seconds each.</p>
+
+	    <h2>Features and bugs</h2>
+	    
+	    <h4>How do I sign up and start punching in my own flights?</h4>
+	    
+	    <p>At the moment you don't, because the user interface isn't comprehensible/stable enough to let the world go crazy on the flight database quite yet.  Stay tuned &mdash; it's going to be a <i>lot</i> nicer than what you're used to.  If you're really keen on beta-testing, drop us a line at <i>info at openflights dot org</i> and tell us why.</p>
+	   
+	    <h4>What's the roadmap then?</h4>
+
+	    Roughly like this:
+	    <ol>
+	      <li>Implement simple flight input (point-to-point).</li>
+	      <li>Implement flight editing.</li>
+	      <li>Add user logins and privacy controls.</li>
+	      <li><b>Launch public beta.</b></li>
+	      <li>Implement complex flight input (multi-segment and repeated flights).</li>
+	      <li>Implement importing and exporting.</li>
+	      <li>Add support for filtering according to pretty much anything.</li>
+	      <li>Graphical bells and whistles (eg. color-coding of flights).</li>
+	      <li><b>Full public launch.</b></li>
+	    </ol>
+
+	    <h4>When?</h4>
+	    
+	    <p>When it's ready.</p>
+
+	    <h4>Can I get a map centred on Australia or the Americas instead of Europe?</h4>
+	    
+	    <p>The mapping software actually allows wrap-around worlds, so you can center and scroll anywhere, but unfortunately there's a bug in the current version that breaks things.  Stay tuned.</p>
+	    
+	    <h4>Why is the map slow to draw sometimes?  Why do map updates slow down my computer?</h4>
+	    
+	    <p>Map tiles are loaded off the Internet, and the flights, airports etc are drawn on top by your own browser.  Switching to a faster computer or just shrinking the window size will speed up things.  The NASA geographic tiles are also larger and thus slower than the Metacarta political ones.</p>
+	    
+	    <h4>Why aren't the flight paths curved?</h4>
+	    
+	    <p>That would be hard to draw fast, so we cheat and use straight lines.  The actual distances, though, are calculated correctly as <a href="http://en.wikipedia.org/en/Great-circle_distance">great circle distances</a>.</p>
+	    
+	    <h4>Are those flight times estimates accurate?</h4>
+	    
+	    <p>We currently use a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation.</p>
+	    
+	    <h4>You need to implement cool feature X, and fix terrible bug Y!</h4>
+	    
+	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!</p>
+	    
+	    <h2>Technical jibber-jabber</h2>
+	    
+	    <h4>Howdja make that spiffy-keen map?</h4>
+	    
+	    <p>All credit goes to <a http="http://openlayers.org">OpenLayers</a>.</p>
+	    
+	    <h4>And the rest of it?</h4>
+	    
+	    <p>JavaScript frontend chock full of AJAX-y goodness, plus PHP scripts on the backend shifting through reams of data pulled from MySQL.</p>
+	    
+	    <h4>Where did you get all that airline and airport data?</h4>
+	    
+	    <p>Airport data (c. 5000 airports) was generated by mashing together DAFIF (October 2006 cycle) for location, ICAO data and country data with the Global Airport Database for IATA codes and city names, plus some manual updates for major post-2006 changes.</p>
+	    
+	    <p>Airline data (c. 5000 airlines) was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.</p>
+	    
+	    <p>Raw data, cooked data and recipes can be found in the SourceForge SVN repository under <i>data</i>.</p>
+	    
+<!-- Created: Fri Aug  1 02:25:28 SGT 2008 -->
+<!-- hhmts start -->
+Last modified: Sat Aug  2 21:03:10 SGT 2008
+<!-- hhmts end -->
+	    
+	  </div>
+	</div> 
+	
+	<div id="sideBar">
+        <!--#include virtual="/sidebar.html" -->
+	</div>
+
+      </div> <!-- end sidebarwrapper -->
+    </div> <!-- end mainContainer -->
+
+  </body>
+</html>
