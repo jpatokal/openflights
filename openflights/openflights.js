@@ -6,7 +6,6 @@
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var trid = 0, alid = 0, apid = 0, initializing = true;
 var helptext;
-var resultHistory = new Array();
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
@@ -33,14 +32,14 @@ function init(){
     var ol_wms = new OpenLayers.Layer.WMS( "Political (Metacarta)",
                                            "http://labs.metacarta.com/wms/vmap0?",
 		                           {layers: 'basic'},
-                                           {transitionEffect: 'resize'},
+                                           //{transitionEffect: 'resize'},
                                            {wrapDateLine: true}
       );
 
     var jpl_wms = new OpenLayers.Layer.WMS( "Geographical (NASA)",
                     "http://t1.hypercube.telascience.org/cgi-bin/landsat7", 
                     {layers: "landsat7"},
-                    {transitionEffect: 'resize'},
+		    //{transitionEffect: 'resize'},
                     {wrapDateLine: true}
       );
     jpl_wms.setVisibility(false);
@@ -72,7 +71,6 @@ function init(){
     //map.setCenter(new OpenLayers.LonLat(0, 0), 0);
     map.zoomToMaxExtent();
 
-    helptext = document.getElementById("result").innerHTML;
     xmlhttpPost(URL_MAP, 0);
  }    
 
@@ -182,7 +180,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
     if(this.popup.visible()) {
       currentPopup = this.popup;
     } else {
-      popResult();
+      closeResult();
     }
     OpenLayers.Event.stop(evt);
   };
@@ -242,7 +240,6 @@ function xmlhttpPost(strURL, id, param) {
       return;
     }
     apid = id;
-    pushResult();
   }
   document.getElementById("ajaxstatus").style.visibility = 'visible';
   self.xmlHttpReq.send(getquerystring(id));
@@ -345,7 +342,8 @@ function updateMap(str){
 }
 
 function updateAirport(str, desc) {
-  table = "<img src=\"img/close.gif\" onclick=\"JavaScript:popResult();\" width=17 height=17> ";
+  openResult();
+  table = "<img src=\"img/close.gif\" onclick=\"JavaScript:closeResult();\" width=17 height=17> ";
   if(str == "") {
     table += "<i>No flights originating at this airport found.</i>";
   } else {
@@ -369,6 +367,7 @@ function updateAirport(str, desc) {
 }
 
 function updateStats(str) {
+  openResult();
   if(str == "") {
     table = "<i>Statistics calculation failed!</i>";
   } else {
@@ -445,15 +444,19 @@ function selectAirline(new_alid) {
   refresh();
 }
 
-function pushResult() {
-  resultHistory.push(document.getElementById("result").innerHTML);
+function openResult() {
+  document.getElementById("help").style.display = 'none';
+  document.getElementById("input").style.display = 'none';
+  document.getElementById("result").style.display = 'inline';
 }
 
-function popResult() {
-  if(resultHistory.length > 0) {
-    document.getElementById("result").innerHTML = resultHistory.pop();
-    apid = 0;
-  }
+function closeResult() {
+  document.getElementById("result").style.display = 'none';
+  document.getElementById("help").style.display = 'inline';
+}
+
+function showHelp() {
+  closeResult();
 }
 
 function closePopup() {
@@ -475,8 +478,4 @@ function clearFilter() {
 function refresh() {
   closePopup();
   xmlhttpPost(URL_MAP, 0, false);
-}
-
-function showHelp(){
-  document.getElementById("result").innerHTML = helptext;
 }
