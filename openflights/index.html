@@ -3,12 +3,12 @@
     <link rel="stylesheet" href="style_reset.css" type="text/css">
     <link rel="stylesheet" href="openflights.css" type="text/css">
     <link rel="stylesheet" href="sortable.css" type="text/css">
-    <script src="OpenLayers.js"></script>
+    <script type="text/javascript" src="OpenLayers.js"></script>
     <script type="text/javascript" src="sortable.js"></script>
     <script type="text/javascript" src="openflights.js"></script>
   </head>
 
-  <body onload="init()">
+  <body>
 
     <div id="mainContainer">
       <div id="sideBarContentWrapper">
@@ -20,9 +20,7 @@
 	<div id="sideBar">
 	  <!--#include virtual="/sidebar.html" -->
 
-<!--
-	  <div id="control">
-
+	  <div id="login">
 	    <form name="login">
 	    <table cellspacing="5" cellpadding="0" border="0" width="200">
 	      <tr><td>Username</td><td>
@@ -35,13 +33,17 @@
 	      </tr><tr>
 		<td></td>
 		<td>
-		  <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/map.php")'>
+		  <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
 		</td>
 	      </tr></table>
 	  </form></br>	    
-	  <small>Sorry &mdash; not open to the public yet. Please mail <i>info at openflights dot org</i> for any enquiries.</small>
+	  <small>Sorry &mdash; registration not open to the public yet.</small>.
 	  </div>
--->
+
+	  <div id="statsbox">
+	    <div id="stats"></div>
+            <div id="ajaxstatus" style="visibility: hidden;"><br><img src="img/ajax-wait.gif" height=32 width=32/></div>
+	  </div>
 
 	  <div id="filter">
 	    <b>Filter</b><br>
@@ -66,9 +68,8 @@
 	    
 	  </div>
 
-	  <div id="statsbox">
-	    <div id="stats"></div>
-            <div id="ajaxstatus" style="visibility: hidden;"><br><img src="img/ajax-wait.gif" height=32 width=32/></div>
+	  <div id="control">
+	    <input type="button" value="New flight" align="middle" onclick='JavaScript:xmlhttpPost("/php/preinput.php")'>
 	  </div>
 
           <div id="maptitle">
@@ -89,8 +90,44 @@
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="img/layer-switcher-maximize.png" height=18 width=18>.
 </p>
 	</div> <!-- end help -->
-	<div id="result" style="display: none;">ping</div>
-	<div id="input" style="display: none;"></div>
+	<div id="input" style="display: none;">
+<h2>Add new flight</h2>
+<p>Fields in <font color="red">red</font> are required.  Click on airports to select them!</p>
+
+<form id='inputform'>
+<table>
+<tr>
+  <td><font color="red">Date</font></td>
+  <td><input type="text" name="src_time" size="40"
+  </td>
+</tr><tr>
+  <td><font color="red">Source</font></td>
+  <td><div id="input_src_ap_select"></div></td>
+</tr><tr>
+  <td><font color="red">Destination</font></td>
+  <td><div id="input_dst_ap_select"></div></td>
+</tr><tr>
+  <td><font color="red">Flight number <i>or</i><br>airline code (IATA)</font></td>
+  <td><input type="text" name="number" size="10" value=""/></td>
+</tr><tr>
+  <td>Airline</td>
+  <td><div id="input_airline_select"></div></td>
+</tr><tr>
+  <td>Plane</td>
+  <td>
+    <div id="input_plane_select">
+      <select name="Plane"><option value="">-</option></select>
+    </div>
+  </td>
+</tr>
+</table>
+
+<input value="Submit" type="button" onclick='JavaScript:xmlhttpPost("/input.php")'>
+</form>
+
+	</div>
+	<div id="result" style="display: none;"></div>
+
       </div> <!-- end resultbox -->
     </div> <!-- end mainContainer -->
 
