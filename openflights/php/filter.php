@@ -1,14 +1,18 @@
 <?php
 session_start();
+$uid = $_SESSION["uid"];
+if(!$uid or empty($uid)) {
+  printf("Not logged in, aborting");
+  exit;
+}
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
-
-$id = $HTTP_POST_VARS["id"];
 
 // Load up possible filter settings for this user
 
 // List of all trips
-$sql = "SELECT * FROM trips WHERE uid=1 ORDER BY name";
+$sql = "SELECT * FROM trips WHERE uid=" . $uid . " ORDER BY name";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -22,7 +26,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List of all airlines
-$sql = "SELECT DISTINCT a.alid, name FROM airlines as a, flights as f WHERE uid=1 AND a.alid=f.alid ORDER BY name";
+$sql = "SELECT DISTINCT a.alid, name FROM airlines as a, flights as f WHERE uid=" . $uid . " AND a.alid=f.alid ORDER BY name";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
