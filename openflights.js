@@ -4,16 +4,18 @@
  */
 
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
-var trid = 0, alid = 0, apid = 0, initializing = true;
+var trid = 0, alid = 0, apid = 0;
+var input = false, initializing = true;
 var helptext;
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
-var URL_FLIGHT = "/php/airport.php";
+var URL_INPUT = "/php/input.php";
 var URL_MAP = "/php/map.php";
+var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
 
-function init(){
+window.onload = function init(){
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
     map = new OpenLayers.Map('map', {
       maxExtent: bounds,
@@ -26,20 +28,20 @@ function init(){
         new OpenLayers.Control.ScaleLine(),
         //new OpenLayers.Control.MouseToolbar(),
         //new OpenLayers.Control.Permalink('permalink'),
-        new OpenLayers.Control.OverviewMap(),
+        new OpenLayers.Control.OverviewMap()
       ] });
 
     var ol_wms = new OpenLayers.Layer.WMS( "Political (Metacarta)",
                                            "http://labs.metacarta.com/wms/vmap0?",
 		                           {layers: 'basic'},
-                                           //{transitionEffect: 'resize'},
+                                           {transitionEffect: 'resize'},
                                            {wrapDateLine: true}
       );
 
     var jpl_wms = new OpenLayers.Layer.WMS( "Geographical (NASA)",
                     "http://t1.hypercube.telascience.org/cgi-bin/landsat7", 
                     {layers: "landsat7"},
-		    //{transitionEffect: 'resize'},
+		    {transitionEffect: 'resize'},
                     {wrapDateLine: true}
       );
     jpl_wms.setVisibility(false);
@@ -52,7 +54,7 @@ function init(){
                     strokeWidth: 2,
                     hoverStrokeColor: "red",
                     hoverStrokeOpacity: 1,
-                    hoverStrokeWidth: 2,
+                    hoverStrokeWidth: 2
                   })
                 });
 
@@ -106,13 +108,13 @@ function drawLine(lineLayer, x1, y1, x2, y2, flight) {
   var targetNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2, y2), {flight: flight} );
   
   if(Math.abs(x1-x2) < 180) {
-    var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {flight: flight});
-    var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
+    //var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {flight: flight});
+    //var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
     var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1), {flight: flight});
     var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
     lineLayer.addNodes([sourceNode, targetNode]);
-    lineLayer.addNodes([westNode1, westNode2]);
-    lineLayer.addNodes([eastNode1, eastNode2]);
+    //lineLayer.addNodes([westNode1, westNode2]);
+    //lineLayer.addNodes([eastNode1, eastNode2]);
     
   } else {
     var dy = y2 - y1;
@@ -120,20 +122,22 @@ function drawLine(lineLayer, x1, y1, x2, y2, flight) {
     var dx2 = 180 - Math.abs(x2);
     var y = parseFloat(y1) + (dx1 / (dx1 + dx2)) * dy;
     
-    var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-540, y), {flight: flight});
-    var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1));
-    lineLayer.addNodes([westNode1, westNode2]);
+    //var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-540, y), {flight: flight});
+    //var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1));
+    //lineLayer.addNodes([westNode1, westNode2]);
     
-    var westNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2), {flight: flight});
+    //var westNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2), {flight: flight});
     var bNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-180, y), {flight: flight});
-    lineLayer.addNodes([westNode3, bNode1, sourceNode]);
+    //lineLayer.addNodes([westNode3, bNode1, sourceNode]);
+    lineLayer.addNodes([bNode1, sourceNode]);
     
-    var eastNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1));
+    //var eastNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1));
     var bNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(180, y), {flight: flight});
-    lineLayer.addNodes([targetNode, bNode2, eastNode3]);
+    //lineLayer.addNodes([targetNode, bNode2, eastNode3]);
+    lineLayer.addNodes([targetNode, bNode2]);
     
-    var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(540, y), {flight: flight});
-    var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
+    //var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(540, y), {flight: flight});
+    //var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
     //lineLayer.addNodes([eastNode1, eastNode2]);
   }
 }
@@ -146,14 +150,14 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
 
   var iconfile, size;
   if(count > 4) {
-    iconfile = 'img/icon_plane-25x25.png';
-    size = new OpenLayers.Size(25,25);
+    iconfile = 'img/icon_plane-19x19.png';
+    size = new OpenLayers.Size(19,19);
   } else if(count <= 2) {
     iconfile = 'img/icon_plane-15x15.png';
     size = new OpenLayers.Size(15,15);
   } else {
-    iconfile = 'img/icon_plane-20x20.png';
-    size = new OpenLayers.Size(20,20);
+    iconfile = 'img/icon_plane-17x17.png';
+    size = new OpenLayers.Size(17,17);
   }
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   var icon = new OpenLayers.Icon(iconfile,size,offset);
@@ -166,9 +170,29 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   feature.data.overflow = "auto";
   var marker = feature.createMarker();
   marker.apid = apid;
+  feature.apid = apid;
 
+  // Run when the user clicks on an airport marker
+  // this == the feature, *not* the marker
   var markerClick = function (evt) {
     closePopup();
+
+    // If input mode is active, we select the airport instead of popping it up
+    if(input) {
+      var ap_select = document.forms['inputform'].src_ap;
+      // If src is already chosen, then we edit dst instead
+      if(ap_select.selectedIndex > 0) {
+	ap_select = document.forms['inputform'].dst_ap;
+      }
+      for(index = 0; index < ap_select.length; index++) {
+	if(ap_select[index].value == this.apid) {
+	  ap_select.selectedIndex = index;
+	}
+      }
+      var size = new OpenLayers.Size(19, 19);
+      this.marker.icon.setUrl('img/icon_plane-selected.png');
+      return;
+    }
 
     if (this.popup == null) {
       this.popup = this.createPopup(this.closeBox);
@@ -227,6 +251,10 @@ function xmlhttpPost(strURL, id, param) {
 	  initializing = false;
         }
       }
+      if(strURL == URL_PREINPUT) {
+	inputFlight(self.xmlHttpReq.responseText);
+      }
+
       if(strURL == URL_STATS) {
 	updateStats(self.xmlHttpReq.responseText);
       }
@@ -262,10 +290,10 @@ function updateFilter(str) {
   var trips = master[3];
   var airlines = master[4];
 
-  var tripselect = createSelect("Trips", "All flights", trid, trips.split("\t"));
+  var tripselect = "Trips " + createSelect("Trips", "All flights", trid, trips.split("\t"), 20);
   document.getElementById("filter_tripselect").innerHTML = tripselect;
 
-  var airlineselect = createSelect("Airlines", "All airlines", alid, airlines.split("\t"));
+  var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", alid, airlines.split("\t"), 20);
   document.getElementById("filter_airlineselect").innerHTML = airlineselect;
 
   /*  if(trid == 0) {
@@ -280,10 +308,11 @@ function updateFilter(str) {
  * name: document name (id) of select element
  * allopts: "No filtering" option
  * id: id to match col 1 against
- * rows: rows of array
+ * rows: Array of strings
+ * length: maximum length (omit or set to <= 0 to allow any length)
  */ 
-function createSelect(name, allopts, id, rows) {
-  var select = name + " <select name=\"" + name + "\"><option value=\"0\">" + allopts + "</option>";
+function createSelect(name, allopts, id, rows, maxlen) {
+  var select = "<select name=\"" + name + "\"><option value=\"0\">" + allopts + "</option>";
   var selected = "";
   for (r in rows) {
     var col = rows[r].split(";");
@@ -295,8 +324,8 @@ function createSelect(name, allopts, id, rows) {
     } else {
       selected = "";
     }
-    if (name.length > 20) {
-      name = name.substring(0,17) + "...";
+    if (maxlen && maxlen > 0 && name.length > maxlen) {
+      name = name.substring(0,maxlen - 3) + "...";
     }
     select += "<option value=\"" + col[0] + "\"" + selected + ">" + name + "</option>";
   }
@@ -415,7 +444,28 @@ function updateStats(str) {
   document.getElementById("result").innerHTML = bigtable;
 }
 
-// Given apid, find the matching airport marker and pop it up
+function inputFlight(str) {
+  openInput();
+
+  var master = str.split("\n");
+  var airports = master[0];
+  var airlines = master[1];
+  var planes = master[2];
+
+  var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"));
+  document.getElementById("input_src_ap_select").innerHTML = airportselect;
+
+  airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"));
+  document.getElementById("input_dst_ap_select").innerHTML = airportselect;
+
+  var airlineselect = createSelect("Airline", "-", 0, airlines.split("\t"));
+  document.getElementById("input_airline_select").innerHTML = airlineselect;
+
+  var planeselect = createSelect("Plane", "-", 0, planes.split("\t"));
+  document.getElementById("input_plane_select").innerHTML = planeselect;
+}
+
+// Given apid, find the matching airport and pop it up
 function selectAirport(apid) {
   var markers = airportLayer.markers;
   var found = false;
@@ -444,10 +494,19 @@ function selectAirline(new_alid) {
   refresh();
 }
 
+// Functions for swapping between lower panes
 function openResult() {
   document.getElementById("help").style.display = 'none';
   document.getElementById("input").style.display = 'none';
   document.getElementById("result").style.display = 'inline';
+  input = false;
+}
+
+function openInput() {
+  document.getElementById("help").style.display = 'none';
+  document.getElementById("input").style.display = 'inline';
+  document.getElementById("result").style.display = 'none';
+  input = true;
 }
 
 function closeResult() {
@@ -457,6 +516,7 @@ function closeResult() {
 
 function showHelp() {
   closeResult();
+  input = false;
 }
 
 function closePopup() {
