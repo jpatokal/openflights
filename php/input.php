@@ -1,5 +1,11 @@
 <?php
 session_start();
+$uid = $_SESSION["uid"];
+if(!$uid or empty($uid)) {
+  printf("Not logged in, aborting");
+  exit;
+}
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 $src_time = $HTTP_POST_VARS["src_time"];
@@ -112,7 +118,6 @@ if (! $error) {
   $duration = sprintf("%d:%02d", $time / 60, $time % 60);
   printf("DURATION: %s", $duration);
 
-  $uid = 1;
   $seat = '';
   $seat_type = 'W';
   $class = 'Y';

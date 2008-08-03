@@ -1,5 +1,11 @@
 <?php
 session_start();
+$uid = $_SESSION["uid"];
+if(!$uid or empty($uid)) {
+  printf("Not logged in, aborting");
+  exit;
+}
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 $id = $HTTP_POST_VARS["id"];
@@ -9,7 +15,7 @@ if(!$id) {
 }
 
 // List of all flights originating from an airport
-$sql = "SELECT s.iata AS src_iata,s.apid AS src_apid,d.iata AS dst_iata,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,duration,seat,seat_type,class,reason FROM flights AS f,airports AS s,airports AS d WHERE f.uid=1 AND f.src_apid=s.apid AND f.dst_apid=d.apid AND (s.apid=" . $id . " OR d.apid=" . $id . ")";
+$sql = "SELECT s.iata AS src_iata,s.apid AS src_apid,d.iata AS dst_iata,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,duration,seat,seat_type,class,reason FROM flights AS f,airports AS s,airports AS d WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND (s.apid=" . $id . " OR d.apid=" . $id . ")";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
