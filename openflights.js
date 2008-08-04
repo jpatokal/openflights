@@ -10,6 +10,7 @@ var helptext;
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
+var URL_GETCODE = "/php/getcode.php";
 var URL_INPUT = "/php/input.php";
 var URL_MAP = "/php/map.php";
 var URL_PREINPUT = "/php/preinput.php";
@@ -244,6 +245,9 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_AIRPORT) {
 	updateAirport(self.xmlHttpReq.responseText, param);
       }
+      if(strURL == URL_GETCODE) {
+	updateCodes(self.xmlHttpReq.responseText);
+      }
       if(strURL == URL_MAP) {
 	updateMap(self.xmlHttpReq.responseText);
         if(initializing) {
@@ -254,7 +258,6 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_PREINPUT) {
 	inputFlight(self.xmlHttpReq.responseText);
       }
-
       if(strURL == URL_STATS) {
 	updateStats(self.xmlHttpReq.responseText);
       }
@@ -269,8 +272,31 @@ function xmlhttpPost(strURL, id, param) {
     }
     apid = id;
   }
-  document.getElementById("ajaxstatus").style.visibility = 'visible';
-  self.xmlHttpReq.send(getquerystring(id));
+  if(strURL == URL_GETCODE) {
+    var form = document.forms['inputform'];
+    var src = form.src_ap_code.value;
+    var dst = form.dst_ap_code.value;
+    var flightNumber = form.flightnumber.value;
+    if(flightNumber.length >= 2) {
+      var airlineCode = flightNumber.substring(0, 2);
+    }
+    if(param == "SRC" && src) {
+      document.getElementById("src_ap_ajax").style.visibility = 'visible';
+      query = 'src=' + escape(src);
+    }
+    if(param == "DST" && dst) {
+      document.getElementById("dst_ap_ajax").style.visibility = 'visible';
+      query = 'dst=' + escape(dst);
+    }
+    if(param == "AIRLINE" && airlineCode) {
+      document.getElementById("airline_ajax").style.visibility = 'visible';
+      query = 'airline=' + escape(airlineCode);
+    }
+  } else {
+    document.getElementById("ajaxstatus").style.visibility = 'visible';
+    var query = getquerystring(id);
+  }
+  self.xmlHttpReq.send(query);
 }
 
 function getquerystring(id) {
@@ -444,6 +470,34 @@ function updateStats(str) {
   document.getElementById("result").innerHTML = bigtable;
 }
 
+function updateCodes(str) {
+  var lines = str.split("\n");
+  var select;
+  if(lines[0] == "SRC") {
+    select = document.forms['inputform'].src_ap;
+    document.getElementById("src_ap_ajax").style.visibility = 'hidden';
+  }
+  if(lines[0] == "DST") {
+    select = document.forms['inputform'].dst_ap;
+    document.getElementById("dst_ap_ajax").style.visibility = 'hidden';
+  }
+  if(lines[0] == "AIRLINE") {
+    select = document.forms['inputform'].airline;
+    document.getElementById("airline_ajax").style.visibility = 'hidden';
+  }
+  if(select) {
+    select.options.length = lines.length - 2; // redimension select
+    select.selectedIndex = 0;
+
+    for(l in lines) {
+      if(l == 0) continue; // already processed
+      var col = lines[l].split(";");
+      select[l-1].value = col[0]; // id
+      select[l-1].text = col[1]; // name
+    }
+  }
+}
+
 function inputFlight(str) {
   openInput();
 
@@ -458,11 +512,37 @@ function inputFlight(str) {
   airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"));
   document.getElementById("input_dst_ap_select").innerHTML = airportselect;
 
-  var airlineselect = createSelect("Airline", "-", 0, airlines.split("\t"));
+  var airlineselect = createSelect("airline", "-", 0, airlines.split("\t"));
   document.getElementById("input_airline_select").innerHTML = airlineselect;
 
-  var planeselect = createSelect("Plane", "-", 0, planes.split("\t"));
+  var planeselect = createSelect("plane", "-", 0, planes.split("\t"));
   document.getElementById("input_plane_select").innerHTML = planeselect;
+}
+
+// When user has entered airline code, try to match it to airline
+function flightNumberToAirline() {
+  var flightNumber = document.forms['inputform'].flightnumber.value;
+  if(flightNumber.length >= 2) {
+    var found = false;
+    var airlineCode = flightNumber.substring(0, 2);
+    var al_select = document.forms['inputform'].airline;
+    for(index = 0; index < al_select.length; index++) {
+      if(al_select[index].text.substring(0, 2) == airlineCode) {
+	found = true;
+	al_select.selectedIndex = index;
+      }
+    }
+
+    // Couldn't find it entered yet, so pull code from database
+    if(!found) {
+      xmlhttpPost(URL_GETCODE, 0, "AIRLINE");
+    }
+  }
+}
+
+// When user has entered airport code, try to match it to airport
+function codeToAirport(type) {
+  xmlhttpPost(URL_GETCODE, 0, type);
 }
 
 // Given apid, find the matching airport and pop it up
