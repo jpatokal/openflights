@@ -92,32 +92,42 @@
 	</div> <!-- end help -->
 	<div id="input" style="display: none;">
 <h2>Add new flight</h2>
-<p>Fields in <font color="red">red</font> are required.  Click on airports to select them!</p>
+<p>Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them.</p>
 
 <form id='inputform'>
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td><input type="text" name="src_time" size="40"
+  <td><input type="text" name="src_time" size="10"/>
   </td>
 </tr><tr>
-  <td><font color="red">Source</font></td>
-  <td><div id="input_src_ap_select"></div></td>
+  <td><font color="red">From</font></td>
+  <td><input type="text" name="src_ap_code" size="6" onChange='JavaScript:codeToAirport("SRC")'/>
+      <span id="input_src_ap_select"></span>
+      <span id="src_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
 </tr><tr>
-  <td><font color="red">Destination</font></td>
-  <td><div id="input_dst_ap_select"></div></td>
+  <td><font color="red">To</font></td>
+  <td><input type="text" name="dst_ap_code" size="6" onChange='JavaScript:codeToAirport("DST")'/>
+      <span id="input_dst_ap_select"></span>
+      <span id="dst_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
 </tr><tr>
-  <td><font color="red">Flight number <i>or</i><br>airline code (IATA)</font></td>
-  <td><input type="text" name="number" size="10" value=""/></td>
-</tr><tr>
-  <td>Airline</td>
-  <td><div id="input_airline_select"></div></td>
+  <td>Flight number</td>
+  <td><input id="flightnumber" type="text" name="number" size="6" value="" onChange='JavaScript:flightNumberToAirline()'/>
+      <font color="red">Airline</font>
+      <span id="input_airline_select"></span>
+      <span id="airline_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span>
+  </td>
 </tr><tr>
   <td>Plane</td>
-  <td>
-    <div id="input_plane_select">
-      <select name="Plane"><option value="">-</option></select>
-    </div>
+  <td><span id="input_plane_select"></span>Seat
+      <input type="text" name="seat" size="5"/>
+      Type
+      <select name="seat_type">
+        <option value="-">-</option>
+        <option value="W">Window</option>
+        <option value="A">Aisle</option>
+        <option value="M">Middle</option>
+      </select>
   </td>
 </tr>
 </table>
