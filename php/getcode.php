@@ -1,4 +1,6 @@
 <?php
+include 'helper.php';
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
@@ -24,11 +26,11 @@ function getAirport($id, $code) {
   $error = false;
   printf ("%s\n", $id);
   $len = strlen($code);
-  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata FROM airports WHERE iata!='' AND iata != '" . $code . "' AND city LIKE '" . $code . "%' ORDER BY city,name";
+  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,x,y FROM airports WHERE iata!='' AND iata != '" . $code . "' AND city LIKE '" . $code . "%' ORDER BY city,name";
   if($len == 3) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata FROM airports WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
+    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,x,y FROM airports WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
   } else if ($len == 4) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata FROM airports WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
+    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,x,y FROM airports WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
   } else if ($len < 3) {
     $error = true;
     printf ("0;Enter airport code or name\n");
@@ -37,15 +39,7 @@ function getAirport($id, $code) {
     $result = mysql_query($sql, $db);
     $found = false;
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      $name = $row["name"];
-      $city = $row["city"];
-      // Foobar-Foobar Intl into Foobar Intl
-      if(substr($name, 0, strlen($city)) == $city) {
-	$name = " " . substr($name, strlen($city) + 1);
-      } else {
-	$city = $city . "-";
-      }
-      printf ("%s;%s\n", $row["apid"], $city . $name . " (" . $row["iata"] . "), " . $row["country"]);
+      printf ("%s:%s:%s:%s;%s\n", $row["iata"], $row["apid"], $row["x"], $row["y"], format_airport($row));
       $found = true;
     }
     if(! $found) {
@@ -73,7 +67,7 @@ function getAirline($id, $code) {
     $result = mysql_query($sql, $db);
     $found = false;
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      printf ("%s;%s\n", $row["alid"], $row["name"] . " (" . $row["iata"] . ")");
+      printf ("%s;%s\n", $row["iata"] . ":" . $row["alid"], $row["name"] . " (" . $row["iata"] . ")");
       $found = true;
     } 
     if(! $found) {

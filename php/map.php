@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
   printf("Not logged in, aborting");
