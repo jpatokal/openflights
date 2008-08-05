@@ -1,4 +1,6 @@
 <?php
+include 'helper.php';
+
 session_start();
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
@@ -8,7 +10,7 @@ if(!$uid or empty($uid)) {
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
-$sql = "SELECT DISTINCT a.apid,a.name,a.iata,a.city,a.country FROM flights AS f,airports AS a WHERE uid=" . $uid . " AND (a.apid=f.src_apid OR a.apid=f.dst_apid) ORDER BY a.iata";
+$sql = "SELECT DISTINCT a.apid,a.name,a.iata,a.city,a.country,a.x,a.y FROM flights AS f,airports AS a WHERE uid=" . $uid . " AND (a.apid=f.src_apid OR a.apid=f.dst_apid) ORDER BY a.iata";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -17,7 +19,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf("\t");
   }  
-  printf ("%s;%s", $row["apid"], $row["iata"] . ": " . $row["name"] . ", " . $row["city"] . ", " . $row["country"]);
+  printf ("%s:%s:%s:%s;%s", $row["iata"], $row["apid"], $row["x"], $row["y"], format_airport($row));
 }
 printf ("\n");
 
@@ -30,7 +32,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf("\t");
   }  
-  printf ("%s;%s", $row["alid"], $row["iata"] . ": " . $row["name"]);
+  printf ("%s;%s", $row["iata"] . ":" . $row["alid"], format_airline($row));
 }
 printf ("\n");
 

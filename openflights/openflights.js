@@ -6,7 +6,7 @@
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var trid = 0, alid = 0, apid = 0;
 var input = false, initializing = true;
-var helptext;
+var input_srcmarker, input_dstmarker, input_toggle;
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
@@ -172,6 +172,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   var marker = feature.createMarker();
   marker.apid = apid;
   feature.apid = apid;
+  feature.iata = code;
 
   // Run when the user clicks on an airport marker
   // this == the feature, *not* the marker
@@ -180,18 +181,14 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
 
     // If input mode is active, we select the airport instead of popping it up
     if(input) {
-      var ap_select = document.forms['inputform'].src_ap;
-      // If src is already chosen, then we edit dst instead
-      if(ap_select.selectedIndex > 0) {
-	ap_select = document.forms['inputform'].dst_ap;
+      if(input_toggle == "SRC") {
+	var ap_select = document.forms['inputform'].src_ap;
+	document.forms['inputform'].src_ap_code.value = this.iata;
+      } else {
+	var ap_select = document.forms['inputform'].dst_ap;
+	document.forms['inputform'].dst_ap_code.value = this.iata;
       }
-      for(index = 0; index < ap_select.length; index++) {
-	if(ap_select[index].value == this.apid) {
-	  ap_select.selectedIndex = index;
-	}
-      }
-      var size = new OpenLayers.Size(19, 19);
-      this.marker.icon.setUrl('img/icon_plane-selected.png');
+      codeToAirport(input_toggle);
       return;
     }
 
@@ -276,10 +273,8 @@ function xmlhttpPost(strURL, id, param) {
     var form = document.forms['inputform'];
     var src = form.src_ap_code.value;
     var dst = form.dst_ap_code.value;
-    var flightNumber = form.flightnumber.value;
-    if(flightNumber.length >= 2) {
-      var airlineCode = flightNumber.substring(0, 2);
-    }
+    var flightNumber = form.number.value;
+    var airlineCode = form.airline_code.value;
     if(param == "SRC" && src) {
       document.getElementById("src_ap_ajax").style.visibility = 'visible';
       query = 'src=' + escape(src);
@@ -287,6 +282,10 @@ function xmlhttpPost(strURL, id, param) {
     if(param == "DST" && dst) {
       document.getElementById("dst_ap_ajax").style.visibility = 'visible';
       query = 'dst=' + escape(dst);
+    }
+    if(param == "NUMBER" && flightNumber.length >= 2) {
+      airlineCode = flightNumber.substring(0, 2);
+      param = "AIRLINE";
     }
     if(param == "AIRLINE" && airlineCode) {
       document.getElementById("airline_ajax").style.visibility = 'visible';
@@ -336,9 +335,16 @@ function updateFilter(str) {
  * id: id to match col 1 against
  * rows: Array of strings
  * length: maximum length (omit or set to <= 0 to allow any length)
+ * hook: Function to call on value change, with name as argument
  */ 
-function createSelect(name, allopts, id, rows, maxlen) {
-  var select = "<select name=\"" + name + "\"><option value=\"0\">" + allopts + "</option>";
+function createSelect(name, allopts, id, rows, maxlen, hook) {
+  if(hook) {
+    var select = "<select name=\"" + name + "\" onChange='JavaScript:" + hook + "(\"" + name + "\")'" + ">";
+  } else {
+    var select = "<select name=\"" + name + "\><option value=\"0\">" + allopts + "</option>";
+  }
+  select += "<option value=\"0\">" + allopts + "</option>";
+
   var selected = "";
   for (r in rows) {
     var col = rows[r].split(";");
@@ -473,15 +479,16 @@ function updateStats(str) {
 function updateCodes(str) {
   var lines = str.split("\n");
   var select;
-  if(lines[0] == "SRC") {
+  var type = lines[0];
+  if(type == "SRC") {
     select = document.forms['inputform'].src_ap;
     document.getElementById("src_ap_ajax").style.visibility = 'hidden';
   }
-  if(lines[0] == "DST") {
+  if(type == "DST") {
     select = document.forms['inputform'].dst_ap;
     document.getElementById("dst_ap_ajax").style.visibility = 'hidden';
   }
-  if(lines[0] == "AIRLINE") {
+  if(type == "AIRLINE") {
     select = document.forms['inputform'].airline;
     document.getElementById("airline_ajax").style.visibility = 'hidden';
   }
@@ -490,11 +497,15 @@ function updateCodes(str) {
     select.selectedIndex = 0;
 
     for(l in lines) {
-      if(l == 0) continue; // already processed
+      if(l == 0 || l == lines.length - 1) continue; // already processed
       var col = lines[l].split(";");
       select[l-1].value = col[0]; // id
       select[l-1].text = col[1]; // name
     }
+
+    // Rebuilding select doesn't count as onChange, so we trigger manually
+    if(type == "SRC") selectNewAirport("src_ap");
+    if(type == "DST") selectNewAirport("dst_ap");
   }
 }
 
@@ -506,10 +517,10 @@ function inputFlight(str) {
   var airlines = master[1];
   var planes = master[2];
 
-  var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"));
+  var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"), 0, "selectNewAirport");
   document.getElementById("input_src_ap_select").innerHTML = airportselect;
 
-  airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"));
+  airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"), 0, "selectNewAirport");
   document.getElementById("input_dst_ap_select").innerHTML = airportselect;
 
   var airlineselect = createSelect("airline", "-", 0, airlines.split("\t"));
@@ -520,29 +531,94 @@ function inputFlight(str) {
 }
 
 // When user has entered airline code, try to match it to airline
-function flightNumberToAirline() {
-  var flightNumber = document.forms['inputform'].flightnumber.value;
+function flightNumberToAirline(str) {
+  if(str == "NUMBER") {
+    var flightNumber = document.forms['inputform'].number.value;
+  } else {
+    var flightNumber = document.forms['inputform'].airline_code.value;
+  }
   if(flightNumber.length >= 2) {
     var found = false;
     var airlineCode = flightNumber.substring(0, 2);
     var al_select = document.forms['inputform'].airline;
     for(index = 0; index < al_select.length; index++) {
-      if(al_select[index].text.substring(0, 2) == airlineCode) {
+      if(al_select[index].value.substring(0, 2) == airlineCode) {
 	found = true;
 	al_select.selectedIndex = index;
+	break;
       }
     }
 
     // Couldn't find it entered yet, so pull code from database
     if(!found) {
-      xmlhttpPost(URL_GETCODE, 0, "AIRLINE");
+      xmlhttpPost(URL_GETCODE, 0, str);
     }
   }
 }
 
 // When user has entered airport code, try to match it to airport
 function codeToAirport(type) {
-  xmlhttpPost(URL_GETCODE, 0, type);
+  var found = false;
+  var apid;
+  if(type == "SRC") {
+    var ap_select = document.forms['inputform'].src_ap;
+    var airportCode = document.forms['inputform'].src_ap_code.value;
+  } else {
+    var ap_select = document.forms['inputform'].dst_ap;
+    var airportCode = document.forms['inputform'].dst_ap_code.value;
+  }
+  for(index = 0; index < ap_select.length; index++) {
+    if(ap_select[index].value.substring(0, 3) == airportCode) {
+      found = true;
+      ap_select.selectedIndex = index;
+      apid = ap_select[index].value.split(':')[1];
+      break;
+    }
+  }
+  if(found) {
+    // Altering value doesn't count as onChange, so we trigger manually
+    if(type == "SRC") selectNewAirport("src_ap");
+    if(type == "DST") selectNewAirport("dst_ap");
+  } else {
+    xmlhttpPost(URL_GETCODE, 0, type);
+  }
+}
+
+// Add a temporary source or destination marker over currently selected airport
+// type: "src_ap" or "dst_ap"
+function selectNewAirport(type) {
+  if(type == "src_ap") {
+    var select = document.forms['inputform'].src_ap;
+    if(input_srcmarker) {
+      airportLayer.removeMarker(input_srcmarker);
+    }
+    input_toggle = "DST";
+  } else {
+    var select = document.forms['inputform'].dst_ap;
+    if(input_dstmarker) {
+      airportLayer.removeMarker(input_dstmarker);
+    }
+    input_toggle = "SRC";
+  }
+
+  var iata = select[select.selectedIndex].value.split(":")[0];
+  var x = select[select.selectedIndex].value.split(":")[2];
+  var y = select[select.selectedIndex].value.split(":")[3];
+  var lonlat = new OpenLayers.LonLat(x, y);
+
+  var size = new OpenLayers.Size(19, 19);
+  var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
+  var icon = new OpenLayers.Icon('img/icon_plane-selected.png',size,offset);
+
+  var marker = new OpenLayers.Marker(lonlat, icon);
+  airportLayer.addMarker(marker);
+  if(type == "src_ap") {
+    document.forms['inputform'].src_ap_code.value = iata;
+    input_srcmarker = marker;
+  } else {
+    document.forms['inputform'].dst_ap_code.value = iata;
+    input_dstmarker = marker;
+  }
 }
 
 // Given apid, find the matching airport and pop it up
@@ -587,6 +663,7 @@ function openInput() {
   document.getElementById("input").style.display = 'inline';
   document.getElementById("result").style.display = 'none';
   input = true;
+  input_toggle = "SRC";
 }
 
 function closeResult() {
