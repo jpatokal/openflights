@@ -22,28 +22,34 @@
 	  <!--#include virtual="/sidebar.html" -->
 
 	  <div id="login">
-	    <form name="login">
-	    <table cellspacing="5" cellpadding="0" border="0" width="200">
-	      <tr><td>Username</td><td>
-		  <input type="Text" name="name" align="top" size="10">
-		</td>
-	      </tr><tr>
-		<td align=right>Password</td><td>
-		  <input type="password" name="pw" align="top" size="10">	    
-		</td>
-	      </tr><tr>
-		<td></td>
-		<td>
-		  <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
-		</td>
-	      </tr></table>
-	  </form></br>	    
-	  <small>Sorry &mdash; registration not open to the public yet.</small>.
-	  </div>
+	    <div id="loginstatus" style="display: none"></div>
+
+	    <div id="loginform" style="display: inline">
+	      <form name="login">
+	      <table cellspacing="5" cellpadding="0" border="0" width="200">
+		<tr><td>Username</td><td>
+		    <input type="Text" name="name" align="top" size="10">
+		  </td>
+		</tr><tr>
+		  <td align=right>Password</td><td>
+		    <input type="password" name="pw" align="top" size="10">	    
+		  </td>
+		</tr><tr>
+		  <td></td>
+		  <td>
+		    <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
+		    <div id="loginajax" style="display: none;"><img src="img/ajax-wait-small.gif" height=16 width=16/></div>
+		  </td>
+		</tr></table>
+	    </form>
+	    </div>
+	  </div> <!-- login -->
 
 	  <div id="statsbox">
-	    <div id="stats"></div>
-            <div id="ajaxstatus" style="visibility: hidden;"><br><img src="img/ajax-wait.gif" height=32 width=32/></div>
+	    <b>Statistics</b>
+	    <span id="ajaxstatus" style="float: right; visibility: hidden; margin-right: 10px"><img src="img/ajax-wait.gif" height=32 width=32/></span>
+	    <div id="stats"><i>Loading...</i></div>
+	    <input type="button" value="More..." align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
 	  </div>
 
 	  <div id="filter">
@@ -69,8 +75,10 @@
 	    
 	  </div>
 
-	  <div id="control">
+	  <div id="control" style="display: none">
+	    <b>Control panel</b><br>
 	    <input type="button" value="New flight" align="middle" onclick='JavaScript:xmlhttpPost("/php/preinput.php")'>
+	    <input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
 	  </div>
 
           <div id="maptitle">
@@ -93,50 +101,76 @@
 	</div> <!-- end help -->
 	<div id="input" style="display: none;">
 <h2>Add new flight</h2>
-<p>Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them.</p>
+<p>Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city, IATA or ICAO code.</p>
 
 <form id='inputform'>
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td><input type="text" name="src_time" size="10" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_time'),event);"/>
+  <td width="50%"><input type="text" name="src_time" size="8" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_time'),event);"/>
   </td>
 
+  <td>Trip</td>
+  <td><span id="input_trip_select"></span>
+
+</tr><tr>
+  <td><font color="red">From</font></td>
+  <td><input type="text" name="src_ap_code" size="6" tabindex="2" onChange='JavaScript:codeToAirport("SRC")'/>
+      <img src="img/icon_plane-src.png" title="Enter city name or airport code." height=17 width=17/>
+      <span id="input_src_ap_select"></span>
+      <span id="src_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
+
   <td>Plane</td>
-  <td><span id="input_plane_select"></span>Seat
-      <input type="text" name="seat" size="5"/>
+  <td><span id="input_plane_select"></span>
+      Seat
+      <input type="text" name="seat" size="5" tabindex="8"/>
       Type
-      <select name="seat_type">
+      <select name="seat_type" tabindex="9">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
         <option value="M">Middle</option>
       </select>
   </td>
+
 </tr><tr>
-  <td><img src="img/icon_plane-src.png" height=17 width=17/> <font color="red">From</font></td>
-  <td><input type="text" name="src_ap_code" size="6" tabindex="2" onChange='JavaScript:codeToAirport("SRC")'/> &gt;
-      <span id="input_src_ap_select"></span>
-      <span id="src_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
-</tr><tr>
-  <td><img src="img/icon_plane-dst.png" height=17 width=17/> <font color="red">To</font></td>
-  <td><input type="text" name="dst_ap_code" size="6" tabindex="3" onChange='JavaScript:codeToAirport("DST")'/> &gt;
+  <td><font color="red">To&nbsp;&nbsp;</font></td>
+  <td><input type="text" name="dst_ap_code" size="6" tabindex="3" onChange='JavaScript:codeToAirport("DST")'/>
+      <img src="img/icon_plane-dst.png" title="Enter city name or airport code." height=17 width=17/>
       <span id="input_dst_ap_select"></span>
       <span id="dst_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
+
+  <td>Class</td>
+  <td><input type="radio" name="class" value="Y" tabindex="9" CHECKED>Economy
+      <input type="radio" name="class" value="C">Business
+      <input type="radio" name="class" value="F">First
+  </td>
+
 </tr><tr>
-  <td>Flight number</td>
+  <td>Flight # </td>
   <td><input type="text" name="number" size="6" value="" tabindex="4" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
   </td>
+
+  <td>Reason</td>
+  <td><input type="radio" name="reason" value="B" tabindex="10" CHECKED>Business
+      <input type="radio" name="reason" value="P">Pleasure
+      <input type="radio" name="reason" value="C">Crew
+  </td>
+
 </tr><tr>
   <td><font color="red">Airline</font></td>
   <td><input type="text" name="airline_code" size="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
       <span id="input_airline_select"></span>
       <span id="airline_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span>
+  </td>
 
+  <td colspan=2 align=right>
+    <input value="Submit" type="button" tabindex="11" onclick='JavaScript:xmlhttpPost("/input.php")'>
+    <input value="Cancel" type="button" tabindex="12" onclick='JavaScript:closeInput()'>
+  </td>
 </tr>
 </table>
 
-<input value="Submit" type="button" onclick='JavaScript:xmlhttpPost("/input.php")'>
 </form>
 
 	</div>

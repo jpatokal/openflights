@@ -52,9 +52,9 @@
         height: 65%;
 	}
 
-#maptitle { 
-    left: 3em;
-    top: 0.5em;
+#mapTitle { 
+    right: 1.5em;
+    top: 3em;
     display: block;
     position: absolute;
     font-size:1.5em;
@@ -83,9 +83,9 @@
         margin: 0;
         }
 
-#control{
+#login{
   max-width: 220px;
-  margin: 10px 10px 0px 0px;
+  margin: 0px 0px 0px 0px;
   padding: 10px;
 }
 
@@ -97,7 +97,13 @@
 
 #statsbox { 
   max-width: 220px;
-  margin: 00px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  padding: 10px;
+}
+
+#control{
+  max-width: 220px;
+  margin: 0px 0px 0px 0px;
   padding: 10px;
 }
 
