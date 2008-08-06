@@ -53,5 +53,8 @@ select d.name,c.name,g.city,g.iata,d.icao,d.x,d.y,d.elevation from countries as 
 insert into airports(name,country,city,iata,icao,x,y,elevation)
 select d.name,c.name,g.city,d.iata,d.icao,d.x,d.y,d.elevation from countries as c,airports_dafif as d,airports_gad as g where d.icao=g.icao and c.code=d.code and c.code='US';
 
-select d.name,c.name,g.city,g.iata,d.icao,d.x,d.y,d.elevation from airports_dafif as d,airports_gad as g where d.icao!=g.icao limit 10;
+; Fix Indonesian airports that changed their ICAO codes between GAD and DAFIF
+insert into airports(name,country,city,iata,icao,x,y,elevation)
+select d.name,c.name,g.city,g.iata,d.icao,d.x,d.y,d.elevation from countries as c,airports_dafif as d,airports_gad as g where g.name=d.name and g.icao!=d.icao and c.code=d.code and c.code='ID';
 
+update airports set iata='' where iata='N/A';
