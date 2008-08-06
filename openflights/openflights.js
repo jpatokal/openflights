@@ -11,12 +11,12 @@ var input_srcmarker, input_srcpoint, input_dstmarker, input_dstpoint, input_togg
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
 var URL_GETCODE = "/php/getcode.php";
-var URL_INPUT = "/php/input.php";
 var URL_LOGIN = "/php/login.php";
 var URL_LOGOUT = "/php/logout.php";
 var URL_MAP = "/php/map.php";
 var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
+var URL_SUBMIT = "/php/submit.php";
 
 window.onload = function init(){
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
@@ -265,6 +265,10 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_STATS) {
 	updateStats(self.xmlHttpReq.responseText);
       }
+      if(strURL == URL_SUBMIT) {
+	alert(self.xmlHttpReq.responseText);
+	refresh(false);
+      }
       document.getElementById("ajaxstatus").style.visibility = 'hidden';
     }
   }
@@ -298,6 +302,46 @@ function xmlhttpPost(strURL, id, param) {
       document.getElementById("airline_ajax").style.visibility = 'visible';
       query = 'airline=' + escape(airlineCode);
     }
+  } else if(strURL == URL_SUBMIT) {
+    var inputform = document.forms['inputform'];
+    var src_apid = inputform.src_ap[inputform.src_ap.selectedIndex].value.split(":")[1];
+    if(! src_apid || src_apid == 0) {
+      alert("Please select a source airport.");
+      return;
+    }
+    var dst_apid = inputform.dst_ap[inputform.dst_ap.selectedIndex].value.split(":")[1];
+    if(! dst_apid || dst_apid == 0) {
+      alert("Please select a destination airport.");
+      return;
+    }
+    var alid = inputform.airline[inputform.airline.selectedIndex].value.split(":")[1];
+    if(! alid || alid == 0) {
+      alert("Please select an airline.");
+      return;
+    }
+    var type = inputform.seat_type.value;
+    if(type == "-") type = "";
+    var myClass = radioValue(inputform.class);
+    var reason = radioValue(inputform.reason);
+    var plid = inputform.plane[inputform.plane.selectedIndex].value;
+    if(plid == 0) plid = "NULL";
+    var trid = inputform.trips[inputform.trips.selectedIndex].value;
+    if(trid == 0) trid = "NULL";
+    
+    query = 'src_date=' + escape(inputform.src_date.value) + '&' +
+      'duration=' + escape(inputform.duration.value) + '&' +
+      'distance=' + escape(inputform.distance.value) + '&' +
+      'src_apid=' + escape(src_apid) + '&' +
+      'dst_apid=' + escape(dst_apid) + '&' +
+      'number=' + escape(inputform.number.value) + '&' +
+      'seat=' + escape(inputform.seat.value) + '&' +
+      'type=' + escape(type) + '&' +
+      'class=' + escape(myClass) + '&' +
+      'reason=' + escape(reason) + '&' +
+      'plid=' + escape(plid) + '&' +
+      'alid=' + escape(alid) + '&' +
+      'trid=' + escape(trid);
+
   } else if(strURL == URL_LOGIN) {
     document.getElementById("loginajax").style.display = 'inline';
     var name = document.forms['login'].name.value;
@@ -327,17 +371,11 @@ function updateFilter(str) {
   var trips = master[3];
   var airlines = master[4];
 
-  if(trips != "") {
-    var tripselect = "Trips " + createSelect("Trips", "All flights", trid, trips.split("\t"), 20);
-    document.getElementById("filter_tripselect").innerHTML = tripselect;
+  var tripselect = "Trips " + createSelect("Trips", "All flights", trid, trips.split("\t"), 20);
+  document.getElementById("filter_tripselect").innerHTML = tripselect;
 
-    var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", alid, airlines.split("\t"), 20);
-    document.getElementById("filter_airlineselect").innerHTML = airlineselect;
-  }
-
-  /*  if(trid == 0) {
-    document.getElementById("maptitle").innerHTML = "";
-    } */
+  var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", alid, airlines.split("\t"), 20);
+  document.getElementById("filter_airlineselect").innerHTML = airlineselect;
 }
 
 
@@ -355,9 +393,14 @@ function createSelect(name, allopts, id, rows, maxlen, hook) {
   if(hook) {
     var select = "<select name=\"" + name + "\" onChange='JavaScript:" + hook + "(\"" + name + "\")'" + ">";
   } else {
-    var select = "<select name=\"" + name + "\"><option value=\"0\">" + allopts + "</option>";
+    var select = "<select name=\"" + name + "\">";
   }
   select += "<option value=\"0\">" + allopts + "</option>";
+  
+  // No data, so return an empty element
+  if(! rows || rows == "") {
+    return select + "</select>";
+  }
 
   var selected = "";
   for (r in rows) {
@@ -377,6 +420,15 @@ function createSelect(name, allopts, id, rows, maxlen, hook) {
   }
   select += "</select>";
   return select;
+}
+
+// Return value of currently selected radio button in this group
+function radioValue(radio) {
+  for (r=0; r < radio.length; r++){
+    if (radio[r].checked) {
+      return radio[r].value;
+    }
+  }
 }
 
 // Reinsert all flights, airports from database result
@@ -529,13 +581,14 @@ function inputFlight(str) {
   var month = today.getMonth() + 1;
   var day = today.getDate();
   var year = today.getFullYear();
-  document.forms['inputform'].src_time.value = day + "." + month + "." + year;
-  document.forms['inputform'].src_time.focus();
+  document.forms['inputform'].src_date.value = day + "." + month + "." + year;
+  document.forms['inputform'].src_date.focus();
 
   var master = str.split("\n");
   var airports = master[0];
   var airlines = master[1];
   var planes = master[2];
+  var trips = master[3];
 
   var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"), 0, "selectNewAirport");
   document.getElementById("input_src_ap_select").innerHTML = airportselect;
@@ -548,6 +601,9 @@ function inputFlight(str) {
 
   var planeselect = createSelect("plane", "-", 0, planes.split("\t"));
   document.getElementById("input_plane_select").innerHTML = planeselect;
+
+  var tripselect = createSelect("trips", "-", 0, trips.split("\t"));
+  document.getElementById("input_trip_select").innerHTML = tripselect;
 
   // Load up any values already entered into the form
   if(document.forms['inputform'].src_ap_code.value != "") codeToAirport("SRC");
@@ -613,7 +669,26 @@ function codeToAirport(type) {
   }
 }
 
+// Compute great circle distance between two points (spherical law of cosines)
+// http://www.movable-type.co.uk/scripts/latlong.html
+// © 2002-2008 Chris Veness
+function greatCircle(lat1, lon1, lat2, lon2) {
+  var rad = Math.PI / 180;
+  var R = 6371; // km
+  lat1 = lat1 * rad;
+  lon1 = lon1 * rad;
+  lat2 = lat2 * rad;
+  lon2 = lon2 * rad;
+  var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
+                  Math.cos(lat1)*Math.cos(lat2) *
+                  Math.cos(lon2-lon1));
+  if (d < 0) d += Math.PI;
+  return Math.floor(d * R * 0.621);
+
+}
+
 // Add a temporary source or destination marker over currently selected airport
+// Also calculates distance and duration
 // type: "src_ap" or "dst_ap"
 function selectNewAirport(type) {
   var size = new OpenLayers.Size(17, 17);
@@ -668,6 +743,26 @@ function selectNewAirport(type) {
       input_dstmarker = "";
     }
   }
+
+  // Two airports defined, calculate distance and duration
+  if(input_dstmarker && input_srcmarker) {
+    var src_ap = document.forms['inputform'].src_ap;
+    var lon1 = src_ap[src_ap.selectedIndex].value.split(":")[2];
+    var lat1 = src_ap[src_ap.selectedIndex].value.split(":")[3];
+    var dst_ap = document.forms['inputform'].dst_ap;
+    var lon2 = dst_ap[dst_ap.selectedIndex].value.split(":")[2];
+    var lat2 = dst_ap[dst_ap.selectedIndex].value.split(":")[3];
+    var distance = greatCircle(lat1, lon1, lat2, lon2);
+
+    var rawtime = Math.floor(30 + (distance / 500) * 60);
+    var hours = Math.floor(rawtime/60);
+    var mins = rawtime % 60;
+    if(mins < 10) mins = "0" + mins;
+    var duration = hours + ":" + mins;
+
+    document.forms['inputform'].distance.value = distance;
+    document.forms['inputform'].duration.value = duration;
+  } 
 }
 
 // Given apid, find the matching airport and pop it up
@@ -710,11 +805,11 @@ function login(str) {
     document.getElementById("loginstatus").innerHTML = "Welcome, <B>" + name + "</B>!";
     document.getElementById("loginform").style.display = 'none';
     document.getElementById("control").style.display = 'inline';
+    refresh(true);
   } else {
     logged_in == false;
     document.getElementById("loginstatus").innerHTML = "<B>" + name + "</B>";
   }
-  refresh(true);
 }
 
 function logout(str) {
@@ -728,10 +823,10 @@ function logout(str) {
 
 // Functions for swapping between lower panes
 function openResult() {
+  closeInput();
   document.getElementById("help").style.display = 'none';
   document.getElementById("input").style.display = 'none';
   document.getElementById("result").style.display = 'inline';
-  input = false;
 }
 
 function openInput() {

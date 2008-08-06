@@ -107,7 +107,9 @@
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td width="50%"><input type="text" name="src_time" size="8" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_time'),event);"/>
+  <td width="50%"><input type="text" name="src_date" size="10" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"/>
+    Duration <input type="text" name="duration" size="5" style="text-align: right"/>
+    Distance <input type="text" name="distance" size="5" style="text-align: right"/>mi
   </td>
 
   <td>Trip</td>
@@ -115,7 +117,7 @@
 
 </tr><tr>
   <td><font color="red">From</font></td>
-  <td><input type="text" name="src_ap_code" size="6" tabindex="2" onChange='JavaScript:codeToAirport("SRC")'/>
+  <td><input type="text" name="src_ap_code" size="6" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
       <img src="img/icon_plane-src.png" title="Enter city name or airport code." height=17 width=17/>
       <span id="input_src_ap_select"></span>
       <span id="src_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
@@ -123,9 +125,9 @@
   <td>Plane</td>
   <td><span id="input_plane_select"></span>
       Seat
-      <input type="text" name="seat" size="5" tabindex="8"/>
+      <input type="text" name="seat" size="5" tabindex="9"/>
       Type
-      <select name="seat_type" tabindex="9">
+      <select name="seat_type" tabindex="10">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
@@ -135,24 +137,24 @@
 
 </tr><tr>
   <td><font color="red">To&nbsp;&nbsp;</font></td>
-  <td><input type="text" name="dst_ap_code" size="6" tabindex="3" onChange='JavaScript:codeToAirport("DST")'/>
+  <td><input type="text" name="dst_ap_code" size="6" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
       <img src="img/icon_plane-dst.png" title="Enter city name or airport code." height=17 width=17/>
       <span id="input_dst_ap_select"></span>
       <span id="dst_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
 
   <td>Class</td>
-  <td><input type="radio" name="class" value="Y" tabindex="9" CHECKED>Economy
+  <td><input type="radio" name="class" value="Y" tabindex="10" CHECKED>Economy
       <input type="radio" name="class" value="C">Business
       <input type="radio" name="class" value="F">First
   </td>
 
 </tr><tr>
   <td>Flight # </td>
-  <td><input type="text" name="number" size="6" value="" tabindex="4" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
+  <td><input type="text" name="number" size="6" value="" tabindex="5" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
   </td>
 
   <td>Reason</td>
-  <td><input type="radio" name="reason" value="B" tabindex="10" CHECKED>Business
+  <td><input type="radio" name="reason" value="B" tabindex="11" CHECKED>Business
       <input type="radio" name="reason" value="P">Pleasure
       <input type="radio" name="reason" value="C">Crew
   </td>
@@ -165,8 +167,8 @@
   </td>
 
   <td colspan=2 align=right>
-    <input value="Submit" type="button" tabindex="11" onclick='JavaScript:xmlhttpPost("/input.php")'>
-    <input value="Cancel" type="button" tabindex="12" onclick='JavaScript:closeInput()'>
+    <input value="Submit" type="button" tabindex="12" onclick='JavaScript:xmlhttpPost("/php/submit.php")'>
+    <input value="Cancel" type="button" tabindex="13" onclick='JavaScript:closeInput()'>
   </td>
 </tr>
 </table>
