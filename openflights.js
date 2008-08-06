@@ -6,7 +6,7 @@
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var trid = 0, alid = 0, apid = 0;
 var input = false, initializing = true;
-var input_srcmarker, input_dstmarker, input_toggle;
+var input_srcmarker, input_srcpoint, input_dstmarker, input_dstpoint, input_toggle;
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
@@ -341,7 +341,7 @@ function createSelect(name, allopts, id, rows, maxlen, hook) {
   if(hook) {
     var select = "<select name=\"" + name + "\" onChange='JavaScript:" + hook + "(\"" + name + "\")'" + ">";
   } else {
-    var select = "<select name=\"" + name + "\><option value=\"0\">" + allopts + "</option>";
+    var select = "<select name=\"" + name + "\"><option value=\"0\">" + allopts + "</option>";
   }
   select += "<option value=\"0\">" + allopts + "</option>";
 
@@ -512,6 +512,12 @@ function updateCodes(str) {
 function inputFlight(str) {
   openInput();
 
+  var today = new Date();
+  var month = today.getMonth() + 1;
+  var day = today.getDate();
+  var year = today.getFullYear();
+  document.forms['inputform'].src_time.value = day + "." + month + "." + year;
+
   var master = str.split("\n");
   var airports = master[0];
   var airlines = master[1];
@@ -587,37 +593,57 @@ function codeToAirport(type) {
 // Add a temporary source or destination marker over currently selected airport
 // type: "src_ap" or "dst_ap"
 function selectNewAirport(type) {
+  var size = new OpenLayers.Size(17, 17);
+  var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   if(type == "src_ap") {
     var select = document.forms['inputform'].src_ap;
-    if(input_srcmarker) {
-      airportLayer.removeMarker(input_srcmarker);
-    }
-    input_toggle = "DST";
+    var icon = new OpenLayers.Icon('img/icon_plane-src.png',size,offset);
   } else {
     var select = document.forms['inputform'].dst_ap;
-    if(input_dstmarker) {
-      airportLayer.removeMarker(input_dstmarker);
-    }
-    input_toggle = "SRC";
+    var icon = new OpenLayers.Icon('img/icon_plane-dst.png',size,offset);
   }
 
   var iata = select[select.selectedIndex].value.split(":")[0];
+  var apid = select[select.selectedIndex].value.split(":")[1];
   var x = select[select.selectedIndex].value.split(":")[2];
   var y = select[select.selectedIndex].value.split(":")[3];
-  var lonlat = new OpenLayers.LonLat(x, y);
 
-  var size = new OpenLayers.Size(19, 19);
-  var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
-  var icon = new OpenLayers.Icon('img/icon_plane-selected.png',size,offset);
-
-  var marker = new OpenLayers.Marker(lonlat, icon);
-  airportLayer.addMarker(marker);
+  if(apid > 0) {
+    var lonlat = new OpenLayers.LonLat(x, y);
+    var marker = new OpenLayers.Marker(lonlat, icon);
+    airportLayer.addMarker(marker);
+  }
   if(type == "src_ap") {
-    document.forms['inputform'].src_ap_code.value = iata;
-    input_srcmarker = marker;
+    if(input_srcmarker) {
+      airportLayer.removeMarker(input_srcmarker);
+      //input_srcpoint.geometry.move(x,y);
+    } else {
+      //input_srcpoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x,y), {foo: "bar"}, {strokeColor: "red"});
+    }
+    if(apid > 0) {
+      document.forms['inputform'].src_ap_code.value = iata;
+      input_srcmarker = marker;
+      input_toggle = "DST";
+    } else {
+      document.forms['inputform'].src_ap_code.value = "";
+      input_srcmarker = 0;
+    }
   } else {
-    document.forms['inputform'].dst_ap_code.value = iata;
-    input_dstmarker = marker;
+    if(input_dstmarker) {
+      airportLayer.removeMarker(input_dstmarker);
+      //input_dstpoint.geometry.move(x,y);
+    } else {
+      //input_dstpoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x,y));
+      //lineLayer.addNodes([input_srcpoint, input_dstpoint]);
+    }
+    if(apid > 0) {
+      document.forms['inputform'].dst_ap_code.value = iata;
+      input_dstmarker = marker;
+      input_toggle = "SRC";
+    } else {
+      document.forms['inputform'].dst_ap_code.value = "";
+      input_dstmarker = "";
+    }
   }
 }
 
