@@ -47,5 +47,16 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }  
   printf ("%s;%s", $row["plid"], $row["name"]);
 }
+printf ("\n");
 
-
+$sql = "SELECT DISTINCT t.trid, t.name FROM trips AS t WHERE uid=" . $uid . " ORDER BY NAME";
+$result = mysql_query($sql, $db);
+$first = true;
+while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  if($first) {
+    $first = false;
+  } else {
+    printf("\t");
+  }  
+  printf ("%s;%s", $row["trid"], $row["name"]);
+}

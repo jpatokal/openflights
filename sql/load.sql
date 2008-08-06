@@ -58,3 +58,5 @@ insert into airports(name,country,city,iata,icao,x,y,elevation)
 select d.name,c.name,g.city,g.iata,d.icao,d.x,d.y,d.elevation from countries as c,airports_dafif as d,airports_gad as g where g.name=d.name and g.icao!=d.icao and c.code=d.code and c.code='ID';
 
 update airports set iata='' where iata='N/A';
+
+insert into airports(name,city,country,iata,icao,x,y,elevation) values('Incheon Intl','Seoul','Korea','ICN','RKSI',126.450517,37.469075,23);
