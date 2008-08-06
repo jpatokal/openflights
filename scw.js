@@ -19,210 +19,6 @@
 //   Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 //   Boston, MA  02110-1301  USA
 //
-// *****************************************************************************
-//
-// Contact:   Sorry, I can't offer support for this but if you find a problem
-//            (or just want to tell me how useful you find it), please send
-//            me an email at scwfeedback@tarrget.info (Note the two Rs in
-//            tarrget).  I will try to fix problems quickly but this is a
-//            spare time thing for me.
-//
-// Credits:   I wrote this from scratch myself but I couldn't have done it
-//            without the superb "JavaScript The Definitive Guide" by David
-//            Flanagan (Pub. O'Reilly ISBN 0-596-00048-0).  I also recognise
-//            a contribution from my experience with PopCalendar 4.1 by
-//            Liming(Victor) Weng.
-//
-// Link back: Please give me credit and link back to my page.  To ensure that
-//            search engines give my page a higher ranking you can add the
-//            following HTML to any indexed page on your web site:
-//
-//            <A HREF="http://www.tarrget.info/calendar/scw.htm">
-//              Simple Calendar Widget by Anthony Garrett
-//            </A>
-//
-// Features:  Easily customised
-//                  (output date format, colours, language, year range and
-//                   week start day)
-//            Accepts a date as input
-//                  (see comments below for formats).
-//            Cross-browser code tested against;
-//                  Internet Explorer 6.0.28     Mozilla  1.7.1
-//                  Opera             7.52+      Firefox  0.9.1+
-//                  Konqueror         3.4.0      Flock    0.4.9
-//
-// How to add the Calendar to your page:
-//            This script needs to be defined for your page so, immediately
-//            after the BODY tag add the following line;
-//
-//                  <script type='Text/JavaScript' src='scw.js'></script>
-//
-//            Your root directory of the web site should also contain an empty
-//            file called "scwblank.html". See
-//                  http://www.tarrget.info/calendar/IEnightmare.html
-//            for a full explanation.
-//
-// How to use the Calendar once it is defined for your page:
-//
-//            Simply choose an event to trigger the calendar (like an onClick
-//            or an onMouseOver) and an element to work on (for the calendar
-//            to take its initial date from and write its output date to) then
-//            write it like this;
-//
-//                  <<event>>="scwShow(<<element>>,event);"
-//
-//            e.g. onClick="scwShow(scwID('myElement'),event);"
-//            or   onMouseOver="scwShow(this,event);"
-//
-//            NOTE: If you wish to use the calendar with an Anchor tag, do
-//                  not use the syntax:   href="javascript:scwShow(...)"
-//                  Instead you should use the following;
-//
-//                  <a href="#" onclick="scwShow(<<element>>,event);return false;">
-//                      <<your text>>
-//                  </a>
-//
-//            If you are using a text node then specify the text's parent node
-//            in the function call. The date should be the only text under that
-//            node;
-//
-//            e.g.  <p onclick="scwShow(this,event);"><<date>></p>
-//
-//            You can also disable days of the week by adding arguments to the
-//            call to scwShow.  The values should be Sunday = 0 through to
-//            Saturday = 6.  A call to scwShow with Friday and Monday disabled
-//            would look something like this;
-//
-//                  scwShow(<<element>>,event,5,1);
-//
-//            Finally you can use the following technique to run a function
-//            when the calendar closes:
-//
-//                  scwNextAction=<<function>>.runsAfterSCW(this,<<arguments>>);
-//                  scwShow(<<element>>,event <<,optional arguments above>>);
-//
-//            Where <<function>> is a function defined on the calling page
-//            and <<arguments>> is the list of arguments being passed to that
-//            function.
-//
-//      No event? No problem!
-//
-//            Normally the calendar will be triggered by an event but if you wish to
-//            control it in code and the event is not available to you, simply pass
-//            an element as the second parameter;
-//
-//            E.G.  scwShow(<<target element>>,<<source element>>);
-//                  as in: scwShow(this,this);
-//
-//            ------------------------------------------------------------------
-//            Here's an extremely trivial but fully functioning example page
-//            showing two of the ways to trigger the calendar;
-//
-//            <html>
-//                <head><title>Basic Example</title></head>
-//                <body>
-//                    <script type='text/JavaScript' src='scw.js'></script>
-//                    <p onclick='scwShow(this,event);'>06-Dec-2006</p>
-//                    <input onclick='scwShow(this,event);' value='07-Dec-2006' />
-//                    <br/><br/>
-//                    <a href='#' onclick='scwShow(this,event);return false;'>
-//                        08-Dec-2006
-//                    </a>
-//                </body>
-//            </html>
-//
-// *****************************************************************************
-//
-// See http://www.tarrget.info/calendar/scw.htm for a complete version history
-//
-// Version   Date        By               Description
-// =======   ====        ===============  ===========
-//   3.58    2007-04-04  Anthony Garrett  Resolved an error caused when the date
-//                                         range does not include the current year.
-//                                         Thanks to Steve Davis for letting me know.
-//
-//                                        Fixed "Today" selector display which
-//                                         was incorrectly visible when year range
-//                                         ended last year. (Also the result of
-//                                         investigations based on Steve Davis'
-//                                         feedback).
-//
-//   3.59    2007-06-13  Anthony Garrett  Added Verdana to font list of
-//                                         calendar's CSS.  Resolves rendering
-//                                         bug in Safari Beta 3 for Windows.
-//
-//   3.60    2007-07-31  Anthony Garrett  Fixed javascript error that occurred
-//                                         when the target element had no value
-//                                         attribute.  The error had no impact
-//                                         on the behaviour of the script.  Thanks
-//                                         to John Phelps for reporting this bug.
-//
-//   3.70    2007-09-21  Anthony Garrett  Updated the event trapping to make it
-//                                         less intrusive on the page body.
-//                                         NOTE: This requires that a calendar's
-//                                         second parameter should be the calling
-//                                         event (not the calling object as in
-//                                         previous versions).
-//                                         Thanks to Steve Davis for the bug report
-//                                         that led to this change.
-//
-//                                        Fixed a bug that caused undelimited
-//                                         dates to be handled incorrectly. They
-//                                         are now parsed against the full date
-//                                         output format then checked for validity.
-//                                         Thanks to Dan Wood for raising this bug.
-//
-//                                        Replaced the date input sequence user
-//                                         configuration setting with parsing the
-//                                         sequence from the full format. New users
-//                                         are often confused by the sequence and
-//                                         in practice (to allow the calendar's date
-//                                         output to be used for input) the sequence
-//                                         must always match the full format element
-//                                         order.
-//
-//                                        Extended IFRAME backing to all calendar objects
-//                                         in order to improve calendar display over
-//                                         some embedded applets and objects.  Thanks to
-//                                         Stanko Kupcevic for his feedback on this.
-//                                         NOTE: It is not possible to protect any
-//                                         JavaScript object displayed over an
-//                                         embedded DYNAMIC (and, therefore refreshed)
-//                                         object because browsers usually do not
-//                                         directly control the screen handling within
-//                                         the object.  The best advice therefore remains
-//                                         to design pages in such a way that the calendar
-//                                         does not overlap embedded objects.
-//
-//  3.71     2008-12-14  Anthony Garrett  Restored the ability to use an element
-//                                         as the second parameter when opening a
-//                                         calendar while retaining the option
-//                                         of passing an event. Thanks to Thierry Blind
-//                                         and Sergey Snovsky for the feedback.
-//
-//  3.72     2008-02-24  Anthony Garrett  Trapped calls to script with only a
-//                                         NAME attribute is set for the target
-//                                         element when the script really requires
-//                                         an ID attribute.  This is the most
-//                                         frequent mistake reported to me.
-//
-//  3.73     2008-04-11  Anthony Garrett  Corrected the input month name parsing
-//                                         so that it set the calendar to the
-//                                         right month when long month names used.
-//                                         Thanks to Ben Diamand for this bug report.
-//
-//  3.80     2008-04-29  Anthony Garrett  Added optional auto-positioning of the
-//                                         calendar when its normal position would
-//                                         go off the visible area.
-//                                         Thanks to Chandramouli Iyer for this
-//                                         suggestion.
-//
-//  3.90     2008-05-05  Anthony Garrett  Added an optional "Clear" button for
-//                                         use when handling a read-only text
-//                                         input element. Thanks to Sanjay Gangwal
-//                                         for his suggestion.
-// *****************************************************************************
-
 // ************************************
 // Start of Simple Calendar Widget Code
 // ************************************
@@ -243,7 +39,7 @@
     // alternatively, hard code a date like this...
     //      var scwBaseYear = 1990;
 
-    var scwBaseYear        = scwDateNow.getFullYear()-10;
+    var scwBaseYear        = scwDateNow.getFullYear()-19;
 
     // How many years do want to be valid and to show in the drop-down list?
 
@@ -352,11 +148,12 @@
 
     // Displayed "Today" date format
 
-    var scwDateDisplayFormat = 'dd-mm-yy';     // e.g. 'MMM-DD-YYYY' for the US
+    var scwDateDisplayFormat = 'd.m.yyyy';     // e.g. 'MMM-DD-YYYY' for the US
 
     // Output date format
 
-    var scwDateOutputFormat  = 'DD MMM YYYY'; // e.g. 'MMM-DD-YYYY' for the US
+    //var scwDateOutputFormat  = 'DD MMM YYYY'; // e.g. 'MMM-DD-YYYY' for the US
+    var scwDateOutputFormat  = 'd.m.yyyy'; // e.g. 'MMM-DD-YYYY' for the US
 
     // Note: The delimiters used should be in scwArrDelimiters.
 
