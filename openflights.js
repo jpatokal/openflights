@@ -5,13 +5,15 @@
 
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var trid = 0, alid = 0, apid = 0;
-var input = false, initializing = true;
+var input = false, logged_in = false;
 var input_srcmarker, input_srcpoint, input_dstmarker, input_dstpoint, input_toggle;
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
 var URL_GETCODE = "/php/getcode.php";
 var URL_INPUT = "/php/input.php";
+var URL_LOGIN = "/php/login.php";
+var URL_LOGOUT = "/php/logout.php";
 var URL_MAP = "/php/map.php";
 var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
@@ -74,7 +76,7 @@ window.onload = function init(){
     //map.setCenter(new OpenLayers.LonLat(0, 0), 0);
     map.zoomToMaxExtent();
 
-    xmlhttpPost(URL_MAP, 0);
+  xmlhttpPost(URL_MAP, 0, true);
  }    
 
 function onFeatureSelect(feature) {
@@ -245,12 +247,17 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_GETCODE) {
 	updateCodes(self.xmlHttpReq.responseText);
       }
+      if(strURL == URL_LOGIN) {
+	login(self.xmlHttpReq.responseText);
+      }
+      if(strURL == URL_LOGOUT) {
+	logout(self.xmlHttpReq.responseText);
+      }
       if(strURL == URL_MAP) {
 	updateMap(self.xmlHttpReq.responseText);
-        if(initializing) {
+	if(param) {
 	  updateFilter(self.xmlHttpReq.responseText);
-	  initializing = false;
-        }
+	}
       }
       if(strURL == URL_PREINPUT) {
 	inputFlight(self.xmlHttpReq.responseText);
@@ -291,21 +298,26 @@ function xmlhttpPost(strURL, id, param) {
       document.getElementById("airline_ajax").style.visibility = 'visible';
       query = 'airline=' + escape(airlineCode);
     }
+  } else if(strURL == URL_LOGIN) {
+    document.getElementById("loginajax").style.display = 'inline';
+    var name = document.forms['login'].name.value;
+    var pw = document.forms['login'].pw.value;
+    query = 'name=' + escape(name) + '&' + 'pw=' + escape(pw);
   } else {
     document.getElementById("ajaxstatus").style.visibility = 'visible';
-    var query = getquerystring(id);
+    var query = getquerystring(id, param);
   }
   self.xmlHttpReq.send(query);
 }
 
-function getquerystring(id) {
+function getquerystring(id, param) {
   var form = document.forms['filterform'];
   trid = form.Trips.value;
   alid = form.Airlines.value;
   qstr = 'id=' + escape(id) + '&' +
     'trid=' + escape(trid) + '&' +
     'alid=' + escape(alid) + '&' +
-    'init=' + escape(initializing);
+    'init=' + escape(param);
   return qstr;
 }
 
@@ -315,11 +327,13 @@ function updateFilter(str) {
   var trips = master[3];
   var airlines = master[4];
 
-  var tripselect = "Trips " + createSelect("Trips", "All flights", trid, trips.split("\t"), 20);
-  document.getElementById("filter_tripselect").innerHTML = tripselect;
+  if(trips != "") {
+    var tripselect = "Trips " + createSelect("Trips", "All flights", trid, trips.split("\t"), 20);
+    document.getElementById("filter_tripselect").innerHTML = tripselect;
 
-  var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", alid, airlines.split("\t"), 20);
-  document.getElementById("filter_airlineselect").innerHTML = airlineselect;
+    var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", alid, airlines.split("\t"), 20);
+    document.getElementById("filter_airlineselect").innerHTML = airlineselect;
+  }
 
   /*  if(trid == 0) {
     document.getElementById("maptitle").innerHTML = "";
@@ -380,11 +394,9 @@ function updateMap(str){
   var days = Math.floor(col[2] / (60*24));
   var hours = Math.floor((col[2] / 60) % 24);
   var min = Math.floor(col[2] % 60);
-  stats = "<b>Statistics</b><br>" +
-    "Flights: " + col[0] + "<br>" +
+  stats = "Flights: " + col[0] + "<br>" +
     "Distance: " + col[1] + " mi<br>" +
-    "Duration: " + days + " days " + hours + " hrs " + min + "min" +
-    "<input type=\"button\" value=\"More...\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_STATS + "\")'>";
+    "Duration: " + days + "d " + hours + ":" + min;
   document.getElementById("stats").innerHTML = stats;
     
   var rows = flights.split(":");
@@ -429,14 +441,15 @@ function updateAirport(str, desc) {
 
 function updateStats(str) {
   openResult();
+  bigtable = "<img src=\"img/close.gif\" onclick=\"JavaScript:closeResult();\" width=17 height=17> ";
   if(str == "") {
-    table = "<i>Statistics calculation failed!</i>";
+    bigtable += "<i>Statistics calculation failed!</i>";
   } else {
     var master = str.split("\n");
     var airports = master[0];
     var airlines = master[1];
     var planes = master[2];
-    bigtable = "<table><td>"
+    bigtable += "<table><td>"
       
       table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=3>Top 10 Airports</th></tr>"
@@ -517,6 +530,7 @@ function inputFlight(str) {
   var day = today.getDate();
   var year = today.getFullYear();
   document.forms['inputform'].src_time.value = day + "." + month + "." + year;
+  document.forms['inputform'].src_time.focus();
 
   var master = str.split("\n");
   var airports = master[0];
@@ -534,6 +548,15 @@ function inputFlight(str) {
 
   var planeselect = createSelect("plane", "-", 0, planes.split("\t"));
   document.getElementById("input_plane_select").innerHTML = planeselect;
+
+  // Load up any values already entered into the form
+  if(document.forms['inputform'].src_ap_code.value != "") codeToAirport("SRC");
+  if(document.forms['inputform'].dst_ap_code.value != "") codeToAirport("DST");
+  if(document.forms['inputform'].airline_code.value != "") {
+    flightNumberToAirline("AIRLINE");
+  } else if(document.forms['inputform'].number.value != "") {
+    flightNumberToAirline("NUMBER");
+  }
 }
 
 // When user has entered airline code, try to match it to airline
@@ -673,7 +696,34 @@ function selectAirline(new_alid) {
       al_select.selectedIndex = index;
     }
   }
-  refresh();
+  refresh(false);
+}
+
+function login(str) {
+  document.getElementById("loginajax").style.display = 'none';
+  var status = str.split(";")[0];
+  var name = str.split(";")[1];
+  document.getElementById("loginstatus").style.display = 'inline';
+  // Login successful
+  if(status == "1") {
+    logged_in == true;
+    document.getElementById("loginstatus").innerHTML = "Welcome, <B>" + name + "</B>!";
+    document.getElementById("loginform").style.display = 'none';
+    document.getElementById("control").style.display = 'inline';
+  } else {
+    logged_in == false;
+    document.getElementById("loginstatus").innerHTML = "<B>" + name + "</B>";
+  }
+  refresh(true);
+}
+
+function logout(str) {
+  document.getElementById("loginstatus").innerHTML = "<B>You have been logged out.</B>";
+  document.getElementById("loginform").style.display = 'inline';
+  document.getElementById("control").style.display = 'none';
+  document.getElementById("loginajax").style.display = 'none';
+  refresh(true);
+  closeInput();
 }
 
 // Functions for swapping between lower panes
@@ -690,6 +740,15 @@ function openInput() {
   document.getElementById("result").style.display = 'none';
   input = true;
   input_toggle = "SRC";
+}
+
+function closeInput() {
+  document.getElementById("input").style.display = 'none';
+  document.getElementById("help").style.display = 'inline';
+  document.getElementById("result").style.display = 'none';
+  input = false;
+  if(input_srcmarker) airportLayer.removeMarker(input_srcmarker);
+  if(input_dstmarker) airportLayer.removeMarker(input_dstmarker);
 }
 
 function closeResult() {
@@ -717,8 +776,9 @@ function clearFilter() {
 }
 
 // Refresh user's display after change in filter
-// (loads new flight data and stats, but does not update filter options)
-function refresh() {
+// init = true: reloads all user data
+// init = false: loads flight data and stats only
+function refresh(init) {
   closePopup();
-  xmlhttpPost(URL_MAP, 0, false);
+  xmlhttpPost(URL_MAP, 0, init);
 }
