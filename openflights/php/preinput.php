@@ -36,7 +36,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 }
 printf ("\n");
 
-$sql = "SELECT DISTINCT p.plid, p.name FROM flights AS f,planes AS p WHERE uid=" . $uid . " AND p.plid=f.plid";
+$sql = "SELECT DISTINCT p.plid, p.name FROM flights AS f,planes AS p WHERE uid=" . $uid . " AND p.plid=f.plid ORDER BY NAME";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

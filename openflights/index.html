@@ -99,7 +99,7 @@
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td><input type="text" name="src_time" size="10"/><img src="img/scw.gif" height="16" width="16" onclick='scwShow(this,event);'/>
+  <td><input type="text" name="src_time" size="10" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_time'),event);"/>
   </td>
 
   <td>Plane</td>
@@ -114,18 +114,18 @@
       </select>
   </td>
 </tr><tr>
-  <td><font color="red">From</font></td>
-  <td><input type="text" name="src_ap_code" size="6" onChange='JavaScript:codeToAirport("SRC")'/> &gt;
+  <td><img src="img/icon_plane-src.png" height=17 width=17/> <font color="red">From</font></td>
+  <td><input type="text" name="src_ap_code" size="6" tabindex="2" onChange='JavaScript:codeToAirport("SRC")'/> &gt;
       <span id="input_src_ap_select"></span>
       <span id="src_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
 </tr><tr>
-  <td><font color="red">To</font></td>
-  <td><input type="text" name="dst_ap_code" size="6" onChange='JavaScript:codeToAirport("DST")'/> &gt;
+  <td><img src="img/icon_plane-dst.png" height=17 width=17/> <font color="red">To</font></td>
+  <td><input type="text" name="dst_ap_code" size="6" tabindex="3" onChange='JavaScript:codeToAirport("DST")'/> &gt;
       <span id="input_dst_ap_select"></span>
       <span id="dst_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span></td>
 </tr><tr>
   <td>Flight number</td>
-  <td><input type="text" name="number" size="6" value="" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
+  <td><input type="text" name="number" size="6" value="" tabindex="4" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
   </td>
 </tr><tr>
   <td><font color="red">Airline</font></td>
