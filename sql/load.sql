@@ -60,3 +60,11 @@ select d.name,c.name,g.city,g.iata,d.icao,d.x,d.y,d.elevation from countries as 
 update airports set iata='' where iata='N/A';
 
 insert into airports(name,city,country,iata,icao,x,y,elevation) values('Incheon Intl','Seoul','Korea','ICN','RKSI',126.450517,37.469075,23);
+
+insert into airports(name,country,city,iata,icao,x,y,elevation) select distinct d.name,c.name,g.city,g.iata,d.icao,d.x,d.y,d.elevation from countries as c,airports_dafif as d,airports_gad as g where d.name like g.city and g.icao!=d. icao and g.iata!="N/A" and c.code=d.code and c.code='TH';
+
+B
+B
+B
+B
+OB

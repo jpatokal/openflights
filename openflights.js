@@ -6,7 +6,7 @@
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var trid = 0, alid = 0, apid = 0;
 var input = false, logged_in = false;
-var input_srcmarker, input_srcpoint, input_dstmarker, input_dstpoint, input_toggle;
+var input_srcmarker, input_dstmarker, input_toggle;
 
 var URL_AIRPORT = "/php/airport.php";
 var URL_FILTER = "/php/filter.php";
@@ -17,6 +17,13 @@ var URL_MAP = "/php/map.php";
 var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
 var URL_SUBMIT = "/php/submit.php";
+
+var INPUT_MAXLEN = 50;
+
+var airportMaxFlights = 0;
+var airportIcons = [ [ 'img/icon_plane-15x15.png', 15 ],
+		     [ 'img/icon_plane-17x17.png', 17 ],
+		     [ 'img/icon_plane-19x19.png', 19 ] ];
 
 window.onload = function init(){
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
@@ -37,15 +44,13 @@ window.onload = function init(){
     var ol_wms = new OpenLayers.Layer.WMS( "Political (Metacarta)",
                                            "http://labs.metacarta.com/wms/vmap0?",
 		                           {layers: 'basic'},
-                                           {transitionEffect: 'resize'},
-                                           {wrapDateLine: true}
+                                           {transitionEffect: 'resize', wrapDateLine: true}
       );
 
     var jpl_wms = new OpenLayers.Layer.WMS( "Geographical (NASA)",
                     "http://t1.hypercube.telascience.org/cgi-bin/landsat7", 
                     {layers: "landsat7"},
-		    {transitionEffect: 'resize'},
-                    {wrapDateLine: true}
+		    {transitionEffect: 'resize', wrapDateLine: true}
       );
     jpl_wms.setVisibility(false);
 
@@ -111,13 +116,13 @@ function drawLine(lineLayer, x1, y1, x2, y2, flight) {
   var targetNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2, y2), {flight: flight} );
   
   if(Math.abs(x1-x2) < 180) {
-    //var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {flight: flight});
-    //var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
+    var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {flight: flight});
+    var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
     var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1), {flight: flight});
     var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
     lineLayer.addNodes([sourceNode, targetNode]);
-    //lineLayer.addNodes([westNode1, westNode2]);
-    //lineLayer.addNodes([eastNode1, eastNode2]);
+    lineLayer.addNodes([westNode1, westNode2]);
+    lineLayer.addNodes([eastNode1, eastNode2]);
     
   } else {
     var dy = y2 - y1;
@@ -125,23 +130,23 @@ function drawLine(lineLayer, x1, y1, x2, y2, flight) {
     var dx2 = 180 - Math.abs(x2);
     var y = parseFloat(y1) + (dx1 / (dx1 + dx2)) * dy;
     
-    //var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-540, y), {flight: flight});
-    //var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1));
-    //lineLayer.addNodes([westNode1, westNode2]);
+    var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-540, y), {flight: flight});
+    var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1));
+    lineLayer.addNodes([westNode1, westNode2]);
     
-    //var westNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2), {flight: flight});
+    var westNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2), {flight: flight});
     var bNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-180, y), {flight: flight});
-    //lineLayer.addNodes([westNode3, bNode1, sourceNode]);
+    lineLayer.addNodes([westNode3, bNode1, sourceNode]);
     lineLayer.addNodes([bNode1, sourceNode]);
     
-    //var eastNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1));
+    var eastNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1));
     var bNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(180, y), {flight: flight});
-    //lineLayer.addNodes([targetNode, bNode2, eastNode3]);
+    lineLayer.addNodes([targetNode, bNode2, eastNode3]);
     lineLayer.addNodes([targetNode, bNode2]);
     
-    //var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(540, y), {flight: flight});
-    //var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
-    //lineLayer.addNodes([eastNode1, eastNode2]);
+    var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(540, y), {flight: flight});
+    var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
+    lineLayer.addNodes([eastNode1, eastNode2]);
   }
 }
 
@@ -150,18 +155,10 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_AIRPORT + "\"," + apid + ", \"" + desc + "\")'>";
   desc = "<img src=\"img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
 
-
-  var iconfile, size;
-  if(count > 4) {
-    iconfile = 'img/icon_plane-19x19.png';
-    size = new OpenLayers.Size(19,19);
-  } else if(count <= 2) {
-    iconfile = 'img/icon_plane-15x15.png';
-    size = new OpenLayers.Size(15,15);
-  } else {
-    iconfile = 'img/icon_plane-17x17.png';
-    size = new OpenLayers.Size(17,17);
-  }
+  // Select icon based on number of flights
+  var colorIndex = Math.floor(((count / airportMaxFlights) * airportIcons.length) - 0.1);
+  var iconfile = airportIcons[colorIndex][0];
+  var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   var icon = new OpenLayers.Icon(iconfile,size,offset);
   
@@ -175,12 +172,12 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   marker.apid = apid;
   feature.apid = apid;
   feature.iata = code;
-
+  
   // Run when the user clicks on an airport marker
   // this == the feature, *not* the marker
   var markerClick = function (evt) {
     closePopup();
-
+    
     // If input mode is active, we select the airport instead of popping it up
     if(input) {
       if(input_toggle == "SRC") {
@@ -193,7 +190,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
       codeToAirport(input_toggle);
       return;
     }
-
+    
     if (this.popup == null) {
       this.popup = this.createPopup(this.closeBox);
       map.addPopup(this.popup);
@@ -209,9 +206,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
     OpenLayers.Event.stop(evt);
   };
   marker.events.register("mousedown", feature, markerClick);
-  
   airportLayer.addMarker(marker);
-  
 }
 
 function toggleControl(element) {
@@ -241,6 +236,14 @@ function xmlhttpPost(strURL, id, param) {
   self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   self.xmlHttpReq.onreadystatechange = function() {
     if (self.xmlHttpReq.readyState == 4) {
+
+      // First make sure session is still up
+      // (note: sessionfree PHPs do not return this string)
+      if(self.xmlHttpReq.responseText.substring(0, 13) == "Not logged in") {
+	logout(self.xmlHttpReq.responseText);
+	return;
+      }
+
       if(strURL == URL_AIRPORT) {
 	updateAirport(self.xmlHttpReq.responseText, param);
       }
@@ -267,6 +270,7 @@ function xmlhttpPost(strURL, id, param) {
       }
       if(strURL == URL_SUBMIT) {
 	alert(self.xmlHttpReq.responseText);
+	document.getElementById("input_status").innerHTML = 'Flight added.';
 	refresh(false);
       }
       document.getElementById("ajaxstatus").style.visibility = 'hidden';
@@ -461,6 +465,11 @@ function updateMap(str){
   var rows = airports.split(":");
   for (r in rows) {
     var col = rows[r].split(",");
+
+    // Airports are ordered from busiest to least busy, so we calibrate the color scale based on the first result
+    if(r == 0) {
+      airportMaxFlights = col[7];
+    }
     // apid, x, y, name, code, city, country, count
     drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7]);
   }
@@ -564,8 +573,12 @@ function updateCodes(str) {
     for(l in lines) {
       if(l == 0 || l == lines.length - 1) continue; // already processed
       var col = lines[l].split(";");
+      var name = col[1];
+      if (name.length > INPUT_MAXLEN) {
+	name = name.substring(0,INPUT_MAXLEN - 3) + "...";
+      }
       select[l-1].value = col[0]; // id
-      select[l-1].text = col[1]; // name
+      select[l-1].text = name;
     }
 
     // Rebuilding select doesn't count as onChange, so we trigger manually
@@ -590,10 +603,10 @@ function inputFlight(str) {
   var planes = master[2];
   var trips = master[3];
 
-  var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"), 0, "selectNewAirport");
+  var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
   document.getElementById("input_src_ap_select").innerHTML = airportselect;
 
-  airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"), 0, "selectNewAirport");
+  airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
   document.getElementById("input_dst_ap_select").innerHTML = airportselect;
 
   var airlineselect = createSelect("airline", "-", 0, airlines.split("\t"));
@@ -617,6 +630,8 @@ function inputFlight(str) {
 
 // When user has entered airline code, try to match it to airline
 function flightNumberToAirline(str) {
+  document.getElementById("input_status").innerHTML = '';
+
   if(str == "NUMBER") {
     var flightNumber = document.forms['inputform'].number.value;
   } else {
@@ -643,6 +658,8 @@ function flightNumberToAirline(str) {
 
 // When user has entered airport code, try to match it to airport
 function codeToAirport(type) {
+  document.getElementById("input_status").innerHTML = '';
+
   var found = false;
   var apid;
   if(type == "SRC") {
@@ -691,6 +708,8 @@ function greatCircle(lat1, lon1, lat2, lon2) {
 // Also calculates distance and duration
 // type: "src_ap" or "dst_ap"
 function selectNewAirport(type) {
+  document.getElementById("input_status").innerHTML = '';
+
   var size = new OpenLayers.Size(17, 17);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   if(type == "src_ap") {
@@ -724,7 +743,7 @@ function selectNewAirport(type) {
       input_toggle = "DST";
     } else {
       document.forms['inputform'].src_ap_code.value = "";
-      input_srcmarker = 0;
+      input_srcmarker = null;
     }
   } else {
     if(input_dstmarker) {
@@ -740,7 +759,7 @@ function selectNewAirport(type) {
       input_toggle = "SRC";
     } else {
       document.forms['inputform'].dst_ap_code.value = "";
-      input_dstmarker = "";
+      input_dstmarker = null;
     }
   }
 
@@ -763,6 +782,15 @@ function selectNewAirport(type) {
     document.forms['inputform'].distance.value = distance;
     document.forms['inputform'].duration.value = duration;
   } 
+}
+
+function swapAirports() {
+  var tmp = document.forms["inputform"].src_ap_code.value;
+  document.forms["inputform"].src_ap_code.value = document.forms["inputform"].dst_ap_code.value;
+  document.forms["inputform"].dst_ap_code.value = tmp;
+  codeToAirport("SRC");
+  // awful hack: wait a second for the first request to execute
+  setTimeout('codeToAirport("DST")', 1000);
 }
 
 // Given apid, find the matching airport and pop it up
@@ -829,12 +857,29 @@ function openResult() {
   document.getElementById("result").style.display = 'inline';
 }
 
+function closeResult() {
+  document.getElementById("result").style.display = 'none';
+  document.getElementById("help").style.display = 'inline';
+}
+
 function openInput() {
   document.getElementById("help").style.display = 'none';
   document.getElementById("input").style.display = 'inline';
   document.getElementById("result").style.display = 'none';
   input = true;
   input_toggle = "SRC";
+}
+
+function clearInput() {
+  var form = document.forms["inputform"];
+  form.src_ap_code.value = "";
+  form.dst_ap_code.value = "";
+  form.duration.value = "";
+  form.distance.value = "";
+  form.number.value = "";
+  form.airline_code.value = "";
+  form.seat_type.value = "";
+  xmlhttpPost(URL_PREINPUT); // rebuild selects
 }
 
 function closeInput() {
@@ -844,11 +889,6 @@ function closeInput() {
   input = false;
   if(input_srcmarker) airportLayer.removeMarker(input_srcmarker);
   if(input_dstmarker) airportLayer.removeMarker(input_dstmarker);
-}
-
-function closeResult() {
-  document.getElementById("result").style.display = 'none';
-  document.getElementById("help").style.display = 'inline';
 }
 
 function showHelp() {
