@@ -10,7 +10,7 @@ if(!$uid or empty($uid)) {
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
-$init = $HTTP_POST_VARS["init"];
+$init = $HTTP_POST_VARS["param"];
 if(! $init) {
   $init = $HTTP_GET_VARS["init"];
 }
