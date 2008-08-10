@@ -14,6 +14,7 @@ var URL_GETCODE = "/php/getcode.php";
 var URL_LOGIN = "/php/login.php";
 var URL_LOGOUT = "/php/logout.php";
 var URL_MAP = "/php/map.php";
+var URL_NEWPLANE = "/php/newplane.php";
 var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
 var URL_SUBMIT = "/php/submit.php";
@@ -265,12 +266,15 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_PREINPUT) {
 	inputFlight(self.xmlHttpReq.responseText);
       }
+      if(strURL == URL_NEWPLANE) {
+	afterNewPlane(self.xmlHttpReq.responseText);
+      }
       if(strURL == URL_STATS) {
 	updateStats(self.xmlHttpReq.responseText);
       }
       if(strURL == URL_SUBMIT) {
 	alert(self.xmlHttpReq.responseText);
-	document.getElementById("input_status").innerHTML = 'Flight added.';
+	document.getElementById("input_status").innerHTML = '<B>Flight added.</B>';
 	refresh(false);
       }
       document.getElementById("ajaxstatus").style.visibility = 'hidden';
@@ -365,7 +369,7 @@ function getquerystring(id, param) {
   qstr = 'id=' + escape(id) + '&' +
     'trid=' + escape(trid) + '&' +
     'alid=' + escape(alid) + '&' +
-    'init=' + escape(param);
+    'param=' + escape(param);
   return qstr;
 }
 
@@ -594,7 +598,7 @@ function inputFlight(str) {
   var month = today.getMonth() + 1;
   var day = today.getDate();
   var year = today.getFullYear();
-  document.forms['inputform'].src_date.value = day + "." + month + "." + year;
+  document.forms['inputform'].src_date.value = year + "-" + month + "-" + day;
   document.forms['inputform'].src_date.focus();
 
   var master = str.split("\n");
@@ -626,6 +630,53 @@ function inputFlight(str) {
   } else if(document.forms['inputform'].number.value != "") {
     flightNumberToAirline("NUMBER");
   }
+}
+
+// Handle the "add new airports" buttons
+function addNewAirport() {
+  alert("This will later pop up a dialog for seaching and adding airports.  For now, please click on any airport icon or enter something into the To/From boxes.");
+}
+
+//
+// Handle the "add new plane" button in input form
+//
+function inputNewPlane() {
+  document.getElementById("input_plane_add").style.display = 'none';
+  document.getElementById("input_plane_unadd").style.display = 'inline';
+  document.forms['inputform'].newPlane.focus();
+}
+
+function enterNewPlane() {
+  xmlhttpPost(URL_NEWPLANE, 0, document.forms['inputform'].newPlane.value);
+}
+
+function afterNewPlane(str) {
+  var col = str.split(";");
+  var plid = col[0];
+  var text = col[1];
+  var newplane = document.forms['inputform'].newPlane.value;
+  document.getElementById("input_status").innerHTML = "<B>" + text + "</B>";
+  if(plid != 0) {
+    cancelNewPlane();
+    var inputform = document.forms['inputform'];
+    inputform.plane.selectedIndex = 0;
+    inputform.plane[0].value = plid;
+    inputform.plane[0].text = newplane;
+  }
+}
+
+function cancelNewPlane() {
+  document.forms['inputform'].newPlane.value = "";
+  document.getElementById("input_plane_add").style.display = 'inline';
+  document.getElementById("input_plane_unadd").style.display = 'none';
+  document.forms['inputform'].plane.focus();
+}
+
+//
+// Handle the "add new trip" button in input
+//
+function addNewTrip() {
+  alert("This will pop up a dialog for adding new trips. Coming soon...");
 }
 
 // When user has entered airline code, try to match it to airline
@@ -866,6 +917,7 @@ function openInput() {
   document.getElementById("help").style.display = 'none';
   document.getElementById("input").style.display = 'inline';
   document.getElementById("result").style.display = 'none';
+  document.getElementById("newairport").style.display = 'inline';
   input = true;
   input_toggle = "SRC";
 }
@@ -879,6 +931,14 @@ function clearInput() {
   form.number.value = "";
   form.airline_code.value = "";
   form.seat_type.value = "";
+  if(input_srcmarker) {
+    airportLayer.removeMarker(input_srcmarker);
+    input_srcmarker = null;
+  }
+  if(input_dstmarker) {
+    airportLayer.removeMarker(input_dstmarker);
+    input_dstmarker = null;
+  }
   xmlhttpPost(URL_PREINPUT); // rebuild selects
 }
 
@@ -886,6 +946,7 @@ function closeInput() {
   document.getElementById("input").style.display = 'none';
   document.getElementById("help").style.display = 'inline';
   document.getElementById("result").style.display = 'none';
+  document.getElementById("newairport").style.display = 'none';
   input = false;
   if(input_srcmarker) airportLayer.removeMarker(input_srcmarker);
   if(input_dstmarker) airportLayer.removeMarker(input_dstmarker);

@@ -52,9 +52,9 @@
         height: 65%;
 	}
 
-#mapTitle { 
-    right: 1.5em;
-    top: 3em;
+#newairport { 
+    right: 260px;
+    top: 60%;
     display: block;
     position: absolute;
     font-size:1.5em;

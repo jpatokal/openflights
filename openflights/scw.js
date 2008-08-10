@@ -39,11 +39,11 @@
     // alternatively, hard code a date like this...
     //      var scwBaseYear = 1990;
 
-    var scwBaseYear        = scwDateNow.getFullYear()-19;
+    var scwBaseYear        = scwDateNow.getFullYear()-9;
 
     // How many years do want to be valid and to show in the drop-down list?
 
-    var scwDropDownYears   = 20;
+    var scwDropDownYears   = 10;
 
     // All language-dependent changes can be made here...
 
@@ -148,12 +148,12 @@
 
     // Displayed "Today" date format
 
-    var scwDateDisplayFormat = 'd.m.yyyy';     // e.g. 'MMM-DD-YYYY' for the US
+    var scwDateDisplayFormat = 'yyyy-m-d';     // e.g. 'MMM-DD-YYYY' for the US
 
     // Output date format
 
     //var scwDateOutputFormat  = 'DD MMM YYYY'; // e.g. 'MMM-DD-YYYY' for the US
-    var scwDateOutputFormat  = 'd.m.yyyy'; // e.g. 'MMM-DD-YYYY' for the US
+    var scwDateOutputFormat  = 'yyyy-m-d'; // e.g. 'MMM-DD-YYYY' for the US
 
     // Note: The delimiters used should be in scwArrDelimiters.
 
