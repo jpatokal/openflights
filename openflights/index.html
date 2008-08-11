@@ -1,5 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head><title>OpenFlights (ALPHA)</title>
+  <head><title>OpenFlights (BETA)</title>
     <link rel="stylesheet" href="style_reset.css" type="text/css">
     <link rel="stylesheet" href="openflights.css" type="text/css">
     <link rel="stylesheet" href="sortable.css" type="text/css">
@@ -48,7 +48,7 @@
 	  <div id="statsbox">
 	    <span id="ajaxstatus" style="float: right; visibility: hidden; margin-right: 10px"><img src="img/ajax-wait.gif" height=32 width=32/></span>
 	    <div id="stats"><i>Loading...</i></div>
-	    <input type="button" value="More..." align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
+	    <input type="button" value="Stats..." align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
 	  </div>
 
 	  <div id="filter">
@@ -101,7 +101,7 @@
 	</div> <!-- end help -->
 	<div id="input" style="display: none;">
 <h2><img src="img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> Add new flight</h2>
-<p>Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city, IATA or ICAO code.</p>
+<p>Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</p>
 
 <form id='inputform'>
 <table>
@@ -116,8 +116,8 @@
   <td width="50%"><span id="input_trip_select"></span> <img src="img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:addNewTrip()'/></td>
 
 </tr><tr>
-  <td><font color="red">From</font></td>
-  <td><input type="text" name="src_ap_code" size="6" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
+  <td><font color="red">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><input type="text" name="src_ap_code" size="10" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
       <img src="img/icon_plane-src.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
       <span id="input_src_ap_select"></span></td>
   <td rowspan=2 valign=middle>
@@ -141,13 +141,13 @@
   </td>
 
 </tr><tr>
-  <td><font color="red">To&nbsp;&nbsp;</font></td>
-  <td><input type="text" name="dst_ap_code" size="6" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
+  <td><font color="red">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><input type="text" name="dst_ap_code" size="10" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
       <img src="img/icon_plane-dst.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
       <span id="input_dst_ap_select"></span></td>
 
   <td>Class</td>
-  <td><input type="radio" name="class" value="Y" tabindex="10" CHECKED>Economy
+  <td><input type="radio" name="class" value="Y" CHECKED>Economy
       <input type="radio" name="class" value="C">Business
       <input type="radio" name="class" value="F">First
   </td>
@@ -158,15 +158,15 @@
   </td>
 
   <td></td>
-  <td>Reason</td>
-  <td><input type="radio" name="reason" value="B" tabindex="11" CHECKED>Business
-      <input type="radio" name="reason" value="P">Pleasure
+  <td>Reason&nbsp;</td>
+  <td><input type="radio" name="reason" value="B" CHECKED>Business
+      <input type="radio" name="reason" value="L">Leisure
       <input type="radio" name="reason" value="C">Crew
   </td>
 
 </tr><tr>
-  <td><font color="red">Airline</font></td>
-  <td><input type="text" name="airline_code" size="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
+  <td><font color="red">Airline</font><sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
+  <td><input type="text" name="airline_code" size="10" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
       <span id="input_airline_select"></span>
       <span id="airline_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span>
   </td>

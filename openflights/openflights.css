@@ -107,6 +107,11 @@
   padding: 10px;
 }
 
+#contexthelp{
+  margin: 0px 0px 0px 0px;
+  padding: 10px;
+}
+
 /* We have to include some sort of height attribute for IE 6 and 7 to render  */
 /* the columns background properly, and prevent additional, unwanted          */
 /* whitespace from being rendered.                                            */
@@ -117,6 +122,8 @@
 	padding: 5px 10px;
 	clear: both;
 	}
+
+input:focus, textarea:focus { background-color: LightYellow; }
 
 /* OpenLayers default stuff starts here */
 
