@@ -26,7 +26,12 @@ var airportIcons = [ [ 'img/icon_plane-15x15.png', 15 ],
 		     [ 'img/icon_plane-17x17.png', 17 ],
 		     [ 'img/icon_plane-19x19.png', 19 ] ];
 
+var classes = {"Y":"Economy", "C":"Business", "F":"First", "": ""};
+var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
+var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "": ""};
+
 window.onload = function init(){
+
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
     map = new OpenLayers.Map('map', {
       maxExtent: bounds,
@@ -273,7 +278,6 @@ function xmlhttpPost(strURL, id, param) {
 	updateStats(self.xmlHttpReq.responseText);
       }
       if(strURL == URL_SUBMIT) {
-	alert(self.xmlHttpReq.responseText);
 	document.getElementById("input_status").innerHTML = '<B>Flight added.</B>';
 	refresh(false);
       }
@@ -396,16 +400,19 @@ function updateFilter(str) {
  * rows: Array of strings
  * length: maximum length (omit or set to <= 0 to allow any length)
  * hook: Function to call on value change, with name as argument
+ * tabIndex: tabindex
  */ 
-function createSelect(name, allopts, id, rows, maxlen, hook) {
+function createSelect(name, allopts, id, rows, maxlen, hook, tabIndex) {
+  var select = "<select name=\"" + name + "\"";
   if(hook) {
-    var select = "<select name=\"" + name + "\" onChange='JavaScript:" + hook + "(\"" + name + "\")'" + ">";
-  } else {
-    var select = "<select name=\"" + name + "\">";
+    select += " onChange='JavaScript:" + hook + "(\"" + name + "\")'";
   }
-  select += "<option value=\"0\">" + allopts + "</option>";
-  
-  // No data, so return an empty element
+  if(tabIndex) {
+    select += " tabindex=\"" + tabIndex + "\"";
+  }
+  select += "><option value=\"0\">" + allopts + "</option>";
+
+  // No data?  Return an empty element
   if(! rows || rows == "") {
     return select + "</select>";
   }
@@ -487,15 +494,18 @@ function updateAirport(str, desc) {
   } else {
     table += desc.replace(/\<br\>/g, " &mdash; ");
     table += "<table class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">";
-    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th>Distance</th><th>Duration</th><th>Seat</th><th>Seat type</th><th>Class</th><th>Reason</th></tr>";
+    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Distance</th><th>Duration</th><th>Seat</th><th>Seat type</th><th>Class</th><th>Reason</th></tr>";
     var rows = str.split("\t");
     for (r in rows) {
+      // src_iata, src_apid, dst_iata, dst_apid, flight code, date, distance, duration, seat, seat_type, class, reason, fid
       var col = rows[r].split(",");
-      // src_iata, src_apid, dst_iata, dst_apid, flight code, date
+
       table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 	"<td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
-	"<td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
-	"</td><td>" + col[8] + "</td><td>" + col[9] + "</td><td>" + col[10] + "</td><td>" + col[11] + "</td></tr>";
+	"<td><a href=\"#stats\" onclick=\"JavaScript:editFlight(" + col[12] + ");\">" + col[4] + "</a></td>" +
+	"<td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
+	"</td><td>" + col[8] + "</td><td>" + seattypes[col[9]] + "</td><td>" + classes[col[10]] + "</td><td>"
+	+ reasons[col[11]] + "</td></tr>";
     }
     table += "</table>";
   }
@@ -591,6 +601,10 @@ function updateCodes(str) {
   }
 }
 
+function editFlight(fid) {
+  alert("Flight editing not implemented yet");
+}
+
 function inputFlight(str) {
   openInput();
 
@@ -607,20 +621,20 @@ function inputFlight(str) {
   var planes = master[2];
   var trips = master[3];
 
-  var airportselect = createSelect("src_ap", "-", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
+  var airportselect = createSelect("src_ap", "Choose airport", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
   document.getElementById("input_src_ap_select").innerHTML = airportselect;
 
-  airportselect = createSelect("dst_ap", "-", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
+  airportselect = createSelect("dst_ap", "Choose airport", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
   document.getElementById("input_dst_ap_select").innerHTML = airportselect;
 
-  var airlineselect = createSelect("airline", "-", 0, airlines.split("\t"));
+  var airlineselect = createSelect("airline", "Choose airline", 0, airlines.split("\t"));
   document.getElementById("input_airline_select").innerHTML = airlineselect;
 
-  var planeselect = createSelect("plane", "-", 0, planes.split("\t"));
-  document.getElementById("input_plane_select").innerHTML = planeselect;
-
-  var tripselect = createSelect("trips", "-", 0, trips.split("\t"));
+  var tripselect = createSelect("trips", "-", 0, trips.split("\t"), INPUT_MAXLEN, null, 7);
   document.getElementById("input_trip_select").innerHTML = tripselect;
+
+  var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, null, 8);
+  document.getElementById("input_plane_select").innerHTML = planeselect;
 
   // Load up any values already entered into the form
   if(document.forms['inputform'].src_ap_code.value != "") codeToAirport("SRC");
@@ -641,6 +655,7 @@ function addNewAirport() {
 // Handle the "add new plane" button in input form
 //
 function inputNewPlane() {
+  document.getElementById("input_status").innerHTML = "";
   document.getElementById("input_plane_add").style.display = 'none';
   document.getElementById("input_plane_unadd").style.display = 'inline';
   document.forms['inputform'].newPlane.focus();
@@ -670,6 +685,7 @@ function cancelNewPlane() {
   document.getElementById("input_plane_add").style.display = 'inline';
   document.getElementById("input_plane_unadd").style.display = 'none';
   document.forms['inputform'].plane.focus();
+  document.getElementById("input_status").innerHTML = "<B>Adding plane cancelled.</B>";
 }
 
 //
@@ -873,6 +889,16 @@ function selectAirline(new_alid) {
   refresh(false);
 }
 
+//
+// Context help
+//
+function help(context) {
+  window.open('/help/' + context + '.html', 'OpenFlights Help: ' + context, 'width=500,height=400,scrollbars=yes');
+}
+
+//
+// Login and logout
+//
 function login(str) {
   document.getElementById("loginajax").style.display = 'none';
   var status = str.split(";")[0];
@@ -911,6 +937,7 @@ function openResult() {
 function closeResult() {
   document.getElementById("result").style.display = 'none';
   document.getElementById("help").style.display = 'inline';
+  apid = 0;
 }
 
 function openInput() {
