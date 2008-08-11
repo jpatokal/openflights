@@ -677,6 +677,7 @@ function afterNewPlane(str) {
     inputform.plane.selectedIndex = 0;
     inputform.plane[0].value = plid;
     inputform.plane[0].text = newplane;
+    document.getElementById("input_status").innerHTML = "<B>New plane added.</B>";
   }
 }
 
