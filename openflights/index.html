@@ -62,7 +62,7 @@
 	    <label for="selectToggle">Flights</label>
 -->
 	    <div id="filter_tripselect">
-	      Trips <select name="Trips"><option value="">All flights</option></select>
+	      Trips <select name="Trips"><option value="">All trips</option></select>
             </div>
 	    <div id="filter_airlineselect">
 	      Airlines <select name="Airlines"><option value="">All airlines</option></select>
@@ -76,7 +76,8 @@
 
 	  <div id="control" style="display: none">
 	    <b>Control panel</b><br>
-	    <input type="button" value="New flight" align="middle" onclick='JavaScript:xmlhttpPost("/php/preinput.php")'>
+	    <input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
+	    <input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
 	    <input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
 	  </div>
 
@@ -100,8 +101,8 @@
 </p>
 	</div> <!-- end help -->
 	<div id="input" style="display: none;">
-<h2><img src="img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> Add new flight</h2>
-<p>Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</p>
+<h2><img src="img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> Add new flight <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
+<p></p>
 
 <form id='inputform'>
 <table>
@@ -109,7 +110,7 @@
   <td><font color="red">Date</font></td>
   <td colspan=2><input type="text" name="src_date" size="10" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"/>
     Duration <input type="text" name="duration" size="5" style="text-align: right"/>
-    Distance <input type="text" name="distance" size="5" style="text-align: right"/>mi&nbsp;&nbsp;
+    Distance <input type="text" name="distance" size="5" style="text-align: right"/> mi&nbsp;&nbsp;
   </td>
 
   <td>Trip</td>
@@ -128,16 +129,8 @@
 
   <td>Plane</td>
   <td><span id="input_plane_add" style="display: inline;"><span id="input_plane_select"></span> <img src="img/icon_add.png" title="Add new plane type" height=17 width=17 onclick='JavaScript:inputNewPlane()'/></span>
-      <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane()'/></span>
-      Seat
-      <input type="text" name="seat" size="5" tabindex="9"/>
-      Type
-      <select name="seat_type" tabindex="10">
-        <option value="-">-</option>
-        <option value="W">Window</option>
-        <option value="A">Aisle</option>
-        <option value="M">Middle</option>
-      </select>
+      <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane(true)'/></span>
+      Registration <input type="text" name="registration" size="8" tabindex="9"/>
   </td>
 
 </tr><tr>
@@ -146,10 +139,16 @@
       <img src="img/icon_plane-dst.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
       <span id="input_dst_ap_select"></span></td>
 
-  <td>Class</td>
-  <td><input type="radio" name="class" value="Y" CHECKED>Economy
-      <input type="radio" name="class" value="C">Business
-      <input type="radio" name="class" value="F">First
+  <td>Seat</td>
+
+  <td><input type="text" name="seat" size="5" tabindex="10"/>
+      Type
+      <select name="seat_type" tabindex="11">
+        <option value="-">-</option>
+        <option value="W">Window</option>
+        <option value="A">Aisle</option>
+        <option value="M">Middle</option>
+      </select>
   </td>
 
 </tr><tr>
@@ -158,22 +157,31 @@
   </td>
 
   <td></td>
-  <td>Reason&nbsp;</td>
-  <td><input type="radio" name="reason" value="B" CHECKED>Business
-      <input type="radio" name="reason" value="L">Leisure
-      <input type="radio" name="reason" value="C">Crew
+  <td>Class</td>
+  <td><input type="radio" name="class" value="Y" CHECKED>Economy
+      <input type="radio" name="class" value="C">Business
+      <input type="radio" name="class" value="F">First
   </td>
 
 </tr><tr>
   <td><font color="red">Airline</font><sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
-  <td><input type="text" name="airline_code" size="10" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
+  <td><input type="text" name="airline_code" size="10" tabindex="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
       <span id="input_airline_select"></span>
       <span id="airline_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span>
   </td>
 
   <td></td>
+  <td>Reason&nbsp;</td>
+  <td><input type="radio" name="reason" value="B" CHECKED>Business
+      <input type="radio" name="reason" value="L">Leisure
+      <input type="radio" name="reason" value="C">Crew
+  </td>
+</tr><tr>
+  <td></td>
+  <td></td>
+  <td></td>
   <td colspan=2 align=right>
-    <input value="Submit" type="button" tabindex="12" onclick='JavaScript:xmlhttpPost("/php/submit.php")'>
+    <input value="Add" type="button" tabindex="12" onclick='JavaScript:xmlhttpPost("/php/submit.php")'>
     <input value="Clear" type="button" tabindex="13" onclick='JavaScript:clearInput()'>
     <input value="Exit" type="button" tabindex="14" onclick='JavaScript:closeInput()'>
     <span id="input_status"></span>

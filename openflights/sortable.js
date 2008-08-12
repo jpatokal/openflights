@@ -50,7 +50,7 @@ function ts_makeSortable(t) {
 		var cell = firstRow.cells[i];
 		var txt = ts_getInnerText(cell);
 		if (cell.className != "unsortable" && cell.className.indexOf("unsortable") == -1) {
-			cell.innerHTML = '<a href="#" class="sortheader" onclick="ts_resortTable(this, '+i+');return false;">'+txt+'<span class="sortarrow">&nbsp;&nbsp;<img src="'+ image_path + image_none + '" alt="&darr;"/></span></a>';
+			cell.innerHTML = '<a href="#" class="sortheader" onclick="ts_resortTable(this, '+i+');return false;">'+txt+'<span class="sortarrow">&nbsp;<img src="'+ image_path + image_none + '" alt="&darr;"/></span></a>';
 		}
 	}
 	if (alternate_row_colors) {
@@ -129,11 +129,11 @@ function ts_resortTable(lnk, clid) {
 	}
 	newRows.sort(sortfn);
 	if (span.getAttribute("sortdir") == 'down') {
-			ARROW = '&nbsp;&nbsp;<img src="'+ image_path + image_down + '" alt="&darr;"/>';
+			ARROW = '&nbsp;<img src="'+ image_path + image_down + '" alt="&darr;"/>';
 			newRows.reverse();
 			span.setAttribute('sortdir','up');
 	} else {
-			ARROW = '&nbsp;&nbsp;<img src="'+ image_path + image_up + '" alt="&uarr;"/>';
+			ARROW = '&nbsp;<img src="'+ image_path + image_up + '" alt="&uarr;"/>';
 			span.setAttribute('sortdir','down');
 	} 
     // We appendChild rows that already exist to the tbody, so it moves them rather than creating new ones
@@ -153,7 +153,7 @@ function ts_resortTable(lnk, clid) {
 	for (var ci=0;ci<allspans.length;ci++) {
 		if (allspans[ci].className == 'sortarrow') {
 			if (getParent(allspans[ci],"table") == getParent(lnk,"table")) { // in the same table as us?
-				allspans[ci].innerHTML = '&nbsp;&nbsp;<img src="'+ image_path + image_none + '" alt="&darr;"/>';
+				allspans[ci].innerHTML = '&nbsp;<img src="'+ image_path + image_none + '" alt="&darr;"/>';
 			}
 		}
 	}		
