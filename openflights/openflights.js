@@ -14,7 +14,6 @@ var URL_GETCODE = "/php/getcode.php";
 var URL_LOGIN = "/php/login.php";
 var URL_LOGOUT = "/php/logout.php";
 var URL_MAP = "/php/map.php";
-var URL_NEWPLANE = "/php/newplane.php";
 var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
 var URL_SUBMIT = "/php/submit.php";
@@ -163,6 +162,14 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
 
   // Select icon based on number of flights
   var colorIndex = Math.floor(((count / airportMaxFlights) * airportIcons.length) - 0.1);
+  if(colorIndex < 0) {
+    alert("Color error: " + name + ":" + colorIndex);
+    colorIndex = 0;
+  }
+  if(colorIndex >= airportIcons.length) {
+    alert("Color error: " + name + ":" + colorIndex);
+    colorIndex = airportIcons.length - 1;
+  }
   var iconfile = airportIcons[colorIndex][0];
   var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
@@ -271,9 +278,6 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_PREINPUT) {
 	inputFlight(self.xmlHttpReq.responseText);
       }
-      if(strURL == URL_NEWPLANE) {
-	afterNewPlane(self.xmlHttpReq.responseText);
-      }
       if(strURL == URL_STATS) {
 	updateStats(self.xmlHttpReq.responseText);
       }
@@ -282,6 +286,11 @@ function xmlhttpPost(strURL, id, param) {
 	var text = self.xmlHttpReq.responseText.split(";")[1];
 	document.getElementById("input_status").innerHTML = '<B>' + text + '</B>';
 	refresh(false);
+
+	// We've added a new plane, so rebuild selects
+	if(code == "2") {
+	  setTimeout('xmlhttpPost(URL_PREINPUT)', 1000);
+	}
       }
       document.getElementById("ajaxstatus").style.visibility = 'hidden';
     }
@@ -320,6 +329,7 @@ function xmlhttpPost(strURL, id, param) {
       document.getElementById("airline_ajax").style.visibility = 'visible';
       query = 'airline=' + escape(airlineCode);
     }
+
   } else if(strURL == URL_SUBMIT) {
     var inputform = document.forms['inputform'];
     var src_apid = inputform.src_ap[inputform.src_ap.selectedIndex].value.split(":")[1];
@@ -346,7 +356,6 @@ function xmlhttpPost(strURL, id, param) {
     var trid = inputform.trips[inputform.trips.selectedIndex].value;
     if(trid == 0) trid = "NULL";
     var registration = inputform.registration.value;
-    if(registration == "") registration = "NULL";
 
     query = 'src_date=' + escape(inputform.src_date.value) + '&' +
       'duration=' + escape(inputform.duration.value) + '&' +
@@ -679,24 +688,12 @@ function inputNewPlane() {
 }
 
 function enterNewPlane() {
-  xmlhttpPost(URL_NEWPLANE, 0, document.forms['inputform'].newPlane.value);
-}
-
-function afterNewPlane(str) {
-  var col = str.split(";");
-  var plid = col[0];
-  var text = col[1];
   var newplane = document.forms['inputform'].newPlane.value;
-  document.getElementById("input_status").innerHTML = "<B>" + text + "</B>";
-
-  // New plane found or added
-  if(plid != 0) {
-    cancelNewPlane(false); // don't clear status
-    var inputform = document.forms['inputform'];
-    inputform.plane.selectedIndex = 0;
-    inputform.plane[0].value = plid;
-    inputform.plane[0].text = newplane;
-  }
+  cancelNewPlane(false); // don't clear status
+  var inputform = document.forms['inputform'];
+  inputform.plane.selectedIndex = 0;
+  inputform.plane[0].value = "NEW:" + newplane;
+  inputform.plane[0].text = newplane;
 }
 
 // If really=true, then print "Cancelled"
@@ -704,7 +701,6 @@ function cancelNewPlane(really) {
   document.forms['inputform'].newPlane.value = "";
   document.getElementById("input_plane_add").style.display = 'inline';
   document.getElementById("input_plane_unadd").style.display = 'none';
-  document.forms['inputform'].plane.focus();
   if(really) {
     document.getElementById("input_status").innerHTML = "<B>Adding plane cancelled.</B>";
   }
@@ -981,7 +977,7 @@ function clearInput() {
   form.distance.value = "-";
   form.number.value = "";
   form.airline_code.value = "";
-  form.seat_type.value = "";
+  form.seat.value = "";
   form.registration.value = "";
   if(input_srcmarker) {
     airportLayer.removeMarker(input_srcmarker);
