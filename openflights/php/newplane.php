@@ -20,7 +20,6 @@ while ($newplane != "") {
     $newplane = "";
   } else {
     $sql = "INSERT INTO planes(name) VALUES('" . $newplane . "')";
-    print $sql;
     mysql_query($sql, $db) or die('0;Adding new plane failed');
   }
 }
