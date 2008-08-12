@@ -278,7 +278,6 @@ function xmlhttpPost(strURL, id, param) {
 	updateStats(self.xmlHttpReq.responseText);
       }
       if(strURL == URL_SUBMIT) {
-	alert(self.xmlHttpReq.responseText);
 	var code = self.xmlHttpReq.responseText.split(";")[0];
 	var text = self.xmlHttpReq.responseText.split(";")[1];
 	document.getElementById("input_status").innerHTML = '<B>' + text + '</B>';
