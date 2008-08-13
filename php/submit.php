@@ -20,6 +20,8 @@ $registration = $HTTP_POST_VARS["registration"];
 $plid = $HTTP_POST_VARS["plid"];
 $alid = $HTTP_POST_VARS["alid"];
 $trid = $HTTP_POST_VARS["trid"];
+$fid = $HTTP_POST_VARS["fid"];
+$param = $HTTP_POST_VARS["param"];
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
@@ -42,13 +44,35 @@ if(strstr($plid, "NEW:")) {
   }
  }
 
-$sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, plid, alid, trid) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s)",
+switch($param) {
+ case "ADD":
+   $verb = "add";
+   $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, plid, alid, trid) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s)",
 	       $uid, $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $plid, $alid, $trid);
+   break;
 
-mysql_query($sql, $db) or die ('0;Adding plane to DB failed: ' . $sql);
-if($newplane == "OK") {
-  printf("2;Flight and plane added.");
+ case "EDIT":
+   $verb = "chang";
+   $sql = sprintf("UPDATE flights SET src_apid=%s, src_time='%s', dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', plid=%s, alid=%s, trid=%s WHERE fid=%s",
+		  $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $plid, $alid, $trid, $fid);
+   break;
+
+   // uid is strictly speaking unnecessary, but just to be sure...
+ case "DELETE":
+   $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, $fid);
+   break;
+ }
+
+mysql_query($sql, $db) or die ('0;Altering plane to DB failed: ' . $sql);
+if($param == "DELETE") {
+  printf("3;Flight deleted.");
 } else {
-  printf("1;Flight added.");
+
+  if($newplane == "OK") {
+    printf("2;Flight and plane %sed.", $verb);
+  } else {
+    printf("1;Flight %sed.", $verb);
+  }
 }
+
 ?>

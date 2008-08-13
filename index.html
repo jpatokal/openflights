@@ -101,7 +101,10 @@
 </p>
 	</div> <!-- end help -->
 	<div id="input" style="display: none;">
-<h2><img src="img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> Add new flight <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
+<h2><img src="img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
+    <span id="addflighttitle">Add new flight</span>
+    <span id="editflighttitle" style="display: none">Edit flight</span>
+    <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
 <p></p>
 
 <form id='inputform'>
@@ -181,9 +184,16 @@
   <td></td>
   <td></td>
   <td colspan=2 align=right>
-    <input value="Add" type="button" tabindex="12" onclick='JavaScript:xmlhttpPost("/php/submit.php")'>
-    <input value="Clear" type="button" tabindex="13" onclick='JavaScript:clearInput()'>
-    <input value="Exit" type="button" tabindex="14" onclick='JavaScript:closeInput()'>
+    <span id="addflightbuttons">
+      <input value="Add" type="button" tabindex="12" onclick='JavaScript:xmlhttpPost("/php/submit.php", 0, "ADD")'>
+      <input value="Clear" type="button" tabindex="13" onclick='JavaScript:clearInput()'>
+      <input value="Exit" type="button" tabindex="14" onclick='JavaScript:closeInput()'>
+    </span>
+    <span id="editflightbuttons" style="display: none">
+      <input value="Save changes" type="button" tabindex="12" onclick='JavaScript:saveFlight()'>
+      <input value="Delete flight" type="button" tabindex="13" onclick='JavaScript:deleteFlight()'>
+      <input value="Cancel" type="button" tabindex="14" onclick='JavaScript:openResult()'>
+    </span>
     <span id="input_status"></span>
   </td>
 </tr>
