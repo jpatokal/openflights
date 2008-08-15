@@ -43,8 +43,8 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   printf("%s,%s,%s\n", $row["count"], $row["distance"], $row["duration"]);
 }
 
-// List of all unique flights
-$sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND uid=" . $uid . " " . $filter . " GROUP BY fid";
+// List of all flights (unique by airport pair)
+$sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -53,7 +53,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   } else {
     printf(":");
   }  
-  printf ("%s,%s,%s,%s,%s,%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5]);
+  printf ("%s,%s,%s,%s,%s,%s,%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6]);
 }
 printf ("\n");
 

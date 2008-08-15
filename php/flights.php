@@ -20,7 +20,7 @@ $alid = $HTTP_POST_VARS["alid"];
 $fid = $HTTP_POST_VARS["fid"];
 
 // List of all this user's flights
-$sql = "SELECT s.iata AS src_iata,s.apid AS src_apid,d.iata AS dst_iata,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,alid FROM airports AS s,airports AS d, flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid";
+$sql = "SELECT s.iata AS src_iata,s.apid AS src_apid,d.iata AS dst_iata,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,alid,note FROM airports AS s,airports AS d, flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid";
 
 // ...filtered by airport (optional)
 if($apid && $apid != 0) {
@@ -47,6 +47,6 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf("\t");
   }  
-  printf ("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", $row["src_iata"], $row["src_apid"], $row["dst_iata"], $row["dst_apid"], $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"]);
+  printf ("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", $row["src_iata"], $row["src_apid"], $row["dst_iata"], $row["dst_apid"], $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"]);
 }
 ?>

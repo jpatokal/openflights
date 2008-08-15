@@ -21,6 +21,7 @@ $plid = $HTTP_POST_VARS["plid"];
 $alid = $HTTP_POST_VARS["alid"];
 $trid = $HTTP_POST_VARS["trid"];
 $fid = $HTTP_POST_VARS["fid"];
+$note = $HTTP_POST_VARS["note"];
 $param = $HTTP_POST_VARS["param"];
 
 $db = mysql_connect("localhost", "openflights");
@@ -47,32 +48,47 @@ if(strstr($plid, "NEW:")) {
 switch($param) {
  case "ADD":
    $verb = "add";
-   $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, plid, alid, trid) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s)",
-	       $uid, $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $plid, $alid, $trid);
+   $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s)",
+		  $uid, $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid, $trid);
    break;
 
  case "EDIT":
    $verb = "chang";
-   $sql = sprintf("UPDATE flights SET src_apid=%s, src_time='%s', dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', plid=%s, alid=%s, trid=%s WHERE fid=%s",
-		  $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $plid, $alid, $trid, $fid);
+   $sql = sprintf("UPDATE flights SET src_apid=%s, src_time='%s', dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s WHERE fid=%s",
+		  $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid, $trid, $fid);
    break;
 
    // uid is strictly speaking unnecessary, but just to be sure...
  case "DELETE":
    $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, $fid);
    break;
+
+ default:
+   die('0;Unknown operation ' . $param);
  }
 
-mysql_query($sql, $db) or die ('0;Altering plane to DB failed: ' . $sql);
-if($param == "DELETE") {
-  printf("3;Flight deleted.");
-} else {
+mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql);
 
-  if($newplane == "OK") {
-    printf("2;Flight and plane %sed.", $verb);
-  } else {
-    printf("1;Flight %sed.", $verb);
-  }
+switch($param) {
+ case "DELETE":
+   printf("10;Flight deleted.");
+   break;
+
+ case "ADD":
+   if($newplane == "OK") {
+     printf("11;Flight and plane added.");
+   } else {
+     printf("1;Flight added.");
+   }
+   break;
+
+ case "EDIT":
+   if($newplane == "OK") {
+     printf("12;Flight and plane edited.");
+   } else {
+     printf("2;Flight edited.");
+   }
+   break;
 }
 
 ?>

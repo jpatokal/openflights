@@ -52,12 +52,17 @@
         height: 65%;
 	}
 
+#triptitle { 
+    left: 3em;
+    top: 1em;
+    position: absolute;
+    font-size:1.5em;
+} 
+
 #newairport { 
     right: 260px;
     top: 60%;
-    display: block;
     position: absolute;
-    font-size:1.5em;
 } 
 
 #sideBar
