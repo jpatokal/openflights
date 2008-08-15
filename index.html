@@ -1,12 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head><title>OpenFlights (BETA)</title>
-    <link rel="stylesheet" href="style_reset.css" type="text/css">
-    <link rel="stylesheet" href="openflights.css" type="text/css">
-    <link rel="stylesheet" href="sortable.css" type="text/css">
-    <script type="text/javascript" src="OpenLayers.js"></script>
-    <script type="text/javascript" src="sortable.js"></script>
-    <script type="text/javascript" src="scw.js"></script>
-    <script type="text/javascript" src="openflights.js"></script>
+    <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="stylesheet" href="/css/sortable.css" type="text/css">
+    <script type="text/javascript" src="/OpenLayers.js"></script>
+    <script type="text/javascript" src="/js/sortable.js"></script>
+    <script type="text/javascript" src="/js/scw.js"></script>
+    <script type="text/javascript" src="/openflights.js"></script>
   </head>
 
   <body>
@@ -15,6 +15,14 @@
       <div id="sideBarContentWrapper">
 	<div id="contentContainer">
 	  <div id="map" class="smallmap"></div>
+
+          <div id="newairport" style="display: none">
+	    <input type="button" value="Add new airport" align="middle" onclick='JavaScript:addNewAirport()'>	    
+          </div>
+
+          <div id="triptitle">
+	    Loading...
+          </div>
 	</div>
 
 
@@ -38,7 +46,7 @@
 		  <td></td>
 		  <td>
 		    <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
-		    <div id="loginajax" style="display: none;"><img src="img/ajax-wait-small.gif" height=16 width=16/></div>
+		    <div id="loginajax" style="display: none;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
 		  </td>
 		</tr></table>
 	    </form>
@@ -46,7 +54,7 @@
 	  </div> <!-- login -->
 
 	  <div id="statsbox">
-	    <span id="ajaxstatus" style="float: right; visibility: hidden; margin-right: 10px"><img src="img/ajax-wait.gif" height=32 width=32/></span>
+	    <span id="ajaxstatus" style="float: right; visibility: hidden; margin-right: 10px"><img src="/img/ajax-wait.gif" height=32 width=32/></span>
 	    <div id="stats"><i>Loading...</i></div>
 	    <input type="button" value="Stats..." align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
 	  </div>
@@ -68,8 +76,8 @@
 	      Airlines <select name="Airlines"><option value="">All airlines</option></select>
 	    </div>
 	    
-	    <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh()'>
-	    <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter()'>
+	    <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh(true)'>
+	    <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
 	  </form>
 	    
 	  </div>
@@ -80,10 +88,6 @@
 	    <input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
 	    <input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
 	  </div>
-
-          <div id="newairport" style="display: none">
-	    <input type="button" value="Add new airport" align="middle" onclick='JavaScript:addNewAirport()'>	    
-          </div>
 	  
 	</div> <!-- end sidebar -->
       </div> <!-- end sidebarwrapper -->
@@ -92,16 +96,16 @@
 	<div id="help" style="display: inline;">
 <h2>OpenFlights Map Quick Reference</h2></p>
 <p>
-<b>View airport</b>: Click on an airport <img src="img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
-<b>Move around</b>: Use <img src="img/north-mini.png" height=18 width=18><img src="img/west-mini.png" height=18 width=18><img src="img/east-mini.png" height=18 width=18><img src="img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
-<b>Zoom in/out</b>: Use <img src="img/zoom-plus-mini.png" height=18 width=18><img src="img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="img/zoom-world-mini.png" height=18 width=18>.<br>
-<b>Select region</b>: Click on <img src="img/drag-rectangle-off.png" width=18 height=18>, then draw a rectangle.  Click on <img src="img/panning-hand-off.png" width=18 height=18> to return to normal (panning) mode.<br>
-<b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="img/layer-switcher-maximize.png" height=18 width=18>.<br>
-<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="img/layer-switcher-maximize.png" height=18 width=18>.
+<b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
+<b>Move around</b>: Use <img src="/img/north-mini.png" height=18 width=18><img src="/img/west-mini.png" height=18 width=18><img src="/img/east-mini.png" height=18 width=18><img src="/img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
+<b>Zoom in/out</b>: Use <img src="/img/zoom-plus-mini.png" height=18 width=18><img src="/img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="/img/zoom-world-mini.png" height=18 width=18>.<br>
+<b>Select region</b>: Click on <img src="/img/drag-rectangle-off.png" width=18 height=18>, then draw a rectangle.  Click on <img src="/img/panning-hand-off.png" width=18 height=18> to return to normal (panning) mode.<br>
+<b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.<br>
+<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.
 </p>
 	</div> <!-- end help -->
 	<div id="input" style="display: none;">
-<h2><img src="img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle">Add new flight</span>
     <span id="editflighttitle" style="display: none">Edit flight</span>
     <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
@@ -111,42 +115,42 @@
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td colspan=2><input type="text" name="src_date" size="10" tabindex="1"/><img src="img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"/>
+  <td colspan=2><input type="text" name="src_date" size="11" tabindex="1"/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"/>
     Duration <input type="text" name="duration" size="5" style="text-align: right"/>
     Distance <input type="text" name="distance" size="5" style="text-align: right"/> mi&nbsp;&nbsp;
   </td>
 
   <td>Trip</td>
-  <td width="40%"><span id="input_trip_select"></span> <img src="img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:addNewTrip()'/></td>
+  <td width="45%"><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:addNewTrip()'/></td>
 
 </tr><tr>
   <td><font color="red">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><input type="text" name="src_ap_code" size="10" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
-      <img src="img/icon_plane-src.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
+  <td><input type="text" name="src_ap_code" size="11" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
+      <img src="/img/icon_plane-src.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
       <span id="input_src_ap_select"></span></td>
   <td rowspan=2 valign=middle>
-      <span id="src_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span><br>
-      <img src="img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports()' style="float: left; margin-right: 10px"/><br>
-      <span id="dst_ap_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span>
+      <span id="src_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span><br>
+      <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports()' style="float: left; margin-right: 10px"/><br>
+      <span id="dst_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span>
   </td>
 
   <td>Plane</td>
-  <td><span id="input_plane_add" style="display: inline;"><span id="input_plane_select"></span> <img src="img/icon_add.png" title="Add new plane type" height=17 width=17 onclick='JavaScript:inputNewPlane()'/></span>
-      <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane(true)'/></span>
-      Registration <input type="text" name="registration" size="8" tabindex="9"/>
+  <td><span id="input_plane_add" style="display: inline;"><span id="input_plane_select"></span> <img src="/img/icon_add.png" title="Add new plane type" height=17 width=17 onclick='JavaScript:inputNewPlane()'/></span>
+      <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="/img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane(true)'/></span>
+      Registration <input type="text" name="registration" size="8" tabindex="10"/>
   </td>
 
 </tr><tr>
   <td><font color="red">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><input type="text" name="dst_ap_code" size="10" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
-      <img src="img/icon_plane-dst.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
+  <td><input type="text" name="dst_ap_code" size="11" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
+      <img src="/img/icon_plane-dst.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
       <span id="input_dst_ap_select"></span></td>
 
   <td>Seat</td>
 
-  <td><input type="text" name="seat" size="5" tabindex="10"/>
+  <td><input type="text" name="seat" size="5" tabindex="11"/>
       Type
-      <select name="seat_type" tabindex="11">
+      <select name="seat_type" tabindex="12">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
@@ -168,9 +172,9 @@
 
 </tr><tr>
   <td><font color="red">Airline</font><sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
-  <td><input type="text" name="airline_code" size="10" tabindex="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
+  <td><input type="text" name="airline_code" size="11" tabindex="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
       <span id="input_airline_select"></span>
-      <span id="airline_ajax" style="visibility: hidden;"><img src="img/ajax-wait-small.gif" height=16 width=16/></span>
+      <span id="airline_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span>
   </td>
 
   <td></td>
@@ -180,19 +184,20 @@
       <input type="radio" name="reason" value="C">Crew
   </td>
 </tr><tr>
-  <td></td>
-  <td></td>
+  <td>Note</td>
+  <td><input type="text" name="note" size="50" tabindex="7"</td>
   <td></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
-      <input value="Add" type="button" tabindex="12" onclick='JavaScript:xmlhttpPost("/php/submit.php", 0, "ADD")'>
-      <input value="Clear" type="button" tabindex="13" onclick='JavaScript:clearInput()'>
-      <input value="Exit" type="button" tabindex="14" onclick='JavaScript:closeInput()'>
+      <input value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
+      <input value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
+      <input value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput()'>
+      <input value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
     </span>
     <span id="editflightbuttons" style="display: none">
-      <input value="Save changes" type="button" tabindex="12" onclick='JavaScript:saveFlight()'>
-      <input value="Delete flight" type="button" tabindex="13" onclick='JavaScript:deleteFlight()'>
-      <input value="Cancel" type="button" tabindex="14" onclick='JavaScript:openResult()'>
+      <input value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
+      <input value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
+      <input value="Cancel" type="button" tabindex="15" onclick='JavaScript:openResult()'>
     </span>
     <span id="input_status"></span>
   </td>
