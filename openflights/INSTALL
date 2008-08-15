@@ -1,0 +1,11 @@
+PACKAGES
+
+apt-get install mysql-server apache2 php5 libapache2-mod-php5 php5-mysql svn
+
+APACHE MODULES
+
+mod_include
+mod_rewrite
+
+
+
