@@ -47,19 +47,17 @@ if(strstr($plid, "NEW:")) {
 
 switch($param) {
  case "ADD":
-   $verb = "add";
-   $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s)",
+   $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW())",
 		  $uid, $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid, $trid);
    break;
 
  case "EDIT":
-   $verb = "chang";
-   $sql = sprintf("UPDATE flights SET src_apid=%s, src_time='%s', dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s WHERE fid=%s",
+   $sql = sprintf("UPDATE flights SET src_apid=%s, src_time='%s', dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, upd_time=NOW() WHERE fid=%s",
 		  $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid, $trid, $fid);
    break;
 
-   // uid is strictly speaking unnecessary, but just to be sure...
  case "DELETE":
+   // uid is strictly speaking unnecessary, but just to be sure...
    $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, $fid);
    break;
 
@@ -71,7 +69,7 @@ mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql);
 
 switch($param) {
  case "DELETE":
-   printf("10;Flight deleted.");
+   printf("100;Flight deleted.");
    break;
 
  case "ADD":
