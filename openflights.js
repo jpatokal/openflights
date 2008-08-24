@@ -309,10 +309,16 @@ function xmlhttpPost(strURL, id, param) {
 	logout(self.xmlHttpReq.responseText);
       }
       if(strURL == URL_MAP) {
-	updateMap(self.xmlHttpReq.responseText);
-	if(param) {
-	  updateFilter(self.xmlHttpReq.responseText);
-	}
+	var str = self.xmlHttpReq.responseText;
+	if(str.substring(0,5) == "Error") {
+	  document.getElementById("result").innerHTML = str.split(';')[1];
+	  openResult();
+	} else {
+	  updateMap(str);
+	  if(param) {
+	    updateFilter(str);
+	  }
+	} 
       }
       if(strURL == URL_PREINPUT) {
 	inputFlight(self.xmlHttpReq.responseText, param);
