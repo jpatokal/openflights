@@ -163,7 +163,7 @@
     // level in order to ensure that the calendar displays correctly in
     // relation to all other elements on the page.
 
-    var scwZindex          = 1;
+    var scwZindex          = 1000;
 
     // Personally I like the fact that entering 31-Sep-2005 displays
     // 1-Oct-2005, however you may want that to be an error.  If so,
