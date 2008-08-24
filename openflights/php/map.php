@@ -27,6 +27,16 @@ if(! $alid) {
 
 $filter = "";
 if($trid && $trid != "0") {
+  // Verify that we're allowed to access this trip
+  $sql = "SELECT * FROM trips WHERE trid=" . $trid;
+  $result = mysql_query($sql, $db);
+  if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row["uid"] != $uid and $row["public"] != "Y") {
+      die('Error;This trip is not public.');
+    } else {
+      $uid = $row["uid"];
+    }
+  }
   $filter = $filter . " AND trid= " . $trid;
 }
 if($alid && $alid != "0") {
