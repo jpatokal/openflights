@@ -17,7 +17,7 @@
 	  <div id="map" class="smallmap"></div>
 
           <div id="newairport" style="display: none">
-	    <input type="button" value="Add new airport" align="middle" onclick='JavaScript:addNewAirport()'>	    
+	    <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport()'>	    
           </div>
 
           <div id="triptitle">
@@ -126,7 +126,7 @@
 </tr><tr>
   <td><font color="red">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
   <td><input type="text" name="src_ap_code" size="11" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
-      <img src="/img/icon_plane-src.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
+      <img src="/img/icon_plane-src.png" title="&lt; Enter city name or airport code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirport("SRC")'/>
       <span id="input_src_ap_select"></span></td>
   <td rowspan=2 valign=middle>
       <span id="src_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span><br>
@@ -143,7 +143,7 @@
 </tr><tr>
   <td><font color="red">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
   <td><input type="text" name="dst_ap_code" size="11" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
-      <img src="/img/icon_plane-dst.png" title="&lt; Enter city name or airport code." height=17 width=17 onclick='JavaScript:addNewAirport()'/>
+      <img src="/img/icon_plane-dst.png" title="&lt; Enter city name or airport code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirport("DST")'/>
       <span id="input_dst_ap_select"></span></td>
 
   <td>Seat</td>

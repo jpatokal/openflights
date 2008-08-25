@@ -13,7 +13,7 @@ function format_airport($row) {
     $country = $code; // hack for DAFIF
   }
   $iata = $row["iata"];
-  if(! $iata) {
+  if(! $iata || $iata == "N/A") {
     $iata = $row["icao"];
   }
   $apid = $row["apid"];
