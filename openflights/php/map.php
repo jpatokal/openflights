@@ -76,8 +76,12 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $first = false;
   } else {
     printf(":");
-  }  
-  printf ("%s,%s,%s,%s,%s,%s,%s,%s", $row["apid"], $row["x"], $row["y"], $row["name"], $row["iata"], $row["city"], $row["country"], $row["visits"]);
+  }
+  $code = $row["iata"];
+  if($code == "") {
+    $code = $row["icao"];
+  }
+  printf ("%s,%s,%s,%s,%s,%s,%s,%s", $row["apid"], $row["x"], $row["y"], $row["name"], $code, $row["city"], $row["country"], $row["visits"]);
 }
 
 // When running for the first time, load up possible filter settings for this user
