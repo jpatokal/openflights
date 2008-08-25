@@ -8,7 +8,7 @@ $city = $HTTP_POST_VARS["city"];
 $country = $HTTP_POST_VARS["country"];
 $code = $HTTP_POST_VARS["code"];
 $dbname = $HTTP_POST_VARS["db"];
-$all = $HTTP_POST_VARS["all"];
+$iatafilter = $HTTP_POST_VARS["iatafilter"];
 $offset = $HTTP_POST_VARS["offset"];
 
 $db = mysql_connect("localhost", "openflights");
@@ -18,6 +18,8 @@ if(! $dbname) {
   $dbname = "airports";
 }
 $sql = "SELECT * FROM " . $dbname . " WHERE ";
+
+// Build filter
 if($airport) {
   $sql .= " name LIKE '" . $airport . "%' AND";
 }
@@ -41,10 +43,12 @@ if($country != "ALL") {
     }
   }
 }
-if($all == "true" || $dbname == "airports_dafif") {
+
+// Disable this filter for DAFIF (no IATA data)
+if($iatafilter == "false" || $dbname == "airports_dafif") {
   $sql .= " 1=1"; // dummy
  } else {
-  $sql .= " iata != ''";
+  $sql .= " iata != '' AND iata != 'N/A'";
 }
 if(! $offset) {
   $offset = 0;
@@ -59,7 +63,7 @@ if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
 printf("%s;%s;%s", $offset, $max, $sql);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf ("\n%s;%s", $row["apid"], format_airport($row));
+  printf ("\n%s:%s:%s:%s;%s", $row["iata"], $row["apid"], $row["x"], $row["y"], format_airport($row));
 }
 
 ?>

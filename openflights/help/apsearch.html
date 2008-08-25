@@ -41,14 +41,14 @@
 		</select>
 	      </td>
 	      <td colspan=3>
-		Include airports with no IATA code <input type="checkbox" name="searchall" value="yes">
+		Require IATA code? <input type="checkbox" name="iatafilter" value="yes" checked>
 	      </td>
 	    </tr>
 	</table>
 	<br>
 
 	<INPUT type="button" value="Search" onClick="doSearch(0)">
-	<INPUT type="button" value="Clear" onClick="window.close()">
+	<INPUT type="button" value="Clear" onClick="clearSearch()">
 	<INPUT type="button" value="Cancel" onClick="window.close()">
       </FORM>
 

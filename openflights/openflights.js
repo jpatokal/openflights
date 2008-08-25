@@ -851,9 +851,27 @@ function deleteFlight() {
 }
 
 // Handle the "add new airports" buttons
-function addNewAirport() {
-  alert("This will later pop up a dialog for seaching and adding airports.  For now, please click on any airport icon or enter something into the To/From boxes.");
+function popNewAirport(type) {
+  if(type) {
+    input_toggle = type;
+  }
+  window.open('/help/apsearch.html', 'OpenFlights: Add New Airport', 'width=500,height=520,scrollbars=yes');
 }
+
+function addNewAirport(data, name) {
+  if(input_toggle == "SRC") {
+    var ap_select = document.forms['inputform'].src_ap;
+  } else {
+    var ap_select = document.forms['inputform'].dst_ap;
+  }
+  ap_select[0].text = name;
+  ap_select[0].value = data;
+  ap_select.selectedIndex = 0;
+
+  if(input_toggle == "SRC") selectNewAirport("src_ap");
+  if(input_toggle == "DST") selectNewAirport("dst_ap");
+}
+
 
 //
 // Handle the "add new plane" button in input form
@@ -1160,7 +1178,7 @@ function openInput(param) {
 
 function clearInput() {
   var form = document.forms["inputform"];
-  form.src_date.value == "";
+  form.src_date.value = "";
   form.src_ap_code.value = "";
   form.dst_ap_code.value = "";
   form.duration.value = "-";

@@ -77,12 +77,15 @@ function xmlhttpPost(strURL, offset) {
       'code=' + escape(code) + '&' +
       'db=' + escape(db) + '&' +
       'offset=' + offset + '&' +
-      'all=' + form.searchall.checked;
+      'iatafilter=' + form.iatafilter.checked;
     document.getElementById("resultbox").innerHTML = "<I>Searching...</I>";
   }
   self.xmlHttpReq.send(query);
 }
 
+/*
+ * Load up list of countries in DB
+ */
 function loadCountries(str) {
   var countries = str.split("\n");
 
@@ -99,6 +102,9 @@ function loadCountries(str) {
   document.getElementById("country_select").innerHTML = select;
 }
 
+/*
+ * Display results of search
+ */
 function searchResult(str) {
   var airports = str.split("\n");
   var table = "<table width=100%>";
@@ -119,14 +125,14 @@ function searchResult(str) {
       if(max > 10) {
 	table += "<td style=\"float: right\">";
 	if(offset - 10 >= 0) {
-	  table += "<INPUT type=\"button\" value=\"<<\" onClick=\"doSearch(" + (offset-10) + ")\">";
+	  table += "<INPUT type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
 	} else {
-	  table += "<INPUT type=\"button\" value=\"<<\" disabled>";
+	  table += "<INPUT type=\"button\" value=\"<\" disabled>";
 	}
 	if(offset + 10 < max) {
-	  table += "<INPUT type=\"button\" value=\">>\" onClick=\"doSearch(" + (offset+10) + ")\">";
+	  table += "<INPUT type=\"button\" value=\">\" onClick=\"doSearch(" + (offset+10) + ")\">";
 	} else {
-	  table += "<INPUT type=\"button\" value=\">>\" disabled>";
+	  table += "<INPUT type=\"button\" value=\">\" disabled>";
 	}
 	table += "</td>";
       }
@@ -135,7 +141,7 @@ function searchResult(str) {
     }
     table += "<tr><td>" + col[1] + "</td>";
     if(db == DB_OPENFLIGHTS) {
-      table += "<td style=\"float: right\"><INPUT type=\"button\" value=\"Select\" onClick=\"alert(" + col[0] + ")\"></td>";
+      table += "<td style=\"float: right\"><INPUT type=\"button\" value=\"Select\" onClick=\"selectAirport('" + col[0] + "','" + col[1] + "')\"></td>";
     }
     table += "<tr>";
   }
@@ -143,6 +149,25 @@ function searchResult(str) {
   document.getElementById("resultbox").innerHTML = table;
 }
 
+// Clear form
+function clearSearch() {
+  var form = document.forms['searchform'];
+  form.airport.value = "";
+  form.city.value = "";
+  form.country.selectedIndex = 0;
+  form.iata.value = "";
+  form.icao.value = "";
+  form.db.selectedIndex = 0;
+  form.iatafilter.checked = true;
+}
+
+// Airport selected, kick it back to main window and close this
+function selectAirport(data, name) {
+  parent.opener.addNewAirport(data, name);
+  window.close();
+}
+
+// A dupe from openflights.js...
 function help(context) {
   window.open('/help/' + context + '.html', 'OpenFlights Help: ' + context, 'width=500,height=400,scrollbars=yes');
 }
