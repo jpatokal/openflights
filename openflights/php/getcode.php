@@ -26,11 +26,11 @@ function getAirport($id, $code) {
   $error = false;
   printf ("%s\n", $id);
   $len = strlen($code);
-  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,x,y FROM airports WHERE iata!='' AND iata != '" . $code . "' AND city LIKE '" . $code . "%' ORDER BY city,name";
+  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata!='' AND iata != '" . $code . "' AND city LIKE '" . $code . "%' ORDER BY city,name";
   if($len == 3) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,x,y FROM airports WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
+    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
   } else if ($len == 4) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,x,y FROM airports WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
+    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
   } else if ($len < 3) {
     $error = true;
     printf ("0;Enter airport code or name\n");
@@ -39,7 +39,11 @@ function getAirport($id, $code) {
     $result = mysql_query($sql, $db);
     $found = false;
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      printf ("%s:%s:%s:%s;%s\n", $row["iata"], $row["apid"], $row["x"], $row["y"], format_airport($row));
+      $code = $row["iata"];
+      if($code == "") {
+	$code = $row["icao"];
+      }
+      printf ("%s:%s:%s:%s;%s\n", $code, $row["apid"], $row["x"], $row["y"], format_airport($row));
       $found = true;
     }
     if(! $found) {
