@@ -661,7 +661,7 @@ function updateStats(str) {
     for (r in rows) {
       var col = rows[r].split(",");
       // name, count, apid
-      table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirline(" + col[2] + ");\">" + col[0] + "</a></td><td>" + col[1] + "</td>";
+      table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td>" + col[1] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -842,7 +842,11 @@ function saveFlight() {
   xmlhttpPost(URL_SUBMIT, false, "EDIT");
 }
 
-function deleteFlight() {
+// Delete current flight (fid)
+function deleteFlight(id) {
+  if(id) {
+    fid = id;
+  }
   if(confirm("Are you sure you want to delete this flight?")) {
     xmlhttpPost(URL_SUBMIT, false, "DELETE");
   } else {
@@ -1174,6 +1178,7 @@ function openInput(param) {
   }
   input = true;
   input_toggle = "SRC";
+  document.getElementById("input_status").innerHTML = "";
 }
 
 function clearInput() {
