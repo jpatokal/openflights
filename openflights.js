@@ -379,9 +379,14 @@ function xmlhttpPost(strURL, id, param) {
       document.getElementById("dst_ap_ajax").style.visibility = 'visible';
       query = 'dst=' + escape(dst);
     }
-    if(param == "NUMBER" && flightNumber.length >= 2) {
-      airlineCode = flightNumber.substring(0, 2);
-      param = "AIRLINE";
+    if(param == "NUMBER") {
+      if(flightNumber.length == 2) {
+	airlineCode = flightNumber.substring(0, 2);
+	param = "AIRLINE";
+      } else if(flightNumber.length == 3) {
+	airlineCode = flightNumber.substring(0, 3);
+	param = "AIRLINE";
+      }
     }
     if(param == "AIRLINE" && airlineCode) {
       document.getElementById("airline_ajax").style.visibility = 'visible';
@@ -913,7 +918,7 @@ function addNewTrip() {
   alert("This will pop up a dialog for adding new trips. Coming soon...");
 }
 
-// When user has entered airline code, try to match it to airline
+// When user has entered flight number or airline code, try to match it to airline
 function flightNumberToAirline(str) {
   document.getElementById("input_status").innerHTML = '';
 
@@ -924,15 +929,27 @@ function flightNumberToAirline(str) {
   }
   if(flightNumber.length >= 2) {
     var found = false;
-    var airlineCode = flightNumber.substring(0, 2);
-    document.forms['inputform'].airline_code.value = airlineCode;   
-    var al_select = document.forms['inputform'].airline;
-    for(index = 0; index < al_select.length; index++) {
-      if(al_select[index].value.substring(0, 2) == airlineCode) {
-	found = true;
-	al_select.selectedIndex = index;
-	document.forms['inputform'].trips.focus();
-	break;
+    var re_iata = /^[a-zA-Z][a-zA-Z][ 0-9]/; // XX N...
+    var re_icao = /^[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9]$/;  // XXX N...
+    if(flightNumber.length == 2 || re_iata.test(flightNumber.substring(0,3))) {
+      alert("IATA");
+      var airlineCode = flightNumber.substring(0, 2);
+      
+    } else if(flightNumber.length == 3 || re_icao.test(flightNumber.substring(0,3))) {
+      alert("ICAO");
+      var airlineCode = flightNumber.substring(0, 3);
+    }
+
+    if(airlineCode) {
+      document.forms['inputform'].airline_code.value = airlineCode;   
+      var al_select = document.forms['inputform'].airline;
+      for(index = 0; index < al_select.length; index++) {
+	if(al_select[index].value.substring(0, airlineCode.length) == airlineCode) {
+	  found = true;
+	  al_select.selectedIndex = index;
+	  document.forms['inputform'].trips.focus();
+	  break;
+	}
       }
     }
 
@@ -1113,6 +1130,13 @@ function selectAirline(new_alid) {
 //
 function help(context) {
   window.open('/help/' + context + '.html', 'OpenFlights Help: ' + context, 'width=500,height=400,scrollbars=yes');
+}
+
+//
+// Register new account
+//
+function signUp() {
+  window.open('/help/signup.html', 'OpenFlights: Create new account', 'width=500,height=400,scrollbars=yes');
 }
 
 //
