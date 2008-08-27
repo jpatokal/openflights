@@ -58,20 +58,30 @@ function getAirline($id, $code) {
   $error = false;
   $len = strlen($code);
 
-  $sql = "SELECT 2 as sort_col,alid,name,iata FROM airlines WHERE iata!='' AND name LIKE '" . $code . "%' ORDER BY name";
+  // For short strings, filter out non-IATA airlines
+  if($len <= 3) {
+    $ext = "iata!='' AND";
+  } else {
+    $ext = "";
+  }
+  $sql = "SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE " . $ext . " name LIKE '" . $code . "%' ORDER BY name";
   if($len == 2) {
-    $sql = "SELECT 1 as sort_col,alid,name,iata FROM airlines WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col, name";
+    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col, name";
   } else if ($len == 3) {
-    $sql = "SELECT 1 as sort_col,alid,name,iata FROM airlines WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col, name";
+    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col, name";
   } else if ($len < 2) {
-    $error = true;
     printf ("0;Enter airline code or name\n");
+    return;
   }
   if(!$error) {
     $result = mysql_query($sql, $db);
     $found = false;
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      printf ("%s;%s\n", $row["iata"] . ":" . $row["alid"], $row["name"] . " (" . $row["iata"] . ")");
+      $code = $row["iata"];
+      if(!$code || $code == "") {
+	$code = $row["icao"];
+      }
+      printf ("%s;%s\n", $code . ":" . $row["alid"], $row["name"] . " (" . $code . ")");
       $found = true;
     } 
     if(! $found) {
