@@ -379,15 +379,6 @@ function xmlhttpPost(strURL, id, param) {
       document.getElementById("dst_ap_ajax").style.visibility = 'visible';
       query = 'dst=' + escape(dst);
     }
-    if(param == "NUMBER") {
-      if(flightNumber.length == 2) {
-	airlineCode = flightNumber.substring(0, 2);
-	param = "AIRLINE";
-      } else if(flightNumber.length == 3) {
-	airlineCode = flightNumber.substring(0, 3);
-	param = "AIRLINE";
-      }
-    }
     if(param == "AIRLINE" && airlineCode) {
       document.getElementById("airline_ajax").style.visibility = 'visible';
       query = 'airline=' + escape(airlineCode);
@@ -918,7 +909,7 @@ function addNewTrip() {
   alert("This will pop up a dialog for adding new trips. Coming soon...");
 }
 
-// When user has entered flight number or airline code, try to match it to airline
+// When user has entered flight number (NUMBER) or airline code (AIRLINE), try to match it to airline
 function flightNumberToAirline(str) {
   document.getElementById("input_status").innerHTML = '';
 
@@ -932,14 +923,12 @@ function flightNumberToAirline(str) {
     var re_iata = /^[a-zA-Z][a-zA-Z][ 0-9]/; // XX N...
     var re_icao = /^[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9]$/;  // XXX N...
     if(flightNumber.length == 2 || re_iata.test(flightNumber.substring(0,3))) {
-      alert("IATA");
       var airlineCode = flightNumber.substring(0, 2);
-      
-    } else if(flightNumber.length == 3 || re_icao.test(flightNumber.substring(0,3))) {
-      alert("ICAO");
+    } else if(flightNumber.length == 3 || re_icao.test(flightNumber.substring(0,4))) {
       var airlineCode = flightNumber.substring(0, 3);
     }
 
+    // We've found something that looks like an airline code, so overwrite it into AIRLINE field
     if(airlineCode) {
       document.forms['inputform'].airline_code.value = airlineCode;   
       var al_select = document.forms['inputform'].airline;
@@ -954,8 +943,9 @@ function flightNumberToAirline(str) {
     }
 
     // Couldn't find it entered yet, so pull code from database
+    // This search is *always* an airline search (either code or full text)
     if(!found) {
-      xmlhttpPost(URL_GETCODE, 0, str);
+      xmlhttpPost(URL_GETCODE, 0, "AIRLINE");
     }
   }
 }
