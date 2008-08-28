@@ -17,85 +17,88 @@
 	<div id="contentContainer">
 	  <div id="map" class="smallmap"></div>
 
-          <div id="newairport" style="display: none">
-	    <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport()'>	    
-          </div>
-
-          <div id="triptitle">
-	    Loading...
-          </div>
-	</div>
-
-
-	<div id="sideBar">
-	  <!--#include virtual="/sidebar.html" -->
-
-	  <div id="login">
-	    <div id="loginstatus" style="display: none"></div>
-
-	    <div id="loginform" style="display: inline">
-	      <form name="login">
-	      <table cellspacing="5" cellpadding="0" border="0" width="200">
-		<tr><td>Username</td><td>
-		    <input type="Text" name="name" align="top" size="10">
-		  </td>
-		</tr><tr>
-		  <td align=right>Password</td><td>
-		    <input type="password" name="pw" align="top" size="10">	    
-		  </td>
-		</tr><tr>
-		  <td></td>
-		  <td>
-		    <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
-		    <!-- <input type="button" value="Sign up" align="middle" onclick='JavaScript:signUp()'> -->
-		    <div id="loginajax" style="display: none;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
-		  </td>
-		</tr></table>
-	    </form>
+	    <div id="newairport" style="display: none">
+	      <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport()'>	    
 	    </div>
-	  </div> <!-- login -->
 
-	  <div id="statsbox">
-	    <span id="ajaxstatus" style="float: right; visibility: hidden; margin-right: 10px"><img src="/img/ajax-wait.gif" height=32 width=32/></span>
-	    <div id="stats"><i>Loading...</i></div>
-	    <input type="button" value="Stats" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
+	    <div id="triptitle">
+	    </div>
+	    
+	    <div id="ajaxloader">
+	      <span id="ajaxstatus" style="visibility: hidden"><img src="/img/ajax-wait.gif" height=100 width=100/></span>
+	    </div>
+	    
 	  </div>
 
-	  <div id="filter">
-	    <b>Filter</b><br>
-	    <form id='filterform'>
-<!--	      <input type="radio" name="type" value="none" id="airportToggle"
+
+	  <div id="sideBar">
+	    <!--#include virtual="/sidebar.html" -->
+
+	    <div id="login">
+	      <div id="loginstatus" style="display: none"></div>
+	      
+	      <div id="loginform" style="display: inline">
+		<form name="login">
+		<table cellspacing="5" cellpadding="0" border="0" width="200">
+		  <tr><td>Username</td><td>
+		      <input type="Text" name="name" align="top" size="10">
+		    </td>
+		  </tr><tr>
+		    <td align=right>Password</td><td>
+		      <input type="password" name="pw" align="top" size="10">	    
+		    </td>
+		  </tr><tr>
+		    <td></td>
+		    <td>
+		      <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
+		      <!-- <input type="button" value="Sign up" align="middle" onclick='JavaScript:signUp()'> -->
+		      <div id="loginajax" style="display: none;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
+		    </td>
+		  </tr></table>
+	      </form>
+	      </div>
+	    </div> <!-- login -->
+	    
+	    <div id="statsbox">
+	      <div id="stats"><i>Loading...</i></div>
+	      <input type="button" value="Stats" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
+	    </div>
+	    
+	    <div id="filter">
+	      <b>Filter</b><br>
+	      <form id='filterform'>
+		<!--	      <input type="radio" name="type" value="none" id="airportToggle"
 		onclick="toggleControl(this);" checked="checked" />
-	    <label for="airportToggle">Airports</label>
-	    <input type="radio" name="type" value="select" id="selectToggle"
-	      onclick="toggleControl(this);" />
-	    <label for="selectToggle">Flights</label>
--->
-	    <div id="filter_tripselect">
-	      Trips <select name="Trips"><option value="">All trips</option></select>
-            </div>
-	    <div id="filter_airlineselect">
-	      Airlines <select name="Airlines"><option value="">All airlines</option></select>
+		<label for="airportToggle">Airports</label>
+		<input type="radio" name="type" value="select" id="selectToggle"
+		onclick="toggleControl(this);" />
+		<label for="selectToggle">Flights</label>
+		-->
+	      <div id="filter_tripselect">
+		Trips <select name="Trips"><option value="">All trips</option></select>
+	      </div>
+	      <div id="filter_airlineselect">
+		Airlines <select name="Airlines"><option value="">All airlines</option></select>
+	      </div>
+	      
+	      <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh(true)'>
+	      <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
+	    </form>
+	      
+	    </div>
+
+	    <div id="control" style="display: none">
+	      <b>Control panel</b><br>
+	      <input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
+	      <input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
+	      <input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
 	    </div>
 	    
-	    <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh(true)'>
-	    <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
-	  </form>
-	    
-	  </div>
+	  </div> <!-- end sidebar -->
+	</div> <!-- end sidebarwrapper -->
 
-	  <div id="control" style="display: none">
-	    <b>Control panel</b><br>
-	    <input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
-	    <input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
-	    <input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
-	  </div>
-	  
-	</div> <!-- end sidebar -->
-      </div> <!-- end sidebarwrapper -->
-
-      <div id="resultbox">
-	<div id="help" style="display: inline;">
+	<div id="resultbox">
+	  <div id="help" style="display: inline;">
 <h2>OpenFlights Map Quick Reference</h2></p>
 <p>
 <b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
@@ -105,8 +108,8 @@
 <b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.<br>
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.
 </p>
-	</div> <!-- end help -->
-	<div id="input" style="display: none;">
+	  </div> <!-- end help -->
+	  <div id="input" style="display: none;">
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle">Add new flight</span>
     <span id="editflighttitle" style="display: none">Edit flight</span>
