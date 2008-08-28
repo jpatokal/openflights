@@ -67,6 +67,14 @@
     z-index: 1000;
 } 
 
+#ajaxloader { 
+    left: 40%;
+    top: 25%;
+    position: absolute;
+    z-index: 1000;
+    border: 1;
+} 
+
 #sideBar
 	{
 	float: left;
