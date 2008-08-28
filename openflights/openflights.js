@@ -478,8 +478,11 @@ function updateFilter(str) {
   document.getElementById("filter_tripselect").innerHTML = tripselect;
 
   var form = document.forms['filterform'];
-  document.getElementById("triptitle").innerHTML = form.Trips[form.Trips.selectedIndex].text;
-
+  if(logged_in) {
+    document.getElementById("triptitle").innerHTML = form.Trips[form.Trips.selectedIndex].text;
+  } else {
+    document.getElementById("triptitle").innerHTML = "DEMO: Recently added flights";
+  }
   var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), 20);
   document.getElementById("filter_airlineselect").innerHTML = airlineselect;
 }
