@@ -32,14 +32,14 @@ if(strstr($plid, "NEW:")) {
   $newplane = substr($plid, 4);
   
   while ($newplane != "OK") {
-    $sql = "SELECT * FROM planes WHERE name='" . $newplane . "' limit 1";
+    $sql = "SELECT * FROM planes WHERE name='" . mysql_real_escape_string($newplane) . "' limit 1";
     $result = mysql_query($sql, $db);
     if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       // Found it
       $plid = $row["plid"];
       $newplane = "OK";
     } else {
-      $sql = "INSERT INTO planes(name) VALUES('" . $newplane . "')";
+      $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($newplane) . "')";
       mysql_query($sql, $db) or die('0;Adding new plane failed');
     }
   }
@@ -48,17 +48,17 @@ if(strstr($plid, "NEW:")) {
 switch($param) {
  case "ADD":
    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW())",
-		  $uid, $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid, $trid);
+		  $uid, mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid));
    break;
 
  case "EDIT":
    $sql = sprintf("UPDATE flights SET src_apid=%s, src_time='%s', dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, upd_time=NOW() WHERE fid=%s",
-		  $src_apid, $src_date, $dst_apid, $duration, $distance, $registration, $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid, $trid, $fid);
+		  mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), mysql_real_escape_string($fid));
    break;
 
  case "DELETE":
    // uid is strictly speaking unnecessary, but just to be sure...
-   $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, $fid);
+   $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, mysql_real_escape_string($fid));
    break;
 
  default:

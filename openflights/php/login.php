@@ -8,7 +8,7 @@ if($name) {
   $db = mysql_connect("localhost", "openflights");
   mysql_select_db("flightdb",$db);
 
-  $sql = "select * from users where name='$name' AND password='$pw';";
+  $sql = "select * from users where name='" . mysql_real_escape_string($name) . "' AND password='" . mysql_real_escape_string($pw) . "';";
   $result = mysql_query($sql, $db);
   if ($myrow = mysql_fetch_array($result)) {
     $uid = $myrow["uid"];

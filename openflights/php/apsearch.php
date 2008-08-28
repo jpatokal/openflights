@@ -17,29 +17,29 @@ mysql_select_db("flightdb",$db);
 if(! $dbname) {
   $dbname = "airports";
 }
-$sql = "SELECT * FROM " . $dbname . " WHERE ";
+$sql = "SELECT * FROM " . mysql_real_escape_string($dbname) . " WHERE ";
 
 // Build filter
 if($airport) {
-  $sql .= " name LIKE '" . $airport . "%' AND";
+  $sql .= " name LIKE '" . mysql_real_escape_string($airport) . "%' AND";
 }
 if($iata) {
-  $sql .= " iata='" . $iata . "' AND";
+  $sql .= " iata='" . mysql_real_escape_string($iata) . "' AND";
 }
 if($icao) {
-  $sql .= " icao='" . $icao . "' AND";
+  $sql .= " icao='" . mysql_real_escape_string($icao) . "' AND";
 }
 if($city) {
-  $sql .= " city LIKE '" . $city . "%' AND";
+  $sql .= " city LIKE '" . mysql_real_escape_string($city) . "%' AND";
 }
 if($country != "ALL") {
   if($dbname == "airports_dafif") {
     if($code) {
-      $sql .= " code='" . $code . "' AND";
+      $sql .= " code='" . mysql_real_escape_string($code) . "' AND";
     }
   } else {
     if($country) {
-      $sql .= " country='" . $country . "' AND";
+      $sql .= " country='" . mysql_real_escape_string($country) . "' AND";
     }
   }
 }
