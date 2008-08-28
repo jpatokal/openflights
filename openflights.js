@@ -389,19 +389,30 @@ function xmlhttpPost(strURL, id, param) {
 
     // Deleting needs only the fid, and can be run without the inputform
     if(param != "DELETE") {
+      var src_date = inputform.src_date.value;
+      var re_date = /^[0-9]{2,4}[-/.]?[0-9]{2}[-/.]?[0-9]{2}$/
+      if(! re_date.test(src_date)) {
+	alert("Please enter a full date in year/month/date order. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD, YYYYMMDD and YYMMDD.");
+	document.forms['inputform'].src_date.focus();
+	return;
+      }
+
       var src_apid = inputform.src_ap[inputform.src_ap.selectedIndex].value.split(":")[1];
       if(! src_apid || src_apid == 0) {
 	alert("Please select a source airport.");
+	document.forms['inputform'].src_ap.focus();
 	return;
       }
       var dst_apid = inputform.dst_ap[inputform.dst_ap.selectedIndex].value.split(":")[1];
       if(! dst_apid || dst_apid == 0) {
 	alert("Please select a destination airport.");
+	document.forms['inputform'].dst_ap.focus();
 	return;
       }
       var alid = inputform.airline[inputform.airline.selectedIndex].value.split(":")[1];
       if(! alid || alid == 0) {
 	alert("Please select an airline.");
+	document.forms['inputform'].airline.focus();
 	return;
       }
       var type = inputform.seat_type.value;
