@@ -65,7 +65,7 @@ switch($param) {
    die('0;Unknown operation ' . $param);
  }
 
-mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql);
+mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql . ', error ' . mysql_error());
 
 switch($param) {
  case "DELETE":
