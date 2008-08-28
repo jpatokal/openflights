@@ -24,18 +24,18 @@ $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata A
 
 // ...filtered by airport (optional)
 if($apid && $apid != 0) {
-  $sql = $sql . " AND (s.apid=" . $apid . " OR d.apid=" . $apid . ")";
+  $sql = $sql . " AND (s.apid=" . mysql_real_escape_string($apid) . " OR d.apid=" . mysql_real_escape_string($apid) . ")";
 }
 
 // Add filters, if any
 if($trid && $trid != "0") {
-  $sql = $sql . " AND trid= " . $trid;
+  $sql = $sql . " AND trid= " . mysql_real_escape_string($trid);
 }
 if($alid && $alid != "0") {
-  $sql = $sql . " AND alid= " . $alid;
+  $sql = $sql . " AND alid= " . mysql_real_escape_string($alid);
 }
 if($fid && $fid != "0") {
-  $sql = $sql . " AND fid= " . $fid;
+  $sql = $sql . " AND fid= " . mysql_real_escape_string($fid);
 }
 
 // Execute!

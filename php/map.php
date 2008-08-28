@@ -28,7 +28,7 @@ if(! $alid) {
 $filter = "";
 if($trid && $trid != "0") {
   // Verify that we're allowed to access this trip
-  $sql = "SELECT * FROM trips WHERE trid=" . $trid;
+  $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["uid"] != $uid and $row["public"] != "Y") {
@@ -37,17 +37,17 @@ if($trid && $trid != "0") {
       $uid = $row["uid"];
     }
   }
-  $filter = $filter . " AND trid= " . $trid;
+  $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
 if($alid && $alid != "0") {
-  $filter = $filter . " AND alid= " . $alid;
+  $filter = $filter . " AND alid= " . mysql_real_escape_string($alid);
 }
 
 // Load up all information needed by this user
 
 // Statistics
 // Number of flights, total distance (mi), total duration (minutes)
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights where uid=" .$uid . " " . $filter;
+$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights where uid=" . $uid . " " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   printf("%s,%s,%s\n", $row["count"], $row["distance"], $row["duration"]);

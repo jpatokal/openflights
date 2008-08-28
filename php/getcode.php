@@ -26,11 +26,11 @@ function getAirport($id, $code) {
   $error = false;
   printf ("%s\n", $id);
   $len = strlen($code);
-  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata!='' AND iata != '" . $code . "' AND city LIKE '" . $code . "%' ORDER BY city,name";
+  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata!='' AND iata != '" . mysql_real_escape_string($code) . "' AND city LIKE '" . mysql_real_escape_string($code) . "%' ORDER BY city,name";
   if($len == 3) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
+    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
   } else if ($len == 4) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
+    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE icao='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
   } else if ($len < 3) {
     $error = true;
     printf ("0;Enter airport code or name\n");
@@ -64,11 +64,11 @@ function getAirline($id, $code) {
   } else {
     $ext = "";
   }
-  $sql = "SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE " . $ext . " name LIKE '" . $code . "%' ORDER BY name";
+  $sql = "SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE " . $ext . " name LIKE '" . mysql_real_escape_string($code) . "%' ORDER BY name";
   if($len == 2) {
-    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col, name";
+    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col, name";
   } else if ($len == 3) {
-    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='" . $code . "' UNION (" . $sql . ") ORDER BY sort_col, name";
+    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col, name";
   } else if ($len < 2) {
     printf ("0;Enter airline code or name\n");
     return;
