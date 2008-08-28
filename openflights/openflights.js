@@ -348,7 +348,7 @@ function xmlhttpPost(strURL, id, param) {
 	  setTimeout('clearInput()', 1000);
 	}
       }
-      document.getElementById("ajaxstatus").style.visibility = 'hidden';
+      document.getElementById("ajaxstatus").style.display = 'none';
     }
   }
   
@@ -451,7 +451,7 @@ function xmlhttpPost(strURL, id, param) {
     var pw = document.forms['login'].pw.value;
     query = 'name=' + escape(name) + '&' + 'pw=' + escape(pw);
   } else {
-    document.getElementById("ajaxstatus").style.visibility = 'visible';
+    document.getElementById("ajaxstatus").style.display = 'inline';
     var query = getquerystring(id, param);
   }
   self.xmlHttpReq.send(query);
