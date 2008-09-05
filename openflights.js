@@ -390,7 +390,7 @@ function xmlhttpPost(strURL, id, param) {
     // Deleting needs only the fid, and can be run without the inputform
     if(param != "DELETE") {
       var src_date = inputform.src_date.value;
-      var re_date = /^[0-9]{2,4}[-/.]?[0-9]{2}[-/.]?[0-9]{2}$/
+      var re_date = /^[0-9]{2,4}[-/.]?[0-9]{1,2}[-/.]?[0-9]{1,2}$/
       if(! re_date.test(src_date)) {
 	alert("Please enter a full date in year/month/date order. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD, YYYYMMDD and YYMMDD.");
 	document.forms['inputform'].src_date.focus();
