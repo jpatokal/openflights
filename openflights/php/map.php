@@ -7,6 +7,12 @@ if(!$uid or empty($uid)) {
   $uid = 1;
 }
 
+// This applies only when viewing another's flights
+$user = $HTTP_POST_VARS["user"];
+if(! $user) {
+  $user = $HTTP_GET_VARS["user"];
+}
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
@@ -23,9 +29,9 @@ if(! $alid) {
   $alid = $HTTP_GET_VARS["alid"];
 }
 
-// Set up filtering clause
-
+// Set up filtering clause and verify that this trip and user are public
 $filter = "";
+
 if($trid && $trid != "0") {
   // Verify that we're allowed to access this trip
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
@@ -39,6 +45,20 @@ if($trid && $trid != "0") {
   }
   $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
+
+if($user && $user != "0") {
+  // Verify that we're allowed to view this user's flights
+  $sql = "SELECT uid,public FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
+  $result = mysql_query($sql, $db);
+  if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row["public"] != "Y") {
+      die('Error;This user\'s flights are not public.');
+    } else {
+      $uid = $row["uid"];
+    }
+  }
+}
+
 if($alid && $alid != "0") {
   $filter = $filter . " AND alid= " . mysql_real_escape_string($alid);
 }

@@ -5,12 +5,60 @@ if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode
   $uid = 1;
 }
+// This applies only when viewing another's flights
+$user = $HTTP_POST_VARS["user"];
+if(! $user) {
+  $user = $HTTP_GET_VARS["user"];
+}
+
+// Filter
+$trid = $HTTP_POST_VARS["trid"];
+if(! $trid) {
+  $trid = $HTTP_GET_VARS["trid"];
+}
+$alid = $HTTP_POST_VARS["alid"];
+if(! $alid) {
+  $alid = $HTTP_GET_VARS["alid"];
+}
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
+// Set up filtering clause and verify that this trip and user are public
+$filter = "";
+
+if($trid && $trid != "0") {
+  // Verify that we're allowed to access this trip
+  $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
+  $result = mysql_query($sql, $db);
+  if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row["uid"] != $uid and $row["public"] != "Y") {
+      die('Error;This trip is not public.');
+    } else {
+      $uid = $row["uid"];
+    }
+  }
+  $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
+}
+if($user && $user != "0") {
+  // Verify that we're allowed to view this user's flights
+  $sql = "SELECT uid,public FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
+  $result = mysql_query($sql, $db);
+  if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row["public"] != "Y") {
+      die('Error;This user\'s flights are not public.');
+    } else {
+      $uid = $row["uid"];
+    }
+  }
+}
+
+if($alid && $alid != "0") {
+  $filter = $filter . " AND f.alid= " . mysql_real_escape_string($alid);
+}
+
 // List top 10 airports
-$sql = "select a.name, a.iata, count(fid) as count, a.apid from airports as a, flights as f where uid=" . $uid . " and (f.src_apid=a.apid or f.dst_apid=a.apid) group by a.apid order by count desc limit 10";
+$sql = "select a.name, a.iata, count(fid) as count, a.apid from airports as a, flights as f where uid=" . $uid . " and (f.src_apid=a.apid or f.dst_apid=a.apid) " . $filter . " group by a.apid order by count desc limit 10";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -24,7 +72,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 airlines
-$sql = "select a.name, count(fid) as count, a.alid from airlines as a, flights as f where uid=" . $uid . " and f.alid=a.alid group by f.alid order by count desc limit 10";
+$sql = "select a.name, count(fid) as count, a.alid from airlines as a, flights as f where uid=" . $uid . " and f.alid=a.alid " . $filter . " group by f.alid order by count desc limit 10";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -38,7 +86,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 plane types
-$sql = "select p.name, count(fid) as count from planes as p, flights as f where uid=" . $uid . " and p.plid=f.plid group by f.plid order by count desc limit 10";
+$sql = "select p.name, count(fid) as count from planes as p, flights as f where uid=" . $uid . " and p.plid=f.plid " . $filter . " group by f.plid order by count desc limit 10";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

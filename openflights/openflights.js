@@ -3,9 +3,13 @@
  * by Jani Patokallio <jpatokal@iki.fi>
  */
 
+// Core map features
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
+
 // Filter selections and currently chosen airport 
-var filter_trid = 0, filter_alid = 0, apid = 0;
+var filter_user = 0, filter_trid = 0, filter_alid = 0, apid = 0;
+var tripname, tripurl;
+
 // Temporary variables for current flight being edited
 var fid = 0, alid = 0, plane;
 var input = false, logged_in = false, initializing = true;
@@ -104,16 +108,18 @@ window.onload = function init(){
   //map.setCenter(new OpenLayers.LonLat(0, 0), 0);
   map.zoomToMaxExtent();
 
+  // Extract any arguments from URL
   filter_trid = parseArgument("trip");
+  filter_user = parseArgument("user");
 
   xmlhttpPost(URL_MAP, 0, true);
  }    
 
-// Extract arguments from URL (/trip/xxx)
-// Returns zero if not found
+// Extract arguments from URL (/trip/xxx or /user/xxx)
+// Returns null if not found
 function parseArgument(name)
 {
-  // http://foobar.com/trip/xxx
+  // http://foobar.com/name/xxx
   // 0    1 2          3    4
   var urlbits = window.location.href.split('/');
   if(urlbits[3] == name) {
@@ -192,7 +198,9 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
 
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count) {
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
-  desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + desc + "\")'>";
+  if(logged_in) {
+    desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + desc + "\")'>";
+  }
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
 
   // Select icon based on number of flights (0...airportIcons.length-1)
@@ -314,6 +322,9 @@ function xmlhttpPost(strURL, id, param) {
 	  document.getElementById("result").innerHTML = str.split(';')[1];
 	  openResult();
 	} else {
+	  if(! logged_in) {
+	    closeResult();
+	  }
 	  updateMap(str);
 	  if(param) {
 	    updateFilter(str);
@@ -471,6 +482,7 @@ function getquerystring(id, param) {
     qstr = 'id=' + escape(id);
   }
   qstr += '&' +
+    'user=' + escape(filter_user) + '&' +
     'trid=' + escape(filter_trid) + '&' +
     'alid=' + escape(filter_alid) + '&' +
     'param=' + escape(param);
@@ -493,20 +505,34 @@ function updateFilter(str) {
 // Refresh current map title
 function updateTitle(str) {
   var form = document.forms['filterform'];
+  airline = form.Airlines[form.Airlines.selectedIndex].text;
+  trip = form.Trips[form.Trips.selectedIndex].text;
+
   if(logged_in) {
     text = "";
-    trip = form.Trips[form.Trips.selectedIndex].text;
-    airline = form.Airlines[form.Airlines.selectedIndex].text;
     if(trip != "All trips") {
-      text = trip;
+      text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
     }
+
     if(airline != "All airlines") {
       if(text != "") text += ", ";
       text += airline;
     }
-    document.getElementById("triptitle").innerHTML = " " + text + " ";
+    document.getElementById("maptitle").innerHTML = text;
   } else {
-    document.getElementById("triptitle").innerHTML = "Recently added flights";
+    if(filter_user == 0 && filter_trid == 0) {
+      document.getElementById("maptitle").innerHTML = "Recently added flights";
+    } else {
+      if(trip != "All trips") {
+	text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
+      } else {
+	text = filter_user + "'s flights";
+	if(airline != "All airlines") {
+	  text += " on " + airline;
+	}
+      }
+      document.getElementById("maptitle").innerHTML = text;
+    }
   }
 }
 
@@ -543,6 +569,11 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
     var url = col[2];
     if(col[0] == id) {
       selected = " SELECTED";
+      // Special case: un-truncated trip name and URL
+      if(selectName == "Trips") {
+	tripname = name;
+	tripurl = url;
+      }
     } else {
       selected = "";
     }
@@ -630,8 +661,8 @@ function listFlights(str, desc) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16
       var col = rows[r].split(",");
 
-      table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
-	"<td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
+	"<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
 	"<td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
 	"</td><td>" + col[13] + "</td><td>" + col[14] + "</td><td>" + col[8] + "</td><td>" + seattypes[col[9]] +
 	"</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
@@ -639,9 +670,9 @@ function listFlights(str, desc) {
 	
       if(logged_in) {
 	table += "<td>" +
-	  "<a href=\"#stats\" onclick=\"JavaScript:preEditFlight(" + col[12] + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>" +
-	  "<a href=\"#stats\" onclick=\"JavaScript:preCopyFlight(" + col[12] + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>" +
-	  "<a href=\"#stats\" onclick=\"JavaScript:deleteFlight(" + col[12] + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>" +
+	  "<a href=\"#\" onclick=\"JavaScript:preEditFlight(" + col[12] + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>" +
+	  "<a href=\"#\" onclick=\"JavaScript:preCopyFlight(" + col[12] + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>" +
+	  "<a href=\"#\" onclick=\"JavaScript:deleteFlight(" + col[12] + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>" +
 	  "</td>";
       }
       table += "</tr>";
@@ -654,6 +685,12 @@ function listFlights(str, desc) {
 }
 
 function updateStats(str) {
+  if(str.substring(0,5) == "Error") {
+    document.getElementById("result").innerHTML = str.split(';')[1];
+    openResult();
+    return;
+  }
+
   openResult();
   if(str == "") {
     bigtable = "<i>Statistics calculation failed!</i>";
@@ -671,7 +708,7 @@ function updateStats(str) {
       var col = rows[r].split(",");
       // name, iata, count, apid
       desc = col[0] + " (" + col[1] + ")";
-      table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td>" + col[2] + "</td>";
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td>" + col[2] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -682,7 +719,7 @@ function updateStats(str) {
     for (r in rows) {
       var col = rows[r].split(",");
       // name, count, apid
-      table += "<tr><td><a href=\"#stats\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td>" + col[1] + "</td>";
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td>" + col[1] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
