@@ -318,6 +318,7 @@ function xmlhttpPost(strURL, id, param) {
 	  if(param) {
 	    updateFilter(str);
 	  }
+	  updateTitle();
 	} 
       }
       if(strURL == URL_PREINPUT) {
@@ -372,17 +373,15 @@ function xmlhttpPost(strURL, id, param) {
     var flightNumber = form.number.value;
     var airlineCode = form.airline_code.value;
     if(param == "SRC" && src) {
-      document.getElementById("src_ap_ajax").style.visibility = 'visible';
       query = 'src=' + escape(src);
     }
     if(param == "DST" && dst) {
-      document.getElementById("dst_ap_ajax").style.visibility = 'visible';
       query = 'dst=' + escape(dst);
     }
     if(param == "AIRLINE" && airlineCode) {
-      document.getElementById("airline_ajax").style.visibility = 'visible';
       query = 'airline=' + escape(airlineCode);
     }
+    setInputAllowed(param, false);
 
   } else if(strURL == URL_SUBMIT) {
     var inputform = document.forms['inputform'];
@@ -464,7 +463,6 @@ function getquerystring(id, param) {
     initializing = false;
   } else {
     filter_trid = form.Trips.value;
-    document.getElementById("triptitle").innerHTML = form.Trips[form.Trips.selectedIndex].text;
   }
   filter_alid = form.Airlines.value;
   if(param == "EDIT" || param == "COPY") {
@@ -487,17 +485,30 @@ function updateFilter(str) {
 
   var tripselect = "Trips " + createSelect("Trips", "All trips", filter_trid, trips.split("\t"), 20);
   document.getElementById("filter_tripselect").innerHTML = tripselect;
-
-  var form = document.forms['filterform'];
-  if(logged_in) {
-    document.getElementById("triptitle").innerHTML = form.Trips[form.Trips.selectedIndex].text;
-  } else {
-    document.getElementById("triptitle").innerHTML = "DEMO: Recently added flights";
-  }
   var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), 20);
   document.getElementById("filter_airlineselect").innerHTML = airlineselect;
 }
 
+
+// Refresh current map title
+function updateTitle(str) {
+  var form = document.forms['filterform'];
+  if(logged_in) {
+    text = "";
+    trip = form.Trips[form.Trips.selectedIndex].text;
+    airline = form.Airlines[form.Airlines.selectedIndex].text;
+    if(trip != "All trips") {
+      text = trip;
+    }
+    if(airline != "All airlines") {
+      if(text != "") text += ", ";
+      text += airline;
+    }
+    document.getElementById("triptitle").innerHTML = " " + text + " ";
+  } else {
+    document.getElementById("triptitle").innerHTML = "Recently added flights";
+  }
+}
 
 /*
  * Create a <SELECT> box from row of (id;name)
@@ -697,15 +708,12 @@ function updateCodes(str) {
   var type = lines[0];
   if(type == "SRC") {
     select = document.forms['inputform'].src_ap;
-    document.getElementById("src_ap_ajax").style.visibility = 'hidden';
   }
   if(type == "DST") {
     select = document.forms['inputform'].dst_ap;
-    document.getElementById("dst_ap_ajax").style.visibility = 'hidden';
   }
   if(type == "AIRLINE") {
     select = document.forms['inputform'].airline;
-    document.getElementById("airline_ajax").style.visibility = 'hidden';
   }
   if(select) {
     select.options.length = lines.length - 2; // redimension select
@@ -725,6 +733,9 @@ function updateCodes(str) {
     // Rebuilding select doesn't count as onChange, so we trigger manually
     if(type == "SRC") selectNewAirport("src_ap");
     if(type == "DST") selectNewAirport("dst_ap");
+
+    // And now finally allow submitting again
+    setInputAllowed(type, true);
   }
 }
 
@@ -841,6 +852,43 @@ function inputFlight(str, param) {
       flightNumberToAirline("NUMBER");
     }
   }
+}
+
+// Disable and re-enable submission while AJAX requests are pending
+// element=SRC,DST,AIRLINE
+// state={true,false} for enabled,disabled
+function setInputAllowed(element, state) {
+  switch(element) {
+  case "SRC":
+    ajax = "src_ap_ajax";
+    break;
+  case "DST":
+    ajax = "dst_ap_ajax";
+    break;
+  case "AIRLINE":
+    ajax = "airline_ajax";
+    break;
+  }
+  if(state) {
+    style = 'hidden';
+    b_add.disabled = false;
+    b_addclear.disabled = false;
+    b_clear.disabled = false;
+    b_exit.disabled = false;
+    b_save.disabled = false;
+    b_delete.disabled = false;
+    b_cancel.disabled = false;
+  } else {
+    style = 'visible';
+    b_add.disabled = true;
+    b_addclear.disabled = true;
+    b_clear.disabled = true;
+    b_exit.disabled = true;
+    b_save.disabled = true;
+    b_delete.disabled = true;
+    b_cancel.disabled = true;
+  }
+  document.getElementById(ajax).style.visibility = style;
 }
 
 // If clear=true, then input form is cleared after successful entry

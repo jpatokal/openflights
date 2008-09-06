@@ -194,15 +194,15 @@
   <td></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
-      <input value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
-      <input value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
-      <input value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput()'>
-      <input value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
+      <input id="b_add" value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
+      <input id="b_addclear" value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
+      <input id="b_clear" value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput()'>
+      <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
     </span>
     <span id="editflightbuttons" style="display: none">
-      <input value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
-      <input value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
-      <input value="Cancel" type="button" tabindex="15" onclick='JavaScript:openResult()'>
+      <input id="b_save" value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
+      <input id="b_delete" value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
+      <input id="b_cancel" value="Cancel" type="button" tabindex="15" onclick='JavaScript:openResult()'>
     </span>
     <span id="input_status"></span>
   </td>
