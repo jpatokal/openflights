@@ -37,6 +37,7 @@ var INPUT_MAXLEN = 50;
 var airportMaxFlights = 0;
 var airportIcons = [ [ '/img/icon_plane-15x15.png', 15 ],
 		     [ '/img/icon_plane-17x17.png', 17 ],
+		     [ '/img/icon_plane-19x19.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
 
 var classes = {"Y":"Economy", "C":"Business", "F":"First", "": ""};
