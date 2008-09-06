@@ -198,7 +198,10 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
 
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count) {
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
-  if(logged_in) {
+  // Detailed flights accessible only if user is logged in or system is in "demo mode"
+  if( (filter_user == 0 && filter_trid == 0) ||
+      logged_in)
+    {
     desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + desc + "\")'>";
   }
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
