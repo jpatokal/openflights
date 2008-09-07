@@ -7,8 +7,10 @@ CONNECT flightdb;
 
 CREATE TABLE users
 (
-name TEXT,
+name TEXT UNIQUE KEY,
 password TEXT,
+email TEXT,
+public TEXT,
 uid INT AUTO_INCREMENT PRIMARY KEY
 );
 
@@ -48,6 +50,7 @@ CREATE TABLE trips
 name TEXT,
 url TEXT,
 uid INT,
+public TEXT,
 trid INT AUTO_INCREMENT PRIMARY KEY,
 FOREIGN KEY (uid) REFERENCES users (uid)
 );
@@ -65,6 +68,9 @@ seat TEXT,
 seat_type TEXT,
 class TEXT,
 reason TEXT,
+registration TEXT,
+note TEXT,
+upd_time DATETIME,
 plid INT,
 alid INT,
 trid INT,
