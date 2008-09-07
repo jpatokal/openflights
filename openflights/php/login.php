@@ -8,7 +8,7 @@ if($name) {
   $db = mysql_connect("localhost", "openflights");
   mysql_select_db("flightdb",$db);
 
-  $sql = "select * from users where name='" . mysql_real_escape_string($name) . "' AND password='" . mysql_real_escape_string($pw) . "';";
+  $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "' AND password=MD5(CONCAT('" . mysql_real_escape_string($pw) . "','" . mysql_real_escape_string($name) . "'));";
   $result = mysql_query($sql, $db);
   if ($myrow = mysql_fetch_array($result)) {
     $uid = $myrow["uid"];
@@ -17,7 +17,7 @@ if($name) {
     $_SESSION['access'] = $access;
     printf("1;%s", $name);
   } else {
-    printf("0;Login failed");
+    printf("0;Login failed" . $sql);
   }
 }
 ?>
