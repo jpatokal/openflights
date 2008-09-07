@@ -1229,7 +1229,7 @@ function help(context) {
 // Register new account
 //
 function signUp() {
-  window.open('/help/signup.html', 'OpenFlights: Create new account', 'width=500,height=400,scrollbars=yes');
+  window.open('/help/signup.html', 'OpenFlights: Create new account', 'width=500,height=500,scrollbars=yes');
 }
 
 //
@@ -1252,6 +1252,13 @@ function login(str) {
     logged_in = false;
     document.getElementById("loginstatus").innerHTML = "<B>" + name + "</B>";
   }
+}
+
+// Called by signup.js when a new user has successfully registered
+function newUserLogin(name, pw) {
+  document.forms['login'].name.value = name;
+  document.forms['login'].pw.value = pw;
+  xmlhttpPost(URL_LOGIN);
 }
 
 function logout(str) {
