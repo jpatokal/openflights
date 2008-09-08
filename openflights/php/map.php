@@ -56,6 +56,8 @@ if($user && $user != "0") {
     } else {
       $uid = $row["uid"];
     }
+  } else {
+    die('Error;No such user.');
   }
 }
 
