@@ -42,6 +42,8 @@ if($trid && $trid != "0") {
     } else {
       $uid = $row["uid"];
     }
+  } else {
+    die('Error;No such trip.');
   }
   $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
