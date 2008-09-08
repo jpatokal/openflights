@@ -14,10 +14,10 @@ if($name) {
     $uid = $myrow["uid"];
     $_SESSION['uid'] = $uid;
     $_SESSION['name'] = $name;
-    $_SESSION['access'] = $access;
+    $_SESSION['email'] = $myrow["email"];
     printf("1;%s", $name);
   } else {
-    printf("0;Login failed" . $sql);
+    printf("0;Login failed");
   }
 }
 ?>

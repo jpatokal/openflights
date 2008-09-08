@@ -52,7 +52,6 @@
 		    <td>
 		      <input type="button" value="Log in" align="middle" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
 		      <input type="button" value="Sign up" align="middle" onclick='JavaScript:signUp()'>
-		      <div id="loginajax" style="display: none;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
 		    </td>
 		  </tr></table>
 	      </form>
@@ -60,7 +59,7 @@
 	    </div> <!-- login -->
 	    
 	    <div id="statsbox">
-	      <div id="stats"><i>Loading...</i></div>
+	      <div id="stats"></div>
 	      <input type="button" value="Stats" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'>
 	    </div>
 	    
@@ -85,13 +84,15 @@
 	      <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
 	    </form>
 	      
-	    </div>
 
-	    <div id="control" style="display: none">
-	      <b>Control panel</b><br>
-	      <input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
-	      <input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
-	      <input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
+	      <div id="controlpanel" style="display: none">
+		<br><b>Control panel</b><br>
+		<input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
+		<input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
+		<input type="button" value="Settings" align="middle" onclick='JavaScript:settings()'>
+		<input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
+	      </div>
+
 	    </div>
 	    
 	  </div> <!-- end sidebar -->

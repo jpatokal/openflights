@@ -57,8 +57,8 @@
     top: 1em;
     position: absolute;
     font-size:1.5em;
-    filter:alpha(opacity=50);
-    opacity: 0.5;
+    filter:alpha(opacity=70);
+    opacity: 0.7;
     background: white;
     z-index: 1000;
 } 
@@ -114,12 +114,6 @@
 }
 
 #statsbox { 
-  max-width: 220px;
-  margin: 0px 0px 0px 0px;
-  padding: 10px;
-}
-
-#control{
   max-width: 220px;
   margin: 0px 0px 0px 0px;
   padding: 10px;
