@@ -332,7 +332,9 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_MAP) {
 	var str = self.xmlHttpReq.responseText;
 	if(str.substring(0,5) == "Error") {
-	  document.getElementById("result").innerHTML = str.split(';')[1];
+	  document.getElementById("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
+	  document.getElementById("statsbox").style.visibility = "hidden";
+	  document.getElementById("filter").style.visibility = "hidden";
 	  openResult();
 	} else {
 	  if(! logged_in) {
