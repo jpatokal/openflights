@@ -99,12 +99,13 @@ window.onload = function init(){
   
   map.addLayers([ol_wms, jpl_wms, lineLayer, highlightLayer, airportLayer]);
   
+  /* flight selection -- currently disabled
   selectControl = new OpenLayers.Control.SelectFeature(lineLayer,
 						       {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
   drawControls = {
     select: selectControl
   };
-  map.addControl(drawControls.select);
+  map.addControl(drawControls.select); */
 
   //map.setCenter(new OpenLayers.LonLat(0, 0), 0);
   map.zoomToMaxExtent();
@@ -112,6 +113,12 @@ window.onload = function init(){
   // Extract any arguments from URL
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
+
+  // Are viewing another user's flights or trip?
+  if(filter_user != "0" || filter_trid != 0) {
+    document.getElementById("loginform").style.display = 'none';
+    document.getElementById("loginstatus").style.display = 'inline';
+  }
 
   xmlhttpPost(URL_MAP, 0, true);
  }    
@@ -130,6 +137,7 @@ function parseArgument(name)
   }
 }
 
+/* currently not used
 function onFeatureSelect(feature) {
   selectedFeature = feature;
   popup = new OpenLayers.Popup.FramedCloud("chicken", 
@@ -148,6 +156,7 @@ function onFeatureUnselect(feature) {
 function onPopupClose(evt) {
   selectControl.unselect(selectedFeature);
 }
+  */
 
 function drawLine(lineLayer, x1, y1, x2, y2, count) {
   if(x2 < x1) {
@@ -460,7 +469,7 @@ function xmlhttpPost(strURL, id, param) {
       'param=' + escape(param);
 
   } else if(strURL == URL_LOGIN) {
-    document.getElementById("loginajax").style.display = 'inline';
+    document.getElementById("ajaxstatus").style.display = 'inline';
     var name = document.forms['login'].name.value;
     var pw = document.forms['login'].pw.value;
     query = 'name=' + escape(name) + '&' + 'pw=' + escape(pw);
@@ -509,11 +518,12 @@ function updateFilter(str) {
 // Refresh current map title
 function updateTitle(str) {
   var form = document.forms['filterform'];
-  airline = form.Airlines[form.Airlines.selectedIndex].text;
-  trip = form.Trips[form.Trips.selectedIndex].text;
+  var text = "";
+  var airline = form.Airlines[form.Airlines.selectedIndex].text;
+  var trip = form.Trips[form.Trips.selectedIndex].text;
 
+  // Logged in users
   if(logged_in) {
-    text = "";
     if(trip != "All trips") {
       text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
     }
@@ -522,11 +532,17 @@ function updateTitle(str) {
       if(text != "") text += ", ";
       text += airline;
     }
-    document.getElementById("maptitle").innerHTML = text;
   } else {
+    // Demo mode
     if(filter_user == 0 && filter_trid == 0) {
-      document.getElementById("maptitle").innerHTML = "Recently added flights";
+      if(airline != "All airlines") {
+	text = "Recent flights on " + airline;
+      } else {
+	text = "Recently added flights";
+      }
+
     } else {
+      // Viewing another's profile
       if(trip != "All trips") {
 	text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
       } else {
@@ -535,9 +551,11 @@ function updateTitle(str) {
 	  text += " on " + airline;
 	}
       }
-      document.getElementById("maptitle").innerHTML = text;
+      document.getElementById("loginstatus").innerHTML = "<b>" + text +
+	"</b> <h6><a href='/'>Home</a></h6>";
     }
   }
+  document.getElementById("maptitle").innerHTML = text;
 }
 
 /*
@@ -1233,10 +1251,16 @@ function signUp() {
 }
 
 //
+// Change settings
+//
+function settings() {
+  window.open('/help/settings.html', 'OpenFlights: Change settings', 'width=500,height=500,scrollbars=yes');
+}
+
+//
 // Login and logout
 //
 function login(str) {
-  document.getElementById("loginajax").style.display = 'none';
   var status = str.split(";")[0];
   var name = str.split(";")[1];
   document.getElementById("loginstatus").style.display = 'inline';
@@ -1245,7 +1269,7 @@ function login(str) {
     logged_in = true;
     document.getElementById("loginstatus").innerHTML = "Welcome, <B>" + name + "</B>!";
     document.getElementById("loginform").style.display = 'none';
-    document.getElementById("control").style.display = 'inline';
+    document.getElementById("controlpanel").style.display = 'inline';
     closeResult();
     clearFilter(true);
   } else {
@@ -1264,8 +1288,7 @@ function newUserLogin(name, pw) {
 function logout(str) {
   document.getElementById("loginstatus").innerHTML = "<B>You have been logged out.</B>";
   document.getElementById("loginform").style.display = 'inline';
-  document.getElementById("control").style.display = 'none';
-  document.getElementById("loginajax").style.display = 'none';
+  document.getElementById("controlpanel").style.display = 'none';
   closeInput();
   clearFilter(true);
 }
