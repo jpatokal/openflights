@@ -1,9 +1,9 @@
 /*
- * Create new user accounts
+ * Create new user accounts and modify existing ones
  */
 var URL_SIGNUP = "/php/signup.php";
 
-function xmlhttpPost(strURL, offset) {
+function xmlhttpPost(strURL, type) {
   var xmlHttpReq = false;
   var self = this;
   // Mozilla/Safari
@@ -34,30 +34,45 @@ function xmlhttpPost(strURL, offset) {
 	privacy = signupform.privacy[r].value;
       }
     }
-    query = 'name=' + escape(form.username.value) + '&' +
+    query = 'type=' + type + '&' +
       'pw=' + escape(form.pw1.value) + '&' +
       'email=' + escape(form.email.value) + '&' +
       'privacy=' + escape(privacy);
-    document.getElementById("resultbox").innerHTML = "<I>Creating account...</I>";
+    if(type == 'NEW') {
+      query += '&name=' + escape(form.username.value);
+      document.getElementById("resultbox").innerHTML = "<I>Creating account...</I>";
+    } else {
+      query += '&oldpw=' + escape(form.oldpw.value);
+      document.getElementById("resultbox").innerHTML = "<I>Saving changes...</I>";
+    }
   }
   self.xmlHttpReq.send(query);
 }
 
 // Validate form
-function validate() {
+function validate(type) {
   var form = document.forms['signupform'];
-  var name = form.username.value;
   var pw1 = form.pw1.value;
   var pw2 = form.pw2.value;
   var email = form.email.value;
 
-  if(name == "") {
-    showError("Please enter a username.");
-    return;
+  if(type == 'NEW') {
+    var name = form.username.value;
+    if(name == "") {
+      showError("Please enter a username.");
+      return;
+    }
+    if(pw1 == "") {
+      showError("Please enter a password.");
+      return;
+    }
   }
-  if(pw1 == "") {
-    showError("Please enter a password.");
-    return;
+  if(type == 'EDIT') {
+    var oldpw = form.oldpw.value;
+    if(pw1 != "" && oldpw == "") {
+      showError("Please enter your current password.");
+      return;
+    }
   }
 
   if(pw1 != pw2) {
@@ -71,20 +86,22 @@ function validate() {
   }
 
   document.getElementById("resultbox").innerHTML = "<i>Processing...</i>";
-  xmlhttpPost(URL_SIGNUP);
+  xmlhttpPost(URL_SIGNUP, type);
 }
 
 
 function signup(str) {
   var code = str.split(";")[0];
   var message = str.split(";")[1];
-  // Creation successful
-  if(code == "1") {
+  // Operation successful
+  if(code != "0") {
     document.getElementById("resultbox").innerHTML = message;
-    var form = document.forms['signupform'];
-    var name = form.username.value;
-    var pw = form.pw1.value;
-    parent.opener.newUserLogin(name, pw);
+    if(code == "1") { // new
+      var form = document.forms['signupform'];
+      var name = form.username.value;
+      var pw = form.pw1.value;
+      parent.opener.newUserLogin(name, pw);
+    }
     window.close();
   } else {
     showError(message);
