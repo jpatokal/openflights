@@ -675,21 +675,25 @@ function listFlights(str, desc) {
       table += desc.replace(/\<br\>/g, " &mdash; ");
     }
     table += "<table class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">";
-    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Reg.</th><th>Seat</th><th>Type</th><th>Class</th><th>Reason</th><th>Note</th>";
+    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Reg.</th><th>Seat</th><th>Type</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>";
     if(logged_in) {
       table += "<th class=\"unsortable\">Action</th>";
     }
     table += "</tr>";
     var rows = str.split("\t");
     for (r in rows) {
-      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16
+      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17
       var col = rows[r].split(",");
-
+      var trip = col[17];
+      if(logged_in && trip != "") {
+	trip = "<a href=\"#\" onclick=\"JavaScript:editTrip(" + trip + ");\">" + trip + "</a>";
+      }
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 	"<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
 	"<td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
 	"</td><td>" + col[13] + "</td><td>" + col[14] + "</td><td>" + col[8] + "</td><td>" + seattypes[col[9]] +
 	"</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
+	"</td><td>" + trip + "</td>" +
 	"</td><td>" + col[16].substring(0,15) + "</td>";
 	
       if(logged_in) {
@@ -847,6 +851,7 @@ function editFlight(str, param) {
   form.registration.value = col[14];
   alid = col[15];
   form.note.value = col[16];
+  trid = col[17];
 
   // can be "EDIT" or "COPY"
   xmlhttpPost(URL_PREINPUT, 0, param);
@@ -890,7 +895,7 @@ function inputFlight(str, param) {
   if(document.forms['inputform'].src_ap_code.value != "") codeToAirport("SRC");
   if(document.forms['inputform'].dst_ap_code.value != "") codeToAirport("DST");
 
-  // An existing entry will already have plane, airline selected
+  // An existing entry will already have plane, airline, trip selected
   if(param == "EDIT" || param == "COPY") {
     var select = inputform.plane;
     for(index = 0; index < select.length; index++) {
@@ -902,6 +907,13 @@ function inputFlight(str, param) {
     select = inputform.airline;
     for(index = 0; index < select.length; index++) {
       if(select[index].value.split(":")[1] == alid) {
+	select.selectedIndex = index;
+	break;
+      }
+    }
+    select = inputform.trips;
+    for(index = 0; index < select.length; index++) {
+      if(select[index].value == trid) {
 	select.selectedIndex = index;
 	break;
       }
@@ -1028,8 +1040,38 @@ function cancelNewPlane(really) {
 //
 // Handle the "add new trip" button in input
 //
-function addNewTrip() {
-  alert("This will pop up a dialog for adding new trips. Coming soon...");
+function editTrip(thisTrip) {
+  var url = '/help/trip.html';
+  var trid = 0;
+  if(thisTrip) {
+    trid = thisTrip;
+  } else {
+    var inputform = document.forms['inputform'];
+    trid = inputform.trips[inputform.trips.selectedIndex].value;
+  }
+  if(trid != 0) {
+    url += "?trid=" + trid;
+  }
+  window.open(url, 'OpenFlights: Trip editor', 'width=500,height=250,scrollbars=yes');
+}
+
+// User has added or edited trip, so punch it in
+function newTrip(code, trid, name, url) {
+  var trips = document.forms['inputform'].trips;
+
+  // This only applies when new trip is added in flight editor
+  if(trips) {
+    if(code == CODE_ADDOK) {
+      trips[0].text = name;
+      trips[0].value = trid;
+      trips.selectedIndex = 0;
+    } else {
+      trips[trips.selectedIndex].text = name;
+    }
+  }
+  // In all cases, refresh map
+  // TODO: Would be enough to refresh the filter only...
+  refresh(true);
 }
 
 // When user has entered flight number (NUMBER) or airline code (AIRLINE), try to match it to airline
