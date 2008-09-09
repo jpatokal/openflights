@@ -31,17 +31,15 @@ mysql_select_db("flightdb",$db);
 if(strstr($plid, "NEW:")) {
   $newplane = substr($plid, 4);
   
-  while ($newplane != "OK") {
-    $sql = "SELECT * FROM planes WHERE name='" . mysql_real_escape_string($newplane) . "' limit 1";
-    $result = mysql_query($sql, $db);
-    if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      // Found it
-      $plid = $row["plid"];
-      $newplane = "OK";
-    } else {
-      $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($newplane) . "')";
-      mysql_query($sql, $db) or die('0;Adding new plane failed');
-    }
+  $sql = "SELECT * FROM planes WHERE name='" . mysql_real_escape_string($newplane) . "' limit 1";
+  $result = mysql_query($sql, $db);
+  if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    // Found it
+    $plid = $row["plid"];
+  } else {
+    $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($newplane) . "')";
+    mysql_query($sql, $db) or die('0;Adding new plane failed');
+    $plid = mysql_insert_id();
   }
  }
 
