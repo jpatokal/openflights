@@ -1,23 +1,42 @@
 <?php
 session_start();
-$uid = $_SESSION["uid"];
-if(!$uid or empty($uid)) {
-  // If not logged in, default to demo mode
-  $uid = 1;
-}
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 $apid = $HTTP_POST_VARS["id"];
 if(!$apid) {
   // For easier debugging
   $apid = $HTTP_GET_VARS["id"];
 }
-
 $trid = $HTTP_POST_VARS["trid"];
 $alid = $HTTP_POST_VARS["alid"];
 $fid = $HTTP_POST_VARS["fid"];
+
+$uid = $_SESSION["uid"];
+// Logged in?
+if(!$uid or empty($uid)) {
+
+  // Viewing an "open" user's flights?
+  $uid = $_SESSION["openuid"]; 
+  if(!$uid or empty($uid)) {
+    // Nope, default to demo mode
+    $uid = 1;
+  } else {
+    // Yes we are, so check if we're limited to a single trip
+    $openTrid = $_SESSION["trid"];
+    if($openTrid) {
+      if($openTrid == $trid) {
+	// This trip's OK
+      } else {
+	// Naughty naughty, back to demo mode
+	$uid = 1;
+      }
+    } else {
+      // No limit, do nothing
+    }
+  }
+}
+
+$db = mysql_connect("localhost", "openflights");
+mysql_select_db("flightdb",$db);
 
 // List of all this user's flights
 $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,alid,note,trid FROM airports AS s,airports AS d, flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid";

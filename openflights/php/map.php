@@ -31,9 +31,11 @@ if(! $alid) {
 
 // Set up filtering clause and verify that this trip and user are public
 $filter = "";
+$public = "O"; // default to full access
 
 if($trid && $trid != "0") {
   // Verify that we're allowed to access this trip
+  // NB: a "trid" filter can mean logged-in *and* filtered, or not logged in!
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -41,6 +43,11 @@ if($trid && $trid != "0") {
       die('Error;This trip is not public.');
     } else {
       $uid = $row["uid"];
+      $public = $row["public"];
+      if($public == "O") {
+	$_SESSION["openuid"] = $uid;
+	$_SESSION["opentrid"] = $trid;
+      }
     }
   } else {
     die('Error;No such trip.');
@@ -50,6 +57,7 @@ if($trid && $trid != "0") {
 
 if($user && $user != "0") {
   // Verify that we're allowed to view this user's flights
+  // if $user is set, we are never logged in
   $sql = "SELECT uid,public FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -57,6 +65,11 @@ if($user && $user != "0") {
       die('Error;This user\'s flights are not public.');
     } else {
       $uid = $row["uid"];
+      $public = $row["public"];
+      if($public == "O") {
+	$_SESSION["openuid"] = $uid;
+	$_SESSION["opentrid"] = null;
+      }
     }
   } else {
     die('Error;No such user.');
@@ -70,11 +83,11 @@ if($alid && $alid != "0") {
 // Load up all information needed by this user
 
 // Statistics
-// Number of flights, total distance (mi), total duration (minutes)
+// Number of flights, total distance (mi), total duration (minutes), public/open
 $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights where uid=" . $uid . " " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf("%s,%s,%s\n", $row["count"], $row["distance"], $row["duration"]);
+  printf("%s,%s,%s,%s\n", $row["count"], $row["distance"], $row["duration"], $public);
 }
 
 // List of all flights (unique by airport pair)
