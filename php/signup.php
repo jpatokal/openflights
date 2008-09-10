@@ -19,17 +19,29 @@ if($type == "NEW") {
     printf("0;Sorry, that user name is already taken.");
     exit;
   }
-}
 
-if($type == "EDIT") {
+} else {
+  // EDIT or LOAD
   $uid = $_SESSION["uid"];
   $name = $_SESSION["name"];
   if(!$uid or empty($uid)) {
     printf("0;Your session has timed out, please log in again.");
     exit;
   }
+
+  if($type == "LOAD") {
+    $sql = "SELECT * FROM users WHERE uid=" . $uid;
+    $result = mysql_query($sql, $db);
+    if($row = mysql_fetch_array($result)) {
+      printf("1;%s;%s;%s", $row["name"], $row["email"], $row["public"]);
+    } else {
+      printf("0;Unknown error");
+    }
+    exit;
+  }
+
+  // EDIT
   if($oldpw && $oldpw != "") {
-    $name = $_SESSION["name"];
     $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .
       "' AND password=MD5(CONCAT('" . mysql_real_escape_string($oldpw) . "','" . mysql_real_escape_string($name) . "'));";
     $result = mysql_query($sql, $db);
@@ -38,10 +50,6 @@ if($type == "EDIT") {
       exit;
     }
   }
-}
-
-
- else {
 }
 
 // Note: Password is stored as salted hash of pw and username
