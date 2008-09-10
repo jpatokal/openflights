@@ -37,15 +37,21 @@
 	    <ul>
 	      <li>OpenFlights has a <b>way cool map</b>.  You can pan, zoom, select, scroll and explore all you like!</li>
 	      <li>OpenFlights is <b>user-friendly and efficient</b>.  Everything's on the same page!</li>
+	      <li>OpenFlights <b>makes searching really easy</b>.  Point and click!</li>
 	      <li>OpenFlights <b>works in realtime</b>.  Make any change, and you'll see it right then and there.</li>
-	      <li>OpenFlights supports <b>"trips"</b>.  You can join up any flights together into a trip, which you can then display on its own page and even share with friends.</li>
+	      <li>OpenFlights supports <b>"trips"</b> (<a href="/help/trip.html">read more</a>).  You can join up any flights together into a trip, which you can then display on its own page and even share with friends.</li>
 	      <li>OpenFlights is <b>free in spirit</b>.  We don't try to lock you in: it's easy to import your data <i>and</i> export copies for safekeeping.</li>
 	      <li>OpenFlights is <b>free software</b>.  All our source code and (public) data is licensed under the <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="http://sourceforge.net/projects/openflights">SourceForge</a>, so you can set up your own copy or just use the bits you like.</li>
+	      <li>OpenFlights <b>can be used anywhere</b>.   No need to install any programs, synchronize data or take care of backups, just point your browser to the site.</li>
 	    </ul>
+
+	    <h4>What browsers do you support?</h4>
+
+	    <p>Developed on Firefox 3, tested on Internet Explorer 7.  If it works or breaks on anything else, please <a href="/contact.html">let us know.</a></p>
 
 	    <h4>How much does it cost?</h4>
 
-	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so OpenFlights.org reserves the right to add (unobtrusive) advertising to the site and to nag heavy users for donations.</p>
+	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so OpenFlights.org reserves the future right to add (unobtrusive) advertising to the site and to nag heavy users for donations.</p>
 
 	    <h4>Are you sure this thing will scale?</h4>
 
@@ -55,26 +61,28 @@
 	    
 	    <h4>How do I sign up and start punching in my own flights?</h4>
 	    
-	    <p>At the moment you don't, because the user interface isn't comprehensible/stable enough to let the world go crazy on the flight database quite yet.  Stay tuned &mdash; it's going to be a <i>lot</i> nicer than what you're used to.  If you're really keen on beta-testing, drop us a line at <i>jani at contentshare dot sg</i> and tell us why.</p>
-	   
+	    <p>Click on the <input type="button" value="Sign up" align="middle"> button (on the <a href="/">main page</a>, not here!) and pick a username.  Your account will be created instantly, no e-mail confirmation or other tiresome hassles needed.</p>
+
+	    <h4>How do I share my flight map with friends?</h4>
+
+	    <p>Point them to <b>http://openflights.org/user/<i>yourname</i></b>.  You can also click on <input type="button" value="Settings" align="middle"> when logged in to find your address; this is particularly useful if your name has spaces or unusual characters.</p>
+	    <p>Example: <a href="http://openflights.org/user/jpatokal">http://openflights.org/user/jpatokal</a></p>
+
+	    <h4>When are you launching?</h4>
+	    
+	    <p>OpenFlights was soft-launched (gamma release) on Friday, September 12th, 2008, but the "official" launch will happen when it's ready.  If you'd like to be notified, send mail to <i>jani at contentshare dot sg</i>.</p>
+
 	    <h4>What's the roadmap then?</h4>
 
-	    Roughly like this:
+	    <p>Roughly like this:</p>
 	    <ol>
-	      <li>Implement simple flight input (point-to-point).</li>
-	      <li>Implement flight editing.</li>
-	      <li>Add user logins and privacy controls.</li>
-	      <li><b>Launch public beta.</b></li>
-	      <li>Implement complex flight input (multi-segment and repeated flights).</li>
 	      <li>Implement importing and exporting.</li>
+	      <li>Implement complex flight input (multi-segment and repeated flights).</li>
 	      <li>Add support for filtering according to pretty much anything.</li>
 	      <li>Graphical bells and whistles (eg. color-coding of flights).</li>
 	      <li><b>Full public launch.</b></li>
 	    </ol>
-
-	    <h4>When are you launching?</h4>
-	    
-	    <p>When it's ready.  If you'd like to be notified, send mail to <i>jani at contentshare dot sg</i>.</p>
+	    <p>If you think there's an important feature still missing, <a href="http://sourceforge.net/tracker/?atid=1097180&group_id=235620&func=browse">tell us about it</a>.</p>
 
 	    <h4>Why is there a blank stripe in the map and/or half the airports disappear when I scroll around from the Americas to Asia or visa versa?</h4>
 	    
@@ -82,7 +90,7 @@
 	    
 	    <h4>Why is the map slow to draw sometimes?  Why do map updates slow down my computer?</h4>
 	    
-	    <p>Map tiles are loaded off the Internet, and the flights, airports etc are drawn on top by your own browser.  Switching to a faster computer or just shrinking the window size will speed up things.  The NASA geographic tiles are also larger and thus slower to load than the Metacarta political ones.</p>
+	    <p>Map tiles are loaded off the Internet, and the flights, airports etc are drawn on top by your own browser.  Switching to a faster computer, using Firefox instead of Internet Explorer, or just shrinking the window size will speed up things.  The NASA geographic tiles are also larger and thus slower to load than the Metacarta political ones.</p>
 	    
 	    <h4>Why aren't the flight paths curved?</h4>
 	    
@@ -90,10 +98,12 @@
 
 	    <p>The distances for the statistics, though, are calculated correctly as <a href="http://en.wikipedia.org/en/Great-circle_distance">great circle distances</a>.</p>
 	    
-	    <h4>Are those flight times estimates accurate?</h4>
+	    <h4>Are those flight time estimates accurate?</h4>
 	    
-	    <p>We currently use a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p>
+	    <p>The site currently uses a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p>
 	    
+	    <p>Letting users punch in actual times and calculating actual durations is a <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=2049976&group_id=235620&atid=1097180">pending feature</a>, but time zones make this harder than you'd think.  However, you can already manually overwrite the flight time if you wish.</p>
+
 	    <h4>Why is my favorite airport missing?</h4>
 
 	    <p>Short answer: <a href="/contact.html">Let us know</a> and we'll add it.</p>
@@ -103,6 +113,7 @@
 	    <h4>You really need to implement cool feature X, and fix terrible bug Y, and do it <i>right now</i>!</h4>
 	    
 	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!</p>
+	    <p>Direct links: <a href="http://sourceforge.net/tracker/?atid=1097177&group_id=235620&func=browse">Known bugs</a>, <a href="http://sourceforge.net/tracker/?atid=1097180&group_id=235620&func=browse">Feature requests</a></p>
 	    
 	    <h2>Technical jibber-jabber</h2>
 	    
@@ -112,15 +123,15 @@
 	    
 	    <h4>And the rest of it?</h4>
 	    
-	    <p>JavaScript frontend chock full of AJAX-y goodness, plus PHP scripts on the backend shifting through reams of data pulled from MySQL.</p>
+	    <p>JavaScript frontend chock full of AJAX-y goodness served off Apache running on Linux, plus PHP scripts on the backend shifting through reams of data pulled from MySQL.  In other words, a classic LAMP stack.</p>
 	    
 	    <h4>Where did you get all that airline and airport data?</h4>
 	    
-	    <p>Airport data (c. 4000 airports) was generated by mashing together DAFIF (October 2006 cycle) for location, ICAO data and country data with the Global Airport Database for IATA codes and city names, plus some manual updates for major post-2006 changes.</p>
+	    <p>Airport data (c. 4000 airports) was generated by mashing together DAFIF (October 2006 cycle) for location, ICAO data and country data with the Global Airport Database for IATA codes and city names, plus quite a bit of manual updating.</p>
 	    
 	    <p>Airline data (c. 5000 airlines) was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.</p>
 	    
-	    <p>Raw data, cooked data and recipes can be found in the SourceForge SVN repository under <i>data</i>.</p>
+	    <p>Raw data, cooked data and recipes can be found in the <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/">SourceForge SVN repository</a>.</p>
 
 	    <p><i>See also: <a href="help/database.html">Help: Database</i></p>	    
 	  </div>
