@@ -1,5 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head><title>OpenFlights (BETA)</title>
+  <head><title>OpenFlights.org: Fly the open skies</title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="stylesheet" href="/css/sortable.css" type="text/css">
@@ -126,8 +126,8 @@
     Distance <input type="text" name="distance" size="5" style="text-align: right"/> mi&nbsp;&nbsp;
   </td>
 
-  <td>Trip</td>
-  <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:editTrip()'/></td>
+  <td>Trip<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
+  <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="Edit this trip" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td>
 
 </tr><tr>
   <td><font color="red">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>

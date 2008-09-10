@@ -12,11 +12,11 @@ window.onload = function init(){
     type = "EDIT";
     trid = urlbits[1].split('=')[1];
     document.getElementById("title").innerHTML = "<h1>Edit trip</h1>";
-    document.getElementById("resultbox").innerHTML = "<i>Loading...</i>";
+    document.getElementById("miniresultbox").innerHTML = "<i>Loading...</i>";
     xmlhttpPost(URL_TRIP, "LOAD");
   } else {
     document.getElementById("title").innerHTML = "<h1>Add new trip</h1>";
-    document.getElementById("resultbox").innerHTML = "<i>Enter your new trip's details here.</i>";
+    document.getElementById("miniresultbox").innerHTML = "<i>Enter your new trip's details here.</i>";
   }
 }
 
@@ -74,11 +74,11 @@ function validate() {
     return;
   }
 
-  document.getElementById("resultbox").innerHTML = "<i>Processing...</i>";
+  document.getElementById("miniresultbox").innerHTML = "<i>Processing...</i>";
   xmlhttpPost(URL_TRIP, type);
 }
 
-
+// Load up trip data
 function loadTrip(str) {
   var code = str.split(";")[0];
   if(code == "1") {
@@ -89,6 +89,7 @@ function loadTrip(str) {
     var form = document.forms['tripform'];
     tripform.name.value = name;
     tripform.url.value = url;
+    tripform.puburl.value = "http://openflights.org/trip/" + trid;
     for (r=0; r < tripform.privacy.length; r++){
       if (tripform.privacy[r].value == privacy) {
 	tripform.privacy[r].checked = true;
@@ -96,19 +97,20 @@ function loadTrip(str) {
 	tripform.privacy[r].checked = false;
       }
     }
-    document.getElementById("resultbox").innerHTML = "<i>Edit your trip details here.</i>";
+    document.getElementById("miniresultbox").innerHTML = "<i>Edit your trip details here.</i>";
   } else {
     showError(str.split(";")[1]);
   }
 }
 
+// Check if trip creation/editing succeeded
 function editTrip(str) {
   var code = str.split(";")[0];
   var trid = str.split(";")[1];
   var message = str.split(";")[2];
   // Operation successful
   if(code != "0") {
-    document.getElementById("resultbox").innerHTML = message;
+    document.getElementById("miniresultbox").innerHTML = message;
     var form = document.forms['tripform'];
     parent.opener.newTrip(code, trid, form.name.value, form.url.value);
     window.close();
@@ -118,5 +120,5 @@ function editTrip(str) {
 }
 
 function showError(err) {
-  document.getElementById("resultbox").innerHTML = "<font color=red>" + err + "</font>";
+  document.getElementById("miniresultbox").innerHTML = "<font color=red>" + err + "</font>";
 }

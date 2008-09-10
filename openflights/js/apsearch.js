@@ -78,7 +78,7 @@ function xmlhttpPost(strURL, offset) {
       'db=' + escape(db) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked;
-    document.getElementById("resultbox").innerHTML = "<I>Searching...</I>";
+    document.getElementById("miniresultbox").innerHTML = "<I>Searching...</I>";
   }
   self.xmlHttpReq.send(query);
 }
@@ -150,7 +150,7 @@ function searchResult(str) {
     table += "</tr>";
   }
   table += "</table><br>";
-  document.getElementById("resultbox").innerHTML = table;
+  document.getElementById("miniresultbox").innerHTML = table;
 }
 
 // Clear form

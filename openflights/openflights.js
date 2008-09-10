@@ -9,6 +9,7 @@ var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 // Filter selections and currently chosen airport 
 var filter_user = 0, filter_trid = 0, filter_alid = 0, apid = 0;
 var tripname, tripurl;
+var privacy = "Y";
 
 // Temporary variables for current flight being edited
 var fid = 0, alid = 0, plane;
@@ -131,7 +132,7 @@ function parseArgument(name)
   // 0    1 2          3    4
   var urlbits = window.location.href.split('/');
   if(urlbits[3] == name) {
-    return urlbits[4];
+    return unescape(urlbits[4]);
   } else {
     return 0;
   }
@@ -208,9 +209,13 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
 
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count) {
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
-  // Detailed flights accessible only if user is logged in or system is in "demo mode"
-  if( (filter_user == 0 && filter_trid == 0) ||
-      logged_in)
+  // Detailed flights accessible only if...
+  // 1. user is logged in
+  // 2. system is in "demo mode"
+  // 3. privacy is set to (O)pen
+  if( logged_in ||
+      (filter_user == 0 && filter_trid == 0) ||
+      privacy == "O")
     {
       desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")'>";
   }
@@ -383,10 +388,6 @@ function xmlhttpPost(strURL, id, param) {
   if(strURL == URL_FLIGHTS) {
     if(param != "EDIT" && param != "COPY") {
       if(id) {
-	// Don't reload the current airport
-	if(id == apid) {
-	  return;
-	}
 	apid = id;
       } else {
 	id = 0;
@@ -639,7 +640,13 @@ function updateMap(str){
     "Distance: " + col[1] + " mi<br>" +
     "Duration: " + days + "d " + hours + ":" + min;
   document.getElementById("stats").innerHTML = stats;
-    
+  privacy = col[3];
+
+  // New user with no flights?  Then don't even try to draw
+  if(col[0] == "0") {
+    return;
+  }
+
   var rows = flights.split(":");
   for (r in rows) {
     var col = rows[r].split(",");
@@ -676,7 +683,7 @@ function listFlights(str, desc) {
       table += desc.replace(/\<br\>/g, " &mdash; ");
     }
     table += "<table class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">";
-    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Reg.</th><th>Seat</th><th>Type</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>";
+    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>";
     if(logged_in) {
       table += "<th class=\"unsortable\">Action</th>";
     }
@@ -686,13 +693,18 @@ function listFlights(str, desc) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17
       var col = rows[r].split(",");
       var trip = col[17];
+      var seat = col[8] + " " + seattypes[col[9]];
+      var plane = col[13];
+      if(col[14] != "") {
+	plane += " (" + col[14] + ")";
+      }
       if(logged_in && trip != "") {
 	trip = "<a href=\"#\" onclick=\"JavaScript:editTrip(" + trip + ");\">" + trip + "</a>";
       }
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 	"<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
 	"<td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
-	"</td><td>" + col[13] + "</td><td>" + col[14] + "</td><td>" + col[8] + "</td><td>" + seattypes[col[9]] +
+	"</td><td>" + plane + "</td><td>" + seat +
 	"</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
 	"</td><td>" + trip + "</td>" +
 	"</td><td>" + col[16].substring(0,15) + "</td>";
@@ -991,7 +1003,7 @@ function popNewAirport(type) {
   if(type) {
     input_toggle = type;
   }
-  window.open('/help/apsearch.html', 'Airport', 'width=500,height=520,scrollbars=yes');
+  window.open('/html/apsearch.html', 'Airport', 'width=500,height=520,scrollbars=yes');
 }
 
 function addNewAirport(data, name) {
@@ -1039,16 +1051,21 @@ function cancelNewPlane(really) {
 }
 
 //
-// Handle the "add new trip" button in input
+// Handle the "add new/edit trip" buttons in input
+// thisTrip can be "ADD" (new), "EDIT" (edit selected), or a numeric trip id (edit this)
 //
 function editTrip(thisTrip) {
-  var url = '/help/trip.html';
+  var url = '/html/trip.html';
   var trid = 0;
-  if(thisTrip) {
-    trid = thisTrip;
+  if(thisTrip == "ADD") {
+    // do nothing, we'll create a new trip
   } else {
-    var inputform = document.forms['inputform'];
-    trid = inputform.trips[inputform.trips.selectedIndex].value;
+    if(thisTrip == "EDIT") {
+      var inputform = document.forms['inputform'];
+      trid = inputform.trips[inputform.trips.selectedIndex].value;
+    } else {
+      trid = thisTrip;
+    }
   }
   if(trid != 0) {
     url += "?trid=" + trid;
@@ -1292,14 +1309,14 @@ function help(context) {
 // Register new account
 //
 function signUp() {
-  window.open('/help/signup.html', 'CreateNewAccount', 'width=500,height=500,scrollbars=yes');
+  window.open('/html/signup.html', 'CreateNewAccount', 'width=500,height=500,scrollbars=yes');
 }
 
 //
 // Change settings
 //
 function settings() {
-  window.open('/help/settings.html', 'ChangeSettings', 'width=500,height=500,scrollbars=yes');
+  window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=400,scrollbars=yes');
 }
 
 //
