@@ -23,6 +23,7 @@
 	min-width: 740px;
 	padding: 0;
 	margin: 0;
+        height: 100%;
 	}
 
 /* You must include some sort of border on this rule.  Otherwise IE 6.0 will not */
@@ -30,12 +31,14 @@
 #sideBarContentWrapper
         {
 	background-position: right;
+        height: 65%;
         }
 
 #contentContainer
         {
         float: left;
         width: 100%;
+        height: 100%;
         }
 
 #nonmap
@@ -49,7 +52,7 @@
 	{
 	margin-right: 240px;
 	padding: 0px;
-        height: 65%;
+        height: 100%;
 	}
 
 #maptitle { 
