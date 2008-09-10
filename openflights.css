@@ -132,11 +132,16 @@
 /* whitespace from being rendered.                                            */
 #resultbox
 	{
-	height: 1%;
+	height: 34%;
 	margin: 0;
 	padding: 5px 10px;
 	clear: both;
+        overflow: auto;
 	}
+
+#miniresultbox { 
+  padding: 5px 10px;
+}
 
 input:focus, textarea:focus { background-color: LightYellow; }
 
