@@ -13,9 +13,13 @@
       <FORM name="signupform">
 	<h1>OpenFlights: Settings</h1>
 
-	<div id="resultbox">Change your account settings</div><br>
+	<div id="miniresultbox"><i>Account settings</i></div>
 	
 	<table>
+	    <tr>
+	      <td>Openflights URL</td>
+	      <td><INPUT type="text" name="myurl" style="border:none" size="40"></td>
+	    </tr>
 	    <tr>
 	      <td>E-mail <i>(optional)</i>&nbsp;&nbsp;</td>
 	      <td><INPUT type="text" name="email" size="20"></td>
@@ -27,7 +31,7 @@
 		  <input type="radio" name="privacy" value="O">Open (all flight data shared)</td>
 	    </tr><tr>
 	      <td colspan="2">
-		<div id="contexthelp">Change password <i>(optional)</i></div>
+		<div id="contexthelp"><i>Change password (optional)</i></div>
 	      </td>
 	    </tr><tr>
 	      <td>Current password</td>
