@@ -212,7 +212,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   if( (filter_user == 0 && filter_trid == 0) ||
       logged_in)
     {
-    desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + desc + "\")'>";
+      desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")'>";
   }
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
 
@@ -317,7 +317,8 @@ function xmlhttpPost(strURL, id, param) {
 	if(param == "EDIT" || param == "COPY") {
 	  editFlight(self.xmlHttpReq.responseText, param);
 	} else {
-	  listFlights(self.xmlHttpReq.responseText, param);
+	  // param contains previously escaped semi-random HTML title
+	  listFlights(self.xmlHttpReq.responseText, unescape(param));
 	}
       }
       if(strURL == URL_GETCODE) {
@@ -442,7 +443,7 @@ function xmlhttpPost(strURL, id, param) {
       }
       var type = inputform.seat_type.value;
       if(type == "-") type = "";
-      var myClass = radioValue(inputform.class);
+      var myClass = radioValue(inputform.myClass);
       var reason = radioValue(inputform.reason);
       var plid = inputform.plane[inputform.plane.selectedIndex].value;
       if(plid == 0) plid = "NULL";
@@ -662,7 +663,7 @@ function updateMap(str){
 function startListFlights() {
   var tripName = document.forms['filterform'].Trips[document.forms['filterform'].Trips.selectedIndex].text;  
   var airlineName = document.forms['filterform'].Airlines[document.forms['filterform'].Airlines.selectedIndex].text;
-  xmlhttpPost(URL_FLIGHTS, 0, "Flights for " + tripName + " on " + airlineName);
+  xmlhttpPost(URL_FLIGHTS, 0, escape("Flights for " + tripName + " on " + airlineName));
 }
 
 function listFlights(str, desc) {
@@ -832,7 +833,7 @@ function editFlight(str, param) {
       seat_type.selectedIndex = index;
     }
   }
-  var myClass = inputform.class;
+  var myClass = inputform.myClass;
   for(index = 0; index < myClass.length; index++) {
     if(myClass[index].value == col[10]) {
       myClass[index].checked = true;
@@ -944,22 +945,22 @@ function setInputAllowed(element, state) {
   }
   if(state) {
     style = 'hidden';
-    b_add.disabled = false;
-    b_addclear.disabled = false;
-    b_clear.disabled = false;
-    b_exit.disabled = false;
-    b_save.disabled = false;
-    b_delete.disabled = false;
-    b_cancel.disabled = false;
+    document.getElementById("b_add").disabled = false;
+    document.getElementById("b_addclear").disabled = false;
+    document.getElementById("b_clear").disabled = false;
+    document.getElementById("b_exit").disabled = false;
+    document.getElementById("b_save").disabled = false;
+    document.getElementById("b_delete").disabled = false;
+    document.getElementById("b_cancel").disabled = false;
   } else {
     style = 'visible';
-    b_add.disabled = true;
-    b_addclear.disabled = true;
-    b_clear.disabled = true;
-    b_exit.disabled = true;
-    b_save.disabled = true;
-    b_delete.disabled = true;
-    b_cancel.disabled = true;
+    document.getElementById("b_add").disabled = true;
+    document.getElementById("b_addclear").disabled = true;
+    document.getElementById("b_clear").disabled = true;
+    document.getElementById("b_exit").disabled = true;
+    document.getElementById("b_save").disabled = true;
+    document.getElementById("b_delete").disabled = true;
+    document.getElementById("b_cancel").disabled = true;
   }
   document.getElementById(ajax).style.visibility = style;
 }
@@ -990,7 +991,7 @@ function popNewAirport(type) {
   if(type) {
     input_toggle = type;
   }
-  window.open('/help/apsearch.html', 'OpenFlights: Add New Airport', 'width=500,height=520,scrollbars=yes');
+  window.open('/help/apsearch.html', 'Airport', 'width=500,height=520,scrollbars=yes');
 }
 
 function addNewAirport(data, name) {
@@ -1052,7 +1053,7 @@ function editTrip(thisTrip) {
   if(trid != 0) {
     url += "?trid=" + trid;
   }
-  window.open(url, 'OpenFlights: Trip editor', 'width=500,height=250,scrollbars=yes');
+  window.open(url, 'TripEditor', 'width=500,height=250,scrollbars=yes');
 }
 
 // User has added or edited trip, so punch it in
@@ -1284,21 +1285,21 @@ function selectAirline(new_alid) {
 // Context help
 //
 function help(context) {
-  window.open('/help/' + context + '.html', 'OpenFlights Help: ' + context, 'width=500,height=400,scrollbars=yes');
+  window.open('/help/' + context + '.html', 'Help', 'width=500,height=400,scrollbars=yes');
 }
 
 //
 // Register new account
 //
 function signUp() {
-  window.open('/help/signup.html', 'OpenFlights: Create new account', 'width=500,height=500,scrollbars=yes');
+  window.open('/help/signup.html', 'CreateNewAccount', 'width=500,height=500,scrollbars=yes');
 }
 
 //
 // Change settings
 //
 function settings() {
-  window.open('/help/settings.html', 'OpenFlights: Change settings', 'width=500,height=500,scrollbars=yes');
+  window.open('/help/settings.html', 'ChangeSettings', 'width=500,height=500,scrollbars=yes');
 }
 
 //

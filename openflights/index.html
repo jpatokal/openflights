@@ -18,7 +18,7 @@
 	  <div id="map" class="smallmap"></div>
 
 	    <div id="newairport" style="display: none">
-	      <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport()'>	    
+	      <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport(null)'>	    
 	    </div>
 
 	    <div id="maptitle">
@@ -39,12 +39,12 @@
 	      
 	      <div id="loginform" style="display: inline">
 		<form name="login">
-		<table cellspacing="5" cellpadding="0" border="0" width="200">
-		  <tr><td>Username</td><td>
+		<table cellspacing="5" cellpadding="0" border="0">
+		  <tr><td>Username&nbsp;</td><td>
 		      <input type="Text" name="name" align="top" size="10">
 		    </td>
 		  </tr><tr>
-		    <td align=right>Password</td><td>
+		    <td align=right>Password&nbsp;</td><td>
 		      <input type="password" name="pw" align="top" size="10">	    
 		    </td>
 		  </tr><tr>
@@ -171,9 +171,9 @@
 
   <td></td>
   <td>Class</td>
-  <td><input type="radio" name="class" value="Y" CHECKED>Economy
-      <input type="radio" name="class" value="C">Business
-      <input type="radio" name="class" value="F">First
+  <td><input type="radio" name="myClass" value="Y" CHECKED>Economy
+      <input type="radio" name="myClass" value="C">Business
+      <input type="radio" name="myClass" value="F">First
   </td>
 
 </tr><tr>
