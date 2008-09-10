@@ -13,20 +13,22 @@
       <FORM name="tripform">
 	<div id="title"></div>
 
-	<div id="resultbox"></div><br>
-
+	<div id="miniresultbox"></div>
 	<table>
 	    <tr>
 	      <td>Name</td>
 	      <td><INPUT type="text" name="name" size="40"></td>
 	    </tr><tr>
-	      <td>URL <i>(optional)</i>&nbsp;</td>
+	      <td>My URL <i>(optional)</i>&nbsp;</td>
 	      <td><INPUT type="text" name="url" size="40"></td>
 	    </tr><tr>
 	      <td style="vertical-align: top">Trip privacy</td>
 	      <td><input type="radio" name="privacy" value="N" CHECKED>Private (visible only to you)<br>
 		  <input type="radio" name="privacy" value="Y">Public (map and stats shared)<br>
 		  <input type="radio" name="privacy" value="O">Open (all flight data shared)</td>
+	    </tr><tr>
+	      <td>OpenFlights URL</td>
+	      <td><input type="text" value="Not assigned yet" name="puburl" style="border:none" readonly></td>
 	    </tr>
 	</table><br>
 
