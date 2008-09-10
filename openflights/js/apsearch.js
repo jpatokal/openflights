@@ -112,6 +112,8 @@ function searchResult(str) {
   var db = document.forms['searchform'].db.value;
   for(a in airports) {
     var col = airports[a].split(";");
+
+    // First line contains header info
     if(a == 0) {
       offset = parseInt(col[0]);
       max = col[1];
@@ -139,11 +141,13 @@ function searchResult(str) {
       table += "</tr>";
       continue;
     }
+
+    // Meat of the table
     table += "<tr><td>" + col[1] + "</td>";
     if(db == DB_OPENFLIGHTS) {
-      table += "<td style=\"float: right\"><INPUT type=\"button\" value=\"Select\" onClick=\"selectAirport('" + col[0] + "','" + col[1] + "')\"></td>";
+      table += "<td style='float: right'><INPUT type='button' value='Select' onClick='selectAirport(\"" + col[0] + "\",\"" + escape(col[1]) + "\")'></td>";
     }
-    table += "<tr>";
+    table += "</tr>";
   }
   table += "</table><br>";
   document.getElementById("resultbox").innerHTML = table;
@@ -163,7 +167,7 @@ function clearSearch() {
 
 // Airport selected, kick it back to main window and close this
 function selectAirport(data, name) {
-  parent.opener.addNewAirport(data, name);
+  parent.opener.addNewAirport(data, unescape(name));
   window.close();
 }
 
