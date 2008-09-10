@@ -32,7 +32,7 @@ if($trid && $trid != "0") {
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($row["uid"] != $uid and $row["public"] != "Y") {
+    if($row["uid"] != $uid and $row["public"] == "N") {
       die('Error;This trip is not public.');
     } else {
       $uid = $row["uid"];
@@ -45,7 +45,7 @@ if($user && $user != "0") {
   $sql = "SELECT uid,public FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($row["public"] != "Y") {
+    if($row["public"] == "N") {
       die('Error;This user\'s flights are not public.');
     } else {
       $uid = $row["uid"];
