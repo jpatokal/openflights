@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: Add new airport</title>
+    <title>OpenFlights: Airport search</title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
@@ -11,7 +11,7 @@
   <body>
     <div id="contexthelp">
       <FORM name="searchform">
-	<h1>Add new airport</h1>
+	<h1>Airport search</h1>
 	Fill one or more fields below to search for matching airports.
 	<table>
 	    <tr>
@@ -31,6 +31,14 @@
 		<div id="country_select"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
 	      </td>
 	    </tr><tr>
+	      <td>Latitude (&plusmn;dd)</td>
+	      <td>Longitude (&plusmn;dd)</td>
+	      <td>Elevation (ft)</td>
+	    </tr><tr>
+	      <td><INPUT type="text" name="y" size="12"></td>
+	      <td><INPUT type="text" name="x" size="12"></td>
+	      <td><INPUT type="text" name="elevation" size="6"></td>
+	    </tr><tr>
 	      <td>Database<sup><a href="#help" onclick='JavaScript:help("database")'>?</a></sup></td>
 	    </tr><tr>
 	      <td>
@@ -47,9 +55,18 @@
 	</table>
 	<br>
 
-	<INPUT type="button" value="Search" onClick="doSearch(0)">
-	<INPUT type="button" value="Clear" onClick="clearSearch()">
-	<INPUT type="button" value="Cancel" onClick="window.close()">
+	<table width="100%">
+	    <tr>
+	      <td>
+		<INPUT type="button" value="Search" onClick="doSearch(0)">
+		<INPUT type="button" value="Clear" onClick="clearSearch()">
+		<INPUT type="button" value="Cancel" onClick="window.close()">
+		</td><td style="text-align: right">
+		<INPUT type="button" title="Record the current data as a new airport." value="Add as new" onClick="doRecord()">
+		</td>
+	    </tr>
+	</table>
+
       </FORM>
 
     </div>

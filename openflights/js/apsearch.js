@@ -12,10 +12,14 @@ window.onload = function init(){
 }
 
 function doSearch(offset) {
-  xmlhttpPost(URL_APSEARCH, offset);
+  xmlhttpPost(URL_APSEARCH, offset, "SEARCH");
 }
 
-function xmlhttpPost(strURL, offset) {
+function doRecord(offset) {
+  xmlhttpPost(URL_APSEARCH, offset, "RECORD");
+}
+
+function xmlhttpPost(strURL, offset, action) {
   var xmlHttpReq = false;
   var self = this;
   // Mozilla/Safari
@@ -36,7 +40,12 @@ function xmlhttpPost(strURL, offset) {
       }
 
       if(strURL == URL_APSEARCH) {
-	searchResult(self.xmlHttpReq.responseText);
+	if(action == "SEARCH") {
+	  searchResult(self.xmlHttpReq.responseText);
+	}
+	if(action == "RECORD") {
+	  recordResult(self.xmlHttpReq.responseText);
+	}
       }
     }
   }
@@ -44,10 +53,15 @@ function xmlhttpPost(strURL, offset) {
   if(strURL == URL_APSEARCH) {
     var form = document.forms['searchform'];
     var db = form.db.value;
+    var airport = form.airport.value;
     var city = form.city.value;
     var code = form.country.value;
     var iata = form.iata.value;
     var icao = form.icao.value;
+    var x = form.x.value;
+    var y = form.y.value;
+    var elevation = form.elevation.value;
+    var country = form.country[form.country.selectedIndex].text
 
     if(iata != "" && iata.length != 3) {
       alert("IATA/FAA codes must be exactly three letters.");
@@ -58,7 +72,7 @@ function xmlhttpPost(strURL, offset) {
       return;
     }
 
-    if(db == DB_DAFIF) {
+    if(action == "SEARCH" && db == DB_DAFIF) {
       if(city != "") {
 	alert("Sorry, the DAFIF database does not contain city information.");
 	return;
@@ -69,16 +83,56 @@ function xmlhttpPost(strURL, offset) {
       }
     }
 
-    query = 'airport=' + escape(form.airport.value) + '&' +
+    if(action == "RECORD") {
+      if(airport == "") {
+	alert("You must enter an airport name.");
+	return;
+      }
+      if(city == "") {
+	alert("You must enter a city name.");
+	return;
+      }
+      if(code == "") {
+	alert("You must select a country.");
+	return;
+      }
+      if(icao == "") {
+	alert("You must enter an ICAO code.");
+	return;
+      }
+      if(x == "" || y == "" || elevation == "") {
+	alert("You must enter latitude, longitude and elevation.");
+	return;
+      }
+
+      var re_dd = /^[-+]?\d*\.?\d*$/;
+      if(! re_dd.test(x) || ! re_dd.test(y)) {
+	alert("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively.  For example, San Francisco (SFO) is at latitude 37.618972(N), longitude -122.374889(W).");
+	return;
+      }
+
+      desc = airport + ", " + city + ", " + country + " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + icao + ")";
+      quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
+      if(! confirm("Are you sure you want to add " + desc + " as a new airport, located in the " + quad + " quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming.")) {
+	document.getElementById("miniresultbox").innerHTML = "<I>Cancelled.</I>";
+	return;
+      }
+    }
+
+    query = 'airport=' + escape(airport) + '&' +
       'iata=' + escape(iata) + '&' +
       'icao=' + escape(icao) + '&' +
       'city=' + escape(city) + '&' +
-      'country=' + escape(form.country[form.country.selectedIndex].text) + '&' +
+      'country=' + escape(country) + '&' +
       'code=' + escape(code) + '&' +
+      'x=' + x + '&' +
+      'y=' + y + '&' +
+      'elevation=' + elevation + '&' +
       'db=' + escape(db) + '&' +
       'offset=' + offset + '&' +
-      'iatafilter=' + form.iatafilter.checked;
-    document.getElementById("miniresultbox").innerHTML = "<I>Searching...</I>";
+      'iatafilter=' + form.iatafilter.checked + '&' +
+      'action=' + action;
+    document.getElementById("miniresultbox").innerHTML = (action == "SEARCH" ? "<I>Searching...</I>" : "<I>Recording...</I>");
   }
   self.xmlHttpReq.send(query);
 }
@@ -119,7 +173,7 @@ function searchResult(str) {
       max = col[1];
       sql = col[2];
       if(max == 0) {
-	table += "<tr><td><i>No matches found.</i></td></td>";
+	table += "<tr><td><i>No matches found in this database &mdash; try another?</i></td></td>";
 	break;
       }
       table += "<tr><td><b>Results " + (offset+1) + " to " + Math.min(offset+10, max) + " of " + max + "</b><br></td>";
@@ -127,12 +181,12 @@ function searchResult(str) {
       if(max > 10) {
 	table += "<td style=\"float: right\">";
 	if(offset - 10 >= 0) {
-	  table += "<INPUT type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
+	  table += "<INPUT id=\"b_back\" type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
 	} else {
 	  table += "<INPUT type=\"button\" value=\"<\" disabled>";
 	}
 	if(offset + 10 < max) {
-	  table += "<INPUT type=\"button\" value=\">\" onClick=\"doSearch(" + (offset+10) + ")\">";
+	  table += "<INPUT id=\"b_fwd\" type=\"button\" value=\">\" onClick=\"doSearch(" + (offset+10) + ")\">";
 	} else {
 	  table += "<INPUT type=\"button\" value=\">\" disabled>";
 	}
@@ -143,9 +197,20 @@ function searchResult(str) {
     }
 
     // Meat of the table
-    table += "<tr><td>" + col[1] + "</td>";
+    // 0 iata, 1 icao, 2 apid, 3 x, 4 y, 5, elevation, 6 ap-name, 7 code, 8 printable-name
+    if(a % 2 == 1) {
+      bgcolor = "#fff";
+    } else {
+      bgcolor = "#ddd";
+    }
+    table += "<tr><td style='background-color: " + bgcolor + "'>" + col[8] + "</td>";
     if(db == DB_OPENFLIGHTS) {
-      table += "<td style='float: right'><INPUT type='button' value='Select' onClick='selectAirport(\"" + col[0] + "\",\"" + escape(col[1]) + "\")'></td>";
+      // code:apid:x:y
+      id = (col[0] != "" ? col[0] : col[1]) + ":" + col[2] + ":" + col[3] + ":" + col[4];
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col[7]) + "\")'></td>";
+    }
+    if(db == DB_DAFIF) {
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Load' onClick='loadDAFIFAirport(\"" + col[0] + "\",\"" + col[1] + "\",\"" + col[3] + "\",\"" + col[4] + "\",\"" + col[5] + "\",\"" + escape(col[6]) + "\",\"" + col[7] + "\")'></td>";
     }
     table += "</tr>";
   }
@@ -153,7 +218,52 @@ function searchResult(str) {
   document.getElementById("miniresultbox").innerHTML = table;
 }
 
-// Clear form
+// Load data from DAFIF search into form
+function loadDAFIFAirport(iata, icao, x, y, elevation, name, country) {
+  var b_back = document.getElementById("b_back");
+  var b_fwd = document.getElementById("b_fwd");
+  if(b_back) b_back.disabled = true;
+  if(b_fwd) b_fwd.disabled = true;
+
+  var form = document.forms['searchform'];
+  form.airport.value = unescape(name);
+  form.iata.value = iata;
+  form.icao.value = icao;
+  form.x.value = x;
+  form.y.value = y;
+  form.elevation.value = elevation;
+  var country_select = form.country;
+  for(index = 0; index < country_select.length; index++) {
+    if(country_select[index].value == country) {
+      country_select.selectedIndex = index;
+    }
+  }
+}
+
+// Did we manage to record the airport?
+function recordResult(str) {
+  var col = str.split(";");
+  // Error?
+  if(col[0] != "1") {
+    document.getElementById("miniresultbox").innerHTML = col[1];
+  } else {
+    document.getElementById("miniresultbox").innerHTML = col[2];
+
+    // Select newly minted airport and return to main
+    var form = document.forms['searchform'];
+    var iata = form.iata.value;
+    var country = form.country[form.country.selectedIndex].text
+
+    // code:apid:x:y
+    code = (iata != "" ? iata : form.icao.value);
+    // city-airport (code), country
+    data = code + ":" + col[1] + ":" + form.x.value + ":" + form.y.value;
+    name = form.city.value + "-" + form.airport.value + " (" + code + "), " + country;
+    selectAirport(data, name);
+  }
+}
+
+// Clear form -- everything *except* database
 function clearSearch() {
   var form = document.forms['searchform'];
   form.airport.value = "";
@@ -161,7 +271,9 @@ function clearSearch() {
   form.country.selectedIndex = 0;
   form.iata.value = "";
   form.icao.value = "";
-  form.db.selectedIndex = 0;
+  form.x.value = "";
+  form.y.value = "";
+  form.elevation.value = "";
   form.iatafilter.checked = true;
 }
 
