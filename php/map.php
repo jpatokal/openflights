@@ -91,7 +91,7 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 }
 
 // List of all flights (unique by airport pair)
-$sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid";
+$sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -105,7 +105,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 printf ("\n");
 
 // List of all airports
-$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND uid=" . $uid . $filter . " GROUP BY name ORDER BY visits DESC";
+$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . $filter . " GROUP BY name ORDER BY visits DESC";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -140,7 +140,7 @@ if($init == "true") {
   printf ("\n");
   
   // List of all airlines
-  $sql = "SELECT DISTINCT a.alid, name FROM airlines as a, flights as f WHERE a.alid=f.alid AND uid=" . $uid . " ORDER BY name";
+  $sql = "SELECT DISTINCT a.alid, name FROM airlines as a, flights as f WHERE a.alid=f.alid AND f.uid=" . $uid . " ORDER BY name";
   $result = mysql_query($sql, $db);
   $first = true;
   while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

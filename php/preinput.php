@@ -15,7 +15,7 @@ mysql_select_db("flightdb",$db);
 //
 
 // List of this user's airports
-$sql = "SELECT DISTINCT a.apid,a.name,a.iata,a.icao,a.city,a.country,a.x,a.y FROM flights AS f,airports AS a WHERE uid=" . $uid . " AND (a.apid=f.src_apid OR a.apid=f.dst_apid) ORDER BY a.iata";
+$sql = "SELECT DISTINCT a.apid,a.name,a.iata,a.icao,a.city,a.country,a.x,a.y FROM flights AS f,airports AS a WHERE f.uid=" . $uid . " AND (a.apid=f.src_apid OR a.apid=f.dst_apid) ORDER BY a.iata";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -33,7 +33,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List of this user's airlines
-$sql = "SELECT DISTINCT a.alid,a.name,a.iata FROM flights AS f,airlines AS a WHERE uid=" . $uid . " AND a.alid=f.alid ORDER BY a.iata";
+$sql = "SELECT DISTINCT a.alid,a.name,a.iata FROM flights AS f,airlines AS a WHERE f.uid=" . $uid . " AND a.alid=f.alid ORDER BY a.iata";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -47,7 +47,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List of this user's planes
-$sql = "SELECT DISTINCT p.plid, p.name FROM flights AS f,planes AS p WHERE uid=" . $uid . " AND p.plid=f.plid ORDER BY NAME";
+$sql = "SELECT DISTINCT p.plid, p.name FROM flights AS f,planes AS p WHERE f.uid=" . $uid . " AND p.plid=f.plid ORDER BY NAME";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
