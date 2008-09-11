@@ -161,7 +161,7 @@ function loadCountries(str) {
  */
 function searchResult(str) {
   var airports = str.split("\n");
-  var table = "<table width=100%>";
+  var table = "<table width=95% cellspacing=0>";
   var offset, sql;
   var db = document.forms['searchform'].db.value;
   for(a in airports) {
@@ -179,7 +179,7 @@ function searchResult(str) {
       table += "<tr><td><b>Results " + (offset+1) + " to " + Math.min(offset+10, max) + " of " + max + "</b><br></td>";
 
       if(max > 10) {
-	table += "<td style=\"float: right\">";
+	table += "<td style=\"text-align: right\">";
 	if(offset - 10 >= 0) {
 	  table += "<INPUT id=\"b_back\" type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
 	} else {
