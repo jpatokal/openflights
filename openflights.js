@@ -1017,7 +1017,7 @@ function popNewAirport(type) {
   if(type) {
     input_toggle = type;
   }
-  window.open('/html/apsearch.html', 'Airport', 'width=500,height=520,scrollbars=yes');
+  window.open('/html/apsearch.html', 'Airport', 'width=500,height=550,scrollbars=yes');
 }
 
 function addNewAirport(data, name) {
@@ -1084,7 +1084,7 @@ function editTrip(thisTrip) {
   if(trid != 0) {
     url += "?trid=" + trid;
   }
-  window.open(url, 'TripEditor', 'width=500,height=250,scrollbars=yes');
+  window.open(url, 'TripEditor', 'width=500,height=280,scrollbars=yes');
 }
 
 // User has added or edited trip, so punch it in
