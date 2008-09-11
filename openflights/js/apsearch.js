@@ -101,7 +101,7 @@ function xmlhttpPost(strURL, offset, action) {
 	return;
       }
       if(x == "" || y == "" || elevation == "") {
-	alert("You must enter latitude, longitude and elevation.");
+	alert("You must enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
 	return;
       }
 
