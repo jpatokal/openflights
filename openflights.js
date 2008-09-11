@@ -737,11 +737,25 @@ function updateStats(str) {
     bigtable = "<i>Statistics calculation failed!</i>";
   } else {
     var master = str.split("\n");
-    var airports = master[0];
-    var airlines = master[1];
-    var planes = master[2];
+    var routes = master[0];
+    var airports = master[1];
+    var airlines = master[2];
+    var planes = master[3];
     bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closeResult();\" width=17 height=17></td><td style=\"vertical-align: top\">";
-      
+
+    table = "<table style=\"border-spacing: 10px 0px\">";
+    table += "<tr><th colspan=3>Top 10 Routes</th></tr>";
+    var rows = routes.split(":");
+    for (r in rows) {
+      var col = rows[r].split(",");
+      // s.name, s.apid, d.name, d.apid, count
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>-" +
+	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td><td>"
+	+ col[4] + "</td></tr>";
+    }
+    table += "</table>";
+    bigtable += table + "</td><td style=\"vertical-align: top\">";
+
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=3>Top 10 Airports</th></tr>";
     var rows = airports.split(":");

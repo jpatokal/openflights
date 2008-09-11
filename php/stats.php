@@ -57,6 +57,24 @@ if($alid && $alid != "0") {
   $filter = $filter . " AND f.alid= " . mysql_real_escape_string($alid);
 }
 
+// List top 10 routes
+$sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT 10";
+$result = mysql_query($sql, $db);
+$first = true;
+while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  if($first) {
+    $first = false;
+  } else {
+    printf(":");
+  }
+  $src = $row["siata"];
+  if($src == "") $src = $row["sicao"];
+  $dst = $row["diata"];
+  if($dst == "") $src = $row["dicao"];
+  printf ("%s,%s,%s,%s,%s", $src, $row["sapid"], $dst, $row["dapid"], $row["times"]);
+}
+printf ("\n");
+
 // List top 10 airports
 $sql = "select a.name, a.iata, count(fid) as count, a.apid from airports as a, flights as f where uid=" . $uid . " and (f.src_apid=a.apid or f.dst_apid=a.apid) " . $filter . " group by a.apid order by count desc limit 10";
 $result = mysql_query($sql, $db);
@@ -66,7 +84,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $first = false;
   } else {
     printf(":");
-  }  
+  }
   printf ("%s,%s,%s,%s", $row["name"], $row["iata"], $row["count"], $row["apid"]);
 }
 printf ("\n");
