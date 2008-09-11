@@ -41,7 +41,7 @@ var airportIcons = [ [ '/img/icon_plane-15x15.png', 15 ],
 		     [ '/img/icon_plane-19x19.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
 
-var classes = {"Y":"Economy", "C":"Business", "F":"First", "": ""};
+var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
 var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
 var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "": ""};
 
@@ -1017,7 +1017,7 @@ function popNewAirport(type) {
   if(type) {
     input_toggle = type;
   }
-  window.open('/html/apsearch.html', 'Airport', 'width=500,height=550,scrollbars=yes');
+  window.open('/html/apsearch.html', 'Airport', 'width=500,height=580,scrollbars=yes');
 }
 
 function addNewAirport(data, name) {
