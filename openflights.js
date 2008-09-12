@@ -1122,13 +1122,14 @@ function flightNumberToAirline(str) {
   document.getElementById("input_status").innerHTML = '';
 
   if(str == "NUMBER") {
-    var flightNumber = document.forms['inputform'].number.value;
+    var flightNumber = document.forms['inputform'].number.value.toUpperCase();
+    document.forms['inputform'].number.value = flightNumber;
   } else {
     var flightNumber = document.forms['inputform'].airline_code.value;
   }
   if(flightNumber.length >= 2) {
     var found = false;
-    var re_iata = /^[a-zA-Z][a-zA-Z][ 0-9]/; // XX N...
+    var re_iata = /^[a-zA-Z0-9][a-zA-Z0-9][ 0-9]/; // XX N...
     var re_icao = /^[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9]$/;  // XXX N...
     if(flightNumber.length == 2 || re_iata.test(flightNumber.substring(0,3))) {
       var airlineCode = flightNumber.substring(0, 2);
