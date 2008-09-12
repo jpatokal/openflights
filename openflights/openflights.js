@@ -172,15 +172,26 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
   var sourceNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1, y1), {count: count} );
   var targetNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2, y2), {count: count} );
   
+  // Path does not cross the date line
   if(Math.abs(x1-x2) < 180) {
-    var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {count: count});
-    var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
-    var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1), {count: count});
-    var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
     lineLayer.addNodes([sourceNode, targetNode]);
-    lineLayer.addNodes([westNode1, westNode2]);
-    lineLayer.addNodes([eastNode1, eastNode2]);
-    
+
+    // Path is in or extends into east (+) half, so we have to make a -360 copy
+    if(x1 > 0 || x2 > 0) {
+      var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {count: count});
+      var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
+      lineLayer.addNodes([westNode1, westNode2]);
+    }
+
+    // Path is in or extends into west (-) half, so we have to make a +360 copy
+    if(x1 < 0 || x2 < 0) {
+      var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1), {count: count});
+      var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
+      lineLayer.addNodes([eastNode1, eastNode2]);
+    }
+
+  // Path crosses the date line, we have to split it in two
+  // "y" is y-coordinate of where the path intersects the dateline at -180/+180
   } else {
     var dy = y2 - y1;
     var dx1 = 180 - Math.abs(x1);
@@ -210,8 +221,8 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count) {
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
   // Detailed flights accessible only if...
-  // 1. user is logged in
-  // 2. system is in "demo mode"
+  // 1. user is logged in, or
+  // 2. system is in "demo mode", or
   // 3. privacy is set to (O)pen
   if( logged_in ||
       (filter_user == 0 && filter_trid == 0) ||
