@@ -9,6 +9,7 @@ if(!$apid) {
 $trid = $HTTP_POST_VARS["trid"];
 $alid = $HTTP_POST_VARS["alid"];
 $fid = $HTTP_POST_VARS["fid"];
+$user = $HTTP_POST_VARS["user"];
 
 $uid = $_SESSION["uid"];
 // Logged in?
@@ -16,10 +17,7 @@ if(!$uid or empty($uid)) {
 
   // Viewing an "open" user's flights?
   $uid = $_SESSION["openuid"]; 
-  if(!$uid or empty($uid)) {
-    // Nope, default to demo mode
-    $uid = 1;
-  } else {
+  if($user && $uid && !empty($uid)) {
     // Yes we are, so check if we're limited to a single trip
     $openTrid = $_SESSION["trid"];
     if($openTrid) {
@@ -32,6 +30,9 @@ if(!$uid or empty($uid)) {
     } else {
       // No limit, do nothing
     }
+  } else {
+    // Nope, default to demo mode
+    $uid = 1;
   }
 }
 
