@@ -70,7 +70,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $src = $row["siata"];
   if($src == "") $src = $row["sicao"];
   $dst = $row["diata"];
-  if($dst == "") $src = $row["dicao"];
+  if($dst == "") $dst = $row["dicao"];
   printf ("%s,%s,%s,%s,%s", $src, $row["sapid"], $dst, $row["dapid"], $row["times"]);
 }
 printf ("\n");
