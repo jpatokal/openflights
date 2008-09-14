@@ -3,6 +3,7 @@
 * Support for "private flights" added
 * Airports, cities, IATA and ICAO codes capitalized when entering new airports
 * Bugs in airport ICAO codes for stats fixed
+* Airports now rendered busiest last (on top), with one extra size
 
 <b>2008-09-13</b>
 
