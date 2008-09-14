@@ -66,10 +66,16 @@ function xmlhttpPost(strURL, offset, action) {
     if(iata != "" && iata.length != 3) {
       alert("IATA/FAA codes must be exactly three letters.");
       return;
+    } else {
+      iata = iata.toUpperCase();
+      form.iata.value = iata;
     }
     if(icao != "" && icao.length != 4) {
       alert("ICAO codes must be exactly four letters.");
       return;
+    } else {
+      icao = icao.toUpperCase();
+      form.icao.value = icao;
     }
 
     if(action == "SEARCH" && db == DB_DAFIF) {
@@ -87,11 +93,19 @@ function xmlhttpPost(strURL, offset, action) {
       if(airport == "") {
 	alert("You must enter an airport name.");
 	return;
+      } else {
+	airport = airport.substring(0,1).toUpperCase() + airport.substring(1);
+	form.airport.value = airport;
       }
+
       if(city == "") {
 	alert("You must enter a city name.");
 	return;
+      } else {
+	city = city.substring(0,1).toUpperCase() + city.substring(1);
+	form.city.value = city;
       }
+	
       if(code == "") {
 	alert("You must select a country.");
 	return;
