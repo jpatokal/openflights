@@ -76,7 +76,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 airports
-$sql = "select a.name, a.iata, count(fid) as count, a.apid from airports as a, flights as f where f.uid=" . $uid . " and (f.src_apid=a.apid or f.dst_apid=a.apid) " . $filter . " group by a.apid order by count desc limit 10";
+$sql = "select a.name, a.iata, a.icao, count(fid) as count, a.apid from airports as a, flights as f where f.uid=" . $uid . " and (f.src_apid=a.apid or f.dst_apid=a.apid) " . $filter . " group by a.apid order by count desc limit 10";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -85,7 +85,9 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf(":");
   }
-  printf ("%s,%s,%s,%s", $row["name"], $row["iata"], $row["count"], $row["apid"]);
+  $code = $row["iata"];
+  if($code == "") $code = $row["icao"];
+  printf ("%s,%s,%s,%s", $row["name"], $code, $row["count"], $row["apid"]);
 }
 printf ("\n");
 
