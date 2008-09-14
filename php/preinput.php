@@ -33,7 +33,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List of this user's airlines
-$sql = "SELECT DISTINCT a.alid,a.name,a.iata FROM flights AS f,airlines AS a WHERE f.uid=" . $uid . " AND a.alid=f.alid ORDER BY a.iata";
+// NB: private flights (alid 1) handled separately
+$sql = "SELECT DISTINCT a.alid,a.name,a.iata FROM flights AS f,airlines AS a WHERE f.uid=" . $uid . " AND a.alid=f.alid AND a.alid != 1 ORDER BY a.iata";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -44,6 +45,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }  
   printf ("%s;%s", $row["iata"] . ":" . $row["alid"], format_airline($row));
 }
+printf ("\t-:1;Private flight");
 printf ("\n");
 
 // List of this user's planes
