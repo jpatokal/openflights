@@ -36,7 +36,8 @@ var CODE_DELETEOK = 100;
 var INPUT_MAXLEN = 50;
 
 var airportMaxFlights = 0;
-var airportIcons = [ [ '/img/icon_plane-15x15.png', 15 ],
+var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
+                     [ '/img/icon_plane-15x15.png', 15 ],
 		     [ '/img/icon_plane-17x17.png', 17 ],
 		     [ '/img/icon_plane-19x19.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
@@ -235,9 +236,15 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor(((count / airportMaxFlights) * airportIcons.length) - 0.01);
   // 1/reallybigumber - 0.01 may be negative, so bump it to zero
-  if(colorIndex < 0) {
+  // Two or less flights: smallest dot
+  if(count <= 2 || colorIndex < 0) {
     colorIndex = 0;
   }
+  // More than two flights: at least 2nd smallest
+  if(count > 2) {
+    colorIndex = Math.max(1, colorIndex);
+  }
+  // This should never happen
   if(colorIndex >= airportIcons.length) {
     alert("Color error: " + name + ":" + colorIndex);
     colorIndex = airportIcons.length - 1;
@@ -666,13 +673,11 @@ function updateMap(str){
   }
   
   var rows = airports.split(":");
+
+  // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
+  airportMaxFlights = rows[rows.length - 1].split(",")[7];
   for (r in rows) {
     var col = rows[r].split(",");
-
-    // Airports are ordered from busiest to least busy, so we calibrate the color scale based on the first result
-    if(r == 0) {
-      airportMaxFlights = col[7];
-    }
     // apid, x, y, name, code, city, country, count
     drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7]);
   }
