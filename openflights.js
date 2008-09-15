@@ -249,6 +249,10 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
     alert("Color error: " + name + ":" + colorIndex);
     colorIndex = airportIcons.length - 1;
   }
+  if(! airportIcons[colorIndex]) {
+    alert("Color error: " + name + ":" + colorIndex);
+    colorIndex = 0;
+  }
   var iconfile = airportIcons[colorIndex][0];
   var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
