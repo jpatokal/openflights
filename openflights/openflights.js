@@ -1344,7 +1344,10 @@ function help(context) {
 // Register new account
 //
 function signUp() {
-  window.open('/html/signup.html', 'CreateNewAccount', 'width=500,height=500,scrollbars=yes');
+  var regWindow = window.open('/html/signup.html', 'CreateNewAccount', 'width=500,height=500,scrollbars=yes');
+  if (!regWindow) {
+    alert("Oops, your browser seems to be blocking the sign up window?  Please disable your popup blocker for this site and try again.");
+  }
 }
 
 //
