@@ -77,6 +77,11 @@ function xmlhttpPost(strURL, offset, action) {
       icao = icao.toUpperCase();
       form.icao.value = icao;
     }
+    var re_alphanum = /^[-.\'a-zA-Z0-9]*$/;
+    if(! re_alphanum.test(airport) || ! re_alphanum.test(city)) {
+      alert("Only the unaccented letters A-Z, the numbers 0-9 and the punctuation marks -.' (dash, period, apostrophe) can be used in airport and city names.");
+      return;
+    }
 
     if(action == "SEARCH" && db == DB_DAFIF) {
       if(city != "") {
@@ -91,7 +96,7 @@ function xmlhttpPost(strURL, offset, action) {
 
     if(action == "RECORD") {
       if(airport == "") {
-	alert("You must enter an airport name.");
+	alert("Please enter an airport name.");
 	return;
       } else {
 	airport = airport.substring(0,1).toUpperCase() + airport.substring(1);
@@ -99,7 +104,7 @@ function xmlhttpPost(strURL, offset, action) {
       }
 
       if(city == "") {
-	alert("You must enter a city name.");
+	alert("Please enter a city name.");
 	return;
       } else {
 	city = city.substring(0,1).toUpperCase() + city.substring(1);
@@ -107,15 +112,15 @@ function xmlhttpPost(strURL, offset, action) {
       }
 	
       if(code == "") {
-	alert("You must select a country.");
+	alert("Please select a country.");
 	return;
       }
       if(icao == "") {
-	alert("You must enter an ICAO code.");
+	alert("Please enter an ICAO code.");
 	return;
       }
       if(x == "" || y == "" || elevation == "") {
-	alert("You must enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
+	alert("Please enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
 	return;
       }
 
