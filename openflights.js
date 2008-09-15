@@ -39,7 +39,8 @@ var airportMaxFlights = 0;
 var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
                      [ '/img/icon_plane-15x15.png', 15 ],
 		     [ '/img/icon_plane-17x17.png', 17 ],
-		     [ '/img/icon_plane-19x19.png', 19 ],
+		     [ '/img/icon_plane-19x19b.png', 19 ],
+		     [ '/img/icon_plane-19x19b.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
 
 var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
