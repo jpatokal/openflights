@@ -235,8 +235,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
 
   // Select icon based on number of flights (0...airportIcons.length-1)
-  var colorIndex = Math.floor(((count / airportMaxFlights) * airportIcons.length) - 0.01);
-  // 1/reallybigumber - 0.01 may be negative, so bump it to zero
+  var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
   // Two or less flights: smallest dot
   if(count <= 2 || colorIndex < 0) {
     colorIndex = 0;
@@ -245,11 +244,11 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
   if(count > 2) {
     colorIndex = Math.max(1, colorIndex);
   }
-  // This should never happen
+  // Max out at top color
   if(colorIndex >= airportIcons.length) {
-    alert("Color error: " + name + ":" + colorIndex);
     colorIndex = airportIcons.length - 1;
   }
+  // This should never happen
   if(! airportIcons[colorIndex]) {
     alert("Color error: " + name + ":" + colorIndex);
     colorIndex = 0;
