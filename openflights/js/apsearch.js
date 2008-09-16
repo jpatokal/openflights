@@ -77,9 +77,9 @@ function xmlhttpPost(strURL, offset, action) {
       icao = icao.toUpperCase();
       form.icao.value = icao;
     }
-    var re_alphanum = /^[-.\'a-zA-Z0-9]*$/;
+    var re_alphanum = /^[-.\'a-zA-Z0-9 ]*$/;
     if(! re_alphanum.test(airport) || ! re_alphanum.test(city)) {
-      alert("Only the unaccented letters A-Z, the numbers 0-9 and the punctuation marks -.' (dash, period, apostrophe) can be used in airport and city names.");
+      alert("Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names.");
       return;
     }
 
