@@ -42,4 +42,18 @@ function format_airline($row) {
   return $name . " (" . $iata . ")";
 }
 
+//
+// Strip out surrounding FlightMemory "liste" <td> from value
+//
+// <td class="liste">value[</td> --> value
+function fm_strip_liste($value) {
+  $value = substr($value, 18);
+  $value = trim(str_replace('</td>', '', $value));
+  if(strlen($value) == 1) {
+    return "";
+  } else {
+    return $value;
+  }
+}
+  
 ?>
