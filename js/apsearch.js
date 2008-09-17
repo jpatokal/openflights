@@ -115,10 +115,17 @@ function xmlhttpPost(strURL, offset, action) {
 	alert("Please select a country.");
 	return;
       }
-      if(icao == "") {
-	alert("Please enter an ICAO code.");
-	return;
+      if(iata == "") {
+	if(! confirm("You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?")) {
+	  return;
+	}
       }
+      if(icao == "") {
+	if(! confirm("You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?")) {
+	  return;
+	}
+      }
+
       if(x == "" || y == "" || elevation == "") {
 	alert("Please enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
 	return;
@@ -130,7 +137,8 @@ function xmlhttpPost(strURL, offset, action) {
 	return;
       }
 
-      desc = airport + ", " + city + ", " + country + " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + icao + ")";
+      desc = airport + ", " + city + ", " + country +
+	" (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
       quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
       if(! confirm("Are you sure you want to add " + desc + " as a new airport, located in the " + quad + " quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming.")) {
 	document.getElementById("miniresultbox").innerHTML = "<I>Cancelled.</I>";
@@ -226,10 +234,10 @@ function searchResult(str) {
     if(db == DB_OPENFLIGHTS) {
       // code:apid:x:y
       id = (col[0] != "" ? col[0] : col[1]) + ":" + col[2] + ":" + col[3] + ":" + col[4];
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col[7]) + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col[8]) + "\")'></td>";
     }
     if(db == DB_DAFIF) {
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Load' onClick='loadDAFIFAirport(\"" + col[0] + "\",\"" + col[1] + "\",\"" + col[3] + "\",\"" + col[4] + "\",\"" + col[5] + "\",\"" + escape(col[6]) + "\",\"" + col[7] + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Load' onClick='loadDAFIFAirport(\"" + col[0] + "\",\"" + col[1] + "\",\"" + col[3] + "\",\"" + col[4] + "\",\"" + col[5] + "\",\"" + escape(col[6]) + "\",\"" + col[9] + "\")'></td>";
     }
     table += "</tr>";
   }

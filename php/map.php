@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'helper.php';
 
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
@@ -114,10 +115,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf(":");
   }
-  $code = $row["iata"];
-  if($code == "") {
-    $code = $row["icao"];
-  }
+  $code = format_apcode($row);
   printf ("%s,%s,%s,%s,%s,%s,%s,%s", $row["apid"], $row["x"], $row["y"], $row["name"], $code, $row["city"], $row["country"], $row["visits"]);
 }
 

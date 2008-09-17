@@ -68,13 +68,13 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     printf("\t");
   }
   $src_code = $row["src_iata"];
-  if($src_code == "") {
-    $src_code = $row["src_icao"];
-  }
+  if($src_code == "") $src_code = $row["src_icao"];
+  if($src_code == "") $src_code = "Priv";
+
   $dst_code = $row["dst_iata"];
-  if($dst_code == "") {
-    $dst_code = $row["dst_icao"];
-  }
+  if($dst_code == "") $dst_code = $row["dst_icao"];
+  if($dst_code == "") $dst_code = "Priv";
+
   printf ("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", $src_code, $row["src_apid"], $dst_code, $row["dst_apid"], $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"], $row["trid"]);
 }
 ?>

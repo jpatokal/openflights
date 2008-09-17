@@ -1,6 +1,12 @@
+<b>2008-09-17</b>
+
+* Added Google ads and implemented stack for tracking panes
+* Filters for what can be entered in new airports
+* Added support for private airports (non-IATA, non-ICAO)
+
 <b>2008-09-14</b>
 
-* Support for "private flights" added
+* Support for "private" (non-airline) flights added
 * Airports, cities, IATA and ICAO codes capitalized when entering new airports
 * Bugs in airport ICAO codes for stats fixed
 * Airports now rendered busiest last (on top), with one extra size
