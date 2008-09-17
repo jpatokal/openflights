@@ -15,7 +15,7 @@ mysql_select_db("flightdb",$db);
 //
 
 // List of this user's airports
-$sql = "SELECT DISTINCT a.apid,a.name,a.iata,a.icao,a.city,a.country,a.x,a.y FROM flights AS f,airports AS a WHERE f.uid=" . $uid . " AND (a.apid=f.src_apid OR a.apid=f.dst_apid) ORDER BY a.iata";
+$sql = "SELECT DISTINCT a.apid,a.name,a.iata,a.icao,a.city,a.country,a.x,a.y,a.iata = '' AS isnull FROM flights AS f,airports AS a WHERE f.uid=" . $uid . " AND (a.apid=f.src_apid OR a.apid=f.dst_apid) ORDER BY isnull,a.iata";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -24,10 +24,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf("\t");
   }
-  $code = $row["iata"];
-  if($code == "") {
-    $code = $row["icao"];
-  }
+  $code = format_apcode($row);
   printf ("%s:%s:%s:%s;%s", $code, $row["apid"], $row["x"], $row["y"], format_airport($row));
 }
 printf ("\n");
@@ -43,9 +40,9 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf("\t");
   }  
-  printf ("%s;%s", $row["iata"] . ":" . $row["alid"], format_airline($row));
+  printf ("%s;%s", $row["alid"] . ":" . $row["iata"], format_airline($row));
 }
-printf ("\t-:1;Private flight");
+printf ("\t1:-;Private flight");
 printf ("\n");
 
 // List of this user's planes
