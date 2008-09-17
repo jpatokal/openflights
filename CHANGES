@@ -3,6 +3,8 @@
 * Added Google ads and implemented stack for tracking panes
 * Filters for what can be entered in new airports
 * Added support for private airports (non-IATA, non-ICAO)
+* Auto-fill airline, trip from filter (2115834)
+* Tweaked DAFIF warnings (2115839)
 
 <b>2008-09-14</b>
 

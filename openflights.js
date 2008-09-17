@@ -616,7 +616,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
     var col = rows[r].split(";");
     var name = col[1];
     var url = col[2];
-    if(col[0] == id) {
+    if(col[0].split(':')[0] == id) {
       selected = " SELECTED";
       // Special case: un-truncated trip name and URL
       if(selectName == "Trips") {
@@ -930,10 +930,10 @@ function inputFlight(str, param) {
   airportselect = createSelect("dst_ap", "Choose airport", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
   document.getElementById("input_dst_ap_select").innerHTML = airportselect;
 
-  var airlineselect = createSelect("airline", "Choose airline", 0, airlines.split("\t"));
+  var airlineselect = createSelect("airline", "Choose airline", filter_alid, airlines.split("\t"));
   document.getElementById("input_airline_select").innerHTML = airlineselect;
 
-  var tripselect = createSelect("trips", "-", 0, trips.split("\t"), INPUT_MAXLEN, null, 8);
+  var tripselect = createSelect("trips", "-", filter_trid, trips.split("\t"), INPUT_MAXLEN, null, 8);
   document.getElementById("input_trip_select").innerHTML = tripselect;
 
   var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, null, 9);
@@ -953,7 +953,7 @@ function inputFlight(str, param) {
     }
     select = inputform.airline;
     for(index = 0; index < select.length; index++) {
-      if(select[index].value.split(":")[1] == alid) {
+      if(select[index].value.split(":")[0] == alid) {
 	select.selectedIndex = index;
 	break;
       }
@@ -1155,7 +1155,7 @@ function flightNumberToAirline(str) {
       document.forms['inputform'].airline_code.value = airlineCode;   
       var al_select = document.forms['inputform'].airline;
       for(index = 0; index < al_select.length; index++) {
-	if(al_select[index].value.substring(0, airlineCode.length) == airlineCode) {
+	if(al_select[index].value.split(':')[1] == airlineCode) {
 	  found = true;
 	  al_select.selectedIndex = index;
 	  document.forms['inputform'].trips.focus();
