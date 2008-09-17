@@ -17,6 +17,47 @@
 include_once('simple_html_dom.php');
 include_once('helper.php');
 
+
+//
+// Strip out surrounding FlightMemory "liste" <td> from value
+//
+// <td class="liste">value[</td> --> value
+function fm_strip_liste($value) {
+  $value = substr($value, 18);
+  $value = str_replace('&nbsp;', '', $value);
+  $value = trim(str_replace('</td>', '', $value));
+
+  if(strlen($value) == 1) {
+    return "";
+  } else {
+    return $value;
+  }
+}
+  
+function fm_check_airport($db, $code) {
+  $sql = "select apid from airports where iata='" . mysql_real_escape_string($code) . "'";
+  $result = mysql_query($sql, $db);
+  switch(mysql_num_rows($result)) {
+
+    // No match
+  case "0":
+    $color = "#faa";
+    break;
+
+    // Solitary match
+  case "1":
+    $apid = mysql_result($result, 0);
+    $color="#fff";
+    break;
+    
+    // Multiple matches
+  default:
+    $apid = mysql_result($result, 0);
+    $color="#ddf";
+  }
+  return array($apid, $color);
+}
+
 $uploaddir = '/var/www/openflights/import/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
 
