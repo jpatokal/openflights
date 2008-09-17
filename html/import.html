@@ -12,24 +12,35 @@
     <div id="contexthelp">
       <h1>OpenFlights: Import data</h1>
 
+      OpenFlights can import two types of data:<br>
+
       <form name="importform" action="/php/import.php" enctype="multipart/form-data" method="post"><p>
 	  <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 
-	<table>
+	<table style='style:border-spacing: 5'>
 	    <tr>
-	      <td rowspan=2>Type of file</td>
-	      <td><input type="radio" name="fileType" value="FM" CHECKED>FlightMemory (.html)</td>
-	      <td>Log into your FlightMemory account, go to the FlightData page, and select "Save Web Page" in your browser. Repeat once for each page of data.</td>
+	      <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
+	      <td><p><b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can "screen-scrape" its FlightData pages.  To create one, log into your FlightMemory account, go to the FlightData page, and select "Save Web Page" in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><br>
+	  <p><i>Note</i>: The airline names used on FlightMemory do not always match those used by OpenFlights, but the import tool will try its best to match them.  Importing accuracy is <i>much higher</i> if your FlightData also includes flight numbers; for example, there are four airlines named "Virgin", but only Virgin Atlantic has the code "VS".</p><br>
+	      </td>
 	    </tr><tr>
-	      <td><input type="radio" name="fileType" value="CSV" disabled>Comma-Separated Value (.csv)</td>
-	      <td>Coming soon...</td>
+	      <td style='vertical-align: top'><input type="radio" name="fileType" value="CSV" disabled></td>
+	      <td><p><b>Comma-separated value (.csv)</b> &mdash; Easily exported from Excel or any other spreadsheet. Coming soon...</p>
+	      </td>
 	    </tr><tr>
-	      <td>File to upload&nbsp;</td>
-	      <td colspan=2><input type="file" name="userfile" size="30"></td>
-	      </tr>
+	      <td></td>
+	      <td></td>
+	    </tr>
+	    </tr><tr>
+	      <td></td>
+	      <td>
+	    </tr>
 	</table>
+
+	<h4>File to upload</h4>
+	<input type="file" name="userfile" size="30"><br>
 	
-	<p><b>Note:</b> You will be given a chance to preview and either accept or reject the results before the data is written to the database.</p><br>
+	<p>You will be given a chance to review and either accept or reject the results before the imported data is added to your flights.</p><br>
 
 	<input type="submit" value="Upload">
 	<INPUT type="button" value="Cancel" onClick="window.close()">
