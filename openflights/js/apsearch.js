@@ -7,6 +7,8 @@ URL_COUNTRIES = "/php/countries.php";
 DB_OPENFLIGHTS = "airports";
 DB_DAFIF = "airports_dafif";
 
+var warning;
+
 window.onload = function init(){
   xmlhttpPost(URL_COUNTRIES);
 }
@@ -85,12 +87,25 @@ function xmlhttpPost(strURL, offset, action) {
 
     if(action == "SEARCH" && db == DB_DAFIF) {
       if(city != "") {
-	alert("Sorry, the DAFIF database does not contain city information.");
-	return;
+	warning = "Ignoring city '" + city + "', since the DAFIF database does not contain city information.";
+	city = "";
       }
-      if(code != "US" && iata != "") {
-	alert("Sorry, the DAFIF database does not contain IATA codes for cities outside the United States.");
-	return;
+      if(iata != "") {
+	switch(code) {
+	case "US":
+	  // do nothing
+	  break;
+	  
+	case "":
+	  warning = "Search for IATA/FAA code '" + iata + "' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US.";
+	  code = "US";
+	  break;
+
+	default:
+	  warning = "Ignoring IATA code '" + iata + "', since DAFIF does not contain IATA codes for cities outside the United States.";
+	  iata = "";
+	  break;
+	}
       }
     }
 
@@ -191,6 +206,11 @@ function searchResult(str) {
   var table = "<table width=95% cellspacing=0>";
   var offset, sql;
   var db = document.forms['searchform'].db.value;
+
+  if(warning) {
+    table += "<tr><td colspan=2><i><font color='red'>" + warning + "</font></i></td></tr>";
+    warning = null;
+  }
   for(a in airports) {
     var col = airports[a].split(";");
 
