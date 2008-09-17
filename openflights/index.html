@@ -1,10 +1,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head><title>OpenFlights.org: Fly the open skies</title>
+  <head>
+    <title>OpenFlights.org: Flight logging, mapping, stats and sharing</title>
+    <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
+    <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="stylesheet" href="/css/sortable.css" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <script type="text/javascript" src="/OpenLayers.js?version=20080914"></script>
+    <script type="text/javascript" src="/OpenLayers.js?version=20080917"></script>
     <script type="text/javascript" src="/js/sortable.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/openflights.js"></script>
@@ -99,19 +102,21 @@
 	</div> <!-- end sidebarwrapper -->
 
 	<div id="resultbox">
-	  <div id="help" style="display: inline;">
-<h2>OpenFlights Map Quick Reference</h2></p>
-<p>
-<b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
+	  <div id="ad" style="display: inline;">
+	    <!--#include virtual="/html/ad.html" -->
+	  </div>
+
+	  <div id="help" style="display: none;">
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'> OpenFlights Map Help <small>&mdash; Didn't answer your question?  Try the <a href="faq.html">FAQ</a>.</small></h2>
+<p><b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
 <b>Move around</b>: Use <img src="/img/north-mini.png" height=18 width=18><img src="/img/west-mini.png" height=18 width=18><img src="/img/east-mini.png" height=18 width=18><img src="/img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
 <b>Zoom in/out</b>: Use <img src="/img/zoom-plus-mini.png" height=18 width=18><img src="/img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="/img/zoom-world-mini.png" height=18 width=18>.<br>
 <b>Select region</b>: Click on <img src="/img/drag-rectangle-off.png" width=18 height=18>, then draw a rectangle.  Click on <img src="/img/panning-hand-off.png" width=18 height=18> to return to normal (panning) mode.<br>
 <b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.<br>
-<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.
-</p>
+<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.</p>
 	  </div> <!-- end help -->
 	  <div id="input" style="display: none;">
-<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'>
     <span id="addflighttitle">Add new flight</span>
     <span id="editflighttitle" style="display: none">Edit flight</span>
     <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
@@ -132,6 +137,7 @@
 </tr><tr>
   <td><font color="red">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
   <td><input type="text" name="src_ap_code" size="11" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
+      <input type="hidden" name="src_apid"/>
       <img src="/img/icon_plane-src.png" title="&lt; Enter city name or airport code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirport("SRC")'/>
       <span id="input_src_ap_select"></span></td>
   <td rowspan=2 valign=middle>
@@ -149,6 +155,7 @@
 </tr><tr>
   <td><font color="red">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
   <td><input type="text" name="dst_ap_code" size="11" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
+      <input type="hidden" name="dst_apid"/>
       <img src="/img/icon_plane-dst.png" title="&lt; Enter city name or airport code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirport("DST")'/>
       <span id="input_dst_ap_select"></span></td>
 
@@ -199,12 +206,12 @@
       <input id="b_add" value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
       <input id="b_addclear" value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
       <input id="b_clear" value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput()'>
-      <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
+      <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closePane()'>
     </span>
     <span id="editflightbuttons" style="display: none">
       <input id="b_save" value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
       <input id="b_delete" value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
-      <input id="b_cancel" value="Cancel" type="button" tabindex="15" onclick='JavaScript:openResult()'>
+      <input id="b_cancel" value="Cancel" type="button" tabindex="15" onclick='JavaScript:closePane()'>
     </span>
     <span id="input_status"></span>
   </td>

@@ -1,5 +1,7 @@
 <?php
 session_start();
+include 'helper.php';
+
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode
@@ -69,8 +71,10 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }
   $src = $row["siata"];
   if($src == "") $src = $row["sicao"];
+  if($src == "") $src = "Priv";
   $dst = $row["diata"];
   if($dst == "") $dst = $row["dicao"];
+  if($dst == "") $dst = "Priv";
   printf ("%s,%s,%s,%s,%s", $src, $row["sapid"], $dst, $row["dapid"], $row["times"]);
 }
 printf ("\n");
@@ -85,8 +89,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf(":");
   }
-  $code = $row["iata"];
-  if($code == "") $code = $row["icao"];
+  $code = format_apcode($row);
   printf ("%s,%s,%s,%s", $row["name"], $code, $row["count"], $row["apid"]);
 }
 printf ("\n");

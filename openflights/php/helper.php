@@ -1,6 +1,21 @@
 <?php
 
 //
+// Standard formatting of airport codes
+// row: associative array containing iata, icao
+//
+function format_apcode($row) {
+  $code = $row["iata"];
+  if(! $code || $code == "N/A") {
+    $code = $row["icao"];
+    if(! $code) {
+      $code = "Priv";
+    }
+  }
+  return $code;
+}
+
+//
 // Standard formatting of airport names
 // row: associative array containing name, city, country/code and iata/icao
 //
@@ -12,10 +27,7 @@ function format_airport($row) {
   if($code) {
     $country = $code; // hack for DAFIF
   }
-  $iata = $row["iata"];
-  if(! $iata || $iata == "N/A") {
-    $iata = $row["icao"];
-  }
+  $iata = format_apcode($row);
   $apid = $row["apid"];
 
   // Format name only for OpenFlights, GAD DBs

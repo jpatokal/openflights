@@ -5,6 +5,7 @@
 
 // Core map features
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
+var paneStack = [ "ad" ];
 
 // Filter selections and currently chosen airport 
 var filter_user = 0, filter_trid = 0, filter_alid = 0, apid = 0;
@@ -297,7 +298,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count)
     if(this.popup.visible()) {
       currentPopup = this.popup;
     } else {
-      closeResult();
+      closePane();
     }
     OpenLayers.Event.stop(evt);
   };
@@ -363,10 +364,10 @@ function xmlhttpPost(strURL, id, param) {
 	  document.getElementById("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
 	  document.getElementById("statsbox").style.visibility = "hidden";
 	  document.getElementById("filter").style.visibility = "hidden";
-	  openResult();
+	  openPane("result");
 	} else {
 	  if(! logged_in) {
-	    closeResult();
+	    closePane();
 	  }
 	  updateMap(str);
 	  if(param) {
@@ -395,7 +396,7 @@ function xmlhttpPost(strURL, id, param) {
 	// Exit if flight was successfully deleted or edited (plane or not)
 	if(code == CODE_DELETEOK ||
 	   code % 10 == CODE_EDITOK) {
-	  closeInput();
+	  clearStack();
 	}
 
 	// If id == true and operation succeeded, then clear input
@@ -694,8 +695,8 @@ function startListFlights() {
 }
 
 function listFlights(str, desc) {
-  openResult();
-  table = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closeResult();\" width=17 height=17> ";
+  openPane("result");
+  table = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ";
   if(str == "") {
     table += "<i>No flights found.</i>";
   } else {
@@ -748,11 +749,11 @@ function listFlights(str, desc) {
 function updateStats(str) {
   if(str.substring(0,5) == "Error") {
     document.getElementById("result").innerHTML = str.split(';')[1];
-    openResult();
+    openPane("result");
     return;
   }
 
-  openResult();
+  openPane("result");
   if(str == "") {
     bigtable = "<i>Statistics calculation failed!</i>";
   } else {
@@ -761,7 +762,7 @@ function updateStats(str) {
     var airports = master[1];
     var airlines = master[2];
     var planes = master[3];
-    bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closeResult();\" width=17 height=17></td><td style=\"vertical-align: top\">";
+    bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17></td><td style=\"vertical-align: top\">";
 
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=3>Top 10 Routes</th></tr>";
@@ -865,8 +866,8 @@ function editFlight(str, param) {
   var col = str.split(",");
 
   var form = document.forms['inputform'];
-  form.src_ap_code.value = col[0];
-  form.dst_ap_code.value = col[2];
+  form.src_apid.value = col[1];
+  form.dst_apid.value = col[3];
   form.number.value = col[4];
   form.src_date.value = col[5];
   form.distance.value = col[6];
@@ -900,7 +901,7 @@ function editFlight(str, param) {
   form.note.value = col[16];
   trid = col[17];
 
-  // can be "EDIT" or "COPY"
+  // param can be "EDIT" or "COPY"
   xmlhttpPost(URL_PREINPUT, 0, param);
 }
 
@@ -938,12 +939,11 @@ function inputFlight(str, param) {
   var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, null, 9);
   document.getElementById("input_plane_select").innerHTML = planeselect;
 
-  // Load up any values already entered into the form
-  if(document.forms['inputform'].src_ap_code.value != "") codeToAirport("SRC");
-  if(document.forms['inputform'].dst_ap_code.value != "") codeToAirport("DST");
-
   // An existing entry will already have plane, airline, trip selected
   if(param == "EDIT" || param == "COPY") {
+    codeToAirport("SRC", document.forms['inputform'].src_apid.value);
+    codeToAirport("DST", document.forms['inputform'].dst_apid.value);
+
     var select = inputform.plane;
     for(index = 0; index < select.length; index++) {
       if(select[index].text == plane) {
@@ -966,6 +966,10 @@ function inputFlight(str, param) {
       }
     }
   } else {
+    // Load up any values already entered into the form
+    if(document.forms['inputform'].src_ap_code.value != "") codeToAirport("SRC");
+    if(document.forms['inputform'].dst_ap_code.value != "") codeToAirport("DST");
+
     if(document.forms['inputform'].airline_code.value != "") {
       flightNumberToAirline("AIRLINE");
     } else if(document.forms['inputform'].number.value != "") {
@@ -1169,20 +1173,27 @@ function flightNumberToAirline(str) {
 }
 
 // When user has entered airport code, try to match it to airport
-function codeToAirport(type) {
+// Alternatively, if "id" is given, then match id to airport id (apid)
+function codeToAirport(type, id) {
   document.getElementById("input_status").innerHTML = '';
-
+  if(id) {
+    idx = 1; // compare against code:apid[1]:x:y
+  } else {
+    idx = 0; // compare against code[0]:apid:x:y
+  }
   var found = false;
   var apid;
   if(type == "SRC") {
     var ap_select = document.forms['inputform'].src_ap;
-    var airportCode = document.forms['inputform'].src_ap_code.value;
   } else {
     var ap_select = document.forms['inputform'].dst_ap;
     var airportCode = document.forms['inputform'].dst_ap_code.value;
   }
+  if(id) {
+    airportCode = id;
+  }
   for(index = 0; index < ap_select.length; index++) {
-    if(ap_select[index].value.substring(0, 3) == airportCode) {
+    if(ap_select[index].value.split(':')[idx] == airportCode) {
       found = true;
       ap_select.selectedIndex = index;
       apid = ap_select[index].value.split(':')[1];
@@ -1370,7 +1381,7 @@ function login(str) {
     document.getElementById("loginstatus").innerHTML = "Welcome, <B>" + name + "</B>!";
     document.getElementById("loginform").style.display = 'none';
     document.getElementById("controlpanel").style.display = 'inline';
-    closeResult();
+    clearStack();
     clearFilter(true);
   } else {
     logged_in = false;
@@ -1389,28 +1400,53 @@ function logout(str) {
   document.getElementById("loginstatus").innerHTML = "<B>You have been logged out.</B>";
   document.getElementById("loginform").style.display = 'inline';
   document.getElementById("controlpanel").style.display = 'none';
-  closeInput();
+  clearStack();
   clearFilter(true);
 }
 
 // Functions for swapping between lower panes
-function openResult() {
-  closeInput();
-  document.getElementById("help").style.display = 'none';
-  document.getElementById("input").style.display = 'none';
-  document.getElementById("result").style.display = 'inline';
+
+// Open a new pane
+// If the pane is open already, do nothing
+function openPane(newPane) {
+  if(paneStack.length > 0) {
+    var currentPane = paneStack[paneStack.length-1];
+    if(currentPane == newPane) return;
+    document.getElementById(currentPane).style.display = 'none';
+  }
+  document.getElementById(newPane).style.display = 'inline';
+  paneStack.push(newPane);
 }
 
-function closeResult() {
-  document.getElementById("result").style.display = 'none';
-  document.getElementById("help").style.display = 'inline';
-  apid = 0;
+// Close current pane
+// If the current pane is the last one, do nothing
+function closePane() {
+  if(paneStack.length == 1) return;
+
+  var currentPane = paneStack.pop();
+  var lastPane = paneStack[paneStack.length-1];
+  if(currentPane == "input") {
+    input = false;
+    if(input_srcmarker) airportLayer.removeMarker(input_srcmarker);
+    if(input_dstmarker) airportLayer.removeMarker(input_dstmarker);
+    document.getElementById("newairport").style.display = 'none';
+  }
+  if(currentPane == "result") {
+    apid = 0;
+  }
+  document.getElementById(currentPane).style.display = 'none';
+  document.getElementById(lastPane).style.display = 'inline';
+}
+
+// Clear all panes until the base pane (ad)
+function clearStack() {
+  while(paneStack.length > 1) {
+    closePane();
+  }
 }
 
 function openInput(param) {
-  document.getElementById("help").style.display = 'none';
-  document.getElementById("input").style.display = 'inline';
-  document.getElementById("result").style.display = 'none';
+  openPane("input");
   document.getElementById("newairport").style.display = 'inline';
   if(param == "EDIT") {
     document.getElementById("addflighttitle").style.display = 'none';
@@ -1451,19 +1487,9 @@ function clearInput() {
   xmlhttpPost(URL_PREINPUT); // rebuild selects
 }
 
-function closeInput() {
-  document.getElementById("input").style.display = 'none';
-  document.getElementById("help").style.display = 'inline';
-  document.getElementById("result").style.display = 'none';
-  document.getElementById("newairport").style.display = 'none';
-  input = false;
-  if(input_srcmarker) airportLayer.removeMarker(input_srcmarker);
-  if(input_dstmarker) airportLayer.removeMarker(input_dstmarker);
-}
-
 function showHelp() {
-  closeResult();
-  input = false;
+  if(currentPane == "help") return;
+  openPane("help");
 }
 
 function closePopup() {

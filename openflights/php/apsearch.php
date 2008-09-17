@@ -27,19 +27,21 @@ if($action == "RECORD") {
   }
 
   // Check for duplicates
-  $sql = "SELECT * FROM airports WHERE icao='" . mysql_real_escape_string($icao) . "'";
-  $result = mysql_query($sql, $db);
-  if($row = mysql_fetch_array($result, MYSQL_NUM)) {
-    printf("0;An airport using the ICAO code " . $icao . " exists already.");
-    exit;
+  if($icao != "") {
+    $sql = "SELECT * FROM airports WHERE icao='" . mysql_real_escape_string($icao) . "'";
+    $result = mysql_query($sql, $db);
+    if($row = mysql_fetch_array($result, MYSQL_NUM)) {
+      printf("0;An airport using the ICAO code " . $icao . " exists already.");
+      exit;
+    }
   }
 
-  $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,uid) VALUES('%s', '%s', '%s', '%s', '%s', %s, %s, %s, %s)",
+  $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,uid) VALUES('%s', '%s', '%s', '%s', %s, %s, %s, %s, %s)",
 		 mysql_real_escape_string($airport), 
 		 mysql_real_escape_string($city),
 		 mysql_real_escape_string($country),
 		 mysql_real_escape_string($iata),
-		 mysql_real_escape_string($icao),
+		 $icao == "" ? "NULL" : "'" . mysql_real_escape_string($icao) . "'",
 		 mysql_real_escape_string($myX),
 		 mysql_real_escape_string($myY),
 		 mysql_real_escape_string($elevation),
