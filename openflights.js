@@ -459,7 +459,7 @@ function xmlhttpPost(strURL, id, param) {
 	document.forms['inputform'].dst_ap.focus();
 	return;
       }
-      var alid = inputform.airline[inputform.airline.selectedIndex].value.split(":")[1];
+      var alid = inputform.airline[inputform.airline.selectedIndex].value.split(":")[0];
       if(! alid || alid == 0) {
 	alert("Please select an airline.");
 	document.forms['inputform'].airline.focus();
