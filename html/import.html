@@ -12,7 +12,7 @@
     <div id="contexthelp">
       <h1>OpenFlights: Import data</h1>
 
-      OpenFlights can import two types of data:<br>
+      OpenFlights can import two types of data:<br><br>
 
       <form name="importform" action="/php/import.php" enctype="multipart/form-data" method="post"><p>
 	  <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
@@ -29,20 +29,15 @@
 	      </td>
 	    </tr><tr>
 	      <td></td>
-	      <td></td>
-	    </tr>
-	    </tr><tr>
-	      <td></td>
-	      <td>
+	      <td><br><h4>File to upload</h4>
+		<input type="file" name="userfile" size="30"><br><br>
+   	      </td>
 	    </tr>
 	</table>
-
-	<h4>File to upload</h4>
-	<input type="file" name="userfile" size="30"><br>
 	
-	<p>You will be given a chance to review and either accept or reject the results before the imported data is added to your flights.</p><br>
+	<p>You will be given a chance to review the flights before they are actually imported.</p><br>
 
-	<input type="submit" value="Upload">
+	<input type="submit" name="action" value="Upload">
 	<INPUT type="button" value="Cancel" onClick="window.close()">
       </form>
 
