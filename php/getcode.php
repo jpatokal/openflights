@@ -81,7 +81,7 @@ function getAirline($id, $code) {
       if(!$code || $code == "") {
 	$code = $row["icao"];
       }
-      printf ("%s;%s\n", $code . ":" . $row["alid"], $row["name"] . " (" . $code . ")");
+      printf ("%s;%s\n", $row["alid"] . ":" . $code, $row["name"] . " (" . $code . ")");
       $found = true;
     } 
     if(! $found) {
