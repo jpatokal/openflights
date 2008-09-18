@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -11,12 +14,16 @@
   <body>
     <div id="contexthelp">
   
-    <h1>OpenFlights: Parse imported data</h1>
-
+    <h1>OpenFlights: Import</h1>
 <?php
+$uid = $_SESSION["uid"];
+if(!$uid or empty($uid)) {
+  printf("Not logged in, aborting");
+  exit;
+}
+
 include_once('simple_html_dom.php');
 include_once('helper.php');
-
 
 //
 // Strip out surrounding FlightMemory "liste" <td> from value
@@ -59,14 +66,32 @@ function fm_check_airport($db, $code) {
 }
 
 $uploaddir = '/var/www/openflights/import/';
-$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
 
-if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-  echo "<b>Upload successful.  Parsing...</b><br><h4>Results</h4>";
+$action = $HTTP_POST_VARS["action"];
+switch($action) {
+ case "Upload":
+  $uploadfile = $uploaddir . basename($_FILES['userfile']['tmp_name']);
+  if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+    echo "<b>Upload successful.  Parsing...</b><br><h4>Results</h4>";
+    flush();
+    print "Tmpfile " . basename($_FILES['userfile']['tmp_name']) . "<br>"; // DEBUG
+  } else {
+    echo "<b>Upload failed!</b>";
+    exit;
+  }
+  break;
+
+ case "Import":
+  $remove_these = array(' ','`','"','\'','\\','/');
+  $filename = $HTTP_POST_VARS["tmpfile"];
+  $uploadfile = $uploaddir . str_replace($remove_these,'', $filename);
+  print "<H4>Importing...</H4>";
+  print "Tmpfile " . $filename . "<br>"; // DEBUG
   flush();
-} else {
-  echo "No file uploaded, using test file.<br>";
-  $uploadfile = $uploaddir . "fm.html";
+  break;
+
+ default:
+   exit;
 }
 
 // Parse it
@@ -89,9 +114,11 @@ $table = $html->find('table', 2);
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
-print "<table style='border-spacing: 3'><tr>";
-print "<th>ID</th><th>Date</th><th>Flight</th><th>From</th><th>To</th><th>Miles</th><th>Time</th><th>Plane</th><th>Reg</th>";
-print "<th>Seat</th><th>Class</th><th>Type</th><th>Reason</th><th>Comment</th></tr>";
+if($action == "Upload") {
+  print "<table style='border-spacing: 3'><tr>";
+  print "<th>ID</th><th>Date</th><th>Flight</th><th>From</th><th>To</th><th>Miles</th><th>Time</th><th>Plane</th><th>Reg</th>";
+  print "<th>Seat</th><th>Class</th><th>Type</th><th>Reason</th><th>Comment</th></tr>";
+}
 
 // Rows with valign=top are data rows
 $rows = $table->find('tr[valign=top]');
@@ -126,7 +153,8 @@ foreach($rows as $row) {
   } else {
     $code = null;
     $airlinepart = explode(' ', $airline);
-    $sql = "select name,alid from airlines where name like '" . $airlinepart[0] . "%' and iata != '' order by name";
+    $sql = sprintf("select name,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
+		   $airlinepart[0], $uid);
   }
 
   // validate the airline/code against the DB
@@ -174,10 +202,11 @@ foreach($rows as $row) {
       $plid = mysql_result($result, 0);
       $plane_bgcolor = "#fff";
     } else {
-      $plid = null;
+      $plid = "-1"; // new plane
       $plane_bgcolor = "#fdd";
     }
   } else {
+    $plid = null;
     $plane_bgcolor = "#fff";
   }
 
@@ -207,14 +236,51 @@ foreach($rows as $row) {
   } else {
     $comment = "";
   }
-  printf ("<tr><td>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $id, $src_date, $airline_bgcolor, $airline . $alid, $number,
-	  $src_bgcolor, $src_iata . $src_apid, $dst_bgcolor, $dst_iata . $dst_apid, $distance, $duration, $plane_bgcolor, $plane . $plid, $reg,
-	  $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $comment);
 
+  switch($action) {
+  case "Upload":
+    printf ("<tr><td>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $id, $src_date, $airline_bgcolor, $airline, $number,
+	  $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $distance, $duration, $plane_bgcolor, $plane, $reg,
+	  $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $comment);
+    break;
+
+  case "Import":
+    $classMap = array("Economy"=>"Y", "Business"=>"C", "First"=>"F");
+    $reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C");
+
+    // Do we need a new plane?
+    if($plid == -1) {
+      $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($plane) . "')";
+      mysql_query($sql, $db) or die ('0;Adding new plane failed: ' . $sql . ', error ' . mysql_error());
+      $plid = mysql_insert_id();
+      print "Plane:" . $plane . " ";
+    }
+
+    // Do we need a new airline?
+    if(! $alid) {
+      $sql = sprintf("INSERT INTO airlines(name, uid) VALUES('%s', %s)",
+		     mysql_real_escape_string($airline), $uid);
+      mysql_query($sql, $db) or mysql_query($sql, $db) or die ('0;Adding new airline failed: ' . $sql . ', error ' . mysql_error());
+      $alid = mysql_insert_id();
+      print "Airline:" . $airline . " ";
+    }
+
+    // And now the flight 
+    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time) VALUES (%s, %s, STR_TO_DATE('%s', '%%d.%%m.%%Y'), %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW())",
+		   $uid, $src_apid, mysql_real_escape_string($src_date), $dst_apid, mysql_real_escape_string($duration),
+		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
+		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],
+		   $reasonMap[$seatreason], mysql_real_escape_string($comment),
+		   ($plid ? $plid : "NULL"), $alid);
+    mysql_query($sql, $db) or die('0;Importing flight failed ' . $sql . ', error ' . mysql_error());
+    print $id . " ";
+    break;
+  }
 }
 
-print "</table>";
+if($action == "Upload") {
 ?>
+</table>
 
 <h4>Key to results</h4>
 
@@ -232,13 +298,27 @@ print "</table>";
  </tr>
 </table><br>
 
+<form name="importform" action="/php/import.php" method="post">
+
 <?php
-print "<INPUT type='submit' value='Confirm import' " . $status . ">";
+print "<INPUT type='hidden' name='tmpfile' value='". basename($_FILES['userfile']['tmp_name']) . "'>";
+print "<INPUT type='submit' name='action' value='Import' " . $status . ">";
 ?>
 
 <INPUT type="button" value="Upload again" onClick="history.back(-1)">
 
 <INPUT type="button" value="Cancel" onClick="window.close()">
+
+<?php
+}
+if($action == "Import") {
+  print "<BR><H4>Flights successfully imported.</H4><BR>";
+  print "<INPUT type='button' value='Import more flights' onClick='javascript:window.location=\"/html/import.html\"'>";
+  print "<INPUT type='button' value='Close' onClick='javascript:parent.opener.refresh(true); window.close();'>";
+}
+
+?>
+  </form>
 
   </body>
 </html>
