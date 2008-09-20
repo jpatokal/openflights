@@ -122,6 +122,10 @@ window.onload = function init(){
   if(filter_user != "0" || filter_trid != 0) {
     document.getElementById("loginform").style.display = 'none';
     document.getElementById("loginstatus").style.display = 'inline';
+    document.getElementById("news").style.display = 'none';
+    if(filter_trid != 0) {
+      document.getElementById("filter_tripselect").style.display = 'none';
+    }
   }
 
   xmlhttpPost(URL_MAP, 0, true);
@@ -171,6 +175,8 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
     x2 = tmpx;
     y2 = tmpy;
   }
+  // 1,2 flights as single pixel
+  count = Math.floor(count/2 + 0.5);
 
   var sourceNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1, y1), {count: count} );
   var targetNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2, y2), {count: count} );
@@ -1364,6 +1370,13 @@ function signUp() {
 //
 // Change settings
 //
+function openImport() {
+  window.open('/html/import.html', 'Import', 'width=800,height=600,scrollbars=yes');
+}
+
+//
+// Change settings
+//
 function settings() {
   window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=400,scrollbars=yes');
 }
@@ -1381,6 +1394,7 @@ function login(str) {
     document.getElementById("loginstatus").innerHTML = "Welcome, <B>" + name + "</B>!";
     document.getElementById("loginform").style.display = 'none';
     document.getElementById("controlpanel").style.display = 'inline';
+    closeNews();
     clearStack();
     clearFilter(true);
   } else {
@@ -1498,6 +1512,10 @@ function closePopup() {
     currentPopup.hide();
     currentPopup = null;
   }
+}
+
+function closeNews() {
+  document.getElementById("news").style.display = 'none';
 }
 
 // refresh_all: false = only flights, true = reload everything

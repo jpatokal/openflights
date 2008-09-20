@@ -190,6 +190,7 @@ foreach($rows as $row) {
       // Many matches
     default:
       $airline_bgcolor = "#fdd";
+      $alid = null;
       while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	if(stristr($dbrow['name'], $airline)) {
 	  $airline_bgcolor = "#fff";
@@ -274,13 +275,23 @@ foreach($rows as $row) {
       print "Airline:" . $airline . " ";
     }
 
+    // Hack to record X-Y and Y-X flights as same in DB
+    if($src_apid > $dst_apid) {
+      $tmp = $src_apid;
+      $src_apid = $dst_apid;
+      $dst_apid = $tmp;
+      $opp = "Y";
+    } else {
+      $opp = "N";
+    }
+
     // And now the flight 
-    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time) VALUES (%s, %s, STR_TO_DATE('%s', '%%d.%%m.%%Y'), %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW())",
+    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, STR_TO_DATE('%s', '%%d.%%m.%%Y'), %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW(), '%s')",
 		   $uid, $src_apid, mysql_real_escape_string($src_date), $dst_apid, mysql_real_escape_string($duration),
 		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
 		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],
 		   $reasonMap[$seatreason], mysql_real_escape_string($comment),
-		   ($plid ? $plid : "NULL"), $alid);
+		   ($plid ? $plid : "NULL"), $alid, $opp);
     mysql_query($sql, $db) or die('0;Importing flight failed ' . $sql . ', error ' . mysql_error());
     print $id . " ";
     break;

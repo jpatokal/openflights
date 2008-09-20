@@ -40,7 +40,7 @@ $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
 // List of all this user's flights
-$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,alid,note,trid FROM airports AS s,airports AS d, flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid";
+$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,alid,note,trid,opp FROM airports AS s,airports AS d, flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid";
 
 // ...filtered by airport (optional)
 if($apid && $apid != 0) {
@@ -67,14 +67,25 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf("\t");
   }
+  $src_apid = $row["src_apid"];
   $src_code = $row["src_iata"];
   if($src_code == "") $src_code = $row["src_icao"];
   if($src_code == "") $src_code = "Priv";
 
+  $dst_apid = $row["dst_apid"];
   $dst_code = $row["dst_iata"];
   if($dst_code == "") $dst_code = $row["dst_icao"];
   if($dst_code == "") $dst_code = "Priv";
 
-  printf ("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", $src_code, $row["src_apid"], $dst_code, $row["dst_apid"], $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"], $row["trid"]);
+  if($row["opp"] == 'Y') {
+    $tmp = $src_apid;
+    $src_apid = $dst_apid;
+    $dst_apid = $tmp;
+
+    $tmp = $src_code;
+    $src_code = $dst_code;
+    $dst_code = $tmp;
+  }
+  printf ("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"], $row["trid"]);
 }
 ?>
