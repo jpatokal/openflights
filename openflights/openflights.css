@@ -67,8 +67,8 @@
 } 
 
 #news { 
-    left: 2em;
-    top: 50%;
+    left: 1em;
+    top: 45%;
     position: absolute;
     font-size:1em;
     filter:alpha(opacity=80);
