@@ -776,7 +776,7 @@ function updateStats(str) {
     for (r in rows) {
       var col = rows[r].split(",");
       // s.name, s.apid, d.name, d.apid, count
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>-" +
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>&harr;" +
 	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td><td>"
 	+ col[4] + "</td></tr>";
     }
