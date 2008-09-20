@@ -66,6 +66,18 @@
     z-index: 1000;
 } 
 
+#news { 
+    left: 2em;
+    top: 50%;
+    position: absolute;
+    font-size:1em;
+    filter:alpha(opacity=80);
+    opacity: 0.8;
+    background: white;
+    z-index: 1000;
+    padding: 10px;
+} 
+
 #newairport { 
     right: 260px;
     top: 60%;
