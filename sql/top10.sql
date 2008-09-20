@@ -10,7 +10,7 @@ select count(*) as '', concat('<a href="http://openflights.org/user/',u.name,'">
 
 select count(*) as '', concat('<a href="http://openflights.org/user/',u.name,'">',u.name,'</a>') as '<br><b>Top 10 users (yesterday)</b>' from users as u,flights as f where u.uid != 1 and u.uid=f.uid and date_sub(now(), interval 1 day) < upd_time group by f.uid order by count(*) desc limit 10;
 
-select distinct CONCAT(s.iata,' -') as '<br><b>Top 10 routes</b>',d.iata as '',count(fid) as '' from airports as s,airports as d,flights as f where f.uid != 1 and s.apid=f.src_apid and d.apid=f.dst_apid group by s.apid,d.apid order by count(fid) desc limit 10;
+select distinct CONCAT(s.iata,' &harr;') as '<br><b>Top 10 routes</b>',d.iata as '',count(fid) as '' from airports as s,airports as d,flights as f where f.uid != 1 and s.apid=f.src_apid and d.apid=f.dst_apid group by s.apid,d.apid order by count(fid) desc limit 10;
 
 select rpad(a.name,25,' ') as '<br><b>Top 10 airports</b>',a.iata as '', count(*) as '' from airports as a,flights as f where f.uid != 1 and a.apid=f.src_apid or a.apid=f.dst_apid group by a.apid order by count(*) desc limit 10;
 
