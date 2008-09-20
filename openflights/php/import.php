@@ -42,7 +42,7 @@ function fm_strip_liste($value) {
 }
   
 function fm_check_airport($db, $code) {
-  $sql = "select apid from airports where iata='" . mysql_real_escape_string($code) . "'";
+  $sql = "select apid,city,country from airports where iata='" . mysql_real_escape_string($code) . "'";
   $result = mysql_query($sql, $db);
   switch(mysql_num_rows($result)) {
 
@@ -59,10 +59,12 @@ function fm_check_airport($db, $code) {
     
     // Multiple matches
   default:
-    $apid = mysql_result($result, 0);
+    $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
+    $apid = $dbrow["apid"];
+    $code = $code . "<br><small>" . $dbrow["city"] . "," . $dbrow["country"] . "</small>";
     $color="#ddf";
   }
-  return array($apid, $color);
+  return array($apid, $code, $color);
 }
 
 $uploaddir = '/var/www/openflights/import/';
@@ -135,8 +137,8 @@ foreach($rows as $row) {
 
   $src_iata = $cols[2]->plaintext;
   $dst_iata = $cols[4]->plaintext;
-  list($src_apid, $src_bgcolor) = fm_check_airport($db, $src_iata);
-  list($dst_apid, $dst_bgcolor) = fm_check_airport($db, $dst_iata);
+  list($src_apid, $src_iata, $src_bgcolor) = fm_check_airport($db, $src_iata);
+  list($dst_apid, $dst_iata, $dst_bgcolor) = fm_check_airport($db, $dst_iata);
   if(!$src_apid || !$dst_apid) $status = "disabled";
 
   $distance = substr($cols[6]->find('<td>[align=right]', 0)->plaintext, 0, -6); // peel off trailing &nbsp;
@@ -145,49 +147,56 @@ foreach($rows as $row) {
 
   $flight = explode('<br>', $cols[7]);
   $airline = fm_strip_liste($flight[0]);
-  $number = str_replace('</td>', '', $flight[1]);
-  $code = substr($number, 0, 2);
-  // is alphanumeric, but not all numeric? then it's probably an airline code
-  if(ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code)) {
-    $sql = "select name,alid from airlines where iata='" . $code . "' order by name";
+  if($airline == "") {
+    $airline = "Private flight<br><small>(was: No airline)</small>";
+    $airline_bgcolor = "#ddf";
+    $alid = 1;
   } else {
-    $code = null;
-    $airlinepart = explode(' ', $airline);
-    $sql = sprintf("select name,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
-		   $airlinepart[0], $uid);
-  }
-
-  // validate the airline/code against the DB
-  $result = mysql_query($sql, $db);
-  switch(mysql_num_rows($result)) {
-
-    // No match
-  case "0":
-    $airline_bgcolor = "#fdd";
-    $alid = null;
-    break;
-
-    // Solitary match
-  case "1":
-    $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
-    if(stristr($dbrow['name'], $airline)) {
-      $airline_bgcolor = "#fff";
+    $number = str_replace('</td>', '', $flight[1]);
+    $code = substr($number, 0, 2);
+    // is alphanumeric, but not all numeric? then it's probably an airline code
+    if(ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code)) {
+      $sql = "select name,alid from airlines where iata='" . $code . "' order by name";
     } else {
-      $airline_bgcolor = "#ddf";
+      $code = null;
+      $airlinepart = explode(' ', $airline);
+      $sql = sprintf("select name,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
+		     mysql_real_escape_string($airlinepart[0]), $uid);
     }
-    $airline = $dbrow['name'];
-    $alid = $dbrow['alid'];
-    break;
+    
+    // validate the airline/code against the DB
+    $result = mysql_query($sql, $db);
+    switch(mysql_num_rows($result)) {
+      
+      // No match
+    case "0":
+      $airline_bgcolor = "#fdd";
+      $alid = null;
+      break;
 
-    // Many matches
-  default:
-    $airline_bgcolor = "#fdd";
-    while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      // Solitary match
+    case "1":
+      $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
       if(stristr($dbrow['name'], $airline)) {
 	$airline_bgcolor = "#fff";
 	$airline = $dbrow['name'];
-	$alid = $dbrow['alid'];
-	break;
+      } else {
+	$airline_bgcolor = "#ddf";
+	$airline = $dbrow['name'] . "<br><small>(was: " . $airline . ")</small>";
+      }
+      $alid = $dbrow['alid'];
+      break;
+      
+      // Many matches
+    default:
+      $airline_bgcolor = "#fdd";
+      while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	if(stristr($dbrow['name'], $airline)) {
+	  $airline_bgcolor = "#fff";
+	  $airline = $dbrow['name'];
+	  $alid = $dbrow['alid'];
+	  break;
+	}
       }
     }
   }
@@ -301,11 +310,17 @@ if($action == "Upload") {
 <form name="importform" action="/php/import.php" method="post">
 
 <?php
+if($status == "disabled") {
+  print "<font color=red>Error: Your flight data includes unrecognized airports.  Please add them to the database and try again.</font> ";
+  print "<INPUT type='button' value='Add new airport' onClick='javascript:window.open(\"/html/apsearch.html\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'><br><br>";
+} else {
+  print "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)<br><br>";
+}
 print "<INPUT type='hidden' name='tmpfile' value='". basename($_FILES['userfile']['tmp_name']) . "'>";
-print "<INPUT type='submit' name='action' value='Import' " . $status . ">";
+print "<INPUT type='submit' name='action' title='Add these flights to your OpenFlights' value='Import' " . $status . ">";
 ?>
 
-<INPUT type="button" value="Upload again" onClick="history.back(-1)">
+<INPUT type="button" value="Upload again" title="Cancel this import and return to file upload page" onClick="history.back(-1)">
 
 <INPUT type="button" value="Cancel" onClick="window.close()">
 
