@@ -134,6 +134,11 @@ foreach($rows as $row) {
   if(strlen($src_date) == 4) {
     $src_date = "01.01." . $src_date;
   }
+  if(strstr($src_date, "-")) {
+    $dateFormat = "%m-%d-%Y";
+  } else {
+    $dateFormat = "%d.%m.%Y";
+  }
 
   $src_iata = $cols[2]->plaintext;
   $dst_iata = $cols[4]->plaintext;
@@ -286,8 +291,9 @@ foreach($rows as $row) {
     }
 
     // And now the flight 
-    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, STR_TO_DATE('%s', '%%d.%%m.%%Y'), %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW(), '%s')",
-		   $uid, $src_apid, mysql_real_escape_string($src_date), $dst_apid, mysql_real_escape_string($duration),
+    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, STR_TO_DATE('%s', '%s'), %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW(), '%s')",
+		   $uid, $src_apid, mysql_real_escape_string($src_date), $dateFormat,
+		   $dst_apid, mysql_real_escape_string($duration),
 		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
 		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],
 		   $reasonMap[$seatreason], mysql_real_escape_string($comment),
