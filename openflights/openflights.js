@@ -359,7 +359,7 @@ function xmlhttpPost(strURL, id, param) {
 	updateCodes(self.xmlHttpReq.responseText);
       }
       if(strURL == URL_LOGIN) {
-	login(self.xmlHttpReq.responseText);
+	login(self.xmlHttpReq.responseText, param);
       }
       if(strURL == URL_LOGOUT) {
 	logout(self.xmlHttpReq.responseText);
@@ -1384,7 +1384,7 @@ function settings() {
 //
 // Login and logout
 //
-function login(str) {
+function login(str, param) {
   var status = str.split(";")[0];
   var name = str.split(";")[1];
   document.getElementById("loginstatus").style.display = 'inline';
@@ -1394,7 +1394,9 @@ function login(str) {
     document.getElementById("loginstatus").innerHTML = "Welcome, <B>" + name + "</B>!";
     document.getElementById("loginform").style.display = 'none';
     document.getElementById("controlpanel").style.display = 'inline';
-    closeNews();
+    if(param != "NEWUSER") {
+      closeNews();
+    }
     clearStack();
     clearFilter(true);
   } else {
@@ -1407,7 +1409,10 @@ function login(str) {
 function newUserLogin(name, pw) {
   document.forms['login'].name.value = name;
   document.forms['login'].pw.value = pw;
-  xmlhttpPost(URL_LOGIN);
+  document.getElementById("news").innerHTML =
+    "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
+    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:clearInput()'> to start adding flights, or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
+  xmlhttpPost(URL_LOGIN, 0, "NEWUSER");
 }
 
 function logout(str) {
