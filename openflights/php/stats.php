@@ -15,13 +15,8 @@ if(! $user) {
 
 // Filter
 $trid = $HTTP_POST_VARS["trid"];
-if(! $trid) {
-  $trid = $HTTP_GET_VARS["trid"];
-}
 $alid = $HTTP_POST_VARS["alid"];
-if(! $alid) {
-  $alid = $HTTP_GET_VARS["alid"];
-}
+$year = $HTTP_POST_VARS["year"];
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
@@ -57,6 +52,9 @@ if($user && $user != "0") {
 
 if($alid && $alid != "0") {
   $filter = $filter . " AND f.alid= " . mysql_real_escape_string($alid);
+}
+if($year && $year != "0") {
+  $filter = $filter . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
 }
 
 // List top 10 routes

@@ -1,3 +1,11 @@
+<b>2008-09-21</b>
+
+* "Year" filter added
+* Filter selections automatically restricted when a trip is chosen
+* Clearing filter in /trip/X mode no longer resets trip
+* FlightMemory import strict date validation implemented
+* FlightMemory import now handles distances in km correctly
+
 <b>2008-09-20</b>
 
 * FlightMemory importing implemented

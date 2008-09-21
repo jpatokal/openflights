@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="stylesheet" href="/css/sortable.css" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <script type="text/javascript" src="/OpenLayers.js?version=20080918"></script>
+    <script type="text/javascript" src="/OpenLayers.js?version=20080921"></script>
     <script type="text/javascript" src="/js/sortable.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/openflights.js"></script>
@@ -82,12 +82,19 @@
 		onclick="toggleControl(this);" />
 		<label for="selectToggle">Flights</label>
 		-->
-	      <div id="filter_tripselect">
-		Trips<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup> <select name="Trips"><option value="">All trips</option></select>
-	      </div>
-	      <div id="filter_airlineselect">
-		Airlines <select name="Airlines"><option value="">All airlines</option></select>
-	      </div>
+		<table>
+		<tr>
+		  <td>Trips<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
+		  <td><span id="filter_tripselect"><select name="Trips"><option value="">All trips</option></select></span>
+		</tr><tr>
+		  <td>Airlines&nbsp;</td>
+		  <td><span id="filter_airlineselect"><select name="Airlines"><option value="">All airlines</option></select></span>
+		</tr><tr>
+		  <td>Year</td>
+		  <td><span id="filter_yearselect"><select name="Years"><option value="">All</option></select></span></td>
+		  </tr>
+		</table>
+	      </span>
 	      
 	      <input type="button" value="Apply" align="middle" onclick='JavaScript:refresh(true)'>
 	      <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
@@ -98,8 +105,8 @@
 		<br><b>Control panel</b><br>
 		<input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
 		<input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
-		<input type="button" value="Import" align="middle" onclick='JavaScript:openImport()'>
-		<input type="button" value="Settings" align="middle" onclick='JavaScript:settings()'>
+		<input type="button" value="Import..." align="middle" onclick='JavaScript:openImport()'>
+		<input type="button" value="Settings..." align="middle" onclick='JavaScript:settings()'>
 		<input type="button" value="Logout" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
 	      </div>
 

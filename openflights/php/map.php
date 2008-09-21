@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'helper.php';
+include 'filter.php';
 
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
@@ -28,6 +29,10 @@ if(! $trid) {
 $alid = $HTTP_POST_VARS["alid"];
 if(! $alid) {
   $alid = $HTTP_GET_VARS["alid"];
+}
+$year = $HTTP_POST_VARS["year"];
+if(! $year) {
+  $year = $HTTP_GET_VARS["year"];
 }
 
 // Set up filtering clause and verify that this trip and user are public
@@ -78,7 +83,10 @@ if($user && $user != "0") {
 }
 
 if($alid && $alid != "0") {
-  $filter = $filter . " AND alid= " . mysql_real_escape_string($alid);
+  $filter = $filter . " AND alid=" . mysql_real_escape_string($alid);
+}
+if($year && $year != "0") {
+  $filter = $filter . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
 }
 
 // Load up all information needed by this user
@@ -122,32 +130,6 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 // When running for the first time, load up possible filter settings for this user
 if($init == "true") {
   print("\n");
-
-  // List of all trips
-  $sql = "SELECT * FROM trips WHERE uid=" . $uid . " ORDER BY name";
-  $result = mysql_query($sql, $db);
-  $first = true;
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($first) {
-      $first = false;
-    } else {
-      printf("\t");
-    }  
-    printf ("%s;%s;%s", $row["trid"], $row["name"], $row["url"]);
-  }
-  printf ("\n");
-  
-  // List of all airlines
-  $sql = "SELECT DISTINCT a.alid, name FROM airlines as a, flights as f WHERE a.alid=f.alid AND f.uid=" . $uid . " ORDER BY name";
-  $result = mysql_query($sql, $db);
-  $first = true;
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($first) {
-      $first = false;
-    } else {
-      printf("\t");
-    }  
-    printf ("%s;%s", $row["alid"], $row["name"]);
-  }
+  loadFilter($db, $uid, $trid);
 }
 ?>

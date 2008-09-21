@@ -8,7 +8,7 @@ var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var paneStack = [ "ad" ];
 
 // Filter selections and currently chosen airport 
-var filter_user = 0, filter_trid = 0, filter_alid = 0, apid = 0;
+var filter_user = 0, filter_trid = 0, filter_alid = 0, filter_year = 0, apid = 0;
 var tripname, tripurl;
 var privacy = "Y";
 
@@ -17,7 +17,6 @@ var fid = 0, alid = 0, plane;
 var input = false, logged_in = false, initializing = true;
 var input_srcmarker, input_dstmarker, input_toggle;
 
-var URL_FILTER = "/php/filter.php";
 var URL_FLIGHTS = "/php/flights.php";
 var URL_GETCODE = "/php/getcode.php";
 var URL_LOGIN = "/php/login.php";
@@ -522,6 +521,7 @@ function getquerystring(id, param) {
     filter_trid = form.Trips.value;
   }
   filter_alid = form.Airlines.value;
+  filter_year = form.Years.value;
   if(param == "EDIT" || param == "COPY") {
     qstr = 'fid=' + escape(id);
   } else {
@@ -531,6 +531,7 @@ function getquerystring(id, param) {
     'user=' + escape(filter_user) + '&' +
     'trid=' + escape(filter_trid) + '&' +
     'alid=' + escape(filter_alid) + '&' +
+    'year=' + escape(filter_year) + '&' +
     'param=' + escape(param);
   return qstr;
 }
@@ -540,11 +541,15 @@ function updateFilter(str) {
   var master = str.split("\n");
   var trips = master[3];
   var airlines = master[4];
+  var years = master[5];
 
-  var tripselect = "Trips " + createSelect("Trips", "All trips", filter_trid, trips.split("\t"), 20);
+  var tripselect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), 20);
   document.getElementById("filter_tripselect").innerHTML = tripselect;
-  var airlineselect = "Airlines " + createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), 20);
+  var airlineselect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), 20);
   document.getElementById("filter_airlineselect").innerHTML = airlineselect;
+  var yearselect = createSelect("Years", "All", filter_year, years.split("\t"), 20);
+  document.getElementById("filter_yearselect").innerHTML = yearselect;
+
 }
 
 
@@ -554,16 +559,20 @@ function updateTitle(str) {
   var text = "";
   var airline = form.Airlines[form.Airlines.selectedIndex].text;
   var trip = form.Trips[form.Trips.selectedIndex].text;
+  var year = form.Years[form.Years.selectedIndex].text;
 
   // Logged in users
   if(logged_in) {
     if(trip != "All trips") {
       text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
     }
-
     if(airline != "All airlines") {
       if(text != "") text += ", ";
       text += airline;
+    }
+    if(year != "All") {
+      if(text != "") text += " in ";
+      text += year;
     }
   } else {
     // Demo mode
@@ -582,6 +591,9 @@ function updateTitle(str) {
 	text = filter_user + "'s flights";
 	if(airline != "All airlines") {
 	  text += " on " + airline;
+	}
+	if(year != "All") {
+	  text += " in " + year;
 	}
       }
       document.getElementById("loginstatus").innerHTML = "<b>" + text +
@@ -667,7 +679,7 @@ function updateMap(str){
   var min = Math.floor(col[2] % 60);
   stats = "Flights: " + col[0] + "<br>" +
     "Distance: " + col[1] + " mi<br>" +
-    "Duration: " + days + "d " + hours + ":" + min;
+    "Duration: " + days + "days " + hours + ":" + min;
   document.getElementById("stats").innerHTML = stats;
   privacy = col[3];
 
@@ -697,7 +709,8 @@ function updateMap(str){
 function startListFlights() {
   var tripName = document.forms['filterform'].Trips[document.forms['filterform'].Trips.selectedIndex].text;  
   var airlineName = document.forms['filterform'].Airlines[document.forms['filterform'].Airlines.selectedIndex].text;
-  xmlhttpPost(URL_FLIGHTS, 0, escape("Flights for " + tripName + " on " + airlineName));
+  var yearName = document.forms['filterform'].Years[document.forms['filterform'].Years.selectedIndex].text;
+  xmlhttpPost(URL_FLIGHTS, 0, escape("Flights for " + tripName + " on " + airlineName + " in year " + yearName));
 }
 
 function listFlights(str, desc) {
@@ -1525,8 +1538,14 @@ function closeNews() {
 
 // refresh_all: false = only flights, true = reload everything
 function clearFilter(refresh_all) {
-  var tr_select = document.forms['filterform'].Trips;
-  tr_select.selectedIndex = 0;
+
+  // Do not allow trip filter to be cleared if it's set in URL
+  if(parseArgument("trip") == 0) {
+    var tr_select = document.forms['filterform'].Trips;
+    tr_select.selectedIndex = 0;
+  }
+  var year_select = document.forms['filterform'].Years;
+  year_select.selectedIndex = 0;
   selectAirline(0);
   refresh(refresh_all);
 }
