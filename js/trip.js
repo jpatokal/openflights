@@ -59,7 +59,7 @@ function xmlhttpPost(strURL, type) {
       'name=' + escape(form.name.value) + '&' +
       'url=' + escape(form.url.value) + '&' +
       'privacy=' + escape(privacy);
-    if(type == 'EDIT' || type == 'LOAD') {
+    if(type == 'EDIT' || type == 'LOAD' || type == 'DELETE') {
       query += '&trid=' + trid;
     }
   }
@@ -76,6 +76,15 @@ function validate() {
 
   document.getElementById("miniresultbox").innerHTML = "<i>Processing...</i>";
   xmlhttpPost(URL_TRIP, type);
+}
+
+// Delete trip?
+function deleteTrip() {
+  if(confirm("Are you sure you want to delete this trip?  (Flights in this trip will NOT be deleted.)")) {
+    xmlhttpPost(URL_TRIP, "DELETE");
+  } else {
+    document.getElementById("miniresultbox").innerHTML = "<i>Deleting trip cancelled.</i>";
+  }
 }
 
 // Load up trip data
@@ -98,12 +107,13 @@ function loadTrip(str) {
       }
     }
     document.getElementById("miniresultbox").innerHTML = "<i>Edit your trip details here.</i>";
+    document.getElementById("delbutton").style.display = 'inline';
   } else {
     showError(str.split(";")[1]);
   }
 }
 
-// Check if trip creation/editing succeeded
+// Check if trip creation/editing/deletion succeeded
 function editTrip(str) {
   var code = str.split(";")[0];
   var trid = str.split(";")[1];

@@ -1130,18 +1130,39 @@ function editTrip(thisTrip) {
   window.open(url, 'TripEditor', 'width=500,height=280,scrollbars=yes');
 }
 
-// User has added or edited trip, so punch it in
-function newTrip(code, trid, name, url) {
-  var trips = document.forms['inputform'].trips;
+// User has added, edited or deleted trip, so punch it in
+function newTrip(code, newTrid, name, url) {
+  code = parseInt(code);
+
+  // Trip deleted?  Switch back to "all trips" view
+  if(code == CODE_DELETEOK) {
+    var tr_select = document.forms['filterform'].Trips;
+    tr_select.selectedIndex = 0;
+  }
 
   // This only applies when new trip is added in flight editor
+  var trips = document.forms['inputform'].trips;
   if(trips) {
-    if(code == CODE_ADDOK) {
+    switch(code) {
+    case CODE_ADDOK:
       trips[0].text = name;
-      trips[0].value = trid;
+      trips[0].value = newTrid;
       trips.selectedIndex = 0;
-    } else {
+      break;
+
+    case CODE_DELETEOK:
+      if(trips.selectedIndex == 0) {
+	trips[0].text = "Select trip";
+	trips[0].value = 0;
+      } else {
+	trips.remove(trips.selectedIndex);
+	trips.selectedIndex = 0;
+      }
+      break;
+
+    default:
       trips[trips.selectedIndex].text = name;
+      break;
     }
   }
   // In all cases, refresh map
