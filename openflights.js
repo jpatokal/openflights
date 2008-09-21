@@ -679,7 +679,7 @@ function updateMap(str){
   var min = Math.floor(col[2] % 60);
   stats = "Flights: " + col[0] + "<br>" +
     "Distance: " + col[1] + " mi<br>" +
-    "Duration: " + days + "days " + hours + ":" + min;
+    "Duration: " + days + " days " + hours + ":" + min;
   document.getElementById("stats").innerHTML = stats;
   privacy = col[3];
 
