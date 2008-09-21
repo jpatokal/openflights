@@ -129,8 +129,10 @@ foreach($rows as $row) {
   $cols = $row->find('td[class=liste],td[class=liste_gross]');
 
   $id = $cols[0]->plaintext;
+
+  // Read and validate date field
   $dates = explode('<br>', $cols[1]);
-  $src_date = substr($dates[0], 24, -7); // Eeew...  <td class="liste"><nobr>xx...xx</nobr>
+  $src_date = strip_tags($dates[0]); // <td class="liste"><nobr>xx...xx</nobr>
   if(strlen($src_date) == 4) {
     $src_date = "01.01." . $src_date;
   }
@@ -139,16 +141,34 @@ foreach($rows as $row) {
   } else {
     $dateFormat = "%d.%m.%Y";
   }
+  $sql = sprintf("SELECT STR_TO_DATE('%s', '%s')", $src_date, $dateFormat);
+  $result = mysql_query($sql, $db);
+  $db_date = mysql_result($result, 0); 
+  if($db_date == "") {
+    $date_bgcolor = "#faa";
+    $status = "disabled";
+    $fatal = "date";
+  } else {
+    $date_bgcolor = "#fff";
+    $src_date = $db_date;
+  }
 
   $src_iata = $cols[2]->plaintext;
   $dst_iata = $cols[4]->plaintext;
   list($src_apid, $src_iata, $src_bgcolor) = fm_check_airport($db, $src_iata);
   list($dst_apid, $dst_iata, $dst_bgcolor) = fm_check_airport($db, $dst_iata);
-  if(!$src_apid || !$dst_apid) $status = "disabled";
+  if(!$src_apid || !$dst_apid) {
+    $status = "disabled";
+    $fatal = "airport";
+  }
 
-  $distance = substr($cols[6]->find('<td>[align=right]', 0)->plaintext, 0, -6); // peel off trailing &nbsp;
+  $distance = substr($cols[6]->find('td[align=right]', 0)->plaintext, 0, -6); // peel off trailing &nbsp;
   $distance = str_replace(',', '', $distance);
-  $duration = substr($cols[6]->find('<td>[align=right]', 1)->plaintext, 0, -6);
+  $dist_unit = $cols[6]->find('tr', 0)->find('td', 1)->plaintext;
+  if($dist_unit == "km") {
+    $distance = round($distance/1.609344); // km to mi
+  }
+  $duration = substr($cols[6]->find('td[align=right]', 1)->plaintext, 0, -6);
 
   $flight = explode('<br>', $cols[7]);
   $airline = fm_strip_liste($flight[0]);
@@ -254,7 +274,7 @@ foreach($rows as $row) {
 
   switch($action) {
   case "Upload":
-    printf ("<tr><td>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $id, $src_date, $airline_bgcolor, $airline, $number,
+    printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $airline_bgcolor, $airline, $number,
 	  $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $distance, $duration, $plane_bgcolor, $plane, $reg,
 	  $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $comment);
     break;
@@ -291,8 +311,8 @@ foreach($rows as $row) {
     }
 
     // And now the flight 
-    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, STR_TO_DATE('%s', '%s'), %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW(), '%s')",
-		   $uid, $src_apid, mysql_real_escape_string($src_date), $dateFormat,
+    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW(), '%s')",
+		   $uid, $src_apid, mysql_real_escape_string($src_date),
 		   $dst_apid, mysql_real_escape_string($duration),
 		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
 		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],
@@ -328,8 +348,17 @@ if($action == "Upload") {
 
 <?php
 if($status == "disabled") {
-  print "<font color=red>Error: Your flight data includes unrecognized airports.  Please add them to the database and try again.</font> ";
-  print "<INPUT type='button' value='Add new airport' onClick='javascript:window.open(\"/html/apsearch.html\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'><br><br>";
+  print "<font color=red>Error: ";
+  switch($fatal) {
+  case "airport":
+    print "Your flight data includes unrecognized airports.  Please add them to the database and try again. ";
+    print "<INPUT type='button' value='Add new airport' onClick='javascript:window.open(\"/html/apsearch.html\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
+    break;
+  case "date":
+    print "Some date fields could not be parsed.  Please change them to use any of these three formats: MM-DD-YYYY, DD.MM.YYYY, or YYYY only.";
+    break;
+  }
+  print "</font><br><br>";
 } else {
   print "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)<br><br>";
 }
