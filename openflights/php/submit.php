@@ -65,7 +65,7 @@ switch($param) {
    break;
 
  case "DELETE":
-   // uid is strictly speaking unnecessary, but just to be sure...
+   // Check uid to prevent an evil logged-in hacker from deleting somebody else's flight
    $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, mysql_real_escape_string($fid));
    break;
 

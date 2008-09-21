@@ -3,6 +3,7 @@
 * "Year" filter added
 * Filter selections automatically restricted when a trip is chosen
 * Clearing filter in /trip/X mode no longer resets trip
+* Add "Delete" option for trips
 * FlightMemory import strict date validation implemented
 * FlightMemory import now handles distances in km correctly
 
