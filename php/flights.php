@@ -10,6 +10,7 @@ $trid = $HTTP_POST_VARS["trid"];
 $alid = $HTTP_POST_VARS["alid"];
 $fid = $HTTP_POST_VARS["fid"];
 $user = $HTTP_POST_VARS["user"];
+$year = $HTTP_POST_VARS["year"];
 
 $uid = $_SESSION["uid"];
 // Logged in?
@@ -56,6 +57,9 @@ if($alid && $alid != "0") {
 }
 if($fid && $fid != "0") {
   $sql = $sql . " AND fid= " . mysql_real_escape_string($fid);
+}
+if($year && $year != "0") {
+  $sql = $sql . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
 }
 
 // Execute!
