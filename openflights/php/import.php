@@ -246,7 +246,7 @@ foreach($rows as $row) {
   }
 
   if($planedata[1]) {
-    $reg = $planedata[1];
+    $reg = strip_tags($planedata[1]);
   } else {
     $reg = "";
   }
