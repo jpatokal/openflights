@@ -181,18 +181,20 @@ foreach($rows as $row) {
     $code = substr($number, 0, 2);
     // is alphanumeric, but not all numeric? then it's probably an airline code
     if(ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code)) {
-      $sql = "select name,alid from airlines where iata='" . $code . "' order by name";
+      $sql = sprintf("select name,alias,alid from airlines where iata='%s' or uid = %s order by name",
+		     $code, $uid);
     } else {
       $code = null;
       $airlinepart = explode(' ', $airline);
-      $sql = sprintf("select name,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
+      $sql = sprintf("select name,alias,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
 		     mysql_real_escape_string($airlinepart[0]), $uid);
     }
-    
+    print $sql;
+
     // validate the airline/code against the DB
     $result = mysql_query($sql, $db);
     switch(mysql_num_rows($result)) {
-      
+
       // No match
     case "0":
       $airline_bgcolor = "#fdd";
@@ -202,7 +204,7 @@ foreach($rows as $row) {
       // Solitary match
     case "1":
       $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
-      if(stristr($dbrow['name'], $airline)) {
+      if(stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline)) {
 	$airline_bgcolor = "#fff";
 	$airline = $dbrow['name'];
       } else {
@@ -217,7 +219,7 @@ foreach($rows as $row) {
       $airline_bgcolor = "#fdd";
       $alid = null;
       while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
-	if(stristr($dbrow['name'], $airline)) {
+	if(stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline)) {
 	  $airline_bgcolor = "#fff";
 	  $airline = $dbrow['name'];
 	  $alid = $dbrow['alid'];
