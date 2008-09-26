@@ -189,7 +189,6 @@ foreach($rows as $row) {
       $sql = sprintf("select name,alias,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
 		     mysql_real_escape_string($airlinepart[0]), $uid);
     }
-    print $sql;
 
     // validate the airline/code against the DB
     $result = mysql_query($sql, $db);
