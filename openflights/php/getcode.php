@@ -64,7 +64,7 @@ function getAirline($id, $code) {
   } else {
     $ext = "";
   }
-  $sql = "SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE " . $ext . " name LIKE '" . mysql_real_escape_string($code) . "%' ORDER BY name";
+  $sql = "SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE " . $ext . " name LIKE '" . mysql_real_escape_string($code) . "%' OR alias LIKE '" . mysql_real_escape_string($code) . "%' ORDER BY name";
   if($len == 2) {
     $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col, name";
   } else if ($len == 3) {
