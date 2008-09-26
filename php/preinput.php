@@ -1,12 +1,14 @@
 <?php
-include 'helper.php';
-
 session_start();
+header("Content-type: text/html; charset=iso-8859-1");
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
   printf("Not logged in, aborting");
   exit;
 }
+
+include 'helper.php';
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
