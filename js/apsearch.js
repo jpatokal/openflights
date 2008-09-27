@@ -226,7 +226,7 @@ function searchResult(str) {
       table += "<tr><td><b>Results " + (offset+1) + " to " + Math.min(offset+10, max) + " of " + max + "</b><br></td>";
 
       if(max > 10) {
-	table += "<td style=\"text-align: right\">";
+	table += "<td style=\"text-align: right\"><nobr>";
 	if(offset - 10 >= 0) {
 	  table += "<INPUT id=\"b_back\" type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
 	} else {
@@ -237,7 +237,7 @@ function searchResult(str) {
 	} else {
 	  table += "<INPUT type=\"button\" value=\">\" disabled>";
 	}
-	table += "</td>";
+	table += "</nobr></td>";
       }
       table += "</tr>";
       continue;
