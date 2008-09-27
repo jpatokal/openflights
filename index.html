@@ -30,8 +30,7 @@
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
 	      <B>News</b>: <i>Please hit CTRL-F5 to ensure your browser loads the latest version.</i><br>
-	      21 Sep 2008: <a href="/about.html#CHANGES">Filtering by year added.</a><br>
-	      20 Sep 2008: <a href="/about.html#CHANGES">Importing from FlightMemory added.</a>
+	      27 Sep 2008: <a href="/about.html#CHANGES">Major streamlining of flight editing process.</a><br>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -92,12 +91,14 @@
 		</tr><tr>
 		  <td>Year</td>
 		  <td><span id="filter_yearselect"><select name="Years"><option value="">All</option></select></span></td>
-		  </tr>
+		</tr><tr>
+		  <td></td>
+		  <td>
+		    <input type="button" value="Filter" align="middle" onclick='JavaScript:refresh(true)'>
+		    <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
+		  </td>
 		</table>
 	      </span>
-	      
-	      <input type="button" value="Filter" align="middle" onclick='JavaScript:refresh(true)'>
-	      <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
 	    </form>
 	      
 
@@ -140,9 +141,9 @@
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td colspan=2><input type="text" name="src_date" size="11" tabindex="1"/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"/>
-    Duration <input type="text" name="duration" size="5" style="text-align: right"/>
-    Distance <input type="text" name="distance" size="5" style="text-align: right"/> mi&nbsp;&nbsp;
+  <td colspan=2><input type="text" name="src_date" size="11" tabindex="1" onChange="JavaScript:editChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"" />
+    Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:editChanged();"/>
+    Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:editChanged();"/> mi&nbsp;&nbsp;
   </td>
 
   <td>Trip<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
@@ -163,7 +164,7 @@
   <td>Plane</td>
   <td><span id="input_plane_add" style="display: inline;"><span id="input_plane_select"></span> <img src="/img/icon_add.png" title="Add new plane type" height=17 width=17 onclick='JavaScript:inputNewPlane()'/></span>
       <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="/img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane(true)'/></span>
-      Registration <input type="text" name="registration" size="8" tabindex="10"/>
+      Registration <input type="text" name="registration" size="8" tabindex="10" onChange="JavaScript:editChanged();"/>
   </td>
 
 </tr><tr>
@@ -175,9 +176,9 @@
 
   <td>Seat</td>
 
-  <td><input type="text" name="seat" size="5" tabindex="11"/>
+  <td><input type="text" name="seat" size="5" tabindex="11" onChange="JavaScript:editChanged();"/>
       Type
-      <select name="seat_type" tabindex="12">
+      <select name="seat_type" tabindex="12" onChange="JavaScript:editChanged();">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
@@ -192,10 +193,10 @@
 
   <td></td>
   <td>Class</td>
-  <td><input type="radio" name="myClass" value="Y" CHECKED>Economy
-      <input type="radio" name="myClass" value="P">Premium Eco.
-      <input type="radio" name="myClass" value="C">Business
-      <input type="radio" name="myClass" value="F">First
+  <td><input type="radio" name="myClass" value="Y" onChange="JavaScript:editChanged();" CHECKED>Economy
+      <input type="radio" name="myClass" value="P" onChange="JavaScript:editChanged();">Premium Eco.
+      <input type="radio" name="myClass" value="C" onChange="JavaScript:editChanged();">Business
+      <input type="radio" name="myClass" value="F" onChange="JavaScript:editChanged();">First
   </td>
 
 </tr><tr>
@@ -207,13 +208,13 @@
 
   <td></td>
   <td>Reason&nbsp;</td>
-  <td><input type="radio" name="reason" value="B" CHECKED>Business
-      <input type="radio" name="reason" value="L">Leisure
-      <input type="radio" name="reason" value="C">Crew
+  <td><input type="radio" name="reason" value="B" onChange="JavaScript:editChanged();" CHECKED>Business
+      <input type="radio" name="reason" value="L" onChange="JavaScript:editChanged();">Leisure
+      <input type="radio" name="reason" value="C" onChange="JavaScript:editChanged();">Crew
   </td>
 </tr><tr>
   <td>Note</td>
-  <td><input type="text" name="note" size="50" tabindex="7"></td>
+  <td><input type="text" name="note" size="50" tabindex="7" onChange="JavaScript:editChanged();"></td>
   <td></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
@@ -226,6 +227,8 @@
       <input id="b_save" value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
       <input id="b_delete" value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
       <input id="b_cancel" value="Cancel" type="button" tabindex="15" onclick='JavaScript:closePane()'>
+      <input id="b_prev" value="<" type="button" tabindex="16" onclick='JavaScript:editPointer(-1)'>
+      <input id="b_next" value="&gt;" type="button" tabindex="17" onclick='JavaScript:editPointer(1)'>
     </span>
     <span id="input_status"></span>
   </td>
