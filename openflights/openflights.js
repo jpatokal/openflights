@@ -1074,6 +1074,7 @@ function flightSelectBoxes() {
   codeToAirport("DST", document.forms['inputform'].dst_apid.value, true);
   
   var select = inputform.plane;
+  select.selectedIndex = 0;
   for(index = 0; index < select.length; index++) {
     if(select[index].text == plane) {
       select.selectedIndex = index;
@@ -1088,6 +1089,7 @@ function flightSelectBoxes() {
     }
   }
   select = inputform.trips;
+  select.selectedIndex = 0;
   for(index = 0; index < select.length; index++) {
     if(select[index].value == trid) {
       select.selectedIndex = index;
