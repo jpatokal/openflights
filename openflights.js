@@ -964,9 +964,14 @@ function preCopyFlight(fid) {
 
 // Load existing flight data into input form
 function editFlight(str, param) {
+  // Oops, no matches!?
+  if(str == "") {
+    closeInput();
+    return;
+  }
+
   // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16
   var col = str.split(",");
-
   var form = document.forms['inputform'];
   form.src_ap_code.value = col[0];
   form.src_apid.value = col[1];
