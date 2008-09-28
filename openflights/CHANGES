@@ -1,3 +1,8 @@
+<b>2008-09-28</b>
+
+* Flight editing streamlined: prev/next buttons, list reloading, tracking of changes
+* Fixed bug for viewing flights of open trips (/trip/x) when not logged in
+
 <b>2008-09-26</b>
 
 * Airline aliases now supported in DB (eg. Sibir Airlines -> S7 Airlines)

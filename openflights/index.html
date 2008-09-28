@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="stylesheet" href="/css/sortable.css" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <script type="text/javascript" src="/OpenLayers.js?version=20080921"></script>
+    <script type="text/javascript" src="/OpenLayers.js?version=20080928"></script>
     <script type="text/javascript" src="/js/sortable.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/openflights.js"></script>
@@ -29,8 +29,8 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: <i>Please hit CTRL-F5 to ensure your browser loads the latest version.</i><br>
-	      27 Sep 2008: <a href="/about.html#CHANGES">Major streamlining of flight editing process.</a><br>
+	      <B>News</b>: 28 Sep 2008: <a href="/about.html#CHANGES">Flight editing streamlined: next/prev, list reloading, change tracking</a><br>
+	      <i>Please hit CTRL-F5 to ensure your browser loads the latest version.</i>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -54,7 +54,7 @@
 		    </td>
 		  </tr><tr>
 		    <td align=right>Password&nbsp;</td><td>
-		      <input type="password" name="pw" align="top" size="10">	    
+		      <input type="password" name="pw" align="top" size="10" onChange='JavaScript:xmlhttpPost("/php/login.php")'>	    
 		    </td>
 		  </tr><tr>
 		    <td></td>
@@ -131,7 +131,7 @@
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.</p>
 	  </div> <!-- end help -->
 	  <div id="input" style="display: none;">
-<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'>
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle">Add new flight</span>
     <span id="editflighttitle" style="display: none">Edit flight</span>
     <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
@@ -141,7 +141,7 @@
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td colspan=2><input type="text" name="src_date" size="11" tabindex="1" onChange="JavaScript:editChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event);"" />
+  <td colspan=2><input type="text" name="src_date" size="11" tabindex="1" onChange="JavaScript:editChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event); editChanged();" />
     Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:editChanged();"/>
     Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:editChanged();"/> mi&nbsp;&nbsp;
   </td>
@@ -221,12 +221,12 @@
       <input id="b_add" value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
       <input id="b_addclear" value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
       <input id="b_clear" value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput()'>
-      <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closePane()'>
+      <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
     </span>
     <span id="editflightbuttons" style="display: none">
       <input id="b_save" value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
       <input id="b_delete" value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
-      <input id="b_cancel" value="Cancel" type="button" tabindex="15" onclick='JavaScript:closePane()'>
+      <input id="b_cancel" value="Exit" type="button" tabindex="15" onclick='JavaScript:closeInput()'>
       <input id="b_prev" value="<" type="button" tabindex="16" onclick='JavaScript:editPointer(-1)'>
       <input id="b_next" value="&gt;" type="button" tabindex="17" onclick='JavaScript:editPointer(1)'>
     </span>
