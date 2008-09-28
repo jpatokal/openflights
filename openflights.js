@@ -984,6 +984,7 @@ function editFlight(str, param) {
   form.seat.value = col[8];
 
   var seat_type = inputform.seat_type;
+  seat_type.selectedIndex = 0; // default to unselected
   for(index = 0; index < seat_type.length; index++) {
     if(seat_type[index].value == col[9]) {
       seat_type.selectedIndex = index;
