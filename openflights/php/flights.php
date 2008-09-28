@@ -16,11 +16,12 @@ $uid = $_SESSION["uid"];
 // Logged in?
 if(!$uid or empty($uid)) {
 
-  // Viewing an "open" user's flights?
+  // Viewing an "open" user's flights, or an "open" flight?
+  // (will be previously set in map.php)
   $uid = $_SESSION["openuid"]; 
-  if($user && $uid && !empty($uid)) {
+  if($uid && !empty($uid)) {
     // Yes we are, so check if we're limited to a single trip
-    $openTrid = $_SESSION["trid"];
+    $openTrid = $_SESSION["opentrid"];
     if($openTrid) {
       if($openTrid == $trid) {
 	// This trip's OK
