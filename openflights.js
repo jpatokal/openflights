@@ -1611,7 +1611,9 @@ function closeInput() {
     }
   }
   closePane();
-  xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
+  if(document.getElementById("editflighttitle").style.display == 'inline') {
+    xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
+  }
 }
 
 function clearInput() {
