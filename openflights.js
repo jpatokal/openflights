@@ -176,28 +176,27 @@ function drawLine(x1, y1, x2, y2, count, distance) {
   var cList = null, wList = null, eList = null;
   if(distance > 2000) {
     // Plot great circle curve
-    cList = gcPath(new Point(x1, y1), new Point(x2, y2), distance);
+    cList = gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2), distance);
 
     // Path is in or extends into east (+) half, so we have to make a -360 copy
     if(x1 > 0 || x2 > 0) {
-      wList = gcPath(new Point(x1-360, y1), new Point(x2-360, y2), distance);
+      wList = gcPath(new OpenLayers.Geometry.Point(x1-360, y1), new OpenLayers.Geometry.Point(x2-360, y2), distance);
     }
     // Path is in or extends into west (-) half, so we have to make a +360 copy
     if(x1 < 0 || x2 < 0) {
-      eList = gcPath(new Point(x1+360, y1), new Point(x2+360, y2), distance);
+      eList = gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2), distance);
     }
-
   } else {
     // Draw straight lines
-    cList = straightPath(new Point(x1, y1), new Point(x2, y2));
+    cList = straightPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2));
 
     // Path is in or extends into east (+) half, so we have to make a -360 copy
     if(x1 > 0 || x2 > 0) {
-      wList = straightPath(new Point(x1-360, y1), new Point(x2-360, y2));
+      wList = straightPath(new OpenLayers.Geometry.Point(x1-360, y1), new OpenLayers.Geometry.Point(x2-360, y2));
     }
     // Path is in or extends into west (-) half, so we have to make a +360 copy
     if(x1 < 0 || x2 < 0) {
-      eList = straightPath(new Point(x1+360, y1), new Point(x2+360, y2));
+      eList = straightPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2));
     }
   }
   var features = [ new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList), {count: count}) ];
@@ -1409,7 +1408,7 @@ function selectNewAirport(type, quick) {
     var dst_ap = document.forms['inputform'].dst_ap;
     var lon2 = dst_ap[dst_ap.selectedIndex].value.split(":")[2];
     var lat2 = dst_ap[dst_ap.selectedIndex].value.split(":")[3];
-    var distance = greatCircle(lat1, lon1, lat2, lon2);
+    var distance = gcDistance(lat1, lon1, lat2, lon2);
 
     var rawtime = Math.floor(30 + (distance / 500) * 60);
     var hours = Math.floor(rawtime/60);
