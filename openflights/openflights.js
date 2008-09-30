@@ -708,9 +708,9 @@ function updateMap(str){
   var days = Math.floor(col[2] / (60*24));
   var hours = Math.floor((col[2] / 60) % 24);
   var min = Math.floor(col[2] % 60);
-  stats = "Flights: " + col[0] + "<br>" +
-    "Distance: " + col[1] + " mi<br>" +
-    "Duration: " + days + " days " + hours + ":" + min;
+  stats = col[0] + " flights<br>" +
+    col[1] + " mi flown<br>" +
+    days + " days " + hours + ":" + min;
   document.getElementById("stats").innerHTML = stats;
   privacy = col[3];
 
