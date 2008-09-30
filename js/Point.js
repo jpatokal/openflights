@@ -13,16 +13,6 @@ Point.prototype.isValid = function() {
         return( false );
 }
 
-Point.prototype.geoIsValid = function() {
-  return true;
-
-    if( this.isValid() && (this.x >= -180) && (this.x <= 180) && (this.y >= -90) && (this.y <= 90)) 
-        return( true );
-    else {
-      return( false );
-    }
-}
-
 /**
  *    Geo Constants
  */
@@ -48,7 +38,7 @@ Point.prototype.geoDistanceTo = function( point ) {
 var x = new Array(2);
 var y = new Array(2);
 
-    if( this.geoIsValid() && point.geoIsValid()) {
+    if( this.isValid() && point.isValid()) {
         x[0] = this.x * Point.DEG2RAD;    y[0] = this.y * Point.DEG2RAD;
         x[1] = point.x * Point.DEG2RAD;    y[1] = point.y * Point.DEG2RAD;
         
@@ -68,7 +58,7 @@ Point.prototype.geoBearingTo = function( point ) {
   var bearing;
   var adjust;
   
-  if( this.geoIsValid() && point.geoIsValid()) {
+  if( this.isValid() && point.isValid()) {
     x[0] = this.x * Point.DEG2RAD;    y[0] = this.y * Point.DEG2RAD;
     x[1] = point.x * Point.DEG2RAD;    y[1] = point.y * Point.DEG2RAD;
     
@@ -146,11 +136,19 @@ function greatCircle(lat1, lon1, lat2, lon2) {
 
 const GC_STEP = 1000; // draw segment every GC_STEP mi
 
-function gcPath(startPoint, endPoint, distance) {
-  var pointList = new Array();
-  var wayPoint = startPoint;
-  var d = GC_STEP;
+function straightPath(startPoint, endPoint, distance) {
+  // Do we cross the dateline?  If yes, then flip endPoint across it
+  if(Math.abs(startPoint.x-endPoint.x) > 180) {
+    if(startPoint.x < endPoint.x) {
+      endPoint.x -= 360;
+    } else {
+      endPoint.x += 360;
+    }
+  }
+  return [startPoint, endPoint];
+}
   
+function gcPath(startPoint, endPoint, distance) {
   // Do we cross the dateline?  If yes, then flip endPoint across it
   if(Math.abs(startPoint.x-endPoint.x) > 180) {
     if(startPoint.x < endPoint.x) {
@@ -160,6 +158,10 @@ function gcPath(startPoint, endPoint, distance) {
     }
   }
 
+  // And... action!
+  var pointList = new Array();
+  var wayPoint = startPoint;
+  var d = GC_STEP;
   if(startPoint.x > -360 && startPoint.x < 360) {
     pointList.push(startPoint);
   }
@@ -174,6 +176,5 @@ function gcPath(startPoint, endPoint, distance) {
   if(endPoint.x > -360 && endPoint.x < 360) {
     pointList.push(endPoint);
   }
-
   return pointList;
 }

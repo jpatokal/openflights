@@ -85,18 +85,7 @@ window.onload = function init(){
 					  );
   jpl_wms.setVisibility(false);
   
-  lineLayer = new OpenLayers.Layer.PointTrack("My Flights",
-					      {dataFrom: OpenLayers.Layer.PointTrack.dataFrom.SOURCE_NODE,
-					       styleMap: new OpenLayers.StyleMap({
-						   "default": new OpenLayers.Style({
-						      strokeColor: "#ee9900",
-						      strokeOpacity: 1,
-						      strokeWidth: "${count}"
-						     })
-					          })
-					      });
-  
-  gcLayer = new OpenLayers.Layer.Vector("Great Circle paths",
+  lineLayer = new OpenLayers.Layer.Vector("My Flights",
 					{styleMap: new OpenLayers.StyleMap({
 					    strokeColor: "#ee9900",
 						strokeOpacity: 1,
@@ -107,7 +96,7 @@ window.onload = function init(){
   
   airportLayer = new OpenLayers.Layer.Markers("My Airports");
   
-  map.addLayers([ol_wms, jpl_wms, lineLayer, gcLayer, airportLayer]);
+  map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
   
   /* flight selection -- currently disabled
   selectControl = new OpenLayers.Control.SelectFeature(lineLayer,
@@ -172,7 +161,7 @@ function onPopupClose(evt) {
 }
   */
 
-function drawLine(lineLayer, x1, y1, x2, y2, count, distance) {
+function drawLine(x1, y1, x2, y2, count, distance) {
   if(x2 < x1) {
     var tmpx = x1;
     var tmpy = y1;
@@ -184,72 +173,41 @@ function drawLine(lineLayer, x1, y1, x2, y2, count, distance) {
   // 1,2 flights as single pixel
   count = Math.floor(Math.sqrt(count) + 0.5);
 
-  var sourceNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1, y1), {count: count} );
-  var targetNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2, y2), {count: count} );
-  
+  var cList = null, wList = null, eList = null;
   if(distance > 2000) {
-
-    var cList = gcPath(new Point(x1, y1), new Point(x2, y2), distance);
-    var wList = gcPath(new Point(x2-360, y2), new Point(x1-360, y1), distance);
-    var eList = gcPath(new Point(x2+360, y2), new Point(x1+360, y1), distance);
-
-    str = "";
-    for(c in cList) {
-      str += cList[c];
-    }
-
-    var cFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList), {count: 1});
-    var wFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList), {count: 2});
-    var eFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList), {count: 3});
-
-    gcLayer.addFeatures([cFeature, wFeature, eFeature]);
-    return;
-  }
-
-  // Path does not cross the date line
-  if(Math.abs(x1-x2) < 180) {
-    lineLayer.addNodes([sourceNode, targetNode]);
+    // Plot great circle curve
+    cList = gcPath(new Point(x1, y1), new Point(x2, y2), distance);
 
     // Path is in or extends into east (+) half, so we have to make a -360 copy
     if(x1 > 0 || x2 > 0) {
-      var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1), {count: count});
-      var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2));
-      lineLayer.addNodes([westNode1, westNode2]);
+      wList = gcPath(new Point(x1-360, y1), new Point(x2-360, y2), distance);
     }
-
     // Path is in or extends into west (-) half, so we have to make a +360 copy
     if(x1 < 0 || x2 < 0) {
-      var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1), {count: count});
-      var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
-      lineLayer.addNodes([eastNode1, eastNode2]);
+      eList = gcPath(new Point(x1+360, y1), new Point(x2+360, y2), distance);
     }
 
-  // Path crosses the date line, we have to split it in two
-  // "y" is y-coordinate of where the path intersects the dateline at -180/+180
   } else {
-    var dy = y2 - y1;
-    var dx1 = 180 - Math.abs(x1);
-    var dx2 = 180 - Math.abs(x2);
-    var y = parseFloat(y1) + (dx1 / (dx1 + dx2)) * dy;
-    
-    var westNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-540, y), {count: count});
-    var westNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1-360, y1));
-    lineLayer.addNodes([westNode1, westNode2]);
-    
-    var westNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2-360, y2), {count: count});
-    var bNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-180, y), {count: count});
-    lineLayer.addNodes([westNode3, bNode1, sourceNode]);
-    lineLayer.addNodes([bNode1, sourceNode]);
-    
-    var eastNode3 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1+360, y1));
-    var bNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(180, y), {count: count});
-    lineLayer.addNodes([targetNode, bNode2, eastNode3]);
-    lineLayer.addNodes([targetNode, bNode2]);
-    
-    var eastNode1 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(540, y), {count: count});
-    var eastNode2 = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2+360, y2));
-    lineLayer.addNodes([eastNode1, eastNode2]);
+    // Draw straight lines
+    cList = straightPath(new Point(x1, y1), new Point(x2, y2));
+
+    // Path is in or extends into east (+) half, so we have to make a -360 copy
+    if(x1 > 0 || x2 > 0) {
+      wList = straightPath(new Point(x1-360, y1), new Point(x2-360, y2));
+    }
+    // Path is in or extends into west (-) half, so we have to make a +360 copy
+    if(x1 < 0 || x2 < 0) {
+      eList = straightPath(new Point(x1+360, y1), new Point(x2+360, y2));
+    }
   }
+  var features = [ new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList), {count: count}) ];
+  if(wList) {
+    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList), {count: count}));
+  }
+  if(eList) {
+    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList), {count: count}));
+  }
+  lineLayer.addFeatures(features);
 }
 
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count) {
@@ -766,7 +724,7 @@ function updateMap(str){
   for (r in rows) {
     var col = rows[r].split(",");
     // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7
-    drawLine(lineLayer, parseFloat(col[1]), parseFloat(col[2]), parseFloat(col[4]), parseFloat(col[5]), col[6], col[7]);
+    drawLine(parseFloat(col[1]), parseFloat(col[2]), parseFloat(col[4]), parseFloat(col[5]), col[6], col[7]);
   }
   
   var rows = airports.split(":");
