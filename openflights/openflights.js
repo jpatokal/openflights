@@ -96,19 +96,18 @@ window.onload = function init(){
 					          })
 					      });
   
-  highlightLayer = new OpenLayers.Layer.PointTrack("Highlights",
-						   {dataFrom: OpenLayers.Layer.PointTrack.dataFrom.SOURCE_NODE,
-	 				            styleMap: new OpenLayers.StyleMap({
-						      strokeColor: "#369aff",
-						      strokeOpacity: 1,
-						      strokeWidth: 4
-						    })
-						   });
+  gcLayer = new OpenLayers.Layer.Vector("Great Circle paths",
+					{styleMap: new OpenLayers.StyleMap({
+					    strokeColor: "#ee9900",
+						strokeOpacity: 1,
+						strokeWidth: "${count}"
+						})
+					    });
   
   
   airportLayer = new OpenLayers.Layer.Markers("My Airports");
   
-  map.addLayers([ol_wms, jpl_wms, lineLayer, highlightLayer, airportLayer]);
+  map.addLayers([ol_wms, jpl_wms, lineLayer, gcLayer, airportLayer]);
   
   /* flight selection -- currently disabled
   selectControl = new OpenLayers.Control.SelectFeature(lineLayer,
@@ -173,7 +172,7 @@ function onPopupClose(evt) {
 }
   */
 
-function drawLine(lineLayer, x1, y1, x2, y2, count) {
+function drawLine(lineLayer, x1, y1, x2, y2, count, distance) {
   if(x2 < x1) {
     var tmpx = x1;
     var tmpy = y1;
@@ -188,6 +187,25 @@ function drawLine(lineLayer, x1, y1, x2, y2, count) {
   var sourceNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x1, y1), {count: count} );
   var targetNode = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x2, y2), {count: count} );
   
+  if(distance > 2000) {
+
+    var cList = gcPath(new Point(x1, y1), new Point(x2, y2), distance);
+    var wList = gcPath(new Point(x2-360, y2), new Point(x1-360, y1), distance);
+    var eList = gcPath(new Point(x2+360, y2), new Point(x1+360, y1), distance);
+
+    str = "";
+    for(c in cList) {
+      str += cList[c];
+    }
+
+    var cFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList), {count: 1});
+    var wFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList), {count: 2});
+    var eFeature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList), {count: 3});
+
+    gcLayer.addFeatures([cFeature, wFeature, eFeature]);
+    return;
+  }
+
   // Path does not cross the date line
   if(Math.abs(x1-x2) < 180) {
     lineLayer.addNodes([sourceNode, targetNode]);
@@ -747,8 +765,8 @@ function updateMap(str){
   var rows = flights.split(":");
   for (r in rows) {
     var col = rows[r].split(",");
-    // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6
-    drawLine(lineLayer, parseFloat(col[1]), parseFloat(col[2]), parseFloat(col[4]), parseFloat(col[5]), col[6]);
+    // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7
+    drawLine(lineLayer, parseFloat(col[1]), parseFloat(col[2]), parseFloat(col[4]), parseFloat(col[5]), col[6], col[7]);
   }
   
   var rows = airports.split(":");
@@ -1364,24 +1382,6 @@ function codeToAirport(type, id, quick) {
   } else {
     xmlhttpPost(URL_GETCODE, 0, type);
   }
-}
-
-// Compute great circle distance between two points (spherical law of cosines)
-// http://www.movable-type.co.uk/scripts/latlong.html
-// © 2002-2008 Chris Veness
-function greatCircle(lat1, lon1, lat2, lon2) {
-  var rad = Math.PI / 180;
-  var R = 6371; // km
-  lat1 = lat1 * rad;
-  lon1 = lon1 * rad;
-  lat2 = lat2 * rad;
-  lon2 = lon2 * rad;
-  var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
-                  Math.cos(lat1)*Math.cos(lat2) *
-                  Math.cos(lon2-lon1));
-  if (d < 0) d += Math.PI;
-  return Math.floor(d * R * 0.621);
-
 }
 
 // Add a temporary source or destination marker over currently selected airport
