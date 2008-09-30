@@ -47,13 +47,16 @@
 
 	    <h4>What browsers do you support?</h4>
 
-	    <p>Developed on Firefox 3, tested on Internet Explorer 7, and reliably informed to work on Safari as well.  If it works or breaks on anything else, please <a href="/contact.html">let us know.</a></p>
+	    <p>Developed on Firefox 2 and 3, tested on Internet Explorer 7, and reliably informed to work on Safari as well.  If it works or breaks on anything else, please <a href="/contact.html">let us know.</a></p>
 
 	    <h4>How much does it cost?</h4>
 
-	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so we're trying out Google ads and we reserve the right to nag heavy users for donations at some point in the future.</p>
+	    <table><tr><td>
+	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so we're trying out Google ads and we reserve the right to nag heavy users for donations at some point in the future.  $20/year, perhaps?</p>
 
-	    <p>If you'd like to donate now, just click on the button!  PayPal, Visa, MC, Amex, Discover accepted.
+	    <p>If you'd like to donate now, just click on the button!  PayPal, Visa, MC, Amex, Discover accepted.  Any donations received now will be counted towards membership if introduced in the future.</p>
+
+		  </td><td>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_donations">
 <input type="hidden" name="business" value="jani@contentshare.sg">
@@ -65,8 +68,8 @@
 <input type="hidden" name="bn" value="PP-DonationsBF">
 <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
-	    </p>
+		    </form>
+		  </td></tr></table>
 
 	    <h4>Are you sure this thing will scale?</h4>
 
@@ -100,11 +103,15 @@
 	    
 	    <h4>Why is the map slow to draw sometimes?  Why do map updates slow down my computer?</h4>
 	    
-	    <p>Map tiles are loaded off the Internet, and the flights, airports etc are drawn on top by your own browser.  Switching to a faster computer, using Firefox instead of Internet Explorer, or just shrinking the window size will speed up things.  The NASA geographic tiles are also larger and thus slower to load than the Metacarta political ones.</p>
+	    <table><tr><td>
+		    Map tiles are loaded off the Internet, and the flights, airports etc are drawn on top by your own browser.  We warmly recommend using <a href="http://www.spreadfirefox.com/node&id=0&t=308">Firefox 3</a>, which is <i>much</i> faster than Internet Explorer.  Alternatively, switch to a faster computer or just shrink the window size to speed up things.  The NASA geographic map is also larger and thus slower to load than the Metacarta political map.
+		  </td><td>
+		    <a href="http://www.spreadfirefox.com/node&id=0&t=315"><img width="88" height="31" border="0" alt="Firefox 3" title="Firefox 3" src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox3/FF3_88x31_g.png"/></a></td>
+		</tr></table>
+
+	    <h4>Why aren't the flight paths smoothly curved, especially up near the poles?</h4>
 	    
-	    <h4>Why aren't the flight paths curved?</h4>
-	    
-	    <p>That would be hard to draw fast, so we cheat and use straight lines.  Adding curved flight paths is a <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=2113606&group_id=235620&atid=1097180">planned feature</a>, but it's not a priority.</p>
+	    <p>That would be hard to draw fast, so we cheat and chop them up, one segment per every 1000 mi.  Flights under 2000 mi are shown as straight lines.</p>
 
 	    <p>The distances for the statistics, though, are calculated correctly as <a href="http://en.wikipedia.org/en/Great-circle_distance">great circle distances</a>.</p>
 	    
@@ -123,6 +130,12 @@
 	    <h4>Your calendar only goes back to 1999, how do I enter an earlier flight?</h4>
 
 	    <p>You don't have to use the calendar widget, just enter the date manually.</p>
+
+	    <h4>How do I delete an airport/airline/plane/trip that I no longer need?</h4>
+
+	    <p>For airports, airlines and planes, just remove all flights using it, and it will stop appearing.</p>
+
+	    <p>To delete a trip, load it in the Trip editor and select Delete.  Any flights still in that trip will be set as tripless.</p>
 
 	    <h4>How do I share my flight map with friends?</h4>
 

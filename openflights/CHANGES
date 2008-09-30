@@ -1,3 +1,9 @@
+<b>2008-09-30</b>
+
+* Flights over 2000 mi now drawn as great circle routes, one segment per 1000 mi
+* "Stats" renamed as "Top 10"
+* Flight list not shown after "Add"
+
 <b>2008-09-28</b>
 
 * Flight editing streamlined: prev/next buttons, list reloading, tracking of changes
