@@ -42,7 +42,7 @@ function loadFilter($db, $uid, $trid) {
   printf ("\n");
   
   // List of all years
-  $sql = "SELECT DISTINCT YEAR(src_time) AS year FROM flights WHERE uid=" . $uid . $filter . " ORDER BY YEAR DESC";
+  $sql = "SELECT DISTINCT YEAR(src_time) AS year FROM flights WHERE uid=" . $uid . $filter . " AND YEAR(src_time) != '0' ORDER BY YEAR DESC";
   $result = mysql_query($sql, $db);
   $first = true;
   while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
