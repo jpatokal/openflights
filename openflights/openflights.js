@@ -394,22 +394,28 @@ function xmlhttpPost(strURL, id, param) {
 	  setInputAllowed(type, false);
 	}
 	  
-	// If flight was successfully deleted, move to another flight
+	// If flight was successfully deleted...
 	if(code == CODE_DELETEOK) {
-	  // Last flight deleted
-	  if(fidList.length == 1) {
-	    clearStack();
-	  } else {
-	    // Remove current flight
-	    fidList.splice(fidPtr, 1);
 
-	    // Edit next if you can -- but with delay, since deleting a flight causes refresh
-	    if(fidPtr < fidList.length) {
-	      setTimeout('editPointer(0)', 1000);
+	  //... and we're in input mode, move to another flight
+	  if(getCurrentPane() == "input") {
+	    // Last flight deleted
+	    if(fidList.length == 1) {
+	      clearStack();
 	    } else {
-	      // Move back
-	      setTimeout('editPointer(-1)', 1000);
+	      // Remove current flight
+	      fidList.splice(fidPtr, 1);
+	      
+	      // Edit next if you can -- but with delay, since deleting a flight causes refresh
+	      if(fidPtr < fidList.length) {
+		setTimeout('editPointer(0)', 1000);
+	      } else {
+		// Move back
+		setTimeout('editPointer(-1)', 1000);
+	      }
 	    }
+	  } else {
+	    setTimeout('xmlhttpPost(URL_FLIGHTS, 0, "RELOAD")', 1000);
 	  }
 	}
 
@@ -1537,6 +1543,7 @@ function logout(str) {
 }
 
 // Functions for swapping between lower panes
+// Possible panes: 'ad', 'result', 'input', 'help'
 
 function getCurrentPane() {
   return paneStack[paneStack.length-1];

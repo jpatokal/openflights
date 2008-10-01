@@ -1,3 +1,7 @@
+<b>2008-10-01</b>
+
+* Reload flight list after "delete" from flight list
+
 <b>2008-09-30</b>
 
 * Flights over 2000 mi now drawn as great circle routes, one segment per 1000 mi
