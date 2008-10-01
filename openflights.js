@@ -1530,7 +1530,7 @@ function newUserLogin(name, pw) {
   document.forms['login'].pw.value = pw;
   document.getElementById("news").innerHTML =
     "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:clearInput()'> to start adding flights, or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
+    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:clearInput()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
   xmlhttpPost(URL_LOGIN, 0, "NEWUSER");
 }
 
