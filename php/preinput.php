@@ -44,8 +44,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }  
   printf ("%s;%s", $row["alid"] . ":" . $row["iata"], format_airline($row));
 }
-printf ("\t1:-;Private flight");
-printf ("\n");
+if(! $first) printf("\t");
+printf ("1:-;Private flight\n");
 
 // List of this user's planes
 $sql = "SELECT DISTINCT p.plid, p.name FROM flights AS f,planes AS p WHERE f.uid=" . $uid . " AND p.plid=f.plid ORDER BY NAME";
