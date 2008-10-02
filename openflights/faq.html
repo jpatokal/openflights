@@ -19,7 +19,7 @@
 	    
 	    <h4>What is OpenFlights?</h4>
 	    
-	    <p>In a nutshell, it's a tool that lets you map your flights around the world, search and filter them in all sorts of interesting ways, and calculate statistics automatically.</p>
+	    <p>In a nutshell, it's a tool that lets you map your flights around the world, search and filter them in all sorts of interesting ways, calculate statistics automatically, and share the resulting maps with friends and the world &mdash; if you want to.</p>
 
 	    <h4>What can I do with OpenFlights?</h4>
 
@@ -47,14 +47,16 @@
 
 	    <h4>What browsers do you support?</h4>
 
-	    <p>Developed on Firefox 2 and 3, tested on Internet Explorer 7, and reliably informed to work on Safari as well.  If it works or breaks on anything else, please <a href="/contact.html">let us know.</a></p>
+	    <p>Developed on Firefox 2 and 3, tested on Internet Explorer 7, and seems to work nicely on Safari as well.  If it works or breaks on anything else, please <a href="/contact.html">let us know.</a></p>
 
 	    <h4>How much does it cost?</h4>
 
 	    <table><tr><td>
 	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so we're trying out Google ads and we reserve the right to nag heavy users for donations at some point in the future.  $20/year, perhaps?</p>
 
-	    <p>If you'd like to donate now, just click on the button!  PayPal, Visa, MC, Amex, Discover accepted.  Any donations received now will be counted towards membership if introduced in the future.</p>
+	    <p>If you'd like to donate, just click on the button!  PayPal, Visa, MC, Amex, Discover accepted.  Any donations received now will be counted towards membership if introduced in the future.</p>
+		    
+            <p>If you'd like to support the project without paying, we'd really appreciate a little publicity: tell your friends, write about OpenFlights on your blog or your favorite forum, add a link to your OpenFlights map to your e-mail signature, etc.</p>
 
 		  </td><td>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -83,7 +85,7 @@
 
 	    <p>Roughly like this:</p>
 	    <ol>
-	      <li>Implement importing and exporting.</li>
+	      <li>Implement <s>importing</s> (done!) and exporting.</li>
 	      <li>Implement complex flight input (multi-segment and repeated flights).</li>
 	      <li>Add support for filtering according to pretty much anything.</li>
 	      <li>Graphical bells and whistles (eg. color-coding of flights).</li>
@@ -99,7 +101,7 @@
 	    
 	    <h4>Why is there a blank stripe in the map and/or half the airports disappear when I scroll around from the Americas to Asia or visa versa?</h4>
 	    
-	    <p>This is a bug/missing feature in the mapping system we're using.  Stay tuned.</p>
+	    <p>This is a <a href="https://sourceforge.net/tracker/index.php?func=detail&aid=2053282&group_id=235620&atid=1097177">bug/missing feature</a> in the mapping system we're using.  Stay tuned.</p>
 	    
 	    <h4>Why is the map slow to draw sometimes?  Why do map updates slow down my computer?</h4>
 	    
@@ -142,12 +144,19 @@
 	    <p>Point them to <b>http://openflights.org/user/<i>yourname</i></b>.  You can also click on <input type="button" value="Settings" align="middle"> when logged in to find your address; this is particularly useful if your name has spaces or unusual characters.</p>
 	    <p>Example: <a href="http://openflights.org/user/jpatokal">http://openflights.org/user/jpatokal</a></p>
 
+	    <h4>Something went wrong when I imported from FlightMemory!</h4>
+
+	    <p>This most often happens with airlines, since FlightMemory and OpenFlights do not render all company names in the same way.  OpenFlights also uses current airline data, not historical, so eg. SN123 will be mapped to "Brussels Airlines", not "Sabena".  If you had <i>lots</i> of flights get wrongly assigned, please drop us a line and we'll try to sort it out, but for only a few flights, it's easiest to repair by hand.</p>
+
+	    <p>If anything else goes wrong during importing, though, it's a bug and we'd like to know about it.  Drop us a line, tell us exactly what went wrong, and (this is important) <i>give the "Tmpfile" value from the top of the import page</i> so we can replicate it.</p>
+
 	    <h4>You really need to implement cool feature X, and fix terrible bug Y, and do it <i>right now</i>!</h4>
 	    
-	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!</p>
+	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!  Bug reports from people who's made donations also get priority.</p>
+
 	    <p>Direct links: <a href="http://sourceforge.net/tracker/?atid=1097177&group_id=235620&func=browse">Known bugs</a>, <a href="http://sourceforge.net/tracker/?atid=1097180&group_id=235620&func=browse">Feature requests</a></p>
 
-	    <h4>You said feature X/bug Y was implemented/fixed yesterday, but I don't see it!</h4>
+	    <h4>You said feature X was implemented/bug Y was fixed yesterday, but I don't see it!</h4>
 
 	    <p>Your browser probably has an old version still in memory.  Please hit Control-F5 to force it to reload the entire page.</p>
 
@@ -163,7 +172,7 @@
 	    
 	    <h4>Where did you get all that airline and airport data?</h4>
 	    
-	    <p>Airport data (c. 4000 airports) was generated by mashing together DAFIF (October 2006 cycle) for location, ICAO data and country data with the Global Airport Database for IATA codes and city names, plus quite a bit of manual updating.</p>
+	    <p>Airport data (c. 4000 airports) was generated by mashing together DAFIF (October 2006 cycle) for location, ICAO data and country data with the Global Airport Database for IATA codes and city names, plus lots of manual updating.</p>
 	    
 	    <p>Airline data (c. 5000 airlines) was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.</p>
 	    
