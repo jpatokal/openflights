@@ -6,7 +6,8 @@
 EARTH_RADIUS = 3958.75;    // in miles
 DEG2RAD =  0.01745329252;  // factor to convert degrees to radians (PI/180)
 RAD2DEG = 57.29577951308;
-GC_STEP = 1000; // draw segment every GC_STEP mi
+GC_STEP = 500; // draw segment every GC_STEP mi
+GC_MIN = 1000; // trigger GC paths once distance is greater than this
 
 // Compute great circle distance between two points (spherical law of cosines)
 // http://www.movable-type.co.uk/scripts/latlong.html
@@ -123,16 +124,24 @@ function gcPath(startPoint, endPoint, distance) {
   var pointList = new Array();
   var wayPoint = startPoint;
   var d = GC_STEP;
+  var step = GC_STEP;
   if(startPoint.x > -360 && startPoint.x < 360) {
     pointList.push(startPoint);
   }
   while(d < distance) {
     var bearing = gcBearingTo(wayPoint, endPoint);
-    var wayPoint = gcWaypoint(wayPoint, GC_STEP, bearing);
+    var wayPoint = gcWaypoint(wayPoint, step, bearing);
     if(wayPoint.x > -360 && wayPoint.x < 360) {
       pointList.push(wayPoint);
     }
-    d += GC_STEP;
+
+    // Increase step resolution near the poles
+    if(Math.abs(wayPoint.y) > 60) {
+      step = GC_STEP / 2;
+    } else {
+      step = GC_STEP;
+    }
+    d += step;
   }
   if(endPoint.x > -360 && endPoint.x < 360) {
     pointList.push(endPoint);
