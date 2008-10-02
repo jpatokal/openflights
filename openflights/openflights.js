@@ -174,7 +174,7 @@ function drawLine(x1, y1, x2, y2, count, distance) {
   count = Math.floor(Math.sqrt(count) + 0.5);
 
   var cList = null, wList = null, eList = null;
-  if(distance > 2000) {
+  if(distance > GC_MIN) {
     // Plot great circle curve
     cList = gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2), distance);
 
