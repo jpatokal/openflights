@@ -33,6 +33,7 @@ var URL_MAP = "/php/map.php";
 var URL_PREINPUT = "/php/preinput.php";
 var URL_STATS = "/php/stats.php";
 var URL_SUBMIT = "/php/submit.php";
+var URL_TOP10 = "/php/top10.php";
 
 var CODE_FAIL = 0;
 var CODE_ADDOK = 1;
@@ -372,7 +373,10 @@ function xmlhttpPost(strURL, id, param) {
 	preInputFlight(self.xmlHttpReq.responseText, param);
       }
       if(strURL == URL_STATS) {
-	updateStats(self.xmlHttpReq.responseText);
+	showStats(self.xmlHttpReq.responseText);
+      }
+      if(strURL == URL_TOP10) {
+	showTop10(self.xmlHttpReq.responseText);
       }
       if(strURL == URL_SUBMIT) {
 	var code = self.xmlHttpReq.responseText.split(";")[0];
@@ -805,7 +809,7 @@ function listFlights(str, desc) {
   sortables_init();
 }
 
-function updateStats(str) {
+function showTop10(str) {
   if(str.substring(0,5) == "Error") {
     document.getElementById("result").innerHTML = str.split(';')[1];
     openPane("result");
