@@ -101,7 +101,7 @@ if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
 printf("%s;%s;%s", $offset, $max, $sql);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf ("\n%s;%s;%s;%s;%s;%s;%s;%s;%s", $row["iata"], $row["icao"], $row["apid"], $row["x"], $row["y"], $row["elevation"], $row["name"], $row["code"], format_airport($row));
+  printf ("\n%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", $row["iata"], $row["icao"], $row["apid"], $row["x"], $row["y"], $row["elevation"], $row["name"], $row["code"], format_airport($row), $row["uid"]);
 }
 
 ?>
