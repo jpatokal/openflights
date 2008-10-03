@@ -67,6 +67,7 @@ function xmlhttpPost(strURL, offset, action) {
 
     if(iata != "" && iata.length != 3) {
       alert("IATA/FAA codes must be exactly three letters.");
+      form.iata.focus();
       return;
     } else {
       iata = iata.toUpperCase();
@@ -74,6 +75,7 @@ function xmlhttpPost(strURL, offset, action) {
     }
     if(icao != "" && icao.length != 4) {
       alert("ICAO codes must be exactly four letters.");
+      form.icao.focus();
       return;
     } else {
       icao = icao.toUpperCase();
@@ -112,6 +114,7 @@ function xmlhttpPost(strURL, offset, action) {
     if(action == "RECORD") {
       if(airport == "") {
 	alert("Please enter an airport name.");
+	form.airport.focus();
 	return;
       } else {
 	airport = airport.substring(0,1).toUpperCase() + airport.substring(1);
@@ -120,6 +123,7 @@ function xmlhttpPost(strURL, offset, action) {
 
       if(city == "") {
 	alert("Please enter a city name.");
+	form.city.focus();
 	return;
       } else {
 	city = city.substring(0,1).toUpperCase() + city.substring(1);
@@ -128,8 +132,41 @@ function xmlhttpPost(strURL, offset, action) {
 	
       if(code == "") {
 	alert("Please select a country.");
+	form.country.focus();
 	return;
       }
+
+      if(x == "" || y == "" || elevation == "") {
+	alert("Please enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
+	form.x.focus();
+	return;
+      }
+
+      var re_dd = /^[-+]?\d*\.?\d*$/;
+      if(! re_dd.test(x) || ! re_dd.test(y)) {
+	alert("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively.  For example, San Francisco (SFO) is at latitude 37.618972(N), longitude -122.374889(W).");
+	form.x.focus();
+	return;
+      }
+
+      if(Math.abs(x) > 180) {
+	alert("Latitude must be in the range -180 (west) to 180 (east) degrees.");
+	form.x.focus();
+	return;
+      }
+
+      if(Math.abs(y) > 90) {
+	alert("Longitude must be in the range 90 (north) to -90 (south) degrees.");
+	form.y.focus();
+	return;
+      }
+
+      if(elevation < 0) {
+	alert("Please enter a positive number for elevation.");
+	form.elevation.focus();
+	return;
+      }
+
       if(iata == "") {
 	if(! confirm("You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?")) {
 	  return;
@@ -139,17 +176,6 @@ function xmlhttpPost(strURL, offset, action) {
 	if(! confirm("You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?")) {
 	  return;
 	}
-      }
-
-      if(x == "" || y == "" || elevation == "") {
-	alert("Please enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
-	return;
-      }
-
-      var re_dd = /^[-+]?\d*\.?\d*$/;
-      if(! re_dd.test(x) || ! re_dd.test(y)) {
-	alert("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively.  For example, San Francisco (SFO) is at latitude 37.618972(N), longitude -122.374889(W).");
-	return;
       }
 
       desc = airport + ", " + city + ", " + country +
@@ -206,6 +232,7 @@ function searchResult(str) {
   var table = "<table width=95% cellspacing=0>";
   var offset, sql;
   var db = document.forms['searchform'].db.value;
+  var disclaimer = "";
 
   if(warning) {
     table += "<tr><td colspan=2><i><font color='red'>" + warning + "</font></i></td></tr>";
@@ -244,11 +271,15 @@ function searchResult(str) {
     }
 
     // Meat of the table
-    // 0 iata, 1 icao, 2 apid, 3 x, 4 y, 5, elevation, 6 ap-name, 7 code, 8 printable-name
+    // 0 iata, 1 icao, 2 apid, 3 x, 4 y, 5, elevation, 6 ap-name, 7 code, 8 printable-name, 9 uid
     if(a % 2 == 1) {
       bgcolor = "#fff";
     } else {
       bgcolor = "#ddd";
+    }
+    if(col[9] != "") {
+      bgcolor = "#fdd"; // User-added
+      disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col[8] + "</td>";
     if(db == DB_OPENFLIGHTS) {
@@ -257,11 +288,12 @@ function searchResult(str) {
       table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col[8]) + "\")'></td>";
     }
     if(db == DB_DAFIF) {
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Load' onClick='loadDAFIFAirport(\"" + col[0] + "\",\"" + col[1] + "\",\"" + col[3] + "\",\"" + col[4] + "\",\"" + col[5] + "\",\"" + escape(col[6]) + "\",\"" + col[9] + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Load' onClick='loadDAFIFAirport(\"" + col[0] + "\",\"" + col[1] + "\",\"" + col[3] + "\",\"" + col[4] + "\",\"" + col[5] + "\",\"" + escape(col[6]) + "\",\"" + col[7] + "\")'></td>";
     }
     table += "</tr>";
   }
-  table += "</table><br>";
+  table += "</table>";
+  table += disclaimer;
   document.getElementById("miniresultbox").innerHTML = table;
 }
 
