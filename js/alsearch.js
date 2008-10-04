@@ -244,7 +244,6 @@ function recordResult(str) {
 function clearSearch() {
   var form = document.forms['searchform'];
   form.airline.value = "";
-  form.city.value = "";
   form.country.selectedIndex = 0;
   form.iata.value = "";
   form.icao.value = "";
