@@ -1,5 +1,7 @@
 <?php
 session_start();
+header("Content-type: text/html; charset=iso-8859-1");
+
 include 'helper.php';
 
 $airport = $HTTP_POST_VARS["airport"];
