@@ -1,5 +1,8 @@
 <?php
 session_start();
+header("Content-type: text/html; charset=iso-8859-1");
+
+include 'helper.php';
 
 $apid = $HTTP_POST_VARS["id"];
 if(!$apid) {
@@ -73,14 +76,10 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     printf("\t");
   }
   $src_apid = $row["src_apid"];
-  $src_code = $row["src_iata"];
-  if($src_code == "") $src_code = $row["src_icao"];
-  if($src_code == "") $src_code = "Priv";
+  $src_code = format_apcode2($row["src_iata"], $row["src_icao"]);
 
   $dst_apid = $row["dst_apid"];
-  $dst_code = $row["dst_iata"];
-  if($dst_code == "") $dst_code = $row["dst_icao"];
-  if($dst_code == "") $dst_code = "Priv";
+  $dst_code = format_apcode2($row["dst_iata"], $row["dst_icao"]);
 
   if($row["opp"] == 'Y') {
     $tmp = $src_apid;

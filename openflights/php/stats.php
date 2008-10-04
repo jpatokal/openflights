@@ -68,8 +68,9 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // longest and shortest
-$sql = "(SELECT 'Longest flight',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.apid,d.iata,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance DESC LIMIT 1) UNION " .
-  "(SELECT 'Shortest flight',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.apid,d.iata,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance ASC LIMIT 1)";
+// 0 desc, 1 distance, 2 duration, 3 src_iata, 4 src_icao, 5 src_apid, 6 dst_iata, 7 dst_icao, 8 dst_apid
+$sql = "(SELECT 'Longest flight',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance DESC LIMIT 1) UNION " .
+  "(SELECT 'Shortest flight',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance ASC LIMIT 1)";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -78,7 +79,9 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   } else {
     printf(";");
   }
-  printf ("%s,%s,%s,%s,%s,%s,%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6]);
+  $src_code = format_apcode2($row[3], $row[4]);
+  $dst_code = format_apcode2($row[6], $row[7]);
+  printf ("%s,%s,%s,%s,%s,%s,%s", $row[0], $row[1], $row[2], $src_code, $row[5], $dst_code, $row[8]);
 }
 printf ("\n");
 
@@ -96,16 +99,13 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   } else {
     printf(":");
   }
-  $code = $row[1];
-  if(!$code || $code == "") {
-    $code = $row[2];
-  }
+  $code = format_apcode2($row[1], $row[2]);
   printf ("%s,%s,%s,%s,%s", $row[0], $code, $row[3], $row[4], $row[5]);
 }
 printf ("\n");
 
 // Classes
-$sql = "SELECT DISTINCT class,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY class";
+$sql = "SELECT DISTINCT class,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY class ORDER BY class";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -119,7 +119,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 printf ("\n");
 
 // Reason
-$sql = "SELECT DISTINCT reason,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY reason";
+$sql = "SELECT DISTINCT reason,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY reason ORDER BY reason";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -133,7 +133,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 printf ("\n");
 
 // Reason
-$sql = "SELECT DISTINCT seat_type,COUNT(*) FROM flights AS f WHERE " . $filter . " AND seat_type != '' GROUP BY seat_type";
+$sql = "SELECT DISTINCT seat_type,COUNT(*) FROM flights AS f WHERE " . $filter . " AND seat_type != '' GROUP BY seat_type ORDER BY seat_type";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
