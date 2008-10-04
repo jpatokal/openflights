@@ -8,7 +8,10 @@ $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode
   $uid = 1;
+} else {
+  $public = "O";
 }
+
 // This applies only when viewing another's flights
 $user = $HTTP_POST_VARS["user"];
 if(! $user) {
@@ -31,7 +34,8 @@ if($trid && $trid != "0") {
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($row["uid"] != $uid and $row["public"] == "N") {
+    $public = $row["public"];
+    if($row["uid"] != $uid and $public == "N") {
       die('Error;This trip is not public.');
     } else {
       $uid = $row["uid"];
@@ -44,7 +48,8 @@ if($user && $user != "0") {
   $sql = "SELECT uid,public FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($row["public"] == "N") {
+    $public = $row["public"];
+    if($public == "N") {
       die('Error;This user\'s flights are not public.');
     } else {
       $uid = $row["uid"];
@@ -105,6 +110,12 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   printf ("%s,%s,%s,%s,%s", $row[0], $code, $row[3], $row[4], $row[5]);
 }
 printf ("\n");
+
+// Censor remaining info unless in full-public mode
+if($public != "O") {
+  print "\n\n\n";
+  exit;
+ }
 
 // Classes
 $sql = "SELECT DISTINCT class,COUNT(*) FROM flights AS f WHERE " . $filter . " AND class != '' GROUP BY class ORDER BY class";
