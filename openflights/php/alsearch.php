@@ -25,6 +25,22 @@ if($action == "RECORD") {
   }
 
   // Check for duplicates
+  $sql = "SELECT * FROM airlines WHERE name LIKE '" . mysql_real_escape_string($airline) . "%' OR alias LIKE '" . mysql_real_escape_string($airline) . "%';";
+  $result = mysql_query($sql, $db);
+  if($row = mysql_fetch_array($result, MYSQL_NUM)) {
+    printf("0;An airline using the name or alias " . $airline . " exists already.");
+    exit;
+  }
+
+  if($alias != "") {
+    $sql = "SELECT * FROM airlines WHERE name LIKE '" . mysql_real_escape_string($alias) . "%' OR alias LIKE '" . mysql_real_escape_string($alias) . "%';";
+    $result = mysql_query($sql, $db);
+    if($row = mysql_fetch_array($result, MYSQL_NUM)) {
+      printf("0;An airline using the name or alias " . $alias . " exists already.");
+      exit;
+    }
+  }
+
   if($iata != "") {
     $sql = "SELECT * FROM airlines WHERE iata='" . mysql_real_escape_string($iata) . "'";
     $result = mysql_query($sql, $db);
