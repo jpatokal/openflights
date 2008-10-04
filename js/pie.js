@@ -113,7 +113,7 @@ function pie()
    var r  = 30; // radius
    var sx = 75; // width/2
    var sy = 40; // height/2
-   var hyp = 40; // distance to label
+   var hyp = 42; // distance to label
    var fnt    = 12;
 
    // shadow
