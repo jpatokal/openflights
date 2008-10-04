@@ -24,7 +24,7 @@ $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
 // Set up filtering clause and verify that this trip and user are public
-$filter = "f.uid=" . $uid;
+$filter = "";
 
 if($trid && $trid != "0") {
   // Verify that we're allowed to access this trip
@@ -51,6 +51,8 @@ if($user && $user != "0") {
     }
   }
 }
+
+$filter = "f.uid=" . $uid . $filter;
 
 if($alid && $alid != "0") {
   $filter = $filter . " AND f.alid= " . mysql_real_escape_string($alid);
@@ -105,7 +107,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 printf ("\n");
 
 // Classes
-$sql = "SELECT DISTINCT class,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY class ORDER BY class";
+$sql = "SELECT DISTINCT class,COUNT(*) FROM flights AS f WHERE " . $filter . " AND class != '' GROUP BY class ORDER BY class";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -119,7 +121,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 printf ("\n");
 
 // Reason
-$sql = "SELECT DISTINCT reason,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY reason ORDER BY reason";
+$sql = "SELECT DISTINCT reason,COUNT(*) FROM flights AS f WHERE " . $filter . " AND reason != '' GROUP BY reason ORDER BY reason";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
