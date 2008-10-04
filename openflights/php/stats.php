@@ -5,11 +5,10 @@ header("Content-type: text/html; charset=iso-8859-1");
 include 'helper.php';
 
 $uid = $_SESSION["uid"];
+$public = "O"; // by default...
 if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode
   $uid = 1;
-} else {
-  $public = "O";
 }
 
 // This applies only when viewing another's flights
@@ -40,6 +39,8 @@ if($trid && $trid != "0") {
     } else {
       $uid = $row["uid"];
     }
+  } else {
+    die('Error;Trip not found.');
   }
   $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
@@ -54,6 +55,8 @@ if($user && $user != "0") {
     } else {
       $uid = $row["uid"];
     }
+  } else {
+    die('Error;User not found.');
   }
 }
 
