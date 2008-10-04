@@ -69,12 +69,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     printf(":");
   }
-  $src = $row["siata"];
-  if($src == "") $src = $row["sicao"];
-  if($src == "") $src = "Priv";
-  $dst = $row["diata"];
-  if($dst == "") $dst = $row["dicao"];
-  if($dst == "") $dst = "Priv";
+  $src = format_apcode2($row["siata"], $row["sicao"]);
+  $dst = format_apcode2($row["diata"], $row["dicao"]);
   printf ("%s,%s,%s,%s,%s", $src, $row["sapid"], $dst, $row["dapid"], $row["times"]);
 }
 printf ("\n");

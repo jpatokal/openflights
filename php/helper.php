@@ -15,6 +15,17 @@ function format_apcode($row) {
   return $code;
 }
 
+function format_apcode2($iata, $icao) {
+  $code = $iata;
+  if(! $code || $code == "N/A") {
+    $code = $icao;
+    if(! $code) {
+      $code = "Priv";
+    }
+  }
+  return $code;
+}
+
 //
 // Standard formatting of airport names
 // row: associative array containing name, city, country/code and iata/icao

@@ -57,7 +57,7 @@ var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
 var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "": ""};
 var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
 var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
-var reasons_short = {"B":"Work", "L":"Fun", "C":"Crew", "": ""};
+var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "": ""};
 
 window.onload = function init(){
 
@@ -852,20 +852,33 @@ function showStats(str) {
     bigtable += table + "</td><td style=\"vertical-align: top\">";
 
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=2>Flight extremes</th></tr>";
+    table += "<tr><th colspan=2>Flight records</th></tr>";
     var rows = longshort.split(";");
     for (r in rows) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>-<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
     }
+    table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>Airport records</th></tr>";
     var rows = extremes.split(":");
     for (r in rows) {
       var col = rows[r].split(",");
       // 0 desc, 1 code, 2 apid, 3 x, 4 y
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[2] + ");\">" + col[1] + "</a> (" + parseFloat(col[4]).toFixed(2) + "," + parseFloat(col[3]).toFixed(2) + ")</td></tr>";
+      lat = parseFloat(col[4]).toFixed(2);
+      lon = parseFloat(col[3]).toFixed(2);
+      if(lat < 0) {
+	lat = -lat + "&deg;S";
+      } else {
+	lat += "&deg;N";
+      }
+      if(lon < 0) {
+	lon = -lon + "&deg;W";
+      } else {
+	lon += "&deg;E";
+      }
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[2] + ");\">" + col[1] + "</a> (" + lat + " " + lon + ")</td></tr>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
