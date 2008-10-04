@@ -50,7 +50,9 @@ function format_airport($row) {
 function format_airline($row) {
   $name = $row["name"];
   $iata = $row["iata"];
-
+  if(! $iata) {
+    $iata = $row["icao"];
+  }
   return $name . " (" . $iata . ")";
 }
 
