@@ -4,6 +4,9 @@
  *    Geo Constants
  */
 EARTH_RADIUS = 3958.75;    // in miles
+EARTH_CIRCUMFERENCE = 24900; // in miles
+MOON_DISTANCE = 238857;    // in miles
+MARS_DISTANCE = 34649589;    // in miles
 DEG2RAD =  0.01745329252;  // factor to convert degrees to radians (PI/180)
 RAD2DEG = 57.29577951308;
 GC_STEP = 500; // draw segment every GC_STEP mi
