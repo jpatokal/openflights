@@ -11,7 +11,9 @@
     <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/sortable.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081002"></script>
+    <script type="text/javascript" src="/js/wz_jsgraphics.js"></script>
+    <script type="text/javascript" src="/js/pie.js"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081004"></script>
   </head>
 
   <body>
@@ -30,8 +32,8 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 30 Sep 2008: <a href="/about.html#CHANGES">Great Circle mapping implemented.</a><br>
-	      28 Sep 2008: <a href="/about.html#CHANGES">Flight editing streamlined: next/prev, list reloading, change tracking</a>
+	      <B>News</b>: 4 Oct 2008: <a href="/about.html#CHANGES">Airline search and recording added.</a><br>
+	      <a href="/about.html#CHANGES">More statistics now available with "Analyze".</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -73,7 +75,7 @@
 		<tr><td>
 		    <span id="stats"></span>
 		  </td><td style='vertical-align: top; padding: 0px 5px'>
-		    <input type="button" value="More" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'><br>
+		    <input type="button" value="Analyze" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'><br>
 		    <input type="button" value="Top 10" align="middle" onclick='JavaScript:xmlhttpPost("/php/top10.php")'>
 		  </td>
 		</tr></table>
@@ -148,9 +150,9 @@
 <table>
 <tr>
   <td><font color="red">Date</font></td>
-  <td colspan=2><input type="text" name="src_date" size="12" tabindex="1" onChange="JavaScript:editChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event); editChanged();" />
-    Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:editChanged();"/>
-    Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:editChanged();"/> mi&nbsp;&nbsp;
+  <td colspan=2><input type="text" name="src_date" size="12" tabindex="1" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event); markAsChanged();" />
+    Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();"/>
+    Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();"/> mi&nbsp;&nbsp;
   </td>
 
   <td>Trip<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
@@ -171,7 +173,7 @@
   <td>Plane</td>
   <td><span id="input_plane_add" style="display: inline;"><span id="input_plane_select"></span> <img src="/img/icon_add.png" title="Add new plane type" height=17 width=17 onclick='JavaScript:inputNewPlane()'/></span>
       <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="/img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane(true)'/></span>
-      Registration <input type="text" name="registration" size="8" tabindex="10" onChange="JavaScript:editChanged();"/>
+      Registration <input type="text" name="registration" size="8" tabindex="10" onChange="JavaScript:markAsChanged();"/>
   </td>
 
 </tr><tr>
@@ -183,9 +185,9 @@
 
   <td>Seat</td>
 
-  <td><input type="text" name="seat" size="5" tabindex="11" onChange="JavaScript:editChanged();"/>
+  <td><input type="text" name="seat" size="5" tabindex="11" onChange="JavaScript:markAsChanged();"/>
       Type
-      <select name="seat_type" tabindex="12" onChange="JavaScript:editChanged();">
+      <select name="seat_type" tabindex="12" onChange="JavaScript:markAsChanged();">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
@@ -200,28 +202,30 @@
 
   <td></td>
   <td>Class</td>
-  <td><input type="radio" name="myClass" value="Y" onChange="JavaScript:editChanged();" CHECKED>Economy
-      <input type="radio" name="myClass" value="P" onChange="JavaScript:editChanged();">Premium Eco.
-      <input type="radio" name="myClass" value="C" onChange="JavaScript:editChanged();">Business
-      <input type="radio" name="myClass" value="F" onChange="JavaScript:editChanged();">First
+  <td><input type="radio" name="myClass" value="Y" onChange="JavaScript:markAsChanged();" CHECKED>Economy
+      <input type="radio" name="myClass" value="P" onChange="JavaScript:markAsChanged();">Premium Eco.
+      <input type="radio" name="myClass" value="C" onChange="JavaScript:markAsChanged();">Business
+      <input type="radio" name="myClass" value="F" onChange="JavaScript:markAsChanged();">First
   </td>
 
 </tr><tr>
   <td><font color="red">Airline</font><sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
-  <td><input type="text" name="airline_code" size="11" tabindex="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> &gt;
+  <td><input type="text" name="airline_code" size="11" tabindex="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> 
+      <img src="/img/icon_airline.png" title="&lt; Enter airline name or code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirline()'/>
+
       <span id="input_airline_select"></span>
       <span id="airline_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span>
   </td>
 
   <td></td>
   <td>Reason&nbsp;</td>
-  <td><input type="radio" name="reason" value="B" onChange="JavaScript:editChanged();" CHECKED>Business
-      <input type="radio" name="reason" value="L" onChange="JavaScript:editChanged();">Leisure
-      <input type="radio" name="reason" value="C" onChange="JavaScript:editChanged();">Crew
+  <td><input type="radio" name="reason" value="B" onChange="JavaScript:markAsChanged();" CHECKED>Business
+      <input type="radio" name="reason" value="L" onChange="JavaScript:markAsChanged();">Leisure
+      <input type="radio" name="reason" value="C" onChange="JavaScript:markAsChanged();">Crew
   </td>
 </tr><tr>
   <td>Note</td>
-  <td><input type="text" name="note" size="50" tabindex="7" onChange="JavaScript:editChanged();"></td>
+  <td><input type="text" name="note" size="50" tabindex="7" onChange="JavaScript:markAsChanged();"></td>
   <td></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">

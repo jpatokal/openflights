@@ -55,6 +55,9 @@ var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
 var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
 var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
 var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "": ""};
+var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
+var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
+var reasons_short = {"B":"Work", "L":"Fun", "C":"Crew", "": ""};
 
 window.onload = function init(){
 
@@ -809,6 +812,99 @@ function listFlights(str, desc) {
   sortables_init();
 }
 
+function showStats(str) {
+  if(str.substring(0,5) == "Error") {
+    document.getElementById("result").innerHTML = str.split(';')[1];
+    openPane("result");
+    return;
+  }
+
+  var classPie = new pie(), reasonPie = new pie(), seatPie = new pie();
+  openPane("result");
+  if(str == "") {
+    bigtable = "<i>Statistics calculation failed!</i>";
+  } else {
+    var master = str.split("\n");
+    var uniques = master[0];
+    var longshort = master[1];
+    var extremes = master[2];
+    var classData = master[3];
+    var reasonData = master[4];
+    var seatData = master[5];
+
+    bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17></td><td style=\"vertical-align: top\">";
+
+    table = "<table style=\"border-spacing: 10px 0px\">";
+    table += "<tr><th colspan=2>Unique</th></tr>";
+    var col = uniques.split(",");
+    // num_airports, num_airlines, num_planes, distance
+    distance = col[3];
+    table += "<tr><td>Airports</td><td>" + col[0] + "</td></tr>";
+    table += "<tr><td>Airlines</td><td>" + col[1] + "</td></tr>";
+    table += "<tr><td>Plane types</td><td>" + col[2] + "</td></tr>";
+    table += "<tr><td>&nbsp;</td></tr>";
+    table += "<tr><th colspan=2>Distance</th></tr>";
+    table += "<tr><td>Miles flown</td><td>" + distance + "</td></tr>";
+    table += "<tr><td>Around the world</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
+    table += "<tr><td>To the Moon</td><td>" + (distance / MOON_DISTANCE).toFixed(3) + "x</td></tr>";
+    table += "<tr><td>To Mars</td><td>" + (distance / MARS_DISTANCE).toFixed(4) + "x</td></tr>";
+    table += "</table>";
+    bigtable += table + "</td><td style=\"vertical-align: top\">";
+
+    table = "<table style=\"border-spacing: 10px 0px\">";
+    table += "<tr><th colspan=2>Flight extremes</th></tr>";
+    var rows = longshort.split(";");
+    for (r in rows) {
+      var col = rows[r].split(",");
+      // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>-<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
+    }
+    table += "<tr><td>&nbsp;</td></tr>";
+    table += "<tr><th colspan=2>Airport records</th></tr>";
+    var rows = extremes.split(":");
+    for (r in rows) {
+      var col = rows[r].split(",");
+      // 0 desc, 1 code, 2 apid, 3 x, 4 y
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[2] + ");\">" + col[1] + "</a> (" + parseFloat(col[4]).toFixed(2) + "," + parseFloat(col[3]).toFixed(2) + ")</td></tr>";
+    }
+    table += "</table>";
+    bigtable += table + "</td><td style=\"vertical-align: top\">";
+  
+    table = "<table style=\"border-spacing: 10px 0px\">";
+    table += "<tr><th>Class</th><th>Reason</th></tr>";
+    table += "<tr><td>";
+    table += "<div id='classPie' style='position:relative;height:80px;width:150px;'></div>";
+    var rows = classData.split(":");
+    for (r in rows) {
+      var col = rows[r].split(",");
+      classPie.add(classes_short[col[0]], parseInt(col[1]));
+    }
+    table += "</td><td>";
+
+    table += "<div id='reasonPie' style='position:relative;height:80px;width:150px;'></div>";
+    var rows = reasonData.split(":");
+    for (r in rows) {
+      var col = rows[r].split(",");
+      reasonPie.add(reasons_short[col[0]], parseInt(col[1]));
+    }
+    table += "</td></tr>";
+    table += "<tr><th>Seats</th></tr><tr><td>";
+    table += "<div id='seatPie' style='position:relative;height:80px;width:150px;'></div>";
+    var rows = seatData.split(":");
+    for (r in rows) {
+      var col = rows[r].split(",");
+      seatPie.add(seattypes_short[col[0]], parseInt(col[1]));
+    }
+    table += "</td></tr></table>";
+    bigtable += table + "</td></tr></table>";
+  }
+
+  document.getElementById("result").innerHTML = bigtable;
+  classPie.render("classPie", "Class");
+  reasonPie.render("reasonPie", "Reason");
+  seatPie.render("seatPie", "Seat");
+}
+
 function showTop10(str) {
   if(str.substring(0,5) == "Error") {
     document.getElementById("result").innerHTML = str.split(';')[1];
@@ -1034,13 +1130,13 @@ function preInputFlight(str, param) {
   origDstSelect = createSelect("dst_ap", "Choose airport", 0, airports.split("\t"), INPUT_MAXLEN, "selectNewAirport");
   document.getElementById("input_dst_ap_select").innerHTML = origDstSelect;
 
-  origAirlineSelect = createSelect("airline", "Choose airline", filter_alid, airlines.split("\t"), INPUT_MAXLEN, "editChanged");
+  origAirlineSelect = createSelect("airline", "Choose airline", filter_alid, airlines.split("\t"), INPUT_MAXLEN, "markAsChanged");
   document.getElementById("input_airline_select").innerHTML = origAirlineSelect;
 
-  var tripselect = createSelect("trips", "-", filter_trid, trips.split("\t"), INPUT_MAXLEN, "editChanged", 8);
+  var tripselect = createSelect("trips", "-", filter_trid, trips.split("\t"), INPUT_MAXLEN, "markAsChanged", 8);
   document.getElementById("input_trip_select").innerHTML = tripselect;
 
-  var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, "editChanged", 9);
+  var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, "markAsChanged", 9);
   document.getElementById("input_plane_select").innerHTML = planeselect;
 
   // An existing entry will already have plane, airline, trip selected
@@ -1091,7 +1187,7 @@ function flightSelectBoxes() {
 
 // User has edited a flight's contents
 // if major is true, force a redraw later
-function editChanged(major) {
+function markAsChanged(major) {
   if(major) {
     majorEdit = true;
   }
@@ -1175,6 +1271,18 @@ function addNewAirport(data, name) {
   if(input_toggle == "DST") selectNewAirport("dst_ap");
 }
 
+// Handle the "add new airlines" buttons
+function popNewAirline() {
+  window.open('/html/alsearch.html', 'Airline', 'width=500,height=580,scrollbars=yes');
+}
+
+function addNewAirline(data, name) {
+  var al_select = document.forms['inputform'].airline;
+  al_select[0].text = name;
+  al_select[0].value = data;
+  al_select.selectedIndex = 0;
+  markAsChanged();
+}
 
 //
 // Handle the "add new plane" button in input form
@@ -1307,7 +1415,7 @@ function flightNumberToAirline(str) {
     if(!found) {
       xmlhttpPost(URL_GETCODE, 0, "AIRLINE");
     } else {
-      editChanged();
+      markAsChanged();
     }
   }
 }
@@ -1432,7 +1540,7 @@ function selectNewAirport(type, quick) {
   
   // Flag as major change
   if(! quick) {
-    editChanged(true);
+    markAsChanged(true);
   }
 }
 
