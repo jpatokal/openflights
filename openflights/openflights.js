@@ -943,8 +943,8 @@ function showTop10(str) {
       var col = rows[r].split(",");
       // s.name, s.apid, d.name, d.apid, count
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>&harr;" +
-	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td><td>"
-	+ col[4] + "</td></tr>";
+	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" + 
+	"<td style='text-align: right'>" + col[4] + "</td></tr>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -956,7 +956,7 @@ function showTop10(str) {
       var col = rows[r].split(",");
       // name, iata, count, apid
       desc = col[0] + " (" + col[1] + ")";
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td>" + col[2] + "</td>";
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td style='text-align: right'>" + col[2] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -967,7 +967,7 @@ function showTop10(str) {
     for (r in rows) {
       var col = rows[r].split(",");
       // name, count, apid
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td>" + col[1] + "</td>";
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td style='text-align: right'>" + col[1] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -978,7 +978,7 @@ function showTop10(str) {
     for (r in rows) {
       var col = rows[r].split(",");
       // name, count
-      table += "<tr><td>" + col[0] + "</td><td>" + col[1] + "</td>";
+      table += "<tr><td>" + col[0] + "</td><td style='text-align: right'>" + col[1] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td></table>";
