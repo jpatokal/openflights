@@ -387,14 +387,21 @@ function xmlhttpPost(strURL, id, param) {
 	document.getElementById("input_status").innerHTML = '<B>' + text + '</B>';
 
 	// A change that affected the map was made, so redraw
-	if(majorEdit || CODE_DELETEOK) {
+	if(majorEdit || code == CODE_DELETEOK) {
 	  refresh(false);
 	}
 	majorEdit = false;
 
-	// We've added a new plane, so rebuild selects
-	if(code == CODE_ADDOKPLANE || code == CODE_EDITOKPLANE) {
-	  setTimeout('xmlhttpPost(URL_PREINPUT)', 1000);
+	// If id == true and operation succeeded, then clear input (and rebuild selects)
+	if(id && code != CODE_FAIL) {
+	  setTimeout('clearInput()', 1000);
+	  // NB: this calls URL_PREINPUT
+
+	} else {
+	  // We've added a new plane, so rebuild selects
+	  if(code == CODE_ADDOKPLANE || code == CODE_EDITOKPLANE) {
+	    setTimeout('xmlhttpPost(URL_PREINPUT)', 1000);
+	  }
 	}
 
 	if(code % 10 == CODE_EDITOK || code % 10 == CODE_ADDOK) {
@@ -424,11 +431,6 @@ function xmlhttpPost(strURL, id, param) {
 	  } else {
 	    setTimeout('xmlhttpPost(URL_FLIGHTS, 0, "RELOAD")', 1000);
 	  }
-	}
-
-	// If id == true and operation succeeded, then clear input
-	if(id && code != CODE_FAIL) {
-	  setTimeout('clearInput()', 1000);
 	}
       }
       document.getElementById("ajaxstatus").style.display = 'none';
