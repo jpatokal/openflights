@@ -247,7 +247,14 @@ function searchResult(str) {
       max = col[1];
       sql = col[2];
       if(max == 0) {
-	table += "<tr><td><i>No matches found in this database &mdash; try another?</i></td></td>";
+	table += "<tr><td><i>No matches found in this database.<br><ul>";
+	if(document.forms['searchform'].iatafilter.checked) {
+	  table += "<li>Try unchecking 'Show only major airports' and search again.";
+	}
+	if(document.forms['searchform'].db.value != "airports_dafif") {
+	  table += "<li>Switch to the DAFIF database and search again.";
+	}
+	table += "</ul></td></tr>";
 	break;
       }
       table += "<tr><td><b>Results " + (offset+1) + " to " + Math.min(offset+10, max) + " of " + max + "</b><br></td>";

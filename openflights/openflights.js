@@ -394,10 +394,13 @@ function xmlhttpPost(strURL, id, param) {
 
 	// If id == true and operation succeeded, then clear input (and rebuild selects)
 	if(id && code != CODE_FAIL) {
-	  setTimeout('clearInput()', 1000);
+	  setTimeout('clearInput(true)', 1000);
 	  // NB: this calls URL_PREINPUT
 
 	} else {
+	  // Swap last destination to be new source
+	  swapAirports(false);
+
 	  // We've added a new plane, so rebuild selects
 	  if(code == CODE_ADDOKPLANE || code == CODE_EDITOKPLANE) {
 	    setTimeout('xmlhttpPost(URL_PREINPUT)', 1000);
@@ -723,6 +726,8 @@ function updateMap(str){
   var days = Math.floor(col[2] / (60*24));
   var hours = Math.floor((col[2] / 60) % 24);
   var min = Math.floor(col[2] % 60);
+  if(min < 10) min = "0" + min;
+
   stats = col[0] + " flights<br>" +
     col[1] + " mi flown<br>" +
     days + " days " + hours + ":" + min;
@@ -1559,13 +1564,24 @@ function selectNewAirport(type, quick) {
   }
 }
 
-function swapAirports() {
+// Swap airports around
+// If "true" (manual), swap both
+// If "false" (automatic), swap only top to bottom and restore top to original
+function swapAirports(manual) {
   var tmp = document.forms["inputform"].src_ap_code.value;
   document.forms["inputform"].src_ap_code.value = document.forms["inputform"].dst_ap_code.value;
-  document.forms["inputform"].dst_ap_code.value = tmp;
-  codeToAirport("SRC");
-  // awful hack: wait a second for the first request to execute
-  setTimeout('codeToAirport("DST")', 1000);
+  if(manual) {
+    document.forms["inputform"].dst_ap_code.value = tmp;
+  } else {
+    document.forms["inputform"].dst_ap_code.value = "";
+    document.getElementById("input_dst_ap_select").innerHTML = origDstSelect;
+  }
+
+  codeToAirport("SRC", null, true); // quick reload, no recalc
+  if(manual) {
+    // awful hack: wait a second for the first request to execute
+    setTimeout('codeToAirport("DST")', 1000);
+  }
 }
 
 // Given apid, find the matching airport and pop it up
@@ -1657,7 +1673,7 @@ function newUserLogin(name, pw) {
   document.forms['login'].pw.value = pw;
   document.getElementById("news").innerHTML =
     "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:clearInput()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
+    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:clearInput(true)'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
   xmlhttpPost(URL_LOGIN, 0, "NEWUSER");
 }
 
@@ -1732,6 +1748,9 @@ function openInput(param) {
   input = true;
   input_toggle = "SRC";
   document.getElementById("input_status").innerHTML = "";
+  document.getElementById("src_ap_ajax").style.visibility = 'hidden';
+  document.getElementById("dst_ap_ajax").style.visibility = 'hidden';
+  document.getElementById("airline_ajax").style.visibility = 'hidden';
 
   // Don't allow saving until something is changed
   setInputAllowed(null, false);
@@ -1750,7 +1769,10 @@ function closeInput() {
   }
 }
 
-function clearInput() {
+// Clear out (restore to defaults) the input box
+// If hard=true, rebuild selects from DB
+// If hard=false, rebuild from last saved state
+function clearInput(hard) {
   var form = document.forms["inputform"];
   form.src_date.value = "";
   form.src_ap_code.value = "";
@@ -1770,7 +1792,15 @@ function clearInput() {
     airportLayer.removeMarker(input_dstmarker);
     input_dstmarker = null;
   }
-  xmlhttpPost(URL_PREINPUT); // rebuild selects
+
+  // Restore any changes to selects
+  if(hard) {
+    xmlhttpPost(URL_PREINPUT); // rebuild selects from DB
+  } else {
+    document.getElementById("input_src_ap_select").innerHTML = origSrcSelect;
+    document.getElementById("input_dst_ap_select").innerHTML = origDstSelect;
+    document.getElementById("input_airline_select").innerHTML = origAirlineSelect;
+  }
 }
 
 function showHelp() {
