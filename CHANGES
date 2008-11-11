@@ -1,3 +1,11 @@
+<b>2008-11-11</b>
+
+* Feature: "Add" now automatically swaps last destination airport to be new source airport.
+* Feature: Autosuggest better searches if there are no results.
+* Bug: "Clear" renamed as "Show all".
+* Bug: AJAX "wait" swirlies cleared out better.
+* Bug: Minutes of total time displayed correctly.
+
 <b>2008-10-10</b>
 
 * Problem with "Add and clear" causing double refresh fixed, bug 2139697 presumed closed

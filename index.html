@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="/js/pie.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081010"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081111"></script>
   </head>
 
   <body>
@@ -32,8 +32,7 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 4 Oct 2008: <a href="/about.html#CHANGES">Airline search and recording added.</a><br>
-	      <a href="/about.html#CHANGES">More statistics now available with "Analyze".</a>
+	      <B>News</b>: 11 Nov 2008: <a href="/about.html#CHANGES">Small usability enhancements and bugfixes implemented.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -104,7 +103,7 @@
 		  <td></td>
 		  <td>
 		    <input type="button" value="Filter" align="middle" onclick='JavaScript:refresh(true)'>
-		    <input type="button" value="Clear" align="middle" onclick='JavaScript:clearFilter(false)'>
+		    <input type="button" value="Show all" align="middle" onclick='JavaScript:clearFilter(false)'>
 		  </td>
 		</table>
 	      </span>
@@ -113,7 +112,7 @@
 
 	      <div id="controlpanel" style="display: none">
 		<br><b>Control panel</b><br>
-		<input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput()'>
+		<input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput(true)'>
 		<input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
 		<input type="button" value="Import" align="middle" onclick='JavaScript:openImport()'>
 		<input type="button" value="Settings" align="middle" onclick='JavaScript:settings()'>
@@ -166,7 +165,7 @@
       <span id="input_src_ap_select"></span></td>
   <td rowspan=2 valign=middle>
       <span id="src_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span><br>
-      <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports()' style="float: left; margin-right: 10px"/><br>
+      <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="float: left; margin-right: 10px"/><br>
       <span id="dst_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span>
   </td>
 
@@ -231,7 +230,7 @@
     <span id="addflightbuttons">
       <input id="b_add" value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
       <input id="b_addclear" value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
-      <input id="b_clear" value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput()'>
+      <input id="b_clear" value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput(false)'>
       <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
     </span>
     <span id="editflightbuttons" style="display: none">
