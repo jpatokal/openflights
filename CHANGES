@@ -1,10 +1,19 @@
-<b>2008-11-11</b>
+<b>2008-11-14</b>
 
 * Feature: "Add" now automatically swaps last destination airport to be new source airport.
-* Feature: Autosuggest better searches if there are no results.
+* Feature: In airport search, autosuggest better searches if there are no results.
+* Feature: Close button added to map titles when filter is active (only when logged in).
+* Feature: Trip reason "Other" added (#2168254).
 * Bug: "Clear" renamed as "Show all".
 * Bug: AJAX "wait" swirlies cleared out better.
 * Bug: Minutes of total time displayed correctly.
+* Bug: Creating new trip now considered a change when editing a flight.
+* Bug: New trip added to end of trip selector, not first position (corrects buggy behavior in editor).
+* Bug: Comma character (,) now allowed in flight notes.
+* Bug: Number of distinct airports was calculated incorrectly in some cases, fixed.
+* Bug: Date validation is now stricter.
+* Bug: Filter selections correctly reloaded after filter is cleared.
+* Bug: Detailed flight list, if open, is redrawn after a flight is added or copied.
 
 <b>2008-10-10</b>
 
