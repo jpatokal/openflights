@@ -66,6 +66,9 @@ if($year && $year != "0") {
   $sql = $sql . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
 }
 
+// And sort order
+$sql = $sql . " ORDER BY src_date";
+
 // Execute!
 $result = mysql_query($sql, $db);
 $first = true;
