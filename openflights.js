@@ -398,8 +398,10 @@ function xmlhttpPost(strURL, id, param) {
 	  // NB: this calls URL_PREINPUT
 
 	} else {
-	  // Swap last destination to be new source
-	  swapAirports(false);
+	  // If adding new flights (not editing), swap last destination to be new source
+	  if(document.getElementById("addflighttitle").style.display == 'inline') {
+	    swapAirports(false);
+	  }
 
 	  // We've added a new plane, so rebuild selects
 	  if(code == CODE_ADDOKPLANE || code == CODE_EDITOKPLANE) {
