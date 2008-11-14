@@ -69,11 +69,18 @@ if($year && $year != "0") {
   $filter = $filter . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
 }
 
-// unique airports, airlines, total distance
-$sql = "SELECT COUNT(DISTINCT src_apid,dst_apid) AS num_airports, COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, SUM(distance) AS distance FROM flights AS f WHERE " . $filter;
+// unique airports
+$sql = "SELECT COUNT(*) AS num_airports FROM (SELECT src_apid FROM flights AS f WHERE " . $filter . " UNION SELECT dst_apid FROM flights AS f WHERE " . $filter . ") AS FOO";
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf ("%s,%s,%s,%s", $row["num_airports"], $row["num_airlines"], $row["num_planes"], $row["distance"]);
+  printf ("%s,", $row["num_airports"]);
+}
+
+// unique airlines, total distance
+$sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, SUM(distance) AS distance FROM flights AS f WHERE " . $filter;
+$result = mysql_query($sql, $db);
+if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  printf ("%s,%s,%s", $row["num_airlines"], $row["num_planes"], $row["distance"]);
 }
 printf ("\n");
 
