@@ -9,6 +9,7 @@
 * Bug: Minutes of total time displayed correctly.
 * Bug: Creating new trip now considered a change when editing a flight.
 * Bug: New trip added to end of trip selector, not first position (corrects buggy behavior in editor).
+* Bug: Clear airline code when moving between flights in editor.
 * Bug: Comma character (,) now allowed in flight notes.
 * Bug: Number of distinct airports was calculated incorrectly in some cases, fixed.
 * Bug: Date validation is now stricter.
