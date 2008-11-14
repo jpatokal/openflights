@@ -73,7 +73,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($first) {
     $first = false;
   } else {
-    printf("\t");
+    printf("\n");
   }
   $src_apid = $row["src_apid"];
   $src_code = format_apcode2($row["src_iata"], $row["src_icao"]);
@@ -90,6 +90,6 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $src_code = $dst_code;
     $dst_code = $tmp;
   }
-  printf ("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"], $row["trid"]);
+  printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"], $row["trid"]);
 }
 ?>

@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="/js/pie.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081111"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081114"></script>
   </head>
 
   <body>
@@ -32,7 +32,7 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 11 Nov 2008: <a href="/about.html#CHANGES">Small usability enhancements and bugfixes implemented.</a>
+	      <B>News</b>: 14 Nov 2008: <a href="/about.html#CHANGES">Numerous small bugfixes and usability enhancements implemented.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -103,7 +103,7 @@
 		  <td></td>
 		  <td>
 		    <input type="button" value="Filter" align="middle" onclick='JavaScript:refresh(true)'>
-		    <input type="button" value="Show all" align="middle" onclick='JavaScript:clearFilter(false)'>
+		    <input type="button" value="Show all" align="middle" onclick='JavaScript:clearFilter(true)'>
 		  </td>
 		</table>
 	      </span>
@@ -221,6 +221,7 @@
   <td><input type="radio" name="reason" value="B" onChange="JavaScript:markAsChanged();" CHECKED>Business
       <input type="radio" name="reason" value="L" onChange="JavaScript:markAsChanged();">Leisure
       <input type="radio" name="reason" value="C" onChange="JavaScript:markAsChanged();">Crew
+      <input type="radio" name="reason" value="O" onChange="JavaScript:markAsChanged();">Other
   </td>
 </tr><tr>
   <td>Note</td>

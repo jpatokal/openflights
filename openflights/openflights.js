@@ -54,10 +54,10 @@ var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
 
 var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
 var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
-var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "": ""};
+var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "O": "Other", "": ""};
 var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
 var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
-var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "": ""};
+var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "O":"Oth", "": ""};
 
 window.onload = function init(){
 
@@ -467,9 +467,10 @@ function xmlhttpPost(strURL, id, param) {
     // Deleting needs only the fid, and can be run without the inputform
     if(param != "DELETE") {
       var src_date = inputform.src_date.value;
-      var re_date = /^[0-9]{2,4}[-/.]?[0-9]{1,2}[-/.]?[0-9]{1,2}$/
+      // leading zeroes not required for month, date
+      var re_date = /^(19|20)\d\d[- /.]([1-9]|0[1-9]|1[012])[- /.]([1-9]|0[1-9]|[12][0-9]|3[01])$/
       if(! re_date.test(src_date)) {
-	alert("Please enter a full date in year/month/date order. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD, YYYYMMDD and YYMMDD.");
+	alert("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD.");
 	document.forms['inputform'].src_date.focus();
 	return;
       }
@@ -623,6 +624,11 @@ function updateTitle(str) {
       if(text != "") text += " in ";
       text += year;
     }
+    // For non-null titles, add X for easy filter removal
+    if(text != "") {
+      text = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> " + text;
+    }
+
   } else {
     // Demo mode
     if(filter_user == 0 && filter_trid == 0) {
@@ -780,10 +786,10 @@ function listFlights(str, desc) {
       table += "<th class=\"unsortable\">Action</th>";
     }
     table += "</tr>";
-    var rows = str.split("\t");
+    var rows = str.split("\n");
     for (r in rows) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17
-      var col = rows[r].split(",");
+      var col = rows[r].split("\t");
       var trip = col[17];
       var seat = col[8] + " " + seattypes[col[9]];
       var plane = col[13];
@@ -1072,7 +1078,7 @@ function editFlight(str, param) {
   }
 
   // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16
-  var col = str.split(",");
+  var col = str.split("\t");
   var form = document.forms['inputform'];
   form.src_ap_code.value = col[0];
   form.src_apid.value = col[1];
@@ -1371,9 +1377,16 @@ function newTrip(code, newTrid, name, url) {
   if(trips) {
     switch(code) {
     case CODE_ADDOK:
-      trips[0].text = name;
-      trips[0].value = newTrid;
-      trips.selectedIndex = 0;
+      var elOptNew = document.createElement('option');
+      elOptNew.text = name;
+      elOptNew.value = newTrid;
+      try {
+	trips.add(elOptNew, null); // standards compliant; doesn't work in IE
+      }
+      catch(ex) {
+	trips.add(elOptNew); // IE only
+      }
+      trips.selectedIndex = trips.length - 1;
       break;
 
     case CODE_DELETEOK:
@@ -1394,6 +1407,7 @@ function newTrip(code, newTrid, name, url) {
   // In all cases, refresh map
   // TODO: Would be enough to refresh the filter only...
   refresh(true);
+  markAsChanged();
 }
 
 // When user has entered flight number (NUMBER) or airline code (AIRLINE), try to match it to airline
@@ -1722,6 +1736,9 @@ function closePane() {
   }
   document.getElementById(currentPane).style.display = 'none';
   document.getElementById(lastPane).style.display = 'inline';
+
+  // If ad pane is now displayed, refresh it
+  if(paneStack.length == 1) refreshAd();
 }
 
 // Clear all panes until the base pane (ad)
@@ -1756,7 +1773,6 @@ function openInput(param) {
   setInputAllowed(null, false);
 }
 
-// Reload flights list
 function closeInput() {
   if(document.getElementById("b_add").disabled == false) {
     if(! confirm("Changes made to this flight have not been saved.  OK to discard them?")) {
@@ -1764,7 +1780,13 @@ function closeInput() {
     }
   }
   closePane();
-  if(document.getElementById("editflighttitle").style.display == 'inline') {
+
+  // Reload flights list if we were editing flights, or
+  // user had a result pane open when he opened new flight editor
+
+  if(getCurrentPane() == "result" &&
+     (document.getElementById("editflighttitle").style.display == 'inline' ||
+      document.getElementById("addflighttitle").style.display == 'inline')) {
     xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
   }
 }
@@ -1804,7 +1826,7 @@ function clearInput(hard) {
 }
 
 function showHelp() {
-  if(currentPane == "help") return;
+  if(getCurrentPane() == "help") return;
   openPane("help");
 }
 
@@ -1841,4 +1863,19 @@ function refresh(init) {
   closePopup();
   apid = 0;
   xmlhttpPost(URL_MAP, 0, init);
+}
+
+/* Refresh the Google Ad iframe
+ * TODO: How to make the second ad refresh?
+ */
+function refreshAd() {
+  var d=document.getElementById('ad');
+  if(d){
+    var s=d.getElementsByTagName('iframe');
+    if(s && s.length){
+      var src = (s[0].src.split(/&xtime=/))[0];
+      s[0].src = src + '&xtime='+new Date().getTime();
+    }
+  }
+  return true;
 }
