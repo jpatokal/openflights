@@ -1091,6 +1091,7 @@ function editFlight(str, param) {
   form.distance.value = col[6];
   form.duration.value = col[7];
   form.seat.value = col[8];
+  form.airline_code.value = "";
 
   var seat_type = inputform.seat_type;
   seat_type.selectedIndex = 0; // default to unselected
