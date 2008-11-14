@@ -4,6 +4,7 @@
 * Feature: In airport search, autosuggest better searches if there are no results.
 * Feature: Close button added to map titles when filter is active (only when logged in).
 * Feature: Trip reason "Other" added (#2168254).
+* Feature: Default to listing flights in chronological order.
 * Bug: "Clear" renamed as "Show all".
 * Bug: AJAX "wait" swirlies cleared out better.
 * Bug: Minutes of total time displayed correctly.
