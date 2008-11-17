@@ -716,7 +716,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
 function cloneSelect(oldSelect, name, hook) {
   var newSelect = "<select name=\"" + name + "\"";
   if(hook) {
-    newSelect += " onChange='JavaScript:" + hook + "(\"" + name + "\")'";
+    newSelect += " onChange='JavaScript:" + hook + "(\"" + name + "\")'>";
   }
   for(index = 0; index < oldSelect.length; index++) {
     newSelect += "<option value=\"" + oldSelect[index].value + "\">" + oldSelect[index].text + "</option>";
