@@ -386,26 +386,22 @@ function xmlhttpPost(strURL, id, param) {
 	var text = self.xmlHttpReq.responseText.split(";")[1];
 	document.getElementById("input_status").innerHTML = '<B>' + text + '</B>';
 
-	// A change that affected the map was made, so redraw
-	if(majorEdit || code == CODE_DELETEOK) {
-	  refresh(false);
-	}
-	majorEdit = false;
-
 	// If id == true and operation succeeded, then clear input (and rebuild selects)
 	if(id && code != CODE_FAIL) {
-	  setTimeout('clearInput(true)', 1000);
 	  // NB: this calls URL_PREINPUT
+	  clearInput(true);
+	  document.forms['inputform'].src_date.focus();
 
 	} else {
-	  // If adding new flights (not editing), swap last destination to be new source
+	  // If adding new flights (not editing), swap last destination to be new source and focus on date
 	  if(document.getElementById("addflighttitle").style.display == 'inline') {
 	    swapAirports(false);
+	    document.forms['inputform'].src_date.focus();
 	  }
 
 	  // We've added a new plane, so rebuild selects
 	  if(code == CODE_ADDOKPLANE || code == CODE_EDITOKPLANE) {
-	    setTimeout('xmlhttpPost(URL_PREINPUT)', 1000);
+	    xmlhttpPost(URL_PREINPUT);
 	  }
 	}
 
@@ -425,18 +421,24 @@ function xmlhttpPost(strURL, id, param) {
 	      // Remove current flight
 	      fidList.splice(fidPtr, 1);
 	      
-	      // Edit next if you can -- but with delay, since deleting a flight causes refresh
+	      // Edit next if you can
 	      if(fidPtr < fidList.length) {
-		setTimeout('editPointer(0)', 1000);
+		editPointer(0);
 	      } else {
 		// Move back
-		setTimeout('editPointer(-1)', 1000);
+		editPointer(-1);
 	      }
 	    }
 	  } else {
-	    setTimeout('xmlhttpPost(URL_FLIGHTS, 0, "RELOAD")', 1000);
+	    xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
 	  }
 	}
+
+	// A change that affected the map was made, so redraw (after any ops above complete)
+	if(majorEdit || code == CODE_DELETEOK) {
+	  setTimeout('refresh(false)', 1000);
+	}
+	majorEdit = false;
       }
       document.getElementById("ajaxstatus").style.display = 'none';
     }
@@ -710,6 +712,20 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   return select;
 }
 
+// Create a copy of 'select', renamed (incl. hook) as 'name'
+function cloneSelect(oldSelect, name, hook) {
+  var newSelect = "<select name=\"" + name + "\"";
+  if(hook) {
+    newSelect += " onChange='JavaScript:" + hook + "(\"" + name + "\")'";
+  }
+  for(index = 0; index < oldSelect.length; index++) {
+    newSelect += "<option value=\"" + oldSelect[index].value + "\">" + oldSelect[index].text + "</option>";
+  }
+  newSelect += "</select>";
+  return newSelect;
+}
+
+
 // Return value of currently selected radio button in this group
 function radioValue(radio) {
   for (r=0; r < radio.length; r++){
@@ -723,7 +739,7 @@ function radioValue(radio) {
 function updateMap(str){
   lineLayer.destroyFeatures();
   airportLayer.clearMarkers();
-  
+
   var master = str.split("\n");
   var stats = master[0];
   var flights = master[1];
@@ -763,6 +779,12 @@ function updateMap(str){
     // apid, x, y, name, code, city, country, count
     drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7]);
   }
+
+  // Redraw selection markers if in input mode
+  if(input) {
+    if(input_srcmarker) selectNewAirport("src_ap", true);
+    if(input_dstmarker) selectNewAirport("dst_ap", true);
+  }    
 }
 
 function startListFlights() {
@@ -1222,6 +1244,7 @@ function markAsChanged(major) {
   }
   if(document.getElementById("b_add").disabled == true) {
     setInputAllowed(null, true);
+    document.getElementById("input_status").innerHTML = '';
   } 
 }
 
@@ -1415,8 +1438,6 @@ function newTrip(code, newTrid, name, url) {
 
 // When user has entered flight number (NUMBER) or airline code (AIRLINE), try to match it to airline
 function flightNumberToAirline(str) {
-  document.getElementById("input_status").innerHTML = '';
-
   if(str == "NUMBER") {
     var flightNumber = document.forms['inputform'].number.value.toUpperCase();
     document.forms['inputform'].number.value = flightNumber;
@@ -1461,7 +1482,6 @@ function flightNumberToAirline(str) {
 // Alternatively, if "id" is given, then match id to airport id (apid)
 // If "quick", then do not recalculate distance/duration or flag as changed
 function codeToAirport(type, id, quick) {
-  document.getElementById("input_status").innerHTML = '';
   if(id) {
     idx = 1; // compare against code:apid[1]:x:y
   } else {
@@ -1500,8 +1520,6 @@ function codeToAirport(type, id, quick) {
 // Also calculates distance and duration (unless "quick" is true)
 // type: "src_ap" or "dst_ap"
 function selectNewAirport(type, quick) {
-  document.getElementById("input_status").innerHTML = '';
-
   var size = new OpenLayers.Size(17, 17);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   if(type == "src_ap") {
@@ -1525,9 +1543,6 @@ function selectNewAirport(type, quick) {
   if(type == "src_ap") {
     if(input_srcmarker) {
       airportLayer.removeMarker(input_srcmarker);
-      //input_srcpoint.geometry.move(x,y);
-    } else {
-      //input_srcpoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x,y));
     }
     if(apid > 0) {
       document.forms['inputform'].src_ap_code.value = iata;
@@ -1540,10 +1555,6 @@ function selectNewAirport(type, quick) {
   } else {
     if(input_dstmarker) {
       airportLayer.removeMarker(input_dstmarker);
-      //input_dstpoint.geometry.move(x,y);
-    } else {
-      //input_dstpoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(x,y));
-      //highlightLayer.addNodes([input_srcpoint, input_dstpoint]);
     }
     if(apid > 0) {
       document.forms['inputform'].dst_ap_code.value = iata;
@@ -1585,20 +1596,32 @@ function selectNewAirport(type, quick) {
 // If "true" (manual), swap both
 // If "false" (automatic), swap only top to bottom and restore top to original
 function swapAirports(manual) {
-  var tmp = document.forms["inputform"].src_ap_code.value;
-  document.forms["inputform"].src_ap_code.value = document.forms["inputform"].dst_ap_code.value;
   if(manual) {
-    document.forms["inputform"].dst_ap_code.value = tmp;
-  } else {
-    document.forms["inputform"].dst_ap_code.value = "";
-    document.getElementById("input_dst_ap_select").innerHTML = origDstSelect;
+    srcSelect = cloneSelect(document.forms["inputform"].src_ap, "dst_ap", "selectNewAirport");
+    srcPos = document.forms["inputform"].src_ap.selectedIndex;
   }
 
-  codeToAirport("SRC", null, true); // quick reload, no recalc
+  // Clone SRC from DST
+  dstPos = document.forms["inputform"].dst_ap.selectedIndex;
+  document.getElementById("input_src_ap_select").innerHTML = 
+    cloneSelect(document.forms["inputform"].dst_ap, "src_ap", "selectNewAirport");
+  document.forms["inputform"].src_ap.selectedIndex = dstPos;
+
   if(manual) {
-    // awful hack: wait a second for the first request to execute
-    setTimeout('codeToAirport("DST")', 1000);
+    // Clone DST from SRC
+    document.getElementById("input_dst_ap_select").innerHTML = srcSelect;
+    document.forms["inputform"].dst_ap.selectedIndex = srcPos;
+
+  } else {
+    // Clear out DST
+    document.getElementById("input_dst_ap_select").innerHTML = origDstSelect;
+    document.forms["inputform"].dst_ap.selectedIndex = 0;
   }
+
+  // Redraw markers and airline codes
+  selectNewAirport("src_ap", true);
+  selectNewAirport("dst_ap", true);
+  markAsChanged();
 }
 
 // Given apid, find the matching airport and pop it up
@@ -1700,6 +1723,7 @@ function logout(str) {
   document.getElementById("controlpanel").style.display = 'none';
   clearStack();
   clearFilter(true);
+  document.forms['loginform'].name.focus();
 }
 
 // Functions for swapping between lower panes
