@@ -597,11 +597,11 @@ function updateFilter(str) {
   var airlines = master[4];
   var years = master[5];
 
-  var tripselect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), 20);
+  var tripselect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), 20, "refresh(true)");
   document.getElementById("filter_tripselect").innerHTML = tripselect;
-  var airlineselect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), 20);
+  var airlineselect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), 20, "refresh(true)");
   document.getElementById("filter_airlineselect").innerHTML = airlineselect;
-  var yearselect = createSelect("Years", "All", filter_year, years.split("\t"), 20);
+  var yearselect = createSelect("Years", "All", filter_year, years.split("\t"), 20, "refresh(true)");
   document.getElementById("filter_yearselect").innerHTML = yearselect;
 
 }

@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="/js/pie.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081117"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081118"></script>
   </head>
 
   <body>
@@ -32,7 +32,7 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 17 Nov 2008: <a href="/about.html#CHANGES">Airport swap functionality rewritten, now stable and much faster.</a>
+	      <B>News</b>: 18 Nov 2008: <a href="/about.html#CHANGES">Filters applied automatically when selected.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -89,6 +89,7 @@
 		onclick="toggleControl(this);" />
 		<label for="selectToggle">Flights</label>
 		-->
+		<b>Filter</b>
 		<table>
 		<tr>
 		  <td>Trips<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
@@ -99,13 +100,8 @@
 		</tr><tr>
 		  <td>Year</td>
 		  <td><span id="filter_yearselect"><select name="Years"><option value="">All</option></select></span></td>
-		</tr><tr>
-		  <td></td>
-		  <td>
-		    <input type="button" value="Filter" align="middle" onclick='JavaScript:refresh(true)'>
-		    <input type="button" value="Show all" align="middle" onclick='JavaScript:clearFilter(true)'>
-		  </td>
-		</table>
+	        </tr>
+	      </table>
 	      </span>
 	    </form>
 	      
