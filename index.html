@@ -13,7 +13,11 @@
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="/js/pie.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081118"></script>
+    <script type="text/javascript" src="/js/prototype.js"></script>
+    <script type="text/javascript" src="/js/scriptaculous.js"></script>
+    <script type="text/javascript" src="/js/controls.js"></script>
+    <script type="text/javascript" src="/js/effects.js"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081121"></script>
   </head>
 
   <body>
@@ -32,7 +36,7 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 18 Nov 2008: <a href="/about.html#CHANGES">Filters applied automatically when selected.</a>
+	      <B>News</b>: 21 Nov 2008: <a href="/about.html#CHANGES">Plane editor now uses autocomplete, "Analyze" now faster.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -166,9 +170,8 @@
   </td>
 
   <td>Plane</td>
-  <td><span id="input_plane_add" style="display: inline;"><span id="input_plane_select"></span> <img src="/img/icon_add.png" title="Add new plane type" height=17 width=17 onclick='JavaScript:inputNewPlane()'/></span>
-      <span id="input_plane_unadd" style="display: none;"><input type="text" name="newPlane" size="15" onChange='JavaScript:enterNewPlane()'/> <img src="/img/icon_unadd.png" title="Cancel adding new plane" height=17 width=17 onclick='JavaScript:cancelNewPlane(true)'/></span>
-      Registration <input type="text" name="registration" size="8" tabindex="10" onChange="JavaScript:markAsChanged();"/>
+  <td><input style="width: 180px" type="text" name="plane" id="plane" tabindex="9" onChange="JavaScript:markAsChanged();"><div id="planeAC"></div><input type="hidden" id="plane_id" name="plane_id" />
+      Reg. <input type="text" name="registration" size="8" tabindex="10" onChange="JavaScript:markAsChanged();"/>
   </td>
 
 </tr><tr>
@@ -232,7 +235,7 @@
     </span>
     <span id="editflightbuttons" style="display: none">
       <input id="b_save" value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
-      <input id="b_delete" value="Delete flight" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
+      <input id="b_delete" value="Delete" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
       <input id="b_cancel" value="Exit" type="button" tabindex="15" onclick='JavaScript:closeInput()'>
       <input id="b_prev" value="<" type="button" tabindex="16" onclick='JavaScript:editPointer(-1)'>
       <input id="b_next" value="&gt;" type="button" tabindex="17" onclick='JavaScript:editPointer(1)'>

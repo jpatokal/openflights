@@ -37,7 +37,7 @@ if(strstr($plid, "NEW:")) {
     // Found it
     $plid = $row["plid"];
   } else {
-    $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($newplane) . "')";
+    $sql = "INSERT INTO planes(name, public) VALUES('" . mysql_real_escape_string($newplane) . "', 'N')";
     mysql_query($sql, $db) or die('0;Adding new plane failed');
     $plid = mysql_insert_id();
   }

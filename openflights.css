@@ -157,6 +157,14 @@
 
 input:focus, textarea:focus { background-color: LightYellow; }
 
+/* Autocomplete styles */
+
+#search, ul.autocomplete { padding: 3px; width: 180px; border: 1px solid #999; }
+ul.autocomplete { list-style-type: none; font-family: verdana; arial, sans-serif; margin: 1px 0 0 0; background: #FFF; }
+ul.autocomplete { margin: 0 0 0 0; cursor: default; color: black; }
+li.autocomplete:hover { background: #C6DEFF; }
+li.selected { background: #C6DEFF; }
+
 /* OpenLayers default stuff starts here */
 
 div.olLayerDiv {
