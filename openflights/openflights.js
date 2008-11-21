@@ -117,7 +117,7 @@ window.onload = function init(){
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
 
-  // Are viewing another user's flights or trip?
+  // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0) {
     document.getElementById("loginform").style.display = 'none';
     document.getElementById("loginstatus").style.display = 'inline';
@@ -125,8 +125,11 @@ window.onload = function init(){
     if(filter_trid != 0) {
       document.getElementById("filter_tripselect").style.display = 'none';
     }
+  } else {
+    // Nope, set up autocompletes for editor
+    new Ajax.Autocompleter("plane", "planeAC", "php/autocomplete.php",
+    			   {afterUpdateElement : getSelectedId});
   }
-
   xmlhttpPost(URL_MAP, 0, true);
  }    
 
@@ -501,8 +504,16 @@ function xmlhttpPost(strURL, id, param) {
       if(type == "-") type = "";
       var myClass = radioValue(inputform.myClass);
       var reason = radioValue(inputform.reason);
-      var plid = inputform.plane[inputform.plane.selectedIndex].value;
-      if(plid == 0) plid = "NULL";
+      var plid = inputform.plane_id.value;
+      // User has not selected a plane from the pulldown box, did they enter one manually?
+      if(plid == "" || plid == "undefined") {
+	var newPlane = inputform.plane.value;
+	if(newPlane != "") {
+	  plid = "NEW:" + newPlane;
+	} else {
+	  plid = "NULL";
+	}
+      }
       var trid = inputform.trips[inputform.trips.selectedIndex].value;
       if(trid == 0) trid = "NULL";
       var registration = inputform.registration.value;
@@ -689,7 +700,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   }
 
   var selected = "";
-  for (r in rows) {
+  for (r = 0; r < rows.length; r++) {
     var col = rows[r].split(";");
     var name = col[1];
     var url = col[2];
@@ -764,17 +775,17 @@ function updateMap(str){
   }
 
   var rows = flights.split(":");
-  for (r in rows) {
-    var col = rows[r].split(",");
+  for (r = 0; r < rows.length; r++) {
+    var rCol = rows[r].split(",");
     // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7
-    drawLine(parseFloat(col[1]), parseFloat(col[2]), parseFloat(col[4]), parseFloat(col[5]), col[6], col[7]);
+    drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]), parseFloat(rCol[4]), parseFloat(rCol[5]), rCol[6], rCol[7]);
   }
   
   var rows = airports.split(":");
 
   // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
   airportMaxFlights = rows[rows.length - 1].split(",")[7];
-  for (r in rows) {
+  for (r = 0; r < rows.length; r++) {
     var col = rows[r].split(",");
     // apid, x, y, name, code, city, country, count
     drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7]);
@@ -811,7 +822,7 @@ function listFlights(str, desc) {
     }
     table += "</tr>";
     var rows = str.split("\n");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17
       var col = rows[r].split("\t");
       var trip = col[17];
@@ -891,7 +902,7 @@ function showStats(str) {
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=2>Flight records</th></tr>";
     var rows = longshort.split(";");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
       table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
@@ -900,7 +911,7 @@ function showStats(str) {
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>Airport records</th></tr>";
     var rows = extremes.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // 0 desc, 1 code, 2 apid, 3 x, 4 y
       lat = parseFloat(col[4]).toFixed(2);
@@ -925,7 +936,7 @@ function showStats(str) {
     table += "<tr><td>";
     table += "<div id='classPie' style='position:relative;height:80px;width:150px;'></div>";
     var rows = classData.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       classPie.add(classes_short[col[0]], parseInt(col[1]));
     }
@@ -933,7 +944,7 @@ function showStats(str) {
 
     table += "<div id='reasonPie' style='position:relative;height:80px;width:150px;'></div>";
     var rows = reasonData.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       reasonPie.add(reasons_short[col[0]], parseInt(col[1]));
     }
@@ -941,7 +952,7 @@ function showStats(str) {
     table += "<tr><th>Seats</th></tr><tr><td>";
     table += "<div id='seatPie' style='position:relative;height:80px;width:150px;'></div>";
     var rows = seatData.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       seatPie.add(seattypes_short[col[0]], parseInt(col[1]));
     }
@@ -976,7 +987,7 @@ function showTop10(str) {
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=3>Top 10 Routes</th></tr>";
     var rows = routes.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // s.name, s.apid, d.name, d.apid, count
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>&harr;" +
@@ -989,7 +1000,7 @@ function showTop10(str) {
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=3>Top 10 Airports</th></tr>";
     var rows = airports.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, iata, count, apid
       desc = col[0] + " (" + col[1] + ")";
@@ -1001,7 +1012,7 @@ function showTop10(str) {
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=3>Top 10 Airlines</th></tr>";
     var rows = airlines.split(":");
-    for (r in rows) {
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count, apid
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td style='text-align: right'>" + col[1] + "</td>";
@@ -1010,9 +1021,9 @@ function showTop10(str) {
     bigtable += table + "</td><td style=\"vertical-align: top\">";
     
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3>Top 10 Planes</th></tr>"
-      var rows = planes.split(":");
-    for (r in rows) {
+    table += "<tr><th colspan=3>Top 10 Planes</th></tr>";
+    var rows = planes.split(":");
+    for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count
       table += "<tr><td>" + col[0] + "</td><td style='text-align: right'>" + col[1] + "</td>";
@@ -1041,8 +1052,9 @@ function updateCodes(str) {
     select.options.length = lines.length - 2; // redimension select
     select.selectedIndex = 0;
 
-    for(l in lines) {
-      if(l == 0 || l == lines.length - 1) continue; // already processed
+    // skip line 0
+    for (l = 1; l < lines.length; l++) {
+      if(l == lines.length - 1) continue; // already processed
       var col = lines[l].split(";");
       var name = col[1];
       if (name.length > INPUT_MAXLEN) {
@@ -1101,7 +1113,7 @@ function editFlight(str, param) {
     return;
   }
 
-  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16
+  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18
   var col = str.split("\t");
   var form = document.forms['inputform'];
   form.src_ap_code.value = col[0];
@@ -1137,7 +1149,8 @@ function editFlight(str, param) {
     }
   }
   fid = col[12]; //stored until flight is saved or deleted
-  plane = col[13]; 
+  $('plane').value = col[13]; 
+  $('plane_id').value = col[18];
   form.registration.value = col[14];
   alid = col[15];
   form.note.value = col[16];
@@ -1187,8 +1200,8 @@ function preInputFlight(str, param) {
   var tripselect = createSelect("trips", "-", filter_trid, trips.split("\t"), INPUT_MAXLEN, "markAsChanged", 8);
   document.getElementById("input_trip_select").innerHTML = tripselect;
 
-  var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, "markAsChanged", 9);
-  document.getElementById("input_plane_select").innerHTML = planeselect;
+  //var planeselect = createSelect("plane", "-", 0, planes.split("\t"), INPUT_MAXLEN, "markAsChanged", 9);
+  //document.getElementById("input_plane_select").innerHTML = planeselect;
 
   // An existing entry will already have plane, airline, trip selected
   if(param == "EDIT" || param == "COPY") {
@@ -1212,13 +1225,13 @@ function flightSelectBoxes() {
   codeToAirport("DST", document.forms['inputform'].dst_apid.value, true);
   
   var select = inputform.plane;
-  select.selectedIndex = 0;
+  /*select.selectedIndex = 0;
   for(index = 0; index < select.length; index++) {
     if(select[index].text == plane) {
       select.selectedIndex = index;
       break;
     }
-  }
+    }*/
   select = inputform.airline;
   for(index = 0; index < select.length; index++) {
     if(select[index].value.split(":")[0] == alid) {
@@ -1337,32 +1350,10 @@ function addNewAirline(data, name) {
 }
 
 //
-// Handle the "add new plane" button in input form
+// Inject plid into hidden plane_id field after new plane type is selected
 //
-function inputNewPlane() {
-  document.getElementById("input_status").innerHTML = "";
-  document.getElementById("input_plane_add").style.display = 'none';
-  document.getElementById("input_plane_unadd").style.display = 'inline';
-  document.forms['inputform'].newPlane.focus();
-}
-
-function enterNewPlane() {
-  var newplane = document.forms['inputform'].newPlane.value;
-  cancelNewPlane(false); // don't clear status
-  var inputform = document.forms['inputform'];
-  inputform.plane.selectedIndex = 0;
-  inputform.plane[0].value = "NEW:" + newplane;
-  inputform.plane[0].text = newplane;
-}
-
-// If really=true, then print "Cancelled"
-function cancelNewPlane(really) {
-  document.forms['inputform'].newPlane.value = "";
-  document.getElementById("input_plane_add").style.display = 'inline';
-  document.getElementById("input_plane_unadd").style.display = 'none';
-  if(really) {
-    document.getElementById("input_status").innerHTML = "<B>Adding plane cancelled.</B>";
-  }
+function getSelectedId(text, li) {
+  $('plane_id').value=li.id;
 }
 
 //
@@ -1628,7 +1619,7 @@ function swapAirports(manual) {
 function selectAirport(apid) {
   var markers = airportLayer.markers;
   var found = false;
-  for(m in markers) {
+  for(m = 0; m < markers.length; m++) {
     if(markers[m].apid == apid) {
       markers[m].events.triggerEvent("mousedown");
       found = true;
@@ -1831,6 +1822,8 @@ function clearInput(hard) {
   form.number.value = "";
   form.airline_code.value = "";
   form.seat.value = "";
+  form.plane.value = "";
+  form.plane_id.value = "";
   form.registration.value = "";
   form.note.value = "";
   if(input_srcmarker) {
