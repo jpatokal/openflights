@@ -104,10 +104,10 @@ printf ("\n");
 
 // North, South, West, East
 // 0 desc, 1 iata, 2 icao, 3 apid, 4 x, 5 y
-$sql = "(SELECT 'Northernmost',a.iata,a.icao,a.apid,x,y FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . " ORDER BY y DESC LIMIT 1) UNION " .
-  "(SELECT 'Southernmost',a.iata,a.icao,a.apid,x,y FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . " ORDER BY y ASC LIMIT 1) UNION " .
-  "(SELECT 'Westernmost',a.iata,a.icao,a.apid,x,y FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . " ORDER BY x ASC LIMIT 1) UNION " .
-  "(SELECT 'Easternmost',a.iata,a.icao,a.apid,x,y FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . " ORDER BY x DESC LIMIT 1)";
+$sql = "(SELECT 'Northernmost',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MAX(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
+  "(SELECT 'Southernmost',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MIN(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
+  "(SELECT 'Westernmost',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MIN(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
+  "(SELECT 'Easternmost',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . "))";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
