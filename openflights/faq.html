@@ -113,7 +113,7 @@
 
 	    <h4>Why aren't the flight paths smoothly curved, especially up near the poles?</h4>
 	    
-	    <p>That would be hard to draw fast, so we cheat and chop them up, one segment per every 1000 mi.  Flights under 2000 mi are shown as straight lines.</p>
+	    <p>That would be hard to draw fast, so we cheat and chop them up, one segment per every 500 mi.  Flights under 1000 mi are shown as straight lines.</p>
 
 	    <p>The distances for the statistics, though, are calculated correctly as <a href="http://en.wikipedia.org/en/Great-circle_distance">great circle distances</a>.</p>
 	    
@@ -123,9 +123,11 @@
 	    
 	    <p>Letting users punch in actual times and calculating actual durations is a <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=2049976&group_id=235620&atid=1097180">pending feature</a>, but time zones make this harder than you'd think.  However, you can already manually overwrite the flight time if you wish.</p>
 
-	    <h4>Why is my favorite airport missing?</h4>
+	    <h4>Why is my favorite airport/heliport/patch of grass missing?</h4>
 
 	    <p>You can enter it yourself, just click on <input type="button" value="Add new airport" align="middle"> while creating a new flight.  But try a search in the DAFIF database with the airport's name or ICAO code first; if you find it, click <input type="button" value="Load" align="middle"> to load its data, add the name and IATA code (the two missing parts) and then <input type="button" value="Save as new" align="middle">.</p>
+
+	    <p>You can also enter heliports, landing strips and other informal airports which do not have IATA or ICAO codes, just leave the IATA/ICAO fields blank and click "OK" when warned about it.</p>
 
 	    <p>Oh, you asked <i>why</i>?  Well, the reason is that publicly available airport data <i>with coordinates</i> is astonishingly bad.  (For example, the best source file we could find for IATA codes still thinks the Soviet Union exists.)  Merging and fixing up the limited information out there into something usable has been a major headache, and we need your help to find the problem areas so we can correct them.</p>
 
@@ -133,9 +135,9 @@
 
 	    <p>You don't have to use the calendar widget, just enter the date manually.</p>
 
-	    <h4>How do I delete an airport/airline/plane/trip that I no longer need?</h4>
+	    <h4>How do I delete an airport/airline/trip that I no longer need?</h4>
 
-	    <p>For airports, airlines and planes, just remove all flights using it, and it will stop appearing.</p>
+	    <p>For airports and airlines, just remove all flights using it, and it will stop appearing.</p>
 
 	    <p>To delete a trip, load it in the Trip editor and select Delete.  Any flights still in that trip will be set as tripless.</p>
 
@@ -147,6 +149,8 @@
 	    <h4>Something went wrong when I imported from FlightMemory!</h4>
 
 	    <p>This most often happens with airlines, since FlightMemory and OpenFlights do not render all company names in the same way.  OpenFlights also uses current airline data, not historical, so eg. SN123 will be mapped to "Brussels Airlines", not "Sabena".  If you had <i>lots</i> of flights get wrongly assigned, please drop us a line and we'll try to sort it out, but for only a few flights, it's easiest to repair by hand.</p>
+
+	    <p>The other common source of headaches is unofficial airports like heliports and landing strips, which do not have IATA/ICAO codes.  These have to be entered manually into OpenFlights using "Add new airport" <i>before</i> you can import.  Note that the matching is done based on the <i>first word of the airport name</i>, so make sure the one in your data matches the one you enter exactly.</p>
 
 	    <p>If anything else goes wrong during importing, though, it's a bug and we'd like to know about it.  Drop us a line, tell us exactly what went wrong, and (this is important) <i>give the "Tmpfile" value from the top of the import page</i> so we can replicate it.</p>
 
