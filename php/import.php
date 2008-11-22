@@ -42,8 +42,20 @@ function fm_strip_liste($value) {
   }
 }
   
-function fm_check_airport($db, $code) {
-  $sql = "select apid,city,country from airports where iata='" . mysql_real_escape_string($code) . "'";
+function fm_check_airport($db, $code, $name) {
+  switch(strlen($code)) {
+  case 3:
+    $sql = "select apid,city,country from airports where iata='" . mysql_real_escape_string($code) . "'";
+    break;
+
+  case 4:
+    $sql = "select apid,city,country from airports where icao='" . mysql_real_escape_string($code) . "'";
+    break;
+
+  default:
+    $sql = "select apid,city,country from airports where name like '" . mysql_real_escape_string($name) . "%'";
+    break;
+  }
   $result = mysql_query($sql, $db);
   switch(mysql_num_rows($result)) {
 
@@ -156,8 +168,16 @@ foreach($rows as $row) {
 
   $src_iata = $cols[2]->plaintext;
   $dst_iata = $cols[4]->plaintext;
-  list($src_apid, $src_iata, $src_bgcolor) = fm_check_airport($db, $src_iata);
-  list($dst_apid, $dst_iata, $dst_bgcolor) = fm_check_airport($db, $dst_iata);
+
+  // <td class="liste"><b>Country</b><br>Town<br>Airport Blah Blah</td>
+  //                                             ^^^^^^^ target
+  $src_names = end(explode('<br>', $cols[3]));
+  $src_name = reset(preg_split('/[ \/<]/', $src_names));
+  $dst_names = end(explode('<br>', $cols[5]));
+  $dst_name = reset(preg_split('/[ \/<]/', $dst_names));
+
+  list($src_apid, $src_iata, $src_bgcolor) = fm_check_airport($db, $src_iata, $src_name);
+  list($dst_apid, $dst_iata, $dst_bgcolor) = fm_check_airport($db, $dst_iata, $dst_name);
   if(!$src_apid || !$dst_apid) {
     $status = "disabled";
     $fatal = "airport";
@@ -264,6 +284,9 @@ foreach($rows as $row) {
     $seatpos = "";
   }
   $seatclass = substr($seatdata[1], 7);
+  if($seatclass == "") {
+    $seatclass = "Economy";
+  }
   $seattype = $seatdata[2];
   $seatreason = substr($seatdata[3], 0, strpos($seatdata[3], '<'));
   

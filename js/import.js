@@ -1,8 +1,6 @@
 /*
- * Create new trips and modify existing ones
+ * Import trips into database
  */
-var URL_IMPORT = "/php/import_fm.php";
-
 function xmlhttpPost(strURL, type) {
   var xmlHttpReq = false;
   var self = this;
@@ -72,13 +70,8 @@ function doImport() {
       " PLANE " + plane + " REG " + reg + "<br>" +
       " SEAT " + seat + " SEATTYPE " + seattype + " CLASS " + myClass + " TYPE " + type +
       " REASON" + reason + " COM " + comment + "<br><br>";
-
-  document.getElementById("miniresultbox").innerHTML = output;  
-
   }
-
   document.getElementById("miniresultbox").innerHTML = output;  
-  //  xmlhttpPost(URL_IMPORT);
 }
 
 function showError(err) {
