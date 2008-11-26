@@ -139,7 +139,7 @@ if($action == "Upload") {
 $rows = $table->find('tr[valign=top]');
 $count = 0;
 foreach($rows as $row) {
-  $cols = $row->find('td[class=liste],td[class=liste_gross]');
+  $cols = $row->find('td[class=liste],td[class=liste_gross],th[class=liste_gross]');
 
   $id = $cols[0]->plaintext;
 
