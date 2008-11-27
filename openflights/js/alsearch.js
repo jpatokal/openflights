@@ -197,7 +197,7 @@ function searchResult(str) {
     }
 
     // Meat of the table
-    // 0 iata, 1 icao, 2 alid, 3 ap-name, 4 alias, 5 country, 6 callsign, 7 printable-name, 8 uid
+    // 0 iata, 1 icao, 2 alid, 3 al-name, 4 alias, 5 country, 6 callsign, 7 printable-name, 8 uid
     if(a % 2 == 1) {
       bgcolor = "#fff";
     } else {
@@ -208,9 +208,8 @@ function searchResult(str) {
       disclaimer = "<br><b>Note</b>: Airlines in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col[7] + "</td>";
-    // id = alid:iata
-    id = col[2] + ":" + (col[0] != "" ? col[0] : col[1]);
-    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirline(\"" + id + "\",\"" + escape(col[7]) + "\")'></td>";
+    // id = alid
+    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirline(\"" + col[2] + "\",\"" + escape(col[7]) + "\")'></td>";
     table += "</tr>";
   }
   table += "</table>";
@@ -228,15 +227,12 @@ function recordResult(str) {
     document.getElementById("miniresultbox").innerHTML = col[2];
 
     // Select newly minted airline and return to main
+    // 1;alid
     var form = document.forms['searchform'];
     var iata = form.iata.value;
-    var country = form.country[form.country.selectedIndex].text;
-      
     var code = (iata != "" ? iata : form.icao.value);
-    // data = alid:code
-    data = col[1] + ":" + code;
     name = form.airline.value + " (" + code + ")";
-    selectAirline(data, name);
+    selectAirline(col[1], name);
   }
 }
 

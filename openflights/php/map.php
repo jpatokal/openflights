@@ -98,7 +98,7 @@ if($year && $year != "0") {
 $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights where uid=" . $uid . " " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf("%s,%s,%s,%s\n", $row["count"], $row["distance"], $row["duration"], $public);
+  printf("%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public);
 }
 
 // List of all flights (unique by airport pair)
@@ -111,7 +111,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   } else {
     printf(":");
   }  
-  printf ("%s,%s,%s,%s,%s,%s,%s,%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7]);
+  printf ("%s;%s;%s;%s;%s;%s;%s;%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7]);
 }
 printf ("\n");
 
@@ -126,7 +126,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     printf(":");
   }
   $code = format_apcode($row);
-  printf ("%s,%s,%s,%s,%s,%s,%s,%s", $row["apid"], $row["x"], $row["y"], $row["name"], $code, $row["city"], $row["country"], $row["visits"]);
+  printf ("%s;%s;%s;%s;%s;%s;%s;%s;%s", $row["apid"], $row["x"], $row["y"], $row["name"], $code, $row["city"], $row["country"], $row["visits"], format_airport($row));
 }
 
 // When running for the first time, load up possible filter settings for this user

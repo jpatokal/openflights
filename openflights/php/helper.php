@@ -44,10 +44,15 @@ function format_airport($row) {
   // Format name only for OpenFlights, GAD DBs
   if(! $code) {
     // Foobar-Foobar Intl into Foobar Intl
-    if(substr($name, 0, strlen($city)) == $city) {
-      $name = " " . substr($name, strlen($city) + 1);
+    // Foo-bar-Foo Bar Intl into Foo Bar Intl
+    if(strncasecmp($name, strtr($city, "-", " "), strlen($city)) == 0) {
+      $city = "";
     } else {
       $city = $city . "-";
+    }
+    if(strlen($city . $name) > 30) {
+      $name = trim(substr($city . $name, 0, 29)) . ".";
+      $city = "";
     }
   }
 
