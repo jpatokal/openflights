@@ -159,11 +159,15 @@ input:focus, textarea:focus { background-color: LightYellow; }
 
 /* Autocomplete styles */
 
-#search, ul.autocomplete { padding: 3px; width: 180px; border: 1px solid #999; }
-ul.autocomplete { list-style-type: none; font-family: verdana; arial, sans-serif; margin: 1px 0 0 0; background: #FFF; }
-ul.autocomplete { margin: 0 0 0 0; cursor: default; color: black; }
+ul.autocomplete { padding: 3px; width: 350px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }
+ul.autocomplete2 { padding: 3px; width: 180px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }
 li.autocomplete:hover { background: #C6DEFF; }
 li.selected { background: #C6DEFF; }
+
+/* Textbox hinting */
+
+input.hintTextbox { color: #888; }
+input.hintTextboxActive { color: #000; }
 
 /* OpenLayers default stuff starts here */
 

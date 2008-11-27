@@ -1,10 +1,14 @@
 <?php
+header("Content-type: text/html; charset=iso-8859-1");
+
 session_start();
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
   printf("Not logged in, aborting");
   exit;
 }
+
+include 'helper.php';
 
 $src_date = $HTTP_POST_VARS["src_date"];
 $duration = $HTTP_POST_VARS["duration"];
@@ -17,8 +21,7 @@ $seat_type = $HTTP_POST_VARS["type"];
 $class = $HTTP_POST_VARS["class"];
 $reason = $HTTP_POST_VARS["reason"];
 $registration = $HTTP_POST_VARS["registration"];
-$plid = $HTTP_POST_VARS["plid"];
-$alid = $HTTP_POST_VARS["alid"];
+$alid = trim($HTTP_POST_VARS["alid"]); // IE adds some whitespace crud to this!?
 $trid = $HTTP_POST_VARS["trid"];
 $fid = $HTTP_POST_VARS["fid"];
 $note = $HTTP_POST_VARS["note"];
@@ -26,22 +29,29 @@ $param = $HTTP_POST_VARS["param"];
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
+$json = array();
 
-// If $plid is of form "NEW:xxx", we add a new plane type called xxx and read its auto-assigned plid
-if(strstr($plid, "NEW:")) {
-  $newplane = substr($plid, 4);
-  
-  $sql = "SELECT * FROM planes WHERE name='" . mysql_real_escape_string($newplane) . "' limit 1";
-  $result = mysql_query($sql, $db);
-  if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    // Found it
-    $plid = $row["plid"];
+// Validate user-entered information
+if($param == "ADD" || $param == "EDIT") {
+  $plane = $HTTP_POST_VARS["plane"];
+
+  // New planes can be created on the fly
+  if($plane != "") {
+    $sql = "SELECT plid FROM planes WHERE name='" . mysql_real_escape_string($plane) . "' limit 1";
+    $result = mysql_query($sql, $db);
+    if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      // Match found, take its plid
+      $plid = $row["plid"];
+    } else {
+      // No match, create new entry
+      $sql = "INSERT INTO planes(name, public) VALUES('" . mysql_real_escape_string($plane) . "', 'N')";
+      mysql_query($sql, $db) or die('0;Adding new plane failed');
+      $plid = mysql_insert_id();
+    }
   } else {
-    $sql = "INSERT INTO planes(name, public) VALUES('" . mysql_real_escape_string($newplane) . "', 'N')";
-    mysql_query($sql, $db) or die('0;Adding new plane failed');
-    $plid = mysql_insert_id();
+    $plid = "NULL";
   }
- }
+}
 
 // Hack to record X-Y and Y-X flights as same in DB
 if($src_apid > $dst_apid) {
@@ -73,28 +83,24 @@ switch($param) {
    die('0;Unknown operation ' . $param);
  }
 
-mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql . ', error ' . mysql_error());
+mysql_query($sql, $db) or die('0;Database error when executing query ' . $sql);
 
 switch($param) {
  case "DELETE":
-   printf("100;Flight deleted.");
+   $code = 100;
+   $msg = "Flight deleted.";
    break;
 
  case "ADD":
-   if($newplane == "OK") {
-     printf("11;Flight and plane added.");
-   } else {
-     printf("1;Flight added.");
-   }
+   $code = 1;
+   $msg = "Flight added.";
    break;
 
  case "EDIT":
-   if($newplane == "OK") {
-     printf("12;Flight and plane edited.");
-   } else {
-     printf("2;Flight edited.");
-   }
+   $code = 2;
+   $msg = "Flight edited.";
    break;
 }
 
+print $code . ";" . $msg;
 ?>

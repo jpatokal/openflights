@@ -28,7 +28,7 @@ function loadFilter($db, $uid, $trid) {
   printf ("\n");
   
   // List of all airlines
-  $sql = "SELECT DISTINCT a.alid, name FROM airlines as a, flights as f WHERE f.uid=" . $uid . $filter . " AND a.alid=f.alid ORDER BY name";
+  $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, flights as f WHERE f.uid=" . $uid . $filter . " AND a.alid=f.alid ORDER BY name";
   $result = mysql_query($sql, $db);
   $first = true;
   while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

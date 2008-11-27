@@ -6,90 +6,69 @@ include 'helper.php';
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
-$src = $HTTP_POST_VARS["src"];
-if(!$src) {
-  $src = $HTTP_GET_VARS["src"];
-}
-$dst = $HTTP_POST_VARS["dst"];
-if(!$dst) {
-  $dst = $HTTP_GET_VARS["dst"];
-}
-$airline = $HTTP_POST_VARS["airline"];
-if(!$airline) {
-  $airline = $HTTP_GET_VARS["airline"];
+$code = $HTTP_POST_VARS["code"];
+if(!$code) $code = $HTTP_GET_VARS["code"];
+$type = $HTTP_POST_VARS["type"];
+if(!$type) $type = $HTTP_GET_VARS["type"];
+
+$error = false;
+$len = strlen($code);
+
+switch($type) {
+ case "AIRLINE":
+   //
+   // Map an airline code (2-digit IATA or 3-digit ICAO) to an airline in the DB
+   //
+   switch($len) {
+   case 2: // IATA
+     $sql = "SELECT alid,name,iata,icao FROM airlines WHERE iata='" . mysql_real_escape_string($code) . "' LIMIT 1";
+     break;
+     
+   case 3: // ICAO
+     $sql = "SELECT alid,name,iata,icao FROM airlines WHERE icao='" . mysql_real_escape_string($code) . "' LIMIT 1";
+     break;
+     
+   default:
+     // This should never be called with anything other than an IATA/ICAO id
+     die("0;0");
+   }
+   break;
+
+ case "src_ap":
+ case "dst_ap":
+   //
+   // Map an airport code (3-digit IATA or 4-digit ICAO) to an airline in the DB
+   //
+   $sql = "SELECT apid,x,y,name,city,country,iata,icao FROM airports WHERE ";
+   switch($len) {
+   case 3: // IATA
+     $sql = $sql . "iata='" . mysql_real_escape_string($code) . "' LIMIT 1";
+     break;
+     
+   case 4:
+     $sql = $sql . "icao='" . mysql_real_escape_string($code) . "' LIMIT 1";
+     break;
+     
+   default:
+     // This should never be called...
+     die("0;0");
+   }
 }
 
-if($src) getAirport("SRC", $src);
-if($dst) getAirport("DST", $dst);
-if($airline) getAirline("AIRLINE", $airline);
+$result = mysql_query($sql, $db);
+if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  switch($type) {
+  case "AIRLINE":
+    printf ("%s;%s", $row["alid"], format_airline($row));
+    break;
 
-function getAirport($id, $code) {
-  global $db;
-  $error = false;
-  printf ("%s\n", $id);
-  $len = strlen($code);
-  $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata!='' AND iata != '" . mysql_real_escape_string($code) . "' AND city LIKE '" . mysql_real_escape_string($code) . "%' ORDER BY city,name";
-  if($len == 3) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
-  } else if ($len == 4) {
-    $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE icao='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col,city,name";
-  } else if ($len < 3) {
-    $error = true;
-    printf ("0;Enter airport code or name\n");
+  case "src_ap":
+  case "dst_ap":
+    printf ("%s:%s:%s:%s;%s", format_apcode($row), $row["apid"], $row["x"], $row["y"], format_airport($row));
+    break;
   }
-  if(!$error) {
-    $result = mysql_query($sql, $db);
-    $found = false;
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      $code = $row["iata"];
-      if($code == "") {
-	$code = $row["icao"];
-      }
-      printf ("%s:%s:%s:%s;%s\n", $code, $row["apid"], $row["x"], $row["y"], format_airport($row));
-      $found = true;
-    }
-    if(! $found) {
-      printf ("0;No matching airport found\n");
-    }
-  }
-}
-
-function getAirline($id, $code) {
-  printf ("%s\n", $id);
-  global $db;
-  $error = false;
-  $len = strlen($code);
-
-  // For short strings, filter out non-IATA airlines
-  if($len <= 3) {
-    $ext = "iata!='' AND";
-  } else {
-    $ext = "";
-  }
-  $sql = "SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE " . $ext . " name LIKE '" . mysql_real_escape_string($code) . "%' OR alias LIKE '" . mysql_real_escape_string($code) . "%' ORDER BY name";
-  if($len == 2) {
-    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col, name";
-  } else if ($len == 3) {
-    $sql = "SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='" . mysql_real_escape_string($code) . "' UNION (" . $sql . ") ORDER BY sort_col, name";
-  } else if ($len < 2) {
-    printf ("0;Enter airline code or name\n");
-    return;
-  }
-  if(!$error) {
-    $result = mysql_query($sql, $db);
-    $found = false;
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      $code = $row["iata"];
-      if(!$code || $code == "") {
-	$code = $row["icao"];
-      }
-      printf ("%s;%s\n", $row["alid"] . ":" . $code, $row["name"] . " (" . $code . ")");
-      $found = true;
-    } 
-    if(! $found) {
-      printf ("0;No matching airline found\n");
-    }
-  }
+} else {
+  printf ("0;0");
 }
 
 ?>

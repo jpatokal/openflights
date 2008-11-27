@@ -17,7 +17,8 @@
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="/js/effects.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081121"></script>
+    <script type="text/javascript" src="/js/hint-textbox.js"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081127"></script>
   </head>
 
   <body>
@@ -36,7 +37,7 @@
 
 	    <div id="news">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 21 Nov 2008: <a href="/about.html#CHANGES">Plane editor now uses autocomplete, "Analyze" now faster.<br>Please hit <b>CTRL-F5</b> to ensure that latest version is loaded!</a>
+	      <B>News</b>: 27 Nov 2008: <a href="/about.html#CHANGES">Autocompletion for airports and airlines implemented.<br>Please hit <b>CTRL-F5</b> to ensure that latest version is loaded!</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -112,7 +113,7 @@
 
 	      <div id="controlpanel" style="display: none">
 		<br><b>Control panel</b><br>
-		<input type="button" value="New flight" align="middle" onclick='JavaScript:clearInput(true)'>
+		<input type="button" value="New flight" align="middle" onclick='JavaScript:preInputFlight("ADD")'>
 		<input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
 		<input type="button" value="Import" align="middle" onclick='JavaScript:openImport()'>
 		<input type="button" value="Settings" align="middle" onclick='JavaScript:settings()'>
@@ -142,63 +143,40 @@
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle">Add new flight</span>
     <span id="editflighttitle" style="display: none">Edit flight</span>
-    <small>&mdash; Fields in <font color="red">red</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
+    <small>&mdash; Fields in <font color="blue">blue</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
 <p></p>
 
 <form id='inputform'>
 <table>
 <tr>
-  <td><font color="red">Date</font></td>
+  <td><font color="blue">Date</font></td>
   <td colspan=2><input type="text" name="src_date" size="12" tabindex="1" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event); markAsChanged();" />
-    Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();"/>
-    Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();"/> mi&nbsp;&nbsp;
+    Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();" value="-"/>
+    Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();" value="-"/> mi&nbsp;&nbsp;
   </td>
 
   <td>Trip<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
   <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="Edit this trip" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td>
 
 </tr><tr>
-  <td><font color="red">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><input type="text" name="src_ap_code" size="11" tabindex="3" onChange='JavaScript:codeToAirport("SRC")'/>
-      <input type="hidden" name="src_apid"/>
-      <img src="/img/icon_plane-src.png" title="&lt; Enter city name or airport code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirport("SRC")'/>
-      <span id="input_src_ap_select"></span></td>
-  <td rowspan=2 valign=middle>
-      <span id="src_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span><br>
-      <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="float: left; margin-right: 10px"/><br>
-      <span id="dst_ap_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span>
+  <td><font color="blue">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="3" onChange='JavaScript:airportCodeToAirport("src_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="src_apAC"></div>
+      <input type="hidden" name="src_apid" id="src_apid"/></td>
+  <td rowspan=2 valign=middle align=left>
+    <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("SRC")'/ style="margin-left: 5px"/> <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="margin-right: 10px"/><br>
+    <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("DST")'/ style="margin-left: 5px"/>
   </td>
 
   <td>Plane</td>
-  <td><input style="width: 180px" type="text" name="plane" id="plane" tabindex="9" onChange="JavaScript:markAsChanged();"><div id="planeAC"></div><input type="hidden" id="plane_id" name="plane_id" />
-      Reg. <input type="text" name="registration" size="8" tabindex="10" onChange="JavaScript:markAsChanged();"/>
+  <td><input style="width: 180px" type="text" name="plane" id="plane" tabindex="11" onChange="JavaScript:markAsChanged();" class="hintTextbox" value="Enter plane model"><div id="planeAC"></div><input type="hidden" id="plane_id" name="plane_id" />
+      Reg. <input type="text" name="registration" size="8" tabindex="12" onChange="JavaScript:markAsChanged();"/>
   </td>
 
 </tr><tr>
-  <td><font color="red">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><input type="text" name="dst_ap_code" size="11" tabindex="4" onChange='JavaScript:codeToAirport("DST")'/>
-      <input type="hidden" name="dst_apid"/>
-      <img src="/img/icon_plane-dst.png" title="&lt; Enter city name or airport code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirport("DST")'/>
-      <span id="input_dst_ap_select"></span></td>
+  <td><font color="blue">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="4" onChange='JavaScript:airportCodeToAirport("dst_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="dst_apAC"></div>
+      <input type="hidden" name="dst_apid" id="dst_apid"/></td>
 
-  <td>Seat</td>
-
-  <td><input type="text" name="seat" size="5" tabindex="11" onChange="JavaScript:markAsChanged();"/>
-      Type
-      <select name="seat_type" tabindex="12" onChange="JavaScript:markAsChanged();">
-        <option value="-">-</option>
-        <option value="W">Window</option>
-        <option value="A">Aisle</option>
-        <option value="M">Middle</option>
-      </select>
-  </td>
-
-</tr><tr>
-  <td>Flight&nbsp;#&nbsp;</td>
-  <td><input type="text" name="number" size="7" value="" tabindex="5" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
-  </td>
-
-  <td></td>
   <td>Class</td>
   <td><input type="radio" name="myClass" value="Y" onChange="JavaScript:markAsChanged();" CHECKED>Economy
       <input type="radio" name="myClass" value="P" onChange="JavaScript:markAsChanged();">Premium Eco.
@@ -207,40 +185,48 @@
   </td>
 
 </tr><tr>
-  <td><font color="red">Airline</font><sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
-  <td><input type="text" name="airline_code" size="11" tabindex="6" value="" onChange='JavaScript:flightNumberToAirline("AIRLINE")'/> 
-      <img src="/img/icon_airline.png" title="&lt; Enter airline name or code, or click to search." height=17 width=17 onclick='JavaScript:popNewAirline()'/>
-
-      <span id="input_airline_select"></span>
-      <span id="airline_ajax" style="visibility: hidden;"><img src="/img/ajax-wait-small.gif" height=16 width=16/></span>
+  <td>Flight&nbsp;#&nbsp;</td>
+  <td colspan=2><input type="text" name="number" size="7" value="" tabindex="5" onChange='JavaScript:flightNumberToAirline("NUMBER")'/> Seat <input type="text" name="seat" size="5" tabindex="6" onChange="JavaScript:markAsChanged();"/>
+      Type
+      <select name="seat_type" tabindex="7" onChange="JavaScript:markAsChanged();">
+        <option value="-">-</option>
+        <option value="W">Window</option>
+        <option value="A">Aisle</option>
+        <option value="M">Middle</option>
+      </select>
   </td>
 
-  <td></td>
   <td>Reason&nbsp;</td>
   <td><input type="radio" name="reason" value="B" onChange="JavaScript:markAsChanged();" CHECKED>Business
       <input type="radio" name="reason" value="L" onChange="JavaScript:markAsChanged();">Leisure
       <input type="radio" name="reason" value="C" onChange="JavaScript:markAsChanged();">Crew
       <input type="radio" name="reason" value="O" onChange="JavaScript:markAsChanged();">Other
   </td>
+
+</tr><tr>
+  <td><font color="blue">Airline</font><sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
+  <td><input type="text" name="airline" id="airline" size="60" tabindex="8" onChange='JavaScript:flightNumberToAirline("AIRLINE")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
+      <input type="hidden" name="airline_id" id="airline_id"/></td>
+  <td><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline()'/ style="margin-left: 5px"/></td>
+
+  <td colspan=2><span id="input_status"></span></td>
+
 </tr><tr>
   <td>Note</td>
-  <td><input type="text" name="note" size="50" tabindex="7" onChange="JavaScript:markAsChanged();"></td>
-  <td></td>
+  <td colspan=2><input type="text" name="note" size="60" tabindex="9" onChange="JavaScript:markAsChanged();"></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
-      <input id="b_add" value="Add" type="button" tabindex="13" onclick='JavaScript:submitFlight(false);'>
-      <input id="b_addclear" value="Add and clear" type="button" tabindex="14" onclick='JavaScript:submitFlight(true);'>
-      <input id="b_clear" value="Clear" type="button" tabindex="15" onclick='JavaScript:clearInput(false)'>
-      <input id="b_exit" value="Exit" type="button" tabindex="16" onclick='JavaScript:closeInput()'>
+      <input id="b_add" value="Add" type="button" tabindex="20" onclick='JavaScript:submitFlight();'>
+      <input id="b_clear" value="Clear" type="button" tabindex="21" onclick='JavaScript:clearInput(false)'>
+      <input id="b_exit" value="Exit" type="button" tabindex="23" onclick='JavaScript:closeInput()'>
     </span>
     <span id="editflightbuttons" style="display: none">
-      <input id="b_save" value="Save changes" type="button" tabindex="13" onclick='JavaScript:saveFlight()'>
-      <input id="b_delete" value="Delete" type="button" tabindex="14" onclick='JavaScript:deleteFlight()'>
-      <input id="b_cancel" value="Exit" type="button" tabindex="15" onclick='JavaScript:closeInput()'>
-      <input id="b_prev" value="<" type="button" tabindex="16" onclick='JavaScript:editPointer(-1)'>
-      <input id="b_next" value="&gt;" type="button" tabindex="17" onclick='JavaScript:editPointer(1)'>
+      <input id="b_save" value="Save changes" type="button" tabindex="20" onclick='JavaScript:saveFlight()'>
+      <input id="b_delete" value="Delete" type="button" tabindex="21" onclick='JavaScript:deleteFlight()'>
+      <input id="b_cancel" value="Exit" type="button" tabindex="22" onclick='JavaScript:closeInput()'>
+      <input id="b_prev" value="<" type="button" tabindex="23" onclick='JavaScript:editPointer(-1)'>
+      <input id="b_next" value="&gt;" type="button" tabindex="24" onclick='JavaScript:editPointer(1)'>
     </span>
-    <span id="input_status"></span>
   </td>
 </tr>
 </table>
