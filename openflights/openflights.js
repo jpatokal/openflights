@@ -641,8 +641,8 @@ function updateFilter(str) {
 function updateTitle(str) {
   var form = document.forms['filterform'];
   var text = "";
-  var airline = form.Airlines[form.Airlines.selectedIndex].text;
-  var trip = form.Trips[form.Trips.selectedIndex].text;
+  var airline = form.Airlines[form.Airlines.selectedIndex].value.split(";")[1];
+  var trip = form.Trips[form.Trips.selectedIndex].value.split(";")[1];
   var year = form.Years[form.Years.selectedIndex].text;
 
   // Logged in users
@@ -711,8 +711,11 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   if(tabIndex) {
     select += " tabindex=\"" + tabIndex + "\"";
   }
-  select += "><option value=\"0\">" + allopts + "</option>";
-
+  if(selectName == "Years") {
+    select += "><option value=\"0\">" + allopts + "</option>";
+  } else {
+    select += "><option value=\"0;" + allopts + "\">" + allopts + "</option>";
+  }
   // No data?  Return an empty element
   if(! rows || rows == "") {
     return select + "</select>";
