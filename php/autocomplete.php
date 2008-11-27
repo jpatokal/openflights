@@ -82,7 +82,7 @@ if($query) {
   if(strlen($query) <= 3) {
     $ext = "iata!='' AND";
   } else {
-    $ext = "";
+    $ext = "icao!='' AND";
   }
   $sql = sprintf("SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE %s name LIKE '%s%%' OR alias LIKE '%s%%'",
 		 $ext, $query, $query);
