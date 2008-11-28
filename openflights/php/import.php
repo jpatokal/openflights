@@ -193,13 +193,13 @@ foreach($rows as $row) {
 
   $flight = explode('<br>', $cols[7]);
   $airline = fm_strip_liste($flight[0]);
+  $number = str_replace('</td>', '', $flight[1]);
+  $code = substr($number, 0, 2);
   if($airline == "") {
     $airline = "Private flight<br><small>(was: No airline)</small>";
     $airline_bgcolor = "#ddf";
     $alid = 1;
   } else {
-    $number = str_replace('</td>', '', $flight[1]);
-    $code = substr($number, 0, 2);
     // is alphanumeric, but not all numeric? then it's probably an airline code
     if(ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code)) {
       $sql = sprintf("select name,alias,alid from airlines where iata='%s' or uid = %s order by name",
