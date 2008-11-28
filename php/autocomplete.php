@@ -31,11 +31,11 @@ if($_POST['src_ap']) {
 }
 if($query) {
   if(strlen($query) <= 3) {
-    $ext = "iata!='' AND";
+    $ext = "iata!='' AND iata != '" . $query . "' AND";
   } else {
     $ext = "";
   }
-  $sql = sprintf("SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE %s iata != '%s' AND (city LIKE '%s%%'", $ext, $query, $query);
+  $sql = sprintf("SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE %s (city LIKE '%s%%'", $ext, $query);
 
   switch(strlen($query)) {
   case 3: // IATA
@@ -80,7 +80,7 @@ if($query) {
   if($limit > 1) $limit = 3;
   $query = mysql_real_escape_string($_POST['airline']);
   if(strlen($query) <= 3) {
-    $ext = "iata!='' AND";
+    $ext = "iata!='' AND icao!='" . $query . "' AND";
   } else {
     $ext = "icao!='' AND";
   }
