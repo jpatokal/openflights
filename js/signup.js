@@ -59,6 +59,7 @@ function xmlhttpPost(strURL, type) {
       document.getElementById("miniresultbox").innerHTML = "<I>Saving changes...</I>";
       break;
 
+    case 'RESET':
     case 'LOAD':
       // do nothing
       break;
@@ -73,6 +74,13 @@ function validate(type) {
   var pw1 = form.pw1.value;
   var pw2 = form.pw2.value;
   var email = form.email.value;
+
+  if(type == 'RESET') {
+    if(! confirm("This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?")) {
+      document.getElementById("miniresultbox").innerHTML = "<i>Reset cancelled.</i>";
+      return;
+    }
+  }
 
   if(type == 'NEW') {
     var name = form.username.value;
@@ -110,7 +118,7 @@ function validate(type) {
 // Load up user data
 function loadUser(str) {
   var code = str.split(";")[0];
-  if(code == "1") {
+  if(code == "3") {
     var name = str.split(";")[1];
     var email = str.split(";")[2];
     var privacy = str.split(";")[3];
@@ -137,11 +145,17 @@ function signup(str) {
   // Operation successful
   if(code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;
-    if(code == "1") { // new
+    switch(code) {
+    case "1": // new
       var form = document.forms['signupform'];
       var name = form.username.value;
       var pw = form.pw1.value;
       parent.opener.newUserLogin(name, pw);
+      break;
+
+    case "10": // reset
+      parent.opener.refresh(true);
+      break;
     }
     window.close();
   } else {
@@ -151,4 +165,10 @@ function signup(str) {
 
 function showError(err) {
   document.getElementById("miniresultbox").innerHTML = "<font color=red>" + err + "</font>";
+}
+
+// Need to duplicate this from openflights.js so that it opens in Settings window, not main, and
+// IE does not go nuts
+function backupFlights() {
+  location.href="http://" + location.host + "/php/flights.php?export=backup";
 }

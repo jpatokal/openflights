@@ -8,6 +8,12 @@ $oldpw = $HTTP_POST_VARS["oldpw"];
 $email = $HTTP_POST_VARS["email"];
 $privacy = $HTTP_POST_VARS["privacy"];
 
+// 0 error
+// 1 new
+// 2 edited
+// 3 loaded
+// 10 reset
+
 // Create new user
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
@@ -21,7 +27,7 @@ if($type == "NEW") {
   }
 
 } else {
-  // EDIT or LOAD
+  // EDIT, LOAD or RESET
   $uid = $_SESSION["uid"];
   $name = $_SESSION["name"];
   if(!$uid or empty($uid)) {
@@ -29,11 +35,18 @@ if($type == "NEW") {
     exit;
   }
 
+  if($type == "RESET") {
+    $sql = "DELETE FROM flights WHERE uid=" . $uid;
+    $result = mysql_query($sql, $db);
+    printf("10;Account reset, " . mysql_affected_rows() . " flights deleted.");
+    exit;
+  }
+
   if($type == "LOAD") {
     $sql = "SELECT * FROM users WHERE uid=" . $uid;
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result)) {
-      printf("1;%s;%s;%s", $row["name"], $row["email"], $row["public"]);
+      printf("3;%s;%s;%s", $row["name"], $row["email"], $row["public"]);
     } else {
       printf("0;Unknown error");
     }

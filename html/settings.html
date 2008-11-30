@@ -31,7 +31,16 @@
 		  <input type="radio" name="privacy" value="O">Open (all flight data shared)</td>
 	    </tr><tr>
 	      <td colspan="2">
-		<div id="contexthelp"><i>Change password (optional)</i></div>
+		<div id="contexthelp"><i>Manage flights</i></div>
+	      </td>
+	    </tr><tr>
+	      <td></td>
+	      <td>
+		<INPUT type='button' value='Backup to CSV' onClick='javascript:backupFlights()'>
+		<INPUT type='button' value='Delete all flights' onClick='javascript:validate("RESET")'></td>
+	    </tr><tr>
+	      <td colspan="2">
+		<div id="contexthelp"><i>Change password</i></div>
 	      </td>
 	    </tr><tr>
 	      <td>Current password</td>
