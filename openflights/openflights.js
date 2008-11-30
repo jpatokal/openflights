@@ -136,6 +136,9 @@ window.onload = function init(){
     			   {afterUpdateElement : getSelectedPlid});
 
   }
+
+  OpenLayers.Util.alphaHack = function() { return false; };
+
   xmlhttpPost(URL_MAP, 0, true);
  }    
 
