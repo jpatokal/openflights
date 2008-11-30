@@ -95,8 +95,8 @@ if($query) {
     $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
     break;
 
-  default:
-    $sql = sprintf("%s ORDER BY name LIMIT %s", $sql, $limit);
+  default: // sort non-IATA airlines last
+    $sql = sprintf("%s ORDER BY LENGTH(iata) DESC, name LIMIT %s", $sql, $limit);
     break;
   }
 
