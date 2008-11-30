@@ -119,19 +119,19 @@
 	    
 	    <h4>Are those flight time estimates accurate?  Can I enter my own?</h4>
 	    
-	    <p>The site currently uses a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p>
+	    <p>The site currently uses a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p><br>
 	    
 	    <p>Letting users enter start and end times and calculating the duration from there is a <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=2049976&group_id=235620&atid=1097180">pending feature</a>, but time zones make this harder than you'd think.  However, you can already manually overwrite the duration if you wish.</p>
 
 	    <h4>Why is my favorite airport/heliport/patch of grass missing?</h4>
 
-	    <p>You can enter it yourself, just click on <input type="button" value="Add new airport" align="middle"> while creating a new flight.  But try a search in the DAFIF database with the airport's name or ICAO code first; if you find it, click <input type="button" value="Load" align="middle"> to load its data, add the name and IATA code (the two missing parts) and then <input type="button" value="Save as new" align="middle">.</p>
+	    <p>If you can't find your airport right away, click on the <img src="/img/icon_plane-src.png" height=17 width=17> or <img src="/img/icon_plane-dst.png" height=17 width=17> icons to launch the advanced search.  If you're looking for a decommissioned airport, you may need to use the ICAO code instead of the IATA code.  For example, ATH points to Athens-Eleftherios Venizelos (LGAV), but you can still find Athens-Ellinikon as LGAT.  If the main OpenFlights DB doesn't have it, try a search in the DAFIF database with the airport's name or ICAO code. If you find it in DAFIF, click <input type="button" value="Load" align="middle"> to load its data, add the name and IATA code (the two missing parts) and then <input type="button" value="Save as new" align="middle"> to copy it over.</p>
 
-	    <p>You can also enter heliports, landing strips and other informal airports which do not have IATA or ICAO codes, just leave the IATA/ICAO fields blank and click "OK" when warned about it.</p>
+	    <p>If you still can't find it, you can click on <input type="button" value="Add new airport" align="middle"> while creating a new flight to add your own airport.  You can also enter heliports, landing strips and other informal airports which do not have IATA or ICAO codes, just leave the IATA/ICAO fields blank and click "OK" when warned about it.</p>
 
 	    <p>Oh, you asked <i>why</i>?  Well, the reason is that publicly available airport data <i>with coordinates</i> is astonishingly bad.  (For example, the best source file we could find for IATA codes still thinks the Soviet Union exists.)  Merging and fixing up the limited information out there into something usable has been a major headache, and we need your help to find the problem areas so we can correct them.</p>
 
-	    <h4>Your calendar only goes back to 1999, how do I enter an earlier flight?</h4>
+	    <h4>Your calendar only goes back to 1970, how do I enter an earlier flight?</h4>
 
 	    <p>You don't have to use the calendar widget, just enter the date manually.</p>
 
