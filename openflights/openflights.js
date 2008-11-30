@@ -351,12 +351,20 @@ function xmlhttpPost(strURL, id, param) {
       }
 
       if(strURL == URL_FLIGHTS) {
-	if(param == "EDIT" || param == "COPY") {
-	  editFlight(self.xmlHttpReq.responseText, param);
-	} else {
-	  if(param == "RELOAD") param = lastDesc;
-	  // param contains previously escaped semi-random HTML title
-	  listFlights(self.xmlHttpReq.responseText, unescape(param));
+	switch(param) {
+	  case "COPY":
+	  case "EDIT":
+	    editFlight(self.xmlHttpReq.responseText, param);
+	    break;
+	  
+	  case "RELOAD":
+	    param = lastDesc;
+	    // param contains previously escaped semi-random HTML title
+	    // fallthru
+
+	  default:
+  	    listFlights(self.xmlHttpReq.responseText, unescape(param));
+	    break;
 	}
       }
       if(strURL == URL_GETCODE) {
@@ -842,12 +850,13 @@ function listFlights(str, desc) {
   fidList = new Array();
   table = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ";
   if(str == "") {
-    table += "<i>No flights found at this airport.</i>";
+    table += "<i>No flights found at this airport.</i></span></div>";
   } else {
     if(desc) {
       table += desc.replace(/\<br\>/g, " &mdash; ");
+      table = "<span style='float: right'><input type='button' value='Export' align='middle' onclick='JavaScript:exportFlights(\"export\")'></span>" + table;
     }
-    table += "<table class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">";
+    table += "<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">";
     table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>";
     if(logged_in) {
       table += "<th class=\"unsortable\">Action</th>";
@@ -855,12 +864,17 @@ function listFlights(str, desc) {
     table += "</tr>";
     var rows = str.split("\n");
     for (r = 0; r < rows.length; r++) {
-      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17
+      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, airline_code 19
       var col = rows[r].split("\t");
       var trip = col[17];
       var seat = col[8] + " " + seattypes[col[9]];
       var plane = col[13];
       var fid = col[12];
+      var code = col[4];
+      // If no flight number, then use airline code
+      if(code == "") {
+	code = col[19];
+      }
       if(col[14] != "") {
 	plane += " (" + col[14] + ")";
       }
@@ -869,7 +883,7 @@ function listFlights(str, desc) {
       }
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 	"<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
-	"<td>" + col[4] + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
+	"<td>" + code + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
 	"</td><td>" + plane + "</td><td>" + seat +
 	"</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
 	"</td><td>" + trip + "</td>" +
@@ -890,6 +904,12 @@ function listFlights(str, desc) {
   document.getElementById("result").innerHTML = table;
   // Refresh sortables code
   sortables_init();
+}
+
+// Dump flights to CSV
+// type: "backup" to export everything, "export" to export only current filter selection
+function exportFlights(type) {
+  location.href="http://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
 }
 
 function showStats(str) {
@@ -1613,7 +1633,7 @@ function signUp() {
 }
 
 //
-// Change settings
+// Import flights
 //
 function openImport() {
   window.open('/html/import.html', 'Import', 'width=800,height=600,scrollbars=yes');
@@ -1623,7 +1643,7 @@ function openImport() {
 // Change settings
 //
 function settings() {
-  window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=400,scrollbars=yes');
+  window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=450,scrollbars=yes');
 }
 
 //

@@ -19,12 +19,15 @@ header("Content-type: text/html; charset=iso-8859-1");
 <?php
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
-  printf("Not logged in, aborting");
-  exit;
+  die_nicely("Not logged in, aborting");
 }
 
 include_once('simple_html_dom.php');
 include_once('helper.php');
+
+$posMap = array("Window"=>"W", "Middle"=>"Y", "Aisle"=>"A");
+$classMap = array("Economy"=>"Y", "Prem.Eco"=>"P", "Business"=>"C", "First"=>"F");
+$reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C", "Other"=>"O");
 
 //
 // Strip out surrounding FlightMemory "liste" <td> from value
@@ -41,8 +44,9 @@ function fm_strip_liste($value) {
     return $value;
   }
 }
-  
-function fm_check_airport($db, $code, $name) {
+
+// Validate that this code/name match an airport 
+function check_airport($db, $code, $name) {
   switch(strlen($code)) {
   case 3:
     $sql = "select apid,city,country from airports where iata='" . mysql_real_escape_string($code) . "'";
@@ -61,6 +65,7 @@ function fm_check_airport($db, $code, $name) {
 
     // No match
   case "0":
+    $apid = null;
     $color = "#faa";
     break;
 
@@ -80,6 +85,123 @@ function fm_check_airport($db, $code, $name) {
   return array($apid, $code, $color);
 }
 
+// Validate that this flight number/airline name are found in DB
+// If flight number starts with an IATA code, match that (and double-check it against name)
+// Else match first word of airline name
+function check_airline($db, $number, $airline, $uid) {
+  $code = substr($number, 0, 2);
+  $isAlpha = ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code);
+  if($airline == "" && ! $isAlpha) {
+    $airline = "Private flight<br><small>(was: No airline)</small>";
+    $color = "#ddf";
+    $alid = 1;
+  } else {
+    // is alphanumeric, but not all numeric? then it's probably an airline code
+    if($isAlpha) {
+      $sql = sprintf("select name,alias,alid from airlines where iata='%s' order by name",
+		     $code, $uid);
+    } else {
+      $code = null;
+      $airlinepart = explode(' ', $airline);
+      $sql = sprintf("select name,alias,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
+		     mysql_real_escape_string($airlinepart[0]), $uid);
+    }
+    
+    // validate the airline/code against the DB
+    $result = mysql_query($sql, $db);
+    switch(mysql_num_rows($result)) {
+      
+      // No match, add as new if we have a name for it, else return error
+    case "0":
+      if($airline != "") {
+	$color = "#fdd";
+	$alid = -1;
+      } else {
+	$color = "#faa";
+	$alid = null;
+      }
+      break;
+      
+      // Solitary match
+    case "1":
+      $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
+      if(stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline)) {
+	$color = "#fff";
+	$airline = $dbrow['name'];
+      } else {
+	$color = "#ddf";
+	$airline = $dbrow['name'] . "<br><small>(was: " . $airline . ")</small>";
+      }
+      $alid = $dbrow['alid'];
+      break;
+      
+      // Many matches, default to first unless we can match one by name
+    default:
+      $color = "#ddf";
+      $first = true;
+      while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	$isMatch = stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline);
+	if($first || $isMatch) {
+	  if($first) {
+	    $first = false;
+	  } else {
+	    $color = "#fff";
+	  }
+	  $airline = $dbrow['name'];
+	  $alid = $dbrow['alid'];
+	}
+      }
+    }
+  }
+  return array($alid, $airline, $color);
+}
+
+// Validate that this plane is in DB
+function check_plane($db, $plane) {
+  // If no plane set, return OK
+  if(!$plane || $plane == "") {
+    return array(null, "#fff");
+  }
+
+  $sql = "select plid from planes where name='" . mysql_real_escape_string($plane) . "'";
+  $result = mysql_query($sql, $db);
+  if(mysql_num_rows($result) == 1) {
+    $plid = mysql_result($result, 0);
+    $color = "#fff";
+  } else {
+    $plid = "-1"; // new plane
+    $color = "#fdd";
+  }
+  return array($plid, $color);
+}
+
+// Validate that the importing user owns this trip
+function check_trip($db, $uid, $trid) {
+  // If no trip set, return OK
+  if(!$trid || $trid == "") {
+    return array(null, "#fff");
+  }
+
+  $sql = "select uid from trips where trid=" . mysql_real_escape_string($trid);
+  $result = mysql_query($sql, $db);
+  if(mysql_num_rows($result) == 1) {
+    if($uid == mysql_result($result, 0)) {
+      $color = "#fff";
+    } else {
+      $color = "#faa";
+    }
+  } else {
+    $color = "#faa";
+  }
+  return array($trid, $color);
+}
+
+function die_nicely($msg) {
+  print $msg . "<br><br>";
+  print "<INPUT type=\"button\" value=\"Upload again\" title=\"Cancel this import and return to file upload page\" onClick=\"history.back(-1)\">";
+  exit;
+}
+
 $uploaddir = '/var/www/openflights/import/';
 
 $action = $HTTP_POST_VARS["action"];
@@ -91,8 +213,7 @@ switch($action) {
     flush();
     print "Tmpfile " . basename($_FILES['userfile']['tmp_name']) . "<br>"; // DEBUG
   } else {
-    echo "<b>Upload failed!</b>";
-    exit;
+    die_nicely("<b>Upload failed!</b>");
   }
   break;
 
@@ -106,25 +227,49 @@ switch($action) {
   break;
 
  default:
-   exit;
+   die_nicely("Unknown action $action");
 }
 
-// Parse it
-$html = file_get_html($uploadfile);
-if(! $html) {
-  echo "Sorry, this file does not appear to be HTML.";
-  exit;
-}
+$fileType = $HTTP_POST_VARS["fileType"];
+switch($fileType) {
+ case "FM":
+   // Parse it
+   $html = file_get_html($uploadfile);
+   if(! $html) {
+     die_nicely("Sorry, this file does not appear to be FlightMemory HTML.");
+   }
+   
+   $title = $html->find('title', 0);
+   if($title->plaintext != "FlightMemory - FlightData") {
+     die_nicely("Sorry, this HTML file does not appear contain FlightMemory FlightData.");
+   }
+   
+   // 3nd table has the data
+   $status = "";
+   $table = $html->find('table', 2);
+   $rows = $table->find('tr[valign=top]');
+   break;
 
-$title = $html->find('title', 0);
-if($title->plaintext != "FlightMemory - FlightData") {
-  echo "Sorry, this HTML file does not appear contain FlightMemory FlightData.";
-  exit;
-}
+ case "CSV":
+   if($action == "Upload" && substr($_FILES["userfile"]["name"], -4) != ".csv") {
+     die_nicely("Sorry, the filename must end in '.csv'.");
+   }
 
-// 3nd table has the data
-$status = "";
-$table = $html->find('table', 2);
+   $csvfile = fopen($uploadfile, "r");
+   if(! $csvfile) {
+     die_nicely("Unable to open CSV file.");
+   }
+
+   // Convert whole file into giant array
+   // (stupid workaround for PHP 5.2 because str_getcsv() is not standard yet)
+   $rows = array();
+   while (($data = fgetcsv($csvfile, 1000, ",")) !== FALSE) {
+     $rows[] = $data;
+   }
+   fclose($csvfile);
+
+   break;
+ }
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
@@ -132,182 +277,198 @@ mysql_select_db("flightdb",$db);
 if($action == "Upload") {
   print "<table style='border-spacing: 3'><tr>";
   print "<th>ID</th><th>Date</th><th>Flight</th><th>From</th><th>To</th><th>Miles</th><th>Time</th><th>Plane</th><th>Reg</th>";
-  print "<th>Seat</th><th>Class</th><th>Type</th><th>Reason</th><th>Comment</th></tr>";
+  print "<th>Seat</th><th>Class</th><th>Type</th><th>Reason</th><th>Trip</th><th>Comment</th></tr>";
 }
 
-// Rows with valign=top are data rows
-$rows = $table->find('tr[valign=top]');
 $count = 0;
 foreach($rows as $row) {
-  $cols = $row->find('td[class=liste],td[class=liste_gross],th[class=liste_gross]');
+  switch($fileType) {
+  case "FM":
+    $cols = $row->find('td[class=liste],td[class=liste_gross],th[class=liste_gross]');
+    
+    $id = $cols[0]->plaintext;
+    
+    // Read and validate date field
+    $dates = explode('<br>', $cols[1]);
+    $src_date = strip_tags($dates[0]); // <td class="liste"><nobr>xx...xx</nobr>
+    if(strlen($src_date) == 4) {
+      $src_date = "01.01." . $src_date;
+    }
+    if(strstr($src_date, "-")) {
+      $dateFormat = "%m-%d-%Y";
+    } else {
+      $dateFormat = "%d.%m.%Y";
+    }
+    $sql = sprintf("SELECT STR_TO_DATE('%s', '%s')", $src_date, $dateFormat);
+    $result = mysql_query($sql, $db);
+    $db_date = mysql_result($result, 0); 
+    if($db_date == "") {
+      $src_date = null;
+      $date_bgcolor = "#faa";
+    } else {
+      $date_bgcolor = "#fff";
+      $src_date = $db_date;
+    }
+    
+    $src_iata = $cols[2]->plaintext;
+    $dst_iata = $cols[4]->plaintext;
+    
+    // <td class="liste"><b>Country</b><br>Town<br>Airport Blah Blah</td>
+    //                                             ^^^^^^^ target
+    $src_names = end(explode('<br>', $cols[3]));
+    $src_name = reset(preg_split('/[ \/<]/', $src_names));
+    $dst_names = end(explode('<br>', $cols[5]));
+    $dst_name = reset(preg_split('/[ \/<]/', $dst_names));
+    
+    list($src_apid, $src_iata, $src_bgcolor) = check_airport($db, $src_iata, $src_name);
+    list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($db, $dst_iata, $dst_name);
+    
+    $distance = substr($cols[6]->find('td[align=right]', 0)->plaintext, 0, -6); // peel off trailing &nbsp;
+    $distance = str_replace(',', '', $distance);
+    $dist_unit = $cols[6]->find('tr', 0)->find('td', 1)->plaintext;
+    if($dist_unit == "km") {
+      $distance = round($distance/1.609344); // km to mi
+    }
+    $duration = substr($cols[6]->find('td[align=right]', 1)->plaintext, 0, -6);
+    
+    $flight = explode('<br>', $cols[7]);
+    $airline = fm_strip_liste($flight[0]);
+    $number = str_replace('</td>', '', $flight[1]);
+    list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid);
+    
+    // Load plane model (plid)
+    $planedata = explode('<br>', $cols[8]);
+    $plane = fm_strip_liste($planedata[0]);
+    if($plane != "") {
+      list($plid, $plane_bgcolor) = check_plane($db, $plane);
+    } else {
+      $plid = null;
+      $plane_bgcolor = "#fff";
+    }
+    
+    if($planedata[1]) {
+      $reg = strip_tags($planedata[1]);
+    } else {
+      $reg = "";
+    }
 
-  $id = $cols[0]->plaintext;
 
-  // Read and validate date field
-  $dates = explode('<br>', $cols[1]);
-  $src_date = strip_tags($dates[0]); // <td class="liste"><nobr>xx...xx</nobr>
-  if(strlen($src_date) == 4) {
-    $src_date = "01.01." . $src_date;
+    // <td class="liste">12A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+    $seatdata = explode('<br>', $cols[9]);
+    $seatdata2 = explode('/', $seatdata[0]);
+    
+    $seatnumber = fm_strip_liste($seatdata2[0]);
+    $seatpos = trim(str_replace('&nbsp;', '', $seatdata2[1]));
+    if(strlen($seatpos) < 2) {
+      $seatpos = "";
+    }
+    $seatclass = substr($seatdata[1], 7);
+    if($seatclass == "") {
+      $seatclass = "Economy";
+    }
+    $seattype = $seatdata[2];
+    $seatreason = substr($seatdata[3], 0, strpos($seatdata[3], '<'));
+    
+    $span = $cols[10]->find('span', 0);
+    if($span) {
+      $comment = trim(substr($span->title, 9));
+    } else {
+      $comment = "";
+    }
+    break; // case FM
+
+  case "CSV":
+    $count++;
+    if($count == 1) {
+      // Skip header row
+      continue;
+    }
+    $id = $count - 1;
+    // 0 Date, 1 From, 2 To,3 Flight_Number, 4 Airline_Code, 5 Distance, 6 Duration, 7 Seat, 8 Seat_Type, 9 Class
+    // 10 Reason, 11 Plane, 12 Registration, 13 Trip, 14 Note, 15 From_Code, 16 To_Code, 17 Airline_Code, 18 Plane_Code
+    $src_iata = $row[1];
+    $src_apid = $row[15];
+    if($src_apid) {
+      $src_iata .= "<br><small>$src_apid</small>";
+      $src_bgcolor="#fff";
+    } else {
+      list($src_apid, $src_iata, $src_bgcolor) = check_airport($db, $src_iata, $src_iata);
+    }
+    $dst_iata = $row[2];
+    $dst_apid = $row[16];
+    if($dst_apid) {
+      $dst_iata .= "<br><small>$dst_apid</small>";
+      $dst_bgcolor="#fff";
+    } else {
+      list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($db, $dst_iata, $dst_iata);
+    }
+    $number = $row[3];
+    $airline = $row[4];
+    $alid = $row[17];
+    if($alid) {
+      $airline .= "<br><small>$alid</small>";
+      $airline_bgcolor="#fff";
+    } else {
+      list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid);
+    }
+    $plane = $row[11];
+    $plid = $row[18];
+    if($plid) {
+      $plane .= "<br><small>$plid</small>";
+      $plane_bgcolor="#fff";
+    } else {
+      list($plid, $plane_bgcolor) = check_plane($db, $plane);
+    }
+
+    $src_date = $row[0];
+    $distance = $row[5];
+    $duration = $row[6];
+    $seatnumber = $row[7];
+    $seatpos = array_search($row[8], $posMap);
+    $seatclass = array_search($row[9], $classMap);
+    $seatreason = array_search($row[10], $reasonMap);
+    $reg = $row[12];
+    list($trid, $trip_bgcolor) = check_trip($db, $uid, $row[13]);
+    $comment = $row[14];
+    break;
   }
-  if(strstr($src_date, "-")) {
-    $dateFormat = "%m-%d-%Y";
-  } else {
-    $dateFormat = "%d.%m.%Y";
-  }
-  $sql = sprintf("SELECT STR_TO_DATE('%s', '%s')", $src_date, $dateFormat);
-  $result = mysql_query($sql, $db);
-  $db_date = mysql_result($result, 0); 
-  if($db_date == "") {
-    $date_bgcolor = "#faa";
+  
+  // Skip first row for CSV
+  if($fileType == "CSV" && $count == 1) continue;
+
+  //Check if parsing succeeded and tag fatal errors if not
+  if(!$src_date) {
     $status = "disabled";
     $fatal = "date";
-  } else {
-    $date_bgcolor = "#fff";
-    $src_date = $db_date;
   }
-
-  $src_iata = $cols[2]->plaintext;
-  $dst_iata = $cols[4]->plaintext;
-
-  // <td class="liste"><b>Country</b><br>Town<br>Airport Blah Blah</td>
-  //                                             ^^^^^^^ target
-  $src_names = end(explode('<br>', $cols[3]));
-  $src_name = reset(preg_split('/[ \/<]/', $src_names));
-  $dst_names = end(explode('<br>', $cols[5]));
-  $dst_name = reset(preg_split('/[ \/<]/', $dst_names));
-
-  list($src_apid, $src_iata, $src_bgcolor) = fm_check_airport($db, $src_iata, $src_name);
-  list($dst_apid, $dst_iata, $dst_bgcolor) = fm_check_airport($db, $dst_iata, $dst_name);
   if(!$src_apid || !$dst_apid) {
     $status = "disabled";
     $fatal = "airport";
-  }
-
-  $distance = substr($cols[6]->find('td[align=right]', 0)->plaintext, 0, -6); // peel off trailing &nbsp;
-  $distance = str_replace(',', '', $distance);
-  $dist_unit = $cols[6]->find('tr', 0)->find('td', 1)->plaintext;
-  if($dist_unit == "km") {
-    $distance = round($distance/1.609344); // km to mi
-  }
-  $duration = substr($cols[6]->find('td[align=right]', 1)->plaintext, 0, -6);
-
-  $flight = explode('<br>', $cols[7]);
-  $airline = fm_strip_liste($flight[0]);
-  $number = str_replace('</td>', '', $flight[1]);
-  $code = substr($number, 0, 2);
-  if($airline == "") {
-    $airline = "Private flight<br><small>(was: No airline)</small>";
-    $airline_bgcolor = "#ddf";
-    $alid = 1;
   } else {
-    // is alphanumeric, but not all numeric? then it's probably an airline code
-    if(ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code)) {
-      $sql = sprintf("select name,alias,alid from airlines where iata='%s' or uid = %s order by name",
-		     $code, $uid);
+    if($duration == "" || $distance == "") {
+      list($distance, $duration) = gcDistance($db, $src_apid, $dst_apid);
+      $dist_bgcolor = "#ddf";
     } else {
-      $code = null;
-      $airlinepart = explode(' ', $airline);
-      $sql = sprintf("select name,alias,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
-		     mysql_real_escape_string($airlinepart[0]), $uid);
-    }
-
-    // validate the airline/code against the DB
-    $result = mysql_query($sql, $db);
-    switch(mysql_num_rows($result)) {
-
-      // No match
-    case "0":
-      $airline_bgcolor = "#fdd";
-      $alid = null;
-      break;
-
-      // Solitary match
-    case "1":
-      $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
-      if(stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline)) {
-	$airline_bgcolor = "#fff";
-	$airline = $dbrow['name'];
-      } else {
-	$airline_bgcolor = "#ddf";
-	$airline = $dbrow['name'] . "<br><small>(was: " . $airline . ")</small>";
-      }
-      $alid = $dbrow['alid'];
-      break;
-      
-      // Many matches
-    default:
-      $airline_bgcolor = "#fdd";
-      $alid = null;
-      while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
-	if(stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline)) {
-	  $airline_bgcolor = "#fff";
-	  $airline = $dbrow['name'];
-	  $alid = $dbrow['alid'];
-	  break;
-	}
-      }
+      $dist_bgcolor = "#fff";
     }
   }
-
-  // Load plane model (plid)
-  $planedata = explode('<br>', $cols[8]);
-  $plane = fm_strip_liste($planedata[0]);
-  if($plane != "") {
-    $sql = "select plid from planes where name='" . mysql_real_escape_string($plane) . "'";
-    $result = mysql_query($sql, $db);
-    if(mysql_num_rows($result) == 1) {
-      $plid = mysql_result($result, 0);
-      $plane_bgcolor = "#fff";
-    } else {
-      $plid = "-1"; // new plane
-      $plane_bgcolor = "#fdd";
-    }
-  } else {
-    $plid = null;
-    $plane_bgcolor = "#fff";
+  if(!$alid) {
+    $status = "disabled";
+    $fatal = "airline";
   }
-
-  if($planedata[1]) {
-    $reg = strip_tags($planedata[1]);
-  } else {
-    $reg = "";
-  }
-
-
-  // <td class="liste">12A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
-  $seatdata = explode('<br>', $cols[9]);
-  $seatdata2 = explode('/', $seatdata[0]);
-
-  $seatnumber = fm_strip_liste($seatdata2[0]);
-  $seatpos = trim(str_replace('&nbsp;', '', $seatdata2[1]));
-  if(strlen($seatpos) < 2) {
-    $seatpos = "";
-  }
-  $seatclass = substr($seatdata[1], 7);
-  if($seatclass == "") {
-    $seatclass = "Economy";
-  }
-  $seattype = $seatdata[2];
-  $seatreason = substr($seatdata[3], 0, strpos($seatdata[3], '<'));
-  
-  $span = $cols[10]->find('span', 0);
-  if($span) {
-    $comment = trim(substr($span->title, 9));
-  } else {
-    $comment = "";
+  if($trid && $trip_bgcolor != "#fff") {
+    $status = "disabled";
+    $fatal = "trip";
   }
 
   switch($action) {
   case "Upload":
-    printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $airline_bgcolor, $airline, $number,
-	  $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $distance, $duration, $plane_bgcolor, $plane, $reg,
-	  $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $comment);
+    printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $airline_bgcolor, $airline, $number,
+	    $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $dist_bgcolor, $distance, $dist_bgcolor, $duration, $plane_bgcolor, $plane, $reg,
+	    $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $trip_bgcolor, $trid, $comment);
     break;
 
   case "Import":
-    $classMap = array("Economy"=>"Y", "Business"=>"C", "First"=>"F");
-    $reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C");
-
     // Do we need a new plane?
     if($plid == -1) {
       $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($plane) . "')";
@@ -317,7 +478,7 @@ foreach($rows as $row) {
     }
 
     // Do we need a new airline?
-    if(! $alid) {
+    if($alid == -1) {
       $sql = sprintf("INSERT INTO airlines(name, uid) VALUES('%s', %s)",
 		     mysql_real_escape_string($airline), $uid);
       mysql_query($sql, $db) or mysql_query($sql, $db) or die ('0;Adding new airline failed: ' . $sql . ', error ' . mysql_error());
@@ -336,13 +497,13 @@ foreach($rows as $row) {
     }
 
     // And now the flight 
-    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, NULL, NOW(), '%s')",
+    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s')",
 		   $uid, $src_apid, mysql_real_escape_string($src_date),
 		   $dst_apid, mysql_real_escape_string($duration),
 		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
 		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],
 		   $reasonMap[$seatreason], mysql_real_escape_string($comment),
-		   ($plid ? $plid : "NULL"), $alid, $opp);
+		   ($plid ? $plid : "NULL"), $alid, ($trid ? $trid : "NULL"), $opp);
     mysql_query($sql, $db) or die('0;Importing flight failed ' . $sql . ', error ' . mysql_error());
     print $id . " ";
     break;
@@ -379,8 +540,14 @@ if($status == "disabled") {
     print "Your flight data includes unrecognized airports.  Please add them to the database and try again. ";
     print "<INPUT type='button' value='Add new airport' onClick='javascript:window.open(\"/html/apsearch.html\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
     break;
+  case "airline":
+    print "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please add the airline name to the data and try again. ";
+    break;
   case "date":
     print "Some date fields could not be parsed.  Please change them to use any of these three formats: MM-DD-YYYY, DD.MM.YYYY, or YYYY only.";
+    break;
+  case "trip":
+    print "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please validate the trip IDs.";
     break;
   }
   print "</font><br><br>";
@@ -388,6 +555,7 @@ if($status == "disabled") {
   print "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)<br><br>";
 }
 print "<INPUT type='hidden' name='tmpfile' value='". basename($_FILES['userfile']['tmp_name']) . "'>";
+print "<INPUT type='hidden' name='fileType' value='$fileType'>";
 print "<INPUT type='submit' name='action' title='Add these flights to your OpenFlights' value='Import' " . $status . ">";
 ?>
 
