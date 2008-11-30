@@ -715,7 +715,7 @@ function updateTitle(str) {
  * tabIndex: tabindex
  */ 
 function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
-  var select = "<select name=\"" + selectName + "\"";
+  var select = "<select class=\"filter\" name=\"" + selectName + "\"";
   if(hook) {
     select += " onChange='JavaScript:" + hook + "'";
   }
@@ -765,6 +765,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
 }
 
 // Create a copy of 'select', renamed (incl. hook) as 'name'
+// Note: *not* class="filter", so width is not limited
 function cloneSelect(oldSelect, name, hook) {
   var newSelect = "<select name=\"" + name + "\"";
   if(hook) {

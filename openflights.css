@@ -155,8 +155,6 @@
   padding: 5px 10px;
 }
 
-input:focus, textarea:focus { background-color: LightYellow; }
-
 /* Autocomplete styles */
 
 ul.autocomplete { padding: 3px; width: 350px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }
@@ -168,6 +166,11 @@ li.selected { background: #C6DEFF; }
 
 input.hintTextbox { color: #888; }
 input.hintTextboxActive { color: #000; }
+
+/* Misc styles */
+
+input:focus, textarea:focus { background-color: LightYellow; }
+select.filter {  width: 160px };
 
 /* OpenLayers default stuff starts here */
 
