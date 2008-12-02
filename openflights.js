@@ -107,7 +107,6 @@ window.onload = function init(){
   };
   map.addControl(drawControls.select); */
 
-  //map.setCenter(new OpenLayers.LonLat(0, 0), 0);
   map.zoomToMaxExtent();
 
   // Extract any arguments from URL
@@ -271,8 +270,9 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   feature.data.overflow = "auto";
   var marker = feature.createMarker();
   marker.apid = apid;
+  marker.code = code;
   feature.apid = apid;
-  feature.iata = code;
+  feature.code = code;
   feature.name = formattedName;
 
   // Run when the user clicks on an airport marker
@@ -282,7 +282,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
     
     // If input mode is active, we select the airport instead of popping it up
     if(input) {
-      data = this.iata + ":" + this.apid + ":" + this.lonlat.lon + ":" + this.lonlat.lat;
+      data = this.code + ":" + this.apid + ":" + this.lonlat.lon + ":" + this.lonlat.lat;
       if(input_toggle == "SRC") {
 	$('src_ap').value = this.name;
 	$('src_ap').style.color = "#000";
@@ -420,6 +420,15 @@ function xmlhttpPost(strURL, id, param) {
 	  updateMap(str);
 	  if(param) {
 	    updateFilter(str);
+	    // Zoom map to fit when loading another's flights/trip
+	    if(! logged_in && (filter_user != 0 || filter_trid != 0)) {
+	      var form = document.forms['filterform'];    
+	      if(form.Airlines.selectedIndex == 0 &&
+		form.Years.selectedIndex == 0 &&
+		 (filter_trid != 0 || form.Trips.selectedIndex == 0)) {
+		map.zoomToExtent(airportLayer.getDataExtent());
+	      }
+	    }
 	  }
 	  updateTitle();
 	} 
@@ -517,10 +526,9 @@ function xmlhttpPost(strURL, id, param) {
 	return;
       }
       var alid = $('airline_id').value;
-      if(! alid || alid == "0") {
-	alert("Please enter a valid airline.");
-	document.forms['inputform'].airline.focus();
-	return;
+      var airline = $('airline').value.trim();
+      if(! alid || airline == "" || airline == $('airline').hintText) {
+	alid = "-1"; // UNKNOWN
       }
       var type = inputform.seat_type.value;
       if(type == "-") type = "";
@@ -629,15 +637,26 @@ function updateFilter(str) {
   document.getElementById("filter_tripselect").innerHTML = tripSelect;
   var editTripSelect = document.forms['inputform'].trips;
   if(editTripSelect) {
-    selected = editTripSelect.selectedIndex;
+
+    // New trip added, so now we need to figure out the newest (highest) trid to find it
+    if(editTripSelect.reselect) {
+      var newestId = 0;
+      var filterTripSelect = document.forms['filterform'].Trips;
+      for(i = 0; i < filterTripSelect.length; i++) {
+	id = filterTripSelect[i].value.split(";")[0];
+	if(parseInt(id) > newestId) {
+	  newestId = id;
+	  selected = i;
+	}
+      }
+    } else {
+      selected = editTripSelect.selectedIndex;
+    }
   } else {
     selected = null;
   }
   document.getElementById("input_trip_select").innerHTML =
-    cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged");
-  if(selected) {
-    document.forms['inputform'].trips.selectedIndex = selected;
-  }
+    cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged", selected);
   document.forms['inputform'].trips[0].text = "Select trip";
 
   var airlineSelect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), AIRLINE_MAXLEN, "refresh(true)");
@@ -766,7 +785,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
 
 // Create a copy of 'select', renamed (incl. hook) as 'name'
 // Note: *not* class="filter", so width is not limited
-function cloneSelect(oldSelect, name, hook) {
+function cloneSelect(oldSelect, name, hook, selected) {
   var newSelect = "<select name=\"" + name + "\"";
   if(hook) {
     newSelect += " onChange='JavaScript:" + hook + "(\"" + name + "\")'>";
@@ -774,7 +793,12 @@ function cloneSelect(oldSelect, name, hook) {
   for(index = 0; index < oldSelect.length; index++) {
     id = oldSelect[index].value.split(";")[0];
     text = oldSelect[index].value.split(";")[1];
-    newSelect += "<option value=\"" + id + "\">" + text + "</option>";
+    if(index == selected) {
+      selectedText = " SELECTED";
+    } else {
+      selectedText = "";
+    }
+    newSelect += "<option value=\"" + id + "\" " + selectedText + ">" + text + "</option>";
   }
   newSelect += "</select>";
   return newSelect;
@@ -1375,7 +1399,7 @@ function editTrip(thisTrip) {
 function newTrip(code, newTrid, name, url) {
   code = parseInt(code);
 
-  // Trip deleted?  Switch back to "all trips" view
+  // Trip deleted?  Switch filter back to "all trips" view
   if(code == CODE_DELETEOK) {
     var tr_select = document.forms['filterform'].Trips;
     tr_select.selectedIndex = 0;
@@ -1386,29 +1410,14 @@ function newTrip(code, newTrid, name, url) {
   if(trips) {
     switch(code) {
     case CODE_ADDOK:
-      var elOptNew = document.createElement('option');
-      elOptNew.text = name;
-      elOptNew.value = newTrid;
-      try {
-	trips.add(elOptNew, null); // standards compliant; doesn't work in IE
-      }
-      catch(ex) {
-	trips.add(elOptNew); // IE only
-      }
-      trips.selectedIndex = trips.length - 1;
+      trips.reselect = true; // means recalculate on refresh
       break;
 
     case CODE_DELETEOK:
-      if(trips.selectedIndex == 0) {
-	trips[0].text = "Select trip";
-	trips[0].value = 0;
-      } else {
-	trips.remove(trips.selectedIndex);
-	trips.selectedIndex = 0;
-      }
+      trips.selectedIndex = 0;
       break;
 
-    default:
+    default: // EDIT
       trips[trips.selectedIndex].text = name;
       break;
     }
@@ -1419,20 +1428,41 @@ function newTrip(code, newTrid, name, url) {
   markAsChanged();
 }
 
-// When user has manually entered an airport code (not autocomplete!), try to match it to DB
+// When user has manually entered an airport code, try to match it to DB
 function airportCodeToAirport(type) {
-  code = $(type).value;
 
-  if(type == "src_ap" && srcApidAC == true) {
-    srcApidAC = false;
-    return;
+  // Ignore autocomplete results
+  if(type == "src_ap") {
+    if(srcApidAC == true) {
+      srcApidAC = false;
+      return;
+    }
+    input_toggle = "SRC";
   }
-  if(type == "dst_ap" && dstApidAC == true) {
-    dstApidAC = false;
-    return;
+  if(type == "dst_ap") {
+    if(dstApidAC == true) {
+      dstApidAC = false;
+      return;
+    }
+    input_toggle = "DST";    
   }
 
-  xmlhttpPost(URL_GETCODE, code, type);
+  // Try to match against existing airports
+  var code = $(type).value.toUpperCase();
+  var markers = airportLayer.markers;
+  var found = false;
+  for(m = 0; m < markers.length; m++) {
+    if(markers[m].code == code) {
+      markers[m].events.triggerEvent("mousedown");
+      found = true;
+      break;
+    }
+  }
+
+  // If not found, dig up from DB
+  if (!found) {
+    xmlhttpPost(URL_GETCODE, code, type);
+  }
   markAsChanged(true);
 }
 
@@ -1668,6 +1698,7 @@ function login(str, param) {
     }
     clearStack();
     clearFilter(true);
+
   } else {
     logged_in = false;
     document.getElementById("loginstatus").innerHTML = "<B>" + name + "</B>";

@@ -74,14 +74,14 @@ if($year && $year != "0") {
 }
 
 // And sort order
-$sql = $sql . " ORDER BY src_date";
+$sql = $sql . " ORDER BY src_date DESC";
 
 // Execute!
 $result = mysql_query($sql, $db);
 $first = true;
 
 if($export) {
-  printf("Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_Code,To_Code,Airline_Code,Plane_Code\r\n");
+  printf("Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n");
 }
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($first) {
