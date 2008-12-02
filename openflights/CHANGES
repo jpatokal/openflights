@@ -1,3 +1,11 @@
+<b>2008-12-02</b>
+
+* Zoom map to fit when viewing another user's flights/trip
+* Allow "Unknown" airline (default if not given)
+* Flight lists now shown with newest flight first
+* Airport codes looked up in cache before autocomplete AJAX call
+* No autocompletion for 0/1 char strings or those containing ()
+
 <b>2008-11-30</b>
 
 * <a href="/help/csv.html">CSV</a> (comma-separated value) import/export/backup implemented. (2317084)

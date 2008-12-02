@@ -92,19 +92,18 @@ function check_airline($db, $number, $airline, $uid) {
   $code = substr($number, 0, 2);
   $isAlpha = ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code);
   if($airline == "" && ! $isAlpha) {
-    $airline = "Private flight<br><small>(was: No airline)</small>";
+    $airline = "Unknown<br><small>(was: No airline)</small>";
     $color = "#ddf";
-    $alid = 1;
+    $alid = -1;
   } else {
     // is alphanumeric, but not all numeric? then it's probably an airline code
     if($isAlpha) {
       $sql = sprintf("select name,alias,alid from airlines where iata='%s' order by name",
 		     $code, $uid);
     } else {
-      $code = null;
       $airlinepart = explode(' ', $airline);
-      $sql = sprintf("select name,alias,alid from airlines where name like '%s%%' and (iata != '' or uid = %s) order by name",
-		     mysql_real_escape_string($airlinepart[0]), $uid);
+      $sql = sprintf("select name,alias,alid from airlines where (name like '%s%%' or alias like '%s%%') and (iata != '' or uid = %s) order by name",
+		     mysql_real_escape_string($airlinepart[0]), mysql_real_escape_string($airlinepart[0]), $uid);
     }
     
     // validate the airline/code against the DB
@@ -115,7 +114,7 @@ function check_airline($db, $number, $airline, $uid) {
     case "0":
       if($airline != "") {
 	$color = "#fdd";
-	$alid = -1;
+	$alid = -2;
       } else {
 	$color = "#faa";
 	$alid = null;
@@ -478,7 +477,7 @@ foreach($rows as $row) {
     }
 
     // Do we need a new airline?
-    if($alid == -1) {
+    if($alid == -2) {
       $sql = sprintf("INSERT INTO airlines(name, uid) VALUES('%s', %s)",
 		     mysql_real_escape_string($airline), $uid);
       mysql_query($sql, $db) or mysql_query($sql, $db) or die ('0;Adding new airline failed: ' . $sql . ', error ' . mysql_error());
@@ -541,7 +540,7 @@ if($status == "disabled") {
     print "<INPUT type='button' value='Add new airport' onClick='javascript:window.open(\"/html/apsearch.html\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
     break;
   case "airline":
-    print "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please add the airline name to the data and try again. ";
+    print "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. ";
     break;
   case "date":
     print "Some date fields could not be parsed.  Please change them to use any of these three formats: MM-DD-YYYY, DD.MM.YYYY, or YYYY only.";

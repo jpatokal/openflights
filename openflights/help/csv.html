@@ -11,7 +11,7 @@
 
     <h1>Context Help: Comma-Separated Value (CSV) Format</h1>
 
-      This document defines <b>Revision 1.0</b> of the comma-separated value (CSV) format natively exported and imported by OpenFlights.<p>
+      This document defines <b>Revision 0.2</b> of the comma-separated value (CSV) format natively exported and imported by OpenFlights.<p>
 
       OpenFlights CSV follows <a href="http://tools.ietf.org/html/rfc4180#page-2">RFC 4180</a>.
 	<ul>
@@ -24,10 +24,10 @@
 
 	<dl>
 	<dt>1. Date</dt><dd>Date of flight, in YYYY-MM-DD format. <font color="red">Mandatory</font>.</dd>
-	<dt>2. From</dt><dd>IATA or ICAO code of source airport. <font color="red">Mandatory unless "From_Code" is provided.</font></dd>
-	<dt>3. To</dt><dd>IATA or ICAO code of destination airport. <font color="red">Mandatory unless "To_Code" is provided.</font></dd>
-	<dt>4. Flight_Number</dt><dd>Flight number.  <font color="red">Mandatory if "Airline" <i>or</i> "Airline_Code" is not provided.</font> <font color="blue">Overrides "Airline" if first two characters are an airline code (two alphanumeric digits).</font> </dd>
-	<dt>5. Airline</dt><dd>Airline name. <font color="red">Mandatory if "Flight Number" with airline code <i>or</i> "Airline_Code" is not provided.</font> <font color="blue">Looked up from database if "Flight Number" or "Airline_Code" provides airline code.</font> </dd>
+	<dt>2. From</dt><dd>IATA or ICAO code of source airport. <font color="red">Mandatory unless "From_OID" is provided.</font></dd>
+	<dt>3. To</dt><dd>IATA or ICAO code of destination airport. <font color="red">Mandatory unless "To_OID" is provided.</font></dd>
+	<dt>4. Flight_Number</dt><dd>Flight number. <font color="blue">If first two characters are an airline code (two alphanumeric digits), the code is used to override "Airline".</font> </dd>
+	<dt>5. Airline</dt><dd>Full name of airline name.  Airline codes are not recognized. <font color="blue">May be overridden by "Flight_Number", defaults to Unknown if not available.</font> </dd>
 	<dt>6. Distance</dt><dd>Distance of flight, in miles. <font color="blue">Calculated automatically if not provided.</font></dd>
 	<dt>7. Duration</dt><dd>Duration of flight, in the format HH:MM. <font color="blue">Estimated automatically if not provided.</font></dd>
 	<dt>8. Seat</dt><dd>Seat number.</dd>
@@ -39,23 +39,49 @@
 	<dt>14. Trip</dt><dd>Internal OpenFlights Trip ID.  <font color="blue">Optional, but must exist and belong to the user importing the data if specified.</font></dd>
 	<dt>15. Note</dt><dd>User-entered note or comment about flight.</dd>
       </dl>
-      The final four fields contain internal OpenFlights data for ensuring accurate imports.  They are generated automatically when exporting, but should <i>not</i> be provided if creating or importing your own data.
+      The final four fields contain internal OpenFlights IDs (OID) for ensuring accurate imports.  They are generated automatically when exporting, but should <i>not</i> be provided if creating or importing your own data.
       <dl>
-	<dt>16. From_Code</dt><dd>Internal OpenFlights airport ID.  <font color="blue">Overrides "From" if provided.</font></dd>
-	<dt>17. To_Code</dt><dd>Internal OpenFlights airport ID.  <font color="blue">Overrides "To" if provided.</font></dd>
-	<dt>18. Airline_Code</dt><dd>Internal OpenFlights airline ID.  <font color="blue">Overrides "Airline" if provided.</font></dd>
-	<dt>19. Plane_Code</dt><dd>Internal OpenFlights plane ID.  <font color="blue">Overrides "Plane" if provided.</font></dd>
+	<dt>16. From_OID</dt><dd>Internal OpenFlights airport ID.  <font color="blue">Overrides "From" if provided.</font></dd>
+	<dt>17. To_OID</dt><dd>Internal OpenFlights airport ID.  <font color="blue">Overrides "To" if provided.</font></dd>
+	<dt>18. Airline_OID</dt><dd>Internal OpenFlights airline ID.  <font color="blue">Overrides "Airline" if provided.</font></dd>
+	<dt>19. Plane_OID</dt><dd>Internal OpenFlights plane ID.  <font color="blue">Overrides "Plane" if provided.</font></dd>
 	</dl>
       
+      <h2>Airline matching</h2>
+      Airlines are matched in the following order:
+      <ol>
+	<li>"Airline_OID" as internal identifier
+	<li>First two characters of "Flight_Number" as IATA code, if alphanumeric <i>and</i> not numeric (AB, A1, 1A are OK, but 11 is not)
+	<li>"Airline" as name or alias
+      </ol>
+      <p>Note that the airline code (IATA/ICAO) must be supplied in "Flight_Number", <i>not</i> "Airline".</p>
+      <ul>
+	<li>If multiple matches are found, "Airline" is used to determine the best fit.
+	<li>If "Airline" is defined but no matches are found, "Airline" is added as new.
+	<li>If "Flight Number" defines an unrecognized IATA code, import fails.
+	<li>If neither "Airline" nor "Flight_Number" are defined, "Airline" is set to Unknown.
+      </ul>
+
       <h2>Sample</h2>
-      The following sample shows the maximal, recommended, and minimal data sets for importing a flight.
+      The following sample shows the maximal, recommended, and three minimal data sets for importing a flight (airline and flight number, airline only, and neither airline nor flight number).
       <div style="overflow: auto">
 <pre>
-Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_Code,To_Code,Airline_Code,Plane_Code
+Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
 2008-01-18,DXB,RUH,SV559,Saudi Arabian Airlines,542,01:35,40C,A,Y,B,Boeing 777,HZ-AKH,16,"First, to Saudi!",2188,2082,4533,3
 2008-01-18,DXB,RUH,SV559,Saudi Arabian Airlines,542,01:35,40C,A,Y,B,Boeing 777,HZ-AKH,16,"First, to Saudi!"
 2008-01-18,DXB,RUH,SV559
+2008-01-18,DXB,RUH,,Saudi Arabian Airlines
+2008-01-18,DXB,RUH
 </pre>
+
+	<h2>Revision history</h2>
+	<dl>
+	  <dt>0.1 &mdash; Nov 30, 2008</dt>
+	  <dd>Original release</dd>
+	  
+	  <dt>0.2 &mdash; Dec 2, 2008</dt>
+	  <dd>Airlines no longer mandatory, clarified field names, airline matching logic</dd>
+	</dl>
       </div>
 
     <FORM>

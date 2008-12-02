@@ -324,8 +324,13 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
   },
 
   getUpdatedChoices: function() {
-    entry = encodeURIComponent(this.options.paramName) + '=' + 
-      encodeURIComponent(this.getToken());
+    token = this.getToken();
+    // Don't autocomplete for empty, single-char or existing entries like "Foo (FOO)"
+    if(token.length < 2 || token.indexOf("(") != -1) {
+      return;
+    }
+    entry = encodeURIComponent(this.options.paramName) + '=' +
+      encodeURIComponent(token);
 
     this.options.parameters = this.options.callback ?
       this.options.callback(this.element, entry) : entry;
