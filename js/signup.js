@@ -117,15 +117,18 @@ function validate(type) {
 
 // Load up user data
 function loadUser(str) {
-  var code = str.split(";")[0];
+  var cols = str.split(";");
+  var code = cols[0];
   if(code == "3") {
-    var name = str.split(";")[1];
-    var email = str.split(";")[2];
-    var privacy = str.split(";")[3];
+    var name = cols[1];
+    var email = cols[2];
+    var privacy = cols[3];
+    var count = cols[4];
 
     var form = document.forms['signupform'];
     signupform.email.value = email;
     signupform.myurl.value = "http://openflights.org/user/" + escape(name);
+    signupform.count.value = count + " times";
     for (r=0; r < signupform.privacy.length; r++){
       if (signupform.privacy[r].value == privacy) {
 	signupform.privacy[r].checked = true;

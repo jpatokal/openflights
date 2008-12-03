@@ -46,7 +46,7 @@ if($type == "NEW") {
     $sql = "SELECT * FROM users WHERE uid=" . $uid;
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result)) {
-      printf("3;%s;%s;%s", $row["name"], $row["email"], $row["public"]);
+      printf("3;%s;%s;%s;%s", $row["name"], $row["email"], $row["public"], $row["count"]);
     } else {
       printf("0;Unknown error");
     }

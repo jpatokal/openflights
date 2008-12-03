@@ -10,7 +10,7 @@ var paneStack = [ "ad" ];
 // Filter selections and currently chosen airport 
 var filter_user = 0, filter_trid = 0, filter_alid = 0, filter_year = 0, apid = 0;
 var tripname, tripurl;
-var privacy = "Y";
+var privacy = "Y", flightTotal = 0;
 
 // Current list of flights
 var fidList, fidPtr = 0, fid = 0;
@@ -60,6 +60,7 @@ window.onload = function init(){
 
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
   map = new OpenLayers.Map('map', {
+    eventListeners: { "zoomend": zoomEvent },
     maxExtent: bounds,
 			       maxResolution: "auto",
 			       maxZoomLevel: 8,
@@ -68,8 +69,6 @@ window.onload = function init(){
 					  new OpenLayers.Control.NavToolbar(),
 					  new OpenLayers.Control.LayerSwitcher({'ascending':false}),
 					  new OpenLayers.Control.ScaleLine(),
-					  //new OpenLayers.Control.MouseToolbar(),
-					  //new OpenLayers.Control.Permalink('permalink'),
 					  new OpenLayers.Control.OverviewMap()
 					  ] });
   
@@ -85,7 +84,7 @@ window.onload = function init(){
 					  {transitionEffect: 'resize', wrapDateLine: true}
 					  );
   jpl_wms.setVisibility(false);
-  
+
   lineLayer = new OpenLayers.Layer.Vector("My Flights",
 					{styleMap: new OpenLayers.StyleMap({
 					    strokeColor: "#ee9900",
@@ -107,21 +106,20 @@ window.onload = function init(){
   };
   map.addControl(drawControls.select); */
 
-  map.zoomToMaxExtent();
-
   // Extract any arguments from URL
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0) {
-    document.getElementById("loginform").style.display = 'none';
     document.getElementById("loginstatus").style.display = 'inline';
-    document.getElementById("news").style.display = 'none';
     if(filter_trid != 0) {
       document.getElementById("filter_tripselect").style.display = 'none';
     }
   } else {
+    document.getElementById("loginform").style.display = 'inline';
+    document.getElementById("news").style.display = 'inline';
+
     // Nope, set up hinting and autocompletes for editor
     initHintTextboxes();
 
@@ -134,6 +132,7 @@ window.onload = function init(){
     new Ajax.Autocompleter("plane", "planeAC", "php/autocomplete.php",
     			   {afterUpdateElement : getSelectedPlid});
 
+    map.zoomToMaxExtent();
   }
 
   OpenLayers.Util.alphaHack = function() { return false; };
@@ -271,6 +270,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   var marker = feature.createMarker();
   marker.apid = apid;
   marker.code = code;
+  marker.count = count;
   feature.apid = apid;
   feature.code = code;
   feature.name = formattedName;
@@ -312,6 +312,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
     OpenLayers.Event.stop(evt);
   };
   marker.events.register("mousedown", feature, markerClick);
+  marker.display(zoomFilter(count));
   airportLayer.addMarker(marker);
 }
 
@@ -835,10 +836,11 @@ function updateMap(str){
     col[1] + " mi flown<br>" +
     days + " days " + hours + ":" + min;
   document.getElementById("stats").innerHTML = stats;
+  flightTotal = col[0];
   privacy = col[3];
 
   // New user with no flights?  Then don't even try to draw
-  if(col[0] == "0") {
+  if(flightTotal == "0") {
     return;
   }
 
@@ -858,6 +860,7 @@ function updateMap(str){
     // apid, x, y, name, code, city, country, count, formatted_name
     drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8]);
   }
+  zoomEvent(); // filter in/out airports based on zoom level
 
   // Redraw selection markers if in input mode
   if(input) {
@@ -1890,6 +1893,24 @@ function refresh(init) {
   closePopup();
   apid = 0;
   xmlhttpPost(URL_MAP, 0, init);
+}
+
+// Filter out airports based on current map zoom level
+// Current rule: on level 0 only, filter out airports with <2 flights if user has over 200 flights
+function zoomFilter(count) {
+  if(count <= 2 && flightTotal > 200 && map.getZoom() == 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+// Zoom level has been changed, toggle markers on/off
+function zoomEvent(event) {
+  var markers = airportLayer.markers;
+  for(m = 0; m < markers.length; m++) {
+    markers[m].display(zoomFilter(markers[m].count));
+  }
 }
 
 /* Refresh the Google Ad iframe
