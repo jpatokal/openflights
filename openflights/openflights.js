@@ -60,7 +60,7 @@ window.onload = function init(){
 
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
   map = new OpenLayers.Map('map', {
-    eventListeners: { "zoomend": zoomEvent },
+      //eventListeners: { "zoomend": zoomEvent },
     maxExtent: bounds,
 			       maxResolution: "auto",
 			       maxZoomLevel: 8,
@@ -312,7 +312,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
     OpenLayers.Event.stop(evt);
   };
   marker.events.register("mousedown", feature, markerClick);
-  marker.display(zoomFilter(count));
+  //marker.display(zoomFilter(count));
   airportLayer.addMarker(marker);
 }
 
@@ -860,7 +860,7 @@ function updateMap(str){
     // apid, x, y, name, code, city, country, count, formatted_name
     drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8]);
   }
-  zoomEvent(); // filter in/out airports based on zoom level
+  //zoomEvent(); // filter in/out airports based on zoom level
 
   // Redraw selection markers if in input mode
   if(input) {
