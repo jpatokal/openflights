@@ -56,6 +56,8 @@ if($trid && $trid != "0") {
 	$_SESSION["openuid"] = $uid;
 	$_SESSION["opentrid"] = $trid;
       }
+      // Increment view counter
+      mysql_query("UPDATE users SET count=count+1 WHERE uid=$uid", $db);
     }
   } else {
     die('Error;No such trip.');
@@ -78,6 +80,8 @@ if($user && $user != "0") {
 	$_SESSION["openuid"] = $uid;
 	$_SESSION["opentrid"] = null;
       }
+      // Increment view counter
+      mysql_query("UPDATE users SET count=count+1 WHERE uid=$uid", $db);
     }
   } else {
     die('Error;No such user.');
@@ -98,6 +102,9 @@ if($year && $year != "0") {
 $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights where uid=" . $uid . " " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  if($row["count"] == "0" && $user && $user != "0") {
+    die('Error;This user has no flights.');
+  }
   printf("%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public);
 }
 
