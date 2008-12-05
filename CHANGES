@@ -1,3 +1,12 @@
+<b>2008-12-05</b>
+
+* Popup "List" button changed to icon
+* Airport selection for input now via popup
+* Flight path being edited or added now drawn on map
+* Some memory leaks fixed
+* Flight lists drawn faster on IE
+* No longer possible to "stack" multiple adds/edits
+
 <b>2008-12-03</b>
 
 * Log number of times map has been viewed, visible in Settings

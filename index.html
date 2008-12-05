@@ -18,7 +18,7 @@
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="/js/effects.js"></script>
     <script type="text/javascript" src="/js/hint-textbox.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081203"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081205"></script>
   </head>
 
   <body>
@@ -37,7 +37,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 2 Dec 2008: <a href="/about.html#CHANGES">"Unknown" airlines now allowed.<br>CSV import, export and backup implemented.</a>
+	      <B>News</b>: 5 Dec 2008: <a href="/about.html#CHANGES">Route now shown while adding/editing flights.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -113,7 +113,7 @@
 
 	      <div id="controlpanel" style="display: none">
 		<br><b>Control panel</b><br>
-		<input type="button" value="New flight" align="middle" onclick='JavaScript:preInputFlight("ADD")'>
+		<input type="button" value="New flight" align="middle" onclick='JavaScript:newFlight()'>
 		<input type="button" value="List flights" align="middle" onclick='JavaScript:startListFlights()'>
 		<input type="button" value="Import" align="middle" onclick='JavaScript:openImport()'>
 		<input type="button" value="Settings" align="middle" onclick='JavaScript:settings()'>
