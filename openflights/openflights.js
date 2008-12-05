@@ -817,7 +817,7 @@ function updateMap(str){
   flightTotal = col[0];
   privacy = col[3];
 
-  // New user with no flights?  Then don't even try to draw
+  // New user (or filter setting) with no flights?  Then don't even try to draw
   if(flightTotal == "0") {
     return;
   }
@@ -857,24 +857,23 @@ function startListFlights() {
 function listFlights(str, desc) {
   openPane("result");
   fidList = new Array();
-  table = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ";
+
+  // IE string concat is painfully slow, so we use an array and join it instead
+  var table = [];
+  table.push("<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ");
   if(str == "") {
-    table += "<i>No flights found at this airport.</i></span></div>";
+    table.push("<i>No flights found at this airport.</i></span></div>");
   } else {
     if(desc) {
-      table += desc.replace(/\<br\>/g, " &mdash; ");
-      table = "<span style='float: right'><input type='button' value='Export' align='middle' onclick='JavaScript:exportFlights(\"export\")'></span>" + table;
+      table.push(desc.replace(/\<br\>/g, " &mdash; "));
+      table.unshift("<span style='float: right'><input type='button' value='Export' align='middle' onclick='JavaScript:exportFlights(\"export\")'></span>"); // place at front of array
     }
-    table += "<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">";
-    table += "<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>";
+    table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
+    table.push("<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>");
     if(logged_in) {
-      table += "<th class=\"unsortable\">Action</th>";
+      table.push("<th class=\"unsortable\">Action</th>");
     }
-    table += "</tr>";
-
-    // IE string concat is painfully slow, so we use an array and join it instead
-    var tableArray = [];
-    tableArray.push(table);
+    table.push("</tr>");
 
     var rows = str.split("\n");
     for (r = 0; r < rows.length; r++) {
@@ -895,7 +894,7 @@ function listFlights(str, desc) {
       if(logged_in && trip != "") {
 	trip = "<a href=\"#\" onclick=\"JavaScript:editTrip(" + trip + ");\">" + trip + "</a>";
       }
-      tableArray.push("<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
+      table.push("<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
 		      "<td>" + code + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
 		      "</td><td>" + plane + "</td><td>" + seat +
@@ -904,18 +903,18 @@ function listFlights(str, desc) {
 		      "</td><td>" + col[16].substring(0,15) + "</td>");
 	
       if(logged_in) {
-	tableArray.push("<td>");
-	tableArray.push("<a href=\"#\" onclick=\"JavaScript:preEditFlight(" + fid + "," + r + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>");
-	tableArray.push("<a href=\"#\" onclick=\"JavaScript:preCopyFlight(" + fid + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>");
-	tableArray.push("<a href=\"#\" onclick=\"JavaScript:deleteFlight(" + fid + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>");
-	tableArray.push("</td>");
+	table.push("<td>");
+	table.push("<a href=\"#\" onclick=\"JavaScript:preEditFlight(" + fid + "," + r + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>");
+	table.push("<a href=\"#\" onclick=\"JavaScript:preCopyFlight(" + fid + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>");
+	table.push("<a href=\"#\" onclick=\"JavaScript:deleteFlight(" + fid + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>");
+	table.push("</td>");
       }
-      tableArray.push("</tr>");
+      table.push("</tr>");
       fidList.push(fid);
     }
-    tableArray.push("</table>");
+    table.push("</table>");
   }
-  document.getElementById("result").innerHTML = tableArray.join("");
+  document.getElementById("result").innerHTML = table.join("");
   // Refresh sortables code
   sortables_init();
 }
