@@ -19,8 +19,8 @@ var lastQuery, lastDesc;
 
 // Temporary variables for current flight being edited
 var alid = 0, plane;
-var input = false, logged_in = false, initializing = true;
-var input_srcmarker, input_dstmarker, input_toggle;
+var logged_in = false, initializing = true;
+var input_srcmarker, input_dstmarker, input_line, input_toggle;
 var majorEdit = false;
 // If true, the value has been set by autocomplete
 var srcApidAC = false, dstApidAC = false, airlineAC = false;
@@ -39,7 +39,7 @@ var CODE_EDITOK = 2;
 var CODE_DELETEOK = 100;
 
 var INPUT_MAXLEN = 50;
-var AIRLINE_MAXLEN = 21;
+var SELECT_MAXLEN = 25;
 
 var airportMaxFlights = 0;
 var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
@@ -87,7 +87,7 @@ window.onload = function init(){
 
   lineLayer = new OpenLayers.Layer.Vector("My Flights",
 					{styleMap: new OpenLayers.StyleMap({
-					    strokeColor: "#ee9900",
+					    strokeColor: "${color}",
 						strokeOpacity: 1,
 						strokeWidth: "${count}"
 						})
@@ -98,14 +98,6 @@ window.onload = function init(){
   
   map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
   
-  /* flight selection -- currently disabled
-  selectControl = new OpenLayers.Control.SelectFeature(lineLayer,
-						       {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
-  drawControls = {
-    select: selectControl
-  };
-  map.addControl(drawControls.select); */
-
   // Extract any arguments from URL
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
@@ -154,28 +146,10 @@ function parseArgument(name)
   }
 }
 
-/* currently not used
-function onFeatureSelect(feature) {
-  selectedFeature = feature;
-  popup = new OpenLayers.Popup.FramedCloud("chicken", 
-					   feature.geometry.getBounds().getCenterLonLat(),
-					   null,
-					   "<div style='font-size:.8em'>" + feature.attributes.flight +"</div>",
-					   null, true, onPopupClose);
-  feature.popup = popup;
-  map.addPopup(popup);
-}
-function onFeatureUnselect(feature) {
-  map.removePopup(feature.popup);
-  feature.popup.destroy();
-  feature.popup = null;
-}
-function onPopupClose(evt) {
-  selectControl.unselect(selectedFeature);
-}
-  */
-
-function drawLine(x1, y1, x2, y2, count, distance) {
+function drawLine(x1, y1, x2, y2, count, distance, color) {
+  if(! color) {
+    color = "#ee9900";
+  }
   if(x2 < x1) {
     var tmpx = x1;
     var tmpy = y1;
@@ -213,14 +187,19 @@ function drawLine(x1, y1, x2, y2, count, distance) {
       eList = straightPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2));
     }
   }
-  var features = [ new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList), {count: count}) ];
+  var features = [ new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList),
+						 {count: count, color: color}) ];
   if(wList) {
-    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList), {count: count}));
+    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList),
+						{count: count, color: color}));
   }
   if(eList) {
-    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList), {count: count}));
+    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList),
+						{count: count, color: color}));
   }
   lineLayer.addFeatures(features);
+
+  return features;
 }
 
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count, formattedName) {
@@ -233,7 +212,11 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
       (filter_user == 0 && filter_trid == 0) ||
       privacy == "O")
     {
-      desc += " <input type=\"button\" value=\"View\" align=\"middle\" onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")'>";
+      // Add toolbar to popup
+      desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
+	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + apid + ", true);\"><img src=\"/img/icon_plane-src.png\" width=17 height=17 title=\"Select this airport\" id='popup" + apid + "' style='visibility: hidden'></a> " +
+	"<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")';\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"List flights\"></a>" +
+	"</span>" + desc;
   }
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
 
@@ -268,35 +251,17 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   feature.data.popupContentHTML = desc;
   feature.data.overflow = "auto";
   var marker = feature.createMarker();
+
+  // These are used to do airport lookups
   marker.apid = apid;
   marker.code = code;
   marker.count = count;
-  feature.apid = apid;
-  feature.code = code;
-  feature.name = formattedName;
+  marker.name = formattedName;
 
   // Run when the user clicks on an airport marker
   // this == the feature, *not* the marker
   var markerClick = function (evt) {
     closePopup();
-    
-    // If input mode is active, we select the airport instead of popping it up
-    if(input) {
-      data = this.code + ":" + this.apid + ":" + this.lonlat.lon + ":" + this.lonlat.lat;
-      if(input_toggle == "SRC") {
-	$('src_ap').value = this.name;
-	$('src_ap').style.color = "#000";
-	$('src_apid').value = data;
-	selectNewAirport('src_ap');
-      } else {
-	$('dst_ap').value = this.name;
-	$('src_ap').style.color = "#000";
-	$('dst_apid').value = data;
-	selectNewAirport('dst_ap');
-      }
-      return;
-    }
-    
     if (this.popup == null) {
       this.popup = this.createPopup(this.closeBox);
       map.addPopup(this.popup);
@@ -308,6 +273,11 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
       currentPopup = this.popup;
     } else {
       closePane();
+    }
+    if(getCurrentPane() == "input") {
+      $('popup' + apid).style.visibility = "visible";
+    } else {
+      $('popup' + apid).style.visibility = "hidden";
     }
     OpenLayers.Event.stop(evt);
   };
@@ -394,7 +364,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $(param + 'id').value = apdata;
 	    $(param).value = cols[1];
 	    $(param).style.color = '#000000';
-	    selectNewAirport(param);
+	    markAirport(param);
 	  } else {
 	    invalidateAirport(param);
 	  }
@@ -634,7 +604,7 @@ function updateFilter(str) {
   var airlines = master[4];
   var years = master[5];
 
-  var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), 20, "refresh(true)");
+  var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
   document.getElementById("filter_tripselect").innerHTML = tripSelect;
   var editTripSelect = document.forms['inputform'].trips;
   if(editTripSelect) {
@@ -660,7 +630,7 @@ function updateFilter(str) {
     cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged", selected);
   document.forms['inputform'].trips[0].text = "Select trip";
 
-  var airlineSelect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), AIRLINE_MAXLEN, "refresh(true)");
+  var airlineSelect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), SELECT_MAXLEN, "refresh(true)");
   document.getElementById("filter_airlineselect").innerHTML = airlineSelect;
   var yearSelect = createSelect("Years", "All", filter_year, years.split("\t"), 20, "refresh(true)");
   document.getElementById("filter_yearselect").innerHTML = yearSelect;
@@ -818,7 +788,15 @@ function radioValue(radio) {
 // Reinsert all flights, airports from database result
 function updateMap(str){
   lineLayer.destroyFeatures();
+  var markers = airportLayer.markers;
+  for(m = 0; m < markers.length; m++) {
+    markers[m].destroy();
+  }
   airportLayer.clearMarkers();
+  var popups = map.popups;
+  for(p = 0; p < popups.length; p++) {
+    popups[p].destroy();
+  }
 
   var master = str.split("\n");
   var stats = master[0];
@@ -863,9 +841,9 @@ function updateMap(str){
   //zoomEvent(); // filter in/out airports based on zoom level
 
   // Redraw selection markers if in input mode
-  if(input) {
-    if(input_srcmarker) selectNewAirport("src_ap", true);
-    if(input_dstmarker) selectNewAirport("dst_ap", true);
+  if(getCurrentPane() == "input") {
+    if(input_srcmarker) markAirport("src_ap", true);
+    if(input_dstmarker) markAirport("dst_ap", true);
   }    
 }
 
@@ -893,6 +871,11 @@ function listFlights(str, desc) {
       table += "<th class=\"unsortable\">Action</th>";
     }
     table += "</tr>";
+
+    // IE string concat is painfully slow, so we use an array and join it instead
+    var tableArray = [];
+    tableArray.push(table);
+
     var rows = str.split("\n");
     for (r = 0; r < rows.length; r++) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, airline_code 19
@@ -912,27 +895,27 @@ function listFlights(str, desc) {
       if(logged_in && trip != "") {
 	trip = "<a href=\"#\" onclick=\"JavaScript:editTrip(" + trip + ");\">" + trip + "</a>";
       }
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
-	"<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
-	"<td>" + code + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
-	"</td><td>" + plane + "</td><td>" + seat +
-	"</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
-	"</td><td>" + trip + "</td>" +
-	"</td><td>" + col[16].substring(0,15) + "</td>";
+      tableArray.push("<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
+		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
+		      "<td>" + code + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
+		      "</td><td>" + plane + "</td><td>" + seat +
+		      "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
+		      "</td><td>" + trip + "</td>" +
+		      "</td><td>" + col[16].substring(0,15) + "</td>");
 	
       if(logged_in) {
-	table += "<td>" +
-	  "<a href=\"#\" onclick=\"JavaScript:preEditFlight(" + fid + "," + r + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>" +
-	  "<a href=\"#\" onclick=\"JavaScript:preCopyFlight(" + fid + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>" +
-	  "<a href=\"#\" onclick=\"JavaScript:deleteFlight(" + fid + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>" +
-	  "</td>";
+	tableArray.push("<td>");
+	tableArray.push("<a href=\"#\" onclick=\"JavaScript:preEditFlight(" + fid + "," + r + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>");
+	tableArray.push("<a href=\"#\" onclick=\"JavaScript:preCopyFlight(" + fid + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>");
+	tableArray.push("<a href=\"#\" onclick=\"JavaScript:deleteFlight(" + fid + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>");
+	tableArray.push("</td>");
       }
-      table += "</tr>";
+      tableArray.push("</tr>");
       fidList.push(fid);
     }
-    table += "</table>";
+    tableArray.push("</table>");
   }
-  document.getElementById("result").innerHTML = table;
+  document.getElementById("result").innerHTML = tableArray.join("");
   // Refresh sortables code
   sortables_init();
 }
@@ -1122,7 +1105,7 @@ function showTop10(str) {
 function editPointer(offset) {
   var newPtr = fidPtr + offset;
   if(newPtr >= 0 && newPtr < fidList.length) {
-    if(document.getElementById("b_add").disabled == false) {
+    if(hasChanged()) {
       if(! confirm("Changes made to this flight have not been saved.  OK to discard them?")) {
 	return;
       }
@@ -1167,8 +1150,8 @@ function editFlight(str, param) {
   form.duration.value = col[7];
   form.seat.value = col[8];
 
-  selectAirport(col[1]); // sets src_ap, src_apid
-  selectAirport(col[3]); // sets dst_ap, dst_apid
+  selectAirport(col[1], true); // sets src_ap, src_apid
+  selectAirport(col[3], true); // sets dst_ap, dst_apid
   selectAirline(col[15], true); // sets airline, airline_id
 
   var seat_type = inputform.seat_type;
@@ -1192,6 +1175,15 @@ function editFlight(str, param) {
       break;
     }
   }
+  var select = inputform.trips;
+  select.selectedIndex = 0;
+  for(index = 0; index < select.length; index++) {
+    if(select[index].value == col[17]) {
+      select.selectedIndex = index;
+      break;
+    }
+  }
+
   fid = col[12]; //stored until flight is saved or deleted
 
   $('plane').value = col[13]; 
@@ -1200,7 +1192,6 @@ function editFlight(str, param) {
   form.registration.value = col[14];
   alid = col[15];
   form.note.value = col[16];
-  trid = col[17];
 
   $('src_ap').style.color = '#000000';
   $('dst_ap').style.color = '#000000';
@@ -1209,12 +1200,13 @@ function editFlight(str, param) {
 
   // Don't allow saving until something is changed
   setInputAllowed(false);
-  flightSelectBoxes();
 }
 
-// Populate select boxes in input flight and do other preparation for entering/editing flight
-function preInputFlight(param) {
-  openInput(param);
+// Populate select boxes in input flight and do other preparation for adding new flight
+function newFlight() {
+  alert("new");
+  openInput("ADD");
+  alert("old");
 
   if(document.forms['inputform'].src_date.value == "") {
     var today = new Date();
@@ -1225,22 +1217,9 @@ function preInputFlight(param) {
   }
   document.forms['inputform'].src_date.focus();
 
-  // An existing entry will already have plane, airline, trip selected
-  if(param == "EDIT" || param == "COPY") {
-    flightSelectBoxes();
-  }
-}
-
-// Select correct items in input form select boxes
-function flightSelectBoxes() {
-  var select = inputform.trips;
-  select.selectedIndex = 0;
-  for(index = 0; index < select.length; index++) {
-    if(select[index].value == trid) {
-      select.selectedIndex = index;
-      break;
-    }
-  }
+  // Quick marker redraw
+  markAirport("src_ap", true);
+  markAirport("dst_ap", true);
 }
 
 // User has edited a flight's contents
@@ -1255,15 +1234,19 @@ function markAsChanged(major) {
   } 
 }
 
+// Has the user made any changes?
+// If yes, the add button will be enabled (in both ADD and EDIT modes)
+function hasChanged() {
+  return !document.getElementById("b_add").disabled;
+}
+
 // Disable and re-enable submission while a) AJAX requests are pending, b) no changes have been made
 // state={true,false} for enabled,disabled
 function setInputAllowed(state) {
   if(state) {
-    style = 'hidden';
     document.getElementById("b_add").disabled = false;
     document.getElementById("b_save").disabled = false;
   } else {
-    style = 'visible';
     document.getElementById("b_add").disabled = true;
     document.getElementById("b_save").disabled = true;
   }
@@ -1302,11 +1285,11 @@ function addNewAirport(data, name) {
   if(input_toggle == "SRC") {
     $('src_ap').value = name;
     $('src_apid').value = data;
-    selectNewAirport('src_ap');
+    markAirport('src_ap');
   } else {
     $('dst_ap').value = name;
     $('dst_apid').value = data;
-    selectNewAirport('dst_ap');
+    markAirport('dst_ap');
   }
 }
 
@@ -1326,7 +1309,7 @@ function addNewAirline(alid, name) {
   // Nope, we need to add it to filter options
   var al_select = document.forms['filterform'].Airlines;
   var elOptNew = document.createElement('option');
-  if (name.length > AIRLINE_MAXLEN) {
+  if (name.length > SELECT_MAXLEN) {
     // Three dots in a proportional font is about two chars...
     elOptNew.text = name.substring(0,maxlen - 2) + "...";
   } else {
@@ -1352,13 +1335,13 @@ function addNewAirline(alid, name) {
 function getSelectedSrcApid(text, li) {
   $('src_ap').style.color = '#000000';
   $('src_apid').value=li.id;
-  selectNewAirport('src_ap');
+  markAirport('src_ap');
   srcApidAC = true;
 }
 function getSelectedDstApid(text, li) {
   $('dst_ap').style.color = '#000000';
   $('dst_apid').value=li.id;
-  selectNewAirport('dst_ap');
+  markAirport('dst_ap');
   dstApidAC = true;
 }
 
@@ -1431,7 +1414,7 @@ function newTrip(code, newTrid, name, url) {
   markAsChanged();
 }
 
-// When user has manually entered an airport code, try to match it to DB
+// When user has manually entered an airport code, try to match it
 function airportCodeToAirport(type) {
 
   // Ignore autocomplete results
@@ -1456,7 +1439,7 @@ function airportCodeToAirport(type) {
   var found = false;
   for(m = 0; m < markers.length; m++) {
     if(markers[m].code == code) {
-      markers[m].events.triggerEvent("mousedown");
+      selectAirport(markers[m].apid, true);
       found = true;
       break;
     }
@@ -1475,7 +1458,7 @@ function invalidateAirport(type) {
     $(type).style.color = '#FF0000';
   }
   $(type + 'id').value = 0;
-  selectNewAirport(type);
+  markAirport(type);
 }
 
 // When user has entered flight number, try to match it to airline
@@ -1512,7 +1495,7 @@ function flightNumberToAirline(type) {
 // Add a temporary source or destination marker over currently selected airport
 // Also calculates distance and duration (unless "quick" is true)
 // type: "src_ap" or "dst_ap"
-function selectNewAirport(type, quick) {
+function markAirport(type, quick) {
   var size = new OpenLayers.Size(17, 17);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   if(type == "src_ap") {
@@ -1555,8 +1538,12 @@ function selectNewAirport(type, quick) {
     }
   }
 
-  // Two airports defined, calculate distance and duration
+  // Two airports defined, draw line and calculate distance and duration
   if(! quick) {
+    if(input_line) {
+      lineLayer.removeFeatures(input_line);
+      input_line = null;
+    }
     if(input_dstmarker && input_srcmarker) {
       var src_ap_data = $('src_apid').value.split(":");
       var lon1 = src_ap_data[2];
@@ -1564,8 +1551,10 @@ function selectNewAirport(type, quick) {
       var dst_ap_data = $('dst_apid').value.split(":");
       var lon2 = dst_ap_data[2];
       var lat2 = dst_ap_data[3];
+
       distance = gcDistance(lat1, lon1, lat2, lon2);
-      
+      input_line = drawLine(lon1, lat1, lon2, lat2, 4, distance, "#007fff"); // 3399FF
+
       var rawtime = Math.floor(30 + (distance / 500) * 60);
       var hours = Math.floor(rawtime/60);
       var mins = rawtime % 60;
@@ -1580,6 +1569,22 @@ function selectNewAirport(type, quick) {
 
     // Flag change of airport as major change
     markAsChanged(true);
+  }
+}
+
+// Remove input markers and flight lines 
+function unmarkAirports() {
+  if(input_srcmarker) {
+    airportLayer.removeMarker(input_srcmarker);
+    input_srcmarker = null;
+  }
+  if(input_dstmarker) {
+    airportLayer.removeMarker(input_dstmarker);
+    input_dstmarker = null;
+  }
+  if(input_line) {
+    lineLayer.removeFeatures(input_line);
+    input_line = null;
   }
 }
 
@@ -1607,20 +1612,39 @@ function swapAirports(manual) {
   }
 
   // Redraw markers and airline codes
-  selectNewAirport("src_ap", true);
-  selectNewAirport("dst_ap", true);
+  markAirport("src_ap", true);
+  markAirport("dst_ap", true);
   if(manual) {
     markAsChanged();
   }
 }
 
-// Given apid, find the matching airport and pop it up
-function selectAirport(apid) {
+// Given apid, find the matching airport and either pop it up (false) or select it (true)
+function selectAirport(apid, select) {
   var markers = airportLayer.markers;
   var found = false;
   for(m = 0; m < markers.length; m++) {
     if(markers[m].apid == apid) {
-      markers[m].events.triggerEvent("mousedown");
+
+      // If "select" is true, we select the airport into the input form instead of popping it up
+      if(select && getCurrentPane() == "input") {
+	var marker = markers[m];
+	data = marker.code + ":" + marker.apid + ":" + marker.lonlat.lon + ":" + marker.lonlat.lat;
+	if(input_toggle == "SRC") {
+	  $('src_ap').value = marker.name;
+	  $('src_ap').style.color = "#000";
+	  $('src_apid').value = data;
+	  markAirport('src_ap');
+	} else {
+	  $('dst_ap').value = marker.name;
+	  $('dst_ap').style.color = "#000";
+	  $('dst_apid').value = data;
+	  markAirport('dst_ap');
+	}
+	closePopup();
+      } else {
+	markers[m].events.triggerEvent("mousedown");
+      }
       found = true;
       break;
     }
@@ -1714,11 +1738,12 @@ function newUserLogin(name, pw) {
   document.forms['login'].pw.value = pw;
   document.getElementById("news").innerHTML =
     "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:preInputFlight(\"ADD\")'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
+    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:newFlight()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
   xmlhttpPost(URL_LOGIN, 0, "NEWUSER");
 }
 
 function logout(str) {
+  logged_in = false;
   document.getElementById("loginstatus").innerHTML = "<B>You have been logged out.</B>";
   document.getElementById("loginform").style.display = 'inline';
   document.getElementById("controlpanel").style.display = 'none';
@@ -1746,6 +1771,16 @@ function openPane(newPane) {
   paneStack.push(newPane);
 }
 
+// Check if a named pane is already open, return index if yes
+function findPane(pane) {
+  for(i = 0; i < paneStack.length; i++) {
+    if(paneStack[i] == pane) {
+      return i;
+    }
+  }
+  return null;
+}
+
 // Close current pane
 // If the current pane is the last one, do nothing
 function closePane() {
@@ -1754,9 +1789,7 @@ function closePane() {
   var currentPane = paneStack.pop();
   var lastPane = getCurrentPane();
   if(currentPane == "input") {
-    input = false;
-    if(input_srcmarker) airportLayer.removeMarker(input_srcmarker);
-    if(input_dstmarker) airportLayer.removeMarker(input_dstmarker);
+    unmarkAirports();
     document.getElementById("newairport").style.display = 'none';
   }
   if(currentPane == "result") {
@@ -1777,21 +1810,49 @@ function clearStack() {
 }
 
 function openInput(param) {
+  // Does the user already have an input pane open?
+  p = findPane("input");
+  alert("P" + p);
+  if(p) {
+    // Have they changed it, and do they want to throw away the changes?
+    if(hasChanged()) {
+      switch(param) {
+      case "ADD":
+      case "COPY":
+	msg = "add a new";
+	break;
+      case "EDIT":
+	msg = "edit this";
+	break;
+      }
+      if(! confirm("You are already editing a flight. OK to discard your changes and " + msg + " flight instead?")) {
+	return;
+      }
+    }
+    paneStack.splice(p, 1); // remove the previous "input" pane from stack
+  }
   openPane("input");
-  document.getElementById("newairport").style.display = 'inline';
-  if(param == "EDIT") {
-    document.getElementById("addflighttitle").style.display = 'none';
-    document.getElementById("addflightbuttons").style.display = 'none';
-    document.getElementById("editflighttitle").style.display = 'inline';
-    document.getElementById("editflightbuttons").style.display = 'inline';
-  } else { // ADD, COPY
+
+  switch(param) {
+  case "ADD":
+    clearInput();
+    // fall thru
+
+  case "COPY":
     document.getElementById("addflighttitle").style.display = 'inline';
     document.getElementById("addflightbuttons").style.display = 'inline';
     document.getElementById("editflighttitle").style.display = 'none';
     document.getElementById("editflightbuttons").style.display = 'none';
+    break;
+
+  case "EDIT":
+    document.getElementById("addflighttitle").style.display = 'none';
+    document.getElementById("addflightbuttons").style.display = 'none';
+    document.getElementById("editflighttitle").style.display = 'inline';
+    document.getElementById("editflightbuttons").style.display = 'inline';
   }
-  input = true;
   input_toggle = "SRC";
+  document.getElementById("newairport").style.display = 'inline';
   document.getElementById("input_status").innerHTML = "";
 
   // Don't allow saving until something is changed
@@ -1799,7 +1860,7 @@ function openInput(param) {
 }
 
 function closeInput() {
-  if(document.getElementById("b_add").disabled == false) {
+  if(hasChanged()) {
     if(! confirm("Changes made to this flight have not been saved.  OK to discard them?")) {
       return;
     }
@@ -1836,14 +1897,8 @@ function clearInput() {
   form.plane_id.value = "";
   form.registration.value = "";
   form.note.value = "";
-  if(input_srcmarker) {
-    airportLayer.removeMarker(input_srcmarker);
-    input_srcmarker = null;
-  }
-  if(input_dstmarker) {
-    airportLayer.removeMarker(input_dstmarker);
-    input_dstmarker = null;
-  }
+  form.trips.selectedIndex = 0;
+  unmarkAirports();
   $('src_ap').style.color = '#000000';
   $('dst_ap').style.color = '#000000';
   $('airline').style.color = '#000000';
