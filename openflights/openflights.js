@@ -1204,9 +1204,7 @@ function editFlight(str, param) {
 
 // Populate select boxes in input flight and do other preparation for adding new flight
 function newFlight() {
-  alert("new");
   openInput("ADD");
-  alert("old");
 
   if(document.forms['inputform'].src_date.value == "") {
     var today = new Date();
@@ -1812,7 +1810,6 @@ function clearStack() {
 function openInput(param) {
   // Does the user already have an input pane open?
   p = findPane("input");
-  alert("P" + p);
   if(p) {
     // Have they changed it, and do they want to throw away the changes?
     if(hasChanged()) {
