@@ -893,7 +893,7 @@ function updateMap(str){
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(";");
       // apid, x, y, name, code, city, country, count, formatted_name
-      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8])) {
+      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8]);
     }
     //zoomEvent(); // filter in/out airports based on zoom level
   }
