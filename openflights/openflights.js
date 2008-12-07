@@ -1,6 +1,6 @@
 /**
  * openflights.js -- for openflights.org
- * by Jani Patokallio <jpatokal@iki.fi>
+ * by Jani Patokallio <jani at contentshare dot sg>
  */
 
 // Core map features
@@ -55,6 +55,10 @@ var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "O": "Other", "": ""};
 var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
 var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
 var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "O":"Oth", "": ""};
+
+// avoid pink tiles
+OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
+OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
 window.onload = function init(){
 
@@ -202,23 +206,13 @@ function drawLine(x1, y1, x2, y2, count, distance, color) {
   return features;
 }
 
+//
+// Draw airport (or just update marker if it exists already)
+// Returns true if a new marker was created, or false if it existed already
+//
 function drawAirport(airportLayer, apid, x, y, name, code, city, country, count, formattedName) {
+  // Description
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
-  // Detailed flights accessible only if...
-  // 1. user is logged in, or
-  // 2. system is in "demo mode", or
-  // 3. privacy is set to (O)pen
-  if( logged_in ||
-      (filter_user == 0 && filter_trid == 0) ||
-      privacy == "O")
-    {
-      // Add toolbar to popup
-      desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
-	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + apid + ", true);\"><img src=\"/img/icon_plane-src.png\" width=17 height=17 title=\"Select this airport\" id='popup" + apid + "' style='visibility: hidden'></a> " +
-	"<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")';\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"List flights\"></a>" +
-	"</span>" + desc;
-  }
-  desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
 
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
@@ -239,6 +233,25 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
     alert("ERROR: " + name + ":" + colorIndex);
     colorIndex = 0;
   }
+
+  // Check if the airport has a marker already
+  var markers = airportLayer.markers;
+  for(m = 0; m < markers.length; m++) {
+    if(markers[m].apid == apid) {
+      markers[m].desc = desc; // update description for popup
+      markers[m].state = true; // flag so that it will be made visible
+      if(colorIndex != markers[m].colorIndex) {
+	// Change icon
+	var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
+	markers[m].icon.offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
+	markers[m].icon.setSize(size);
+ 	markers[m].setUrl(airportIcons[colorIndex][0]);
+      }
+      return false;
+    }
+  }
+
+  // Nope, we need to add it
   var iconfile = airportIcons[colorIndex][0];
   var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
   var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
@@ -246,9 +259,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   
   var feature = new OpenLayers.Feature(airportLayer, new OpenLayers.LonLat(x, y));
   feature.closeBox = false;
-  feature.popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {'autoSize': true, 'minSize': new OpenLayers.Size(200,110) });
   feature.data.icon = icon;
-  feature.data.popupContentHTML = desc;
   feature.data.overflow = "auto";
   var marker = feature.createMarker();
 
@@ -257,16 +268,41 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   marker.code = code;
   marker.count = count;
   marker.name = formattedName;
+  marker.state = true; // visible
+
+  // Stored for popup
+  marker.desc = desc;
 
   // Run when the user clicks on an airport marker
   // this == the feature, *not* the marker
   var markerClick = function (evt) {
+    this.popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {'autoSize': true, 'minSize': new OpenLayers.Size(200,110) });
+
+    // Detailed flights accessible only if...
+    // 1. user is logged in, or
+    // 2. system is in "demo mode", or
+    // 3. privacy is set to (O)pen
+    desc = this.marker.desc;
+    if( logged_in ||
+	(filter_user == 0 && filter_trid == 0) ||
+	privacy == "O")
+      {
+	// Add toolbar to popup
+	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
+	  "<a href=\"#\" onclick=\"JavaScript:selectAirport(" + apid + ", true);\"><img src=\"/img/icon_plane-src.png\" width=17 height=17 title=\"Select this airport\" id='popup" + apid + "' style='visibility: hidden'></a> " +
+	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")';\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"List flights\"></a>" +
+	  "</span>" + desc;
+      }
+    desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
     closePopup();
+
     if (this.popup == null) {
+      this.data.popupContentHTML = desc;
       this.popup = this.createPopup(this.closeBox);
       map.addPopup(this.popup);
       this.popup.show();
     } else {
+      this.popup.setContentHTML(desc);
       this.popup.toggle();
     }
     if(this.popup.visible()) {
@@ -282,8 +318,11 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
     OpenLayers.Event.stop(evt);
   };
   marker.events.register("mousedown", feature, markerClick);
+
   //marker.display(zoomFilter(count));
   airportLayer.addMarker(marker);
+
+  return true;
 }
 
 function toggleControl(element) {
@@ -340,6 +379,7 @@ function xmlhttpPost(strURL, id, param) {
   	    listFlights(self.xmlHttpReq.responseText, unescape(param));
 	    break;
 	}
+	document.getElementById("ajaxstatus").style.display = 'none';
       }
       if(strURL == URL_GETCODE) {
 	var cols = self.xmlHttpReq.responseText.split(";");
@@ -365,6 +405,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $(param).value = cols[1];
 	    $(param).style.color = '#000000';
 	    markAirport(param);
+	    markAsChanged(true);
 	  } else {
 	    invalidateAirport(param);
 	  }
@@ -406,9 +447,11 @@ function xmlhttpPost(strURL, id, param) {
       }
       if(strURL == URL_STATS) {
 	showStats(self.xmlHttpReq.responseText);
+	document.getElementById("ajaxstatus").style.display = 'none';
       }
       if(strURL == URL_TOP10) {
 	showTop10(self.xmlHttpReq.responseText);
+	document.getElementById("ajaxstatus").style.display = 'none';
       }
       if(strURL == URL_SUBMIT) {
 	var result = self.xmlHttpReq.responseText.split(";");
@@ -446,6 +489,7 @@ function xmlhttpPost(strURL, id, param) {
 	    // Not in edit mode, so reload currently displayed list of flights
 	    xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
 	  }
+	  majorEdit = true; // trigger map refresh
 	}
 
 	if(code == CODE_EDITOK || code == CODE_ADDOK) {
@@ -456,13 +500,18 @@ function xmlhttpPost(strURL, id, param) {
 	  }
 	}
 
-	// A change that affected the map was made, so redraw (after any ops above complete)
-	if(majorEdit || code == CODE_DELETEOK) {
-	  setTimeout('refresh(false)', 1000);
+	// A change that affected the map was made, so redraw
+	if(majorEdit) {
+	  if(code == CODE_DELETEOK) {
+	    setTimeout('refresh(false)', 1000); // wait for earlier ops to complete...
+	  } else {
+	    refresh(false); // ...else do it right now
+	  }
+	} else {
+	  document.getElementById("ajaxstatus").style.display = 'none';
 	}
 	majorEdit = false;
-      }
-      document.getElementById("ajaxstatus").style.display = 'none';
+      } // end URL_SUBMIT
     }
   }
   // End result processing
@@ -561,7 +610,7 @@ function xmlhttpPost(strURL, id, param) {
       query = lastQuery;
       break;
     }
-    // ...else generate new query
+    // ...else fallthru and generate new query
 
   // URL_MAP, URL_FLIGHTS, URL_STATS
   default:
@@ -785,8 +834,8 @@ function radioValue(radio) {
   }
 }
 
-// Reinsert all flights, airports from database result
-function updateMap(str){
+// Clear all markers, popups and flights
+function clearMap() {
   lineLayer.destroyFeatures();
   var markers = airportLayer.markers;
   for(m = 0; m < markers.length; m++) {
@@ -796,6 +845,17 @@ function updateMap(str){
   var popups = map.popups;
   for(p = 0; p < popups.length; p++) {
     popups[p].destroy();
+  }
+}
+
+// Reinsert all flights, airports from database result
+function updateMap(str){
+  lineLayer.destroyFeatures();
+
+  // Default all markers to be turned off
+  var markers = airportLayer.markers;
+  for(m = 0; m < markers.length; m++) {
+    markers[m].state = false;
   }
 
   var master = str.split("\n");
@@ -818,33 +878,38 @@ function updateMap(str){
   privacy = col[3];
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
-  if(flightTotal == "0") {
-    return;
+  if(flightTotal != "0") {
+    var rows = flights.split(":");
+    for (r = 0; r < rows.length; r++) {
+      var rCol = rows[r].split(";");
+      // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7
+      drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]), parseFloat(rCol[4]), parseFloat(rCol[5]), rCol[6], rCol[7]);
+    }
+    
+    var rows = airports.split(":");
+    
+    // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
+    airportMaxFlights = rows[rows.length - 1].split(";")[7];
+    for (r = 0; r < rows.length; r++) {
+      var col = rows[r].split(";");
+      // apid, x, y, name, code, city, country, count, formatted_name
+      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8])) {
+    }
+    //zoomEvent(); // filter in/out airports based on zoom level
   }
 
-  var rows = flights.split(":");
-  for (r = 0; r < rows.length; r++) {
-    var rCol = rows[r].split(";");
-    // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7
-    drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]), parseFloat(rCol[4]), parseFloat(rCol[5]), rCol[6], rCol[7]);
+  // Now we turn marker display on or off
+  for(m = 0; m < markers.length; m++) {
+    markers[m].display(markers[m].state);
   }
-  
-  var rows = airports.split(":");
-
-  // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
-  airportMaxFlights = rows[rows.length - 1].split(";")[7];
-  for (r = 0; r < rows.length; r++) {
-    var col = rows[r].split(";");
-    // apid, x, y, name, code, city, country, count, formatted_name
-    drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8]);
-  }
-  //zoomEvent(); // filter in/out airports based on zoom level
 
   // Redraw selection markers if in input mode
   if(getCurrentPane() == "input") {
     if(input_srcmarker) markAirport("src_ap", true);
     if(input_dstmarker) markAirport("dst_ap", true);
-  }    
+  }
+
+  document.getElementById("ajaxstatus").style.display = 'none';
 }
 
 function startListFlights() {
@@ -1199,6 +1264,7 @@ function editFlight(str, param) {
 
   // Don't allow saving until something is changed
   setInputAllowed(false);
+  majorEdit = false;
 }
 
 // Populate select boxes in input flight and do other preparation for adding new flight
@@ -1288,6 +1354,7 @@ function addNewAirport(data, name) {
     $('dst_apid').value = data;
     markAirport('dst_ap');
   }
+  markAsChanged(true);
 }
 
 // Handle the "add new airlines" buttons
@@ -1333,12 +1400,14 @@ function getSelectedSrcApid(text, li) {
   $('src_ap').style.color = '#000000';
   $('src_apid').value=li.id;
   markAirport('src_ap');
+  markAsChanged(true);
   srcApidAC = true;
 }
 function getSelectedDstApid(text, li) {
   $('dst_ap').style.color = '#000000';
   $('dst_apid').value=li.id;
   markAirport('dst_ap');
+  markAsChanged(true);
   dstApidAC = true;
 }
 
@@ -1563,9 +1632,6 @@ function markAirport(type, quick) {
     }
     document.forms['inputform'].distance.value = distance;
     document.forms['inputform'].duration.value = duration;
-
-    // Flag change of airport as major change
-    markAsChanged(true);
   }
 }
 
@@ -1638,6 +1704,7 @@ function selectAirport(apid, select) {
 	  $('dst_apid').value = data;
 	  markAirport('dst_ap');
 	}
+	markAsChanged(true);
 	closePopup();
       } else {
 	markers[m].events.triggerEvent("mousedown");
@@ -1721,6 +1788,7 @@ function login(str, param) {
       closeNews();
     }
     clearStack();
+    clearMap();
     clearFilter(true);
 
   } else {
@@ -1745,7 +1813,10 @@ function logout(str) {
   document.getElementById("loginform").style.display = 'inline';
   document.getElementById("controlpanel").style.display = 'none';
   clearStack();
+  clearMap();
   clearFilter(true);
+  document.forms['login'].name.value = "";
+  document.forms['login'].pw.value = "";
   document.forms['login'].name.focus();
 }
 

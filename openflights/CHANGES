@@ -1,3 +1,10 @@
+<b>2008-12-07</b>
+
+* Flight map only redrawn after major edits
+* Faster marker rendering for filter, add, delete, edit
+* "LOADING" tag shown until map rendering completed
+* No more pink tiles when MetaCarta is down (only white ones...)
+
 <b>2008-12-05</b>
 
 * Popup "List" button changed to icon
