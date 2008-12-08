@@ -547,7 +547,7 @@ function xmlhttpPost(strURL, id, param) {
       }
       var alid = $('airline_id').value;
       var airline = $('airline').value.trim();
-      if(! alid || airline == "" || airline == $('airline').hintText) {
+      if(! alid || airline == "" || airline == 0 || airline == $('airline').hintText) {
 	alid = "-1"; // UNKNOWN
       }
       var type = inputform.seat_type.value;
