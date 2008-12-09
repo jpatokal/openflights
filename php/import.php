@@ -34,9 +34,8 @@ $reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C", "Other"=>"O");
 //
 // <td class="liste">value[</td> --> value
 function fm_strip_liste($value) {
-  $value = substr($value, 18);
+  $value = strip_tags($value);
   $value = str_replace('&nbsp;', '', $value);
-  $value = trim(str_replace('</td>', '', $value));
 
   if(strlen($value) == 1) {
     return "";

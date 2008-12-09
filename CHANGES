@@ -1,3 +1,11 @@
+<b>2008-12-09</b>
+
+* Bug: Fix plane name handling in some FlightMemory imports
+
+<b>2008-12-08</b>
+
+* Bug: Airline ID 0 now mapped to -1 (unknown)
+
 <b>2008-12-07</b>
 
 * Flight map only redrawn after major edits
