@@ -16,6 +16,8 @@ select lpad(sum(distance),8," ") as '</pre></td><td style="vertical-align: top;"
 
 select lpad(sum(distance),8," ") as '</pre></td><td style="vertical-align: top;"><pre><b><br>Yesterday</b>', IF(u.public='N',u.name,concat('<a href="http://openflights.org/user/',u.name,'">',u.name,'</a>')) as '' from users as u,flights as f where u.uid != 1 and u.uid=f.uid and date_sub(now(), interval 1 day) < upd_time group by f.uid order by sum(distance) desc limit 10;
 
+select lpad(count,8," ") as '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 users by popularity<br>All time</b>', IF(u.public='N',u.name,concat('<a href="http://openflights.org/user/',u.name,'">',u.name,'</a>')) as '' from users as u where u.uid != 1 order by count desc limit 10;
+
 select distinct CONCAT(s.iata,' &harr;') as '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 routes</b>',d.iata as '',lpad(count(fid),6," ") as '' from airports as s,airports as d,flights as f where f.uid != 1 and s.apid=f.src_apid and d.apid=f.dst_apid group by s.apid,d.apid order by count(fid) desc limit 10;
 
 select rpad(a.name,20,' ') as '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airlines</b>', lpad(count(*),6," ") as '' from airlines as a,flights as f where f.uid != 1 and a.alid=f.alid group by f.alid order by count(*) desc limit 10;
