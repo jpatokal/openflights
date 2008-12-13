@@ -1392,12 +1392,12 @@ function setCommitAllowed(state) {
   state = !state; // enabled=true -> disabled=false
   if(state) changed = false;
 
-  /*  if(getCurrentPane() == "input") {
+  if(getCurrentPane() == "input") {
     $("b_add").disabled = state;
     $("b_save").disabled = state;
   } else {
     $("b_multi_add").disabled = state;
-    }*/
+  }
 }
 
 // If clear=true, then input form is cleared after successful entry
