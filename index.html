@@ -4,8 +4,7 @@
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
-    <link rel="stylesheet" href="/openflights.css?version=20081130" type="text/css">
-    <link rel="stylesheet" href="/css/sortable.css" type="text/css">
+    <link rel="stylesheet" href="/openflights.css?version=20081213" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
@@ -18,7 +17,7 @@
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="/js/effects.js"></script>
     <script type="text/javascript" src="/js/hint-textbox.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081207"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081213"></script>
   </head>
 
   <body>
@@ -32,12 +31,12 @@
 	      <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport(null)'>	    
 	    </div>
 
-	    <div id="maptitle">
+	    <div id="maptitle"><noscript>Sorry, OpenFlights requires JavaScript.</noscript>
 	    </div>
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 7 Dec 2008: <a href="/about.html#CHANGES">Faster map refresh after flight add/edit/delete/filter.</a>
+	      <B>News</b>: 13 Dec 2008: <a href="/about.html#CHANGES">"Basic" flight editor for quick multi-segment flights added.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -74,7 +73,7 @@
 	      </div>
 	    </div> <!-- login -->
 	    
-	    <div id="statsbox">
+	    <div id="statsbox" style="visibility: hidden">
 	      <table>
 		<tr><td>
 		    <span id="stats"></span>
@@ -85,15 +84,8 @@
 		</tr></table>
 	    </div>
 	    
-	    <div id="filter">
+	    <div id="filter" style="visibility: hidden">
 	      <form id='filterform'>
-		<!--	      <input type="radio" name="type" value="none" id="airportToggle"
-		onclick="toggleControl(this);" checked="checked" />
-		<label for="airportToggle">Airports</label>
-		<input type="radio" name="type" value="select" id="selectToggle"
-		onclick="toggleControl(this);" />
-		<label for="selectToggle">Flights</label>
-		-->
 		<b>Filter</b>
 		<table>
 		<tr>
@@ -140,17 +132,20 @@
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.</p>
 	  </div> <!-- end help -->
 	  <div id="input" style="display: none;">
+<span style='float: right'><input id="b_basic" title="Switch to basic editor" value="Basic" type="button" tabindex="50" onclick='JavaScript:openBasicInput();'></span>
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle">Add new flight</span>
     <span id="editflighttitle" style="display: none">Edit flight</span>
-    <small>&mdash; Fields in <font color="blue">blue</font> are required.  You can click on airports in the map to select them or search by city name or airport code.</small></h2>
+    <small>&mdash; Fields in <font color="blue">blue</font> are required.  Click on airports in the map to select them or search by city name or airport code.</small>
+
+</h2>
 <p></p>
 
 <form id='inputform'>
 <table>
 <tr>
   <td><font color="blue">Date</font></td>
-  <td colspan=2><input type="text" name="src_date" size="12" tabindex="1" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="16" width="16" onclick="scwShow(scwID('src_date'),event); markAsChanged();" />
+  <td colspan=2><input type="text" name="src_date" id="src_date" size="11" class="date" tabindex="1" onChange="JavaScript:markAsChanged()";/> <img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date'),event); markAsChanged();" />
     Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();" value="-"/>
     Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();" value="-"/> mi&nbsp;&nbsp;
   </td>
@@ -163,8 +158,8 @@
   <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="3" onChange='JavaScript:airportCodeToAirport("src_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="src_apAC"></div>
       <input type="hidden" name="src_apid" id="src_apid"/></td>
   <td rowspan=2 valign=middle align=left>
-    <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("SRC")'/ style="margin-left: 5px"/> <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="margin-right: 10px"/><br>
-    <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("DST")'/ style="margin-left: 5px"/>
+    <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap")'/ style="margin-left: 5px"/> <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="margin-right: 10px"/><br>
+    <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("dst_ap")'/ style="margin-left: 5px"/>
   </td>
 
   <td>Plane</td>
@@ -206,19 +201,19 @@
 </tr><tr>
   <td>Airline<sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
   <td><input type="text" name="airline" id="airline" size="60" tabindex="8" onChange='JavaScript:flightNumberToAirline("AIRLINE")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
-      <input type="hidden" name="airline_id" id="airline_id"/></td>
+      <input type="hidden" name="airlineid" id="airlineid"/></td>
   <td><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline()'/ style="margin-left: 5px"/></td>
 
   <td colspan=2><span id="input_status"></span></td>
 
 </tr><tr>
   <td>Note</td>
-  <td colspan=2><input type="text" name="note" size="60" tabindex="9" onChange="JavaScript:markAsChanged();"></td>
+  <td colspan=2><input type="text" name="note" size="60" tabindex="9" class="hintTextbox" value="" onChange="JavaScript:markAsChanged();"></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
       <input id="b_add" value="Add" type="button" tabindex="20" onclick='JavaScript:submitFlight();'>
-      <input id="b_clear" value="Clear" type="button" tabindex="21" onclick='JavaScript:clearInput(false)'>
-      <input id="b_exit" value="Exit" type="button" tabindex="23" onclick='JavaScript:closeInput()'>
+      <input id="b_clear" value="Clear" type="button" tabindex="21" onclick='JavaScript:clearInput()'>
+      <input id="b_exit" value="Exit" type="button" tabindex="22" onclick='JavaScript:closeInput()'>
     </span>
     <span id="editflightbuttons" style="display: none">
       <input id="b_save" value="Save changes" type="button" tabindex="20" onclick='JavaScript:saveFlight()'>
@@ -234,6 +229,71 @@
 </form>
 
 	</div>
+
+	  <div id="multiinput" style="display: none;">
+<span style='float: right'><input id="b_detailed" title="Switch to detailed editor" value="Detailed" type="button" tabindex="50" onclick='JavaScript:openDetailedInput("ADD");'></span>
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> Add new flights <small>&mdash; Fields in <font color="blue">blue</font> are required.  Click on airports in the map to select them or search by city name or airport code.</small></h2>
+<p></p>
+
+<form id='multiinputform'>
+<table>
+<tr>
+  <td><font color="blue">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><font color="blue">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td>Airline<sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
+  <td>Date</td>
+</tr><tr id="row1"> <!-- Row 1 -->
+  <td><input type="text" name="src_ap1" id="src_ap1" size="32" tabindex="1" onChange='JavaScript:airportCodeToAirport("src_ap1")' class="hintTextbox" value="Enter city name or airport code"/><span id="src_apAC1"></span>
+      <input type="hidden" name="src_ap1id" id="src_ap1id"/>
+     <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap1")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="dst_ap1" id="dst_ap1" size="32" tabindex="2" onChange='JavaScript:airportCodeToAirport("dst_ap1")' class="hintTextbox" value="Enter city name or airport code"/><span id="dst_apAC1"></span>
+      <input type="hidden" name="dst_ap1id" id="dst_ap1id"/>
+     <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("dst_ap1")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="airline1" id="airline1" size="32" tabindex="3" onChange='JavaScript:flightNumberToAirline("airline1")' class="hintTextbox" value="Enter airline name or code"/><span id="airlineAC1"></span>
+      <input type="hidden" name="airline1id" id="airline1id"/><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline()'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="src_date1" id="src_date1" size="11" class="date" tabindex="4" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date1'),event); markAsChanged();" style="margin-left: 5px"/></td>
+</tr><tr id="row2" style="display: none;"> <!-- Row 2 -->
+  <td><input type="text" name="src_ap2" id="src_ap2" size="32" tabindex="11" onChange='JavaScript:airportCodeToAirport("src_ap2")' class="hintTextbox" value="Enter city name or airport code"/><span id="src_apAC2"></span>
+      <input type="hidden" name="src_ap2id" id="src_ap2id"/>
+     <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap2")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="dst_ap2" id="dst_ap2" size="32" tabindex="12" onChange='JavaScript:airportCodeToAirport("dst_ap2")' class="hintTextbox" value="Enter city name or airport code"/><span id="dst_apAC2"></span>
+      <input type="hidden" name="dst_ap2id" id="dst_ap2id"/>
+     <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("dst_ap2")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="airline2" id="airline2" size="32" tabindex="13" onChange='JavaScript:flightNumberToAirline("airline2")' class="hintTextbox" value="Enter airline name or code"/><span id="airlineAC2"></span>
+      <input type="hidden" name="airline2id" id="airline2id"/><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline()'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="src_date2" id="src_date2" size="11" class="date" tabindex="14" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date2'),event); markAsChanged();" style="margin-left: 5px"/></td>
+</tr><tr id="row3" style="display: none"> <!-- Row 3 -->
+  <td><input type="text" name="src_ap3" id="src_ap3" size="32" tabindex="21" onChange='JavaScript:airportCodeToAirport("src_ap3")' class="hintTextbox" value="Enter city name or airport code"/><span id="src_apAC3"></span>
+      <input type="hidden" name="src_ap3id" id="src_ap3id"/>
+     <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap3")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="dst_ap3" id="dst_ap3" size="32" tabindex="22" onChange='JavaScript:airportCodeToAirport("dst_ap3")' class="hintTextbox" value="Enter city name or airport code"/><span id="dst_apAC3"></span>
+      <input type="hidden" name="dst_ap3id" id="dst_ap3id"/>
+     <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("dst_ap3")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="airline3" id="airline3" size="32" tabindex="23" onChange='JavaScript:flightNumberToAirline("airline3")' class="hintTextbox" value="Enter airline name or code"/><span id="airlineAC3"></span>
+      <input type="hidden" name="airline3id" id="airline3id"/><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline()'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="src_date3" id="src_date3" size="11" class="date" tabindex="24" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date3'),event); markAsChanged();" style="margin-left: 5px"/></td>
+</tr><tr id="row4" style="display: none"> <!-- Row 4 -->
+  <td><input type="text" name="src_ap4" id="src_ap4" size="32" tabindex="31" onChange='JavaScript:airportCodeToAirport("src_ap4")' class="hintTextbox" value="Enter city name or airport code"/><span id="src_apAC4"></span>
+      <input type="hidden" name="src_ap4id" id="src_ap4id"/>
+     <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap4")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="dst_ap4" id="dst_ap4" size="32" tabindex="32" onChange='JavaScript:airportCodeToAirport("dst_ap4")' class="hintTextbox" value="Enter city name or airport code"/><span id="dst_apAC4"></span>
+      <input type="hidden" name="dst_ap4id" id="dst_ap4id"/>
+     <img src="/img/icon_plane-dst.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("dst_ap4")'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="airline4" id="airline4" size="32" tabindex="33" onChange='JavaScript:flightNumberToAirline("airline4")' class="hintTextbox" value="Enter airline name or code"/><span id="airlineAC4"></span>
+      <input type="hidden" name="airline4id" id="airline4id"/><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline()'/ style="margin-right: 5px"/></td>
+  <td><input type="text" name="src_date4" id="src_date4" size="11" class="date" tabindex="34" onChange="JavaScript:markAsChanged()";/><img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date4'),event); markAsChanged();" style="margin-left: 5px"/></td>
+</tr><tr>
+<td colspan=5 style="padding-top: 0.5em">
+  <input id="b_multi_add" value="Add" type="button" tabindex="40" onclick='JavaScript:submitFlight();'>
+  <input id="b_more" value="More" type="button" tabindex="41" onclick='JavaScript:changeRows("More");'>
+  <input id="b_less" value="Less" type="button" tabindex="42" onclick='JavaScript:changeRows("Less");' disabled>
+  <input id="b_multi_clear" value="Clear" type="button" tabindex="43" onclick='JavaScript:clearInput()'>
+  <input id="b_multi_exit" value="Exit" type="button" tabindex="44" onclick='JavaScript:closeInput()'>
+  <span id="multiinput_status"></span></td>
+</td></tr></table>
+</form>
+	</div>
+
 	<div id="result" style="display: none;"></div>
 
       </div> <!-- end resultbox -->

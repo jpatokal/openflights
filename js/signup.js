@@ -6,6 +6,8 @@ var URL_SIGNUP = "/php/signup.php";
 window.onload = function init(){
   if(window.location.href.indexOf("settings") != -1) {
     xmlhttpPost(URL_SIGNUP, "LOAD");
+  } else {
+    document.forms['signupform'].username.value = parent.opener.document.forms['login'].name.value;
   }
 }
 
@@ -37,17 +39,23 @@ function xmlhttpPost(strURL, type) {
   var query = "";
   if(strURL == URL_SIGNUP) {
     var form = document.forms['signupform'];
-    var privacy;
+    var privacy, editor;
 
     for (r=0; r < signupform.privacy.length; r++){
       if (signupform.privacy[r].checked) {
 	privacy = signupform.privacy[r].value;
       }
     }
+    for (r=0; r < signupform.editor.length; r++){
+      if (signupform.editor[r].checked) {
+	editor = signupform.editor[r].value;
+      }
+    }
     query = 'type=' + type + '&' +
       'pw=' + escape(form.pw1.value) + '&' +
       'email=' + escape(form.email.value) + '&' +
-      'privacy=' + escape(privacy);
+      'privacy=' + escape(privacy) + '&' +
+      'editor=' + escape(editor);
     switch(type) {
     case 'NEW':
       query += '&name=' + escape(form.username.value);
@@ -124,6 +132,7 @@ function loadUser(str) {
     var email = cols[2];
     var privacy = cols[3];
     var count = cols[4];
+    var editor = cols[5];
 
     var form = document.forms['signupform'];
     signupform.email.value = email;
@@ -134,6 +143,13 @@ function loadUser(str) {
 	signupform.privacy[r].checked = true;
       } else {
 	signupform.privacy[r].checked = false;
+      }
+    }
+    for (r=0; r < signupform.editor.length; r++){
+      if (signupform.editor[r].value == editor) {
+	signupform.editor[r].checked = true;
+      } else {
+	signupform.editor[r].checked = false;
       }
     }
   } else {

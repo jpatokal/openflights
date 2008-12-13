@@ -50,8 +50,8 @@ function format_airport($row) {
     } else {
       $city = $city . "-";
     }
-    if(strlen($city . $name) > 30) {
-      $name = trim(substr($city . $name, 0, 29)) . ".";
+    if(strlen($city . $name . $country) > 40) {
+      $name = trim(substr($city . $name, 0, 39 - strlen($country))) . ".";
       $city = "";
     }
   }
@@ -97,8 +97,7 @@ function gcDistance($db, $src_apid, $dst_apid) {
   $lon2 = doubleval($lon2)*$rad; $lat2 = doubleval($lat2)*$rad;
 
   $theta = $lon2 - $lon1;
-  $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos
-	       ($theta));
+  $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
   if ($dist < 0) { $dist += $pi; }
   $dist = floor($dist * 6371.2 * 0.621);
 

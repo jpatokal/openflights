@@ -13,7 +13,7 @@
       <FORM name="signupform">
 	<h1>OpenFlights: Create new account</h1>
 
-	<div id="miniresultbox">Sign up here to create your OpenFlights account. It's easy and free!</div><br>
+	<div id="miniresultbox">Sign up here to create your OpenFlights account. It's easy and free!</div>
 	
 	<table>
 	    <tr>
@@ -31,9 +31,13 @@
 	    </tr>
 	    </tr><tr>
 	      <td style="vertical-align: top">Profile privacy</td>
-	      <td><input type="radio" name="privacy" value="N" CHECKED>Private (visible only to you)<br>
-		  <input type="radio" name="privacy" value="Y">Public (map and some stats shared)<br>
+	      <td><input type="radio" name="privacy" value="N">Private (visible only to you)<br>
+		  <input type="radio" name="privacy" value="Y" CHECKED>Public (map and some stats shared)<br>
 		  <input type="radio" name="privacy" value="O">Open (all flight data shared)</td>
+	    </tr><tr>
+	      <td style="vertical-align: top">Flight editor</td>
+	      <td><input type="radio" name="editor" value="B" CHECKED>Basic (airports, airline, date only)</br>
+		  <input type="radio" name="editor" value="D">Detailed (plane, registration & more)<br>
 	    </tr>
 	</table>
 	<ul>

@@ -7,6 +7,7 @@ $pw = $HTTP_POST_VARS["pw"];
 $oldpw = $HTTP_POST_VARS["oldpw"];
 $email = $HTTP_POST_VARS["email"];
 $privacy = $HTTP_POST_VARS["privacy"];
+$editor = $HTTP_POST_VARS["editor"];
 
 // 0 error
 // 1 new
@@ -46,7 +47,7 @@ if($type == "NEW") {
     $sql = "SELECT * FROM users WHERE uid=" . $uid;
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result)) {
-      printf("3;%s;%s;%s;%s", $row["name"], $row["email"], $row["public"], $row["count"]);
+      printf("3;%s;%s;%s;%s;%s", $row["name"], $row["email"], $row["public"], $row["count"], $row["editor"]);
     } else {
       printf("0;Unknown error");
     }
@@ -67,11 +68,12 @@ if($type == "NEW") {
 
 // Note: Password is stored as salted hash of pw and username
 if($type == "NEW") {
-  $sql = sprintf("INSERT INTO users(name,password,email,public) VALUES('%s',MD5(CONCAT('%s','%s')),'%s','%s')",
+  $sql = sprintf("INSERT INTO users(name,password,email,public,editor) VALUES('%s',MD5(CONCAT('%s','%s')),'%s','%s', '%s')",
 		 mysql_real_escape_string($name),
 		 mysql_real_escape_string($pw), mysql_real_escape_string($name),
 		 mysql_real_escape_string($email),
-		 mysql_real_escape_string($privacy));
+		 mysql_real_escape_string($privacy),
+		 mysql_real_escape_string($editor));
 } else {
   // Only change password if a new one was given
   if($pw && $pw != "") {
@@ -80,10 +82,11 @@ if($type == "NEW") {
   } else {
     $pwsql = "";
   }
-  $sql = sprintf("UPDATE users SET %s email='%s', public='%s' WHERE uid=%s",
+  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s' WHERE uid=%s",
 		 $pwsql,
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
+		 mysql_real_escape_string($editor),
 		 $uid);
 }
 mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());

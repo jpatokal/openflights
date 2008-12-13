@@ -132,10 +132,15 @@ function gcPath(startPoint, endPoint, distance) {
     pointList.push(startPoint);
   }
   while(d < distance) {
-    var bearing = gcBearingTo(wayPoint, endPoint);
+    var bearing = gcBearingTo(wayPoint, endPoint); // degrees, clockwise from 0 deg at north
     var wayPoint = gcWaypoint(wayPoint, step, bearing);
     if(wayPoint.x > -360 && wayPoint.x < 360) {
       pointList.push(wayPoint);
+    } else {
+      if((wayPoint.x < -360 && bearing > 180) ||
+	 (wayPoint.x > 360 && bearing < 180)) {
+	break; // line's gone off the map, so stop rendering
+      }
     }
 
     // Increase step resolution near the poles

@@ -32,11 +32,13 @@
 		  <input type="radio" name="privacy" value="Y">Public (map and some stats shared)<br>
 		  <input type="radio" name="privacy" value="O">Open (all flight data shared)</td>
 	    </tr><tr>
-	      <td colspan="2">
+	      <td style="vertical-align: top">Editor style</td>
+	      <td><input type="radio" name="editor" value="B" CHECKED>Basic (airports, airline, date only)<br>
+		  <input type="radio" name="editor" value="D">Detailed (plane, registration & more)<br>
+	    </tr><tr>
+	      <td>
 		<div id="contexthelp"><i>Manage flights</i></div>
 	      </td>
-	    </tr><tr>
-	      <td></td>
 	      <td>
 		<INPUT type='button' value='Backup to CSV' onClick='javascript:backupFlights()'>
 		<INPUT type='button' value='Delete all flights' onClick='javascript:validate("RESET")'></td>

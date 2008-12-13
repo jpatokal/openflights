@@ -1,3 +1,15 @@
+<b>2008-12-13</b>
+
+* Introduce "Basic" multi-flight adding tool
+* Configurable setting for selecting basic/detailed editor
+* Same font now used throughout interface
+* Top 10 users by popularity now listed in About
+* Bug: Distance/duration no longer lost on editing flight
+
+<b>2008-12-10</b>
+
+* Fixed some GC path rendering bugs, minor optimization
+
 <b>2008-12-09</b>
 
 * Bug: Fix plane name handling in some FlightMemory imports
