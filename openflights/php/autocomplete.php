@@ -24,10 +24,23 @@ if($_POST['quick']) {
 // 4 chars: match on ICAO or name (major airports only)
 // >4 chars: match on name or city 
 
-if($_POST['src_ap']) {
-  $query = mysql_real_escape_string($_POST['src_ap']);
-} else if($_POST['dst_ap']) {
-  $query = mysql_real_escape_string($_POST['dst_ap']);
+$airports = array("src_ap", "dst_ap", "src_ap1", "dst_ap1", "src_ap2", "dst_ap2", "src_ap3", "dst_ap3", "src_ap4", "dst_ap4");
+foreach($airports as $ap) {
+  if($_POST[$ap]) {
+    $query = mysql_real_escape_string($_POST[$ap]);
+    // Limit the number of rows returned in multiinput, where space is at a premium
+    if($limit > 1) {
+      $idx = substr($ap, -1);
+      switch($idx) {
+      case "4":
+      case "3":
+      case "2":
+      case "1":
+	$limit = 7 - $idx;
+      }
+    }
+    break;
+  }
 }
 if($query) {
   if(strlen($query) <= 3) {
@@ -64,7 +77,7 @@ if($query) {
 	$code = $row["icao"];
       }
       if($limit > 1) {
-	printf ("<li class='autocomplete' id='%s:%s:%s:%s'>%s</li>\n", $code, $row["apid"], $row["x"], $row["y"], format_airport($row));
+	printf ("<li class='autocomplete' origin='%s' id='%s:%s:%s:%s'>%s</li>\n", $ap, $code, $row["apid"], $row["x"], $row["y"], format_airport($row));
       } else {
 	printf ("%s:%s:%s:%s;%s", format_apcode($row), $row["apid"], $row["x"], $row["y"], format_airport($row));
       }
@@ -76,75 +89,96 @@ if($query) {
 // 3 chars: match on ICAO or name (major airlines only)
 // >3 chars: match on name (any airline)
 
-} else if($_POST['airline']) {
-  if($limit > 1) $limit = 3;
-  $query = mysql_real_escape_string($_POST['airline']);
-  if(strlen($query) <= 3) {
-    $ext = "iata!='' AND icao!='" . $query . "' AND";
-  } else {
-    $ext = "icao!='' AND";
-  }
-  $sql = sprintf("SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE %s name LIKE '%s%%' OR alias LIKE '%s%%'",
-		 $ext, $query, $query);
-  switch(strlen($query)) {
-  case 2: // IATA
-    $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
-    break;
-
-  case 3: // ICAO
-    $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
-    break;
-
-  default: // sort non-IATA airlines last
-    $sql = sprintf("%s ORDER BY LENGTH(iata) DESC, name LIMIT %s", $sql, $limit);
-    break;
-  }
-
-  if($limit > 1) print ("<ul class='autocomplete'>");
-  $rs = mysql_query($sql);
-  if(mysql_num_rows($rs) > 0) {
-    while($row = mysql_fetch_assoc($rs)) {
-      $code = $row["iata"];
-      if($code == "") {
-	$code = $row["icao"];
+ } else {
+  $airlines = array("airline", "airline1", "airline2", "airline3", "airline4");
+  foreach($airlines as $al) {
+    if($_POST[$al]) {
+      $query = mysql_real_escape_string($_POST[$al]);
+      // Limit(/expand) the number of rows returned in multiinput, where space is at a premium
+      if($limit != 1) {
+	$idx = substr($al, -1);
+	switch($idx) {
+	case "4":
+	case "3":
+	case "2":
+	case "1":
+	  $limit = 7 - $idx;
+	  break;
+	default:
+	  $limit = 3;
+	}
       }
-      if($limit > 1) {
-	printf ("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
-      } else {
-	printf ("%s;%s", $row["alid"], format_airline($row));
-      }
+      break;
     }
   }
-
-  // Autocompletion for plane types
-} else if($_POST['plane']) {
-  $query = mysql_real_escape_string($_POST['plane']);
-  if(strstr($query, '-')) {
-    $dashes = " ";
-  } else {
-    $dashes = "AND name NOT LIKE 'Boeing %-%' AND name NOT LIKE 'Airbus %-%'";
-  }
-  
-  $sql = "SELECT name,plid FROM planes WHERE public='Y' AND name LIKE '%" . $query . "%' ". $dashes . "ORDER BY name LIMIT 6";
-  $rs = mysql_query($sql);
-  
-  // If no or only one result found, then try again
-  if(mysql_num_rows($rs) == 1 && $dashes != " ") {
-    $sql = "SELECT name,plid FROM planes WHERE public='Y' AND name LIKE '%" . $query . "%' ORDER BY name LIMIT 6";
+  if($query) {
+    if(strlen($query) <= 3) {
+      $ext = "iata!='' AND icao!='" . $query . "' AND";
+    } else {
+      $ext = "icao!='' AND";
+    }
+    $sql = sprintf("SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE %s name LIKE '%s%%' OR alias LIKE '%s%%'",
+		   $ext, $query, $query);
+    switch(strlen($query)) {
+    case 2: // IATA
+      $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
+      break;
+      
+    case 3: // ICAO
+      $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
+      break;
+      
+    default: // sort non-IATA airlines last
+      $sql = sprintf("%s ORDER BY LENGTH(iata) DESC, name LIMIT %s", $sql, $limit);
+      break;
+    }
+    
+    if($limit > 1) print ("<ul class='autocomplete'>");
     $rs = mysql_query($sql);
-  } else {
-    if(mysql_num_rows($rs) == 0) {
-      $sql = "SELECT name,plid FROM planes WHERE name LIKE '%" . $query . "%' ORDER BY name LIMIT 6";
+    if(mysql_num_rows($rs) > 0) {
+      while($row = mysql_fetch_assoc($rs)) {
+	$code = $row["iata"];
+	if($code == "") {
+	  $code = $row["icao"];
+	}
+	if($limit > 1) {
+	  printf ("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
+	} else {
+	  printf ("%s;%s", $row["alid"], format_airline($row));
+	}
+      }
+    }
+  } else if($_POST['plane']) {
+
+    // Autocompletion for plane types
+    $query = mysql_real_escape_string($_POST['plane']);
+    if(strstr($query, '-')) {
+      $dashes = " ";
+    } else {
+      $dashes = "AND name NOT LIKE 'Boeing %-%' AND name NOT LIKE 'Airbus %-%'";
+    }
+    
+    $sql = "SELECT name,plid FROM planes WHERE public='Y' AND name LIKE '%" . $query . "%' ". $dashes . "ORDER BY name LIMIT 6";
+    $rs = mysql_query($sql);
+    
+    // If no or only one result found, then try again
+    if(mysql_num_rows($rs) == 1 && $dashes != " ") {
+      $sql = "SELECT name,plid FROM planes WHERE public='Y' AND name LIKE '%" . $query . "%' ORDER BY name LIMIT 6";
       $rs = mysql_query($sql);
+    } else {
+      if(mysql_num_rows($rs) == 0) {
+	$sql = "SELECT name,plid FROM planes WHERE name LIKE '%" . $query . "%' ORDER BY name LIMIT 6";
+	$rs = mysql_query($sql);
+      }
     }
-  }
-  print ("<ul class='autocomplete2'>");
-  while($data = mysql_fetch_assoc($rs)) {
-    $item = stripslashes($data['name']);
-    if(strlen($item) > 23) {
-      $item = substr($item, 0, 10) . "..." . substr($item, -10, 10);
+    print ("<ul class='autocomplete2'>");
+    while($data = mysql_fetch_assoc($rs)) {
+      $item = stripslashes($data['name']);
+      if(strlen($item) > 23) {
+	$item = substr($item, 0, 10) . "..." . substr($item, -10, 10);
+      }
+      echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
     }
-    echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
   }
 }
 
