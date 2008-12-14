@@ -1998,13 +1998,14 @@ function settings() {
 // Login and logout
 //
 function login(str, param) {
-  var status = str.split(";")[0];
-  var name = str.split(";")[1];
+  var cols = str.split(";");
+  var status = cols[0];
+  var name = cols[1];
   $("loginstatus").style.display = 'inline';
   // Login successful
   if(status == "1") {
-    prefs_editor = str.split(";")[2].trim();
-    elite = str.split(";")[3].trim();
+    prefs_editor = cols[2].trim();
+    elite = cols[3];
     logged_in = true;
     loginstatus = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
     $("loginstatus").innerHTML = loginstatus;
