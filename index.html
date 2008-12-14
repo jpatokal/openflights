@@ -17,7 +17,7 @@
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="/js/effects.js"></script>
     <script type="text/javascript" src="/js/hint-textbox.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081213"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081214"></script>
   </head>
 
   <body>
@@ -219,8 +219,8 @@
       <input id="b_save" value="Save changes" type="button" tabindex="20" onclick='JavaScript:saveFlight()'>
       <input id="b_delete" value="Delete" type="button" tabindex="21" onclick='JavaScript:deleteFlight()'>
       <input id="b_cancel" value="Exit" type="button" tabindex="22" onclick='JavaScript:closeInput()'>
-      <input id="b_prev" value="<" type="button" tabindex="23" onclick='JavaScript:editPointer(-1)'>
-      <input id="b_next" value="&gt;" type="button" tabindex="24" onclick='JavaScript:editPointer(1)'>
+      <input id="b_prev" title="Previous flight" value="&nbsp;<&nbsp;" type="button" tabindex="23" onclick='JavaScript:editPointer(-1)'>
+      <input id="b_next" title="Next flight" value="&nbsp;&gt;&nbsp;" type="button" tabindex="24" onclick='JavaScript:editPointer(1)'>
     </span>
   </td>
 </tr>

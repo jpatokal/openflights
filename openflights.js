@@ -7,10 +7,12 @@
 var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var paneStack = [ "ad" ];
 
+// User settings (defaults)
+var privacy = "Y", flightTotal = 0, prefs_editor = "B", elite = "";
+
 // Filter selections and currently chosen airport 
 var filter_user = 0, filter_trid = 0, filter_alid = 0, filter_year = 0, apid = 0;
 var tripname, tripurl;
-var privacy = "Y", flightTotal = 0, prefs_editor = "B";
 
 // Current list of flights
 var fidList, fidPtr = 0, fid = 0;
@@ -60,6 +62,11 @@ var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
 		     [ '/img/icon_plane-19x19b.png', 19 ],
 		     [ '/img/icon_plane-19x19b.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
+
+var eliteicons = [ [ 'S', 'Silver Elite', '/img/silver-star.png' ],
+		   [ 'G', 'Gold Elite', '/img/gold-star.png' ],
+		   [ 'P', 'Platinum Elite', '/img/platinum-star.png' ],
+		   [ 'X', 'Thank you for using OpenFlights &mdash; please donate!', '/img/icon-warning.png' ] ];
 
 var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
 var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
@@ -546,8 +553,12 @@ function xmlhttpPost(strURL, id, param) {
 	if(code == CODE_EDITOK || code == CODE_ADDOK) {
 	  // If adding new flights (not editing), swap last destination to be new source and focus on date
 	  if($("addflighttitle").style.display == 'inline') {
-	    swapAirports(false);
-	    document.forms['inputform'].src_date.focus();
+	    if(getCurrentPane() == "input") {
+	      swapAirports(false);
+	      document.forms['inputform'].src_date.focus();
+	    } else {
+	      clearInput();
+	    }
 	  }
 	}
 
@@ -661,6 +672,12 @@ function xmlhttpPost(strURL, id, param) {
       'trid=' + escape(trid) + '&' +
       'fid=' + escape(fid) + '&' +
       'param=' + escape(param);
+    if(getCurrentPane() == "multiinput") {
+      $("multiinput_status").innerHTML = '<B>Saving...</B>';
+    } else {
+      $("input_status").innerHTML = '<B>Saving...</B>';
+    }
+
     break;
 
   case URL_LOGIN:
@@ -813,7 +830,7 @@ function updateTitle(str) {
 	  text += " in " + year;
 	}
       }
-      $("loginstatus").innerHTML = "<b>" + text +
+      $("loginstatus").innerHTML = getEliteIcon(elite) + "<b>" + text +
 	"</b> <h6><a href='/'>Home</a></h6>";
     }
   }
@@ -954,6 +971,9 @@ function updateMap(str){
   $("stats").innerHTML = stats;
   flightTotal = col[0];
   privacy = col[3];
+  if(! logged_in) {
+    elite = col[4];
+  }
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
   if(flightTotal != "0") {
@@ -1390,7 +1410,7 @@ function hasChanged() {
 // state={true,false} for enabled,disabled
 function setCommitAllowed(state) {
   state = !state; // enabled=true -> disabled=false
-  if(state) changed = false;
+  if(state) changed = false; // if no commit allowed, then no changes have been made
 
   if(getCurrentPane() == "input") {
     $("b_add").disabled = state;
@@ -1984,11 +2004,18 @@ function login(str, param) {
   // Login successful
   if(status == "1") {
     prefs_editor = str.split(";")[2].trim();
+    elite = str.split(";")[3].trim();
     logged_in = true;
-    $("loginstatus").innerHTML = "Welcome, <B>" + name + "</B> !";
+    loginstatus = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
+    $("loginstatus").innerHTML = loginstatus;
     $("loginform").style.display = 'none';
     $("controlpanel").style.display = 'inline';
-    if(param != "NEWUSER") {
+    if(elite == "X") {
+      $("news").style.display = 'inline';
+      $("news").innerHTML =
+	"<img align='right' src='/img/icon-warning.png' height=34 width=34><img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
+	"<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+    } else if(param != "NEWUSER") {
       closeNews();
     }
     clearStack();
@@ -2012,6 +2039,18 @@ function newUserLogin(name, pw) {
   xmlhttpPost(URL_LOGIN, 0, "NEWUSER");
 }
 
+// Return HTML string representing user's elite status icon
+function getEliteIcon(e) {
+  if(e && e != "") {
+    for(i = 0; i < eliteicons.length; i++) {
+      if(eliteicons[i][0] == e) {
+	return "<a href='/donate.html' target='_blank'><img align=right src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34 align=absmiddle></a> ";
+      }
+    }
+  }
+  return "";
+}
+
 function logout(str) {
   logged_in = false;
   $("loginstatus").innerHTML = "<B>You have been logged out.</B>";
@@ -2020,6 +2059,7 @@ function logout(str) {
   clearStack();
   clearMap();
   clearFilter(true);
+  closeNews();
   document.forms['login'].name.value = "";
   document.forms['login'].pw.value = "";
   document.forms['login'].name.focus();
@@ -2061,7 +2101,7 @@ function closePane() {
 
   var currentPane = paneStack.pop();
   var lastPane = getCurrentPane();
-  if(currentPane == "input") {
+  if(currentPane == "input" || currentPane == "multiinput") {
     unmarkAirports();
     $("newairport").style.display = 'none';
   }
