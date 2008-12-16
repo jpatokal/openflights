@@ -620,7 +620,7 @@ function xmlhttpPost(strURL, id, param) {
 	}
 	var alid = $('airline' + indexes[i] + 'id').value;
 	var airline = $('airline' + indexes[i]).value.trim();
-	if(! alid || airline == "" || airline == 0 || airline == $('airline').hintText) {
+	if(! alid || alid == 0 || airline == "" || airline == $('airline').hintText) {
 	  alid = "-1"; // UNKNOWN
 	}
 
