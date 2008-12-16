@@ -119,19 +119,19 @@
 #login{
   max-width: 220px;
   margin: 0px 0px 0px 0px;
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
 }
 
 #filter { 
   max-width: 220px;
   margin: 0px 0px 0px 0px;
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
 }
 
 #statsbox { 
   max-width: 220px;
   margin: 0px 0px 0px 0px;
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
 }
 
 #contexthelp{

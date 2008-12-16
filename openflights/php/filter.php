@@ -9,6 +9,8 @@ function getFilterString($vars) {
   $trid = $vars["trid"];
   $alid = $vars["alid"];
   $year = $vars["year"];
+  $xkey = $vars["xkey"];
+  $xvalue = $vars["xvalue"];
 
   if($trid && $trid != "0") {
     if($trid == "null") {
@@ -23,7 +25,37 @@ function getFilterString($vars) {
   if($year && $year != "0") {
     $filter = $filter . " AND YEAR(f.src_time)='" . mysql_real_escape_string($year) . "'";
   }
-
+  if($xvalue && $xvalue != "") {
+    switch($xkey) {
+    case null:
+    case "":
+      break;
+      
+    case "class":
+      $filter = $filter . " AND f.class='" . $xvalue . "'";
+      break;
+      
+    case "distgt":
+      $filter = $filter . " AND f.distance > " . $xvalue;
+      break;
+      
+    case "distlt":
+      $filter = $filter . " AND f.distance < " . $xvalue;
+      break;
+      
+    case "note":
+      $filter = $filter . " AND f.note LIKE '%" . $xvalue . "%'";
+      break;
+      
+    case "reason":
+      $filter = $filter . " AND f.reason='" . $xvalue . "'";
+      break;
+      
+    case "reg":
+      $filter = $filter . " AND f.registration LIKE '" . $xvalue . "%'";
+      break;
+    }
+  }
   return $filter;
 }
 

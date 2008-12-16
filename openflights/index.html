@@ -4,7 +4,7 @@
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
-    <link rel="stylesheet" href="/openflights.css?version=20081213" type="text/css">
+    <link rel="stylesheet" href="/openflights.css?version=20081215" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
@@ -17,7 +17,7 @@
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="/js/effects.js"></script>
     <script type="text/javascript" src="/js/hint-textbox.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20081215"></script>
+    <script type="text/javascript" src="/openflights.js?version=20081215b"></script>
   </head>
 
   <body>
@@ -36,7 +36,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 15 Dec 2008: <a href="/about.html#CHANGES">"Not in trip" filter option added (only when logged in).</a>
+	      <B>News</b>: 15 Dec 2008: <a href="/about.html#CHANGES">Class, distance, note, reason, registration and "not in trip" filters added.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -72,8 +72,7 @@
 	      </form>
 	      </div>
 	    </div> <!-- login -->
-	    
-	    <div id="statsbox" style="visibility: hidden">
+	    <div id="statsbox" style="visibility: hidden; clear: both">
 	      <table>
 		<tr><td>
 		    <span id="stats"></span>
@@ -97,6 +96,16 @@
 		</tr><tr>
 		  <td>Year</td>
 		  <td><span id="filter_yearselect"><select class="filter" name="Years"><option value="">All</option></select></span></td>
+		</tr><tr>
+		  <td colspan=2><select style="width: 100px" id="filter_extra_key" name="Extra" onChange="JavaScript:setExtraFilter()" style="visibility: hidden">
+		      <option value="" SELECTED>More...</option>
+		      <option value="class">Class</option>
+		      <option value="distlt">Distance &lt;</option>
+		      <option value="distgt">Distance &gt;</option>
+		      <option value="note">Note</option>
+		      <option value="reason">Reason</option>
+		      <option value="reg">Registration</option>
+		    </select></span> <span id="filter_extra_span"></span></td>
 	        </tr>
 	      </table>
 	      </span>
