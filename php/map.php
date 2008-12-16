@@ -28,20 +28,11 @@ $trid = $HTTP_POST_VARS["trid"];
 if(! $trid) {
   $trid = $HTTP_GET_VARS["trid"];
 }
-$alid = $HTTP_POST_VARS["alid"];
-if(! $alid) {
-  $alid = $HTTP_GET_VARS["alid"];
-}
-$year = $HTTP_POST_VARS["year"];
-if(! $year) {
-  $year = $HTTP_GET_VARS["year"];
-}
 
-// Set up filtering clause and verify that this trip and user are public
-$filter = "";
+// Verify that this trip and user are public
 $public = "O"; // default to full access
 
-if($trid && $trid != "0") {
+if($trid && $trid != "0" && $trid != "null") {
   // Verify that we're allowed to access this trip
   // NB: a "trid" filter can mean logged-in *and* filtered, or not logged in!
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
@@ -50,25 +41,24 @@ if($trid && $trid != "0") {
     if($row["uid"] != $uid and $row["public"] == "N") {
       die('Error;This trip is not public.');
     } else {
-      $uid = $row["uid"];
-      $public = $row["public"];
-      if($public == "O") {
-	$_SESSION["openuid"] = $uid;
-	$_SESSION["opentrid"] = $trid;
-      }
-      // Increment view counter
-      mysql_query("UPDATE users SET count=count+1 WHERE uid=$uid", $db);
+	$uid = $row["uid"];
+	$public = $row["public"];
+	if($public == "O") {
+	  $_SESSION["openuid"] = $uid;
+	  $_SESSION["opentrid"] = $trid;
+	}
+	// Increment view counter
+	mysql_query("UPDATE users SET count=count+1 WHERE uid=$uid", $db);
     }
   } else {
     die('Error;No such trip.');
   }
-  $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
 
 if($user && $user != "0") {
   // Verify that we're allowed to view this user's flights
   // if $user is set, we are never logged in
-  $sql = "SELECT uid,public FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
+  $sql = "SELECT uid,public,elite FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["public"] == "N") {
@@ -76,6 +66,7 @@ if($user && $user != "0") {
     } else {
       $uid = $row["uid"];
       $public = $row["public"];
+      $elite = $row["elite"];
       if($public == "O") {
 	$_SESSION["openuid"] = $uid;
 	$_SESSION["opentrid"] = null;
@@ -88,24 +79,19 @@ if($user && $user != "0") {
   }
 }
 
-if($alid && $alid != "0") {
-  $filter = $filter . " AND alid=" . mysql_real_escape_string($alid);
-}
-if($year && $year != "0") {
-  $filter = $filter . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
-}
 
 // Load up all information needed by this user
+$filter = getFilterString($HTTP_POST_VARS);
 
 // Statistics
 // Number of flights, total distance (mi), total duration (minutes), public/open
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights where uid=" . $uid . " " . $filter;
+$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights AS f WHERE uid=" . $uid . " " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($row["count"] == "0" && $user && $user != "0") {
     die('Error;This user has no flights.');
   }
-  printf("%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public);
+  printf("%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite);
 }
 
 // List of all flights (unique by airport pair)

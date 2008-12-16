@@ -3,12 +3,40 @@
 // Helper functions for filter handling
 //
 
+// Build a flight filter string for SQL SELECT
+function getFilterString($vars) {
+  $filter = "";
+  $trid = $vars["trid"];
+  $alid = $vars["alid"];
+  $year = $vars["year"];
+
+  if($trid && $trid != "0") {
+    if($trid == "null") {
+      $filter = $filter . " AND f.trid IS NULL";
+    } else {
+      $filter = $filter . " AND f.trid= " . mysql_real_escape_string($trid);
+    }
+  }
+  if($alid && $alid != "0") {
+    $filter = $filter . " AND f.alid=" . mysql_real_escape_string($alid);
+  }
+  if($year && $year != "0") {
+    $filter = $filter . " AND YEAR(f.src_time)='" . mysql_real_escape_string($year) . "'";
+  }
+
+  return $filter;
+}
+
 // Load up possible filter settings for this user
 function loadFilter($db, $uid, $trid) {
 
   // Limit selections to a single trip?
   if($trid && $trid != "0") {
-    $filter = " AND trid= " . mysql_real_escape_string($trid);
+    if($trid == "null") {
+      $filter = " AND trid IS NULL";
+    } else {
+      $filter = " AND trid=" . mysql_real_escape_string($trid);
+    }
   } else {
     $filter = "";
   }

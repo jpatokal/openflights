@@ -478,6 +478,7 @@ function xmlhttpPost(strURL, id, param) {
 	var str = self.xmlHttpReq.responseText;
 	if(str.substring(0,5) == "Error") {
 	  $("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
+	  $("ajaxstatus").style.display = 'none';
 	  openPane("result");
 	} else {
 	  if(! logged_in) {
@@ -792,8 +793,16 @@ function updateTitle(str) {
 
   // Logged in users
   if(logged_in) {
-    if(trip != "All trips") {
+    switch(filter_trid) {
+    case "0":
+      // do nothing
+      break;
+    case "null":
+      text = "Unassigned flights";
+      break;
+    default:
       text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
+      break;
     }
     if(airline != "All airlines") {
       if(text != "") text += ", ";
@@ -849,7 +858,7 @@ function updateTitle(str) {
  * tabIndex: tabindex
  */ 
 function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
-  var select = "<select class=\"filter\" name=\"" + selectName + "\"";
+  var select = "<select class='filter' id='" + selectName + "' name='" + selectName + "'";
   if(hook) {
     select += " onChange='JavaScript:" + hook + "'";
   }
@@ -857,9 +866,9 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
     select += " tabindex=\"" + tabIndex + "\"";
   }
   if(selectName == "Years") {
-    select += "><option value=\"0\">" + allopts + "</option>";
+    select += "><option value='0'>" + allopts + "</option>";
   } else {
-    select += "><option value=\"0;" + allopts + "\">" + allopts + "</option>";
+    select += "><option value='0;" + allopts + "'>" + allopts + "</option>";
   }
   // No data?  Return an empty element
   if(! rows || rows == "") {
@@ -894,6 +903,9 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
     }
     select += "<option value=\"" + rid + "\"" + selected + ">" + name + "</option>";
   }
+  if(logged_in && selectName == "Trips") {
+    select += "<option value='null' " + (filter_trid == "null" ? " SELECTED" : "") + ">Not in a trip</option>";
+  }
   select += "</select>";
   return select;
 }
@@ -913,7 +925,9 @@ function cloneSelect(oldSelect, name, hook, selected) {
     } else {
       selectedText = "";
     }
-    newSelect += "<option value=\"" + id + "\" " + selectedText + ">" + text + "</option>";
+    if(id != "null") { // Skip "Not in trip" special option
+      newSelect += "<option value=\"" + id + "\" " + selectedText + ">" + text + "</option>";
+    }
   }
   newSelect += "</select>";
   return newSelect;
@@ -2006,6 +2020,7 @@ function login(str, param) {
   if(status == "1") {
     prefs_editor = cols[2].trim();
     elite = cols[3];
+    if(elite) elite = elite.trim();
     logged_in = true;
     loginstatus = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
     $("loginstatus").innerHTML = loginstatus;
@@ -2041,11 +2056,16 @@ function newUserLogin(name, pw) {
 }
 
 // Return HTML string representing user's elite status icon
-function getEliteIcon(e) {
+// If validity is not null, also return text description and validity period
+function getEliteIcon(e, validity) {
   if(e && e != "") {
     for(i = 0; i < eliteicons.length; i++) {
       if(eliteicons[i][0] == e) {
-	return "<a href='/donate.html' target='_blank'><img align=right src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34 align=absmiddle></a> ";
+	if(validity) {
+	  return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small>";
+	} else {
+	  return "<a href='/donate.html' target='_blank'><img align=right src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a> ";
+	}
       }
     }
   }
