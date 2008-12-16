@@ -3,6 +3,7 @@ session_start();
 header("Content-type: text/html; charset=iso-8859-1");
 
 include 'helper.php';
+include 'filter.php';
 
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
@@ -11,22 +12,13 @@ if(!$uid or empty($uid)) {
 }
 // This applies only when viewing another's flights
 $user = $HTTP_POST_VARS["user"];
-if(! $user) {
-  $user = $HTTP_GET_VARS["user"];
-}
-
-// Filter
 $trid = $HTTP_POST_VARS["trid"];
-$alid = $HTTP_POST_VARS["alid"];
-$year = $HTTP_POST_VARS["year"];
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
-// Set up filtering clause and verify that this trip and user are public
-$filter = "";
-
-if($trid && $trid != "0") {
+// Verify that this trip and user are public
+if($uid == 1 && $trid && $trid != "0") {
   // Verify that we're allowed to access this trip
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
@@ -37,7 +29,6 @@ if($trid && $trid != "0") {
       $uid = $row["uid"];
     }
   }
-  $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
 if($user && $user != "0") {
   // Verify that we're allowed to view this user's flights
@@ -51,13 +42,7 @@ if($user && $user != "0") {
     }
   }
 }
-
-if($alid && $alid != "0") {
-  $filter = $filter . " AND f.alid= " . mysql_real_escape_string($alid);
-}
-if($year && $year != "0") {
-  $filter = $filter . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
-}
+$filter = getFilterString($HTTP_POST_VARS);
 
 // List top 10 routes
 $sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT 10";

@@ -155,6 +155,9 @@
   padding: 5px 10px;
 }
 
+td.donate { padding: 10px; vertical-align: top; text-align: center; }
+td.donate2 { padding: 10px; vertical-align: top; text-align: left; }
+
 /* Autocomplete styles */
 
 ul.autocomplete { padding: 3px; width: 350px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }

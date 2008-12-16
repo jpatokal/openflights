@@ -21,6 +21,7 @@ if($export) {
  }
 
 include 'helper.php';
+include 'filter.php';
 
 $uid = $_SESSION["uid"];
 // Logged in?
@@ -60,17 +61,11 @@ if($apid && $apid != 0) {
 }
 
 // Add filters, if any
-if($trid && $trid != "0") {
-  $sql = $sql . " AND trid= " . mysql_real_escape_string($trid);
-}
-if($alid && $alid != "0") {
-  $sql = $sql . " AND l.alid= " . mysql_real_escape_string($alid);
+if($export != "backup") {
+  $sql = $sql . getFilterString($HTTP_POST_VARS);
 }
 if($fid && $fid != "0") {
   $sql = $sql . " AND fid= " . mysql_real_escape_string($fid);
-}
-if($year && $year != "0") {
-  $sql = $sql . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
 }
 
 // And sort order

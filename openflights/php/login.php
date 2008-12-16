@@ -15,7 +15,7 @@ if($name) {
     $_SESSION['uid'] = $uid;
     $_SESSION['name'] = $name;
     $_SESSION['email'] = $myrow["email"];
-    printf("1;%s;%s", $name, $myrow["editor"]);
+    printf("1;%s;%s;%s", $name, $myrow["editor"], $myrow["elite"]);
   } else {
     printf("0;Login failed. <a href='#' onclick='JavaScript:help(\"forgotpw\")'>Forgot password?</a>");
   }

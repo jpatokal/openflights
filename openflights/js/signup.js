@@ -133,8 +133,12 @@ function loadUser(str) {
     var privacy = cols[3];
     var count = cols[4];
     var editor = cols[5];
+    var elite = cols[6];
+    var validity = cols[7];
 
     var form = document.forms['signupform'];
+    document.getElementById('eliteicon').innerHTML = parent.opener.getEliteIcon(elite, validity);
+
     signupform.email.value = email;
     signupform.myurl.value = "http://openflights.org/user/" + escape(name);
     signupform.count.value = count + " times";

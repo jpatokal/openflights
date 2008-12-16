@@ -3,6 +3,7 @@ session_start();
 header("Content-type: text/html; charset=iso-8859-1");
 
 include 'helper.php';
+include 'filter.php';
 
 $uid = $_SESSION["uid"];
 $public = "O"; // by default...
@@ -16,19 +17,15 @@ $user = $HTTP_POST_VARS["user"];
 if(! $user) {
   $user = $HTTP_GET_VARS["user"];
 }
-
-// Filter
 $trid = $HTTP_POST_VARS["trid"];
-$alid = $HTTP_POST_VARS["alid"];
-$year = $HTTP_POST_VARS["year"];
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
-// Set up filtering clause and verify that this trip and user are public
+// Verify that this trip and user are public
 $filter = "";
 
-if($trid && $trid != "0") {
+if($uid == 1 && $trid && $trid != "0") {
   // Verify that we're allowed to access this trip
   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
@@ -42,7 +39,6 @@ if($trid && $trid != "0") {
   } else {
     die('Error;Trip not found.');
   }
-  $filter = $filter . " AND trid= " . mysql_real_escape_string($trid);
 }
 if($user && $user != "0") {
   // Verify that we're allowed to view this user's flights
@@ -59,15 +55,7 @@ if($user && $user != "0") {
     die('Error;User not found.');
   }
 }
-
-$filter = "f.uid=" . $uid . $filter;
-
-if($alid && $alid != "0") {
-  $filter = $filter . " AND f.alid= " . mysql_real_escape_string($alid);
-}
-if($year && $year != "0") {
-  $filter = $filter . " AND YEAR(src_time)='" . mysql_real_escape_string($year) . "'";
-}
+$filter = "f.uid=" . $uid . getFilterString($HTTP_POST_VARS);
 
 // unique airports
 $sql = "SELECT COUNT(*) AS num_airports FROM (SELECT src_apid FROM flights AS f WHERE " . $filter . " UNION SELECT dst_apid FROM flights AS f WHERE " . $filter . ") AS FOO";
