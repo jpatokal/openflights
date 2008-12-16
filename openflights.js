@@ -724,6 +724,13 @@ function xmlhttpPost(strURL, id, param) {
       'alid=' + escape(filter_alid) + '&' +
       'year=' + escape(filter_year) + '&' +
       'param=' + escape(param);
+
+    filter_extra_key = form.Extra.value;
+    if(filter_extra_key != "" && $('filter_extra_value')) {
+      filter_extra_value = $('filter_extra_value').value;
+      query += '&xkey=' + filter_extra_key +
+	'&xvalue=' + filter_extra_value;
+    }
     if(strURL == URL_FLIGHTS) {
       if(param == "EDIT" || param == "COPY") {
 	query += '&fid=' + escape(id);
@@ -910,6 +917,18 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   return select;
 }
 
+function createSelectFromArray(selectName, opts, hook) {
+  var select = "<select style='width: 100px' id='" + selectName + "' name='" + selectName +
+    "' onChange='JavaScript:" + hook + "'>";
+  select += "<option value=''>All</option>";
+  for (r in opts) {
+    if(r.length != 1) continue; // filter out Prototype.js cruft
+    select += "<option value='" + r + "'>" + opts[r] + "</option>";
+  }
+  select += "</select>";
+  return select;
+}
+
 // Create a copy of 'select', renamed (incl. hook) as 'name'
 // Note: *not* class="filter", so width is not limited
 function cloneSelect(oldSelect, name, hook, selected) {
@@ -973,6 +992,8 @@ function updateMap(str){
   var airports = master[2];
   
   var col = stats.split(";");
+  var miles = col[1];
+  if(! miles) miles = 0;
   var duration = col[2]; // minutes
   var days = Math.floor(col[2] / (60*24));
   var hours = Math.floor((col[2] / 60) % 24);
@@ -980,7 +1001,7 @@ function updateMap(str){
   if(min < 10) min = "0" + min;
 
   stats = col[0] + " flights<br>" +
-    col[1] + " mi flown<br>" +
+    miles + " mi flown<br>" +
     days + " days " + hours + ":" + min;
   $("stats").innerHTML = stats;
   flightTotal = col[0];
@@ -1027,8 +1048,14 @@ function updateMap(str){
   if(initializing) {
     $('statsbox').style.visibility = "visible";
     $('filter').style.visibility = "visible";
+    if(logged_in || privacy == 'O') {
+      $('filter_extra_key').style.visibility = "visible";
+    } else {
+      $('filter_extra_key').style.visibility = "hidden";
+    }
     initializing = false;
   }
+
 }
 
 function startListFlights() {
@@ -2282,6 +2309,37 @@ function closeNews() {
   $("news").style.display = 'none';
 }
 
+// user has selected a new field in the extra filter
+function setExtraFilter() {
+  var key = document.forms['filterform'].Extra.value;
+  var span = "";
+  switch(key) {
+  case "": // none (More...)
+    $('filter_extra_span').innerHTML = "";
+    refresh(true);
+    return;
+
+  case "class":
+    span = createSelectFromArray('filter_extra_value', classes, "refresh(true)");
+    break;
+
+  case "distgt":
+  case "distlt":
+    span = "<input type='text' style='width: 50px' id='filter_extra_value' class='date' onChange='JavaScript:refresh(true)'> mi";
+    break;
+
+  case "reason":
+    span = createSelectFromArray('filter_extra_value', reasons, "refresh(true)");
+    break;
+    
+  case "reg":
+  case "note":
+    span = "<input type='text' style='width: 100px' id='filter_extra_value' class='date' onChange='JavaScript:refresh(true)'>";
+    break;
+  }
+  $('filter_extra_span').innerHTML = span;
+}
+
 // refresh_all: false = only flights, true = reload everything
 function clearFilter(refresh_all) {
 
@@ -2290,8 +2348,9 @@ function clearFilter(refresh_all) {
     var tr_select = document.forms['filterform'].Trips;
     tr_select.selectedIndex = 0;
   }
-  var year_select = document.forms['filterform'].Years;
-  year_select.selectedIndex = 0;
+  document.forms['filterform'].Years.selectedIndex = 0;
+  document.forms['filterform'].Extra.selectedIndex = 0;
+  $('filter_extra_span').innerHTML = "";
   selectAirline(0);
   refresh(refresh_all);
 }
