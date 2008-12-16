@@ -946,11 +946,11 @@ function radioValue(radio) {
 // Clear all markers, popups and flights
 function clearMap() {
   lineLayer.destroyFeatures();
-  var markers = airportLayer.markers;
+  markers = airportLayer.markers.slice(); // clone
+  airportLayer.clearMarkers();
   for(m = 0; m < markers.length; m++) {
     markers[m].destroy();
   }
-  airportLayer.clearMarkers();
   var popups = map.popups;
   for(p = 0; p < popups.length; p++) {
     popups[p].destroy();
@@ -1988,7 +1988,7 @@ function help(context) {
 // Register new account
 //
 function signUp() {
-  var regWindow = window.open('/html/signup.html', 'CreateNewAccount', 'width=500,height=500,scrollbars=yes');
+  var regWindow = window.open('/html/signup.html', 'CreateNewAccount', 'width=600,height=500,scrollbars=yes');
   if (!regWindow) {
     alert("Oops, your browser seems to be blocking the sign up window?  Please disable your popup blocker for this site and try again.");
   }
@@ -2005,7 +2005,7 @@ function openImport() {
 // Change settings
 //
 function settings() {
-  window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=450,scrollbars=yes');
+  window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=500,scrollbars=yes');
 }
 
 //
@@ -2022,10 +2022,9 @@ function login(str, param) {
     elite = cols[3];
     if(elite) elite = elite.trim();
     logged_in = true;
-    loginstatus = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
-    $("loginstatus").innerHTML = loginstatus;
     $("loginform").style.display = 'none';
     $("controlpanel").style.display = 'inline';
+    $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
     if(elite == "X") {
       $("news").style.display = 'inline';
       $("news").innerHTML =
@@ -2062,9 +2061,9 @@ function getEliteIcon(e, validity) {
     for(i = 0; i < eliteicons.length; i++) {
       if(eliteicons[i][0] == e) {
 	if(validity) {
-	  return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small>";
+	  return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small></center>";
 	} else {
-	  return "<a href='/donate.html' target='_blank'><img align=right src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a> ";
+	  return "<span style='float: right'><a href='/donate.html' target='_blank'><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a></span>";
 	}
       }
     }
