@@ -54,7 +54,7 @@ if($action == "RECORD") {
   } else {
     // Editing an existing airport
     // ##TODO## un-hardcode admin write access
-    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s WHERE apid=%s AND (uid=%s OR uid=3)",
+    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s WHERE apid=%s AND (uid=%s OR %s=3)",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
@@ -64,14 +64,19 @@ if($action == "RECORD") {
 		   mysql_real_escape_string($myY),
 		   mysql_real_escape_string($elevation),
 		   mysql_real_escape_string($apid),
-		   mysql_real_escape_string($uid));
+		   $uid,
+		   $uid);
   }
 
-  mysql_query($sql, $db) or die('0;Adding new airport failed' . $sql);
+  mysql_query($sql, $db) or die('0;Adding new airport failed: ' . $sql);
   if(! $apid || $apid == "") {
     printf('1;' . mysql_insert_id() . ';New airport successfully added.');
   } else {
-    printf('1;' . $apid . ';Airport successfully edited.');
+    if(mysql_affected_rows() == 1) {
+      printf('1;' . $apid . ';Airport successfully edited.');
+    } else {
+      printf('0;Editing airport failed: ' . $sql);
+    }
   }
   exit;
 }
