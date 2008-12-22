@@ -1,3 +1,10 @@
+<b>2008-12-22</b>
+
+* Ability to edit your own airports added.
+* GAD airports can now be loaded for airport entry.
+* Seat number, seat type cleared after adding new flight.
+* When viewing user profiles, map focused only on initial load.
+
 <b>2008-12-15</b>
 
 * Megafilter (class, distance, note, reason, reg) added

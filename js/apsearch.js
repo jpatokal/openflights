@@ -64,6 +64,7 @@ function xmlhttpPost(strURL, offset, action) {
     var y = form.y.value;
     var elevation = form.elevation.value;
     var country = form.country[form.country.selectedIndex].text
+    var apid = form.apid.value;
 
     if(iata != "" && iata.length != 3) {
       alert("IATA/FAA codes must be exactly three letters.");
@@ -178,12 +179,15 @@ function xmlhttpPost(strURL, offset, action) {
 	}
       }
 
-      desc = airport + ", " + city + ", " + country +
-	" (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
-      quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
-      if(! confirm("Are you sure you want to add " + desc + " as a new airport, located in the " + quad + " quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming.")) {
-	document.getElementById("miniresultbox").innerHTML = "<I>Cancelled.</I>";
-	return;
+      // Last check for new airports only
+      if(apid == "") {
+	desc = airport + ", " + city + ", " + country +
+	  " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
+	quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
+	if(! confirm("Are you sure you want to add " + desc + " as a new airport, located in the " + quad + " quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming.")) {
+	  document.getElementById("miniresultbox").innerHTML = "<I>Cancelled.</I>";
+	  return;
+	}
       }
     }
 
@@ -199,6 +203,7 @@ function xmlhttpPost(strURL, offset, action) {
       'db=' + escape(db) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
+      'apid=' + apid + '&' +
       'action=' + action;
     document.getElementById("miniresultbox").innerHTML = (action == "SEARCH" ? "<I>Searching...</I>" : "<I>Recording...</I>");
   }
@@ -284,9 +289,16 @@ function searchResult(str) {
     } else {
       bgcolor = "#ddd";
     }
-    if(col[9] != "") {
-      bgcolor = "#fdd"; // User-added
+    switch(col[9]) {
+    case "user":
+      bgcolor = "#fdd";
       disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
+      break;
+
+    case "own":
+      bgcolor = "#ddf";
+      disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>blue</span> have been added by you and can be edited.";
+      break;
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col[8] + "</td>";
     if(db == DB_OPENFLIGHTS) {
@@ -294,8 +306,13 @@ function searchResult(str) {
       id = (col[0] != "" ? col[0] : col[1]) + ":" + col[2] + ":" + col[3] + ":" + col[4];
       table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col[8]) + "\")'></td>";
     }
-    if(db == DB_DAFIF) {
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Load' onClick='loadDAFIFAirport(\"" + col[0] + "\",\"" + col[1] + "\",\"" + col[3] + "\",\"" + col[4] + "\",\"" + col[5] + "\",\"" + escape(col[6]) + "\",\"" + col[7] + "\")'></td>";
+    if(db != DB_OPENFLIGHTS || col[9] == "own") {
+      if(col[9] == "own") {
+	label = "Edit";
+      } else {
+	label = "Load";
+      }
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + escape(airports[a]) + "\")'></td>";
     }
     table += "</tr>";
   }
@@ -304,25 +321,39 @@ function searchResult(str) {
   document.getElementById("miniresultbox").innerHTML = table;
 }
 
-// Load data from DAFIF search into form
-function loadDAFIFAirport(iata, icao, x, y, elevation, name, country) {
+// Load data from search result into form
+function loadAirport(data) {
+  var col = unescape(data).split(";");
+
   var b_back = document.getElementById("b_back");
   var b_fwd = document.getElementById("b_fwd");
   if(b_back) b_back.disabled = true;
   if(b_fwd) b_fwd.disabled = true;
 
   var form = document.forms['searchform'];
-  form.airport.value = unescape(name);
-  form.iata.value = iata;
-  form.icao.value = icao;
-  form.x.value = x;
-  form.y.value = y;
-  form.elevation.value = elevation;
+  form.iata.value = col[0];
+  form.icao.value = col[1];
+  form.x.value = col[3];
+  form.y.value = col[4];
+  form.elevation.value = col[5];
+  form.airport.value = col[6];
+  country = col[7];
   var country_select = form.country;
   for(index = 0; index < country_select.length; index++) {
-    if(country_select[index].value == country) {
+    if(country_select[index].value == country || country_select[index].text == country) {
       country_select.selectedIndex = index;
     }
+  }
+  form.city.value = col[10];
+
+  if(col[2] != "") {
+    form.apid.value = col[2];
+    document.getElementById('b_add').style.display = "none";
+    document.getElementById('b_edit').style.display = "inline";
+  } else {
+    form.apid.value = "";
+    document.getElementById('b_add').style.display = "inline";
+    document.getElementById('b_edit').style.display = "none";
   }
 }
 
@@ -360,7 +391,11 @@ function clearSearch() {
   form.x.value = "";
   form.y.value = "";
   form.elevation.value = "";
+  form.apid.value = "";
   form.iatafilter.checked = true;
+  document.getElementById('b_add').style.display = "inline";
+  document.getElementById('b_edit').style.display = "none";
+  document.getElementById("miniresultbox").innerHTML = "";
 }
 
 // Airport selected, kick it back to main window and close this

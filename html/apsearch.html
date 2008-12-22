@@ -22,6 +22,7 @@
 	      <td><INPUT type="text" name="airport"></td>
 	      <td><INPUT type="text" name="iata" size="3"></td>
 	      <td><INPUT type="text" name="icao" size="4"></td>
+	      <td><INPUT type="text" name="apid" size="10" value="" style="border: 0px" READONLY></td>
 	    </tr><tr>
 	      <td>City name</td>
 	      <td colspan=2>Country name</td>
@@ -62,7 +63,8 @@
 		<INPUT type="button" value="Clear" onClick="clearSearch()">
 		<INPUT type="button" value="Cancel" onClick="window.close()">
 		</td><td style="text-align: right">
-		<INPUT type="button" title="Record the current data as a new airport." value="Add as new" onClick="doRecord()">
+		<INPUT id="b_add" type="button" title="Record the current data as a new airport." value="Add as new" onClick="doRecord()">
+		<INPUT id="b_edit" type="button" title="Record changes to this airport." value="Save changes" onClick="doRecord()" style="display: none">
 		</td>
 	    </tr>
 	</table>
