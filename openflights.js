@@ -484,20 +484,21 @@ function xmlhttpPost(strURL, id, param) {
 	  if(! logged_in) {
 	    closePane();
 	  }
+
+	  // Zoom map to fit when first loading another's flights/trip
 	  updateMap(str);
+	  if(! logged_in && (filter_user != 0 || filter_trid != 0) && initializing) {
+	    map.zoomToExtent(airportLayer.getDataExtent());
+	  }
 	  if(param) {
 	    updateFilter(str);
-	    // Zoom map to fit when loading another's flights/trip
-	    if(! logged_in && (filter_user != 0 || filter_trid != 0)) {
-	      var form = document.forms['filterform'];    
-	      if(form.Airlines.selectedIndex == 0 &&
-		form.Years.selectedIndex == 0 &&
-		 (filter_trid != 0 || form.Trips.selectedIndex == 0)) {
-		map.zoomToExtent(airportLayer.getDataExtent());
-	      }
-	    }
 	  }
 	  updateTitle();
+
+	  // Map now completely drawn for the first time
+	  if(initializing) {
+	    initializing = false;
+	  }
 	} 
       }
       if(strURL == URL_STATS) {
@@ -556,6 +557,8 @@ function xmlhttpPost(strURL, id, param) {
 	  if($("addflighttitle").style.display == 'inline') {
 	    if(getCurrentPane() == "input") {
 	      swapAirports(false);
+	      document.forms['inputform'].seat.value = "";
+	      document.forms['inputform'].seat_type.selectedIndex = 0;
 	      document.forms['inputform'].src_date.focus();
 	    } else {
 	      clearInput();
@@ -1053,7 +1056,6 @@ function updateMap(str){
     } else {
       $('filter_extra_key').style.visibility = "hidden";
     }
-    initializing = false;
   }
 
 }
@@ -1863,6 +1865,9 @@ function swapAirports(manual) {
     // Clone DST from SRC
     $('dst_ap').value = srcName;
     $('dst_apid').value = srcData;
+    if(srcName != "") {
+      $('dst_ap').style.color = "#000";
+    }
   } else {
     // Clear out DST
     $('dst_ap').value = "";
@@ -2272,6 +2277,7 @@ function clearInput() {
     form.number.value = "";
     form.airlineid.value = 0;
     form.seat.value = "";
+    form.seat_type.selectedIndex = 0;
     form.plane_id.value = "";
     form.registration.value = "";
     form.note.value = "";
