@@ -11,7 +11,7 @@
 
     <h1>Context Help: Comma-Separated Value (CSV) Format</h1>
 
-      This document defines <b>Revision 0.2</b> of the comma-separated value (CSV) format natively exported and imported by OpenFlights.<p>
+      This document defines <b>Revision 0.3</b> of the comma-separated value (CSV) format natively exported and imported by OpenFlights.<p>
 
       OpenFlights CSV follows <a href="http://tools.ietf.org/html/rfc4180#page-2">RFC 4180</a>.
 	<ul>
@@ -23,7 +23,7 @@
 	<h2>Field definition</h2>
 
 	<dl>
-	<dt>1. Date</dt><dd>Date of flight, in YYYY-MM-DD format. <font color="red">Mandatory</font>.</dd>
+	<dt>1. Date</dt><dd>Date of flight, in YYYY-MM-DD (dash-separated, <i>preferred format</i>), MM/DD/YYYY (slash-separated), DD.MM.YYYY (dot-separated) or YYYY (year-only) format. <font color="red">Mandatory</font>.</dd>
 	<dt>2. From</dt><dd>IATA or ICAO code of source airport. <font color="red">Mandatory unless "From_OID" is provided.</font></dd>
 	<dt>3. To</dt><dd>IATA or ICAO code of destination airport. <font color="red">Mandatory unless "To_OID" is provided.</font></dd>
 	<dt>4. Flight_Number</dt><dd>Flight number. <font color="blue">If first two characters are an airline code (two alphanumeric digits), the code is used to override "Airline".</font> </dd>
@@ -32,14 +32,14 @@
 	<dt>7. Duration</dt><dd>Duration of flight, in the format HH:MM. <font color="blue">Estimated automatically if not provided.</font></dd>
 	<dt>8. Seat</dt><dd>Seat number.</dd>
 	<dt>9. Seat_Type</dt><dd>Seat type: one of "W" for Window, "A" for Aisle or "M" for Middle.</dd>
-	<dt>10. Class</dt><dd>Class: one of "F" for First, "B" for Business, "P" for Premium Economy, "Y" for Economy.</dd>
+	<dt>10. Class</dt><dd>Class: one of "F" for First, "C" for Business, "P" for Premium Economy, "Y" for Economy.</dd>
 	<dt>11. Reason</dt><dd>Reason for flight: one of "B" for Business, "L" for Personal, "C" for Crew or "O" for Other.</dd>
 	<dt>12. Plane</dt><dd>Plane type.</dd>
 	<dt>13. Registration</dt><dd>Plane registration number.</dd>
 	<dt>14. Trip</dt><dd>Internal OpenFlights Trip ID.  <font color="blue">Optional, but must exist and belong to the user importing the data if specified.</font></dd>
 	<dt>15. Note</dt><dd>User-entered note or comment about flight.</dd>
       </dl>
-      The final four fields contain internal OpenFlights IDs (OID) for ensuring accurate imports.  They are generated automatically when exporting, but should <i>not</i> be provided if creating or importing your own data.
+      The final four fields contain internal OpenFlights IDs (OID) for ensuring accurate imports.  They are generated automatically when exporting, but should <i>not</i> be provided if creating or importing your own data, or altering the airline, airport or plane fields of exported data.
       <dl>
 	<dt>16. From_OID</dt><dd>Internal OpenFlights airport ID.  <font color="blue">Overrides "From" if provided.</font></dd>
 	<dt>17. To_OID</dt><dd>Internal OpenFlights airport ID.  <font color="blue">Overrides "To" if provided.</font></dd>
@@ -76,11 +76,14 @@ Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason
 
 	<h2>Revision history</h2>
 	<dl>
-	  <dt>0.1 &mdash; Nov 30, 2008</dt>
-	  <dd>Original release</dd>
-	  
+	  <dt>0.3 &mdash; Dec 22, 2008</dt>
+	  <dd>Corrected business class specifier to "C", although "B" is still accepted.  Support for American (DD/MM/YYYY) and European (DD.MM.YYYY) added.</dd>
+
 	  <dt>0.2 &mdash; Dec 2, 2008</dt>
-	  <dd>Airlines no longer mandatory, clarified field names, airline matching logic</dd>
+	  <dd>Specifying airline no longer mandatory.  Clarified field names, airline matching logic.</dd>
+
+	  <dt>0.1 &mdash; Nov 30, 2008</dt>
+	  <dd>Original release.</dd>
 	</dl>
       </div>
 

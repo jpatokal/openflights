@@ -2059,8 +2059,8 @@ function login(str, param) {
     $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
     if(elite == "X") {
       $("news").style.display = 'inline';
-      $("news").innerHTML =
-	"<img align='right' src='/img/icon-warning.png' height=34 width=34><img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
+      $("news").innerHTML = getEliteIcon("X") +
+	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
 	"<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
     } else if(param != "NEWUSER") {
       closeNews();

@@ -1,3 +1,10 @@
+<b>2008-12-23</b>
+
+* Clearer warnings when importing CSV data with OpenFlights IDs
+* Bug: Business class identifier "B" now accepted in CSV (2457376)
+* Bug: American-style MM/DD/YYYY dates now accepted (2457381)
+* Bug: Spurious warnings when importing data with no airline names fixed
+
 <b>2008-12-22</b>
 
 * Ability to edit your own airports added.
