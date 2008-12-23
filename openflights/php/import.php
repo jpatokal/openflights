@@ -44,6 +44,36 @@ function fm_strip_liste($value) {
   }
 }
 
+// Validate date field
+// Must be one of YYYY, MM-DD-YYYY (FM only), YYYY-MM-DD (CSV only), MM/DD/YYYY or DD.MM.YYYY
+function check_date($db, $type, $date) {
+  if(strlen($date) == 4) {
+    $date = "01.01." . $date;
+  }
+  if(strstr($date, "-")) {
+    if($type == "FM") {
+      $dateFormat = "%m-%d-%Y";
+    } else {
+      $dateFormat = "%Y-%m-%d";
+    }
+  } else if(strstr($date, "/")) {
+    $dateFormat = "%m/%d/%Y";
+  } else {
+    $dateFormat = "%d.%m.%Y";
+  }
+  $sql = sprintf("SELECT STR_TO_DATE('%s', '%s')", $date, $dateFormat);
+  $result = mysql_query($sql, $db);
+  $db_date = mysql_result($result, 0); 
+  if($db_date == "") {
+    $date = null;
+    $color = "#faa";
+  } else {
+    $color = "#fff";
+    $date = $db_date;
+  }
+  return array($date, $color);
+}
+
 // Validate that this code/name match an airport 
 function check_airport($db, $code, $name) {
   switch(strlen($code)) {
@@ -123,7 +153,7 @@ function check_airline($db, $number, $airline, $uid) {
       // Solitary match
     case "1":
       $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
-      if(stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline)) {
+      if($airline != "" && (stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline))) {
 	$color = "#fff";
 	$airline = $dbrow['name'];
       } else {
@@ -138,7 +168,7 @@ function check_airline($db, $number, $airline, $uid) {
       $color = "#ddf";
       $first = true;
       while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
-	$isMatch = stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline);
+	$isMatch = $airline != "" && (stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline));
 	if($first || $isMatch) {
 	  if($first) {
 	    $first = false;
@@ -229,6 +259,9 @@ switch($action) {
 }
 
 $fileType = $HTTP_POST_VARS["fileType"];
+$status = "";
+$id_note = false;
+
 switch($fileType) {
  case "FM":
    // Parse it
@@ -243,7 +276,6 @@ switch($fileType) {
    }
    
    // 3nd table has the data
-   $status = "";
    $table = $html->find('table', 2);
    $rows = $table->find('tr[valign=top]');
    break;
@@ -289,24 +321,7 @@ foreach($rows as $row) {
     // Read and validate date field
     $dates = explode('<br>', $cols[1]);
     $src_date = strip_tags($dates[0]); // <td class="liste"><nobr>xx...xx</nobr>
-    if(strlen($src_date) == 4) {
-      $src_date = "01.01." . $src_date;
-    }
-    if(strstr($src_date, "-")) {
-      $dateFormat = "%m-%d-%Y";
-    } else {
-      $dateFormat = "%d.%m.%Y";
-    }
-    $sql = sprintf("SELECT STR_TO_DATE('%s', '%s')", $src_date, $dateFormat);
-    $result = mysql_query($sql, $db);
-    $db_date = mysql_result($result, 0); 
-    if($db_date == "") {
-      $src_date = null;
-      $date_bgcolor = "#faa";
-    } else {
-      $date_bgcolor = "#fff";
-      $src_date = $db_date;
-    }
+    list($src_date, $date_bgcolor) = check_date($db, $fileType, $src_date);
     
     $src_iata = $cols[2]->plaintext;
     $dst_iata = $cols[4]->plaintext;
@@ -384,19 +399,24 @@ foreach($rows as $row) {
     $id = $count - 1;
     // 0 Date, 1 From, 2 To,3 Flight_Number, 4 Airline_Code, 5 Distance, 6 Duration, 7 Seat, 8 Seat_Type, 9 Class
     // 10 Reason, 11 Plane, 12 Registration, 13 Trip, 14 Note, 15 From_Code, 16 To_Code, 17 Airline_Code, 18 Plane_Code
+
+    list($src_date, $date_bgcolor) = check_date($db, $fileType, $row[0]);
+
     $src_iata = $row[1];
     $src_apid = $row[15];
     if($src_apid) {
-      $src_iata .= "<br><small>$src_apid</small>";
+      $src_iata = "<small>ID $src_apid</small>";
       $src_bgcolor="#fff";
+      $id_note = true;
     } else {
       list($src_apid, $src_iata, $src_bgcolor) = check_airport($db, $src_iata, $src_iata);
     }
     $dst_iata = $row[2];
     $dst_apid = $row[16];
     if($dst_apid) {
-      $dst_iata .= "<br><small>$dst_apid</small>";
+      $dst_iata = "<small>ID $dst_apid</small>";
       $dst_bgcolor="#fff";
+      $id_note = true;
     } else {
       list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($db, $dst_iata, $dst_iata);
     }
@@ -404,26 +424,28 @@ foreach($rows as $row) {
     $airline = $row[4];
     $alid = $row[17];
     if($alid) {
-      $airline .= "<br><small>$alid</small>";
+      $airline = "<small>ID $alid</small>";
       $airline_bgcolor="#fff";
+      $id_note = true;
     } else {
       list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid);
     }
     $plane = $row[11];
     $plid = $row[18];
     if($plid) {
-      $plane .= "<br><small>$plid</small>";
+      $plane = "<small>ID $plid</small>";
       $plane_bgcolor="#fff";
+      $id_note = true;
     } else {
       list($plid, $plane_bgcolor) = check_plane($db, $plane);
     }
 
-    $src_date = $row[0];
     $distance = $row[5];
     $duration = $row[6];
     $seatnumber = $row[7];
     $seatpos = array_search($row[8], $posMap);
     $seatclass = array_search($row[9], $classMap);
+    if($row[9] == "B") $seatclass = "Business"; // fix for typo in pre-0.3 versions of spec
     $seatreason = array_search($row[10], $reasonMap);
     $reg = $row[12];
     list($trid, $trip_bgcolor) = check_trip($db, $uid, $row[13]);
@@ -531,6 +553,10 @@ if($action == "Upload") {
 <form name="importform" action="/php/import.php" method="post">
 
 <?php
+if($id_note == true) {
+  print "<font color=blue>Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.</font><br><br>";
+}
+
 if($status == "disabled") {
   print "<font color=red>Error: ";
   switch($fatal) {
@@ -542,7 +568,7 @@ if($status == "disabled") {
     print "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. ";
     break;
   case "date":
-    print "Some date fields could not be parsed.  Please change them to use any of these three formats: MM-DD-YYYY, DD.MM.YYYY, or YYYY only.";
+    print "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted.";
     break;
   case "trip":
     print "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please validate the trip IDs.";
