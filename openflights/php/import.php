@@ -131,8 +131,13 @@ function check_airline($db, $number, $airline, $uid) {
 		     $code, $uid);
     } else {
       $airlinepart = explode(' ', $airline);
+      if($airlinepart[0] == 'Air') {
+	$part = 'Air ' . $airlinepart[1];
+      } else {
+	$part = $airlinepart[0];
+      }
       $sql = sprintf("select name,alias,alid from airlines where (name like '%s%%' or alias like '%s%%') and (iata != '' or uid = %s) order by name",
-		     mysql_real_escape_string($airlinepart[0]), mysql_real_escape_string($airlinepart[0]), $uid);
+		     mysql_real_escape_string($part), mysql_real_escape_string($part), $uid);
     }
     
     // validate the airline/code against the DB
@@ -163,18 +168,16 @@ function check_airline($db, $number, $airline, $uid) {
       $alid = $dbrow['alid'];
       break;
       
-      // Many matches, default to first unless we can match one by name
+      // Many matches, default to first with a warning if we can't find an exact match
     default:
       $color = "#ddf";
       $first = true;
       while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
-	$isMatch = $airline != "" && (stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline));
+	$isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
+				      (strcasecmp($dbrow['alias'], $airline) == 0));
 	if($first || $isMatch) {
-	  if($first) {
-	    $first = false;
-	  } else {
-	    $color = "#fff";
-	  }
+	  if($isMatch) $color = "#fff";
+	  if($first) $first = false;
 	  $airline = $dbrow['name'];
 	  $alid = $dbrow['alid'];
 	}
