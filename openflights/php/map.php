@@ -7,8 +7,13 @@ include 'filter.php';
 
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
-  // If not logged in, default to demo mode
+  // If not logged in, default to demo mode and warn app that we're (no longer?) logged in
   $uid = 1;
+  $logged_in = "demo";
+} else {
+  $logged_in = $_SESSION["name"]; // username
+  $elite = $_SESSION["elite"];
+  $editor = $_SESSION["editor"];
 }
 
 // This applies only when viewing another's flights
@@ -43,6 +48,7 @@ if($trid && $trid != "0" && $trid != "null") {
     } else {
 	$uid = $row["uid"];
 	$public = $row["public"];
+	$logged_in = "demo"; // we are *not* this user
 	if($public == "O") {
 	  $_SESSION["openuid"] = $uid;
 	  $_SESSION["opentrid"] = $trid;
@@ -67,6 +73,7 @@ if($user && $user != "0") {
       $uid = $row["uid"];
       $public = $row["public"];
       $elite = $row["elite"];
+      $logged_in = "demo"; // we are *not* this user
       if($public == "O") {
 	$_SESSION["openuid"] = $uid;
 	$_SESSION["opentrid"] = null;
@@ -91,7 +98,8 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($row["count"] == "0" && $user && $user != "0") {
     die('Error;This user has no flights.');
   }
-  printf("%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite);
+  printf("%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite,
+	 $logged_in, $editor);
 }
 
 // List of all flights (unique by airport pair)

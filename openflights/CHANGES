@@ -1,3 +1,14 @@
+<b>2008-12-30</b>
+
+* Session now retained until timeout or "Logout", even if you close window.
+* Faster loading (7 Javascript files merged into two and compacted)
+* New, large, user-friendly signup screen
+* "Extra" filter added to map title when active
+* Starting implementation of Elite Gold features
+* Bug: Public page no longer shows as "open" when user is logged in (2109953)
+* Bug: Map filtering after session timeout caused logout, not blank/incorrect map
+* Bug: Path calculation threw errors when adding rows to empty Basic editor
+
 <b>2008-12-25</b>
 
 * More accurate airline name matching for FM imports when flight number is not provided
