@@ -3,11 +3,13 @@
  */
 var URL_SIGNUP = "/php/signup.php";
 
+var privacyList = [ 'N', 'Y', 'O' ];
+
 window.onload = function init(){
   if(window.location.href.indexOf("settings") != -1) {
     xmlhttpPost(URL_SIGNUP, "LOAD");
   } else {
-    document.forms['signupform'].username.value = parent.opener.document.forms['login'].name.value;
+    // TODO document.forms['signupform'].username.value = parent.opener.document.forms['login'].name.value;
   }
 }
 
@@ -94,10 +96,12 @@ function validate(type) {
     var name = form.username.value;
     if(name == "") {
       showError("Please enter a username.");
+      form.username.focus();
       return;
     }
     if(pw1 == "") {
       showError("Please enter a password.");
+      form.pw1.focus();
       return;
     }
   }
@@ -105,17 +109,20 @@ function validate(type) {
     var oldpw = form.oldpw.value;
     if(pw1 != "" && oldpw == "") {
       showError("Please enter your current password.");
+      form.oldpw.focus();
       return;
     }
   }
 
   if(pw1 != pw2) {
     showError("Your passwords don't match, please try again.");
+    form.pw1.focus();
     return;
   }
 
   if(email != "" && ! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     showError('Invalid e-mail address, it should be "user@example.domain"');
+    form.email.focus();
     return;
   }
 
@@ -169,20 +176,52 @@ function signup(str) {
   if(code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;
     switch(code) {
-    case "1": // new
-      var form = document.forms['signupform'];
-      var name = form.username.value;
-      var pw = form.pw1.value;
-      parent.opener.newUserLogin(name, pw);
-      break;
+    case "1": // new user
+      document.forms['signupform'].submit();
+      return;
 
     case "10": // reset
       parent.opener.refresh(true);
       break;
+
+    default: // edited
+      // do nothing
+      break;
     }
     window.close();
+
   } else {
     showError(message);
+  }
+}
+
+function changeName() {
+  var name = document.forms['signupform'].username.value;
+  var url = "http://" + location.host + "/user/" + escape(name);
+  $('profileurl').innerHTML = "Profile address: " + url;
+}
+
+function changePrivacy(type) {
+  for(p = 0; p < privacyList.length; p++) {
+    if(type == privacyList[p]) {
+      style = "inline";
+    } else {
+      style = "none";
+    }
+    $('privacy' + privacyList[p]).style.display = style;
+  }
+}
+
+function changeEditor(type) {
+  switch(type) {
+  case "BASIC":
+    $('detaileditor').style.display = "none";
+    $('basiceditor').style.display = "inline";
+    break;
+  case "DETAIL":
+    $('basiceditor').style.display = "none";
+    $('detaileditor').style.display = "inline";
+    break;
   }
 }
 
