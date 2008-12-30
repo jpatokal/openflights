@@ -1,0 +1,18 @@
+td.key {
+  vertical-align: top;
+  text-align: right;
+  padding: 10px 10px 10px 10px;
+  font-weight: bold;
+}
+
+td.value {
+  vertical-align: top;
+  text-align: left;
+  padding: 10px 10px 10px 10px;
+}
+
+td.desc {
+  vertical-align: top;
+  text-align: left;
+  padding: 10px 10px 10px 10px;
+}
