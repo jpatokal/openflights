@@ -804,6 +804,7 @@ function updateTitle(str) {
   // Logged in users
   if(logged_in) {
     switch(filter_trid) {
+    case 0:
     case "0":
       // do nothing
       break;
@@ -853,6 +854,18 @@ function updateTitle(str) {
 	"</b> <h6><a href='/'>Home</a></h6>";
     }
   }
+
+  // And finally tack on the extra filter, if any
+  filter_extra_key = form.Extra.value;
+  if(filter_extra_key != "" && $('filter_extra_value')) {
+    if(text == "") {
+      text = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> ";
+    } else {
+      text = ", ";
+    }
+    text += form.Extra[form.Extra.selectedIndex].text + ' ' + $('filter_extra_value').value;
+  }
+
   $("maptitle").innerHTML = text;
 }
 
@@ -1011,6 +1024,22 @@ function updateMap(str){
   privacy = col[3];
   if(! logged_in) {
     elite = col[4];
+    editor = col[6];
+
+    // Does user have a PHP session open?  Log him in!
+    // Simulate login.php: "1;name;editor;elite"
+    if(col[5] != "demo") {
+      if(flightTotal == "0") {
+	op = "NEWUSER";
+      } else {
+	op = "REFRESH";
+      }
+      login("1;" + col[5] + ";" + col[6] + ";" + elite, op);
+    }
+  }
+  // Our PHP session has timed out, kick out the user
+  if(logged_in && col[5] == "demo") {
+    logout("Your session has timed out, please log in again.");
   }
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
@@ -1714,6 +1743,7 @@ function markAirport(element, quick) {
   if(getCurrentPane() == "multiinput") {
     element = markingLimit(element);
   }
+  if(!element) return; // nothing to draw
 
   var data = $(element + 'id').value.split(":");
   var iata = data[0];
@@ -1844,6 +1874,7 @@ function markingLimit(element) {
       break;
     }
   }
+  if(i == 0) return null; // no valid airports
   if(i > multiinput_rows) i = multiinput_rows; // otherwise it goes one over if all rows are valid
   return "dst_ap" + i;
 }
@@ -2020,10 +2051,7 @@ function help(context) {
 // Register new account
 //
 function signUp() {
-  var regWindow = window.open('/html/signup.html', 'CreateNewAccount', 'width=600,height=500,scrollbars=yes');
-  if (!regWindow) {
-    alert("Oops, your browser seems to be blocking the sign up window?  Please disable your popup blocker for this site and try again.");
-  }
+  location.href = '/html/signup.html';
 }
 
 //
@@ -2057,33 +2085,43 @@ function login(str, param) {
     $("loginform").style.display = 'none';
     $("controlpanel").style.display = 'inline';
     $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
-    if(elite == "X") {
+    switch(elite) {
+    case "X":
       $("news").style.display = 'inline';
       $("news").innerHTML = getEliteIcon("X") +
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-	"<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
-    } else if(param != "NEWUSER") {
+	"<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!";
+      break;
+
+    case "G":
+    case "P":
+      // Remove ad pane and manually force help to show
+      $(getCurrentPane()).style.display = 'none';
+      $("help").style.display = 'inline';
+      paneStack[0] = "help";
+      break;
+    }
+
+    if(param == "NEWUSER") {
+      $("news").innerHTML =
+	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
+	"<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:newFlight()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
+      $("news").style.visible = "inline";
+    } else {
       closeNews();
     }
-    clearStack();
-    clearMap();
-    clearFilter(true);
 
+    // in a NEWUSER or REFRESH, we've already drawn the map, so no need to redraw
+    if(!param) {
+      clearStack();
+      clearMap();
+      clearFilter(true);
+    }
   } else {
     logged_in = false;
     $("loginstatus").innerHTML = "<B>" + name + "</B>";
     $("ajaxstatus").style.display = 'none';
   }
-}
-
-// Called by signup.js when a new user has successfully registered
-function newUserLogin(name, pw) {
-  document.forms['login'].name.value = name;
-  document.forms['login'].pw.value = pw;
-  $("news").innerHTML =
-    "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-    "<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:newFlight()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
-  xmlhttpPost(URL_LOGIN, 0, "NEWUSER");
 }
 
 // Return HTML string representing user's elite status icon
@@ -2108,6 +2146,9 @@ function logout(str) {
   $("loginstatus").innerHTML = "<B>You have been logged out.</B>";
   $("loginform").style.display = 'inline';
   $("controlpanel").style.display = 'none';
+  $(getCurrentPane()).style.display = 'none';
+  $("ad").style.display = 'inline';
+  paneStack[0] = "ad";
   clearStack();
   clearMap();
   clearFilter(true);
@@ -2164,7 +2205,7 @@ function closePane() {
   $(lastPane).style.display = 'inline';
 
   // If ad pane is now displayed, refresh it
-  if(paneStack.length == 1) refreshAd();
+  if(paneStack.length == 1 && paneStack[0] == "ad") refreshAd();
 }
 
 // Clear all panes until the base pane (ad)

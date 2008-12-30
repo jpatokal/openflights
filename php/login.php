@@ -15,9 +15,12 @@ if($name) {
     $_SESSION['uid'] = $uid;
     $_SESSION['name'] = $name;
     $_SESSION['email'] = $myrow["email"];
+    $_SESSION['editor'] = $myrow["editor"];
+    $_SESSION['elite'] = $myrow["elite"];
+
     printf("1;%s;%s;%s", $name, $myrow["editor"], $myrow["elite"]);
   } else {
-    printf("0;Login failed. <a href='#' onclick='JavaScript:help(\"forgotpw\")'>Forgot password?</a>");
+    printf("0;Login failed. <a href='/html/signup.html'>Create account</a> or <a href='#' onclick='JavaScript:help(\"forgotpw\")'>reset password?</a>");
   }
 }
 ?>

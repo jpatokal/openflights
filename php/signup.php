@@ -23,7 +23,7 @@ if($type == "NEW") {
   $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "'";
   $result = mysql_query($sql, $db);
   if (mysql_fetch_array($result)) {
-    printf("0;Sorry, that user name is already taken.");
+    printf("0;Sorry, that name is already taken, please try another.");
     exit;
   }
 
@@ -61,7 +61,7 @@ if($type == "NEW") {
       "' AND password=MD5(CONCAT('" . mysql_real_escape_string($oldpw) . "','" . mysql_real_escape_string($name) . "'));";
     $result = mysql_query($sql, $db);
     if(! mysql_fetch_array($result)) {
-      printf("0;Sorry, current password does not match." . $sql);
+      printf("0;Sorry, current password is not correct.");
       exit;
     }
   }
@@ -93,7 +93,15 @@ if($type == "NEW") {
 mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
 
 if($type == "NEW") {
-  printf("1;User successfully created.");
+  printf("1;Successfully signed up, now logging in...");
+
+  // Log in the user
+  $uid = mysql_insert_id();
+  $_SESSION['uid'] = $uid;
+  $_SESSION['name'] = $name;
+  $_SESSION['editor'] = $editor;
+  $_SESSION['elite'] = $elite;
+
 } else {
   printf("2;User successfully edited.");
 }
