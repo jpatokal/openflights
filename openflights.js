@@ -554,15 +554,15 @@ function xmlhttpPost(strURL, id, param) {
 
 	if(code == CODE_EDITOK || code == CODE_ADDOK) {
 	  // If adding new flights (not editing), swap last destination to be new source and focus on date
-	  if($("addflighttitle").style.display == 'inline') {
-	    if(getCurrentPane() == "input") {
+	  if(getCurrentPane() == "input") {
+	    if($("addflighttitle").style.display == 'inline') {
 	      swapAirports(false);
 	      document.forms['inputform'].seat.value = "";
 	      document.forms['inputform'].seat_type.selectedIndex = 0;
 	      document.forms['inputform'].src_date.focus();
-	    } else {
-	      clearInput();
-	    }
+	    } 
+	  } else {
+	    clearInput(); // Always clear multiview
 	  }
 	}
 
