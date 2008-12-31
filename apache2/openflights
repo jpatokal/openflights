@@ -1,8 +1,10 @@
 NameVirtualHost *
 <VirtualHost *>
 	ServerAdmin webmaster@localhost
-	
 	DocumentRoot /var/www/openflights
+        ServerName openflights.org
+        ServerAlias www.openflights.org
+
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
@@ -16,8 +18,28 @@ NameVirtualHost *
                 # in /apache2-default/, but still have / go to the right place
                 #RedirectMatch ^/$ /apache2-default/
                 XBitHack Full
+
+                RewriteEngine on
+                # Map /trip/xxx URLs into ?trid=xxx format
+                RewriteRule   ^trip/img/(.+)$  /img/$1                 [PT,L,QSA]
+                RewriteRule   ^trip/(.+)$      /index.html?trid=$1     [PT,L,QSA]
+                # Map /user/xxx URLs into ?user=xxx format
+                RewriteRule   ^user/img/(.+)$  /img/$1                 [PT,L,QSA]
+                RewriteRule   ^user/(.+)$      /index.html?user=$1     [PT,L,QSA]
+	</Directory>
+	<Directory /var/www/openflights/blog>
+		Options FollowSymLinks
+		AllowOverride None
+
+                RewriteEngine On
+                RewriteBase /blog/
+                RewriteCond %{REQUEST_FILENAME} !-f
+                RewriteCond %{REQUEST_FILENAME} !-d
+                RewriteRule . /blog/index.php [L]
 	</Directory>
 
+        #RewriteLog /var/log/apache2/rewrite.log
+        #RewriteLogLevel 9
 	ErrorLog /var/log/apache2/error.log
 
 	# Possible values include: debug, info, notice, warn, error, crit,
@@ -26,14 +48,5 @@ NameVirtualHost *
 
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
-
-        RewriteEngine on
-        # Map /trip/xxx URLs into ?trid=xxx format
-        RewriteRule   ^/trip/img/(.+)$  /img/$1                 [PT,L,QSA]
-        RewriteRule   ^/trip/(.+)$      /index.html?trid=$1     [PT,L,QSA]
-        # Map /user/xxx URLs into ?user=xxx format
-        RewriteRule   ^/user/img/(.+)$  /img/$1                 [PT,L,QSA]
-        RewriteRule   ^/user/(.+)$      /index.html?user=$1     [PT,L,QSA]
-
 
 </VirtualHost>
