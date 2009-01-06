@@ -48,51 +48,15 @@
 
 	    <h4>What browsers do you support?</h4>
 
-	    <p>Developed on Firefox 2 and 3, tested on Internet Explorer 7, and seems to work nicely on Safari as well.  If it works or breaks on anything else, please <a href="/contact.html">let us know.</a></p>
+	    <p>Developed on Firefox 2 and 3, tested on Internet Explorer 7, and seems to work nicely on Safari as well.  If it works or breaks on anything else, please <a href="/about.html">let us know.</a></p>
 
 	    <h4>How much does it cost?</h4>
 
-	    <table><tr><td>
-	    <p>Using the website costs you <i>absolutely nothing</i>.  We've got to pay our bandwidth bills somehow though, so we're trying out Google ads and we reserve the right to nag heavy users for donations at some point in the future.  $20/year, perhaps?</p>
-
-	    <p>If you'd like to donate, just click on the button!  PayPal, Visa, MC, Amex, Discover accepted.  Any donations received now will be counted towards membership if introduced in the future.</p>
-		    
-            <p>If you'd like to support the project without paying, we'd really appreciate a little publicity: tell your friends, write about OpenFlights on your blog or your favorite forum, add a link to your OpenFlights map to your e-mail signature, etc.</p>
-
-		  </td><td>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_donations">
-<input type="hidden" name="business" value="jani@contentshare.sg">
-<input type="hidden" name="item_name" value="OpenFlights.org">
-<input type="hidden" name="no_shipping" value="0">
-<input type="hidden" name="no_note" value="1">
-<input type="hidden" name="currency_code" value="USD">
-<input type="hidden" name="tax" value="0">
-<input type="hidden" name="bn" value="PP-DonationsBF">
-<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-		    </form>
-		  </td></tr></table>
+	    <p>Using the website costs you <i>absolutely nothing</i>.  However, our meager advertising revenue does not currently suffice even to pay for our bandwidth bills, so if you like the site, you're warmly encouraged to <a href="/donate.html">donate and help keep the site running</a>.  Donors receive "Elite" status with perks like no ads, password-protected private profiles, elite-level support, previews of upcoming features and more.  See <a href="/donate.html">Donate</a> for more.</p>
 
 	    <h4>Are you sure this thing will scale?</h4>
 
 	    <p>Yes!  The heavy lifting of drawing the maps is handled by your browser, not any central server.  The database is built to scale up and has been stress-tested by loading in over 100,000 flights, but key operations still took under 0.1 seconds each.</p>
-
-	    <h4>What's this "gamma" thing?</h4>
-	    
-	    <p>OpenFlights is currently in a "soft launch" mode: all core features are implemented and tested, but development is still continuing in preparation for the official launch.  If you'd like to be notified, send mail to <i>jani at contentshare dot sg</i>.</p>
-
-	    <h4>What's the roadmap then?</h4>
-
-	    <p>Roughly like this:</p>
-	    <ol>
-	      <li><s>Implement importing and exporting.</s> (Done!)</li>
-	      <li><s>Implement complex flight input (multi-segment and repeated flights).</s> (Done!)</li>
-	      <li><s>Add support for filtering according to pretty much anything.</s> (Done!)</li>
-	      <li>Graphical bells and whistles (eg. color-coding of flights).</li>
-	      <li><b>Full public launch.</b></li>
-	    </ol>
-	    <p>If you think there's an important feature still missing, <a href="http://sourceforge.net/tracker/?atid=1097180&group_id=235620&func=browse">tell us about it</a>.</p>
 
 	    <h4>How do I sign up and start punching in my own flights?</h4>
 	    
@@ -120,7 +84,7 @@
 	    
 	    <h4>Are those flight time estimates accurate?  Can I enter my own?</h4>
 	    
-	    <p>The site currently uses a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p><br>
+	    <p>The site currently uses a really fancy formula to calculate them: "30 min plus 1 hour per every 500 miles".  This seems to be a surprisingly good approximation for commercial flights (anything from 100 to 10000 mi).</p>
 	    
 	    <p>Letting users enter start and end times and calculating the duration from there is a <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=2049976&group_id=235620&atid=1097180">pending feature</a>, but time zones make this harder than you'd think.  However, you can already manually overwrite the duration if you wish.</p>
 
@@ -153,7 +117,7 @@
 
 	    <h4>Something went wrong when I imported from FlightMemory!</h4>
 
-	    <p>This most often happens with airlines, since FlightMemory and OpenFlights do not render all company names in the same way.  OpenFlights also uses current airline data, not historical, so eg. SN123 will be mapped to "Brussels Airlines", not "Sabena".  If you had <i>lots</i> of flights get wrongly assigned, please drop us a line and we'll try to sort it out, but for only a few flights, it's easiest to repair by hand.</p>
+	    <p>This most often happens with airlines, since FlightMemory and OpenFlights do not render all company names in the same way.  OpenFlights also uses current airline data, not historical, so eg. SN123 will be mapped to "Brussels Airlines", not "Sabena".  If you had <i>lots</i> of flights get wrongly assigned, please drop us a line and we'll try to sort it out, but for only a few flights, it's easiest to repair by hand.  Exporting to CSV, editing in Excel, and reimporting is also a viable option.</p>
 
 	    <p>The other common source of headaches is unofficial airports like heliports and landing strips, which do not have IATA/ICAO codes.  These have to be entered manually into OpenFlights using "Add new airport" <i>before</i> you can import.  Note that the matching is done based on the <i>first word of the airport name</i>, so make sure the one in your data matches the one you enter exactly.</p>
 
@@ -161,7 +125,7 @@
 
 	    <h4>You really need to implement cool feature X, and fix terrible bug Y, and do it <i>right now</i>!</h4>
 	    
-	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!  Bug reports from people who's made donations also get priority.</p>
+	    <p>Please check <a href="http://sourceforge.net/projects/openflights">SourceForge</a> to see if they're already reported, and add them if not.  But remember, this is open source, so the best way to get anything done is to do it yourself!  Bug reports from people who have <a href="/donate.html">donated to the site</a> also get priority.</p>
 
 	    <p>Direct links: <a href="http://sourceforge.net/tracker/?atid=1097177&group_id=235620&func=browse">Known bugs</a>, <a href="http://sourceforge.net/tracker/?atid=1097180&group_id=235620&func=browse">Feature requests</a></p>
 
@@ -207,11 +171,11 @@
 
 	    <h4>I want to export to/import from OpenFlights format.  Where is your CSV specification?</h4>
 
-	    <p>Right here: <i><a href="/help/csv.html">Help: CSV</a></a>.  It's pretty straightforward, but <a href="/contact.html">let us know</a> if something is not working the way you expect.</p>
+	    <p>Right here: <i><a href="/help/csv.html">Help: CSV</a></i>.  It's pretty straightforward, but <a href="/about.html">let us know</a> if something is not working the way you expect.</p>
 
 	    <h4>I want an anonymized dump of flight data from OpenFlights or a customized installation for my airline/airport/website/other company.</h4>
 
-	    <p>We'd be delighted to work out a deal for consulting work, just <a href="/contact.html">drop us a line.</a></p>
+	    <p>We'd be delighted to work out a deal for consulting work, just <a href="/about.html">drop us a line</a>.</p>
 
 	    <br><br>
 	  </div>

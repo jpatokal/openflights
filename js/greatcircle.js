@@ -164,3 +164,27 @@ function isValid(point) {
     else
         return( false );
 }
+
+// And some totally unrelated helper functions
+
+var eliteicons = [ [ 'S', 'Silver Elite', '/img/silver-star.png' ],
+		   [ 'G', 'Gold Elite', '/img/gold-star.png' ],
+		   [ 'P', 'Platinum Elite', '/img/platinum-star.png' ],
+		   [ 'X', 'Thank you for using OpenFlights &mdash; please donate!', '/img/icon-warning.png' ] ];
+
+// Return HTML string representing user's elite status icon
+// If validity is not null, also return text description and validity period
+function getEliteIcon(e, validity) {
+  if(e && e != "") {
+    for(i = 0; i < eliteicons.length; i++) {
+      if(eliteicons[i][0] == e) {
+	if(validity) {
+	  return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small></center>";
+	} else {
+	  return "<span style='float: right'><a href='/donate.html' target='_blank'><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a></span>";
+	}
+      }
+    }
+  }
+  return "";
+}

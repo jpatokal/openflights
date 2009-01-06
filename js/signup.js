@@ -65,7 +65,14 @@ function xmlhttpPost(strURL, type) {
       break;
 
     case 'EDIT':
-      query += '&oldpw=' + escape(form.oldpw.value);
+      for (r=0; r < signupform.startpane.length; r++){
+	if (signupform.startpane[r].checked) {
+	  startpane = signupform.startpane[r].value;
+	}
+      }
+      query += '&oldpw=' + escape(form.oldpw.value) +
+	'&guestpw=' + escape(form.guestpw.value) +
+	'&startpane=' + escape(startpane);
       document.getElementById("miniresultbox").innerHTML = "<I>Saving changes...</I>";
       break;
 
@@ -87,7 +94,7 @@ function validate(type) {
 
   if(type == 'RESET') {
     if(! confirm("This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?")) {
-      document.getElementById("miniresultbox").innerHTML = "<i>Reset cancelled.</i>";
+      document.getElementById("miniresultbox").innerHTML = "<i>Deletion cancelled.</i>";
       return;
     }
   }
@@ -133,34 +140,42 @@ function validate(type) {
 // Load up user data
 function loadUser(str) {
   var cols = str.split(";");
-  var code = cols[0];
-  if(code == "3") {
-    var name = cols[1];
-    var email = cols[2];
-    var privacy = cols[3];
-    var count = cols[4];
-    var editor = cols[5];
-    var elite = cols[6];
-    var validity = cols[7];
-
+  if(cols[0] == "3") {
+    var settings = jsonParse(cols[1]);
+    var elite = settings["elite"];
     var form = document.forms['signupform'];
-    document.getElementById('eliteicon').innerHTML = parent.opener.getEliteIcon(elite, validity);
-
-    signupform.email.value = email;
-    signupform.myurl.value = "http://openflights.org/user/" + escape(name);
-    signupform.count.value = count + " times";
+    document.getElementById('eliteicon').innerHTML = getEliteIcon(elite, settings["validity"]);
+    if(elite == "G" || elite == "P") {
+      signupform.guestpw.disabled = false;
+      for (r=0; r < signupform.startpane.length; r++){
+	signupform.startpane[r].disabled = false;
+      }
+    }
+    signupform.email.value = settings["email"];
+    signupform.myurl.value = "http://openflights.org/user/" + settings["name"];
+    signupform.count.value = "Viewed " + settings["count"] + " times";
+    signupform.guestpw.value = settings["guestpw"];
     for (r=0; r < signupform.privacy.length; r++){
-      if (signupform.privacy[r].value == privacy) {
+      if (signupform.privacy[r].value == settings["public"]) {
 	signupform.privacy[r].checked = true;
       } else {
 	signupform.privacy[r].checked = false;
       }
     }
+    changePrivacy(settings["public"]);
     for (r=0; r < signupform.editor.length; r++){
-      if (signupform.editor[r].value == editor) {
+      if (signupform.editor[r].value == settings["editor"]) {
 	signupform.editor[r].checked = true;
       } else {
 	signupform.editor[r].checked = false;
+      }
+    }
+    changeEditor(settings["editor"]);
+    for (r=0; r < signupform.startpane.length; r++){
+      if (signupform.startpane[r].value == settings["startpane"]) {
+	signupform.startpane[r].checked = true;
+      } else {
+	signupform.startpane[r].checked = false;
       }
     }
   } else {
@@ -175,20 +190,9 @@ function signup(str) {
   // Operation successful
   if(code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;
-    switch(code) {
-    case "1": // new user
-      document.forms['signupform'].submit();
-      return;
-
-    case "10": // reset
-      parent.opener.refresh(true);
-      break;
-
-    default: // edited
-      // do nothing
-      break;
-    }
-    window.close();
+    // Whether signup, edit or reset, go back to main screen now
+    location.href = '/';
+    return;
 
   } else {
     showError(message);
@@ -214,11 +218,11 @@ function changePrivacy(type) {
 
 function changeEditor(type) {
   switch(type) {
-  case "BASIC":
+  case "B":
     $('detaileditor').style.display = "none";
     $('basiceditor').style.display = "inline";
     break;
-  case "DETAIL":
+  case "D":
     $('basiceditor').style.display = "none";
     $('detaileditor').style.display = "inline";
     break;

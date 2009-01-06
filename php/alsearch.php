@@ -81,6 +81,10 @@ if($airline) {
 if($alias) {
   $sql .= " (name LIKE '" . mysql_real_escape_string($alias) . "%' OR alias LIKE '" . mysql_real_escape_string($alias) . "%') AND";
 }
+if($callsign) {
+  $sql .= " callsign LIKE '" . mysql_real_escape_string($callsign) . "%' AND";
+}
+
 if($iata) {
   $sql .= " iata='" . mysql_real_escape_string($iata) . "' AND";
 }
