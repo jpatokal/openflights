@@ -11,3 +11,7 @@ update users set elite="X" where elite="" and uid!= 1 and uid in
 
 -- Set warning flag for non-elite users with hidden profiles
 update users set elite="X" where elite="" and uid!= 1 and public="N";
+
+-- Summarize
+select elite,public,count(*) from users group by elite,public;
+
