@@ -22,7 +22,7 @@ var lastQuery, lastDesc;
 // Temporary variables for current flight being edited
 var alid = 0, plane;
 var logged_in = false, initializing = true;
-var input_srcmarker, input_dstmarker, input_line, input_toggle;
+var input_srcmarker, input_dstmarker, input_line, input_toggle, input_al_toggle;
 var changed = false, majorEdit = false;
 // If true, the value has been set by autocomplete
 var autocompleted = {"src_ap": false, "dst_ap": false, "airline": false,
@@ -1543,7 +1543,7 @@ function addNewAirport(data, name) {
 // Handle the "add new airlines" buttons
 function popNewAirline(type) {
   if(type) {
-    input_toggle = type;
+    input_al_toggle = type;
   }
   window.open('/html/alsearch.html', 'Airline', 'width=500,height=580,scrollbars=yes');
 }
@@ -1576,9 +1576,9 @@ function addNewAirline(alid, name) {
   }
 
   // And finally the input form
-  $(input_toggle).value = name;
-  $(input_toggle + 'id').value = alid;
-  $(input_toggle).style.color = "#000";
+  $(input_al_toggle).value = name;
+  $(input_al_toggle + 'id').value = alid;
+  $(input_al_toggle).style.color = "#000";
 }
 
 //
@@ -2035,9 +2035,9 @@ function selectAirline(new_alid, edit) {
   for(index = 0; index < al_select.length; index++) {
     if(al_select[index].value.split(";")[0] == new_alid) {
       if(edit) {
-	$(input_toggle).value = al_select[index].value.split(";")[1];
-	$(input_toggle).style.color = "#000";
-	$(input_toggle + 'id').value = new_alid;
+	$(input_al_toggle).value = al_select[index].value.split(";")[1];
+	$(input_al_toggle).style.color = "#000";
+	$(input_al_toggle + 'id').value = new_alid;
       } else {
 	al_select.selectedIndex = index;
       }
@@ -2249,6 +2249,7 @@ function openDetailedInput(param) {
     $("editflightbuttons").style.display = 'inline';
   }
   input_toggle = "src_ap";
+  input_al_toggle = "airline";
   $("newairport").style.display = 'inline';
   $("input_status").innerHTML = "";
 }
@@ -2273,6 +2274,7 @@ function openBasicInput(param) {
   $("multiinput_status").innerHTML = "";
   clearInput();
   input_toggle = multiinput_order[0];
+  input_al_toggle = "airline1";
 }
 
 function closeInput() {
