@@ -3,67 +3,107 @@
   <head>
     <title>OpenFlights: Account settings</title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/signup.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
-
+    <script type="text/javascript" src="/js/prototype.js"></script>
+    <script type="text/javascript" src="/js/utilities.js"></script>
+    <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/signup.js"></script>
   </head>
 
   <body>
-    <div id="contexthelp">
-      <FORM name="signupform">
-	<h1>OpenFlights: Settings</h1>
+    <div id="mainContainer">
+      <div id="sideBarContentWrapper">
+	  
+	<div id="contentContainer">
+	  <div id="nonmap">
 
-	<div id="miniresultbox"><i>My account</i></div>
+	    <FORM name="signupform" method="POST" action="/">
+	      <h1>OpenFlights: Account settings</h1>
+	      
+	      <div id="miniresultbox"></div>
+
+	      <table>
+		  <tr>
+		    <td class="key">Profile&nbsp;address</td>
+		    <td class="value"><INPUT type="text" name="myurl" style="border:none" size="40" READONLY>
+		      <input type="text" name="count" value="" style="border: none" READONLY></td>
+		    <td class="desc">The public address of your profile and how often it has been viewed.</td>
+		    <td class="value" rowspan=4><span id="eliteicon"></span>
+		  </tr><tr>
+		    <td class="key">E-mail <i>(optional)</i>&nbsp;&nbsp;</td>
+		    <td class="value"><INPUT type="text" name="email" size="20"></td>
+		    <td class="desc">If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <a href="#" onClick="window.open('/help/privacy.html', 'Help', 'width=500,height=400,scrollbars=yes')">privacy policy</a> for details.</td>
+		  </tr>
+		</tr><tr>
+		  <td colspan="4"><h2>Profile settings</h2></td>
+		</tr><tr>
+		    <td class="key">Privacy</td>
+		    <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')">Private<br>
+		      <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" CHECKED>Public<br>
+		      <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')">Open</td>
+		    <td class="desc" colspan=2>
+		      <span id="privacyN" style="display: none"><b>Private</b> profiles are visible only to you.  <a href="/donate.html" target="_blank">Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them.</span>
+		      <span id="privacyY" style="display: inline"><b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed.</span>
+		      <span id="privacyO" style="display: none"><b>Open</b> profiles let others see, but not edit, your detailed flight data as well.</span></td>
+		  </tr><tr>
+		    <td class="key">Guest password</td>
+		    <td class="value"><INPUT type="password" name="guestpw" size="20" DISABLED></td>
+		    <td class="desc" style="background-color: #fdf6dd" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="Gold Elite feature" height=17 width=17></a> Password protect your Private profile, so you can share it with friends and family.
+		  </tr><tr>
+		    <td class="key">Flight editor</td>
+		    <td class="value"><input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" CHECKED>Basic</br>
+		      <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('D')">Detailed<br>
+		    <td class="desc" colspan=2>
+		      <span id="basiceditor" style="display: inline">The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!</span>
+		      <span id="detaileditor" style="display: none">The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters.</span></td>
+		  </tr><tr>
+		    <td class="key">Default view</td>
+		    <td class="value"><input type="radio" name="startpane" value="H" CHECKED DISABLED>Help<br>
+		      <input type="radio" name="startpane" value="A" DISABLED>Analyze<br>
+		      <input type="radio" name="startpane" value="T" DISABLED>Top 10</td>
+		    <td class="desc" style="background-color: #fdf6dd" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="Gold Elite feature" height=17 width=17></a> Display a screen of your choice instead of banner ads.
+		  </tr><tr>
+		    <td colspan="4"><h2>Manage flights</h2></td>
+		  </tr><tr>
+		    <td></td>
+		    <td class="value">
+		      <INPUT type='button' value='Backup to CSV' onClick='javascript:backupFlights()'>
+		      <INPUT type='button' value='Delete all flights' onClick='javascript:validate("RESET")'></td>
+		    <td class="desc" colspan=2>
+		      <a href="/help/csv.html">CSV</a> files can be opened and edited with spreadsheets like Excel.
+		    </td>
+		  </tr><tr>
+		    <td colspan="4"><h2>Change password</h2></td>
+		  </tr><tr>
+		    <td class="key">Current password</td>
+		    <td class="value"><INPUT type="password" name="oldpw" size="20"></td>
+		    <td class="desc" colspan=2>You only need to enter this if changing your password.</td>
+		  </tr><tr>
+		    <td class="key">New password</td>
+		    <td class="value"><INPUT type="password" name="pw1" size="20"></td>
+		  </tr><tr>
+		    <td class="key">New password again&nbsp;</td>
+		    <td class="value"><INPUT type="password" name="pw2" size="20"></td>
+		  </tr><tr>
+		    <td class="key"></td>
+		    <td class="value">
+		      <INPUT type="button" value="Save changes" onClick="validate('EDIT')">
+		      <INPUT type="button" value="Cancel" onClick="location.href = '/'">
+		    </td>
+		  </tr>
+	      </table>
+	    </FORM>
+	  </div>
+	</div>
 	
-	<table>
-	    <tr>
-	      <td>OpenFlights URL</td>
-	      <td><INPUT type="text" name="myurl" style="border:none" size="40"></td>
-	      <td rowspan=4><span id="eliteicon"></span>
-	    </tr><tr>
-	      <td style="vertical-align: top">Viewed</td>
-	      <td><input type="text" name="count" value="" style="border: none" READONLY></td>
-	    </tr><tr>
-	      <td>E-mail <i>(optional)</i>&nbsp;&nbsp;</td>
-	      <td><INPUT type="text" name="email" size="20"></td>
-	    </tr>
-	    </tr><tr>
-	      <td style="vertical-align: top">Profile privacy</td>
-	      <td><input type="radio" name="privacy" value="N" CHECKED>Private (visible only to you)<br>
-		  <input type="radio" name="privacy" value="Y">Public (map and some stats shared)<br>
-		  <input type="radio" name="privacy" value="O">Open (all flight data shared)</td>
-	    </tr><tr>
-	      <td style="vertical-align: top">Editor style</td>
-	      <td><input type="radio" name="editor" value="B" CHECKED>Basic (airports, airline, date only)<br>
-		  <input type="radio" name="editor" value="D">Detailed (plane, registration & more)<br>
-	    </tr><tr>
-	      <td>
-		<div id="contexthelp"><i>Manage flights</i></div>
-	      </td>
-	      <td>
-		<INPUT type='button' value='Backup to CSV' onClick='javascript:backupFlights()'>
-		<INPUT type='button' value='Delete all flights' onClick='javascript:validate("RESET")'></td>
-	    </tr><tr>
-	      <td colspan="2">
-		<div id="contexthelp"><i>Change password</i></div>
-	      </td>
-	    </tr><tr>
-	      <td>Current password</td>
-	      <td><INPUT type="password" name="oldpw" size="20"></td>
-	    </tr><tr>
-	      <td>New password</td>
-	      <td><INPUT type="password" name="pw1" size="20"></td>
-	    </tr><tr>
-	      <td>New password again&nbsp;</td>
-	      <td><INPUT type="password" name="pw2" size="20"></td>
-	    </tr>
-	</table><br>
+	<div id="sideBar">
+	  <!--#include virtual="/sidebar.html" -->
+        <!--#include virtual="/html/ad-sidebar.html" -->
+	</div>
 
-	<INPUT type="button" value="Save changes" onClick="validate('EDIT')">
-	<INPUT type="button" value="Cancel" onClick="window.close()">
-      </FORM>
-
-    </div>
+      </div> <!-- end sidebarwrapper -->
+    </div> <!-- end mainContainer -->
 
   </body>
 </html>

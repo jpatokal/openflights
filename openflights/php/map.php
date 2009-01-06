@@ -33,6 +33,7 @@ $trid = $HTTP_POST_VARS["trid"];
 if(! $trid) {
   $trid = $HTTP_GET_VARS["trid"];
 }
+$guestpw = $HTTP_POST_VARS["guestpw"];
 
 // Verify that this trip and user are public
 $public = "O"; // default to full access
@@ -46,15 +47,19 @@ if($trid && $trid != "0" && $trid != "null") {
     if($row["uid"] != $uid and $row["public"] == "N") {
       die('Error;This trip is not public.');
     } else {
+      // Check if we're viewing out own trip
+      if($uid != $row["uid"]) {
+	// Nope, we are *not* this user
 	$uid = $row["uid"];
 	$public = $row["public"];
-	$logged_in = "demo"; // we are *not* this user
+	$logged_in = "demo";
 	if($public == "O") {
 	  $_SESSION["openuid"] = $uid;
 	  $_SESSION["opentrid"] = $trid;
 	}
 	// Increment view counter
 	mysql_query("UPDATE users SET count=count+1 WHERE uid=$uid", $db);
+      }
     }
   } else {
     die('Error;No such trip.');
@@ -64,11 +69,17 @@ if($trid && $trid != "0" && $trid != "null") {
 if($user && $user != "0") {
   // Verify that we're allowed to view this user's flights
   // if $user is set, we are never logged in
-  $sql = "SELECT uid,public,elite FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
+  $sql = "SELECT uid,public,elite,guestpw,IF(MD5(CONCAT('" . $guestpw . "',name)) = guestpw,'Y','N') AS pwmatch FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    if($row["public"] == "N") {
-      die('Error;This user\'s flights are not public.');
+    if($row["public"] == "N" && $row["pwmatch"] == "N") {
+      if($row["guestpw"]) {
+	die('Error;This user\'s flights are password-protected.<br><br>' .
+	    'Password: <input type="password" id="guestpw" size="10">' .
+	    '<input type="button" value="Submit" align="middle" onclick="JavaScript:refresh(true)">');
+      } else {
+	die('Error;This user\'s flights are not public.');
+      }
     } else {
       $uid = $row["uid"];
       $public = $row["public"];

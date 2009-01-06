@@ -8,6 +8,8 @@ $oldpw = $HTTP_POST_VARS["oldpw"];
 $email = $HTTP_POST_VARS["email"];
 $privacy = $HTTP_POST_VARS["privacy"];
 $editor = $HTTP_POST_VARS["editor"];
+$guestpw = $HTTP_POST_VARS["guestpw"];
+$startpane = $HTTP_POST_VARS["startpane"];
 
 // 0 error
 // 1 new
@@ -46,9 +48,8 @@ if($type == "NEW") {
   if($type == "LOAD") {
     $sql = "SELECT * FROM users WHERE uid=" . $uid;
     $result = mysql_query($sql, $db);
-    if($row = mysql_fetch_array($result)) {
-      printf("3;%s;%s;%s;%s;%s;%s;%s", $row["name"], $row["email"], $row["public"],
-	     $row["count"], $row["editor"], $row["elite"], $row["validity"]);
+    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      printf("3;" . json_encode($row));
     } else {
       printf("0;Unknown error");
     }
@@ -83,11 +84,13 @@ if($type == "NEW") {
   } else {
     $pwsql = "";
   }
-  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s' WHERE uid=%s",
+  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s' WHERE uid=%s",
 		 $pwsql,
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
 		 mysql_real_escape_string($editor),
+		 $guestpw == "" ? "NULL" : "MD5(CONCAT('" . mysql_real_escape_string($guestpw) . "',name))",
+		 mysql_real_escape_string($startpane),
 		 $uid);
 }
 mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
@@ -103,6 +106,6 @@ if($type == "NEW") {
   $_SESSION['elite'] = $elite;
 
 } else {
-  printf("2;User successfully edited.");
+  printf("2;Settings changed successfully.");
 }
 ?>

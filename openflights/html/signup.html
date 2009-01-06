@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/signup.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <script type="text/javascript" src="/js/prototype.js"></script>
+    <script type="text/javascript" src="/js/utilities.js"></script>
     <script type="text/javascript" src="/js/signup.js"></script>
   </head>
 
@@ -57,8 +58,8 @@
 		      <span id="privacyO" style="display: none"><b>Open</b> profiles let others see, but not edit, your detailed flight data as well.</span></td>
 		  </tr><tr>
 		    <td class="key">Flight editor</td>
-		    <td class="value"><input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('BASIC')" CHECKED>Basic</br>
-		      <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('DETAIL')">Detailed<br>
+		    <td class="value"><input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" CHECKED>Basic</br>
+		      <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('D')">Detailed<br>
 		    <td class="desc">
 		      <span id="basiceditor" style="display: inline">The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!</span>
 		      <span id="detaileditor" style="display: none">The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters.</span></td>

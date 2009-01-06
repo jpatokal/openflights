@@ -63,11 +63,6 @@ var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
 		     [ '/img/icon_plane-19x19b.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
 
-var eliteicons = [ [ 'S', 'Silver Elite', '/img/silver-star.png' ],
-		   [ 'G', 'Gold Elite', '/img/gold-star.png' ],
-		   [ 'P', 'Platinum Elite', '/img/platinum-star.png' ],
-		   [ 'X', 'Thank you for using OpenFlights &mdash; please donate!', '/img/icon-warning.png' ] ];
-
 var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
 var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
 var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "O": "Other", "": ""};
@@ -80,6 +75,7 @@ OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
 window.onload = function init(){
+  $("helplink").style.display = 'inline';
 
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
   map = new OpenLayers.Map('map', {
@@ -176,6 +172,10 @@ window.onload = function init(){
     for(i=0;i<document.forms['inputform'].elements.length;i++){
       document.forms['inputform'].elements[i].disabled=false;
     }
+    for(i=0;i<document.forms['multiinputform'].elements.length;i++){
+      document.forms['multiinputform'].elements[i].disabled=false;
+    }
+    $('b_less').disabled = true;
 
     map.zoomToMaxExtent();
   }
@@ -727,7 +727,10 @@ function xmlhttpPost(strURL, id, param) {
       'alid=' + escape(filter_alid) + '&' +
       'year=' + escape(filter_year) + '&' +
       'param=' + escape(param);
-
+    guestpw = $('guestpw');
+    if(guestpw) {
+      query += "&guestpw=" + guestpw.value;
+    }
     filter_extra_key = form.Extra.value;
     if(filter_extra_key != "" && $('filter_extra_value')) {
       filter_extra_value = $('filter_extra_value').value;
@@ -1291,38 +1294,38 @@ function showTop10(str) {
     var planes = master[3];
     bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17></td><td style=\"vertical-align: top\">";
 
-    table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3>Top 10 Routes</th></tr>";
+    table = "<table style='border-spacing: 10px 0px;'>";
+    table += "<tr><th colspan=3 style='padding-right: 20px'>Top 10 Routes</th></tr>";
     var rows = routes.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // s.name, s.apid, d.name, d.apid, count
       table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>&harr;" +
 	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" + 
-	"<td style='text-align: right'>" + col[4] + "</td></tr>";
+	"<td style='text-align: right; padding: 0px 20px 0px 10px'>" + col[4] + "</td></tr>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
 
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3>Top 10 Airports</th></tr>";
+    table += "<tr><th colspan=3 style='padding-right: 20px'>Top 10 Airports</th></tr>";
     var rows = airports.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, iata, count, apid
-      desc = col[0] + " (" + col[1] + ")";
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td style='text-align: right'>" + col[2] + "</td>";
+      desc = col[0].substring(0,20) + " (" + col[1] + ")";
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td style='text-align: right; padding: 0px 20px 0px 10px'>" + col[2] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
     
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3>Top 10 Airlines</th></tr>";
+    table += "<tr><th colspan=3 style='padding-right: 20px'>Top 10 Airlines</th></tr>";
     var rows = airlines.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count, apid
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td style='text-align: right'>" + col[1] + "</td>";
+      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td style='text-align: right; padding: 0px 20px 0px 10px;'>" + col[1] + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -1538,7 +1541,10 @@ function addNewAirport(data, name) {
 }
 
 // Handle the "add new airlines" buttons
-function popNewAirline() {
+function popNewAirline(type) {
+  if(type) {
+    input_toggle = type;
+  }
   window.open('/html/alsearch.html', 'Airline', 'width=500,height=580,scrollbars=yes');
 }
 
@@ -1570,8 +1576,9 @@ function addNewAirline(alid, name) {
   }
 
   // And finally the input form
-  $('airline').value = name;
-  $('airlineid').value = alid;
+  $(input_toggle).value = name;
+  $(input_toggle + 'id').value = alid;
+  $(input_toggle).style.color = "#000";
 }
 
 //
@@ -2028,9 +2035,9 @@ function selectAirline(new_alid, edit) {
   for(index = 0; index < al_select.length; index++) {
     if(al_select[index].value.split(";")[0] == new_alid) {
       if(edit) {
-	$('airlineid').value = new_alid;
-	$('airline').value = al_select[index].value.split(";")[1];
-	$('airline').style.color = "#000";
+	$(input_toggle).value = al_select[index].value.split(";")[1];
+	$(input_toggle).style.color = "#000";
+	$(input_toggle + 'id').value = new_alid;
       } else {
 	al_select.selectedIndex = index;
       }
@@ -2065,7 +2072,7 @@ function openImport() {
 // Change settings
 //
 function settings() {
-  window.open('/html/settings.html', 'ChangeSettings', 'width=500,height=500,scrollbars=yes');
+  location.href = '/html/settings.html';
 }
 
 //
@@ -2122,23 +2129,6 @@ function login(str, param) {
     $("loginstatus").innerHTML = "<B>" + name + "</B>";
     $("ajaxstatus").style.display = 'none';
   }
-}
-
-// Return HTML string representing user's elite status icon
-// If validity is not null, also return text description and validity period
-function getEliteIcon(e, validity) {
-  if(e && e != "") {
-    for(i = 0; i < eliteicons.length; i++) {
-      if(eliteicons[i][0] == e) {
-	if(validity) {
-	  return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small></center>";
-	} else {
-	  return "<span style='float: right'><a href='/donate.html' target='_blank'><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a></span>";
-	}
-      }
-    }
-  }
-  return "";
 }
 
 function logout(str) {
