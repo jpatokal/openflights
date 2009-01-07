@@ -1709,6 +1709,7 @@ function invalidateAirport(type) {
 // When user has entered flight number, try to match it to airline
 // type: element invoked
 function flightNumberToAirline(type) {
+  markAsChanged();
   if(type == "NUMBER") {
     var flightNumber = document.forms['inputform'].number.value.toUpperCase();
     document.forms['inputform'].number.value = flightNumber;
@@ -1736,7 +1737,6 @@ function flightNumberToAirline(type) {
   if(airlineCode) {
     xmlhttpPost(URL_GETCODE, airlineCode, type);
   }
-  markAsChanged();
 }
 
 // Add a temporary source or destination marker over currently selected airport

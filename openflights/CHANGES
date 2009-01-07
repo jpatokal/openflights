@@ -1,6 +1,7 @@
 <b>2009-01-07</b>
 
 * Bug: Blank class, reason no longer assigned defaults when edited
+* Bug: Autocompletion of airline in Detailed editor fixed
 
 <b>2009-01-06</b>
 
