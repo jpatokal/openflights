@@ -979,6 +979,7 @@ function radioValue(radio) {
       return radio[r].value;
     }
   }
+  return "";
 }
 
 // Clear all markers, popups and flights
@@ -1407,14 +1408,16 @@ function editFlight(str, param) {
   for(index = 0; index < myClass.length; index++) {
     if(myClass[index].value == col[10]) {
       myClass[index].checked = true;
-      break;
+    } else {
+      myClass[index].checked = false;
     }
   }
   var reason = inputform.reason;
   for(index = 0; index < reason.length; index++) {
     if(reason[index].value == col[11]) {
       reason[index].checked = true;
-      break;
+    } else {
+      reason[index].checked = false;
     }
   }
   var select = inputform.trips;
