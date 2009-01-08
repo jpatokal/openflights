@@ -117,7 +117,8 @@ function check_airport($db, $code, $name) {
 // Validate that this flight number/airline name are found in DB
 // If flight number starts with an IATA code, match that (and double-check it against name)
 // Else match first word of airline name
-function check_airline($db, $number, $airline, $uid) {
+// If $history == "yes", ignore codes and ignore errors
+function check_airline($db, $number, $airline, $uid, $history) {
   $code = substr($number, 0, 2);
   $isAlpha = ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code);
   if($airline == "" && ! $isAlpha) {
@@ -126,7 +127,7 @@ function check_airline($db, $number, $airline, $uid) {
     $alid = -1;
   } else {
     // is alphanumeric, but not all numeric? then it's probably an airline code
-    if($isAlpha) {
+    if($isAlpha && $history != "yes") {
       $sql = sprintf("select name,alias,alid from airlines where iata='%s' order by name",
 		     $code, $uid);
     } else {
@@ -158,14 +159,22 @@ function check_airline($db, $number, $airline, $uid) {
       // Solitary match
     case "1":
       $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
-      if($airline != "" && (stristr($dbrow['name'], $airline) || stristr($dbrow['alias'], $airline))) {
+      if($airline != "" && (strcasecmp($dbrow['name'], $airline) == 0 || strcasecmp($dbrow['alias'], $airline) == 0)) {
+	// Exact match
 	$color = "#fff";
 	$airline = $dbrow['name'];
+	$alid = $dbrow['alid'];
       } else {
-	$color = "#ddf";
-	$airline = $dbrow['name'] . "<br><small>(was: " . $airline . ")</small>";
+	// Not an exact match
+	if($history == "yes") {
+	  $color = "#fdd";
+	  $alid = -2;
+	} else {
+	  $color = "#ddf";
+	  $airline = $dbrow['name'] . "<br><small>(was: " . $airline . ")</small>";
+	  $alid = $dbrow['alid'];
+	}
       }
-      $alid = $dbrow['alid'];
       break;
       
       // Many matches, default to first with a warning if we can't find an exact match
@@ -178,9 +187,16 @@ function check_airline($db, $number, $airline, $uid) {
 	if($first || $isMatch) {
 	  if($isMatch) $color = "#fff";
 	  if($first) $first = false;
-	  $airline = $dbrow['name'];
+	  $new_airline = $dbrow['name'];
 	  $alid = $dbrow['alid'];
 	}
+      }
+      // No match and in historical mode? Add it as new
+      if($history == "yes" && $color == "#ddf") {
+	$color = "#fdd";
+	$alid = -2;
+      } else {
+	$airline = $new_airline;
       }
     }
   }
@@ -262,6 +278,7 @@ switch($action) {
 }
 
 $fileType = $HTTP_POST_VARS["fileType"];
+$history = $HTTP_POST_VARS["historyMode"];
 $status = "";
 $id_note = false;
 
@@ -350,7 +367,7 @@ foreach($rows as $row) {
     $flight = explode('<br>', $cols[7]);
     $airline = fm_strip_liste($flight[0]);
     $number = str_replace('</td>', '', $flight[1]);
-    list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid);
+    list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid, $history);
     
     // Load plane model (plid)
     $planedata = explode('<br>', $cols[8]);
@@ -431,7 +448,7 @@ foreach($rows as $row) {
       $airline_bgcolor="#fff";
       $id_note = true;
     } else {
-      list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid);
+      list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid, $history);
     }
     $plane = $row[11];
     $plid = $row[18];
@@ -557,7 +574,10 @@ if($action == "Upload") {
 
 <?php
 if($id_note == true) {
-  print "<font color=blue>Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.</font><br><br>";
+  print "<font color=blue>Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.</font><br>";
+}
+if($history == "yes") {
+  print "<font color=blue>Note: You have selected historical airline mode.  All airline names have been preserved exactly as is.</font><br>";
 }
 
 if($status == "disabled") {
@@ -583,10 +603,11 @@ if($status == "disabled") {
 }
 print "<INPUT type='hidden' name='tmpfile' value='". basename($_FILES['userfile']['tmp_name']) . "'>";
 print "<INPUT type='hidden' name='fileType' value='$fileType'>";
+print "<INPUT type='hidden' name='historyMode' value='$history'>";
 print "<INPUT type='submit' name='action' title='Add these flights to your OpenFlights' value='Import' " . $status . ">";
 ?>
 
-<INPUT type="button" value="Upload again" title="Cancel this import and return to file upload page" onClick="history.back(-1)">
+<INPUT type="button" value="Upload again" title="Cancel this import and return to file upload page" onClick="JavaScript:history.go(-1)">
 
 <INPUT type="button" value="Cancel" onClick="window.close()">
 

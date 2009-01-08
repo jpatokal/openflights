@@ -1,3 +1,8 @@
+<b>2009-01-08</b>
+
+* Feature: "Keep historical airline names?" now preserves FlightMemory airline names as is
+* Bug: Multiple matches for airline names not being processed right
+
 <b>2009-01-07</b>
 
 * Bug: Blank class, reason no longer assigned defaults when edited
