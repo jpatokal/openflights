@@ -1,7 +1,9 @@
 <b>2009-01-08</b>
 
-* Feature: "Keep historical airline names?" now preserves FlightMemory airline names as is
-* Bug: Multiple matches for airline names not being processed right
+* "Keep historical airline names?" now preserves FlightMemory airline names as is
+* scriptaculous loading optimized (6 HTTP requests less)
+* blank.gif added for OpenLayers 
+* Bug: Multiple matches for airline names now processed correctly
 
 <b>2009-01-07</b>
 
