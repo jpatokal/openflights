@@ -112,16 +112,16 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if(strpos($note, ",") !== false) {
       $note = "\"" . $note . "\"";
     }
-    // Filter out any carriage returns or tabs
-    $note = str_replace(array("\n", "\r", "\t"), "", $note);
-
     printf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 	   $row["src_date"], $src_code, $dst_code, $row["code"], $row["al_name"],
 	   $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"],
 	   $row["name"], $row["registration"], $row["trid"], $note,
 	   $src_apid, $dst_apid, $row["alid"], $row["plid"]);
   } else {
-    printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $row["note"], $row["trid"], $row["plid"], $al_code);
+    // Filter out any carriage returns or tabs
+    $note = str_replace(array("\n", "\r", "\t"), "", $row["note"]);
+
+    printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code);
   }
 }
 ?>
