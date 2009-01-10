@@ -108,9 +108,13 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
   if($export) {
     $note = $row["note"];
+    // Escape strings with commas
     if(strpos($note, ",") !== false) {
       $note = "\"" . $note . "\"";
     }
+    // Filter out any carriage returns or tabs
+    $note = str_replace(array("\n", "\r", "\t"), "", $note);
+
     printf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 	   $row["src_date"], $src_code, $dst_code, $row["code"], $row["al_name"],
 	   $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"],
