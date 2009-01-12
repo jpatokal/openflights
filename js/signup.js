@@ -54,7 +54,7 @@ function xmlhttpPost(strURL, type) {
       }
     }
     query = 'type=' + type + '&' +
-      'pw=' + escape(form.pw1.value) + '&' +
+      'pw=' + escape(hex_md5(form.pw1.value + form.username.value)) + '&' +
       'email=' + escape(form.email.value) + '&' +
       'privacy=' + escape(privacy) + '&' +
       'editor=' + escape(editor);
@@ -70,9 +70,13 @@ function xmlhttpPost(strURL, type) {
 	  startpane = signupform.startpane[r].value;
 	}
       }
-      query += '&oldpw=' + escape(form.oldpw.value) +
-	'&guestpw=' + escape(form.guestpw.value) +
-	'&startpane=' + escape(startpane);
+      if(form.oldpw.value != "") {
+	query += '&oldpw=' + escape(hex_md5(form.oldpw.value + form.username.value));
+      }
+      if(form.guestpw.value != "") {
+	query += '&guestpw=' + escape(hex_md5(form.guestpw.value + form.username.value));
+      }
+      query += '&startpane=' + escape(startpane);
       document.getElementById("miniresultbox").innerHTML = "<I>Saving changes...</I>";
       break;
 
@@ -119,6 +123,11 @@ function validate(type) {
       form.oldpw.focus();
       return;
     }
+    if(pw1 == "" && oldpw != "") {
+      showError("Please enter a new password, or clear current password if you do not wish to change it.");
+      form.pw1.focus();
+      return;
+    }
   }
 
   if(pw1 != pw2) {
@@ -152,6 +161,7 @@ function loadUser(str) {
       }
     }
     signupform.email.value = settings["email"];
+    signupform.username.value = settings["name"];
     signupform.myurl.value = "http://openflights.org/user/" + settings["name"];
     signupform.count.value = "Viewed " + settings["count"] + " times";
     signupform.guestpw.value = settings["guestpw"];
@@ -231,6 +241,7 @@ function changeEditor(type) {
 
 function showError(err) {
   document.getElementById("miniresultbox").innerHTML = "<font color=red>" + err + "</font>";
+  location.hash = "top";
 }
 
 // Need to duplicate this from openflights.js so that it opens in Settings window, not main, and

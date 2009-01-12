@@ -8,11 +8,11 @@
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js?version=2009016"></script>
-    <script type="text/javascript" src="/js/utilities.js?version=20090106"></script>
+    <script type="text/javascript" src="/js/utilities.js?version=20090112"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js"></script>
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090107"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090112"></script>
   </head>
 
   <body>
@@ -31,7 +31,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 06 Jan 2009: <a href="/about.html#CHANGES">OpenFlights public launch!<br>Blog, "Elite" donation/level system, improved imports, new settings and more.</a>
+	      <B>News</b>: 12 Jan 2009: <a href="/about.html#CHANGES">Login security improved.<br>Please report any problems logging in or changing password.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -56,6 +56,7 @@
 		  </tr><tr>
 		    <td align=right>Password&nbsp;</td><td>
 		      <input type="password" name="pw" align="top" size="10" tabindex="2" onChange='JavaScript:xmlhttpPost("/php/login.php")'>	    
+		      <input type="hidden" name="challenge">    
 		    </td>
 		  </tr><tr>
 		    <td></td>

@@ -2,13 +2,19 @@
 session_start();
 $name = $HTTP_POST_VARS["name"];
 $pw = $HTTP_POST_VARS["pw"];
+$challenge = $HTTP_POST_VARS["challenge"];
 
 // Log in user
 if($name) {
   $db = mysql_connect("localhost", "openflights");
   mysql_select_db("flightdb",$db);
 
-  $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "' AND password=MD5(CONCAT('" . mysql_real_escape_string($pw) . "','" . mysql_real_escape_string($name) . "'));";
+  // CHAP: Use random challenge key in addition to password
+  // user_pw == MD5(challenge, db_pw)
+  $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .
+    "' AND ('" . mysql_real_escape_string($pw) . "') = MD5(CONCAT('" .
+    mysql_real_escape_string($challenge) . "',password))";
+
   $result = mysql_query($sql, $db);
   if ($myrow = mysql_fetch_array($result)) {
     $uid = $myrow["uid"];

@@ -16,3 +16,7 @@ td.desc {
   text-align: left;
   padding: 10px 10px 10px 10px;
 }
+
+tr.gold { 
+  background-color: #fdf6dd;
+}

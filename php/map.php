@@ -10,10 +10,12 @@ if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode and warn app that we're (no longer?) logged in
   $uid = 1;
   $logged_in = "demo";
+  $challenge = md5(rand(1,100000));
 } else {
   $logged_in = $_SESSION["name"]; // username
   $elite = $_SESSION["elite"];
   $editor = $_SESSION["editor"];
+  $challenge = "";
 }
 
 // This applies only when viewing another's flights
@@ -69,7 +71,7 @@ if($trid && $trid != "0" && $trid != "null") {
 if($user && $user != "0") {
   // Verify that we're allowed to view this user's flights
   // if $user is set, we are never logged in
-  $sql = "SELECT uid,public,elite,guestpw,IF(MD5(CONCAT('" . $guestpw . "',name)) = guestpw,'Y','N') AS pwmatch FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
+  $sql = "SELECT uid,public,elite,guestpw,IF('" . $guestpw . "'= guestpw,'Y','N') AS pwmatch FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["public"] == "N" && $row["pwmatch"] == "N") {
@@ -109,8 +111,8 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($row["count"] == "0" && $user && $user != "0") {
     die('Error;This user has no flights.');
   }
-  printf("%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite,
-	 $logged_in, $editor);
+  printf("%s;%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite,
+	 $logged_in, $editor, $challenge);
 }
 
 // List of all flights (unique by airport pair)
