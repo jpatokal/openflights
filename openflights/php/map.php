@@ -6,16 +6,19 @@ include 'helper.php';
 include 'filter.php';
 
 $uid = $_SESSION["uid"];
+$challenge = $_SESSION["challenge"];
 if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode and warn app that we're (no longer?) logged in
   $uid = 1;
   $logged_in = "demo";
-  $challenge = md5(rand(1,100000));
+  if(!$challenge or empty($challenge)) {
+    $challenge = md5(rand(1,100000));
+    $_SESSION["challenge"] = $challenge;
+  }
 } else {
   $logged_in = $_SESSION["name"]; // username
   $elite = $_SESSION["elite"];
   $editor = $_SESSION["editor"];
-  $challenge = "";
 }
 
 // This applies only when viewing another's flights

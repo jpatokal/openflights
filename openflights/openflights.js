@@ -687,7 +687,7 @@ function xmlhttpPost(strURL, id, param) {
     var pw = document.forms['login'].pw.value;
     var challenge = document.forms['login'].challenge.value;
     pw = hex_md5(challenge + hex_md5(pw + name));
-    query = 'name=' + escape(name) + '&pw=' + escape(pw) + '&challenge=' + escape(challenge);
+    query = 'name=' + escape(name) + '&pw=' + escape(pw);
     break;
 
   case URL_GETCODE:
