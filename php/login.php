@@ -2,7 +2,7 @@
 session_start();
 $name = $HTTP_POST_VARS["name"];
 $pw = $HTTP_POST_VARS["pw"];
-$challenge = $HTTP_POST_VARS["challenge"];
+$challenge = $_SESSION["challenge"];
 
 // Log in user
 if($name) {
