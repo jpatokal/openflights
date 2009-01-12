@@ -59,7 +59,7 @@ if($type == "NEW") {
   // EDIT
   if($oldpw && $oldpw != "") {
     $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .
-      "' AND password=MD5(CONCAT('" . mysql_real_escape_string($oldpw) . "','" . mysql_real_escape_string($name) . "'));";
+      "' AND password='" . mysql_real_escape_string($oldpw) . "'";
     $result = mysql_query($sql, $db);
     if(! mysql_fetch_array($result)) {
       printf("0;Sorry, current password is not correct.");
@@ -68,28 +68,28 @@ if($type == "NEW") {
   }
 }
 
-// Note: Password is stored as salted hash of pw and username
+// Note: Password is actually an MD5 hash of pw and username
 if($type == "NEW") {
-  $sql = sprintf("INSERT INTO users(name,password,email,public,editor) VALUES('%s',MD5(CONCAT('%s','%s')),'%s','%s', '%s')",
+  $sql = sprintf("INSERT INTO users(name,password,email,public,editor) VALUES('%s','%s','%s','%s', '%s')",
 		 mysql_real_escape_string($name),
-		 mysql_real_escape_string($pw), mysql_real_escape_string($name),
+		 mysql_real_escape_string($pw),
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
 		 mysql_real_escape_string($editor));
 } else {
-  // Only change password if a new one was given
-  if($pw && $pw != "") {
-    $pwsql = sprintf("password=MD5(CONCAT('%s','%s')), ",
-		     mysql_real_escape_string($pw), mysql_real_escape_string($name));
+  // Only change password if old password matched and a new one was given
+  if($oldpw && $oldpw != "" && $pw && $pw != "") {
+    $pwsql = sprintf("password='%s', ", mysql_real_escape_string($pw));
   } else {
     $pwsql = "";
   }
+  if(! $guestpw) $guestpw = "";
   $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s' WHERE uid=%s",
 		 $pwsql,
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
 		 mysql_real_escape_string($editor),
-		 $guestpw == "" ? "NULL" : "MD5(CONCAT('" . mysql_real_escape_string($guestpw) . "',name))",
+		 $guestpw == "" ? "NULL" : "'" . mysql_real_escape_string($guestpw) . "'",
 		 mysql_real_escape_string($startpane),
 		 $uid);
 }

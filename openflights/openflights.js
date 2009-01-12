@@ -481,13 +481,10 @@ function xmlhttpPost(strURL, id, param) {
 	  $("ajaxstatus").style.display = 'none';
 	  openPane("result");
 	} else {
-	  if(! logged_in) {
-	    closePane();
-	  }
-
 	  // Zoom map to fit when first loading another's flights/trip
 	  updateMap(str);
 	  if(! logged_in && (filter_user != 0 || filter_trid != 0) && initializing) {
+	    closePane();
 	    map.zoomToExtent(airportLayer.getDataExtent());
 	  }
 	  if(param) {
@@ -688,7 +685,9 @@ function xmlhttpPost(strURL, id, param) {
     $("ajaxstatus").style.display = 'inline';
     var name = document.forms['login'].name.value;
     var pw = document.forms['login'].pw.value;
-    query = 'name=' + escape(name) + '&' + 'pw=' + escape(pw);
+    var challenge = document.forms['login'].challenge.value;
+    pw = hex_md5(challenge + hex_md5(pw + name));
+    query = 'name=' + escape(name) + '&pw=' + escape(pw) + '&challenge=' + escape(challenge);
     break;
 
   case URL_GETCODE:
@@ -729,7 +728,7 @@ function xmlhttpPost(strURL, id, param) {
       'param=' + escape(param);
     guestpw = $('guestpw');
     if(guestpw) {
-      query += "&guestpw=" + guestpw.value;
+      query += "&guestpw=" + hex_md5(guestpw.value + filter_user);
     }
     filter_extra_key = form.Extra.value;
     if(filter_extra_key != "" && $('filter_extra_value')) {
@@ -1029,6 +1028,7 @@ function updateMap(str){
   if(! logged_in) {
     elite = col[4];
     editor = col[6];
+    document.forms['login'].challenge.value = col[7];
 
     // Does user have a PHP session open?  Log him in!
     // Simulate login.php: "1;name;editor;elite"
@@ -2094,7 +2094,11 @@ function login(str, param) {
     logged_in = true;
     $("loginform").style.display = 'none';
     $("controlpanel").style.display = 'inline';
-    $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
+    if(param == "REFRESH") {
+      $("loginstatus").innerHTML = getEliteIcon(elite) + "Logged in as <B>" + name + "</B>";
+    } else {
+      $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
+    }
     switch(elite) {
     case "X":
       $("news").style.display = 'inline';

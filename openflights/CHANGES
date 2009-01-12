@@ -1,3 +1,10 @@
+<b>2009-01-12</b>
+
+* Challenge-handshake authentication now implemented (password no longer sent in clear)
+* Move to top of settings/signup screen on any error
+* Bug: Linefeed, carriage return, tab now filtered out from flight notes
+* Bug: Do not accept empty as new password
+
 <b>2009-01-08</b>
 
 * "Keep historical airline names?" now preserves FlightMemory airline names as is

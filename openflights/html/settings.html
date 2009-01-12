@@ -19,7 +19,7 @@
 	  <div id="nonmap">
 
 	    <FORM name="signupform" method="POST" action="/">
-	      <h1>OpenFlights: Account settings</h1>
+	      <a name="top"><h1>OpenFlights: Account settings</h1>
 	      
 	      <div id="miniresultbox"></div>
 
@@ -46,10 +46,10 @@
 		      <span id="privacyN" style="display: none"><b>Private</b> profiles are visible only to you.  <a href="/donate.html" target="_blank">Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them.</span>
 		      <span id="privacyY" style="display: inline"><b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed.</span>
 		      <span id="privacyO" style="display: none"><b>Open</b> profiles let others see, but not edit, your detailed flight data as well.</span></td>
-		  </tr><tr>
+		  </tr><tr class="gold">
 		    <td class="key">Guest password</td>
 		    <td class="value"><INPUT type="password" name="guestpw" size="20" DISABLED></td>
-		    <td class="desc" style="background-color: #fdf6dd" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="Gold Elite feature" height=17 width=17></a> Password protect your Private profile, so you can share it with friends and family.
+		    <td class="desc" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="Gold Elite feature" height=17 width=17></a> Password protect your Private profile, so you can share it with friends and family.
 		  </tr><tr>
 		    <td class="key">Flight editor</td>
 		    <td class="value"><input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" CHECKED>Basic</br>
@@ -57,12 +57,12 @@
 		    <td class="desc" colspan=2>
 		      <span id="basiceditor" style="display: inline">The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!</span>
 		      <span id="detaileditor" style="display: none">The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters.</span></td>
-		  </tr><tr>
+		  </tr><tr class="gold">
 		    <td class="key">Default view</td>
 		    <td class="value"><input type="radio" name="startpane" value="H" CHECKED DISABLED>Help<br>
 		      <input type="radio" name="startpane" value="A" DISABLED>Analyze<br>
 		      <input type="radio" name="startpane" value="T" DISABLED>Top 10</td>
-		    <td class="desc" style="background-color: #fdf6dd" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="Gold Elite feature" height=17 width=17></a> Display a screen of your choice instead of banner ads.
+		    <td class="desc" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="Gold Elite feature" height=17 width=17></a> Display a screen of your choice instead of banner ads.
 		  </tr><tr>
 		    <td colspan="4"><h2>Manage flights</h2></td>
 		  </tr><tr>
@@ -77,7 +77,8 @@
 		    <td colspan="4"><h2>Change password</h2></td>
 		  </tr><tr>
 		    <td class="key">Current password</td>
-		    <td class="value"><INPUT type="password" name="oldpw" size="20"></td>
+		    <td class="value"><INPUT type="password" name="oldpw" size="20">
+		      <INPUT type="hidden" name="username"></td>
 		    <td class="desc" colspan=2>You only need to enter this if changing your password.</td>
 		  </tr><tr>
 		    <td class="key">New password</td>
