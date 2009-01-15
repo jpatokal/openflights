@@ -686,8 +686,9 @@ function xmlhttpPost(strURL, id, param) {
     var name = document.forms['login'].name.value;
     var pw = document.forms['login'].pw.value;
     var challenge = document.forms['login'].challenge.value;
-    pw = hex_md5(challenge + hex_md5(pw + name));
-    query = 'name=' + escape(name) + '&pw=' + escape(pw);
+    pw = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
+    legacy_pw = hex_md5(challenge + hex_md5(pw + name));
+    query = 'name=' + escape(name) + '&pw=' + escape(pw) + '&lpw=' + escape(legacy_pw);
     break;
 
   case URL_GETCODE:
@@ -728,7 +729,7 @@ function xmlhttpPost(strURL, id, param) {
       'param=' + escape(param);
     guestpw = $('guestpw');
     if(guestpw) {
-      query += "&guestpw=" + hex_md5(guestpw.value + filter_user);
+      query += "&guestpw=" + hex_md5(guestpw.value + filter_user.toLowerCase());
     }
     filter_extra_key = form.Extra.value;
     if(filter_extra_key != "" && $('filter_extra_value')) {

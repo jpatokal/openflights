@@ -5,6 +5,7 @@ $type = $HTTP_POST_VARS["type"];
 $name = $HTTP_POST_VARS["name"];
 $pw = $HTTP_POST_VARS["pw"];
 $oldpw = $HTTP_POST_VARS["oldpw"];
+$oldlpw = $HTTP_POST_VARS["oldlpw"];
 $email = $HTTP_POST_VARS["email"];
 $privacy = $HTTP_POST_VARS["privacy"];
 $editor = $HTTP_POST_VARS["editor"];
@@ -59,7 +60,8 @@ if($type == "NEW") {
   // EDIT
   if($oldpw && $oldpw != "") {
     $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .
-      "' AND password='" . mysql_real_escape_string($oldpw) . "'";
+      "' AND (password='" . mysql_real_escape_string($oldpw) . "' OR " .
+      "password='" . mysql_real_escape_string($oldlpw) . "')";
     $result = mysql_query($sql, $db);
     if(! mysql_fetch_array($result)) {
       printf("0;Sorry, current password is not correct.");
