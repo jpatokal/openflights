@@ -54,7 +54,7 @@ function xmlhttpPost(strURL, type) {
       }
     }
     query = 'type=' + type + '&' +
-      'pw=' + escape(hex_md5(form.pw1.value + form.username.value)) + '&' +
+      'pw=' + escape(hex_md5(form.pw1.value + form.username.value.toLowerCase())) + '&' +
       'email=' + escape(form.email.value) + '&' +
       'privacy=' + escape(privacy) + '&' +
       'editor=' + escape(editor);
@@ -71,10 +71,12 @@ function xmlhttpPost(strURL, type) {
 	}
       }
       if(form.oldpw.value != "") {
-	query += '&oldpw=' + escape(hex_md5(form.oldpw.value + form.username.value));
+	query += '&oldpw=' + escape(hex_md5(form.oldpw.value + form.username.value.toLowerCase()));
+	// Legacy password for case-sensitive days of yore
+	query += '&oldlpw=' + escape(hex_md5(form.oldpw.value + form.username.value));
       }
       if(form.guestpw.value != "") {
-	query += '&guestpw=' + escape(hex_md5(form.guestpw.value + form.username.value));
+	query += '&guestpw=' + escape(hex_md5(form.guestpw.value + form.username.value.toLowerCase()));
       }
       query += '&startpane=' + escape(startpane);
       document.getElementById("miniresultbox").innerHTML = "<I>Saving changes...</I>";
@@ -119,7 +121,7 @@ function validate(type) {
   if(type == 'EDIT') {
     var oldpw = form.oldpw.value;
     if(pw1 != "" && oldpw == "") {
-      showError("Please enter your current password.");
+      showError("Please enter your current password if you wish to change to a new password.");
       form.oldpw.focus();
       return;
     }
@@ -197,13 +199,13 @@ function loadUser(str) {
 function signup(str) {
   var code = str.split(";")[0];
   var message = str.split(";")[1];
+
   // Operation successful
-  if(code != "0") {
+  if(code.length == 1 && code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;
     // Whether signup, edit or reset, go back to main screen now
     location.href = '/';
     return;
-
   } else {
     showError(message);
   }

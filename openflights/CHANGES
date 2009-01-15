@@ -1,3 +1,7 @@
+<b>2009-01-15</b>
+
+* Username lowercased before password hashing.  "Legacy" passwords still recognized.
+
 <b>2009-01-12</b>
 
 * Challenge-handshake authentication now implemented (password no longer sent in clear)
