@@ -686,9 +686,9 @@ function xmlhttpPost(strURL, id, param) {
     var name = document.forms['login'].name.value;
     var pw = document.forms['login'].pw.value;
     var challenge = document.forms['login'].challenge.value;
-    pw = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
-    legacy_pw = hex_md5(challenge + hex_md5(pw + name));
-    query = 'name=' + escape(name) + '&pw=' + escape(pw) + '&lpw=' + escape(legacy_pw);
+    hash = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
+    legacy_hash = hex_md5(challenge + hex_md5(pw + name));
+    query = 'name=' + escape(name) + '&pw=' + escape(hash) + '&lpw=' + escape(legacy_hash);
     break;
 
   case URL_GETCODE:
