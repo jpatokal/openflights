@@ -42,19 +42,27 @@ class DuplicateUserTest extends WebTestCase {
   }
 }
 
-// Load user data without session
-class LoadUserWithoutSessionTest extends WebTestCase {
+// Try to manipulate without session
+class LoadEditResetWithoutSessionTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
 
     $params = array("type" => "LOAD");
     $this->post($webroot . "php/signup.php", $params);
     $this->assertText('0;');
+
+    $params = array("type" => "EDIT");
+    $this->post($webroot . "php/signup.php", $params);
+    $this->assertText('0;');
+
+    $params = array("type" => "RESET");
+    $this->post($webroot . "php/signup.php", $params);
+    $this->assertText('0;');
   }
 }
 
-// Load user data without session
-class LoadUserWithSessionTest extends WebTestCase {
+// Load user data 
+class LoadUserDataTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
 
@@ -135,6 +143,24 @@ class ChangeSettingsTest extends WebTestCase {
     $this->assertText('"public":"N"');
     $this->assertText('"email":"new@email.example"');
     $this->assertText('"editor":"D"');
+  }
+}
+
+// Reset (delete) all flights
+class ResetFlightsTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings;
+
+    login($this);
+    $params = array("type" => "RESET");
+    $msg = $this->post($webroot . "php/signup.php", $params);
+    $this->assertText('10;');
+
+    // Validate reset
+    $params = array("type" => "LOAD");
+    $msg = $this->post($webroot . "php/signup.php", $params);
+    $this->assertText('3;');
+    $this->assertText('"count":"0"');
   }
 }
 

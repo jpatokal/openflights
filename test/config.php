@@ -33,10 +33,11 @@ function login($case, $username = NULL, $password = NULL) {
   $map = $case->post($webroot . "php/map.php");
   $cols = preg_split('/[;\n]/', $map);
   $challenge = $cols[7];
-  $hash = md5($challenge . md5($password . $username));
+  $hash = md5($challenge . md5($password . strtolower($username)));
+  $legacyhash = md5($challenge . md5($password . $username));
   $params = array("name" => $username,
 		  "pw" => $hash,
-		  "lpw" => "bar");
+		  "lpw" => $legacyhash);
   return $case->post($webroot . "php/login.php", $params);
 }
 
