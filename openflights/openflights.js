@@ -2080,6 +2080,26 @@ function settings() {
 }
 
 //
+// Let users log in by pressing ENTER (from onKeyPress) or TAB (from onChange)
+// 
+function submitEnter(e) {
+  var keycode;
+  if(e == "CHANGE") {
+    if(logged_in == "pending") return true;
+  } else {
+    if (window.event) keycode = window.event.keyCode;
+    else if (e) keycode = e.which;
+    else return true;
+  }
+
+  if (keycode == 13 || e == "CHANGE") {
+    logged_in = "pending";
+    xmlhttpPost("/php/login.php");
+  }
+  return true;
+}
+
+//
 // Login and logout
 //
 function login(str, param) {
@@ -2087,6 +2107,7 @@ function login(str, param) {
   var status = cols[0];
   var name = cols[1];
   $("loginstatus").style.display = 'inline';
+
   // Login successful
   if(status == "1") {
     prefs_editor = cols[2].trim();
@@ -2100,6 +2121,7 @@ function login(str, param) {
     } else {
       $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
     }
+    $("stats").innerHTML = "<i>Loading...</i> ";
     switch(elite) {
     case "X":
       $("news").style.display = 'inline';
@@ -2142,6 +2164,7 @@ function login(str, param) {
 function logout(str) {
   logged_in = false;
   $("loginstatus").innerHTML = "<B>You have been logged out.</B>";
+  $("stats").innerHTML = "<i>Loading...</i> ";
   $("loginform").style.display = 'inline';
   $("controlpanel").style.display = 'none';
   $(getCurrentPane()).style.display = 'none';
