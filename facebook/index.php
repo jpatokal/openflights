@@ -15,7 +15,7 @@ $user_id = $facebook->require_login();
 
 // You need to set info or profile box in order for the button's below to show up.
 // Don't set them every time.
-$is_set = $fb->api_client->data_getUserPreference(1);
+$is_set = $facebook->api_client->data_getUserPreference(1);
 
 if($_REQUEST["ofname"]){
   $ofname = $_REQUEST["ofname"];
@@ -57,5 +57,5 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
   echo $profile_box;
 
-  $fb->api_client->profile_setFBML(null, $user_id, null, null, null, $profile_box);
+  $facebook->api_client->profile_setFBML(null, $user_id, null, null, null, $profile_box);
 }
