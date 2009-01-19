@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js"></script>
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090115"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090119"></script>
   </head>
 
   <body>
@@ -55,8 +55,8 @@
 		    </td>
 		  </tr><tr>
 		    <td align=right>Password&nbsp;</td><td>
-		      <input type="password" name="pw" align="top" size="10" tabindex="2" onChange='JavaScript:xmlhttpPost("/php/login.php")'>	    
-		      <input type="hidden" name="challenge">    
+		      <input type="password" name="pw" align="top" size="10" tabindex="2" onKeyPress='JavaScript:submitEnter(event)' onChange='submitEnter("CHANGE")'>	    
+ 		      <input type="hidden" name="challenge">    
 		    </td>
 		  </tr><tr>
 		    <td></td>
@@ -70,7 +70,7 @@
 	    </div> <!-- login -->
 	    <div id="statsbox" style="visibility: hidden; clear: both">
 	      <table>
-		<tr><td>
+		<tr><td style='vertical-align: top'>
 		    <span id="stats"></span>
 		  </td><td style='vertical-align: top; padding: 0px 5px'>
 		    <input type="button" value="Analyze" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'><br>

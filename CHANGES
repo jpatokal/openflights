@@ -1,3 +1,8 @@
+<b>2009-01-19</b>
+
+* Pressing "ENTER" after password submits log in form.
+* Stats cleared out ("Loading...") during login/logout process.
+
 <b>2009-01-15</b>
 
 * Username lowercased before password hashing.  "Legacy" passwords still recognized.
