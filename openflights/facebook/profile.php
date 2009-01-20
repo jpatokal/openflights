@@ -11,7 +11,7 @@ function get_profile($db, $uid, $fbuid, $ofname) {
 			floor($row["duration"] / 3600),
 			floor(($row["duration"] % 3600)/60),
 			$row["duration"] % 60);
-    return sprintf("<p><a href='http://openflights.org/user/%s'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/><a href='http://openflights.org/user/%s'><b>%s</b></a> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s miles</b> and a total duration of <b>%s</b>!</p>", $ofname, $ofname, $ofname, $row["count"], $row["distance"], $duration);
+    return sprintf("<p><a href='http://openflights.org/user/%s'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/><a href='http://openflights.org/user/%s'><b>%s</b></a> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s miles</b> and a total duration of <b>%s</b>!  <a href='http://openflights.org/user/%s'>Find out more.</a></p>", $ofname, $ofname, $ofname, $row["count"], $row["distance"], $duration, $ofname);
   } else {
     return "Error, no data found";
   }
