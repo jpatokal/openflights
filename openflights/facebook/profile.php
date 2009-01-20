@@ -17,7 +17,7 @@ function get_profile($db, $uid, $fbuid, $ofname) {
   } else {
     $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>", $ofname);
   }
-  return "<p><a href='http://openflights.org/user/" . $ofname . "'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/>" . $content . "</p><p style='text-align: left'><a href='http://apps.facebook.com/openflights>Refresh</a>";
+  return "<p><a href='http://openflights.org/user/" . $ofname . "'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/>" . $content . "</p><p style='text-align: left'><a href='http://apps.facebook.com/openflights>Refresh</a></p>";
 }
 
 ?>
