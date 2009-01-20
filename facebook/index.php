@@ -49,6 +49,6 @@ echo '<div class="section_button"><fb:add-section-button section="profile"/></di
 
 // Update the user's profile box
 
-$profile_box = get_profile($db, $uid, $fbuid);
+$profile_box = get_profile($db, $uid, $fbuid, $ofname);
 echo $profile_box;
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
