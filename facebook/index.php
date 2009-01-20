@@ -34,7 +34,7 @@ if(! $ofname || $ofname == "") {
     $facebook->api_client->data_setUserPreference(1, $ofname);
 
     $uid = $row["uid"];
-    $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,NOW())", $uid, $fbuid);
+    $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,DATE_SUB(NOW(), INTERVAL 1 DAY))", $uid, $fbuid);
     $result = mysql_query($sql, $db);
 
     echo("<p>Done!</p>");
@@ -61,14 +61,26 @@ if(! $ofname || $ofname == "") {
 </fb:tabs>
 
 <?php
-// Update the user's profile box
-if(! $uid) {
-  $sql = "SELECT public, uid FROM users WHERE name='" . $ofname . "'";
-  $result = mysql_query($sql, $db);
-  if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    $uid = $row["uid"];
-  }
+// Check if we already have an infinite session (offline access) key for this user
+$sql = "SELECT uid, session FROM facebook WHERE fbuid=" . $fbuid;
+$result = mysql_query($sql, $db);
+if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  $uid = $row["uid"];
+  $session = $row["session"];
 }
+$session_key = $POST["fb_sig_session_key"];
+$session_expiry = $POST["fb_sig_expires"];
+print "Live session key [" . $session_key . "], expiry [" . $session_expiry . "], DB session [" . $session . "]<br>";
+// Do we now have a new infinite key?
+if(! $session && $session_expiry == "0") {
+  $sql = "UPDATE facebook SET session_key='" . $session_key . "' WHERE fbuid=" . $fbuid;
+  $result = mysql_query($sql, $db);
+  $session = $session_key;
+
+  print "<p><b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.</p>";
+}
+
+// Update the user's profile box
 $profile_box = get_profile($db, $uid, $fbuid, $ofname);
 echo $profile_box;
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
@@ -80,3 +92,12 @@ $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_
 <p>Click the button below to add the OpenFlights box to your Facebook profile.</p>
 <div class="section_button"><fb:add-section-button section="profile"/></div>
 <p>(If there is no button, it was added already.)</p>
+
+<?php
+if(! $session) {
+?>
+  <p>Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your profile automatically when you add new flights.</p> 
+  <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
+<?php
+}
+?>
