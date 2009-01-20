@@ -8,6 +8,8 @@ require_once 'profile.php';
 // appapikey,appsecret must be defined in keys.php
 $facebook = new Facebook($appapikey, $appsecret);
 $fbuid = $facebook->require_login();
+$db = mysql_connect("localhost", "openflights");
+mysql_select_db("flightdb",$db);
 
 // Has the user configured their OpenFlights name?
 $ofname = $facebook->api_client->data_getUserPreference(1);
@@ -16,8 +18,6 @@ if(! $ofname || $ofname == "") {
   $ofname = $_REQUEST["ofname"];
   if($ofname) {
     // Yes, check it
-    $db = mysql_connect("localhost", "openflights");
-    mysql_select_db("flightdb",$db);
     $sql = "SELECT public, uid FROM users WHERE name='" . $ofname . "'";
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -36,11 +36,6 @@ if(! $ofname || $ofname == "") {
     $uid = $row["uid"];
     $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,NOW())", $uid, $fbuid);
     $result = mysql_query($sql, $db);
-
-    // Update the user's profile box
-    $profile_box = get_profile($db, $uid, $fbuid, $ofname);
-    echo $profile_box;
-    $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 
     echo("<p>Done!</p>");
 
@@ -65,6 +60,23 @@ if(! $ofname || $ofname == "") {
 	<fb:tab-item href="http://apps.facebook.com/openflights/index.php" title="Home" selected="true"/>;
 	<fb:tab-item href="http://apps.facebook.com/openflights/invite.php" title="Invite Friends"/>;
 </fb:tabs>
+
+<?php
+// Update the user's profile box
+if(! $uid) {
+  $sql = "SELECT public, uid FROM users WHERE name='" . $ofname . "'";
+  $result = mysql_query($sql, $db);
+  if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    $uid = $row["uid"];
+  }
+}
+$profile_box = get_profile($db, $uid, $fbuid, $ofname);
+echo $profile_box;
+$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
+?>
+<form requirelogin="1">
+  <input type='submit' value='Refresh' /><br/>
+</form>
 
 <p>Click the button below to add the OpenFlights box to your Facebook profile.</p>
 <div class="section_button"><fb:add-section-button section="profile"/></div>

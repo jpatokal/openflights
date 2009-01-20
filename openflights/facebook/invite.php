@@ -16,7 +16,7 @@ $fbuid = $facebook->require_login();
 
 <?php
 // Retrieve array of friends who've already added the app.
-$fql = 'SELECT uid FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1='.$user.') AND has_added_app = 1';
+$fql = 'SELECT uid FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1='.$fbuid.') AND has_added_app = 1';
 $_friends = $facebook->api_client->fql_query($fql);
 
 // Extract the user ID's returned in the FQL request into a new array.
@@ -32,7 +32,7 @@ $friends = implode(',', $friends);
 
 // Prepare the invitation text that all invited users will receive.
 $content = <<<FBML
-<fb:name uid="{$user}" firstnameonly="true" shownetwork="false"/> wants to see your OpenFlights map!
+<fb:name uid="{$fbuid}" firstnameonly="true" shownetwork="false"/> wants to see your OpenFlights map!
 <fb:req-choice url="{$facebook->get_add_url()}" label="Add OpenFlights to your profile!"/>
 FBML;
 ?>
