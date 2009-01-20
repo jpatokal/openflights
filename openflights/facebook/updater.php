@@ -11,7 +11,7 @@ $fbupdates = 0;
 $fbfail = 0;
 
 // Check which FB users have valid infinite session keys and new flights since last update
-$sql = "SELECT fb.uid,fb.session,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated FROM flights AS f,facebook AS fb, users AS u WHERE fb.session IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND f.upd_time > fb.updated GROUP BY f.uid";
+$sql = "SELECT fb.uid,fb.sessionkey,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND f.upd_time > fb.updated GROUP BY f.uid";
 $result = mysql_query($sql, $db);
 while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $count = $row["count"];
@@ -22,7 +22,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $uid = $row["uid"];
     $fbuid = $row["fbuid"];
     $ofname = $row["name"];
-    $infinitesessionkey = $row["session"];
+    $infinitesessionkey = $row["sessionkey"];
 
     // Get details of last flight entered
     $sql = "SELECT s.city AS src, d.city AS dst FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
@@ -59,7 +59,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     }
   }
 }
-echo "Updating complete: $fbupdates successful, $fbfail failed\n";
+echo date(DATE_RFC822) . ": $fbupdates successful, $fbfail failed";
 
 ?>
 

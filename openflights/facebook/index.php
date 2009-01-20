@@ -22,7 +22,7 @@ if(! $ofname || $ofname == "") {
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       if($row["public"] == "N") {
-	die("Sorry, $ofname's profile is set to 'Private'.  Please go to 'Settings', change it to 'Public' or 'Open', and try again.");
+	die("Sorry, $ofname's profile is set to 'Private'.  Please go to <a href='http://openflights.org/html/settings.html' target='_blank'>Settings</a>, change <b>Privacy</b> to 'Public' or 'Open', and try again.");
       }
     } else {
       die("Sorry, couldn't find <b>$ofname</b> at OpenFlights.  Please check the spelling, hit 'Back' and try again.");
@@ -46,7 +46,7 @@ if(! $ofname || $ofname == "") {
     echo "<p>Please enter your username on OpenFlights: <input type='text' name='ofname' value='$ofname' /></p>";
     echo "<input type='submit' value='Submit' />";
 
-    echo "<p>If you don't have an account already, you can <a href='http://openflights.org/html/signup.html'>sign up</a> for one now.</p>";
+    echo "<p>This application requires an <a target='_blank' href='http://openflights.org'>OpenFlights</a> account.</b>  If you don't have one already, you can <a target='_blank' href='http://openflights.org/html/signup.html'>sign up</a> for one now.</p>";
 
     echo "</form>";
     return;
@@ -62,22 +62,25 @@ if(! $ofname || $ofname == "") {
 
 <?php
 // Check if we already have an infinite session (offline access) key for this user
-$sql = "SELECT uid, session FROM facebook WHERE fbuid=" . $fbuid;
+$sql = "SELECT uid, sessionkey FROM facebook WHERE fbuid=" . $fbuid;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $uid = $row["uid"];
-  $session = $row["session"];
+  $session = $row["sessionkey"];
 }
-$session_key = $POST["fb_sig_session_key"];
-$session_expiry = $POST["fb_sig_expires"];
-print "Live session key [" . $session_key . "], expiry [" . $session_expiry . "], DB session [" . $session . "]<br>";
+
+$session_key = $_POST["fb_sig_session_key"];
+$session_expiry = $_POST["fb_sig_expires"];
+// print "Live session key [" . $session_key . "], expiry [" . $session_expiry . "], DB session [" . $session . "]<br>";
 // Do we now have a new infinite key?
 if(! $session && $session_expiry == "0") {
-  $sql = "UPDATE facebook SET session_key='" . $session_key . "' WHERE fbuid=" . $fbuid;
-  $result = mysql_query($sql, $db);
-  $session = $session_key;
-
-  print "<p><b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.</p>";
+  $sql = "UPDATE facebook SET sessionkey='" . $session_key . "' WHERE fbuid=" . $fbuid;
+  if($result = mysql_query($sql, $db)) {
+    $session = $session_key;
+    print "<p><b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.</p>";
+  } else {
+    die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+  }
 }
 
 // Update the user's profile box
@@ -96,7 +99,7 @@ $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_
 <?php
 if(! $session) {
 ?>
-  <p>Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your profile automatically when you add new flights.</p> 
+  <p>Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.</p> 
   <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
 <?php
 }
