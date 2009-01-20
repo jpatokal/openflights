@@ -32,7 +32,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
       $tokens = array( 'src' => $detail["src"],
 		       'dst' => $detail["dst"],
-		       'count' => $detail["count"] - 1,
+		       'count' => $detail["count"],
+		       'distance' => $row["distance"],
 		       'ofname' => $ofname );
       $target_ids = array();
       $body_general = '';
@@ -47,7 +48,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 	// Mark user as updated
 	$sql = "UPDATE facebook SET updated=NOW() WHERE uid=$uid";
-	$result = mysql_query($sql, $db);
+	mysql_query($sql, $db);
 	$fbupdates++;
       }catch(FacebookRestClientException $e){
 	echo "Exception: " . $e;
