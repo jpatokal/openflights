@@ -32,7 +32,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
       $tokens = array( 'src' => $detail["src"],
 		       'dst' => $detail["dst"],
-		       'count' => $detail["count"],
+		       'count' => $count,
 		       'distance' => $row["distance"],
 		       'ofname' => $ofname );
       $target_ids = array();
