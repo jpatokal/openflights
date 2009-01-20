@@ -12,10 +12,10 @@ $one_line_story_templates[] = '{*actor*} added a flight from <b>{*src*}</b> to <
 $one_line_story_templates[] = '{*actor*} added a flight from <b>{*src*}</b> to <b>{*dst*}</b> to <fb:pronoun uid=\"$fbuid\" useyou=\"false\" possessive=\"true\"> <a href="http://openflights.org/user/{*ofname*}">OpenFlights</a>!';
 
 $short_story_templates = array();
-$short_story_templates[] = array('template_title' => '<fb:name uid=\"$fbuid\" useyou=\"false\" /> added flights to <fb:pronoun uid=\"$fbuid\" useyou=\"false\" possessive=\"true\"> <a href="http://openflights.org/user/{*ofname*}">OpenFlights</a>!',
+$short_story_templates[] = array('template_title' => '{*actor*} added flights to <fb:pronoun uid=\"$fbuid\" useyou=\"false\" possessive=\"true\"> <a href="http://openflights.org/user/{*ofname*}">OpenFlights</a>!',
 				 'template_body' => 'From <b>{*src*}</b> to <b>{*dst*}</b>');
 
-$full_story_template = array('template_title' => '<fb:name uid=\"$fbuid\" useyou=\"false\" /> added flights to <fb:pronoun uid=\"$fbuid\" useyou=\"false\" possessive=\"true\"> <a href="http://openflights.org/user/{*ofname*}">OpenFlights</a>!',
+$full_story_template = array('template_title' => '{*actor*} added flights to <fb:pronoun uid=\"$fbuid\" useyou=\"false\" possessive=\"true\"> <a href="http://openflights.org/user/{*ofname*}">OpenFlights</a>!',
 				 'template_body' => 'From <b>{*src*}</b> to <b>{*dst*}</b>');
 
 $action_links = array();
