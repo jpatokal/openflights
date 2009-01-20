@@ -38,9 +38,8 @@ if(! $ofname || $ofname == "") {
     $result = mysql_query($sql, $db);
 
     echo("<p>Done!</p>");
-
-  }
- } else {
+    
+  } else {
     // No, ask for it
     echo "<form requirelogin=\"1\">";
     echo "<h2>Configuration</h2>";
@@ -52,7 +51,7 @@ if(! $ofname || $ofname == "") {
     echo "</form>";
     return;
   }
- }
+}
 
 ?>
 
