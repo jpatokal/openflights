@@ -7,7 +7,7 @@ require_once 'profile.php';
 
 // appapikey,appsecret must be defined in keys.php
 $facebook = new Facebook($appapikey, $appsecret);
-$user_id = $facebook->require_login();
+$fbuid = $facebook->require_login();
 
 // You need to set info or profile box in order for the button's below to show up.
 // Don't set them every time.
@@ -49,6 +49,6 @@ echo '<div class="section_button"><fb:add-section-button section="profile"/></di
 
 // Update the user's profile box
 
-$profile_box = get_profile($db, $uid);
+$profile_box = get_profile($db, $uid, $fbuid);
 echo $profile_box;
-$facebook->api_client->profile_setFBML(null, $user_id, null, null, null, $profile_box);
+$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);

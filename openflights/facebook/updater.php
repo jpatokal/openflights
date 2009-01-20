@@ -18,6 +18,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($count > 0) {
     $updated = $row["updated"];
     $uid = $row["uid"];
+    $fbuid = $row["fbuid"];
     $ofname = $row["name"];
     $sql = "SELECT s.city AS src, d.city AS dst FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
     $detailresult = mysql_query($sql, $db);
@@ -30,14 +31,14 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       try{
 	// Publish feed story
 	$feed_body = 'Take a look at <a href="http://openflights.org/user/' . $ofname . '">the updated map</a>.';
-	//$facebook->api_client->feed_publishActionOfUser($feed_title, $feed_body);
+	$facebook->api_client->feed_publishActionOfUser($feed_title, $feed_body);
 	
 	echo $feed_title . "\n";
 	echo $feed_body . "\n";
 
 	// Update the user's profile box
-	$profile_box = get_profile($db, $uid);
-	$facebook->api_client->profile_setFBML(null, $user_id, null, null, null, $profile_box);
+	$profile_box = get_profile($db, $uid, $fbuid);
+	$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 
 	echo $profile_box;
 
