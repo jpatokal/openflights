@@ -12,12 +12,12 @@ function get_profile($db, $uid, $fbuid, $ofname) {
 			  floor($row["duration"] / 3600),
 			  floor(($row["duration"] % 3600)/60),
 			  $row["duration"] % 60);
-      $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s miles</b> and a total duration of <b>%s</b>!  <a href='http://openflights.org/user/%s'>Find out more.</a>", $ofname, $ofname, $ofname, $row["count"], $row["distance"], $duration, $ofname);
+      $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s miles</b> and a total duration of <b>%s</b>!  <a href='http://openflights.org/user/%s'>Find out more.</a>", $ofname, $ofname, $row["count"], $row["distance"], $duration, $ofname);
     }
   } else {
-    $content = "<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>";
+    $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>", $ofname);
   }
-  return "<p><a href='http://openflights.org/user/%s'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/>" . $content . "</p>";
+  return "<p><a href='http://openflights.org/user/" . $ofname . "'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/>" . $content . "</p>";
 }
 
 ?>
