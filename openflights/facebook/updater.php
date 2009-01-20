@@ -37,7 +37,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	echo $feed_body . "\n";
 
 	// Update the user's profile box
-	$profile_box = get_profile($db, $uid, $fbuid);
+	$profile_box = get_profile($db, $uid, $fbuid, $ofname);
 	$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 
 	echo $profile_box;
