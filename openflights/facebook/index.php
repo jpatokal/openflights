@@ -85,7 +85,7 @@ if(! $session && $session_expiry == "0") {
 
 // Update the user's profile box
 $profile_box = get_profile($db, $uid, $fbuid, $ofname);
-echo $profile_box;
+echo "<span style='width: 200px'>$profile_box</span>";
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 ?>
 <form requirelogin="1">
