@@ -44,8 +44,11 @@ $uid = $row["uid"];
 $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,NOW())", $uid, $fbuid);
 $result = mysql_query($sql, $db);
 
-echo 'Now just click below to add the OpenFlights box to your Facebook profile.';
+echo 'Click below to add the OpenFlights box to your Facebook profile.';
 echo '<div class="section_button"><fb:add-section-button section="profile"/></div>';
+
+echo 'And click here if you want to post new flights to Facebook automatically.';
+echo '<fb:prompt-permission perms="offline_access">Grant permission for automatic updates</fb:prompt-permission>'
 
 // Update the user's profile box
 
