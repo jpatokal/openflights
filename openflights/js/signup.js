@@ -166,6 +166,19 @@ function loadUser(str) {
     signupform.username.value = settings["name"];
     signupform.myurl.value = "http://openflights.org/user/" + settings["name"];
     signupform.count.value = "Viewed " + settings["count"] + " times";
+
+
+    if(settings["fbuid"]) {
+      if(settings["sessionkey"]) {
+	fbstring = "Linked, automatic updates";
+      } else {
+	fbstring = "Linked, manual updates only<br><small><a target='_blank' href='http://apps.facebook.com/openflights'>Automate</a></small>";
+      }
+    } else {
+      fbstring = "Not active<br><small><a target='_blank' href='http://apps.facebook.com/openflights?ofname=" +
+	settings["name"] + "'>Add link</a></small>";
+    }
+    document.getElementById('facebook').innerHTML = fbstring;
     signupform.guestpw.value = settings["guestpw"];
     for (r=0; r < signupform.privacy.length; r++){
       if (signupform.privacy[r].value == settings["public"]) {
