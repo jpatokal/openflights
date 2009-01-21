@@ -2,6 +2,7 @@
 
 * Facebook application released
 * Facebook link status visible in Settings
+* Bug: Don't blank stats on automatic relogin after page reload
 
 <b>2009-01-19</b>
 
