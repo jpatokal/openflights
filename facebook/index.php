@@ -36,7 +36,7 @@ if(! $ofname || $ofname == "") {
       die("Sorry, couldn't find <b>$ofname</b> at OpenFlights.  Please check the spelling, hit 'Back' and try again.");
     }
 
-    echo("<p><b>Thank you!</b>  Setting up your profile...</p>");
+    echo("<p><b>Account found!</b>  Setting up your profile...</p>");
 
     // Looking good, save to Facebook and our internal table
     $facebook->api_client->data_setUserPreference(1, $ofname);
@@ -47,14 +47,14 @@ if(! $ofname || $ofname == "") {
     if(! $result || mysql_affected_rows() != 1) {
       die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
     }
-    echo("<p>Done!</p>");
+    echo("<p>Done!  Here's a preview:</p>");
     
   } else {
     // No, ask for it
     echo "<form requirelogin=\"1\">";
     echo "<h2>Configuration</h2>";
     echo "<p>Thanks for trying out the OpenFlights Facebook application!  Hooking it up to your OpenFlights account is an easy three-step process.</p>";
-    echo "<p><b>Step 1</b>: Please enter your username on OpenFlights: <input type='text' name='ofname' value='$ofname' /></p>";
+    echo "<p>To start, please enter your username on OpenFlights: <input type='text' name='ofname' value='$ofname' /></p>";
     echo "<input type='submit' value='Submit' />";
 
     echo "<p>This application requires an <a target='_blank' href='http://openflights.org'>OpenFlights</a> account.</b>  If you don't have one already, you can <a target='_blank' href='http://openflights.org/html/signup.html'>sign up</a> for one now.</p>";
@@ -96,15 +96,15 @@ if(! $session && $session_expiry == "0") {
 
 // Update the user's profile box
 $profile_box = get_profile($db, $uid, $fbuid, $ofname);
-echo "<span style='width: 200px'>$profile_box</span>";
+echo "<br><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div>";
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 ?>
 <?php
 if(! $session) {
 ?>
-  <p><b>Step 2</b>: Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you'll have to manually refresh your stats.</p> 
+  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you'll have to manually refresh your stats.</p> 
   <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
-  <p><i>After</i> granting permission, click Refresh below to activate.</p>
+  <p><b>Step 2</b>: <i>After</i> granting permission, click Refresh below to activate automatic updating.</p>
   <form requirelogin="1">
     <input type='submit' value='Refresh' /><br/>
   </form>
