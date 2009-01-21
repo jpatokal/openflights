@@ -47,7 +47,7 @@ if($type == "NEW") {
   }
 
   if($type == "LOAD") {
-    $sql = "SELECT * FROM users WHERE uid=" . $uid;
+    $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, startpane, fbuid, sessionkey FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       printf("3;" . json_encode($row));

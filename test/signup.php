@@ -75,6 +75,9 @@ class LoadUserDataTest extends WebTestCase {
     $this->assertText('"public":"' . $settings["privacy"] . '"');
     $this->assertText('"email":"' . $settings["email"] . '"');
     $this->assertText('"editor":"' . $settings["editor"] . '"');
+    $this->assertText('"fbuid":' . $settings["fbuid"]);
+    $this->assertText('"sessionkey":' . $settings["sessionkey"] . '');
+
   }
 }
 
@@ -157,10 +160,9 @@ class ResetFlightsTest extends WebTestCase {
     $this->assertText('10;');
 
     // Validate reset
-    $params = array("type" => "LOAD");
-    $msg = $this->post($webroot . "php/signup.php", $params);
-    $this->assertText('3;');
-    $this->assertText('"count":"0"');
+    $map = $this->post($webroot . "php/map.php");
+    $cols = preg_split('/[;\n]/', $map);
+    $this->assertTrue($cols[0] == "0", "No flights recorded");
   }
 }
 

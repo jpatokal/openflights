@@ -8,7 +8,9 @@ $settings = array('username' => 'autotest',
 		  'password' => 'autotest',
 		  'email' => 'test@openflights.example',
 		  'privacy' => 'Y',
-		  'editor' => 'B');
+		  'editor' => 'B',
+		  'fbuid' => null,
+		  'sessionkey' => null);
 
 // Database configuration
 $dbhost = "localhost";
