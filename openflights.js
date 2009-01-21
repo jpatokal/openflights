@@ -2120,8 +2120,8 @@ function login(str, param) {
       $("loginstatus").innerHTML = getEliteIcon(elite) + "Logged in as <B>" + name + "</B>";
     } else {
       $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
+      $("stats").innerHTML = "<i>Loading...</i> ";
     }
-    $("stats").innerHTML = "<i>Loading...</i> ";
     switch(elite) {
     case "X":
       $("news").style.display = 'inline';
