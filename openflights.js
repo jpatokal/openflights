@@ -55,6 +55,9 @@ var CODE_DELETEOK = 100;
 var INPUT_MAXLEN = 50;
 var SELECT_MAXLEN = 25;
 
+var COLOR_NORMAL = "#ee9900";
+var COLOR_HIGHLIGHT = "#007fff";
+
 var airportMaxFlights = 0;
 var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
                      [ '/img/icon_plane-15x15.png', 15 ],
@@ -108,7 +111,8 @@ window.onload = function init(){
 					{styleMap: new OpenLayers.StyleMap({
 					    strokeColor: "${color}",
 						strokeOpacity: 1,
-						strokeWidth: "${count}"
+						strokeWidth: "${count}",
+						strokeDashstyle: "${stroke}"
 						})
 					    });
   
@@ -201,9 +205,12 @@ function parseArgument(name)
 
 // Draw a flight connecting (x1,y1)-(x2,y2)
 // Note: Values passed in *must already be parsed as floats* or very strange things happen
-function drawLine(x1, y1, x2, y2, count, distance, color) {
+function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   if(! color) {
-    color = "#ee9900";
+    color = COLOR_NORMAL;
+  }
+  if(! stroke) {
+    stroke = "solid";
   }
 
   // 1,2 flights as single pixel
@@ -236,14 +243,14 @@ function drawLine(x1, y1, x2, y2, count, distance, color) {
     }
   }
   var features = [ new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList),
-						 {count: count, color: color}) ];
+						 {count: count, color: color, stroke: stroke}) ];
   if(wList) {
     features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList),
-						{count: count, color: color}));
+						{count: count, color: color, stroke: stroke}));
   }
   if(eList) {
     features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList),
-						{count: count, color: color}));
+						{count: count, color: color, stroke: stroke}));
   }
   return features;
 }
@@ -252,7 +259,7 @@ function drawLine(x1, y1, x2, y2, count, distance, color) {
 // Draw airport (or just update marker if it exists already)
 // Returns true if a new marker was created, or false if it existed already
 //
-function drawAirport(airportLayer, apid, x, y, name, code, city, country, count, formattedName) {
+function drawAirport(airportLayer, apid, x, y, name, code, city, country, count, formattedName, opacity) {
   // Description
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
 
@@ -272,7 +279,8 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   }
   // This should never happen
   if(! airportIcons[colorIndex]) {
-    alert("ERROR: " + name + ":" + colorIndex);
+    $("news").style.display = 'inline';
+    $("news").innerHTML = "ERROR: " + name + ":" + colorIndex;
     colorIndex = 0;
   }
 
@@ -289,6 +297,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
 	markers[m].icon.setSize(size);
  	markers[m].setUrl(airportIcons[colorIndex][0]);
       }
+      markers[m].setOpacity(opacity);
       return false;
     }
   }
@@ -304,6 +313,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   feature.data.icon = icon;
   feature.data.overflow = "auto";
   var marker = feature.createMarker();
+  marker.setOpacity(opacity);
 
   // These are used to do airport lookups
   marker.apid = apid;
@@ -1021,7 +1031,7 @@ function updateMap(str){
   if(min < 10) min = "0" + min;
 
   stats = col[0] + " flights<br>" +
-    miles + " mi flown<br>" +
+    miles + " miles<br>" +
     days + " days " + hours + ":" + min;
   $("stats").innerHTML = stats;
   flightTotal = col[0];
@@ -1051,11 +1061,16 @@ function updateMap(str){
   if(flightTotal != "0") {
     var rows = flights.split(":");
     for (r = 0; r < rows.length; r++) {
+      // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8
       var rCol = rows[r].split(";");
-      // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7
+      if(rCol[8] == "Y") {
+	stroke = "dash";
+      } else {
+	stroke = "solid";
+      }
       lineLayer.addFeatures(drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]),
 				     parseFloat(rCol[4]), parseFloat(rCol[5]),
-				     rCol[6], rCol[7]));
+				     rCol[6], rCol[7], COLOR_NORMAL, stroke));
     }
     
     var rows = airports.split(":");
@@ -1064,8 +1079,13 @@ function updateMap(str){
     airportMaxFlights = rows[rows.length - 1].split(";")[7];
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(";");
-      // apid, x, y, name, code, city, country, count, formatted_name
-      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8]);
+      // apid, x, y, name, code, city, country, count, formatted_name, future
+      if(col[9] == "Y") {
+	opacity = 0.5;
+      } else {
+	opacity = 1;
+      }
+      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8], opacity);
     }
     //zoomEvent(); // filter in/out airports based on zoom level
   }
@@ -1104,6 +1124,7 @@ function startListFlights() {
 function listFlights(str, desc) {
   openPane("result");
   fidList = new Array();
+  var today = new Date().getTime();
 
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
@@ -1131,6 +1152,12 @@ function listFlights(str, desc) {
       var plane = col[13];
       var fid = col[12];
       var code = col[4];
+      var date = col[5];
+      // Date.parse() doesn't work on YYYY/MM/DD, so we chop it up and use Date.UTC instead (sigh)
+      if(Date.UTC(date.substring(0,4), date.substring(5,7) - 1, date.substring(8,10)) > today) {
+	date = "<I>" + date + "</I>";
+      }
+
       // If no flight number, then use airline code
       if(code == "") {
 	code = col[19];
@@ -1143,7 +1170,7 @@ function listFlights(str, desc) {
       }
       table.push("<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
-		      "<td>" + code + "</td><td>" + col[5] + "</td><td>" + col[6] + "</td><td>" + col[7] +
+		      "<td>" + code + "</td><td>" + date + "</td><td>" + col[6] + "</td><td>" + col[7] +
 		      "</td><td>" + plane + "</td><td>" + seat +
 		      "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
 		      "</td><td>" + trip + "</td>" +
@@ -1818,7 +1845,7 @@ function markAirport(element, quick) {
 	distance = gcDistance(lat1, lon1, lat2, lon2);
 	input_line = drawLine(parseFloat(lon1), parseFloat(lat1),
 			      parseFloat(lon2), parseFloat(lat2),
-			      4, distance, "#007fff");
+			      4, distance, COLOR_HIGHLIGHT);
       } else {
 	input_line = [];
 	for(i = 1; i <= multiinput_rows; i++) {
@@ -1834,7 +1861,7 @@ function markAirport(element, quick) {
 	    distance = gcDistance(lat1, lon1, lat2, lon2);
 	    line = drawLine(parseFloat(lon1), parseFloat(lat1),
 			    parseFloat(lon2), parseFloat(lat2),
-			    4, distance, "#007fff");
+			    4, distance, COLOR_HIGHLIGHT);
 	    input_line = input_line.concat(line);
 	  } else {
 	    break; // stop drawing

@@ -1,3 +1,10 @@
+<b>2009-01-22</b>
+
+* Upgraded to OpenLayers 2.7
+* Enabled mod_deflate in Apache
+* Future flights shown with dotted lines and ghosted airports
+* Future flights in italics in flight listings
+
 <b>2009-01-21</b>
 
 * Facebook application released
