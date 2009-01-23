@@ -1,3 +1,9 @@
+<b>2009-01-23</b>
+
+* Airline always shown (if possible) in "List flights" view
+* Airline autocompleted from flight number only if it looks like IATA/ICAO code
+* Bug: Popup toolbar manipulation no longer attempted unless logged in
+
 <b>2009-01-22</b>
 
 * Upgraded to OpenLayers 2.7
