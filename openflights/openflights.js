@@ -362,10 +362,13 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
     } else {
       closePane();
     }
-    if(getCurrentPane() == "input" || getCurrentPane() == "multiinput") {
-      $('popup' + apid).style.visibility = "visible";
-    } else {
-      $('popup' + apid).style.visibility = "hidden";
+    // Show or hide toolbar when applicable
+    if($('popup' + apid)) {
+      if(getCurrentPane() == "input" || getCurrentPane() == "multiinput") {
+	$('popup' + apid).style.visibility = "visible";
+      } else {
+	$('popup' + apid).style.visibility = "hidden";
+      }
     }
     OpenLayers.Event.stop(evt);
   };
@@ -1158,9 +1161,9 @@ function listFlights(str, desc) {
 	date = "<I>" + date + "</I>";
       }
 
-      // If no flight number, then use airline code
-      if(code == "") {
-	code = col[19];
+      // Prepend airline code to numeric/missing flight number
+      if(/^[0-9]*$/.test(code)) {
+	code = col[19] + code;
       }
       if(col[14] != "") {
 	plane += " (" + col[14] + ")";
@@ -1741,14 +1744,25 @@ function flightNumberToAirline(type) {
   if(type == "NUMBER") {
     var flightNumber = document.forms['inputform'].number.value.toUpperCase();
     document.forms['inputform'].number.value = flightNumber;
+
+    // Ignore all-numeric flight numbers 
+    var re_numeric = /^[0-9]*$/; // N...
+    if(re_numeric.test(flightNumber)) {
+      return;
+    }
+
+    // Does flight number start with IATA or ICAO code?
     if(flightNumber.length >= 2) {
       var found = false;
-      var re_iata = /^[a-zA-Z0-9][a-zA-Z0-9][ 0-9]/; // XX N...
-      var re_icao = /^[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9]$/;  // XXX N...
-      if(flightNumber.length == 2 || re_iata.test(flightNumber.substring(0,3))) {
+      var re_iata = /^([a-zA-Z0-9][a-zA-Z0-9]$|[a-zA-Z0-9][a-zA-Z0-9][ 0-9])/; // XX or XX[ ]N...
+      var re_icao = /^([a-zA-Z][a-zA-Z][a-zA-Z]$|[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9])/;  // XXX or XXX[ ]N...
+      if(re_iata.test(flightNumber.substring(0,3))) {
 	var airlineCode = flightNumber.substring(0, 2);
-      } else if(flightNumber.length == 3 || re_icao.test(flightNumber.substring(0,4))) {
+      } else if(re_icao.test(flightNumber.substring(0,4))) {
 	var airlineCode = flightNumber.substring(0, 3);
+      } else {
+	// User has entered something weird, ignore it
+	return;
       }
       type = "airline";
     }
