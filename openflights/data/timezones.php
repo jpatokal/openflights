@@ -45,11 +45,10 @@ while($row = mysql_fetch_assoc($result)) {
   }
   $sql = "UPDATE airports SET timezone=$tz, dst='$dstcode' WHERE apid=$apid";
   $update = mysql_query($sql, $db) or die ('Database error: ' . $sql . ', error ' . mysql_error());
-  print mysql_affected_rows();
   if(mysql_affected_rows() != 1) {
     die ('Database error: ' . $sql . ', error ' . mysql_error());
   }
-  print " OK\n";
+  print " [OK]\n";
 
   // Don't spam service (max 1 request/sec allowed)
   sleep(5);
