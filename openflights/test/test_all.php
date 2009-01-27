@@ -13,6 +13,10 @@ $test = &new TestSuite('Login');
 $test->addTestFile('login.php');
 $test->run(new HtmlReporter());
 
+$test = &new TestSuite('Airport Search');
+$test->addTestFile('apsearch.php');
+$test->run(new HtmlReporter());
+
 $test = &new TestSuite('Cleanup');
 $test->addTestFile('cleanup.php');
 $test->run(new HtmlReporter());
