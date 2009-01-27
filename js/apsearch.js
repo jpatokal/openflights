@@ -63,6 +63,8 @@ function xmlhttpPost(strURL, offset, action) {
     var x = form.x.value;
     var y = form.y.value;
     var elevation = form.elevation.value;
+    var tz = form.tz.value;
+    var dst = form.dst.value;
     var country = form.country[form.country.selectedIndex].text
     var apid = form.apid.value;
 
@@ -168,13 +170,27 @@ function xmlhttpPost(strURL, offset, action) {
 	return;
       }
 
+      var re_tz = /^[-+]?\d*\.?\d*$/;
+      if(tz == "" || ! re_tz.test(tz) || Math.abs(tz) > 14) {
+	alert("Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal.");
+	form.tz.focus();
+	return;
+      }
+      if(dst == "U") {
+	if(! confirm("You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?")) {
+	  form.dst.focus();
+	  return;
+	}
+      }
       if(iata == "") {
 	if(! confirm("You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?")) {
+	  form.iata.focus();
 	  return;
 	}
       }
       if(icao == "") {
 	if(! confirm("You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?")) {
+	  form.icao.focus();
 	  return;
 	}
       }
@@ -191,7 +207,7 @@ function xmlhttpPost(strURL, offset, action) {
       }
     }
 
-    query = 'airport=' + escape(airport) + '&' +
+    query = 'name=' + escape(airport) + '&' +
       'iata=' + escape(iata) + '&' +
       'icao=' + escape(icao) + '&' +
       'city=' + escape(city) + '&' +
@@ -200,6 +216,8 @@ function xmlhttpPost(strURL, offset, action) {
       'x=' + x + '&' +
       'y=' + y + '&' +
       'elevation=' + elevation + '&' +
+      'timezone=' + tz + '&' +
+      'dst=' + dst + '&' +
       'db=' + escape(db) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
@@ -244,13 +262,11 @@ function searchResult(str) {
     warning = null;
   }
   for(a in airports) {
-    var col = airports[a].split(";");
-
     // First line contains header info
     if(a == 0) {
+      var col = airports[a].split(";");
       offset = parseInt(col[0]);
       max = col[1];
-      sql = col[2];
       if(max == 0) {
 	table += "<tr><td><i>No matches found in this database.<br><ul>";
 	if(document.forms['searchform'].iatafilter.checked) {
@@ -282,14 +298,15 @@ function searchResult(str) {
       continue;
     }
 
+
     // Meat of the table
-    // 0 iata, 1 icao, 2 apid, 3 x, 4 y, 5, elevation, 6 ap-name, 7 code, 8 printable-name, 9 uid
+    var col = jsonParse(airports[a]);
     if(a % 2 == 1) {
       bgcolor = "#fff";
     } else {
       bgcolor = "#ddd";
     }
-    switch(col[9]) {
+    switch(col["ap_uid"]) {
     case "user":
       bgcolor = "#fdd";
       disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
@@ -300,14 +317,14 @@ function searchResult(str) {
       disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>blue</span> have been added by you and can be edited.";
       break;
     }
-    table += "<tr><td style='background-color: " + bgcolor + "'>" + col[8] + "</td>";
+    table += "<tr><td style='background-color: " + bgcolor + "'>" + col["ap_name"] + "</td>";
     if(db == DB_OPENFLIGHTS) {
       // code:apid:x:y
-      id = (col[0] != "" ? col[0] : col[1]) + ":" + col[2] + ":" + col[3] + ":" + col[4];
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col[8]) + "\")'></td>";
+      id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"];
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
     }
-    if(db != DB_OPENFLIGHTS || col[9] == "own") {
-      if(col[9] == "own") {
+    if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own") {
+      if(col["ap_uid"] == "own") {
 	label = "Edit";
       } else {
 	label = "Load";
@@ -323,7 +340,7 @@ function searchResult(str) {
 
 // Load data from search result into form
 function loadAirport(data) {
-  var col = unescape(data).split(";");
+  var col = jsonParse(unescape(data));
 
   var b_back = document.getElementById("b_back");
   var b_fwd = document.getElementById("b_fwd");
@@ -331,23 +348,33 @@ function loadAirport(data) {
   if(b_fwd) b_fwd.disabled = true;
 
   var form = document.forms['searchform'];
-  form.iata.value = col[0];
-  form.icao.value = col[1];
-  form.x.value = col[3];
-  form.y.value = col[4];
-  form.elevation.value = col[5];
-  form.airport.value = col[6];
-  country = col[7];
+  form.airport.value = col["name"];
+  form.city.value = col["city"];
+  form.iata.value = col["iata"];
+  form.icao.value = col["icao"];
+  form.x.value = col["x"];
+  form.y.value = col["y"];
+  form.elevation.value = col["elevation"];
+  if(col["timezone"]) {
+    form.tz.value = col["timezone"];
+  }
+  country = col["country"];
   var country_select = form.country;
   for(index = 0; index < country_select.length; index++) {
     if(country_select[index].value == country || country_select[index].text == country) {
       country_select.selectedIndex = index;
     }
   }
-  form.city.value = col[10];
+  var dst_select = form.dst;
+  for(index = 0; index < dst_select.length; index++) {
+    //alert(dst_select[index].value + "/" + col["dst"]);
+    if(dst_select[index].value == col["dst"]) {
+      dst_select.selectedIndex = index;
+    }
+  }
 
-  if(col[2] != "") {
-    form.apid.value = col[2];
+  if(col["apid"] != "") {
+    form.apid.value = col["apid"];
     document.getElementById('b_add').style.display = "none";
     document.getElementById('b_edit').style.display = "inline";
   } else {
@@ -391,6 +418,8 @@ function clearSearch() {
   form.x.value = "";
   form.y.value = "";
   form.elevation.value = "";
+  form.tz.value = "";
+  form.dst.selectedIndex = 0;
   form.apid.value = "";
   form.iatafilter.checked = true;
   document.getElementById('b_add').style.display = "inline";

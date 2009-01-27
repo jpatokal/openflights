@@ -4,7 +4,7 @@ header("Content-type: text/html; charset=iso-8859-1");
 
 include 'helper.php';
 
-$airport = $HTTP_POST_VARS["airport"];
+$airport = $HTTP_POST_VARS["name"];
 $iata = $HTTP_POST_VARS["iata"];
 $icao = $HTTP_POST_VARS["icao"];
 $city = $HTTP_POST_VARS["city"];
@@ -13,6 +13,8 @@ $code = $HTTP_POST_VARS["code"];
 $myX = $HTTP_POST_VARS["x"];
 $myY = $HTTP_POST_VARS["y"];
 $elevation = $HTTP_POST_VARS["elevation"];
+$tz = $HTTP_POST_VARS["timezone"];
+$dst = $HTTP_POST_VARS["dst"];
 $dbname = $HTTP_POST_VARS["db"];
 $iatafilter = $HTTP_POST_VARS["iatafilter"];
 $offset = $HTTP_POST_VARS["offset"];
@@ -30,18 +32,22 @@ if($action == "RECORD") {
     exit;
   }
 
-  if(! $apid || $apid == "") {
-    // Adding a new airport, so first check for duplicates
-    if($icao != "") {
-      $sql = "SELECT * FROM airports WHERE icao='" . mysql_real_escape_string($icao) . "'";
-      $result = mysql_query($sql, $db);
-      if($row = mysql_fetch_array($result, MYSQL_NUM)) {
-	printf("0;Sorry, an airport using the ICAO code " . $icao . " exists already.  Please double-check.");
-	exit;
-      }
+  // Check for duplicates (by ICAO)
+  if($icao != "") {
+    $sql = "SELECT * FROM airports WHERE icao='" . mysql_real_escape_string($icao) . "'";
+    // Editing an existing entry, so make sure we're not overwriting something else
+    if($apid && $apid != "") {
+      $sql .= " AND apid != " . mysql_real_escape_string($apid);
     }
-    
-    $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,uid) VALUES('%s', '%s', '%s', '%s', %s, %s, %s, %s, %s)",
+    $result = mysql_query($sql, $db);
+    if(mysql_num_rows($result) != 0) {
+      printf("0;Sorry, an airport using the ICAO code " . $icao . " exists already.  Please double-check.");
+      exit;
+    }
+  }
+
+  if(! $apid || $apid == "") {    
+    $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s)",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
@@ -50,11 +56,13 @@ if($action == "RECORD") {
 		   mysql_real_escape_string($myX),
 		   mysql_real_escape_string($myY),
 		   mysql_real_escape_string($elevation),
+		   mysql_real_escape_string($tz),
+		   mysql_real_escape_string($dst),
 		   $uid);
   } else {
     // Editing an existing airport
     // ##TODO## un-hardcode admin write access
-    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s WHERE apid=%s AND (uid=%s OR %s=3)",
+    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s AND (uid=%s OR %s=3)",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
@@ -63,6 +71,8 @@ if($action == "RECORD") {
 		   mysql_real_escape_string($myX),
 		   mysql_real_escape_string($myY),
 		   mysql_real_escape_string($elevation),
+		   mysql_real_escape_string($tz),
+		   mysql_real_escape_string($dst),
 		   mysql_real_escape_string($apid),
 		   $uid,
 		   $uid);
@@ -127,26 +137,26 @@ $result2 = mysql_query(str_replace("*", "COUNT(*)", $sql), $db);
 if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
   $max = $row[0];
 }
-printf("%s;%s;%s", $offset, $max, $sql);
+printf("%s;%s", $offset, $max);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($dbname == "airports_dafif") {
-    $country = $row["code"];
-  } else {
-    $country = $row["country"];
+    $row["country"] = $row["code"];
   }
  
   // ##TODO## admin flag instead of hardcoding...
   if($row["uid"] || $uid == "3" ) {
     if($row["uid"] == $uid || $uid == "3") {
-      $ap_uid = "own"; // editable
+      $row["ap_uid"] = "own"; // editable
     } else {
-      $ap_uid = "user"; // added by another user
+      $row["ap_uid"] = "user"; // added by another user
     }
   } else {
-    $ap_uid = null; // in DB
+    $row["ap_uid"] = null; // in DB
   }
-  printf ("\n%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", $row["iata"], $row["icao"], $row["apid"], $row["x"], $row["y"], $row["elevation"], $row["name"], $country, format_airport($row), $ap_uid, $row["city"]);
+  $row["ap_name"] = format_airport($row);
+  unset($row["uid"]);
+  print "\n" . json_encode($row);
 }
 
 ?>

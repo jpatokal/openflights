@@ -12,6 +12,17 @@ $settings = array('username' => 'autotest',
 		  'fbuid' => null,
 		  'sessionkey' => null);
 
+$airport = array('name' => 'Test Airport',
+		 'city' => 'Testville',
+		 'country' => 'Testland',
+		 'iata' => 'ZZZ',
+		 'icao' => 'ZZZZ',
+		 'x' => '42.42',
+		 'y' => '69.69',
+		 'elevation' => '123',
+		 'timezone' => '-5.5',
+		 'dst' => 'Z');
+
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";

@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
+    <script type="text/javascript" src="/js/utilities.js"></script>
     <script type="text/javascript" src="/js/apsearch.js"></script>
   </head>
 
@@ -32,13 +33,26 @@
 		<div id="country_select"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
 	      </td>
 	    </tr><tr>
-	      <td>Latitude (&plusmn;dd)</td>
-	      <td>Longitude (&plusmn;dd)</td>
-	      <td colspan=2>Elevation (ft)</td>
+	      <td>Latitude&nbsp;(&plusmn;dd)</td>
+	      <td>Longitude&nbsp;(&plusmn;dd)</td>
+	      <td>Elevation&nbsp;(ft)</td>
+	      <td>UTC<sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
+	      <td>DST<sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
 	    </tr><tr>
 	      <td><INPUT type="text" name="y" size="12"></td>
 	      <td><INPUT type="text" name="x" size="12"></td>
-	      <td colspan=2><INPUT type="text" name="elevation" size="6"></td>
+	      <td><INPUT type="text" name="elevation" size="6"></td>
+	      <td><INPUT type="text" name="tz" size="3"></td>
+	      <td><select name="dst">
+		  <option value="U" selected>Unknown</option>
+		  <option value="E">European</option>
+		  <option value="A">US/Canada</option>
+		  <option value="S">S. American</option>
+		  <option value="O">Australia</option>
+		  <option value="Z">New Zealand</option>
+		  <option value="N">None</option>
+		</select>
+	      </td>
 	    </tr><tr>
 	      <td>Database<sup><a href="#help" onclick='JavaScript:help("database")'>?</a></sup></td>
 	    </tr><tr>
