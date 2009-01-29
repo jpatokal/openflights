@@ -23,6 +23,24 @@ $airport = array('name' => 'Test Airport',
 		 'timezone' => '-5.5',
 		 'dst' => 'Z');
 
+$flight = array('param' => 'ADD',
+		'src_date' => '2009-02-03',
+		'src_time' => '23:59',
+		'src_apid' => '1000',
+		'dst_apid' => '1001',
+		'alid' => '1000',
+		'duration' => '1:00',
+		'distance' => '500',
+		'number' => 'AB123',
+		'seat' => '12A',
+		'type' => 'W',
+		'class' => 'Y',
+		'reason' => 'B',
+		'registration' => 'AB-123',
+		'trid' => 'NULL',
+		'plane' => 'Boeing 737',
+		'note' => 'AddSingleFlightTest,;:\'"Chars');
+
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";

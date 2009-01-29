@@ -165,16 +165,4 @@ class SearchGADByNameTest extends WebTestCase {
   }
 }
 
-// Not an actual test, just cleaning up
-class DeleteAirportTest extends WebTestCase {
-  function test() {
-    global $airport;
-
-    $db = db_connect();
-    $sql = "DELETE FROM airports WHERE icao='" . $airport["icao"] . "'";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() == 1, "Airport deleted");
-  }
-}
-
 ?>
