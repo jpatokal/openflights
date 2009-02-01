@@ -7,10 +7,11 @@ include_once(dirname(__FILE__) . '/config.php');
 // Test cases for php/submit.php and php/flights.php
 // NB: Assumes the test user exists and there are no flights entered yet (run signup.php first!)
 //
+// TODO: Multiinput
 
 $fid = null; // global for newly-added flight
 
-// Add flight when not logged in
+// Try to add a flight when not logged in
 class AddSingleFlightWithoutLoggingInTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight, $fid;
@@ -47,7 +48,7 @@ class AddSingleFlightTest extends WebTestCase {
 }
 
 // Fetch and validate newly-added flight
-class FetchSingleFlightTest extends WebTestCase {
+class FetchAddSingleFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight, $fid;
 
@@ -74,31 +75,74 @@ class FetchSingleFlightTest extends WebTestCase {
   }
 }
 
-// CSV export and validate newly-added flight
+// Edit new flight, altering all fields into flight2
+class EditFlightTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings, $flight2, $fid;
+
+    login($this);
+    $this->assertText("1;");
+
+    $params = $flight2;
+    $params["fid"] = $fid;
+    $msg = $this->post($webroot . "php/submit.php", $params);
+    $this->assertText('2;');
+  }
+}
+
+// Fetch and validate newly-added flight
+class FetchEditedFlightTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings, $flight2, $fid;
+
+    login($this);
+    $this->assertText("1;");
+
+    $params = array("fid" => $fid);
+    $msg = $this->post($webroot . "php/flights.php", $params);
+    $this->assertText($flight2["src_date"]);
+    $this->assertText($flight2["src_apid"]);
+    $this->assertText($flight2["dst_apid"]);
+    $this->assertText($flight2["alid"]);
+    $this->assertText($flight2["duration"]);
+    $this->assertText($flight2["distance"]);
+    $this->assertText($flight2["number"]);
+    $this->assertText($flight2["plane"]);
+    $this->assertText($flight2["seat"]);
+    $this->assertText($flight2["type"]);
+    $this->assertText($flight2["class"]);
+    $this->assertText($flight2["reason"]);
+    $this->assertText($flight2["registration"]);
+    $this->assertText($flight2["note"]);
+    $this->assertText($flight2["src_time"]);
+  }
+}
+
+// CSV export and validate edited flight
 class CSVExportFlightTest extends WebTestCase {
   function test() {
-    global $webroot, $settings, $flight, $fid;
+    global $webroot, $settings, $flight2, $fid;
 
     login($this);
     $this->assertText("1;");
 
     $params = array("export" => "export");
     $msg = $this->get($webroot . "php/flights.php", $params);
-    $this->assertText($flight["src_date"] . " " . $flight["src_time"] . ":00,");
-    $this->assertText($flight["alid"] . ",");
-    $this->assertText($flight["duration"] . ",");
-    $this->assertText($flight["distance"] . ",");
-    $this->assertText($flight["number"] . ",");
-    $this->assertText($flight["plane"] . ",");
-    $this->assertText($flight["seat"] . ",");
-    $this->assertText($flight["type"] . ",");
-    $this->assertText($flight["class"] . ",");
-    $this->assertText($flight["reason"] . ",");
-    $this->assertText($flight["registration"] . ",");
-    $this->assertText($flight["note"]); // may or may not be quote-wrapped
-    $this->assertText($flight["src_apid"] . ",");
-    $this->assertText($flight["dst_apid"] . ",");
-    $this->assertText($flight["alid"] . ",");
+    $this->assertText($flight2["src_date"] . " " . $flight2["src_time"] . ":00,");
+    $this->assertText($flight2["alid"] . ",");
+    $this->assertText($flight2["duration"] . ",");
+    $this->assertText($flight2["distance"] . ",");
+    $this->assertText($flight2["number"] . ",");
+    $this->assertText($flight2["plane"] . ",");
+    $this->assertText($flight2["seat"] . ",");
+    $this->assertText($flight2["type"] . ",");
+    $this->assertText($flight2["class"] . ",");
+    $this->assertText($flight2["reason"] . ",");
+    $this->assertText($flight2["registration"] . ",");
+    $this->assertText($flight2["note"]); // may or may not be quote-wrapped
+    $this->assertText($flight2["src_apid"] . ",");
+    $this->assertText($flight2["dst_apid"] . ",");
+    $this->assertText($flight2["alid"] . ",");
   }
 }
 
