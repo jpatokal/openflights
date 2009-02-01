@@ -41,6 +41,24 @@ $flight = array('param' => 'ADD',
 		'plane' => 'Boeing 737',
 		'note' => 'AddSingleFlightTest,;:\'"Chars');
 
+$flight2 = array('param' => 'EDIT',
+		'src_date' => '2010-04-05',
+		'src_time' => '00:01',
+		'src_apid' => '2000',
+		'dst_apid' => '2001',
+		'alid' => '2000',
+		'duration' => '2:00',
+		'distance' => '1000',
+		'number' => 'CD456',
+		'seat' => '34B',
+		'type' => 'A',
+		'class' => 'F',
+		'reason' => 'L',
+		'registration' => 'CD-456',
+		'trid' => 'NULL',
+		'plane' => 'Airbus A2380',
+		'note' => 'EditFlightTest,;:\'"Chars');
+
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";
