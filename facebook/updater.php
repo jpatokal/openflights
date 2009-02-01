@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 require_once 'php/facebook.php';
 require_once 'keys.php';
@@ -53,13 +52,21 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	mysql_query($sql, $db);
 	$fbupdates++;
       }catch(FacebookRestClientException $e){
-	echo "Exception: " . $e;
+	echo "Exception for user $uid (FB $fbuid) and session $infinitesessionkey: $e\n";
+        if($e->getCode() == FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY) {
+          // Clear out expired session key
+	  $sql = "UPDATE facebook SET sessionkey=NULL WHERE uid=$uid";
+	  mysql_query($sql, $db);
+          echo "Session ID cleared\n";
+        }
 	$fbfail++;
       }
     }
   }
 }
-echo date(DATE_RFC822) . ": $fbupdates successful, $fbfail failed";
+if($fbupdates > 0 || $fbfail > 0) {
+  echo date(DATE_RFC822) . ": $fbupdates successful, $fbfail failed";
+}
 
 ?>
 
