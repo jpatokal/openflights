@@ -23,7 +23,7 @@
 	<h2>Field definition</h2>
 
 	<dl>
-	<dt>1. Date</dt><dd>Date of flight, in YYYY-MM-DD (dash-separated, <i>preferred format</i>), MM/DD/YYYY (slash-separated), DD.MM.YYYY (dot-separated) or YYYY (year-only) format.  The date ''may'' optionally also contain the departure time of the flight in the format HH:MM[:SS], separated from the date by a space.  Seconds are optional, but presently ignored. <font color="red">Mandatory (date part only)</font>.</dd>
+	<dt>1. Date</dt><dd>Date of flight, in YYYY-MM-DD (dash-separated, <i>preferred format</i>), MM/DD/YYYY (slash-separated), DD.MM.YYYY (dot-separated) or YYYY (year-only) format.  The date <i>may</i> optionally also contain the departure time of the flight in the format HH:MM[:SS], separated from the date by a space.  Seconds are optional, but presently ignored. <font color="red">Mandatory (date part only)</font>.</dd>
 	<dt>2. From</dt><dd>IATA or ICAO code of source airport. <font color="red">Mandatory unless "From_OID" is provided.</font></dd>
 	<dt>3. To</dt><dd>IATA or ICAO code of destination airport. <font color="red">Mandatory unless "To_OID" is provided.</font></dd>
 	<dt>4. Flight_Number</dt><dd>Flight number. <font color="blue">If first two characters are an airline code (two alphanumeric digits), the code is used to override "Airline".</font> </dd>
@@ -67,7 +67,7 @@
       <div style="overflow: auto">
 <pre>
 Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
-2008-01-18 10:30,DXB,RUH,SV559,Saudi Arabian Airlines,542,01:35,40C,A,Y,B,Boeing 777,HZ-AKH,16,"First, to Saudi!",2188,2082,4533,3
+2008-01-18 10:30:10,DXB,RUH,SV559,Saudi Arabian Airlines,542,01:35,40C,A,Y,B,Boeing 777,HZ-AKH,16,"First, to Saudi!",2188,2082,4533,3
 2008-01-18 10:30,DXB,RUH,SV559,Saudi Arabian Airlines,542,01:35,40C,A,Y,B,Boeing 777,HZ-AKH,16,"First, to Saudi!"
 2008-01-18,DXB,RUH,SV559
 2008-01-18,DXB,RUH,,Saudi Arabian Airlines
@@ -76,7 +76,7 @@ Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason
 
 	<h2>Revision history</h2>
 	<dl>
-	  <dt>0.4 &mdash; Jan 29, 2008</dt>
+	  <dt>0.4 &mdash; Feb 1, 2009</dt>
 	  <dd>Date field now allows optional time element.</dd>
 
 	  <dt>0.3 &mdash; Dec 22, 2008</dt>
