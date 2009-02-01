@@ -293,7 +293,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
   // This should never happen
   if(! airportIcons[colorIndex]) {
     $("news").style.display = 'inline';
-    $("news").innerHTML = "ERROR: " + name + ":" + colorIndex + " of " + airportMaxFlights;
+    $("news").innerHTML = "ERROR: " + name + ":" + colorIndex + " of " + airportMaxFlights + ".i<br>Please hit CTRL-F5 to force refresh, and <a href='/about.html'>report</a> this error if it does not go away.";
     colorIndex = 0;
   }
 
