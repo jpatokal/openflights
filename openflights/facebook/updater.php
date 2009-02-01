@@ -69,4 +69,3 @@ if($fbupdates > 0 || $fbfail > 0) {
 }
 
 ?>
-
