@@ -48,15 +48,15 @@ if($query) {
   } else {
     $ext = "";
   }
-  $sql = sprintf("SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE %s (city LIKE '%s%%'", $ext, $query);
+  $sql = sprintf("SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE %s (city LIKE '%s%%'", $ext, $query);
 
   switch(strlen($query)) {
   case 3: // IATA
-    $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE iata='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
+    $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE iata='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
     break;
 
   case 4: // ICAO
-    $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y FROM airports WHERE icao='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
+    $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE icao='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
     break;
 
   default:
@@ -77,9 +77,9 @@ if($query) {
 	$code = $row["icao"];
       }
       if($limit > 1) {
-	printf ("<li class='autocomplete' origin='%s' id='%s:%s:%s:%s'>%s</li>\n", $ap, $code, $row["apid"], $row["x"], $row["y"], format_airport($row));
+	printf ("<li class='autocomplete' origin='%s' id='%s'>%s</li>\n", $ap, format_apdata($row), format_airport($row));
       } else {
-	printf ("%s:%s:%s:%s;%s", format_apcode($row), $row["apid"], $row["x"], $row["y"], format_airport($row));
+	printf ("%s;%s", format_apdata($row), format_airport($row));
       }
     }
   }

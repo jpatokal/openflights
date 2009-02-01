@@ -108,6 +108,6 @@ if($type == "NEW") {
   $_SESSION['elite'] = $elite;
 
 } else {
-  printf("2;Settings changed successfully.");
+  printf("2;Settings changed successfully, now loading...");
 }
 ?>

@@ -326,7 +326,7 @@ mysql_select_db("flightdb",$db);
 
 if($action == "Upload") {
   print "<table style='border-spacing: 3'><tr>";
-  print "<th>ID</th><th>Date</th><th>Flight</th><th>From</th><th>To</th><th>Miles</th><th>Time</th><th>Plane</th><th>Reg</th>";
+  print "<th>ID</th><th colspan=2>Date</th><th>Flight</th><th>From</th><th>To</th><th>Miles</th><th>Time</th><th>Plane</th><th>Reg</th>";
   print "<th>Seat</th><th>Class</th><th>Type</th><th>Reason</th><th>Trip</th><th>Comment</th></tr>";
 }
 
@@ -341,6 +341,7 @@ foreach($rows as $row) {
     // Read and validate date field
     $dates = explode('<br>', $cols[1]);
     $src_date = strip_tags($dates[0]); // <td class="liste"><nobr>xx...xx</nobr>
+    $src_time = trim(strip_tags($dates[1]));
     list($src_date, $date_bgcolor) = check_date($db, $fileType, $src_date);
     
     $src_iata = $cols[2]->plaintext;
@@ -417,10 +418,13 @@ foreach($rows as $row) {
       continue;
     }
     $id = $count - 1;
-    // 0 Date, 1 From, 2 To,3 Flight_Number, 4 Airline_Code, 5 Distance, 6 Duration, 7 Seat, 8 Seat_Type, 9 Class
+    // 0 Date Time, 1 From, 2 To,3 Flight_Number, 4 Airline_Code, 5 Distance, 6 Duration, 7 Seat, 8 Seat_Type, 9 Class
     // 10 Reason, 11 Plane, 12 Registration, 13 Trip, 14 Note, 15 From_Code, 16 To_Code, 17 Airline_Code, 18 Plane_Code
 
-    list($src_date, $date_bgcolor) = check_date($db, $fileType, $row[0]);
+    $datetime = explode(' ', $row[0]);
+    list($src_date, $date_bgcolor) = check_date($db, $fileType, $datetime[0]);
+    $src_time = $datetime[1];
+    if(! $src_time) $src_time = "";
 
     $src_iata = $row[1];
     $src_apid = $row[15];
@@ -503,7 +507,7 @@ foreach($rows as $row) {
 
   switch($action) {
   case "Upload":
-    printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $airline_bgcolor, $airline, $number,
+    printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $src_time, $airline_bgcolor, $airline, $number,
 	    $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $dist_bgcolor, $distance, $dist_bgcolor, $duration, $plane_bgcolor, $plane, $reg,
 	    $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $trip_bgcolor, $trid, $comment);
     break;
@@ -537,8 +541,9 @@ foreach($rows as $row) {
     }
 
     // And now the flight 
-    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, '%s', %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s')",
+    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, '%s', %s, %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s')",
 		   $uid, $src_apid, mysql_real_escape_string($src_date),
+		   ($src_time != "" ? "'" . $src_time . "'" : "NULL"), 
 		   $dst_apid, mysql_real_escape_string($duration),
 		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
 		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],

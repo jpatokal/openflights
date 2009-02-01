@@ -1,6 +1,15 @@
 <?php
 
 //
+// Standard formatting of airport data
+// Input: row: associative array containing iata, icao
+// Output: " code : apid : x : y : timezone : dstrule "
+//
+function format_apdata($row) {
+  return sprintf ("%s:%s:%s:%s:%s:%s", format_apcode($row), $row["apid"], $row["x"], $row["y"], $row["timezone"], $row["dst"]);
+}
+
+//
 // Standard formatting of airport codes
 // row: associative array containing iata, icao
 //

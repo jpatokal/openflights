@@ -119,31 +119,30 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 }
 
 // List of all flights (unique by airport pair)
-$sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid),distance AS times,IF(MIN(src_time)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid";
+$sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid),distance AS times,IF(MIN(src_date)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   if($first) {
     $first = false;
   } else {
-    printf(":");
+    printf("\t");
   }  
   printf ("%s;%s;%s;%s;%s;%s;%s;%s;%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8]);
 }
 printf ("\n");
 
 // List of all airports
-$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,count(name) AS visits,IF(MIN(src_time)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . $filter . " GROUP BY name ORDER BY visits ASC";
+$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,timezone,dst,count(name) AS visits,IF(MIN(src_date)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . $filter . " GROUP BY name ORDER BY visits ASC";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($first) {
     $first = false;
   } else {
-    printf(":");
+    printf("\t");
   }
-  $code = format_apcode($row);
-  printf ("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", $row["apid"], $row["x"], $row["y"], $row["name"], $code, $row["city"], $row["country"], $row["visits"], format_airport($row), $row["future"]);
+  printf ("%s;%s;%s;%s;%s;%s;%s", format_apdata($row), $row["name"], $row["city"], $row["country"], $row["visits"], format_airport($row), $row["future"]);
 }
 
 // When running for the first time, load up possible filter settings for this user

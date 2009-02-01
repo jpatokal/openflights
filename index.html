@@ -4,15 +4,15 @@
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
-    <link rel="stylesheet" href="/openflights.css?version=20081215" type="text/css">
+    <link rel="stylesheet" href="/openflights.css?version=20080201" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <script type="text/javascript" src="/OpenLayers.js?version=20090122"></script>
-    <script type="text/javascript" src="/js/greatcircle.js?version=2009016"></script>
-    <script type="text/javascript" src="/js/utilities.js?version=20090112"></script>
+    <script type="text/javascript" src="/OpenLayers.js?version=20090201"></script>
+    <script type="text/javascript" src="/js/greatcircle.js?version=20090201"></script>
+    <script type="text/javascript" src="/js/utilities.js?version=20090201"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js"></script>
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090123"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090201"></script>
   </head>
 
   <body>
@@ -23,6 +23,8 @@
 	  <div id="map" class="smallmap"></div>
 
 	    <div id="newairport" style="display: none">
+	      Duration <input type="text" id="duration" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DURATION');" value=""/>
+	      Distance <input type="text" id="distance" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DISTANCE');" value=""/> mi&nbsp;&nbsp;
 	      <input type="button" value="Add new airport" align="middle" onclick='JavaScript:popNewAirport(null)'>	    
 	    </div>
 
@@ -31,7 +33,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 21 Jan 2009: <a href="http://apps.facebook.com/openflights/">Facebook application</a> launched!<br>22 Jan 2009: <a href="/about.html#CHANGES">Faster loading.  Future flights now shown as dotted lines.</a>
+	      <B>News</b>: 01 Feb 2009: Arrival and departure times now supported.  See <a href="http://openflights.org/blog/?p=10">blog</a> and <a href="/about.html#CHANGES">changelog</a> for the full scoop, and force reload (CTRL-F5) if you encounter any problems.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -149,9 +151,10 @@
 <table>
 <tr>
   <td><font color="blue">Date</font></td>
-  <td colspan=2><input type="text" name="src_date" id="src_date" size="11" class="date" tabindex="11" onChange="JavaScript:markAsChanged()";/> <img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date'),event); markAsChanged();" />
-    Duration <input type="text" name="duration" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();" value="-"/>
-    Distance <input type="text" name="distance" size="5" style="text-align: right" onChange="JavaScript:markAsChanged();" value="-"/> mi&nbsp;&nbsp;
+  <td colspan=2><input type="text" name="src_date" id="src_date" size="11" class="date" tabindex="11" onChange="JavaScript:calcDuration('DEPARTURE');"/> <img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date'),event); calcDuration('DEPARTURE');" />
+<input type="text" name="src_time" id="src_time" tabindex="12" size="5" class="miniTextbox" value="HH:MM" onChange="JavaScript:calcDuration('DEPARTURE')"/> &rarr;
+<input type="text" name="dst_time" id="dst_time" size="5" class="miniTextbox" value="HH:MM" onChange="JavaScript:calcDuration('ARRIVAL')"/>
+<input type="text" name="dst_days" id="dst_days" size="6" value="" style="border: 0px; display: none" onChange="JavaScript:markAsChanged()"/><img src="/img/icon_clock.png" id="icon_clock" title="Departure and arrival time" height="16" width="16" onclick='JavaScript:help("time")'/>
   </td>
 
   <td>Trip<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
@@ -159,7 +162,7 @@
 
 </tr><tr>
   <td><font color="blue">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="13" onChange='JavaScript:airportCodeToAirport("src_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="src_apAC"></div>
+  <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onChange='JavaScript:airportCodeToAirport("src_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="src_apAC"></div>
       <input type="hidden" name="src_apid" id="src_apid"/></td>
   <td rowspan=2 valign=middle align=left>
     <img src="/img/icon_plane-src.png" title="Search for airport" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap")'/ style="margin-left: 5px"/> <img src="/img/swap-icon.png" title="Swap To and From airports" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="margin-right: 10px"/><br>
@@ -173,7 +176,7 @@
 
 </tr><tr>
   <td><font color="blue">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="14" onChange='JavaScript:airportCodeToAirport("dst_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="dst_apAC"></div>
+  <td><input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onChange='JavaScript:airportCodeToAirport("dst_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="dst_apAC"></div>
       <input type="hidden" name="dst_apid" id="dst_apid"/></td>
 
   <td>Class</td>
@@ -185,9 +188,9 @@
 
 </tr><tr>
   <td>Flight&nbsp;#&nbsp;</td>
-  <td colspan=2><input type="text" name="number" size="7" value="" tabindex="15" onChange='JavaScript:flightNumberToAirline("NUMBER")'/> Seat <input type="text" name="seat" size="5" tabindex="16" onChange="JavaScript:markAsChanged();"/>
+  <td colspan=2><input type="text" name="number" size="7" value="" tabindex="16" onChange='JavaScript:flightNumberToAirline("NUMBER")'/> Seat <input type="text" name="seat" size="5" tabindex="17" onChange="JavaScript:markAsChanged();"/>
       Type
-      <select name="seat_type" tabindex="17" onChange="JavaScript:markAsChanged();">
+      <select name="seat_type" tabindex="18" onChange="JavaScript:markAsChanged();">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
@@ -204,7 +207,7 @@
 
 </tr><tr>
   <td>Airline<sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
-  <td><input type="text" name="airline" id="airline" size="60" tabindex="18" onChange='JavaScript:flightNumberToAirline("airline")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
+  <td><input type="text" name="airline" id="airline" size="60" tabindex="19" onChange='JavaScript:flightNumberToAirline("airline")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
       <input type="hidden" name="airlineid" id="airlineid"/></td>
   <td><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline("airline")'/ style="margin-left: 5px"/></td>
 
@@ -212,7 +215,7 @@
 
 </tr><tr>
   <td>Note</td>
-  <td colspan=2><input type="text" name="note" size="60" tabindex="19" class="hintTextbox" value="" onChange="JavaScript:markAsChanged();"></td>
+  <td colspan=2><input type="text" name="note" id="note" size="60" tabindex="20" class="hintTextbox" value="" onChange="JavaScript:markAsChanged();"></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
       <input id="b_add" value="Add" title="Save this flight" type="button" tabindex="120" onclick='JavaScript:submitFlight();'>

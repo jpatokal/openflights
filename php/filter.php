@@ -23,7 +23,7 @@ function getFilterString($vars) {
     $filter = $filter . " AND f.alid=" . mysql_real_escape_string($alid);
   }
   if($year && $year != "0") {
-    $filter = $filter . " AND YEAR(f.src_time)='" . mysql_real_escape_string($year) . "'";
+    $filter = $filter . " AND YEAR(f.src_date)='" . mysql_real_escape_string($year) . "'";
   }
   if($xvalue && $xvalue != "") {
     switch($xkey) {
@@ -102,7 +102,7 @@ function loadFilter($db, $uid, $trid) {
   printf ("\n");
   
   // List of all years
-  $sql = "SELECT DISTINCT YEAR(src_time) AS year FROM flights WHERE uid=" . $uid . $filter . " AND YEAR(src_time) != '0' ORDER BY YEAR DESC";
+  $sql = "SELECT DISTINCT YEAR(src_date) AS year FROM flights WHERE uid=" . $uid . $filter . " AND YEAR(src_date) != '0' ORDER BY YEAR DESC";
   $result = mysql_query($sql, $db);
   $first = true;
   while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

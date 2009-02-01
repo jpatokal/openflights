@@ -319,8 +319,9 @@ function searchResult(str) {
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col["ap_name"] + "</td>";
     if(db == DB_OPENFLIGHTS) {
-      // code:apid:x:y
-      id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"];
+      // code:apid:x:y:tz:dst
+      id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
+	":" + col["timezone"] + ":" + col["dst"];
       table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
     }
     if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own") {

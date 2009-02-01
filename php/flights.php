@@ -8,6 +8,7 @@ if($export) {
     $trid = $HTTP_GET_VARS["trid"];
     $alid = $HTTP_GET_VARS["alid"];
     $year = $HTTP_GET_VARS["year"];
+    $apid = $HTTP_GET_VARS["id"];
   }
   // else export everything unfiltered
  } else {
@@ -53,7 +54,7 @@ $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
 // List of all this user's flights
-$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,DATE(f.src_time) as src_date,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
+$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
 
 // ...filtered by airport (optional)
 if($apid && $apid != 0) {
@@ -112,8 +113,15 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if(strpos($note, ",") !== false) {
       $note = "\"" . $note . "\"";
     }
-    printf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-	   $row["src_date"], $src_code, $dst_code, $row["code"], $row["al_name"],
+    $src_time = $row["src_time"];
+    // Pad time with space if it's known
+    if($src_time) {
+      $src_time = " " . $src_time;
+    } else {
+      $src_time = "";
+    }
+    printf("%s%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+	   $row["src_date"], $src_time, $src_code, $dst_code, $row["code"], $row["al_name"],
 	   $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"],
 	   $row["name"], $row["registration"], $row["trid"], $note,
 	   $src_apid, $dst_apid, $row["alid"], $row["plid"]);
@@ -121,7 +129,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     // Filter out any carriage returns or tabs
     $note = str_replace(array("\n", "\r", "\t"), "", $row["note"]);
 
-    printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code);
+    printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code, $row["src_time"]);
   }
 }
 ?>
