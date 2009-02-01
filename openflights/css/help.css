@@ -1,0 +1,29 @@
+table.time { 
+  border-spacing: 1;
+}
+
+td.head {
+  vertical-align: top;
+  text-align: left;
+  font-weight: bold;
+}
+
+td.key {
+  vertical-align: top;
+  text-align: left;
+  padding: 0px 5px 0px 5px;
+}
+
+td.yes {
+  vertical-align: top;
+  text-align: center;
+  padding: 0px 5px 0px 5px;
+  background-color: #ccffcc;
+}
+
+td.no {
+  vertical-align: top;
+  text-align: center;
+  padding: 0px 5px 0px 5px;
+  background-color: #ffcccc;
+}
