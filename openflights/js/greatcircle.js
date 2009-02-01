@@ -166,14 +166,104 @@ function isValid(point) {
 }
 
 // And some totally unrelated helper functions
+//
+// Check if DST is active
+function checkDST(type, date, year) {
+  switch(type) {
+  case "E":
+    alert(getLastDay(year, 3, 0) + " < " + date + " < " + getLastDay(year, 10, 0));
+    // Europe: Last Sunday in Mar to last Sunday in Oct
+    if (date > getLastDay(year, 3, 0) &&
+	date < getLastDay(year, 10, 0)) {
+      return true;
+    }
+    break;
+
+  case "A":
+    // US/Canada: 2nd Sunday in Mar to 1st Sunday in Nov
+    if (date > getNthDay(year, 3, 2, 0) &&
+	date < getNthDay(year, 11, 1, 0)) {
+      return true;
+    }
+    break;
+
+  case "A":
+    // South America: Until 3rd Sunday in Mar or after 3nd Sunday in Oct
+    if (date < getNthDay(year, 3, 3, 0) ||
+	date > getNthDay(year, 10, 3, 0)) {
+      return true;
+    }
+    break;
+
+  case "O":
+    // Australia: Until 1st Sunday in April or after 1st Sunday in Oct
+    if (date < getNthDay(year, 4, 1, 0) ||
+	date > getNthDay(year, 10, 1, 0)) {
+      return true;
+    }
+    break;
+
+  case "Z":
+    // New Zealand: Until 1st Sunday in April or after last Sunday in Sep
+    if (date < getNthDay(year, 4, 1, 0) ||
+	date > getLastDay(year, 9, 0)) {
+      return true;
+    }
+    break;
+
+  default:
+    // cases U, N -- do nothing
+  }
+  return false;
+}
+
+// Get Nth day of type X in a given month (eg. third Sunday in March 2009)
+// 'type' is 0 for Sun, 1 for Mon, etc
+function getNthDay(year, month, nth, type) {
+  date = new Date();
+  date.setFullYear(year, month-1, 1); // Date object months start from 0
+  day = date.getDay();
+  if(type >= day) nth -= 1;
+  date.setDate(date.getDate() + (7 - (day - type)) + ((nth-1) * 7));
+  return date;
+}
+
+// Get last day of type X in a given month (eg. last Sunday in March 2009)
+function getLastDay(year, month, type) {
+  date = new Date();
+  date.setFullYear(year, month, 1); // Date object months start from 0, so this is +1
+  date.setDate(date.getDate()-1); // last day of previous month
+  date.setDate(date.getDate() - (date.getDay() - type));
+  return date;
+} 
+
+// Splice and dice apdata chunks
+// code:apid:x:y:tz:dst
+function getX(element) {
+  var ap = $(element + 'id').value.split(":");
+  return ap[2];
+}
+function getY(element) {
+  var ap = $(element + 'id').value.split(":");
+  return ap[3];
+}
+function getTZ(element) {
+  var ap = $(element + 'id').value.split(":");
+  return parseInt(ap[4]);
+}
+function getDST(element) {
+  var ap = $(element + 'id').value.split(":");
+  return ap[5];
+}
+
+// Return HTML string representing user's elite status icon
+// If validity is not null, also return text description and validity period
 
 var eliteicons = [ [ 'S', 'Silver Elite', '/img/silver-star.png' ],
 		   [ 'G', 'Gold Elite', '/img/gold-star.png' ],
 		   [ 'P', 'Platinum Elite', '/img/platinum-star.png' ],
 		   [ 'X', 'Thank you for using OpenFlights &mdash; please donate!', '/img/icon-warning.png' ] ];
 
-// Return HTML string representing user's elite status icon
-// If validity is not null, also return text description and validity period
 function getEliteIcon(e, validity) {
   if(e && e != "") {
     for(i = 0; i < eliteicons.length; i++) {

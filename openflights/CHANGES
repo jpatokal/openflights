@@ -1,3 +1,14 @@
+<b>2009-02-01</b>
+
+* Departure time and arrival time now supported
+* Timezones and daylight savings time (DST) added to airport database/search
+* Distance, duration, date, departure time, arrival time kept synced to each other
+* Distance, duration validated before saving
+* FlightMemory import now supports arrival times
+* CSV format imports and exports departure times
+* CSV spec updated to 0.4 (optional departure time added)
+* Bug: Can now export the flights of a single airport
+
 <b>2009-01-23</b>
 
 * Airline always shown (if possible) in "List flights" view

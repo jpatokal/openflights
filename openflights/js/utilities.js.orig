@@ -1,10 +1,13 @@
-// Helper code for hinted textboxes, pie charts, sortable tables
+// Third-party utility code for hinted textboxes, pie charts, sortable tables
 
 // Script written by Drew Noakes -- http://drewnoakes.com
 // 14 Dec 2006
 
 var HintClass = "hintTextbox";
 var HintActiveClass = "hintTextboxActive";
+
+var miniHintClass = "miniTextbox";
+var miniHintActiveClass = "miniTextboxActive";
 
 // define a custom method on the string class to trim leading and training spaces
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ''); };
@@ -16,6 +19,12 @@ function initHintTextboxes() {
     if (input.type!="text")
       continue;
 
+    if (input.className.indexOf(miniHintClass)!=-1) {
+      input.hintText = input.value;
+      input.className = miniHintClass;
+      input.onfocus = onHintTextboxFocus;
+      input.onblur = onHintTextboxBlur;
+    }
     if (input.className.indexOf(HintClass)!=-1) {
       input.hintText = input.value;
       input.className = HintClass;
@@ -39,6 +48,11 @@ function resetHintTextboxes() {
       input.value = input.hintText;
       input.style.color = "#888";
     }
+    if (input.className.indexOf(miniHintClass)!=-1) {
+      input.className = miniHintClass;
+      input.value = input.hintText;
+      input.style.color = "#888";
+    }
   }
 }
 
@@ -46,7 +60,11 @@ function onHintTextboxFocus() {
   var input = this;
   if (input.value.trim()==input.hintText) {
     input.value = "";
-    input.className = HintActiveClass;
+    if(input.className == HintClass) {
+      input.className = HintActiveClass;
+    } else {
+      input.className = miniHintActiveClass;
+    }
   }
   input.style.color = "#000";
 }
@@ -56,7 +74,11 @@ function onHintTextboxBlur() {
   if (input.value.trim().length==0) {
     input.style.color = "#888";
     input.value = input.hintText;
-    input.className = HintClass;
+    if(input.className == HintActiveClass) {
+      input.className = HintClass;
+    } else {
+      input.className = miniHintClass;
+    }
   }
 }
 

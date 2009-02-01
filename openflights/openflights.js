@@ -73,6 +73,13 @@ var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
 var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
 var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "O":"Oth", "": ""};
 
+// Validate 24-hr time ([0]0:00-23:59)
+var re_time = /(^0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+// Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
+var re_date = /^((19|20)\d\d)[- /.]([1-9]|0[1-9]|1[012])[- /.]([1-9]|0[1-9]|[12][0-9]|3[01])$/;
+// Validate numeric value
+var re_numeric = /^[0-9]*$/;
+
 // avoid pink tiles
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 OpenLayers.Util.onImageLoadErrorColor = "transparent";
@@ -259,7 +266,13 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
 // Draw airport (or just update marker if it exists already)
 // Returns true if a new marker was created, or false if it existed already
 //
-function drawAirport(airportLayer, apid, x, y, name, code, city, country, count, formattedName, opacity) {
+function drawAirport(airportLayer, apdata, name, city, country, count, formattedName, opacity) {
+  var apcols = apdata.split(":");
+  var code = apcols[0];
+  var apid = apcols[1];
+  var x = apcols[2];
+  var y = apcols[3];
+
   // Description
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
 
@@ -280,7 +293,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   // This should never happen
   if(! airportIcons[colorIndex]) {
     $("news").style.display = 'inline';
-    $("news").innerHTML = "ERROR: " + name + ":" + colorIndex;
+    $("news").innerHTML = "ERROR: " + name + ":" + colorIndex + " of " + airportMaxFlights;
     colorIndex = 0;
   }
 
@@ -320,6 +333,7 @@ function drawAirport(airportLayer, apid, x, y, name, code, city, country, count,
   marker.code = code;
   marker.count = count;
   marker.name = formattedName;
+  marker.apdata = apdata;
   marker.state = true; // visible
 
   // Stored for popup
@@ -611,14 +625,11 @@ function xmlhttpPost(strURL, id, param) {
       }
       for(i = 0; i < indexes.length; i++) {
 	var src_date = $('src_date' + indexes[i]).value;
-	// leading zeroes not required for month, date
-	var re_date = /^(19|20)\d\d[- /.]([1-9]|0[1-9]|1[012])[- /.]([1-9]|0[1-9]|[12][0-9]|3[01])$/
-	  if(! re_date.test(src_date)) {
-	    alert("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD.");
-	    $('src_date' + indexes[i]).focus();
-	    return;
-	  }
-	
+        if(! re_date.test(src_date)) {
+	  alert("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD.");
+	  $('src_date' + indexes[i]).focus();
+	  return;
+	}
 	var src_apid = $('src_ap' + indexes[i] + 'id').value.split(':')[1];
 	if(! src_apid || src_apid == "0") {
 	  alert("Please enter a valid source airport.");
@@ -643,6 +654,16 @@ function xmlhttpPost(strURL, id, param) {
 	  'dst_apid' + indexes[i] + '=' + escape(dst_apid) + '&';
       }
       if(getCurrentPane() == "input") {
+	src_time = $('src_time').value;
+	if(src_time != "" && src_time != "HH:MM") {
+	  if(! re_time.test(src_time)) {
+	    alert("Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM.");
+	    $('src_time').focus();
+	    return;
+	  }
+	  query += 'src_time=' + escape(src_time) + '&';
+	}
+
 	var type = inputform.seat_type.value;
 	if(type == "-") type = "";
 	var myClass = radioValue(inputform.myClass);
@@ -655,8 +676,18 @@ function xmlhttpPost(strURL, id, param) {
 	if(trid == 0) trid = "NULL";
 	var registration = inputform.registration.value;
 	var note = inputform.note.value;
-	var duration = inputform.duration.value;
-	var distance = inputform.distance.value;
+	var duration = $('duration').value;
+	if(! re_time.test(duration)) {
+	  alert("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically.");
+	  $('duration').focus();
+	  return;
+	}
+	var distance = $('distance').value;
+	if(! re_numeric.test(distance)) {
+	  alert("Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically.");
+	  $('distance').focus();
+	  return;
+	}
 	var number = inputform.number.value;
 	var seat = inputform.seat.value;
       } else {
@@ -1062,7 +1093,7 @@ function updateMap(str){
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
   if(flightTotal != "0") {
-    var rows = flights.split(":");
+    var rows = flights.split("\t");
     for (r = 0; r < rows.length; r++) {
       // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8
       var rCol = rows[r].split(";");
@@ -1076,19 +1107,19 @@ function updateMap(str){
 				     rCol[6], rCol[7], COLOR_NORMAL, stroke));
     }
     
-    var rows = airports.split(":");
+    var rows = airports.split("\t");
     
     // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
-    airportMaxFlights = rows[rows.length - 1].split(";")[7];
+    airportMaxFlights = rows[rows.length - 1].split(";")[4];
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(";");
-      // apid, x, y, name, code, city, country, count, formatted_name, future
-      if(col[9] == "Y") {
+      // 0 apdata, 1 name, 2 city, 3 country, 4 count, 5 formatted_name, 6 future
+      if(col[6] == "Y") {
 	opacity = 0.5;
       } else {
 	opacity = 1;
       }
-      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8], opacity);
+      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity);
     }
     //zoomEvent(); // filter in/out airports based on zoom level
   }
@@ -1417,15 +1448,23 @@ function editFlight(str, param) {
     openDetailedInput(param);
   }
 
-  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18
+  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, alcode 19, src_time 20
   var col = str.split("\t");
   var form = document.forms['inputform'];
   form.number.value = col[4];
   form.src_date.value = col[5];
+  if(col[20] != "") {
+    $('src_time').style.color = '#000';
+    form.src_time.value = col[20].substring(0,5); // HH:MM, drop seconds
+    // dst_time calculated automatically
+  } else {
+    clearTimes();
+  }
   form.seat.value = col[8];
 
-  selectAirport(col[1], true); // sets src_ap, src_apid
-  selectAirport(col[3], true); // sets dst_ap, dst_apid
+  // Don't recalc distance/duration yet
+  selectAirport(col[1], true, true); // sets src_ap, src_apid
+  selectAirport(col[3], true, true); // sets dst_ap, dst_apid
   selectAirline(col[15], true); // sets airline, airlineid
 
   var seat_type = inputform.seat_type;
@@ -1461,8 +1500,11 @@ function editFlight(str, param) {
   }
 
   // Read these after selectAirport mucks up the dist/duration
-  form.distance.value = col[6];
-  form.duration.value = col[7];
+  $('distance').value = col[6];
+  $('distance').style.color = '#000';
+  $('duration').value = col[7];
+  $('duration').style.color = '#000';
+  calcDuration('DEPARTURE'); // figure out arrival time according to previous dist/dur
   fid = col[12]; //stored until flight is saved or deleted
 
   $('plane').value = col[13]; 
@@ -1470,7 +1512,13 @@ function editFlight(str, param) {
 
   form.registration.value = col[14];
   alid = col[15];
-  form.note.value = col[16];
+  if(col[16] != "") {
+    $('note').style.color = '#000';
+    form.note.value = col[16];
+  } else {
+    $('note').value = $('note').hintText;
+  }
+  form.seat.value = col[8];
 
   $('src_ap').style.color = '#000000';
   $('dst_ap').style.color = '#000000';
@@ -1560,10 +1608,11 @@ function popNewAirport(type) {
   if(apid != 0) {
     url += "?apid=" + apid;
   }
-  window.open(url, 'Airport', 'width=500,height=580,scrollbars=yes');
+  window.open(url, 'Airport', 'width=550,height=580,scrollbars=yes');
 }
 
-// Read in newly added airport
+// Read in newly added airport (from Airport Search)
+// (new for this map, that is, not necessarily DB)
 function addNewAirport(data, name) {
   var element = input_toggle;
   $(element).value = name;
@@ -1710,6 +1759,7 @@ function airportCodeToAirport(type) {
   input_toggle = type;
 
   // Try to match against existing airports
+  // TODO: Also match against marker.name
   var code = $(type).value.toUpperCase();
   var markers = airportLayer.markers;
   var found = false;
@@ -1746,7 +1796,6 @@ function flightNumberToAirline(type) {
     document.forms['inputform'].number.value = flightNumber;
 
     // Ignore all-numeric flight numbers 
-    var re_numeric = /^[0-9]*$/; // N...
     if(re_numeric.test(flightNumber)) {
       return;
     }
@@ -1779,6 +1828,199 @@ function flightNumberToAirline(type) {
   if(airlineCode) {
     xmlhttpPost(URL_GETCODE, airlineCode, type);
   }
+}
+
+// Calculate duration of flight given user-entered arrival and departure time
+// param 'AIRPORT': airport changed by user, recompute duration and time at destination
+// param 'ARRIVAL': arrival time changed by user, recompute duration
+// param 'DEPARTURE': date or time at source (departure) changed, recompute time at destination
+// param 'DURATION': duration changed by user, recompute time at destination
+// param 'DISTANCE': recalculate distance *only* if blanked
+function calcDuration(param) {
+  var days = 0, duration = 0;
+
+  // Need both airports first
+  if($('src_apid').value == 0 || $('dst_apid').value == 0) return;
+  dst_time = $('dst_time').value.trim();
+  if(dst_time == "" || dst_time == "HH:MM") {
+    dst_time = 0;
+  }
+
+  switch(param) {
+  case 'DISTANCE':
+    // Reestimate *only* if blanked
+    var distance = $('distance').value.trim();
+    if(distance == "") {
+      var lon1 = getX('src_ap');
+      var lat1 = getY('src_ap');
+      var lon2 = getX('dst_ap');
+      var lat2 = getY('dst_ap');
+      $('distance').value = gcDistance(lat1, lon1, lat2, lon2);
+      $('distance').style.color = "#000";
+    } else {
+      if(! re_numeric(distance)) {
+	$('distance').focus();
+	$('distance').style.color = "#F00";
+      } else {
+	$('distance').style.color = "#000";
+      }
+    }
+    markAsChanged();
+    return; // always terminate here
+
+  case 'ARRIVAL':
+    // User has changed arrival time: recompute duration
+    // User has blanked arrival time: recompute arrival time (using existing duration)
+    if(dst_time != 0) {
+      duration = 0;
+      break;
+    }
+    // else fallthru
+
+  case 'DURATION':
+  case 'DEPARTURE':
+    // Recompute arrival time based on user-changed/previously calculated duration
+    // (if no duration is available, estimate it)
+    var duration = $('duration').value.trim();
+    if(duration != "") {
+      if(! re_time.test(duration)) {
+	$('duration').focus();
+	$('duration').style.color = "#F00";
+	return;
+      }
+      $('duration').style.color = "#000";
+      duration = parseFloat(duration.split(":")[0]) + parseFloat(duration.split(":")[1] / 60);
+      dst_time = 0;
+      break;
+    }
+    // else no duration known, estimate and reset
+    param = 'AIRPORT';
+    // fallthru
+
+  case 'AIRPORT':
+    // User has changed airport, estimate duration based on distance then (30 min plus 1 hr/500 mi) and
+    // compute time at destination
+    var distance = $('distance').value;
+    if(! re_numeric(distance)) {
+      $('distance').focus();
+      $('distance').style.color = "#F00";
+      return;
+    }
+    $('distance').style.color = "#000";
+    duration = ($('distance').value / 500) + 0.5;
+    dst_time = 0;
+    break;
+
+  default:
+    alert("Error: Unknown parameter '" + param + "' at calcDuration()");
+    return;
+  }
+
+  // Do we have a starting time?
+  src_time = $('src_time').value;
+  if(src_time != "" && src_time != "HH:MM") {
+    // We do!  Does it make sense?
+    if(! re_time.test(src_time)) {
+      $('src_time').focus();
+      $('src_time').style.color = "#F00";
+      return;
+    }
+    src_time = parseFloat(src_time.split(":")[0]) + parseFloat(src_time.split(":")[1] / 60);
+    
+    // Do we have an arrival time?
+    if(dst_time != 0) {
+      // Yes, validate it
+      if(! re_time.test(dst_time)) {
+	$('dst_time').focus();
+	$('dst_time').style.color = "#F00";
+	return;
+      }
+      // Case 3: Need to determine duration
+      dst_time = parseFloat(dst_time.split(":")[0]) + parseFloat(dst_time.split(":")[1] / 60);
+      days = $('dst_days').value;
+      if(days != "") {
+	dst_time += parseInt($('dst_days').value) * 24;
+      }
+      duration = 0;
+    }
+
+    // Get timezones
+    src_tz = getTZ('src_ap');
+    dst_tz = getTZ('dst_ap');
+    src_dst = getDST('src_ap');
+    dst_dst = getDST('dst_ap');
+
+    // Verify if DST is active
+    // 2008-01-26[0],2008[1],20[2],01[3],26[4]
+    src_date = re_date.exec($('src_date').value);
+    if(! src_date) {
+      // Nonsensical date
+      return;
+    }
+    src_year = src_date[1];
+    src_month = src_date[3];
+    src_day = src_date[4];
+    src_date = new Date();
+    src_date = src_date.setFullYear(src_year, src_month - 1, src_day);
+    if(checkDST(src_dst, src_date, src_year)) {
+      src_tz += 1;
+      src_dst = "Y";
+    }
+    if(checkDST(dst_dst, src_date, src_year)) {
+      dst_tz += 1;
+      dst_dst = "Y";
+    }
+    $('icon_clock').title = "Departure UTC " + (src_tz > 0 ? "+" : "" ) + src_tz + (src_dst == "Y" ? " (DST)" : "") +
+      ", Arrival UTC " + (dst_tz > 0 ? "+" : "" ) + dst_tz + (dst_dst == "Y" ? " (DST)" : "") +
+      ", Time difference " + (dst_tz-src_tz) + " hours";
+    
+    // Case 2: Calculate arrival time from starting time and duration
+    if(dst_time == 0) {
+      dst_time = src_time + duration + (dst_tz-src_tz);
+      days = Math.floor(dst_time / 24);
+      dst_time = dst_time % 24;
+      while(dst_time < 0) dst_time += 24;
+      hours = Math.floor(dst_time);
+      mins = Math.round((Math.abs(dst_time) % 1.0) * 60);
+      if(mins < 10) {
+	mins = "0" + mins + "";
+      }
+      $('dst_time').value = hours + ":" + mins;
+      $('dst_time').style.color = '#000';
+      if(days == 0) {
+	$('dst_days').value = "";
+	$('dst_days').style.display = "none";
+      } else {
+	if(days > 0) {
+	  $('dst_days').value = "+" + days + " day";
+	} else {
+	  $('dst_days').value = days + " day";
+	}
+	$('dst_days').style.display = "inline";
+      }
+    }
+    
+    // Case 3: Calculate duration from arrival time and starting time
+    if(duration == 0) {    
+      duration = (dst_time-src_time) - (dst_tz-src_tz);
+      if(duration < 0) duration += 24;
+    }
+  } else {
+    // Case 1: Do nothing, just use estimated duration
+    $('icon_clock').title = "Flight departure and arrival times";
+  }
+
+  if(param == "AIRPORT" || param == "ARRIVAL") {
+    // Convert duration back to clock time (sexagesimal)
+    hours = Math.floor(duration);
+    mins = Math.round((Math.abs(duration) % 1.0) * 60);
+    if(mins < 10) {
+      mins = "0" + mins + "";
+    }
+    $('duration').value = hours + ":" + mins;
+    $('duration').style.color = "#000";
+  }
+  markAsChanged();
 }
 
 // Add a temporary source or destination marker over currently selected airport
@@ -1850,13 +2092,12 @@ function markAirport(element, quick) {
     }
     if(input_dstmarker && input_srcmarker) {
       if(getCurrentPane() == "input") {
-	var src_ap_data = $('src_apid').value.split(":");
-	var lon1 = src_ap_data[2];
-	var lat1 = src_ap_data[3];
-	var dst_ap_data = $('dst_apid').value.split(":");
-	var lon2 = dst_ap_data[2];
-	var lat2 = dst_ap_data[3];
-	distance = gcDistance(lat1, lon1, lat2, lon2);
+	
+	var lon1 = getX('src_ap');
+	var lat1 = getY('src_ap');
+	var lon2 = getX('dst_ap');
+	var lat2 = getY('dst_ap');
+	var distance = gcDistance(lat1, lon1, lat2, lon2);
 	input_line = drawLine(parseFloat(lon1), parseFloat(lat1),
 			      parseFloat(lon2), parseFloat(lat2),
 			      4, distance, COLOR_HIGHLIGHT);
@@ -1872,7 +2113,7 @@ function markAirport(element, quick) {
 	    var dst_ap_data = dst_ap.split(":");
 	    var lon2 = dst_ap_data[2];
 	    var lat2 = dst_ap_data[3];
-	    distance = gcDistance(lat1, lon1, lat2, lon2);
+	    var distance = gcDistance(lat1, lon1, lat2, lon2);
 	    line = drawLine(parseFloat(lon1), parseFloat(lat1),
 			    parseFloat(lon2), parseFloat(lat2),
 			    4, distance, COLOR_HIGHLIGHT);
@@ -1883,18 +2124,12 @@ function markAirport(element, quick) {
 	}
       }
       lineLayer.addFeatures(input_line);
-
-      var rawtime = Math.floor(30 + (distance / 500) * 60);
-      var hours = Math.floor(rawtime/60);
-      var mins = rawtime % 60;
-      if(mins < 10) mins = "0" + mins;
-      duration = hours + ":" + mins;
+      $('distance').value = distance;
+      calcDuration("AIRPORT");
     } else {
-      distance = "-";
-      duration = "-";
+      $('distance').value = "";
+      $('duration').value = "";
     }
-    document.forms['inputform'].distance.value = distance;
-    document.forms['inputform'].duration.value = duration;
   }
 }
 
@@ -1939,6 +2174,8 @@ function swapAirports(manual) {
     srcName = $('src_ap').value;
     srcData = $('src_apid').value;
   }
+  // Clear out times (makes no sense to swap them)
+  clearTimes();
 
   // Clone SRC from DST
   $('src_ap').value = $('dst_ap').value;
@@ -1965,8 +2202,9 @@ function swapAirports(manual) {
   }
 }
 
-// Given apid, find the matching airport and either pop it up (false) or select it (true)
-function selectAirport(apid, select) {
+// Given apid, find the matching airport and either pop it up (false) or mark it as selected (true)
+// "quick" is passed to markAirport
+function selectAirport(apid, select, quick) {
   var markers = airportLayer.markers;
   var found = false;
   for(m = 0; m < markers.length; m++) {
@@ -1976,12 +2214,11 @@ function selectAirport(apid, select) {
       if(select && (getCurrentPane() == "input" || getCurrentPane() == "multiinput")) {
 	var marker = markers[m];
 	var element = input_toggle;
-	data = marker.code + ":" + marker.apid + ":" + marker.lonlat.lon + ":" + marker.lonlat.lat;
 	$(element).value = marker.name;
 	$(element).style.color = "#000";
-	$(element + 'id').value = data;
+	$(element + 'id').value = marker.apdata;
 	replicateSelection(element);
-	markAirport(element);
+	markAirport(element, quick);
 	markAsChanged(true);
 	closePopup();
       } else {
@@ -2367,6 +2604,16 @@ function closeInput() {
   }
 }
 
+// Clear out (restore to defaults) the time indicators in the editor
+function clearTimes() {
+  $('src_time').value = $('src_time').hintText;
+  $('dst_time').value = $('dst_time').hintText;
+  $('dst_days').value = "";
+  $('src_time').style.color = '#888';
+  $('dst_time').style.color = '#888';
+  $('dst_days').style.display = "none";
+}
+
 // Clear out (restore to defaults) the input box
 function clearInput() {
   var today = new Date();
@@ -2377,8 +2624,12 @@ function clearInput() {
     form.src_date.focus();
     form.src_apid.value = 0;
     form.dst_apid.value = 0;
-    form.duration.value = "-";
-    form.distance.value = "-";
+    form.dst_days.value = "";
+    clearTimes();
+    $('duration').value = "";
+    $('duration').style.color = "#000";
+    $('distance').value = "";
+    $('distance').style.color = "#000";
     form.number.value = "";
     form.airlineid.value = 0;
     form.seat.value = "";
