@@ -171,7 +171,6 @@ function isValid(point) {
 function checkDST(type, date, year) {
   switch(type) {
   case "E":
-    alert(getLastDay(year, 3, 0) + " < " + date + " < " + getLastDay(year, 10, 0));
     // Europe: Last Sunday in Mar to last Sunday in Oct
     if (date > getLastDay(year, 3, 0) &&
 	date < getLastDay(year, 10, 0)) {
