@@ -115,7 +115,7 @@ function xmlhttpPost(strURL, offset, action) {
     }
 
     if(action == "RECORD") {
-      if(! parent.opener !! ! parent.opener.addNewAirport) {
+      if(! parent.opener || ! parent.opener.addNewAirport) {
 	alert("Sorry, you have to be logged into OpenFlights to use this.");
 	return;
       }
