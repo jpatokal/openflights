@@ -115,7 +115,7 @@ function xmlhttpPost(strURL, offset, action) {
     }
 
     if(action == "RECORD") {
-      if(! parent.opener.addNewAirport) {
+      if(! parent.opener !! ! parent.opener.addNewAirport) {
 	alert("Sorry, you have to be logged into OpenFlights to use this.");
 	return;
       }
@@ -261,7 +261,7 @@ function searchResult(str) {
   var db = document.forms['searchform'].db.value;
   var disclaimer = "";
 
-  if(! parent.opener.addNewAirport) {
+  if(! parent.opener || ! parent.opener.addNewAirport) {
     guest = true;
   } else {
     guest = false;
