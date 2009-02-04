@@ -84,6 +84,10 @@ function xmlhttpPost(strURL, offset, action) {
     */
 
     if(action == "RECORD") {
+      if(! parent.opener.addNewAirline) {
+	alert("Sorry, you have to be logged into OpenFlights to use this.");
+	return;
+      }
       if(airline == "") {
 	alert("Please enter an airline name.");
 	form.airline.focus();
@@ -250,6 +254,9 @@ function clearSearch() {
 
 // Airline selected, kick it back to main window and close this
 function selectAirline(data, name) {
+  if(! parent.opener.addNewAirline) {
+    alert("Sorry, you have to be logged into OpenFlights to do this.");
+  }
   parent.opener.addNewAirline(data, unescape(name));
   window.close();
 }
