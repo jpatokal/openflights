@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>OpenFlights: Airport and airline data</title>
+    <meta name="description" content="Free airport and airline data with IATA, ICAO, latitude, longitude, elevation, timezone, DST information">
+    <meta name="keywords" content="airport,airline,data,database,iata,icao,latitude,longitude,elevation,coordinates,timezone,dafif,free">
+    <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/help.css" type="text/css">
+    <link rel="stylesheet" href="/openflights.css" type="text/css">
+  </head>
+
+  <body>
+    <div id="mainContainer">
+      <div id="sideBarContentWrapper">
+	  
+	<div id="contentContainer">
+	  <div id="nonmap">
+
+	    <h1>Airport and airline data</h1>
+	    
+	    <p>We believe that <a href="http://openflights.org">OpenFlights</a> is <b>the best free source of airport and airline data</b> on the Internet.  If you find something better, <i>complete with coordinates</i>, please <a href="/contact.html">let us know</a>!</p>
+
+	    <h2>Airport database</h2>
+
+	    <p><center><a href="/demo/openflights-apdb-2048.png"><img src="/demo/openflights-apdb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
+
+	    <p>As of February 2009, the OpenFlights Airports Database contains <b>4381</b> airports spanning the globe as shown above.  Each entry contains the following information:</p>
+
+	    <table>
+		<tr>
+		  <td class="head">Name</td>
+		  <td class="data">Name of airport.  May or may not contain the <b>City</b> name.</td>
+		</tr>
+		<tr>
+		  <td class="head">City</td>
+		  <td class="data">Main city served by airport.  May be spelled differently from <b>Name</b>.</td>
+		</tr>
+		<tr>
+		  <td class="head">Country</td>
+		  <td class="data">Country or territory where airport is located.</td>
+		</tr>
+		<tr>
+		  <td class="head">IATA/FAA</td>
+		  <td class="data">3-letter FAA code, for airports located in <b>Country</b> "United States of America".<br>
+		    3-letter IATA code, for all other airports.<br>
+		    Blank if not assigned.</td>
+		</tr>
+		<tr>
+		  <td class="head">ICAO</td>
+		  <td class="data">4-letter ICAO code.<br>
+		    Blank if not assigned.</td>
+		</tr>
+		<tr>
+		  <td class="head">Longitude</td>
+		  <td class="data">Decimal degrees, usually to six significant digits.  Negative is West, positive is East.</td>
+		</tr>
+		<tr>
+		  <td class="head">Latitude</td>
+		  <td class="data">Decimal degrees, usually to six significant digits.  Negative is South, positive is North.</td>
+		</tr>
+		<tr>
+		  <td class="head">Altitude</td>
+		  <td class="data">In feet.</td>
+		</tr>
+		<tr>
+		  <td class="head">Timezone</td>
+		  <td class="data">Hours offset from UTC.  Fractional hours are expressed as decimals, eg. India is 5.5.</td>
+		</tr>
+		<tr>
+		  <td class="head">DST</td>
+		  <td class="data">Daylight savings time.  One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a target="_blank" href="help/time.html">Help: Time</i></p>
+
+		</tr>
+	      </tr>
+	    </table>
+
+	    <p>The data is ASCII-encoded, with no special characters.</p>
+
+	    <p><i>Note</i>: Rules for daylight savings time change from year to year and from country to country.  The current data is an approximation for 2009, built on a country level.  Most airports in DST-less regions in countries that generally observe DST (eg. AL, HI in the USA, NT, QL in Australia, parts of Canada) are marked incorrectly.</p>
+
+	    <h4>Sample entries</h4>
+	    <pre>"Heathrow","London","United Kingdom","LHR","EGLL",-0.461389,51.4775,83,0,"E"
+"Kugaaruk","Pelly Bay","Canada","YBB","CYBB",-89.808056,68.534444,56,-6,"A"
+"Pokhara","Pokhara","Nepal","PKR","VNPK",83.982056,28.200881,2712,5.75,"N"</pre>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Try it out: <a target="_blank" href="html/apsearch.html">Airport Search</a> (new window)</p>
+
+	    <p><i>Note</i>: The Airport Search window above is a part of <a href="http://openflights.org">OpenFlights</a>.  You will not be able to add or edit airports unless you are logged in.</p>
+
+	    <h4>Download</h4>
+
+	    <p>To download the current data dump from <a href="http://sourceforge.net/projects/openflights">SourceForge</a> as a very straightforward CSV (comma-separated value) file, suitable for use in spreadsheets etc, simply click below:</p>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airports.dat">airports.dat</a> (~350 KB)</p>
+
+	    <table><tr><td>
+
+	    <p>Creating and maintaining this database has required and continues to require an <i>immense amount</i> of work, which is why it would cost you <i>over one thousand dollars</i> to buy it from a commercial supplier.  We need your support to keep this database up-to-date: just click on the PayPal link to the right (Visa, MasterCard, American Express and Discover also accepted).  We suggest <b>US$50</b>, but any amount at all is welcome, and you may use the data for free if you feel that you are unable to pay.  If you do donate, please specify in the comments if you would like a itemized receipt for business expense or tax purposes.</p>
+
+		  </td><td>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="jani@contentshare.sg">
+<input type="hidden" name="item_name" value="OpenFlights.org">
+<input type="hidden" name="no_shipping" value="0">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		    </form>
+		  </td></tr></table>
+
+	    <p>The SourceForge copy is only a sporadically updated static snapshot of the live OpenFlights database (see <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airports.dat?view=log">revision log</a>).  If you would like an up-to-the-minute copy, or you would like your data filtered by any information available to us (eg. number of flights at the airport), do not hesitate to <a href="/about.html">contact us</a>.<p>
+
+	    <h2>Airline database</h2>
+
+	    <p>As of February 2009, the OpenFlights Airlines Database contains <b>5971</b> airlines.  Each entry contains the following information:</p>
+
+	    <table>
+		<tr>
+		  <td class="head">Name</td>
+		  <td class="data">Name of the airline.
+		</tr>
+		<tr>
+		  <td class="head">Alias</td>
+		  <td class="data">Alias of the airline.  For example, All Nippon Airways is commonly known as "ANA". </td>
+		</tr>
+		<tr>
+		  <td class="head">IATA</td>
+		  <td class="data">2-letter IATA code, if available.</td>
+		</tr>
+		<tr>
+		  <td class="head">ICAO</td>
+		  <td class="data">3-letter ICAO code, if available.<br>
+		</tr>
+		<tr>
+		  <td class="head">Callsign</td>
+		  <td class="data">Airline callsign.</td>
+		</tr>
+		<tr>
+		  <td class="head">Country</td>
+		  <td class="data">Country or territory where airline is incorporated.</td>
+		</tr>
+	    </table>
+
+	    <p>The data is ISO 8859-1 (Latin-1) encoded.  The special value <b>\N</b> is used for "NULL" to indicate that no value is available, and is understood automatically by MySQL if imported.</p>
+	    <p><i>Notes</i>: Airlines with null codes/callsigns/countries generally represent user-added airlines.  Since the data is intended primarily for current flights, defunct IATA codes are generally not included.  For example, "Sabena" is not listed with a SN IATA code, since "SN" is presently used by its successor Brussels Airlines.</p>
+
+	    <h4>Sample entries</h4>
+	    <pre>"All Nippon Airways","ANA All Nippon Airways","NH","ANA","ALL NIPPON","Japan"
+"All Star Airlines",\N,"","ASR"," Inc.","ALL STAR"
+"Almaty Aviation",\N,"","LMT","ALMATY","Kazakhstan"</pre>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Try it out: <a target="_blank" href="html/alsearch.html">Airline Search</a> (new window)</p>
+
+	    <p><i>Note</i>: The Airline Search window above is a part of <a href="http://openflights.org">OpenFlights</a>.  You will not be able to view, add or edit airline details unless you are logged in.</p>
+
+	    <h4>Download</h4>
+
+	    <p>To download the current data dump from <a href="http://sourceforge.net/projects/openflights">SourceForge</a> as a very straightforward CSV (comma-separated value) file, suitable for use in spreadsheets etc, simply click below:</p>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airlines.dat">airlines.dat</a> (~320 KB)</p>
+
+	    <table><tr><td>
+
+	    <p>Creating and maintaining this database has required and continues to require an <i>immense amount</i> of work.  We need your support to keep this database up-to-date: just click on the PayPal link to the right (Visa, MasterCard, American Express and Discover also accepted).  We suggest <b>US$50</b>, but any amount at all is welcome, and you may use the data for free if you feel that you are unable to pay.  If you do donate, please specify in the comments if you would like a itemized receipt for business expense or tax purposes.</p>
+
+		  </td><td>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="jani@contentshare.sg">
+<input type="hidden" name="item_name" value="OpenFlights.org">
+<input type="hidden" name="no_shipping" value="0">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		    </form>
+		  </td></tr></table>
+
+	    <p>The SourceForge copy is only a sporadically updated static snapshot of the live OpenFlights database (see <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airlines.dat?view=log">revision log</a>).  If you would like an up-to-the-minute copy, or you would like your data filtered by any information available to us (eg. number of flights by airline), do not hesitate to <a href="/about.html">contact us</a>.<p>
+
+	    <h2>Disclaimer</h2>
+
+	    <p><b>This data is not suitable for navigation.</b>  OpenFlights does not assume any responsibility whatsoever for its accuracy, and consequently assumes no liability whatsoever for results obtained or loss or damage incurred as a result of application of the data.  OpenFlights expressly disclaims all warranties, expressed or implied, including but not limited to implied warranties of merchantability and fitness for any particular purpose.</p>
+
+	    <p>Any corrections will be <a href="/about.html">gratefully received</a>.
+
+	    <h2>Sources</h2>
+
+	    <p>Airport base data was generated by mashing together DAFIF (October 2006 cycle) for location, ICAO data and country data with the Global Airport Database for IATA codes and city names, plus timezone information from <a href="http://www.earthtools.org">EarthTools</a>.  All DST information added manually.  Significant revisions and additions made by the users of OpenFlights.</p>
+
+	    <p>Airline data was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.  Significant revisions and additions made by the users of OpenFlights.</p>
+
+	    <p><i>See also: <a target="_blank" href="help/database.html">Help: Database</i></p>
+
+	    <br><br>
+	  </div>
+	</div> 
+	
+	<div id="sideBar">
+        <!--#include virtual="/sidebar.html" -->
+        <!--#include virtual="/html/ad-sidebar.html" -->
+	</div>
+
+      </div> <!-- end sidebarwrapper -->
+    </div> <!-- end mainContainer -->
+
+  </body>
+</html>

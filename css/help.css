@@ -27,3 +27,9 @@ td.no {
   padding: 0px 5px 0px 5px;
   background-color: #ffcccc;
 }
+
+td.data {
+  vertical-align: top;
+  text-align: left;
+  padding: 0px 0px 5px 5px;
+}

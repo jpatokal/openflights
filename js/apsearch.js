@@ -115,6 +115,10 @@ function xmlhttpPost(strURL, offset, action) {
     }
 
     if(action == "RECORD") {
+      if(! parent.opener.addNewAirport) {
+	alert("Sorry, you have to be logged into OpenFlights to use this.");
+	return;
+      }
       if(airport == "") {
 	alert("Please enter an airport name.");
 	form.airport.focus();
@@ -257,6 +261,11 @@ function searchResult(str) {
   var db = document.forms['searchform'].db.value;
   var disclaimer = "";
 
+  if(! parent.opener.addNewAirport) {
+    guest = true;
+  } else {
+    guest = false;
+  }
   if(warning) {
     table += "<tr><td colspan=2><i><font color='red'>" + warning + "</font></i></td></tr>";
     warning = null;
@@ -318,13 +327,13 @@ function searchResult(str) {
       break;
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col["ap_name"] + "</td>";
-    if(db == DB_OPENFLIGHTS) {
+    if(db == DB_OPENFLIGHTS && !guest) {
       // code:apid:x:y:tz:dst
       id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
 	":" + col["timezone"] + ":" + col["dst"];
       table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
     }
-    if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own") {
+    if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || guest) {
       if(col["ap_uid"] == "own") {
 	label = "Edit";
       } else {
