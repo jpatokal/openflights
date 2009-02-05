@@ -21,7 +21,7 @@ var lastQuery, lastDesc;
 
 // Temporary variables for current flight being edited
 var alid = 0, plane;
-var logged_in = false, initializing = true;
+var logged_in = false, demo_mode = true, initializing = true;
 var input_srcmarker, input_dstmarker, input_line, input_toggle, input_al_toggle;
 var changed = false, majorEdit = false;
 // If true, the value has been set by autocomplete
@@ -134,12 +134,12 @@ window.onload = function init(){
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0) {
+    demo_mode = false;
     $("loginstatus").style.display = 'inline';
     if(filter_trid != 0) {
       $("filter_tripselect").style.display = 'none';
     }
   } else {
-    $("loginform").style.display = 'inline';
     $("news").style.display = 'inline';
 
     // Nope, set up hinting and autocompletes for editor
@@ -349,10 +349,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     // 2. system is in "demo mode", or
     // 3. privacy is set to (O)pen
     desc = this.marker.desc;
-    if( logged_in ||
-	(filter_user == 0 && filter_trid == 0) ||
-	privacy == "O")
-      {
+    if( logged_in || demo_mode || privacy == "O") {
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
 	  "<a href=\"#\" onclick=\"JavaScript:selectAirport(" + apid + ", true);\"><img src=\"/img/icon_plane-src.png\" width=17 height=17 title=\"Select this airport\" id='popup" + apid + "' style='visibility: hidden'></a> " +
@@ -510,7 +507,7 @@ function xmlhttpPost(strURL, id, param) {
 	} else {
 	  // Zoom map to fit when first loading another's flights/trip
 	  updateMap(str);
-	  if(! logged_in && (filter_user != 0 || filter_trid != 0) && initializing) {
+	  if(! logged_in && ! demo_mode && initializing) {
 	    closePane();
 	    map.zoomToExtent(airportLayer.getDataExtent());
 	  }
@@ -877,7 +874,7 @@ function updateTitle(str) {
 
   } else {
     // Demo mode
-    if(filter_user == 0 && filter_trid == 0) {
+    if(demo_mode) {
       if(airline != "All airlines") {
 	text = "Recent flights on " + airline;
       } else {
@@ -1067,6 +1064,7 @@ function updateMap(str){
   stats = col[0] + " flights<br>" +
     miles + " miles<br>" +
     days + " days " + hours + ":" + min;
+  $("stats_ajax").style.display = 'none';
   $("stats").innerHTML = stats;
   flightTotal = col[0];
   privacy = col[3];
@@ -1137,6 +1135,9 @@ function updateMap(str){
 
   $("ajaxstatus").style.display = 'none';
   if(initializing) {
+    if(! logged_in && demo_mode) {
+      $("loginform").style.display = 'inline';
+    }
     $('statsbox').style.visibility = "visible";
     $('filter').style.visibility = "visible";
     if(logged_in || privacy == 'O') {
@@ -1259,7 +1260,7 @@ function showStats(str) {
     table += "<tr><th colspan=2>Unique</th></tr>";
     var col = uniques.split(",");
     // num_airports, num_airlines, num_planes, distance
-    distance = col[3];
+    var distance = col[3];
     table += "<tr><td>Airports</td><td>" + col[0] + "</td></tr>";
     table += "<tr><td>Airlines</td><td>" + col[1] + "</td></tr>";
     table += "<tr><td>Plane types</td><td>" + col[2] + "</td></tr>";
@@ -2282,7 +2283,7 @@ function replicateSelection(source) {
     // Check if the row we're trying to replicate to is active; if no, abort
     idx = parseInt(source.charAt(source.length-1)) + 1;
     row = "row" + idx;
-    if($(row).style.visible == "none") return;
+    if($(row).style.display == "none") return;
 
     target = "src_ap" + idx;
     date_target = "src_date" + idx;
@@ -2379,6 +2380,10 @@ function submitEnter(e) {
 
 //
 // Login and logout
+// param --
+// null: "Normal" login from front page
+// REFRESH: User has session open and is coming back
+// NEWUSER: User using OF for the first time (or has zero flights)
 //
 function login(str, param) {
   var cols = str.split(";");
@@ -2394,12 +2399,22 @@ function login(str, param) {
     logged_in = true;
     $("loginform").style.display = 'none';
     $("controlpanel").style.display = 'inline';
-    if(param == "REFRESH") {
+    switch(param) {
+    case "REFRESH":
       $("loginstatus").innerHTML = getEliteIcon(elite) + "Logged in as <B>" + name + "</B>";
-    } else {
+      break;
+
+    case "NEWUSER":
       $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
-      $("stats").innerHTML = "<i>Loading...</i> ";
+      break;
+
+    default:
+      $("stats").innerHTML = "<i>Loading</i>";
+      $("stats_ajax").style.display = "inline";
+      $("loginstatus").innerHTML = getEliteIcon(elite) + "Hi, <B>" + name + "</B> !";
+      break;
     }
+
     switch(elite) {
     case "X":
       $("news").style.display = 'inline';
@@ -2421,7 +2436,7 @@ function login(str, param) {
       $("news").innerHTML =
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
 	"<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:newFlight()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
-      $("news").style.visible = "inline";
+      $("news").style.display = 'inline';
     } else {
       closeNews();
     }
@@ -2442,7 +2457,8 @@ function login(str, param) {
 function logout(str) {
   logged_in = false;
   $("loginstatus").innerHTML = "<B>You have been logged out.</B>";
-  $("stats").innerHTML = "<i>Loading...</i> ";
+  $("stats").innerHTML = "<i>Loading</i>";
+  $("stats_ajax").style.display = 'inline';
   $("loginform").style.display = 'inline';
   $("controlpanel").style.display = 'none';
   $(getCurrentPane()).style.display = 'none';
