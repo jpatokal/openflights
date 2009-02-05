@@ -1762,6 +1762,8 @@ Object.extend(Event, {
         || element.detachEvent))
       name = 'keydown';
 
+    if(! observer) return; // prevents random IE7 failures
+
     if (element.removeEventListener) {
       element.removeEventListener(name, observer, useCapture);
     } else if (element.detachEvent) {

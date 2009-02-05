@@ -1,5 +1,14 @@
+<b>2009-02-05</b>
+
+* Cleaner appearance for statsbox, AJAX icon when loading
+* Login form only shown after loading complete
+* Bug: "Analyze" works again on IE7
+* Bug: Popups work again on IE7 (bug in Prototype?)
+* Bug: Syntax error fixed, importing works again
+
 <b>2009-02-04</b>
 
+* Airport/airline databases released
 * Airport/airline search now usable without logging in
 * Bug: Duplicated airlines when importing
 

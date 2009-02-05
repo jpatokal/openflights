@@ -10,9 +10,9 @@
     <script type="text/javascript" src="/js/greatcircle.js?version=20090201"></script>
     <script type="text/javascript" src="/js/utilities.js?version=20090201"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
-    <script type="text/javascript" src="/js/prototype.js"></script>
+    <script type="text/javascript" src="/js/prototype.js?version=20090205"></script>
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090201"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090205"></script>
   </head>
 
   <body>
@@ -33,7 +33,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 01 Feb 2009: Arrival and departure times now supported.  See <a href="http://openflights.org/blog/?p=10">blog</a> and <a href="/about.html#CHANGES">changelog</a> for the full scoop,<br> and force reload (CTRL-F5) if you encounter any problems.</a>
+	      <B>News</b>: 05 Feb 2009: <a href="/about.html#CHANGES">"Analyze" and popups fixed on Internet Explorer.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -71,10 +71,11 @@
 	      </div>
 	    </div> <!-- login -->
 	    <div id="statsbox" style="visibility: hidden; clear: both">
-	      <table>
+	      <table style='width: 218px'>
 		<tr><td style='vertical-align: top'>
 		    <span id="stats"></span>
-		  </td><td style='vertical-align: top; padding: 0px 5px'>
+		    <span id="stats_ajax" style="display: none">&nbsp;<img src='/img/ajax-wait-small.gif' height=16 width=16/></span>
+		  </td><td style='vertical-align: top; text-align: right; padding: 0px 5px'>
 		    <input type="button" value="Analyze" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'><br>
 		    <input type="button" value="Top 10" align="middle" onclick='JavaScript:xmlhttpPost("/php/top10.php")'>
 		  </td>
