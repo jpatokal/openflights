@@ -525,13 +525,13 @@ foreach($rows as $row) {
     if($alid == -2) {
       // Last-ditch effort to check through non-IATA airlines
       $sql = sprintf("SELECT alid FROM airlines WHERE name='%s' OR alias='%s'");
-      $result = mysql_query($sql, $db)
+      $result = mysql_query($sql, $db);
       if($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	// Found it
 	$alid = $dbrow["alid"];
       } else {
 	$sql = sprintf("INSERT INTO airlines(name, uid) VALUES('%s', %s)",
-		     mysql_real_escape_string($airline), $uid);
+		       mysql_real_escape_string($airline), $uid);
 	mysql_query($sql, $db) or mysql_query($sql, $db) or die ('0;Adding new airline failed: ' . $sql . ', error ' . mysql_error());
 	$alid = mysql_insert_id();
 	print "Airline:" . $airline . " ";
