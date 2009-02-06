@@ -1,5 +1,5 @@
 -- Must be run as a user with write access
-SELECT name,city,country,iata,icao,x,y,elevation,timezone,dst INTO OUTFILE '/tmp/airports.dat'
+SELECT name,city,country,iata,icao,y,x,elevation,timezone,dst INTO OUTFILE '/tmp/airports.dat'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airports;
