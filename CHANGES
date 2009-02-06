@@ -1,3 +1,10 @@
+<b>2009-02-06</b>
+
+* GAD replaced with OurAirports
+* Over 1000 new airports imported from OurAirports
+* Added DB index to IATA column for faster searching
+* Require at least four digits of precision for new airports
+
 <b>2009-02-05</b>
 
 * Cleaner appearance for statsbox, AJAX icon when loading
