@@ -110,7 +110,7 @@ if($city) {
   $sql .= " city LIKE '" . mysql_real_escape_string($city) . "%' AND";
 }
 if($country != "ALL") {
-  if($dbname == "airports_dafif") {
+  if($dbname == "airports_dafif" || $dbname == "airports_oa") {
     if($code) {
       $sql .= " code='" . mysql_real_escape_string($code) . "' AND";
     }
@@ -140,7 +140,7 @@ if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
 printf("%s;%s", $offset, $max);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  if($dbname == "airports_dafif") {
+  if($dbname == "airports_dafif" || $dbname == "airports_oa") {
     $row["country"] = $row["code"];
   }
  

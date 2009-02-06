@@ -50,19 +50,16 @@ function format_airport($row) {
   $iata = format_apcode($row);
   $apid = $row["apid"];
 
-  // Format name only for OpenFlights, GAD DBs
-  if(! $code) {
-    // Foobar-Foobar Intl into Foobar Intl
-    // Foo-bar-Foo Bar Intl into Foo Bar Intl
-    if(strncasecmp($name, strtr($city, "-", " "), strlen($city)) == 0) {
-      $city = "";
-    } else {
-      $city = $city . "-";
-    }
-    if(strlen($city . $name . $country) > 40) {
-      $name = trim(substr($city . $name, 0, 39 - strlen($country))) . ".";
-      $city = "";
-    }
+  // Foobar-Foobar Intl into Foobar Intl
+  // Foo-bar-Foo Bar Intl into Foo Bar Intl
+  if(strncasecmp($name, strtr($city, "-", " "), strlen($city)) == 0) {
+    $city = "";
+  } else {
+    $city = $city . "-";
+  }
+  if(strlen($city . $name . $country) > 40) {
+    $name = trim(substr($city . $name, 0, 39 - strlen($country))) . ".";
+    $city = "";
   }
 
   return $city . $name . " (" . $iata . "), " . $country;
