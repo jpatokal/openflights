@@ -149,9 +149,9 @@ function xmlhttpPost(strURL, offset, action) {
 	return;
       }
 
-      var re_dd = /^[-+]?\d*\.\d{4,}$/;
+      var re_dd = /^[-+]?\d*\.\d{3,}$/;
       if(! re_dd.test(x) || ! re_dd.test(y)) {
-	alert("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least four digits of precision.  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W).");
+	alert("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W).");
 	form.x.focus();
 	return;
       }
