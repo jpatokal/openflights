@@ -24,11 +24,18 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $infinitesessionkey = $row["sessionkey"];
 
     // Get details of last flight entered
-    $sql = "SELECT s.city AS src, d.city AS dst FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
+    $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
     $detailresult = mysql_query($sql, $db);
     if($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
-      $tokens = array( 'src' => $detail["src"],
-		       'dst' => $detail["dst"],
+      if($detail["opp"] == "Y") {
+	$src = $detail["dst"];
+	$dst = $detail["src"];
+      } else {
+	$src = $detail["src"];
+	$dst = $detail["dst"];
+      }
+      $tokens = array( 'src' => $src,
+		       'dst' => $dst,
 		       'count' => $count,
 		       'distance' => $row["distance"],
 		       'ofname' => $ofname );
