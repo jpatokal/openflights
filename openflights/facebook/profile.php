@@ -1,5 +1,6 @@
 <?php
 
+
 // Generate content of Facebook profile box for given OF uid
 function get_profile($db, $uid, $fbuid, $ofname) {
   $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration, u.public FROM flights AS f, users AS u WHERE u.uid = f.uid AND f.uid=" . $uid . " GROUP BY f.uid";
@@ -17,7 +18,7 @@ function get_profile($db, $uid, $fbuid, $ofname) {
   } else {
     $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>", $ofname);
   }
-  return "<a href='http://openflights.org/user/" . $ofname . "'><img src='http://openflights.org/img/fb-thumbnail.png' width='184' height='101'/></a><br/><br/>" . $content . "<br/><p style='text-align: right'><a href='http://apps.facebook.com/openflights'>Refresh</a></p>";
+  return "<a href='http://openflights.org/user/" . $ofname . "'><img src='http://openflights.org/facebook/map.php?uid=" . $uid . "' width='184' height='92'/></a><br/><br/>" . $content . "<br/><p style='text-align: right'><a href='http://apps.facebook.com/openflights'>Refresh</a></p>";
 }
 
 ?>
