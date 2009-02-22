@@ -758,7 +758,7 @@ function xmlhttpPost(strURL, id, param) {
   default:
     $("ajaxstatus").style.display = 'inline';
     var form = document.forms['filterform'];    
-    if(! initializing) {
+    if(! initializing && form.Trips) {
       filter_trid = form.Trips.value.split(";")[0];
     }
     filter_alid = form.Airlines.value.split(";")[0];
@@ -803,31 +803,36 @@ function updateFilter(str) {
   var airlines = master[4];
   var years = master[5];
 
-  var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
-  $("filter_tripselect").innerHTML = tripSelect;
-  var editTripSelect = document.forms['inputform'].trips;
-  if(editTripSelect) {
-
-    // New trip added, so now we need to figure out the newest (highest) trid to find it
-    if(editTripSelect.reselect) {
-      var newestId = 0;
-      var filterTripSelect = document.forms['filterform'].Trips;
-      for(i = 0; i < filterTripSelect.length; i++) {
-	id = filterTripSelect[i].value.split(";")[0];
-	if(parseInt(id) > newestId) {
-	  newestId = id;
-	  selected = i;
+  if(!trips || trips == "") {
+    $("filter_tripselect").innerHTML = "&nbsp;None";
+    $("input_trip_select").innerHTML = "&nbsp;No trips. Add one?";
+  } else {
+    var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
+    $("filter_tripselect").innerHTML = tripSelect;
+    var editTripSelect = document.forms['inputform'].trips;
+    if(editTripSelect) {
+      
+      // New trip added, so now we need to figure out the newest (highest) trid to find it
+      if(editTripSelect.reselect) {
+	var newestId = 0;
+	var filterTripSelect = document.forms['filterform'].Trips;
+	for(i = 0; i < filterTripSelect.length; i++) {
+	  id = filterTripSelect[i].value.split(";")[0];
+	  if(parseInt(id) > newestId) {
+	    newestId = id;
+	    selected = i;
+	  }
 	}
+      } else {
+	selected = editTripSelect.selectedIndex;
       }
     } else {
-      selected = editTripSelect.selectedIndex;
+      selected = null;
     }
-  } else {
-    selected = null;
+    $("input_trip_select").innerHTML =
+      cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged", selected);
+    document.forms['inputform'].trips[0].text = "Select trip";
   }
-  $("input_trip_select").innerHTML =
-    cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged", selected);
-  document.forms['inputform'].trips[0].text = "Select trip";
 
   var airlineSelect = createSelect("Airlines", "All airlines", filter_alid, airlines.split("\t"), SELECT_MAXLEN, "refresh(true)");
   $("filter_airlineselect").innerHTML = airlineSelect;
@@ -842,8 +847,11 @@ function updateTitle(str) {
   var form = document.forms['filterform'];
   var text = "";
   var airline = form.Airlines[form.Airlines.selectedIndex].value.split(";")[1];
-  var trip = form.Trips[form.Trips.selectedIndex].value.split(";")[1];
   var year = form.Years[form.Years.selectedIndex].text;
+  var trip = "";
+  if(form.Trips) {
+    trip = form.Trips[form.Trips.selectedIndex].value.split(";")[1];
+  }
 
   // Logged in users
   if(logged_in) {
@@ -883,7 +891,7 @@ function updateTitle(str) {
 
     } else {
       // Viewing another's profile
-      if(trip != "All trips") {
+      if(trip != "All trips" && trip != "") {
 	text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
       } else {
 	text = filter_user + "'s flights";
@@ -1150,10 +1158,14 @@ function updateMap(str){
 }
 
 function startListFlights() {
-  var tripName = document.forms['filterform'].Trips[document.forms['filterform'].Trips.selectedIndex].text;  
+  var form = document.forms['filterform'];
+  if(form.Trips) {
+    var tripName = form.Trips[document.forms['filterform'].Trips.selectedIndex].text;
+  }
   var airlineName = document.forms['filterform'].Airlines[document.forms['filterform'].Airlines.selectedIndex].text;
   var yearName = document.forms['filterform'].Years[document.forms['filterform'].Years.selectedIndex].text;
-  xmlhttpPost(URL_FLIGHTS, 0, escape("Flights for " + tripName + " on " + airlineName + " in year " + yearName));
+  var title = "Flights" + (tripName ? " for " + tripName : "") + " on " + airlineName + " in year " + yearName;
+  xmlhttpPost(URL_FLIGHTS, 0, escape(title));
 }
 
 function listFlights(str, desc) {
@@ -1234,6 +1246,7 @@ function exportFlights(type) {
   location.href="http://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
 }
 
+// The "Analyze" button (detailed stats)
 function showStats(str) {
   if(str.substring(0,5) == "Error") {
     $("result").innerHTML = str.split(';')[1];
@@ -1247,7 +1260,7 @@ function showStats(str) {
     bigtable = "<i>Statistics calculation failed!</i>";
   } else {
     var master = str.split("\n");
-    var uniques = master[0];
+    var uniques = jsonParse(master[0]);
     var longshort = master[1];
     var extremes = master[2];
     var classData = master[3];
@@ -1258,13 +1271,13 @@ function showStats(str) {
 
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=2>Unique</th></tr>";
-    var col = uniques.split(",");
-    // num_airports, num_airlines, num_planes, distance
-    var distance = col[3];
-    table += "<tr><td>Airports</td><td>" + col[0] + "</td></tr>";
-    table += "<tr><td>Airlines</td><td>" + col[1] + "</td></tr>";
-    table += "<tr><td>Plane types</td><td>" + col[2] + "</td></tr>";
+    table += "<tr><td>Airports</td><td>" + uniques["num_airports"] + "</td></tr>";
+    table += "<tr><td>Airlines</td><td>" + uniques["num_airlines"] + "</td></tr>";
+    table += "<tr><td>Countries</td><td>" + uniques["num_countries"] + "</td></tr>";
+    table += "<tr><td>Plane types</td><td>" + uniques["num_planes"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
+
+    var distance = uniques["distance"];
     table += "<tr><th colspan=2>Distance</th></tr>";
     table += "<tr><td>Miles flown</td><td>" + distance + "</td></tr>";
     table += "<tr><td>Around the world</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
@@ -1281,6 +1294,7 @@ function showStats(str) {
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
       table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
     }
+    table += "<tr><td>Average flight</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>Airport records</th></tr>";
@@ -1727,6 +1741,10 @@ function newTrip(code, newTrid, name, url) {
 
   // This only applies when new trip is added in flight editor
   var trips = document.forms['inputform'].trips;
+  if(!trips) {
+    $("input_trip_select").innerHTML = "<select style='width: 100px' name='trips'></select>";
+    trips = document.forms['inputform'].trips;
+  }
   if(trips) {
     switch(code) {
     case CODE_ADDOK:
@@ -2720,14 +2738,14 @@ function setExtraFilter() {
 
 // refresh_all: false = only flights, true = reload everything
 function clearFilter(refresh_all) {
+  var form = document.forms['filterform'];
 
   // Do not allow trip filter to be cleared if it's set in URL
-  if(parseArgument("trip") == 0) {
-    var tr_select = document.forms['filterform'].Trips;
-    tr_select.selectedIndex = 0;
+  if(form.Trips && parseArgument("trip") == 0) {
+    form.Trips.selectedIndex = 0;
   }
-  document.forms['filterform'].Years.selectedIndex = 0;
-  document.forms['filterform'].Extra.selectedIndex = 0;
+  form.Years.selectedIndex = 0;
+  form.Extra.selectedIndex = 0;
   $('filter_extra_span').innerHTML = "";
   selectAirline(0);
   refresh(refresh_all);

@@ -19,6 +19,11 @@ $test = &new TestSuite('Submit/Flights');
 $test->addTestFile('submit.php');
 $test->run(new HtmlReporter());
 
+// "Analyze" stats
+$test = &new TestSuite('Analyse (Stats)');
+$test->addTestFile('stats.php');
+$test->run(new HtmlReporter());
+
 // Add airport
 $test = &new TestSuite('Airport Search');
 $test->addTestFile('apsearch.php');
