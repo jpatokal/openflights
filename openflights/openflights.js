@@ -669,7 +669,10 @@ function xmlhttpPost(strURL, id, param) {
 	if(plane == "Enter plane model") {
 	  plane = "";
 	}
-	var trid = inputform.trips[inputform.trips.selectedIndex].value.split(";")[0];
+	var trid = 0;
+	if(inputform.trips) {
+	  trid = inputform.trips[inputform.trips.selectedIndex].value.split(";")[0];
+	}
 	if(trid == 0) trid = "NULL";
 	var registration = inputform.registration.value;
 	var note = inputform.note.value;
@@ -805,7 +808,7 @@ function updateFilter(str) {
 
   if(!trips || trips == "") {
     $("filter_tripselect").innerHTML = "&nbsp;None";
-    $("input_trip_select").innerHTML = "&nbsp;No trips. Add one?";
+    $("input_trip_select").innerHTML = "&nbsp;No trips. Add one? ";
   } else {
     var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
     $("filter_tripselect").innerHTML = tripSelect;
@@ -1506,11 +1509,13 @@ function editFlight(str, param) {
     }
   }
   var select = inputform.trips;
-  select.selectedIndex = 0;
-  for(index = 0; index < select.length; index++) {
-    if(select[index].value == col[17]) {
-      select.selectedIndex = index;
-      break;
+  if(select) {
+    select.selectedIndex = 0;
+    for(index = 0; index < select.length; index++) {
+      if(select[index].value == col[17]) {
+	select.selectedIndex = index;
+	break;
+      }
     }
   }
 
@@ -1877,7 +1882,7 @@ function calcDuration(param) {
       $('distance').value = gcDistance(lat1, lon1, lat2, lon2);
       $('distance').style.color = "#000";
     } else {
-      if(! re_numeric(distance)) {
+      if(! re_numeric.test(distance)) {
 	$('distance').focus();
 	$('distance').style.color = "#F00";
       } else {
@@ -1920,7 +1925,7 @@ function calcDuration(param) {
     // User has changed airport, estimate duration based on distance then (30 min plus 1 hr/500 mi) and
     // compute time at destination
     var distance = $('distance').value;
-    if(! re_numeric(distance)) {
+    if(! re_numeric.test(distance)) {
       $('distance').focus();
       $('distance').style.color = "#F00";
       return;
@@ -2671,7 +2676,7 @@ function clearInput() {
     form.plane_id.value = "";
     form.registration.value = "";
     form.note.value = "";
-    form.trips.selectedIndex = 0;
+    if(form.trips) form.trips.selectedIndex = 0;
   } else {
     var form = document.forms["multiinputform"];
     for(i = 0; i < multiinput_ids.length; i++) {
