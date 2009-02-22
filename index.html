@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090205"></script>
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090205"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090222"></script>
   </head>
 
   <body>
@@ -33,7 +33,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 09 Feb 2009: <a href="http://apps.facebook.com/openflights">Facebook app</a> now includes a map of your flights!</a>
+	      <B>News</b>: 22 Feb 2009: <a href="/about.html#CHANGES">"Analyze" now includes count of countries plus average flight length and duration.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -87,14 +87,14 @@
 		<b>Filter</b>
 		<table>
 		<tr>
-		  <td>Trips<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
-		  <td><span id="filter_tripselect"><select class="filter" name="Trips"><option value="">All trips</option></select></span>
-		</tr><tr>
 		  <td>Airlines&nbsp;</td>
 		  <td><span id="filter_airlineselect"><select class="filter" name="Airlines"><option value="">All airlines</option></select></span>
 		</tr><tr>
 		  <td>Year</td>
 		  <td><span id="filter_yearselect"><select class="filter" name="Years"><option value="">All</option></select></span></td>
+		</tr><tr>
+		  <td>Trips<a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
+		  <td><span id="filter_tripselect"></span>
 		</tr><tr>
 		  <td colspan=2><select style="width: 100px" id="filter_extra_key" name="Extra" onChange="JavaScript:setExtraFilter()" style="visibility: hidden">
 		      <option value="" SELECTED>More...</option>
@@ -158,11 +158,11 @@
 <input type="text" name="dst_days" id="dst_days" size="6" value="" style="border: 0px; display: none" onChange="JavaScript:markAsChanged()"/><img src="/img/icon_clock.png" id="icon_clock" title="Departure and arrival time" height="16" width="16" onclick='JavaScript:help("time")'/>
   </td>
 
-  <td>Trip<sup><a href="#help" onclick='JavaScript:help("trip")'>?</a></sup></td>
+  <td>Trip<a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
   <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="Add new trip" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="Edit this trip" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td>
 
 </tr><tr>
-  <td><font color="blue">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><font color="blue">From</font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a></td>
   <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onChange='JavaScript:airportCodeToAirport("src_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="src_apAC"></div>
       <input type="hidden" name="src_apid" id="src_apid"/></td>
   <td rowspan=2 valign=middle align=left>
@@ -176,7 +176,7 @@
   </td>
 
 </tr><tr>
-  <td><font color="blue">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
+  <td><font color="blue">To</font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a></td>
   <td><input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onChange='JavaScript:airportCodeToAirport("dst_ap")' class="hintTextbox" value="Enter city name or airport code"/><div id="dst_apAC"></div>
       <input type="hidden" name="dst_apid" id="dst_apid"/></td>
 
@@ -207,7 +207,7 @@
   </td>
 
 </tr><tr>
-  <td>Airline<sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
+  <td>Airline<a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="Help: How do I enter airlines?" height=11 width=10></a></td>
   <td><input type="text" name="airline" id="airline" size="60" tabindex="19" onChange='JavaScript:flightNumberToAirline("airline")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
       <input type="hidden" name="airlineid" id="airlineid"/></td>
   <td><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline("airline")'/ style="margin-left: 5px"/></td>
@@ -246,9 +246,9 @@
 <form id='multiinputform'>
 <table>
 <tr>
-  <td><font color="blue">From</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td><font color="blue">To</font><sup><a href="#help" onclick='JavaScript:help("airport")'>?</a></sup></td>
-  <td>Airline<sup><a href="#help" onclick='JavaScript:help("airline")'>?</a></sup></td>
+  <td><font color="blue">From</font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter where I flew from?" height=11 width=10></a></td>
+  <td><font color="blue">To</font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter where I flew to?" height=11 width=10></a></td>
+  <td>Airline<a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="Help: How do I enter the airline?" height=11 width=10></a></td>
   <td>Date</td>
 </tr><tr id="row1"> <!-- Row 1 -->
   <td><input type="text" name="src_ap1" id="src_ap1" size="32" tabindex="11" onChange='JavaScript:airportCodeToAirport("src_ap1")' class="hintTextbox" value="Enter city name or airport code"/><span id="src_apAC1"></span>
