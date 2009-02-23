@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>OpenFlights</name>
+    <description>Flight map from openflights.org</description>
+    <Style id="flight">
+      <LineStyle>
+        <color>ff0099ee</color> <!-- alpha/blue/green/red -->
+        <width>3</width>
+      </LineStyle>
+    </Style>
+    <Style id="black-pushpin">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
+        </Icon>
+	<scale>0.6</scale>
+        <colorMode>normal</colorMode>
+        <color>FFA9FF45</color>
+      </IconStyle>
+    </Style>
+    <Style id="gray-pushpin">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
+        </Icon>
+	<scale>0.7</scale>
+        <colorMode>normal</colorMode>
+        <color>FF99FF85</color>
+      </IconStyle>
+    </Style>
+    <Style id="purple-pushpin">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
+        </Icon>
+	<scale>0.8</scale>
+        <colorMode>normal</colorMode>
+        <color>FF59FFA0</color>
+      </IconStyle>
+    </Style>
+    <Style id="cyan-pushpin">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
+        </Icon>
+	<scale>0.9</scale>
+        <colorMode>normal</colorMode>
+        <color>FF39FFD0</color>
+      </IconStyle>
+    </Style>
+    <Style id="green-pushpin">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
+        </Icon>
+	<scale>0.9</scale>
+        <colorMode>normal</colorMode>
+        <color>FF00FFFF</color>
+      </IconStyle>
+    </Style>
+    <Placemark>
+      <name>Flights</name>
+      <description>Flights</description>
+      <styleUrl>#flight</styleUrl>
+      <MultiGeometry>

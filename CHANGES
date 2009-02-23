@@ -1,3 +1,9 @@
+<b>2009-02-23</b>
+
+* KML exports (Google Earth etc) added!
+* Wrote 3D path code in php/greatcircle.php
+* Bug: Filters for CSV exports fixed
+
 <b>2009-02-22</b>
 
 * "Analyze" now includes count of countries, avg length, duration

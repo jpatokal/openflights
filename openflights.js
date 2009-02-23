@@ -1184,7 +1184,7 @@ function listFlights(str, desc) {
   } else {
     if(desc) {
       table.push(desc.replace(/\<br\>/g, " &mdash; "));
-      table.unshift("<span style='float: right'><input type='button' value='Export' align='middle' onclick='JavaScript:exportFlights(\"export\")'></span>"); // place at front of array
+      table.unshift("<span style='float: right'>Export <input type='button' value='CSV' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
     table.push("<tr><th>From</th><th>To</th><th>Flight</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>");
@@ -1246,7 +1246,11 @@ function listFlights(str, desc) {
 // Dump flights to CSV
 // type: "backup" to export everything, "export" to export only current filter selection
 function exportFlights(type) {
-  location.href="http://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
+  if(type == "KML") {
+    location.href="http://" + location.host + "/php/kml.php?" + lastQuery;
+  } else {
+    location.href="http://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
+  }
 }
 
 // The "Analyze" button (detailed stats)
