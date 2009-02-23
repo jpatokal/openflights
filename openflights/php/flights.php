@@ -62,8 +62,18 @@ if($apid && $apid != 0) {
 }
 
 // Add filters, if any
-if($export != "backup") {
-  $sql = $sql . getFilterString($HTTP_POST_VARS);
+switch($export) {
+ case "export":
+   $sql = $sql . getFilterString($HTTP_GET_VARS);
+   break;
+
+ case "backup":
+   // do nothing;
+   break;
+
+ default:
+   $sql = $sql . getFilterString($HTTP_POST_VARS);
+   break;
 }
 if($fid && $fid != "0") {
   $sql = $sql . " AND fid= " . mysql_real_escape_string($fid);
