@@ -1,5 +1,9 @@
 <b>2009-02-23</b>
 
+* Bug: Calculate PHP GC distance correctly for flights where src==dest
+
+<b>2009-02-23</b>
+
 * KML exports (Google Earth etc) added!
 * Wrote 3D path code in php/greatcircle.php
 * Bug: Filters for CSV exports fixed

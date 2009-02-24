@@ -34,16 +34,19 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $z2 = $row["dz"] * $METERSPERFOOT;
   $distance = $row["distance"];
 
-  $points = gcPath(array("x" => $x1, "y" => $y1, "z" => $z1), 
-		   array("x" => $x2, "y" => $y2, "z" => $z2),
-		   $distance, true);
-
-  print "<LineString>\n<altitudeMode>absolute</altitudeMode><coordinates>\n";
-  foreach($points as $loc) {
-    if(! $loc) continue; // skip breaks
-    print $loc["x"] . "," . $loc["y"] . "," . $loc["z"] . "\n";
+  // Skip flights where src==dest
+  if($x1 != $x2 && $y1 != $y2) {
+    $points = gcPath(array("x" => $x1, "y" => $y1, "z" => $z1), 
+		     array("x" => $x2, "y" => $y2, "z" => $z2),
+		     $distance, true);
+    
+    print "<LineString>\n<altitudeMode>absolute</altitudeMode><coordinates>\n";
+    foreach($points as $loc) {
+      if(! $loc) continue; // skip breaks
+      print $loc["x"] . "," . $loc["y"] . "," . $loc["z"] . "\n";
+    }
+    print "  </coordinates>\n</LineString>\n";
   }
-  print "  </coordinates>\n</LineString>\n";
 }
 
 print "  </MultiGeometry>\n</Placemark>\n";

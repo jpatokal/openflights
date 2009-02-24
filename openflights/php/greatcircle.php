@@ -23,6 +23,11 @@ function gcPointDistance($from, $to) {
   $lon2 = $to["x"];
   $lat2 = $to["y"];
 
+  // Eliminate one trivial case...
+  if($lon1 == $lon2 && $lat1 == $lat2) {
+    return 0;
+  }
+
   $pi = 3.1415926;
   $rad = doubleval($pi/180.0);
   $lon1 = doubleval($lon1)*$rad; $lat1 = doubleval($lat1)*$rad;
@@ -131,6 +136,8 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
 
   // And... action!
   while($d + 1 < $distance) {
+    //printf("%s of %s: from %s,%s now at %s,%s step %s bearing %s target %s,%s\n", $d, $distance, $startPoint["x"], $startPoint["y"], $step, $bearing, $wayPoint["x"], $wayPoint["y"], $endPoint["x"], $endPoint["y"]);
+
     // Cruising, but increase step resolution near the poles
     if($threed && $delta != 0) {
       $step = $ASCENT_STEP;
