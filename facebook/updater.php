@@ -10,9 +10,11 @@ $fbtoday = 0;
 $fbupdates = 0;
 $fbfail = 0;
 
+$CRONHOUR = 1; // Hour of day (0-23) when to check for today's flights
+
 // Check which FB users have valid infinite session keys and new flights since last update or flying today
-// Note: Assumes that script is run hourly, including exactly one run between 01:00-01:59 AM
-$sql = "SELECT fb.uid,fb.sessionkey,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(HOUR(NOW()) = 1 AND f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND HOUR(NOW()) = 1)) GROUP BY f.uid";
+// Note: Assumes that script is run hourly
+$sql = "SELECT fb.uid,fb.sessionkey,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(HOUR(NOW()) = $CRONHOUR AND f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND HOUR(NOW()) = $CRONHOUR)) GROUP BY f.uid";
 $result = mysql_query($sql, $db);
 while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $count = $row["count"];
@@ -27,13 +29,13 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $infinitesessionkey = $row["sessionkey"];
 
     if($today == "Y") {
-      // Get details of today's flight
-      $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) AND f.src_time = TIME(NOW()) ORDER BY f.upd_time LIMIT 1";
-      $bundle_id = $todayflight_bundle_template_id;
+      // Get details of today's last flight
+      $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) ORDER BY f.upd_time LIMIT 1";
+      $bundle_id = $todayflight_template_bundle_id;
     } else {
       // Get details of last flight entered
       $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
-      $bundle_id = $addflight_bundle_template_id;
+      $bundle_id = $addflight_template_bundle_id;
     }
     $detailresult = mysql_query($sql, $db);
     if($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
@@ -57,8 +59,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$facebook->api_client->session_key = $infinitesessionkey;
 
 	// Publish feed story
-	// NOTE: template_bundle_id must already be created by define_bundles.php and stored in keys.php
-	$facebook->api_client->feed_publishUserAction( $template_bundle_id, json_encode($tokens) , implode(',', $target_ids), $body_general);
+	// NOTE: bundle_id must already be created by define_bundles.php and stored in keys.php
+	$facebook->api_client->feed_publishUserAction( $bundle_id, json_encode($tokens) , implode(',', $target_ids), $body_general);
 
 	// Update the user's profile box
 	$profile_box = get_profile($db, $uid, $fbuid, $ofname);
@@ -92,10 +94,12 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         }
 	$fbfail++;
       }
+    } else {
+      print "Error: No matching flights: $sql\n";
     }
   }
 }
-if($fbupdates > 0 || $fbfail > 0) {
+if($fbupdates > 0 || $fbtoday > 0 || $fbfail > 0) {
   echo date(DATE_RFC822) . ": $fbupdates new flights, $fbtoday flights now, $fbfail failed";
 }
 
