@@ -11,7 +11,7 @@ $fbupdates = 0;
 $fbfail = 0;
 
 // Check which FB users have valid infinite session keys and new flights since last update or flying today
-$sql = "SELECT fb.uid,fb.sessionkey,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(f.src_date = DATE(NOW()),'Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND f.src_time = TIME(NOW()))) GROUP BY f.uid";
+$sql = "SELECT fb.uid,fb.sessionkey,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND f.src_time = TIME(NOW()))) GROUP BY f.uid";
 $result = mysql_query($sql, $db);
 while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $count = $row["count"];
