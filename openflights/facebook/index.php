@@ -7,12 +7,12 @@ require_once 'profile.php';
 
 // Print FB-style information box
 function fb_infobox($info) {
-  print "<br><div style='background-color: #eceff6; border: 1px solid #d4dae8; color: #333333; padding: 10px; font-size: 13px; width: 500px;'>$info</div>";
+  print "<br/><div style='background-color: #eceff6; border: 1px solid #d4dae8; color: #333333; padding: 10px; font-size: 13px; width: 500px;'>$info</div><br/>";
 }
 
 // Print FB-style error box and die
 function fb_die($error) {
-  die("<br><div style='background-color: #ffebe8; border: 1px solid #dd3c10; color: #333333; padding: 10px; font-size: 13px; width: 500px'>$error</div>");
+  die("<br/><div style='background-color: #ffebe8; border: 1px solid #dd3c10; color: #333333; padding: 10px; font-size: 13px; width: 500px'>$error</div>");
 }
 
 // appapikey,appsecret must be defined in keys.php
@@ -55,7 +55,7 @@ if(! $ofname || $ofname == "") {
     $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,DATE_SUB(NOW(), INTERVAL 1 DAY))", $uid, $fbuid);
     $result = mysql_query($sql, $db);
     if(! $result || mysql_affected_rows() != 1) {
-      fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+      fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
     }
     
   } else {
@@ -90,26 +90,7 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $onnew = $row["pref_onnew"];
   $onfly = $row["pref_onfly"];
 } else {
-  fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
-}
-
-// Has user submitted preferences?
-if($_REQUEST["onfly"]) {
-  $reqfly = $_REQUEST["onfly"];
-  $reqnew = $_REQUEST["onnew"];
-  if($reqfly != "Y") $regfly = "N";
-  if($reqnew != "Y") $regnew = "N";
-  if($reqfly != $onfly || $reqnew != $onnew) {
-    // User has changed their preferences
-    $sql = "UPDATE facebook SET pref_onfly='" . $reqfly . "', pref_onnew='" . $reqnew . "' WHERE fbuid=" . $fbuid;
-    if($result = mysql_query($sql, $db)) {
-      fb_infobox("Feed preferences successfully updated.");
-      $onfly = $reqfly;
-      $onnew = $reqnew;
-    } else {
-      fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
-    }
-  }
+  fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
 }
 
 $session_key = $_POST["fb_sig_session_key"];
@@ -122,13 +103,32 @@ if(! $session && $session_expiry == "0") {
     $session = $session_key;
     fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.");
   } else {
-    fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+    fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
+  }
+}
+
+// Has user submitted preferences?
+if($_REQUEST["prefupdate"] == "Y") {
+  $reqfly = $_REQUEST["onfly"];
+  $reqnew = $_REQUEST["onnew"];
+  if($reqfly != "Y") $reqfly = "N";
+  if($reqnew != "Y") $reqnew = "N";
+  if($reqfly != $onfly || $reqnew != $onnew) {
+    // User has changed their preferences
+    $sql = "UPDATE facebook SET pref_onfly='" . $reqfly . "', pref_onnew='" . $reqnew . "' WHERE fbuid=" . $fbuid;
+    if($result = mysql_query($sql, $db)) {
+      fb_infobox("Feed preferences successfully updated.");
+      $onfly = $reqfly;
+      $onnew = $reqnew;
+    } else {
+      fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
+    }
   }
 }
 
 // Update the user's profile box
 $profile_box = get_profile($db, $uid, $fbuid, $ofname);
-echo "<br><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div>";
+echo "<br/><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div><br/>";
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 
 // Feed preferences and session generation
@@ -137,25 +137,22 @@ if(! $session) {
 ?>
 
   <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
+  <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
 
+  <p><b>Step 2</b>: <i>After</i> granting permission, set your preferences and click Activate below to activate automatic updating.</p>
 <?php
 }
 
-print "<h3>Feed preferences</h3><br>";
-print "<p>Post updates to my feed:<br>";
-print "<input type='checkbox' name='onnew' value='Y' " . ($onnew == "Y" ? "CHECKED" : "") . "> when I add a new flight to OpenFlights<br>";
-print "<input type='checkbox' name='onfly' value='Y' " . ($onfly == "Y" ? "CHECKED" : "") . "> on the day I fly<br></p>";
+print "<h3>Feed preferences</h3>";
+print "<p>Post updates to my feed:<br/>";
+print "<input type='checkbox' name='onnew' value='Y' " . ($onnew == "Y" ? "CHECKED" : "") . "> when I add a new flight to OpenFlights<br/>";
+print "<input type='checkbox' name='onfly' value='Y' " . ($onfly == "Y" ? "CHECKED" : "") . "> on the day I fly<br/></p>";
+print "<input type='hidden' name='prefupdate' value='Y'>";
 if(! $session) {
-?>
-  <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
-  <p><b>Step 2</b>: <i>After</i> granting permission, click Activate below to activate automatic updating.</p>
-  <input type='submit' value='Activate' /><br/>
-<?php
+  print "<input type='submit' value='Activate' /><br/>";
 } else {
-?>
-  <input type='submit' value='Update preferences' /><br/>
-  <p><i>Automatic refreshing active: any new flights will be updated to your profile and feed hourly.</i></p>
-<?php
+  print "<input type='submit' value='Update preferences' /><br/>";
+  print "<p><i>Automatic refreshing active: any new flights will be updated to your profile and feed hourly.</i></p>";
 }
 ?>
 </form>
