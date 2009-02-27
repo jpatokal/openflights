@@ -7,12 +7,12 @@ require_once 'profile.php';
 
 // Print FB-style information box
 function fb_infobox($info) {
-  print "<div style='background-color: #eceff6; border: 1px solid #d4dae8; color: #333333; padding: 10px; font-size: 13px; width: 500px;'>$info</div>";
+  print "<br><div style='background-color: #eceff6; border: 1px solid #d4dae8; color: #333333; padding: 10px; font-size: 13px; width: 500px;'>$info</div>";
 }
 
 // Print FB-style error box and die
 function fb_die($error) {
-  die("<div style='background-color: #ffebe8; border: 1px solid #dd3c10; color: #333333; padding: 10px; font-size: 13px; width: 500px'>$error</div>");
+  die("<br><div style='background-color: #ffebe8; border: 1px solid #dd3c10; color: #333333; padding: 10px; font-size: 13px; width: 500px'>$error</div>");
 }
 
 // appapikey,appsecret must be defined in keys.php
@@ -104,6 +104,8 @@ if($_REQUEST["onfly"]) {
     $sql = "UPDATE facebook SET pref_onfly='" . $reqfly . "', pref_onnew='" . $reqnew . "' WHERE fbuid=" . $fbuid;
     if($result = mysql_query($sql, $db)) {
       fb_infobox("Feed preferences successfully updated.");
+      $onfly = $reqfly;
+      $onnew = $reqnew;
     } else {
       fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
     }
@@ -139,8 +141,9 @@ if(! $session) {
 <?php
 }
 
+print "<h3>Feed preferences</h3><br>";
 print "<p>Post updates to my feed:<br>";
-print "<input type='checkbox' name='onnew' value='Y' " . ($onnew == "Y" ? "CHECKED" : "") . "> when I add a new flight<br>";
+print "<input type='checkbox' name='onnew' value='Y' " . ($onnew == "Y" ? "CHECKED" : "") . "> when I add a new flight to OpenFlights<br>";
 print "<input type='checkbox' name='onfly' value='Y' " . ($onfly == "Y" ? "CHECKED" : "") . "> on the day I fly<br></p>";
 if(! $session) {
 ?>
