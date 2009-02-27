@@ -2738,6 +2738,7 @@ class FacebookAPIErrorCodes {
    * DATA EDIT ERRORS
    */
   const API_EC_EDIT_ALBUM_SIZE = 321;
+  const API_EC_EDIT_FEED_TOO_MANY_USER_ACTION_CALLS = 341;
 
   const FQL_EC_PARSER = 601;
   const FQL_EC_UNKNOWN_FIELD = 602;

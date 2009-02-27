@@ -103,7 +103,7 @@ switch($param) {
    $alid = trim($HTTP_POST_VARS["alid"]); // IE adds some whitespace crud to this!?
    if($alid == 0) $alid = -1; // this should not be necessary, but just in case...
    list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid, $opp);
-   $sql = sprintf("UPDATE flights SET src_apid=%s, src_date='%s', src_time=%s, dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, upd_time=NOW(), opp='%s' WHERE fid=%s",
+   $sql = sprintf("UPDATE flights SET src_apid=%s, src_date='%s', src_time=%s, dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, opp='%s' WHERE fid=%s",
 		  mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp, mysql_real_escape_string($fid));
    break;
 
