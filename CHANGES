@@ -1,3 +1,10 @@
+<b>2009-02-27</b>
+
+* Facebook app can now post update on flight day
+* Preferences added to Facebook app
+* Tooltips added to OpenLayers map controls
+* Bug: Flight edits no longer show up on Facebook, stats
+
 <b>2009-02-23</b>
 
 * Bug: Calculate PHP GC distance correctly for flights where src==dest

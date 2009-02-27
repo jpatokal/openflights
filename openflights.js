@@ -95,10 +95,10 @@ window.onload = function init(){
 			       maxZoomLevel: 8,
 			       controls: [
 					  new OpenLayers.Control.PanZoom(),
-					  new OpenLayers.Control.NavToolbar(),
-					  new OpenLayers.Control.LayerSwitcher({'ascending':false}),
+					  new OpenLayers.Control.NavToolbar({'title': "Toggle pan and region select mode"}),
+					  new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title':'Switch map layers'}),
 					  new OpenLayers.Control.ScaleLine(),
-					  new OpenLayers.Control.OverviewMap()
+					  new OpenLayers.Control.OverviewMap({'title': "Toggle overview map"})
 					  ] });
   
   var ol_wms = new OpenLayers.Layer.WMS( "Political (Metacarta)",
