@@ -5,6 +5,16 @@ require_once 'php/facebook.php';
 require_once 'keys.php';
 require_once 'profile.php';
 
+// Print FB-style information box
+function fb_infobox($info) {
+  print "<div style='background-color: #eceff6; border: 1px solid #d4dae8; color: #333333; padding: 10px; font-size: 13px; width: 500px;'>$info</div>";
+}
+
+// Print FB-style error box and die
+function fb_die($error) {
+  die("<div style='background-color: #ffebe8; border: 1px solid #dd3c10; color: #333333; padding: 10px; font-size: 13px; width: 500px'>$error</div>");
+}
+
 // appapikey,appsecret must be defined in keys.php
 $facebook = new Facebook($appapikey, $appsecret);
 $fbuid = $facebook->require_login();
@@ -16,7 +26,7 @@ if($_REQUEST["reset"] == "true") {
   $facebook->api_client->data_setUserPreference(1, 0);
   $sql = "DELETE FROM facebook WHERE fbuid=$fbuid";
   $result = mysql_query($sql, $db);
-  print "<p><b>Account reset.</b></p>";
+  fb_infobox("<b>Account reset.</b>");
 }
 
 // Has the user configured their OpenFlights name?
@@ -30,13 +40,13 @@ if(! $ofname || $ofname == "") {
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       if($row["public"] == "N") {
-	die("Sorry, $ofname's profile is set to 'Private'.  Please go to <a href='http://openflights.org/html/settings.html' target='_blank'>Settings</a>, change <b>Privacy</b> to 'Public' or 'Open', and try again.");
+	fb_die("Sorry, $ofname's profile is set to 'Private'.  Please go to <a href='http://openflights.org/html/settings.html' target='_blank'>Settings</a>, change <b>Privacy</b> to 'Public' or 'Open', save and try again.");
       }
     } else {
-      die("Sorry, couldn't find <b>$ofname</b> at OpenFlights.  Please check the spelling, hit 'Back' and try again.");
+      fb_die("Sorry, couldn't find <b>$ofname</b> at OpenFlights.  Please check the spelling, hit 'Back' and try again.");
     }
 
-    echo("<p><b>Account found!</b>  Setting up your profile...</p>");
+    fb_infobox("<b>Account found!</b>  Generating profile preview...");
 
     // Looking good, save to Facebook and our internal table
     $facebook->api_client->data_setUserPreference(1, $ofname);
@@ -45,9 +55,8 @@ if(! $ofname || $ofname == "") {
     $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,DATE_SUB(NOW(), INTERVAL 1 DAY))", $uid, $fbuid);
     $result = mysql_query($sql, $db);
     if(! $result || mysql_affected_rows() != 1) {
-      die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+      fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
     }
-    echo("<p>Done!  Here's a preview:</p>");
     
   } else {
     // No, ask for it
@@ -63,7 +72,6 @@ if(! $ofname || $ofname == "") {
     return;
   }
 }
-
 ?>
 
 <fb:tabs>
@@ -72,12 +80,34 @@ if(! $ofname || $ofname == "") {
 </fb:tabs>
 
 <?php
-// Check if we already have an infinite session (offline access) key for this user
-$sql = "SELECT uid, sessionkey FROM facebook WHERE fbuid=" . $fbuid;
+
+// Fetch their session key and other info from database
+$sql = "SELECT uid, sessionkey, pref_onnew, pref_onfly FROM facebook WHERE fbuid=" . $fbuid;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $uid = $row["uid"];
   $session = $row["sessionkey"];
+  $onnew = $row["pref_onnew"];
+  $onfly = $row["pref_onfly"];
+} else {
+  fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+}
+
+// Has user submitted preferences?
+if($_REQUEST["onfly"]) {
+  $reqfly = $_REQUEST["onfly"];
+  $reqnew = $_REQUEST["onnew"];
+  if($reqfly != "Y") $regfly = "N";
+  if($reqnew != "Y") $regnew = "N";
+  if($reqfly != $onfly || $reqnew != $onnew) {
+    // User has changed their preferences
+    $sql = "UPDATE facebook SET pref_onfly='" . $reqfly . "', pref_onnew='" . $reqnew . "' WHERE fbuid=" . $fbuid;
+    if($result = mysql_query($sql, $db)) {
+      fb_infobox("Feed preferences successfully updated.");
+    } else {
+      fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+    }
+  }
 }
 
 $session_key = $_POST["fb_sig_session_key"];
@@ -88,9 +118,9 @@ if(! $session && $session_expiry == "0") {
   $sql = "UPDATE facebook SET sessionkey='" . $session_key . "' WHERE fbuid=" . $fbuid;
   if($result = mysql_query($sql, $db)) {
     $session = $session_key;
-    print "<p><b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.</p>";
+    fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.");
   } else {
-    die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
+    fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br>' . $sql);
   }
 }
 
@@ -98,21 +128,34 @@ if(! $session && $session_expiry == "0") {
 $profile_box = get_profile($db, $uid, $fbuid, $ofname);
 echo "<br><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div>";
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
-?>
-<?php
+
+// Feed preferences and session generation
+print "<form requirelogin='1'>";
 if(! $session) {
 ?>
-  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you'll have to manually refresh your stats.</p> 
+
+  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
+
+<?php
+}
+
+print "<p>Post updates to my feed:<br>";
+print "<input type='checkbox' name='onnew' value='Y' " . ($onnew == "Y" ? "CHECKED" : "") . "> when I add a new flight<br>";
+print "<input type='checkbox' name='onfly' value='Y' " . ($onfly == "Y" ? "CHECKED" : "") . "> on the day I fly<br></p>";
+if(! $session) {
+?>
   <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
-  <p><b>Step 2</b>: <i>After</i> granting permission, click Refresh below to activate automatic updating.</p>
-  <form requirelogin="1">
-    <input type='submit' value='Refresh' /><br/>
-  </form>
+  <p><b>Step 2</b>: <i>After</i> granting permission, click Activate below to activate automatic updating.</p>
+  <input type='submit' value='Activate' /><br/>
 <?php
 } else {
-  print "<p><i>Automatic refreshing active: any new flights will be updated to your profile and feed hourly.</i></p>";
+?>
+  <input type='submit' value='Update preferences' /><br/>
+  <p><i>Automatic refreshing active: any new flights will be updated to your profile and feed hourly.</i></p>
+<?php
 }
 ?>
+</form>
 
 <fb:if-section-not-added section="profile">
 <p><b>Step 3</b>: Click the button below to add the OpenFlights box to your Facebook profile.</p>
