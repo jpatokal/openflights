@@ -38,6 +38,10 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       $bundle_id = $addflight_template_bundle_id;
     }
     $detailresult = mysql_query($sql, $db);
+    if(mysql_num_rows($detailresult) == 0) {
+      print "Error: No matching flights: $sql\n";
+      continue;
+    }
     while($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
       if($detail["opp"] == "Y") {
 	$src = $detail["dst"];
@@ -94,8 +98,6 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         }
 	$fbfail++;
       }
-    } else {
-      print "Error: No matching flights: $sql\n";
     }
   }
 }
