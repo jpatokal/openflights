@@ -14,7 +14,7 @@ $CRONHOUR = 1; // Hour of day (0-23) when to check for today's flights
 
 // Check which FB users have valid infinite session keys and new flights since last update or flying today
 // Note: Assumes that script is run hourly
-$sql = "SELECT fb.uid,fb.sessionkey,fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(HOUR(NOW()) = $CRONHOUR AND f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND HOUR(NOW()) = $CRONHOUR)) GROUP BY f.uid";
+$sql = "SELECT fb.uid,fb.sessionkey,fb.fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(HOUR(NOW()) = $CRONHOUR AND f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND HOUR(NOW()) = $CRONHOUR)) GROUP BY f.uid";
 $result = mysql_query($sql, $db);
 while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $count = $row["count"];
@@ -29,8 +29,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $infinitesessionkey = $row["sessionkey"];
 
     if($today == "Y") {
-      // Get details of today's last flight
-      $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) ORDER BY f.upd_time LIMIT 1";
+      // Get details of all of today's flights
+      $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) ORDER BY f.upd_time"; // no limit!
       $bundle_id = $todayflight_template_bundle_id;
     } else {
       // Get details of last flight entered
@@ -38,7 +38,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       $bundle_id = $addflight_template_bundle_id;
     }
     $detailresult = mysql_query($sql, $db);
-    if($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
+    while($detail = mysql_fetch_array($detailresult, MYSQL_ASSOC)) {
       if($detail["opp"] == "Y") {
 	$src = $detail["dst"];
 	$dst = $detail["src"];
