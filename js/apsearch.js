@@ -5,6 +5,7 @@ URL_APSEARCH = "/php/apsearch.php";
 URL_COUNTRIES = "/php/countries.php";
 
 DB_OPENFLIGHTS = "airports";
+DB_OURAIRPORTS = "airports_oa";
 DB_DAFIF = "airports_dafif";
 
 var warning;
@@ -281,8 +282,8 @@ function searchResult(str) {
 	if(document.forms['searchform'].iatafilter.checked) {
 	  table += "<li>Try unchecking 'Show only major airports' and search again.";
 	}
-	if(document.forms['searchform'].db.value != "airports_dafif") {
-	  table += "<li>Switch to the DAFIF database and search again.";
+	if(document.forms['searchform'].db.value != DB_OURAIRPORTS) {
+	  table += "<li>Switch to the OurAirports database and search again.";
 	}
 	table += "</ul></td></tr>";
 	break;
@@ -334,7 +335,7 @@ function searchResult(str) {
       table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
     }
     if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || guest) {
-      if(col["ap_uid"] == "own") {
+      if(col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
 	label = "Edit";
       } else {
 	label = "Load";
@@ -383,7 +384,7 @@ function loadAirport(data) {
     }
   }
 
-  if(col["apid"] != "") {
+  if(col["apid"]) {
     form.apid.value = col["apid"];
     document.getElementById('b_add').style.display = "none";
     document.getElementById('b_edit').style.display = "inline";
