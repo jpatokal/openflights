@@ -14,6 +14,22 @@ if(!$uid or empty($uid)) {
 $user = $HTTP_POST_VARS["user"];
 $trid = $HTTP_POST_VARS["trid"];
 
+$mode = $HTTP_POST_VARS["mode"];
+switch($mode) {
+ case "D":
+   $mode = "SUM(distance)";   
+   break;
+
+ case "F":
+ default:
+   $mode = "COUNT(fid)";
+   break;
+}
+$limit = $HTTP_POST_VARS["limit"];
+if(! $limit) {
+  $limit = "10";
+}
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
@@ -45,7 +61,7 @@ if($user && $user != "0") {
 $filter = getFilterString($HTTP_POST_VARS);
 
 // List top 10 routes
-$sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,count(fid) AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT 10";
+$sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,$mode AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=$uid $filter GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT $limit";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -61,7 +77,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 airports
-$sql = "select a.name, a.iata, a.icao, count(fid) as count, a.apid from airports as a, flights as f where f.uid=" . $uid . " and (f.src_apid=a.apid or f.dst_apid=a.apid) " . $filter . " group by a.apid order by count desc limit 10";
+$sql = "select a.name, a.iata, a.icao, $mode as count, a.apid from airports as a, flights as f where f.uid=$uid and (f.src_apid=a.apid or f.dst_apid=a.apid) $filter group by a.apid order by count desc limit $limit";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -76,7 +92,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 airlines
-$sql = "select a.name, count(fid) as count, a.alid from airlines as a, flights as f where f.uid=" . $uid . " and f.alid=a.alid " . $filter . " group by f.alid order by count desc limit 10";
+$sql = "select a.name, $mode as count, a.alid from airlines as a, flights as f where f.uid=$uid and f.alid=a.alid $filter group by f.alid order by count desc limit $limit";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -90,7 +106,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 plane types
-$sql = "select p.name, count(fid) as count from planes as p, flights as f where f.uid=" . $uid . " and p.plid=f.plid " . $filter . " group by f.plid order by count desc limit 10";
+$sql = "select p.name, $mode as count from planes as p, flights as f where f.uid=$uid and p.plid=f.plid $filter group by f.plid order by count desc limit $limit";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

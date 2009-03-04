@@ -73,6 +73,9 @@ var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
 var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
 var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "O":"Oth", "": ""};
 
+var topmodes = { "F":"Flights", "D":"Distance" };
+var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50" };
+
 // Validate 24-hr time ([0]0:00-23:59)
 var re_time = /(^0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 // Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
@@ -757,7 +760,7 @@ function xmlhttpPost(strURL, id, param) {
     }
     // ...else fallthru and generate new query
 
-  // URL_MAP, URL_FLIGHTS, URL_STATS
+  // URL_MAP, URL_FLIGHTS, URL_STATS, URL_TOP10
   default:
     $("ajaxstatus").style.display = 'inline';
     var form = document.forms['filterform'];    
@@ -789,6 +792,11 @@ function xmlhttpPost(strURL, id, param) {
 	query += '&id=' + escape(id);
 	lastQuery = query;
 	lastDesc = param;
+      }
+    }
+    if(strURL == URL_TOP10) {
+      if(param) {
+	query += '&' + param;
       }
     }
   }
@@ -988,13 +996,14 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   return select;
 }
 
-function createSelectFromArray(selectName, opts, hook) {
+// If current value is given, don't add "All" option
+function createSelectFromArray(selectName, opts, hook, current) {
   var select = "<select style='width: 100px' id='" + selectName + "' name='" + selectName +
     "' onChange='JavaScript:" + hook + "'>";
-  select += "<option value=''>All</option>";
+  if(! current) select += "<option value=''>All</option>";
   for (r in opts) {
-    if(r.length != 1) continue; // filter out Prototype.js cruft
-    select += "<option value='" + r + "'>" + opts[r] + "</option>";
+    if(r.length > 2) continue; // filter out Prototype.js cruft
+    select += "<option value='" + r + "' " + (r == current ? "SELECTED" : "") + ">" + opts[r] + "</option>";
   }
   select += "</select>";
   return select;
@@ -1368,6 +1377,16 @@ function showTop10(str) {
     return;
   }
 
+  // Take note of existing settings, if any
+  var form = document.forms['top10form'];
+  if(form) {
+    mode = form.mode[form.mode.selectedIndex].value;
+    limit = form.limit[form.limit.selectedIndex].value;
+  } else {
+    mode = "F";
+    limit = "10";
+  }
+
   openPane("result");
   if(str == "") {
     bigtable = "<i>Statistics calculation failed!</i>";
@@ -1377,57 +1396,71 @@ function showTop10(str) {
     var airports = master[1];
     var airlines = master[2];
     var planes = master[3];
-    bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17></td><td style=\"vertical-align: top\">";
+    bigtable = "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
+    table = "<br>Show...<br>";
+    table += createSelectFromArray('limit', toplimits, "updateTop10()", limit) + "<br>";
+    table += "Sort by...<br>";
+    table += createSelectFromArray('mode', topmodes, "updateTop10()", mode) + "<br>";
+    bigtable += table + "</form></td>";
 
-    table = "<table style='border-spacing: 10px 0px;'>";
-    table += "<tr><th colspan=3 style='padding-right: 20px'>Top 10 Routes</th></tr>";
+    bigtable += "<td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";
+    table = "<table><tr><th colspan=3'>Routes</th></tr>";
     var rows = routes.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // s.name, s.apid, d.name, d.apid, count
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a>&harr;" +
-	"<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" + 
-	"<td style='text-align: right; padding: 0px 20px 0px 10px'>" + col[4] + "</td></tr>";
+      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[1] + ");'>" + col[0] + "</a>&harr;" +
+	"<a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + col[2] + "</a></td>" + 
+	"<td style='text-align: right; padding-left: 10px'>" + col[4] + "</td></tr>";
     }
     table += "</table>";
-    bigtable += table + "</td><td style=\"vertical-align: top\">";
 
-    table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3 style='padding-right: 20px'>Top 10 Airports</th></tr>";
+    bigtable += table + "</td><td style='vertical-align: top; padding: 0px 10px'>";
+    table = "<table><tr><th colspan=3'>Airports</th></tr>";
     var rows = airports.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, iata, count, apid
       desc = col[0].substring(0,20) + " (" + col[1] + ")";
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + desc + "</a></td><td style='text-align: right; padding: 0px 20px 0px 10px'>" + col[2] + "</td>";
+      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + col[2] + "</td>";
     }
     table += "</table>";
-    bigtable += table + "</td><td style=\"vertical-align: top\">";
-    
-    table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3 style='padding-right: 20px'>Top 10 Airlines</th></tr>";
+
+    bigtable += table + "</td><td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";    
+    table = "<table><tr><th colspan=3'>Airlines</th></tr>";
     var rows = airlines.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count, apid
-      table += "<tr><td><a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[2] + ");refresh(false);\">" + col[0] + "</a></td><td style='text-align: right; padding: 0px 20px 0px 10px;'>" + col[1] + "</td>";
+      table += "<tr><td><a href='#' onclick='JavaScript:selectAirline(" + col[2] + ");refresh(false);'>" + col[0] + "</a></td><td style='text-align: right; padding-left: 10px'>" + col[1] + "</td>";
     }
     table += "</table>";
-    bigtable += table + "</td><td style=\"vertical-align: top\">";
-    
-    table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=3>Top 10 Planes</th></tr>";
+
+    bigtable += table + "</td><td style='vertical-align: top; padding-left: 10px;'>";
+    table = "<table><tr><th colspan=3>Planes</th></tr>";
     var rows = planes.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count
-      table += "<tr><td>" + col[0] + "</td><td style='text-align: right'>" + col[1] + "</td>";
+      table += "<tr><td>" + col[0] + "</td><td style='text-align: right; padding-left: 10px'>" + col[1] + "</td>";
     }
     table += "</table>";
-    bigtable += table + "</td></table>";
-    
+    bigtable += table + "</td>";
+  }
+
+  var form = document.forms['top10form'];
+  if(form) {
+    mode = form.mode[form.mode.selectedIndex].value;
+    limit = form.limit[form.limit.selectedIndex].value;
   }
   $("result").innerHTML = bigtable;
+}
+
+function updateTop10() {
+  var form = document.forms['top10form'];
+  mode = form.mode[form.mode.selectedIndex].value;
+  limit = form.limit[form.limit.selectedIndex].value;
+  xmlhttpPost(URL_TOP10, 0, "mode=" + mode + "&limit=" + limit);
 }
 
 // Move "pointer" in flight list up or down one when user clicks prev, next

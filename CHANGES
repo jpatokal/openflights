@@ -1,3 +1,10 @@
+<b>2009-03-04</b>
+
+* Top 10 allows sorting by flight count or distance (2168185)
+* Top 10 can also show top 20, 50 flights (2495106)
+* Top 10 CSS rewritten (use padding instead of border-spacing), works better on IE
+* Top 10 test cases added
+
 <b>2009-03-02</b>
 
 * Facebook: "Today" flights posted earlier, at 01:00 EST
