@@ -73,7 +73,7 @@ var classes_short = {"Y":"Eco", "P":"PrE", "C":"Biz", "F":"1st", "": ""};
 var seattypes_short = {"W":"Win", "A":"Ais", "M":"Mid", "": ""};
 var reasons_short = {"B":"Wrk", "L":"Fun", "C":"Crw", "O":"Oth", "": ""};
 
-var topmodes = { "F":"Flights", "D":"Distance" };
+var topmodes = { "F":"Flights", "D":"Mileage" };
 var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50" };
 
 // Validate 24-hr time ([0]0:00-23:59)
