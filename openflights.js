@@ -1458,8 +1458,13 @@ function showTop10(str) {
 
 function updateTop10() {
   var form = document.forms['top10form'];
-  mode = form.mode[form.mode.selectedIndex].value;
-  limit = form.limit[form.limit.selectedIndex].value;
+  if(form) {
+    mode = form.mode[form.mode.selectedIndex].value;
+    limit = form.limit[form.limit.selectedIndex].value;
+  } else {
+    mode = "F";
+    limit = "10";
+  }
   xmlhttpPost(URL_TOP10, 0, "mode=" + mode + "&limit=" + limit);
 }
 
