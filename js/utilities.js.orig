@@ -60,7 +60,7 @@ function onHintTextboxFocus() {
   var input = this;
   if (input.value.trim()==input.hintText) {
     input.value = "";
-    if(input.className == HintClass) {
+    if(input.className.indexOf(HintClass)!=-1) {
       input.className = HintActiveClass;
     } else {
       input.className = miniHintActiveClass;
@@ -74,7 +74,7 @@ function onHintTextboxBlur() {
   if (input.value.trim().length==0) {
     input.style.color = "#888";
     input.value = input.hintText;
-    if(input.className == HintActiveClass) {
+    if(input.className.indexOf(HintClass)!=-1) {
       input.className = HintClass;
     } else {
       input.className = miniHintClass;
