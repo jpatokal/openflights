@@ -3,9 +3,9 @@ function initHintTextboxes() {var inputs = document.getElementsByTagName("input"
 
 function resetHintTextboxes() {var inputs = document.getElementsByTagName("input");for (i = 0; i < inputs.length; i++) {var input = inputs[i];if (input.type != "text") {continue;}if (input.className.indexOf(HintClass) != -1) {input.className = HintClass;input.value = input.hintText;input.style.color = "#888";}if (input.className.indexOf(miniHintClass) != -1) {input.className = miniHintClass;input.value = input.hintText;input.style.color = "#888";}}}
 
-function onHintTextboxFocus() {var input = this;if (input.value.trim() == input.hintText) {input.value = "";if (input.className == HintClass) {input.className = HintActiveClass;} else {input.className = miniHintActiveClass;}}input.style.color = "#000";}
+function onHintTextboxFocus() {var input = this;if (input.value.trim() == input.hintText) {input.value = "";if (input.className.indexOf(HintClass) != -1) {input.className = HintActiveClass;} else {input.className = miniHintActiveClass;}}input.style.color = "#000";}
 
-function onHintTextboxBlur() {var input = this;if (input.value.trim().length == 0) {input.style.color = "#888";input.value = input.hintText;if (input.className == HintActiveClass) {input.className = HintClass;} else {input.className = miniHintClass;}}}
+function onHintTextboxBlur() {var input = this;if (input.value.trim().length == 0) {input.style.color = "#888";input.value = input.hintText;if (input.className.indexOf(HintClass) != -1) {input.className = HintClass;} else {input.className = miniHintClass;}}}
 var jg_ihtm, jg_ie, jg_fast, jg_dom, jg_moz, jg_n4 = (document.layers && typeof document.classes != "undefined");
 function chkDHTM(x, i) {x = document.body || null;jg_ie = x && typeof x.insertAdjacentHTML != "undefined";jg_dom = (x && !jg_ie && typeof x.appendChild != "undefined" && typeof document.createRange != "undefined" && typeof (i = document.createRange()).setStartBefore != "undefined" && typeof i.createContextualFragment != "undefined");jg_ihtm = !jg_ie && !jg_dom && x && typeof x.innerHTML != "undefined";jg_fast = jg_ie && document.all && !window.opera;jg_moz = jg_dom && typeof x.style.MozOpacity != "undefined";}
 
