@@ -42,6 +42,10 @@ function getFilterString($vars) {
     case "distlt":
       $filter = $filter . " AND f.distance < " . $xvalue;
       break;
+
+    case "mode":
+      $filter = $filter . " AND f.mode='" . $xvalue . "'";
+      break;
       
     case "note":
       $filter = $filter . " AND f.note LIKE '%" . $xvalue . "%'";

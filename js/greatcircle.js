@@ -239,20 +239,26 @@ function getLastDay(year, month, type) {
 // Splice and dice apdata chunks
 // code:apid:x:y:tz:dst
 function getX(element) {
-  var ap = $(element + 'id').value.split(":");
-  return ap[2];
+  return $(element + 'id').value.split(":")[2];
 }
 function getY(element) {
-  var ap = $(element + 'id').value.split(":");
-  return ap[3];
+  return $(element + 'id').value.split(":")[3];
 }
 function getTZ(element) {
-  var ap = $(element + 'id').value.split(":");
-  return parseInt(ap[4]);
+  var tz = $(element + 'id').value.split(":")[4];
+  if(!tz || tz == "") {
+    return 0;
+  } else {
+    return parseInt(tz);
+  }
 }
 function getDST(element) {
-  var ap = $(element + 'id').value.split(":");
-  return ap[5];
+  var dst = $(element + 'id').value.split(":")[5];
+  if(!dst || dst == "") {
+    return "N";
+  } else {
+    return dst;
+  }
 }
 
 // Return HTML string representing user's elite status icon
@@ -276,4 +282,15 @@ function getEliteIcon(e, validity) {
     }
   }
   return "";
+}
+
+// Given element "select", select option matching "value", or #0 if not found
+function selectInSelect(select, value) {
+  if(!select) return;
+  select.selectedIndex = 0; // default to unselected
+  for(index = 0; index < select.length; index++) {
+    if(select[index].value == value) {
+      select.selectedIndex = index;
+    }
+  }
 }

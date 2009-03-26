@@ -1339,6 +1339,11 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
     if(this.options.defaultParams) 
       this.options.parameters += '&' + this.options.defaultParams;
 
+    // Add if we're looking for a flight/road/train/ship type
+    if(getCurrentPane() == "input") {
+      this.options.parameters += '&mode=' + document.forms['inputform'].mode.value;
+    }
+
     new Ajax.Request(this.url, this.options);
   },
 

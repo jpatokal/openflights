@@ -5,29 +5,39 @@
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
+    <script type="text/javascript" src="/js/utilities.js"></script>
+    <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/alsearch.js"></script>
   </head>
 
   <body>
     <div id="contexthelp">
       <FORM name="searchform">
-	<h1>Airline search</h1>
-	Fill one or more fields below to search for matching airlines.
+	<h1>Airline, railway, road transport and shipping search</h1>
+	Fill one or more fields below to search for matching airlines and other transport operators.
 	<table>
 	    <tr>
-	      <td>Airline name</td>
+	      <td>Name</td>
 	      <td>IATA</td>
 	      <td>ICAO</td>
+	      <td>Mode</td>
 	    </tr><tr>
-	      <td><INPUT type="text" name="airline"></td>
+	      <td><INPUT type="text" name="name"></td>
 	      <td><INPUT type="text" name="iata" size="3"></td>
 	      <td><INPUT type="text" name="icao" size="4"></td>
+	      <td>
+		<select name="mode" onChange="JavaScript:changeMode()">
+		  <option value="F" selected>Airline</option>
+		  <option value="T">Railway</option>
+		  <option value="R">Road transport</option>
+		  <option value="S">Shipping</option>
+	      </td>
 	    </tr><tr>
 	      <td>Alternative name</td>
-	      <td colspan=2>Country name</td>
+	      <td colspan=3>Country name</td>
 	    </tr><tr>
 	      <td><INPUT type="text" name="alias"></td>
-	      <td colspan=2>
+	      <td colspan=3>
 		<div id="country_select"><img src="/img/ajax-wait-small.gif" height=16 width=16/></div>
 	      </td>
 	    </tr><tr>

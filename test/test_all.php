@@ -34,6 +34,11 @@ $test = &new TestSuite('Airport Search');
 $test->addTestFile('apsearch.php');
 $test->run(new HtmlReporter());
 
+// Add airline
+$test = &new TestSuite('Airline Search');
+$test->addTestFile('alsearch.php');
+$test->run(new HtmlReporter());
+
 // Autocompletion results
 $test = &new TestSuite('Autocomplete');
 $test->addTestFile('autocomplete.php');

@@ -33,7 +33,7 @@
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-	      <B>News</b>: 04 Mar 2009: <a href="/blog/">Top 10 can now sort by distance and show up to 50! Details in blog.</a>
+	      <B>News</b>: 26 Mar 2009: <a href="/blog/">Train, road and ship segments now supported! Details in blog.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -87,13 +87,13 @@
 		<b>Filter</b>
 		<table>
 		<tr>
-		  <td>Airlines&nbsp;</td>
-		  <td><span id="filter_airlineselect"><select class="filter" name="Airlines"><option value="">All airlines</option></select></span>
+		  <td>Carrier&nbsp;</td>
+		  <td><span id="filter_airlineselect"><select class="filter" name="Airlines"><option value="">All carriers</option></select></span>
 		</tr><tr>
 		  <td>Year</td>
 		  <td><span id="filter_yearselect"><select class="filter" name="Years"><option value="">All</option></select></span></td>
 		</tr><tr>
-		  <td>Trips<a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
+		  <td>Trip<a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
 		  <td><span id="filter_tripselect"></span>
 		</tr><tr>
 		  <td colspan=2><select style="width: 100px" id="filter_extra_key" name="Extra" onChange="JavaScript:setExtraFilter()" style="visibility: hidden">
@@ -101,6 +101,7 @@
 		      <option value="class">Class</option>
 		      <option value="distlt">Distance &lt;</option>
 		      <option value="distgt">Distance &gt;</option>
+		      <option value="mode">Mode</option>
 		      <option value="note">Note</option>
 		      <option value="reason">Reason</option>
 		      <option value="reg">Registration</option>
@@ -188,10 +189,14 @@
   </td>
 
 </tr><tr>
-  <td>Flight&nbsp;#&nbsp;</td>
-  <td colspan=2><input type="text" name="number" size="7" value="" tabindex="16" onChange='JavaScript:flightNumberToAirline("NUMBER")'/> Seat <input type="text" name="seat" size="5" tabindex="17" onChange="JavaScript:markAsChanged();"/>
-      Type
-      <select name="seat_type" tabindex="18" onChange="JavaScript:markAsChanged();">
+  <td><select name="mode" tabindex="16" onChange="JavaScript:changeMode();">
+      <option value="F">Flight</option>
+      <option value="R">Road</option>
+      <option value="S">Ship</option>
+      <option value="T">Train</option>
+    </select></td>
+  <td colspan="2">&nbsp;Nr.&nbsp;<input type="text" name="number" size="7" value="" tabindex="17" onChange='JavaScript:flightNumberToAirline("NUMBER")'/> Seat <input type="text" name="seat" size="4" tabindex="18" onChange="JavaScript:markAsChanged();"/>
+    Type <select name="seat_type" tabindex="19" onChange="JavaScript:markAsChanged();">
         <option value="-">-</option>
         <option value="W">Window</option>
         <option value="A">Aisle</option>
@@ -207,16 +212,17 @@
   </td>
 
 </tr><tr>
-  <td>Airline<a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="Help: How do I enter airlines?" height=11 width=10></a></td>
-  <td><input type="text" name="airline" id="airline" size="60" tabindex="19" onChange='JavaScript:flightNumberToAirline("airline")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
-      <input type="hidden" name="airlineid" id="airlineid"/></td>
-  <td><img src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline("airline")'/ style="margin-left: 5px"/></td>
+  <td>Carrier<a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="Help: How do I enter airlines?" height=11 width=10></a></td>
+  <td><input type="text" name="airline" id="airline" size="60" tabindex="20" onChange='JavaScript:flightNumberToAirline("airline")' class="hintTextbox" value="Enter airline name or code"/><div id="airlineAC"></div>
+      <input type="hidden" name="airlineid" id="airlineid"/> </td>
+  <td><img id="icon_airline" src="/img/icon_airline.png" title="Search for airline" height=17 width=17 onclick='JavaScript:popNewAirline("airline")' style="margin-left: 5px"/>
+  </td>
 
   <td colspan=2><span id="input_status"></span></td>
 
 </tr><tr>
   <td>Note</td>
-  <td colspan=2><input type="text" name="note" id="note" size="60" tabindex="20" class="hintTextbox" value="" onChange="JavaScript:markAsChanged();"></td>
+  <td colspan=2><input type="text" name="note" id="note" size="60" tabindex="21" class="hintTextbox" value="" onChange="JavaScript:markAsChanged();"></td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">
       <input id="b_add" value="Add" title="Save this flight" type="button" tabindex="120" onclick='JavaScript:submitFlight();'>

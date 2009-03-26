@@ -12,6 +12,18 @@ $settings = array('username' => 'autotest',
 		  'fbuid' => null,
 		  'sessionkey' => null);
 
+$airline = array('name' => 'AutoTest Airways',
+		 'alias' => 'AutoTestAir',
+		 'iata' => 'ZZ',
+		 'icao' => 'ZZZ',
+		 'country' => 'Austria',
+		 'mode' => 'F');
+
+$railway = array('name' => 'AutoTest Railways',
+		 'alias' => 'AutoTestRail',
+		 'country' => 'Austria',
+		 'mode' => 'T');
+
 $airport = array('name' => 'Test Airport',
 		 'city' => 'Testville',
 		 'country' => 'Testland',

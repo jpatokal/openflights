@@ -19,7 +19,7 @@ class LoadCountriesTest extends WebTestCase {
 }
 
 // Try to add airport before logging in
-class RecordNotLoggedInTest extends WebTestCase {
+class RecordAirportNotLoggedInTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
 
@@ -46,7 +46,7 @@ class RecordNewAirportTest extends WebTestCase {
 }
 
 // Try to add it again
-class RecordDuplicateTest extends WebTestCase {
+class RecordAirportDuplicateTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $airport;
 
@@ -74,7 +74,7 @@ class EditWrongAirportTest extends WebTestCase {
 }
 
 // Try to reuse an existing airport's code
-class EditDuplicateICAOTest extends WebTestCase {
+class EditAirportDuplicateICAOTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $airport, $new_apid;
 
@@ -89,7 +89,7 @@ class EditDuplicateICAOTest extends WebTestCase {
 }
 
 // Try to edit to overwrite existing airport
-class EditSuccessfulTest extends WebTestCase {
+class EditAirportSuccessfulTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $airport, $new_apid;
 
@@ -104,7 +104,7 @@ class EditSuccessfulTest extends WebTestCase {
 }
 
 // Search OpenFlights DB by IATA (of just-added airport)
-class SearchOFDBByIATATest extends WebTestCase {
+class SearchAirportOFDBByIATATest extends WebTestCase {
   function test() {
     global $webroot, $airport;
 
@@ -127,7 +127,7 @@ class SearchOFDBByIATATest extends WebTestCase {
 }
 
 // Search DAFIF by ICAO
-class SearchDAFIFByICAOTest extends WebTestCase {
+class SearchAirportDAFIFByICAOTest extends WebTestCase {
   function test() {
     global $webroot;
 
@@ -146,7 +146,7 @@ class SearchDAFIFByICAOTest extends WebTestCase {
 }
 
 // Search GAD by name
-class SearchGADByNameTest extends WebTestCase {
+class SearchAirportGADByNameTest extends WebTestCase {
   function test() {
     global $webroot;
 

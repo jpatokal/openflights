@@ -1,3 +1,21 @@
+<b>2009-03-26</b>
+
+* Segments by train, road or sea added (2509953)
+* Extra filter option "mode" added
+* Added pie chart of travel modes to Analyze
+* Unknown airlines and other carriers can now pop up Add New dialog
+* KML now implements directory hierarchy and color-codes segments based on mode
+* Replaced clunky JS pie chart code with Google Charts API
+* Airline search test cases added
+* Autocomplete airline test cases added
+* Bug: Better handling of blanked airport, airline names
+* Bug: Adding airlines with long names now updates select
+* Bug: Duration of "0:60" now rendered correctly as "1:00"
+
+<b>2009-03-19</b>
+
+* Bug: Restore textbox class correctly after hint text restoration
+
 <b>2009-03-04</b>
 
 * Top 10 allows sorting by flight count or distance (2168185)

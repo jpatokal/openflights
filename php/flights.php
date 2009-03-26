@@ -54,7 +54,7 @@ $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 
 // List of all this user's flights
-$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
+$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
 
 // ...filtered by airport (optional)
 if($apid && $apid != 0) {
@@ -105,7 +105,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $dst_apid = $row["dst_apid"];
   $dst_code = format_apcode2($row["dst_iata"], $row["dst_icao"]);
 
-  $al_code = format_alcode($row["al_iata"], $row["al_icao"]);
+  $al_code = format_alcode($row["al_iata"], $row["al_icao"], $row["mode"]);
 
   if($row["opp"] == 'Y') {
     $tmp = $src_apid;
@@ -139,7 +139,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     // Filter out any carriage returns or tabs
     $note = str_replace(array("\n", "\r", "\t"), "", $row["note"]);
 
-    printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code, $row["src_time"]);
+    printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code, $row["src_time"], $row["mode"]);
   }
 }
 ?>
