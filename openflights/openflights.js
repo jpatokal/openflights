@@ -82,7 +82,7 @@ var modesegments = { "F":"flight", "T":"train", "R":"road trip", "S":"ship" };
 var modeoperators = { "F":"airline", "T":"railway", "R":"road transport", "S":"shipping" };
 var modespeeds = { "F":500, "T":100, "R":60, "S":40 };
 
-var topmodes = { "F":"Flights", "D":"Mileage" };
+var topmodes = { "F":"Segments", "D":"Mileage" };
 var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50" };
 
 // Validate 24-hr time ([0]0:00-23:59)
@@ -1102,7 +1102,7 @@ function updateMap(str){
   var min = Math.floor(col[2] % 60);
   if(min < 10) min = "0" + min;
 
-  stats = col[0] + " flights<br>" +
+  stats = col[0] + " segments<br>" +
     miles + " miles<br>" +
     days + " days " + hours + ":" + min;
   $("stats_ajax").style.display = 'none';
@@ -1219,7 +1219,7 @@ function listFlights(str, desc) {
       table.unshift("<span style='float: right'>Export <input type='button' value='CSV' title='Comma-Separated Value, for Excel and data processing' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='Keyhole Markup Language, for Google Earth and visualization' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
-    table.push("<tr><th class=\"unsortable\"></th><th>From</th><th>To</th><th>Nr.</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Plane</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>");
+    table.push("<tr><th class=\"unsortable\"></th><th>From</th><th>To</th><th>Nr.</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Vehicle</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>");
     if(logged_in) {
       table.push("<th class=\"unsortable\">Action</th>");
     }
@@ -1315,9 +1315,9 @@ function showStats(str) {
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th colspan=2>Unique</th></tr>";
     table += "<tr><td>Airports</td><td>" + uniques["num_airports"] + "</td></tr>";
-    table += "<tr><td>Airlines</td><td>" + uniques["num_airlines"] + "</td></tr>";
+    table += "<tr><td>Carriers</td><td>" + uniques["num_airlines"] + "</td></tr>";
     table += "<tr><td>Countries</td><td>" + uniques["num_countries"] + "</td></tr>";
-    table += "<tr><td>Plane types</td><td>" + uniques["num_planes"] + "</td></tr>";
+    table += "<tr><td>Vehicles</td><td>" + uniques["num_planes"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
 
     var distance = uniques["distance"];
@@ -1330,14 +1330,14 @@ function showStats(str) {
     bigtable += table + "</td><td style=\"vertical-align: top\">";
 
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=2>Flight records</th></tr>";
+    table += "<tr><th colspan=2>Journey records</th></tr>";
     var rows = longshort.split(";");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
       table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
     }
-    table += "<tr><td>Average flight</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
+    table += "<tr><td>Average</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>Airport records</th></tr>";
