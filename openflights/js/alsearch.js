@@ -7,6 +7,16 @@ URL_COUNTRIES = "/php/countries.php";
 var warning;
 
 window.onload = function init(){
+  // ...?name=x&mode=y
+  // 0    1 2          3    4
+  var args = window.location.href.split('?');
+  if(args[1]) {
+    args = args[1].split('&');
+    form = document.forms['searchform'];
+    form.name.value = unescape(args[0].split('=')[1]);
+    selectInSelect(form.mode, args[1].split('=')[1]);
+    changeMode();
+  }
   xmlhttpPost(URL_COUNTRIES);
 }
 
@@ -51,13 +61,13 @@ function xmlhttpPost(strURL, offset, action) {
   var query = "";
   if(strURL == URL_ALSEARCH) {
     var form = document.forms['searchform'];
-    var airline = form.airline.value;
-    var country = form.country.value;
+    var name = form.name.value;
+    var country = form.country[form.country.selectedIndex].text;
     var iata = form.iata.value;
     var icao = form.icao.value;
     var alias = form.alias.value;
     var callsign = form.callsign.value;
-    var country = form.country[form.country.selectedIndex].text
+    var mode = form.mode.value;
 
     if(iata != "" && iata.length != 2) {
       alert("IATA codes must be exactly two letters.");
@@ -77,7 +87,7 @@ function xmlhttpPost(strURL, offset, action) {
     }
     /*
     var re_alphanum = /^[-.\'a-zA-Z0-9 ]*$/;
-    if(! re_alphanum.test(airline) || ! re_alphanum.test(alias)) {
+    if(! re_alphanum.test(name) || ! re_alphanum.test(alias)) {
       alert("Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airline names.");
       return;
     }
@@ -88,46 +98,49 @@ function xmlhttpPost(strURL, offset, action) {
 	alert("Sorry, you have to be logged into OpenFlights to use this.");
 	return;
       }
-      if(airline == "") {
-	alert("Please enter an airline name.");
-	form.airline.focus();
+      if(name == "") {
+	alert("Please enter a name.");
+	form.name.focus();
 	return;
       } else {
-	airline = airline.substring(0,1).toUpperCase() + airline.substring(1);
-	form.airline.value = airline;
+	name = name.substring(0,1).toUpperCase() + name.substring(1);
+	form.name.value = name;
       }
 
-      if(country == "") {
+      if(country == "ALL") {
 	alert("Please select a country.");
 	form.country.focus();
 	return;
       }
 
-      if(iata == "") {
-	if(! confirm("You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?")) {
-	  return;
+      if(mode == "F") {
+	if(iata == "") {
+	  if(! confirm("You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?")) {
+	    return;
+	  }
 	}
-      }
-      if(icao == "") {
-	if(! confirm("You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?")) {
-	  return;
+	if(icao == "") {
+	  if(! confirm("You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?")) {
+	    return;
+	  }
 	}
       }
 
-      desc = airline + ", " + country +
+      desc = name + ", " + country +
 	" (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
-      if(! confirm("Are you sure you want to add " + desc + " as a new airline?  Please double-check the name and airline codes before confirming.")) {
+      if(! confirm("Are you sure you want to add " + desc + " as a new operator?  Please double-check the name and any airline codes before confirming.")) {
 	document.getElementById("miniresultbox").innerHTML = "<I>Cancelled.</I>";
 	return;
       }
     }
 
-    query = 'airline=' + escape(airline) + '&' +
+    query = 'name=' + escape(name) + '&' +
       'alias=' + escape(alias) + '&' +
       'iata=' + escape(iata) + '&' +
       'icao=' + escape(icao) + '&' +
       'country=' + escape(country) + '&' +
       'callsign=' + escape(callsign) + '&' +
+      'mode=' + escape(mode) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
       'action=' + action;
@@ -201,19 +214,26 @@ function searchResult(str) {
     }
 
     // Meat of the table
-    // 0 iata, 1 icao, 2 alid, 3 al-name, 4 alias, 5 country, 6 callsign, 7 printable-name, 8 uid
+    var col = jsonParse(airlines[a]);
     if(a % 2 == 1) {
       bgcolor = "#fff";
     } else {
       bgcolor = "#ddd";
     }
-    if(col[8] != "") {
-      bgcolor = "#fdd"; // User-added
-      disclaimer = "<br><b>Note</b>: Airlines in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
+    switch(col["al_uid"]) {
+    case "user":
+      bgcolor = "#fdd";
+      disclaimer = "<br><b>Note</b>: Operators in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
+      break;
+
+    case "own":
+      bgcolor = "#ddf";
+      disclaimer = "<br><b>Note</b>: Operators in <span style='background-color: " + bgcolor + "'>blue</span> have been added by you and can be edited.";
+      break;
     }
-    table += "<tr><td style='background-color: " + bgcolor + "'>" + col[7] + "</td>";
+    table += "<tr><td style='background-color: " + bgcolor + "'>" + col["al_name"] + "</td>";
     // id = alid
-    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirline(\"" + col[2] + "\",\"" + escape(col[7]) + "\")'></td>";
+    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirline(\"" + col["alid"] + "\",\"" + escape(col["al_name"]) + "\",\"" + col["mode"] + "\")'></td>";
     table += "</tr>";
   }
   table += "</table>";
@@ -233,17 +253,31 @@ function recordResult(str) {
     // Select newly minted airline and return to main
     // 1;alid
     var form = document.forms['searchform'];
-    var iata = form.iata.value;
-    var code = (iata != "" ? iata : form.icao.value);
-    name = form.airline.value + " (" + code + ")";
-    selectAirline(col[1], name);
+    name = form.name.value;
+    mode = form.mode.value;
+    if(mode == "F") {
+      var iata = form.iata.value;
+      name += " (" + (iata != "" ? iata : form.icao.value) + ")";
+    }
+    selectAirline(col[1], name, mode);
   }
+}
+
+// Enable IATA,ICAO,callsign only for flights
+function changeMode() {
+  var form = document.forms['searchform'];
+  var mode = form.mode.value;
+  disabled = (mode != "F");
+  form.iata.disabled = disabled;
+  form.icao.disabled = disabled;
+  form.callsign.disabled = disabled;
+  form.iatafilter.disabled = disabled;
 }
 
 // Clear form -- everything *except* database
 function clearSearch() {
   var form = document.forms['searchform'];
-  form.airline.value = "";
+  form.name.value = "";
   form.country.selectedIndex = 0;
   form.iata.value = "";
   form.icao.value = "";
@@ -253,11 +287,11 @@ function clearSearch() {
 }
 
 // Airline selected, kick it back to main window and close this
-function selectAirline(data, name) {
+function selectAirline(data, name, mode) {
   if(! parent.opener || ! parent.opener.addNewAirline) {
     alert("Sorry, you have to be logged into OpenFlights to do this.");
   }
-  parent.opener.addNewAirline(data, unescape(name));
+  parent.opener.addNewAirline(data, unescape(name), mode);
   window.close();
 }
 

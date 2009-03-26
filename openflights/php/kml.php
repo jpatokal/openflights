@@ -18,11 +18,13 @@ if(!$uid or empty($uid)) {
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
-$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,d.x AS dx,d.y AS dy,d.elevation AS dz,distance FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . getFilterString($HTTP_GET_VARS) . " GROUP BY s.apid,d.apid";
+$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . getFilterString($HTTP_GET_VARS) . " GROUP BY s.apid,d.apid";
 
 $result = mysql_query($sql, $db);
 
 readfile("../kml/header.kml");
+
+print "<Folder>\n<name>Flights</name>\n";
 
 // Plot flights on map
 while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -36,20 +38,36 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
   // Skip flights where src==dest
   if($x1 != $x2 && $y1 != $y2) {
+    $src_ap = format_apcode2($row["siata"], $row["sicao"]);
+    $dst_ap = format_apcode2($row["diata"], $row["dicao"]);
+    $code = $row["code"];
+    $mode = $row["mode"];
+
+    print "<Placemark>\n";
+    print "  <name>$src_ap-$dst_ap</name>\n  <description>$modes[$mode] $code</description>\n";
+    print "  <styleUrl>#$mode</styleUrl>\n";
+
     $points = gcPath(array("x" => $x1, "y" => $y1, "z" => $z1), 
 		     array("x" => $x2, "y" => $y2, "z" => $z2),
 		     $distance, true);
     
-    print "<LineString>\n<altitudeMode>absolute</altitudeMode><coordinates>\n";
+    if($row["mode"] == "F") {
+      $altitudeMode = "absolute";
+    } else {
+      $altitudeMode = "clampToGround";
+    }
+    print "  <MultiGeometry>\n    <LineString>\n      <altitudeMode>$altitudeMode</altitudeMode><coordinates>\n";
     foreach($points as $loc) {
       if(! $loc) continue; // skip breaks
       print $loc["x"] . "," . $loc["y"] . "," . $loc["z"] . "\n";
     }
-    print "  </coordinates>\n</LineString>\n";
+    print "      </coordinates>\n    </LineString>\n";
+    print "  </MultiGeometry>\n</Placemark>\n";
   }
 }
 
-print "  </MultiGeometry>\n</Placemark>\n";
+print "</Folder>\n";
+print "<Folder><name>Airports</name>\n";
 
 // Draw airports from largest to smallest
 $airportColors = array ("black", "gray", "purple", "cyan", "cyan", "green");
@@ -87,7 +105,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   print "  <styleUrl>#" . $airportColors[$colorIndex] . "-pushpin</styleUrl>\n";
   print "</Placemark>\n";
 }
-    
+print "</Folder>\n";
 readfile("../kml/footer.kml");
 
 ?>

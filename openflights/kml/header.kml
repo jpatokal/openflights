@@ -3,9 +3,27 @@
   <Document>
     <name>OpenFlights</name>
     <description>Flight map from openflights.org</description>
-    <Style id="flight">
+    <Style id="F">
       <LineStyle>
         <color>ff0099ee</color> <!-- alpha/blue/green/red -->
+        <width>3</width>
+      </LineStyle>
+    </Style>
+    <Style id="T">
+      <LineStyle>
+        <color>ff5555ee</color> <!-- alpha/blue/green/red -->
+        <width>3</width>
+      </LineStyle>
+    </Style>
+    <Style id="R">
+      <LineStyle>
+        <color>ff00659f</color> <!-- alpha/blue/green/red -->
+        <width>3</width>
+      </LineStyle>
+    </Style>
+    <Style id="S">
+      <LineStyle>
+        <color>ffffcc00</color> <!-- alpha/blue/green/red -->
         <width>3</width>
       </LineStyle>
     </Style>
@@ -59,8 +77,3 @@
         <color>FF00FFFF</color>
       </IconStyle>
     </Style>
-    <Placemark>
-      <name>Flights</name>
-      <description>Flights</description>
-      <styleUrl>#flight</styleUrl>
-      <MultiGeometry>

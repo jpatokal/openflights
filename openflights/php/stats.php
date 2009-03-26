@@ -158,4 +158,18 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 }
 printf ("\n");
 
+// Mode
+$sql = "SELECT DISTINCT mode,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY mode ORDER BY mode";
+$result = mysql_query($sql, $db);
+$first = true;
+while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
+  if($first) {
+    $first = false;
+  } else {
+    printf(":");
+  }
+  printf ("%s,%s", $row[0], $row[1]);
+}
+printf ("\n");
+
 ?>

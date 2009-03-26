@@ -29,9 +29,14 @@ $reason = $HTTP_POST_VARS["reason"];
 $registration = $HTTP_POST_VARS["registration"];
 $trid = $HTTP_POST_VARS["trid"];
 $fid = $HTTP_POST_VARS["fid"];
+$mode = $HTTP_POST_VARS["mode"];
 $note = stripslashes($HTTP_POST_VARS["note"]);
 $param = $HTTP_POST_VARS["param"];
 $multi = $HTTP_POST_VARS["multi"];
+
+if(!$mode || $mode == "") {
+  $mode = "F";
+}
 
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
@@ -65,7 +70,6 @@ if($param == "ADD" || $param == "EDIT") {
   }
 }
 
-
 switch($param) {
  case "ADD":
    // Can add multiple flights or just one
@@ -76,7 +80,7 @@ switch($param) {
    } else {
      $rows = array("");
    }
-   $sql = "INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES";
+   $sql = "INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp, mode) VALUES";
    foreach($rows as $idx) {
      $src_date = $HTTP_POST_VARS["src_date" . $idx];
      $src_apid = $HTTP_POST_VARS["src_apid" . $idx];
@@ -91,8 +95,8 @@ switch($param) {
      if($idx != "" && $idx != "1") {
        $sql .= ",";
      }
-     $sql = $sql . sprintf("(%s, %s, '%s', %s, %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s')",
-			   $uid, mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp);
+     $sql = $sql . sprintf("(%s, %s, '%s', %s, %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s', '%s')",
+			   $uid, mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp, mysql_real_escape_string($mode));
    }
    break;
 
@@ -103,8 +107,8 @@ switch($param) {
    $alid = trim($HTTP_POST_VARS["alid"]); // IE adds some whitespace crud to this!?
    if($alid == 0) $alid = -1; // this should not be necessary, but just in case...
    list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid, $opp);
-   $sql = sprintf("UPDATE flights SET src_apid=%s, src_date='%s', src_time=%s, dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, opp='%s' WHERE fid=%s",
-		  mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp, mysql_real_escape_string($fid));
+   $sql = sprintf("UPDATE flights SET src_apid=%s, src_date='%s', src_time=%s, dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, opp='%s', mode='%s' WHERE fid=%s",
+		  mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp, mysql_real_escape_string($mode), mysql_real_escape_string($fid));
    break;
 
  case "DELETE":
@@ -121,14 +125,14 @@ mysql_query($sql, $db) or die('0;Database error when executing query ' . $sql);
 switch($param) {
  case "DELETE":
    $code = 100;
-   $msg = "Flight deleted.";
+   $msg = $modes[$mode] . " deleted.";
    break;
 
  case "ADD":
    $code = 1;
    $count = mysql_affected_rows();
    if($count == 1) {
-     $msg = "Flight added.";
+     $msg = $modes[$mode] . " added.";
    } else {
      $msg = $count . " flights added.";
    }
@@ -136,7 +140,7 @@ switch($param) {
 
  case "EDIT":
    $code = 2;
-   $msg = "Flight edited.";
+   $msg = $modes[$mode] . " edited.";
    break;
 }
 

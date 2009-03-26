@@ -18,12 +18,24 @@ class DeleteFlightsTest extends WebTestCase {
 // Not an actual test, just cleaning up
 class DeleteAirportTest extends WebTestCase {
   function test() {
-    global $airport;
+    global $settings;
 
     $db = db_connect();
-    $sql = "DELETE FROM airports WHERE icao='" . $airport["icao"] . "'";
+    $sql = "DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["username"] . "')";
     $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() == 1, "Airport deleted");
+    $this->assertTrue(mysql_affected_rows() >= 1, "Airport(s) deleted");
+  }
+}
+
+// Not an actual test, just cleaning up
+class DeleteAirlinesTest extends WebTestCase {
+  function test() {
+    global $settings;
+
+    $db = db_connect();
+    $sql = "DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["username"] . "')";
+    $result = mysql_query($sql, $db);
+    $this->assertTrue(mysql_affected_rows() >= 1, "Airline(s) deleted");
   }
 }
 

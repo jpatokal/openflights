@@ -72,10 +72,6 @@ if($query) {
   $rs = mysql_query($sql);
   if(mysql_num_rows($rs) > 0) {
     while($row = mysql_fetch_assoc($rs)) {
-      $code = $row["iata"];
-      if($code == "") {
-	$code = $row["icao"];
-      }
       if($limit > 1) {
 	printf ("<li class='autocomplete' origin='%s' id='%s'>%s</li>\n", $ap, format_apdata($row), format_airport($row));
       } else {
@@ -112,35 +108,38 @@ if($query) {
     }
   }
   if($query) {
-    if(strlen($query) <= 3) {
+    $mode = mysql_real_escape_string($_POST["mode"]);
+    if(! $mode) $mode = "F";
+    if(strlen($query) <= 3 && $mode == 'F') {
       $ext = "iata!='' AND icao!='" . $query . "' AND";
     } else {
-      $ext = "icao!='' AND";
+      $ext = ""; // anything goes!
     }
-    $sql = sprintf("SELECT 2 as sort_col,alid,name,iata,icao FROM airlines WHERE %s name LIKE '%s%%' OR alias LIKE '%s%%'",
-		   $ext, $query, $query);
-    switch(strlen($query)) {
-    case 2: // IATA
-      $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE iata='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
-      break;
-      
-    case 3: // ICAO
-      $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
-      break;
-      
-    default: // sort non-IATA airlines last
-      $sql = sprintf("%s ORDER BY LENGTH(iata) DESC, name LIMIT %s", $sql, $limit);
-      break;
+    $sql = sprintf("SELECT 2 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE mode='%s' AND %s (name LIKE '%s%%' OR alias LIKE '%s%%')",
+		   $mode, $ext, $query, $query);
+
+    // IATA/ICAO only apply to flights
+    if($mode == 'F') {
+      switch(strlen($query)) {
+      case 2: // IATA
+	$sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE iata='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
+	break;
+	
+      case 3: // ICAO
+	$sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
+	break;
+      default: // sort non-IATA airlines last
+	$sql = sprintf("%s ORDER BY LENGTH(iata) DESC, name LIMIT %s", $sql, $limit);
+	break;
+      }
+    } else {
+      $sql = sprintf("%s ORDER BY name LIMIT %s", $sql, $limit);
     }
     
     if($limit > 1) print ("<ul class='autocomplete'>");
-    $rs = mysql_query($sql);
+    $rs = mysql_query($sql) or die($sql);
     if(mysql_num_rows($rs) > 0) {
       while($row = mysql_fetch_assoc($rs)) {
-	$code = $row["iata"];
-	if($code == "") {
-	  $code = $row["icao"];
-	}
 	if($limit > 1) {
 	  printf ("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
 	} else {

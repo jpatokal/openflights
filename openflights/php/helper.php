@@ -1,4 +1,6 @@
 <?php
+$modes = array ("F" => "Flight", "T" => "Train", "S" => "Ship", "R" => "Road trip");
+$modeOperators = array ("F" => "airline", "T" => "railway", "S" => "shipping company", "R" => "road transport company");
 
 //
 // Standard formatting of airport data
@@ -67,13 +69,20 @@ function format_airport($row) {
 
 //
 // Standard formatting of airline names
-// row: associative array containing name and iata
+// row: associative array containing name, iata, icao and (optionally) mode
 //
 function format_airline($row) {
-  return $row["name"] . " (" . format_alcode($row["iata"], $row["icao"]) . ")";
+  $mode = $row["mode"];
+  if($mode && $mode != "F") {
+    // Not an airline
+    return $row["name"];
+  } else {
+    return $row["name"] . " (" . format_alcode($row["iata"], $row["icao"], $row["mode"]) . ")";
+  }
 }
 
-function format_alcode($iata, $icao) {
+function format_alcode($iata, $icao, $mode) {
+  if($mode && $mode != "F") return "";
   if($iata && $iata != "") {
     return $iata;
   } else {
