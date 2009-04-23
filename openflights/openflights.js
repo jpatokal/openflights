@@ -212,9 +212,9 @@ window.onload = function init(){
 // Returns null if not found
 function parseArgument(name)
 {
-  // http://foobar.com/name/xxx#blah
-  // 0    1 2          3    4   5
-  var urlbits = window.location.href.split(/[\/#]/);
+  // http://foobar.com/name/xxx#blah *or* xxx?blah=blah
+  // 0    1 2          3    4   5         4   5
+  var urlbits = window.location.href.split(/[\/#?]/);
   if(urlbits[3] == name) {
     return unescape(urlbits[4]);
   } else {
