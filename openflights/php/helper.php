@@ -96,25 +96,30 @@ function format_alcode($iata, $icao, $mode) {
 
 // Calculate (distance, duration) between two airport IDs
 function gcDistance($db, $src_apid, $dst_apid) {
-  $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid=$dst_apid";
-  $rs = mysql_query($sql, $db);
-  if(mysql_num_rows($rs) != 2) return array(null, null);
-  $row = mysql_fetch_assoc($rs);
-  $lon1 = $row["x"];
-  $lat1 = $row["y"];
-  $row = mysql_fetch_assoc($rs);
-  $lon2 = $row["x"];
-  $lat2 = $row["y"];
-
-  $pi = 3.1415926;
-  $rad = doubleval($pi/180.0);
-  $lon1 = doubleval($lon1)*$rad; $lat1 = doubleval($lat1)*$rad;
-  $lon2 = doubleval($lon2)*$rad; $lat2 = doubleval($lat2)*$rad;
-
-  $theta = $lon2 - $lon1;
-  $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
-  if ($dist < 0) { $dist += $pi; }
-  $dist = floor($dist * 6371.2 * 0.621);
+  // Special case: loop flight to/from same airport
+  if($src_apid == $dst_apid) {
+    $dist = 0;
+  } else {
+    $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid=$dst_apid";
+    $rs = mysql_query($sql, $db);
+    if(mysql_num_rows($rs) != 2) return array(null, null);
+    $row = mysql_fetch_assoc($rs);
+    $lon1 = $row["x"];
+    $lat1 = $row["y"];
+    $row = mysql_fetch_assoc($rs);
+    $lon2 = $row["x"];
+    $lat2 = $row["y"];
+    
+    $pi = 3.1415926;
+    $rad = doubleval($pi/180.0);
+    $lon1 = doubleval($lon1)*$rad; $lat1 = doubleval($lat1)*$rad;
+    $lon2 = doubleval($lon2)*$rad; $lat2 = doubleval($lat2)*$rad;
+    
+    $theta = $lon2 - $lon1;
+    $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
+    if ($dist < 0) { $dist += $pi; }
+    $dist = floor($dist * 6371.2 * 0.621);
+  }
 
   $rawtime = floor(30 + ($dist / 500) * 60);
   $duration = sprintf("%02d:%02d",  floor($rawtime/60), $rawtime % 60);

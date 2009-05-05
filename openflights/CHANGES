@@ -1,3 +1,8 @@
+<b>2009-05-05</b>
+
+* Bug: Loop flights (same source and dest airport) now work in "Basic" mode
+* Test cases for multi, loop flights added
+
 <b>2009-04-23</b>
 
 * Bug: Links from Facebook with "?ref=nf" added to end now work
