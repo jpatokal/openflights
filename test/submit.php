@@ -6,8 +6,6 @@ include_once(dirname(__FILE__) . '/config.php');
 //
 // Test cases for php/submit.php and php/flights.php
 // NB: Assumes the test user exists and there are no flights entered yet (run signup.php first!)
-//
-// TODO: Multiinput
 
 $fid = null; // global for newly-added flight
 
@@ -18,6 +16,54 @@ class AddSingleFlightWithoutLoggingInTest extends WebTestCase {
 
     $msg = $this->post($webroot . "php/submit.php", $flight);
     $this->assertText('Not logged in');
+  }
+}
+
+// Add loop flight (src==dest)
+class AddLoopFlightTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings, $loopflight;
+
+    login($this);
+    $this->assertText("1;");
+
+    $msg = $this->post($webroot . "php/submit.php", $loopflight);
+    $this->assertText('1;');
+
+    // Check that one flight was added
+    $map = $this->post($webroot . "php/map.php");
+    $cols = preg_split('/[;\n]/', $map);
+    $this->assertTrue($cols[0] == "1", "Flight count should be 1");
+  }
+}
+
+// Add multiple flights at once
+class AddMultiFlightTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings, $multiflight;
+
+    login($this);
+    $this->assertText("1;");
+
+    $msg = $this->post($webroot . "php/submit.php", $multiflight);
+    $this->assertText('1;');
+
+    // Check that one flight was added
+    $map = $this->post($webroot . "php/map.php");
+    $cols = preg_split('/[;\n]/', $map);
+    $this->assertTrue($cols[0] == 1 + $multiflight["multi"], "Flight count should be " . $multiflight["multi"] + 1);
+  }
+}
+
+// Not an actual test, just cleaning up
+class DeleteExtraFlightsTest extends WebTestCase {
+  function test() {
+    global $settings;
+
+    $db = db_connect();
+    $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["username"] . "')";
+    $result = mysql_query($sql, $db);
+    $this->assertTrue(mysql_affected_rows() >= 1, "Flights deleted");
   }
 }
 
