@@ -167,6 +167,9 @@ function loadUser(str) {
     signupform.myurl.value = "http://openflights.org/user/" + settings["name"];
     signupform.count.value = "Viewed " + settings["count"] + " times";
 
+    $('banner_img').innerHTML = "<img src='/banner/" + settings["name"] + ".png' width=400 height=70>";
+    signupform.banner_html.value = "<a href='http://openflights.org/user/" + settings["name"] + "' target='_blank'><img src='http://openflights.org/banner/" + settings["name"] + ".png' width=400 height=70></a>";
+    signupform.banner_phpbb.value = "[url=http://openflights.org/user/" + settings["name"] + "]\n[img]http://openflights.org/banner/" + settings["name"] + ".png[/img][/url]";
 
     if(settings["fbuid"]) {
       if(settings["sessionkey"]) {

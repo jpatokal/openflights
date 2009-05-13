@@ -13,6 +13,11 @@ function getlocationcoords($lat, $lon, $width, $height)
 
 // List of all this user's flights
 $uid = $_GET["uid"];
+if(! $uid) {
+  print "User ID unknown";
+  return;
+}
+
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb",$db);
 $sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,d.x AS dx,d.y AS dy, distance FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " GROUP BY s.apid,d.apid";
