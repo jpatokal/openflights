@@ -1,3 +1,8 @@
+<b>2009-05-13</b>
+
+* Banner images added, with caching system
+* Automatic generation of HTML, phpBB banner code in Settings
+
 <b>2009-05-05</b>
 
 * Bug: Loop flights (same source and dest airport) now work in "Basic" mode
