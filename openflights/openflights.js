@@ -213,10 +213,10 @@ window.onload = function init(){
 function parseArgument(name)
 {
   // http://foobar.com/name/xxx#blah *or* xxx?blah=blah
-  // 0    1 2          3    4   5         4   5
-  var urlbits = window.location.href.split(/[\/#?]/);
-  if(urlbits[3] == name) {
-    return unescape(urlbits[4]);
+  // 0      1          2    3   4         3   4
+  var urlbits = window.location.href.split(/[\/#?]+/);
+  if(urlbits[2] == name) {
+    return unescape(urlbits[3]);
   } else {
     return 0;
   }
