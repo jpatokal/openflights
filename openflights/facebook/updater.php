@@ -102,8 +102,11 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     }
   }
 }
-if($fbupdates > 0 || $fbtoday > 0 || $fbfail > 0) {
-  echo date(DATE_RFC822) . ": $fbupdates new flights, $fbtoday flights now, $fbfail failed";
+if($fbtoday > 0) {
+  echo date(DATE_RFC822) . ": $fbtoday flights today";
+}
+if($fbupdates > 0 || $fbfail > 0) {
+  echo date(DATE_RFC822) . ": $fbupdates new flights, $fbfail failed";
 }
 
 ?>
