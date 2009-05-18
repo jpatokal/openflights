@@ -86,14 +86,15 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	  break;
 	  
 	case FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY:
-          // Clear out expired session key
+	case FacebookAPIErrorCodes::API_EC_PERMISSION:
+          // Clear out if session key expired or access is denied
 	  $sql = "UPDATE facebook SET sessionkey=NULL WHERE uid=$uid";
 	  mysql_query($sql, $db);
-          echo "Exception: Session ID cleared for user $uid (FB $fbuid)\n";
+          echo "Exception " . $e->getCode() . ": Session ID cleared for user $uid (FB $fbuid)\n";
 	  break;
 
 	default:
-	  echo "Exception " . $e->getCode . " for user $uid (FB $fbuid) and session $infinitesessionkey: $e\n";
+	  echo "Exception " . $e->getCode() . " for user $uid (FB $fbuid) and session $infinitesessionkey: $e\n";
 	  break;
         }
 	$fbfail++;
