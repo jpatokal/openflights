@@ -1,6 +1,8 @@
 <b>2009-05-18</b>
 
 * Bug: Flights now sorted by time as well as date
+* Bug: Facebook app now handles case where user denies app access
+* Cleaner logging for FB app
 
 <b>2009-05-14</b>
 
