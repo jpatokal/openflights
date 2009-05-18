@@ -80,7 +80,7 @@ if($fid && $fid != "0") {
 }
 
 // And sort order
-$sql = $sql . " ORDER BY src_date, src_time DESC";
+$sql = $sql . " ORDER BY src_date DESC, src_time DESC";
 
 // Execute!
 $result = mysql_query($sql, $db);
