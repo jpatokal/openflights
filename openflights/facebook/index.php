@@ -101,7 +101,7 @@ if(! $session && $session_expiry == "0") {
   $sql = "UPDATE facebook SET sessionkey='" . $session_key . "' WHERE fbuid=" . $fbuid;
   if($result = mysql_query($sql, $db)) {
     $session = $session_key;
-    fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook feed and refresh your profile automatically when you add new flights.");
+    fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook Wall and refresh your profile automatically when you add new flights.");
   } else {
     fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
   }
@@ -117,7 +117,7 @@ if($_REQUEST["prefupdate"] == "Y") {
     // User has changed their preferences
     $sql = "UPDATE facebook SET pref_onfly='" . $reqfly . "', pref_onnew='" . $reqnew . "' WHERE fbuid=" . $fbuid;
     if($result = mysql_query($sql, $db)) {
-      fb_infobox("Feed preferences successfully updated.");
+      fb_infobox("Wall preferences successfully updated.");
       $onfly = $reqfly;
       $onnew = $reqnew;
     } else {
@@ -131,20 +131,20 @@ $profile_box = get_profile($db, $uid, $fbuid, $ofname);
 echo "<br/><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div><br/>";
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
 
-// Feed preferences and session generation
+// Wall preferences and session generation
 print "<form requirelogin='1'>";
 if(! $session) {
 ?>
 
-  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook feed and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
+  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook Wall and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
   <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
 
   <p><b>Step 2</b>: <i>After</i> granting permission, set your preferences and click Activate below to activate automatic updating.</p>
 <?php
 }
 
-print "<h3>Feed preferences</h3>";
-print "<p>Post updates to my feed:<br/>";
+print "<h3>Wall preferences</h3>";
+print "<p>Post updates to my Wall:<br/>";
 print "<input type='checkbox' name='onnew' value='Y' " . ($onnew == "Y" ? "CHECKED" : "") . "> when I add a new flight to OpenFlights<br/>";
 print "<input type='checkbox' name='onfly' value='Y' " . ($onfly == "Y" ? "CHECKED" : "") . "> on the day I fly<br/></p>";
 print "<input type='hidden' name='prefupdate' value='Y'>";
@@ -152,7 +152,7 @@ if(! $session) {
   print "<input type='submit' value='Activate' /><br/>";
 } else {
   print "<input type='submit' value='Update preferences' /><br/>";
-  print "<p><i>Automatic refreshing active: any new flights will be updated to your profile and feed hourly.</i></p>";
+  print "<p><i>Automatic refreshing active: any new flights will be updated to your profile and Wall hourly.</i></p>";
 }
 ?>
 </form>
