@@ -45,7 +45,7 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     rendererror("User $user not found");
   } else {
     $flights = sprintf("%s flights", $row["count"]);
-    $miles = sprintf("%s miles", $row["distance"]);
+    $miles = sprintf("%d,%03d miles", $row["distance"] / 1000, $row["distance"] % 1000);
     $duration = sprintf("%d days, %2d:%02d hours", $row["duration"] / 1440, ($row["duration"] / 60) % 24, $row["duration"] % 60);
   }
 } else {
