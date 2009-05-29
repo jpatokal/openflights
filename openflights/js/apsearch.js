@@ -9,8 +9,10 @@ DB_OURAIRPORTS = "airports_oa";
 DB_DAFIF = "airports_dafif";
 
 var warning;
+var gt;
 
 window.onload = function init(){
+  gt = new Gettext({ 'domain' : 'messages' });
   xmlhttpPost(URL_COUNTRIES);
 }
 
@@ -70,7 +72,7 @@ function xmlhttpPost(strURL, offset, action) {
     var apid = form.apid.value;
 
     if(iata != "" && iata.length != 3) {
-      alert("IATA/FAA codes must be exactly three letters.");
+      alert(gt.gettext("IATA/FAA codes must be exactly three letters."));
       form.iata.focus();
       return;
     } else {
@@ -78,7 +80,7 @@ function xmlhttpPost(strURL, offset, action) {
       form.iata.value = iata;
     }
     if(icao != "" && icao.length != 4) {
-      alert("ICAO codes must be exactly four letters.");
+      alert(gt.gettext("ICAO codes must be exactly four letters."));
       form.icao.focus();
       return;
     } else {
@@ -87,13 +89,13 @@ function xmlhttpPost(strURL, offset, action) {
     }
     var re_alphanum = /^[-.\'a-zA-Z0-9 ]*$/;
     if(! re_alphanum.test(airport) || ! re_alphanum.test(city)) {
-      alert("Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names.");
+      alert(gt.gettext("Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."));
       return;
     }
 
     if(action == "SEARCH" && db == DB_DAFIF) {
       if(city != "") {
-	warning = "Ignoring city '" + city + "', since the DAFIF database does not contain city information.";
+	warning = Gettext.strargs(gt.gettext("Ignoring city '%1', since the DAFIF database does not contain city information."), [city]);
 	city = "";
       }
       if(iata != "") {
@@ -103,12 +105,12 @@ function xmlhttpPost(strURL, offset, action) {
 	  break;
 	  
 	case "":
-	  warning = "Search for IATA/FAA code '" + iata + "' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US.";
+	  warning = Gettext.strargs(gt.gettext("Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."), [iata]);
 	  code = "US";
 	  break;
 
 	default:
-	  warning = "Ignoring IATA code '" + iata + "', since DAFIF does not contain IATA codes for cities outside the United States.";
+	  warning = Gettext.strargs(gt.gettext("Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."), [iata]);
 	  iata = "";
 	  break;
 	}
@@ -117,11 +119,11 @@ function xmlhttpPost(strURL, offset, action) {
 
     if(action == "RECORD") {
       if(! parent.opener || ! parent.opener.addNewAirport) {
-	alert("Sorry, you have to be logged into OpenFlights to use this.");
+	alert(gt.gettext("Sorry, you have to be logged into OpenFlights to use this."));
 	return;
       }
       if(airport == "") {
-	alert("Please enter an airport name.");
+	alert(gt.gettext("Please enter an airport name."));
 	form.airport.focus();
 	return;
       } else {
@@ -130,7 +132,7 @@ function xmlhttpPost(strURL, offset, action) {
       }
 
       if(city == "") {
-	alert("Please enter a city name.");
+	alert(gt.gettext("Please enter a city name."));
 	form.city.focus();
 	return;
       } else {
@@ -139,62 +141,62 @@ function xmlhttpPost(strURL, offset, action) {
       }
 	
       if(code == "") {
-	alert("Please select a country.");
+	alert(gt.gettext("Please select a country."));
 	form.country.focus();
 	return;
       }
 
       if(x == "" || y == "" || elevation == "") {
-	alert("Please enter latitude, longitude and elevation. Tip: Check if the DAFIF database already contains your airport, and \"Load\" the data from there.");
+	alert(gt.gettext("Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."));
 	form.x.focus();
 	return;
       }
 
       var re_dd = /^[-+]?\d*\.\d{3,}$/;
       if(! re_dd.test(x) || ! re_dd.test(y)) {
-	alert("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W).");
+	alert(gt.gettext("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."));
 	form.x.focus();
 	return;
       }
 
       if(Math.abs(x) > 180) {
-	alert("Latitude must be in the range -180 (west) to 180 (east) degrees.");
+	alert(gt.gettext("Latitude must be in the range -180 (west) to 180 (east) degrees."));
 	form.x.focus();
 	return;
       }
 
       if(Math.abs(y) > 90) {
-	alert("Longitude must be in the range 90 (north) to -90 (south) degrees.");
+	alert(gt.gettext("Longitude must be in the range 90 (north) to -90 (south) degrees."));
 	form.y.focus();
 	return;
       }
 
       if(elevation < 0) {
-	alert("Please enter a positive number for elevation.");
+	alert(gt.gettext("Please enter a positive number for elevation."));
 	form.elevation.focus();
 	return;
       }
 
       var re_tz = /^[-+]?\d*\.?\d*$/;
       if(tz == "" || ! re_tz.test(tz) || Math.abs(tz) > 14) {
-	alert("Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal.");
+	alert(gt.gettext("Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."));
 	form.tz.focus();
 	return;
       }
       if(dst == "U") {
-	if(! confirm("You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?")) {
+	if(! confirm(gt.gettext("You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"))) {
 	  form.dst.focus();
 	  return;
 	}
       }
       if(iata == "") {
-	if(! confirm("You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?")) {
+	if(! confirm(gt.gettext("You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"))) {
 	  form.iata.focus();
 	  return;
 	}
       }
       if(icao == "") {
-	if(! confirm("You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?")) {
+	if(! confirm(gt.gettext("You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"))) {
 	  form.icao.focus();
 	  return;
 	}
@@ -205,8 +207,8 @@ function xmlhttpPost(strURL, offset, action) {
 	desc = airport + ", " + city + ", " + country +
 	  " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
 	quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
-	if(! confirm("Are you sure you want to add " + desc + " as a new airport, located in the " + quad + " quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming.")) {
-	  document.getElementById("miniresultbox").innerHTML = "<I>Cancelled.</I>";
+	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."), [desc, quad]))) {
+	  document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
 	  return;
 	}
       }
@@ -228,7 +230,7 @@ function xmlhttpPost(strURL, offset, action) {
       'iatafilter=' + form.iatafilter.checked + '&' +
       'apid=' + apid + '&' +
       'action=' + action;
-    document.getElementById("miniresultbox").innerHTML = (action == "SEARCH" ? "<I>Searching...</I>" : "<I>Recording...</I>");
+    document.getElementById("miniresultbox").innerHTML = "<I>" + (action == "SEARCH" ? gt.gettext("Searching...") : gt.gettext("Recording...")) + "</I>";
   }
   self.xmlHttpReq.send(query);
 }
@@ -278,17 +280,17 @@ function searchResult(str) {
       offset = parseInt(col[0]);
       max = col[1];
       if(max == 0) {
-	table += "<tr><td><i>No matches found in this database.<br><ul>";
+	table += "<tr><td><i>" + gt.gettext("No matches found in this database.") + "<br><ul>";
 	if(document.forms['searchform'].iatafilter.checked) {
-	  table += "<li>Try unchecking 'Show only major airports' and search again.";
+	  table += "<li>" + gt.gettext("Try unchecking 'Show only major airports' and search again.");
 	}
 	if(document.forms['searchform'].db.value != DB_OURAIRPORTS) {
-	  table += "<li>Switch to the OurAirports database and search again.";
+	  table += "<li>" + gt.gettext("Switch to the OurAirports database and search again.");
 	}
 	table += "</ul></td></tr>";
 	break;
       }
-      table += "<tr><td><b>Results " + (offset+1) + " to " + Math.min(offset+10, max) + " of " + max + "</b><br></td>";
+      table += "<tr><td><b>" + Gettext.strargs(gt.gettext("Results %1 to %2 of %3"), [offset+1, Math.min(offset+10, max), max]) + "</b><br></td>";
 
       if(max > 10) {
 	table += "<td style=\"text-align: right\"><nobr>";
@@ -319,12 +321,12 @@ function searchResult(str) {
     switch(col["ap_uid"]) {
     case "user":
       bgcolor = "#fdd";
-      disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>pink</span> have been added by users of OpenFlights.";
+      disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Airports in pink have been added by users of OpenFlights.") + "</span>";
       break;
 
     case "own":
       bgcolor = "#ddf";
-      disclaimer = "<br><b>Note</b>: Airports in <span style='background-color: " + bgcolor + "'>blue</span> have been added by you and can be edited.";
+      disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Airports in blue have been added by you and can be edited.") + "<span>";
       break;
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col["ap_name"] + "</td>";
@@ -332,13 +334,13 @@ function searchResult(str) {
       // code:apid:x:y:tz:dst
       id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
 	":" + col["timezone"] + ":" + col["dst"];
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='Select' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
     }
     if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || guest) {
       if(col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
-	label = "Edit";
+	label = gt.gettext("Edit");
       } else {
-	label = "Load";
+	label = gt.gettext("Load");
       }
       table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + escape(airports[a]) + "\")'></td>";
     }

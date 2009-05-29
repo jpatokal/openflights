@@ -1,6 +1,7 @@
 <?php
 session_start();
-header("Content-type: text/html; charset=iso-8859-1");
+require_once("../php/locale.php");
+header("Content-type: text/html");
 
 include 'helper.php';
 
@@ -28,7 +29,7 @@ $uid = $_SESSION["uid"];
 
 if($action == "RECORD") {
   if(!$uid or empty($uid)) {
-    printf("0;Your session has timed out, please log in again.");
+    printf("0;" . _("Your session has timed out, please log in again."));
     exit;
   }
 
@@ -41,7 +42,7 @@ if($action == "RECORD") {
     }
     $result = mysql_query($sql, $db);
     if(mysql_num_rows($result) != 0) {
-      printf("0;Sorry, an airport using the ICAO code " . $icao . " exists already.  Please double-check.");
+      printf("0;" . _("Sorry, an airport using the ICAO code %s exists already.  Please double-check."), $icao);
       exit;
     }
   }
@@ -78,14 +79,14 @@ if($action == "RECORD") {
 		   $uid);
   }
 
-  mysql_query($sql, $db) or die('0;Adding new airport failed: ' . $sql);
+  mysql_query($sql, $db) or die('0;' . _("Adding new airport failed:") . ' ' . $sql);
   if(! $apid || $apid == "") {
-    printf('1;' . mysql_insert_id() . ';New airport successfully added.');
+    printf('1;' . mysql_insert_id() . ";" . _("New airport successfully added."));
   } else {
     if(mysql_affected_rows() == 1) {
-      printf('1;' . $apid . ';Airport successfully edited.');
+      printf('1;' . $apid . ';' . _("Airport successfully edited."));
     } else {
-      printf('0;Editing airport failed: ' . $sql);
+      printf('0;' . _("Editing airport failed:") . ' ' . $sql);
     }
   }
   exit;
@@ -98,7 +99,7 @@ $sql = "SELECT * FROM " . mysql_real_escape_string($dbname) . " WHERE ";
 
 // Build filter
 if($airport) {
-  $sql .= " name LIKE '" . mysql_real_escape_string($airport) . "%' AND";
+  $sql .= " name LIKE '%" . mysql_real_escape_string($airport) . "%' AND";
 }
 if($iata) {
   $sql .= " iata='" . mysql_real_escape_string($iata) . "' AND";
