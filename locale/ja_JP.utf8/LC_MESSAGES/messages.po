@@ -11,317 +11,274 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-Country: JAPAN\n"
 
-#: html/apsearch.php:9
-#: html/apsearch.php:20
-#: html/apsearch.php:22
-#: html/apsearch.php:11
-#: html/apsearch.php:37
 msgid "Airport search"
 msgstr "空港検索"
 
-#: html/apsearch.php:23
 msgid "Language"
 msgstr "言語"
 
-#: html/apsearch.php:21
-#: html/apsearch.php:23
-#: html/apsearch.php:39
 msgid "Fill one or more fields below to search for matching airports."
 msgstr ""
 
-#: html/apsearch.php:24
-#: html/apsearch.php:26
-#: html/apsearch.php:42
 msgid "Airport name"
 msgstr "空港"
 
-#: html/apsearch.php:33
-#: html/apsearch.php:35
-#: html/apsearch.php:51
 msgid "City name"
 msgstr "都市"
 
-#: html/apsearch.php:34
-#: html/apsearch.php:36
-#: html/apsearch.php:52
 msgid "Country name"
 msgstr "国"
 
-#: html/apsearch.php:41
-#: html/apsearch.php:43
-#: html/apsearch.php:59
 msgid "Latitude"
 msgstr "緯度"
 
-#: html/apsearch.php:42
-#: html/apsearch.php:44
-#: html/apsearch.php:60
 msgid "Longitude"
 msgstr "経度"
 
-#: html/apsearch.php:43
-#: html/apsearch.php:45
-#: html/apsearch.php:61
 msgid "Elevation"
 msgstr "高度"
 
-#: html/apsearch.php:44
-#: html/apsearch.php:46
-#: html/apsearch.php:62
 msgid "UTC"
 msgstr "時差"
 
-#: html/apsearch.php:45
-#: html/apsearch.php:47
-#: html/apsearch.php:63
 msgid "DST"
 msgstr "夏時間"
 
-#: html/apsearch.php:52
-#: html/apsearch.php:54
-#: html/apsearch.php:70
 msgid "Unknown"
 msgstr "不明"
 
-#: html/apsearch.php:53
-#: html/apsearch.php:55
-#: html/apsearch.php:71
 msgid "European"
 msgstr "欧州"
 
-#: html/apsearch.php:54
-#: html/apsearch.php:56
-#: html/apsearch.php:72
 msgid "US/Canada"
 msgstr "北米"
 
-#: html/apsearch.php:55
-#: html/apsearch.php:57
-#: html/apsearch.php:73
 msgid "S. American"
 msgstr "南米"
 
-#: html/apsearch.php:56
-#: html/apsearch.php:58
-#: html/apsearch.php:74
 msgid "Australia"
 msgstr "オーストラリア"
 
-#: html/apsearch.php:57
-#: html/apsearch.php:59
-#: html/apsearch.php:75
 msgid "New Zealand"
 msgstr "ニュージーランド"
 
-#: html/apsearch.php:58
-#: html/apsearch.php:60
-#: html/apsearch.php:76
 msgid "None"
 msgstr "なし"
 
-#: html/apsearch.php:62
-#: html/apsearch.php:64
-#: html/apsearch.php:80
 msgid "Database"
 msgstr "データベース"
 
-#: html/apsearch.php:72
-#: html/apsearch.php:74
-#: html/apsearch.php:90
 msgid "Show only major (IATA) airports?"
 msgstr "主要な空港（IATAコード有り）のみ"
 
-#: html/apsearch.php:81
-#: html/apsearch.php:83
-#: html/apsearch.php:99
 msgid "Search"
 msgstr "検索"
 
-#: html/apsearch.php:82
-#: html/apsearch.php:84
-#: html/apsearch.php:100
 msgid "Clear"
 msgstr ""
 
-#: html/apsearch.php:83
-#: html/apsearch.php:85
-#: html/apsearch.php:101
 msgid "Cancel"
 msgstr "戻る"
 
-#: html/apsearch.php:85
-#: html/apsearch.php:87
-#: html/apsearch.php:103
 msgid "Record the current data as a new airport."
 msgstr ""
 
-#: html/apsearch.php:85
-#: html/apsearch.php:87
-#: html/apsearch.php:103
 msgid "Add as new"
 msgstr ""
 
-#: html/apsearch.php:86
-#: html/apsearch.php:88
-#: html/apsearch.php:104
 msgid "Record changes to this airport."
 msgstr ""
 
-#: html/apsearch.php:86
-#: html/apsearch.php:88
-#: html/apsearch.php:104
 msgid "Save changes"
 msgstr ""
 
-#: php/apsearch.php:32
+#, php-format
 msgid "Your session has timed out, please log in again."
 msgstr ""
 
-#: php/apsearch.php:45
-msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+#, php-format
+msgid ""
+"Sorry, an airport using the ICAO code %s exists already.  Please double-"
+"check."
 msgstr ""
 
-#: php/apsearch.php:82
 msgid "Adding new airport failed:"
 msgstr ""
 
-#: php/apsearch.php:84
+#, php-format
 msgid "New airport successfully added."
 msgstr ""
 
-#: php/apsearch.php:87
+#, php-format
 msgid "Airport successfully edited."
 msgstr ""
 
-#: php/apsearch.php:89
+#, php-format
 msgid "Editing airport failed:"
 msgstr ""
 
-#: js/apsearch.js:75
 msgid "IATA/FAA codes must be exactly three letters."
 msgstr ""
 
-#: js/apsearch.js:83
 msgid "ICAO codes must be exactly four letters."
 msgstr ""
 
-#: js/apsearch.js:92
-msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgid ""
+"Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks "
+"-.' (dash, period, apostrophe) and spaces can be used in airport and city "
+"names."
 msgstr ""
 
-#: js/apsearch.js:98
-msgid "Ignoring city '%1, since the DAFIF database does not contain city information."
+msgid ""
+"Ignoring city '%1, since the DAFIF database does not contain city "
+"information."
 msgstr ""
 
-#: js/apsearch.js:108
-msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgid ""
+"Search for IATA/FAA code '%1' limited to United States airports, since DAFIF "
+"does not contain IATA codes for cities outside the US."
 msgstr ""
 
-#: js/apsearch.js:113
-msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgid ""
+"Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities "
+"outside the United States."
 msgstr ""
 
-#: js/apsearch.js:122
 msgid "Sorry, you have to be logged into OpenFlights to use this."
 msgstr ""
 
-#: js/apsearch.js:126
 msgid "Please enter an airport name."
 msgstr ""
 
-#: js/apsearch.js:135
 msgid "Please enter a city name."
 msgstr ""
 
-#: js/apsearch.js:144
 msgid "Please select a country."
 msgstr ""
 
-#: js/apsearch.js:150
-msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgid ""
+"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
+"database already contains your airport, and \"Load\" the data from there."
 msgstr ""
 
-#: js/apsearch.js:157
-msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgid ""
+"Latitude and longitude must be given as decimal degrees, where negative "
+"numbers indicate 'south' and 'west' respectively, and with at least three "
+"digits of precision (after the decimal point).  For example, San Francisco "
+"(SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr ""
 
-#: js/apsearch.js:163
 msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
 msgstr ""
 
-#: js/apsearch.js:169
 msgid "Longitude must be in the range 90 (north) to -90 (south) degrees."
 msgstr ""
 
-#: js/apsearch.js:175
 msgid "Please enter a positive number for elevation."
 msgstr ""
 
-#: js/apsearch.js:182
-msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgid ""
+"Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -"
+"5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
 msgstr ""
 
-#: js/apsearch.js:187
-msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgid ""
+"You have not entered whether this airport follows Daylight Savings Time "
+"(DST).  Leave it as Unknown?"
 msgstr ""
 
-#: js/apsearch.js:193
-msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgid ""
+"You have not entered an IATA/FAA code. Are you sure the airport does not "
+"have one and you wish to proceed?"
 msgstr ""
 
-#: js/apsearch.js:199
-msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgid ""
+"You have not entered an ICAO code. Are you sure the airport does not have "
+"one and you wish to proceed?"
 msgstr ""
 
-#: js/apsearch.js:210
-msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgid ""
+"Are you sure you want to add %1 as a new airport, located in the %2 quadrant "
+"of the world?  Please double-check the name, airport codes and exact "
+"coordinates before confirming."
 msgstr ""
 
-#: js/apsearch.js:211
 msgid "Cancelled."
 msgstr ""
 
-#: js/apsearch.js:233
 msgid "SEARCH"
 msgstr ""
 
-#: js/apsearch.js:245
 msgid "ALL"
 msgstr ""
 
-#: js/apsearch.js:283
 msgid "No matches found in this database."
 msgstr "空港は見つかりませんでした。"
 
-#: js/apsearch.js:285
 msgid "Try unchecking 'Show only major airports' and search again."
 msgstr ""
 
-#: js/apsearch.js:288
 msgid "Switch to the OurAirports database and search again."
 msgstr ""
 
-#: js/apsearch.js:293
 msgid "Results %1 to %2 of %3"
 msgstr "検索結果 %3 件中 %1 - %2 件目"
 
-#: js/apsearch.js:324
 msgid "Airports in pink have been added by users of OpenFlights."
 msgstr ""
 
-#: js/apsearch.js:329
 msgid "Airports in blue have been added by you and can be edited."
 msgstr ""
 
-#: js/apsearch.js:337
 msgid "Select"
 msgstr "選択"
 
-#: js/apsearch.js:341
 msgid "Edit"
 msgstr "編集"
 
-#: js/apsearch.js:343
 msgid "Load"
 msgstr ""
 
+msgid "Airline search"
+msgstr ""
+
+msgid "Airline, railway, road transport and shipping search"
+msgstr ""
+
+msgid ""
+"Fill one or more fields below to search for matching airlines and other "
+"transport operators."
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+msgid "Airline"
+msgstr ""
+
+msgid "Railway"
+msgstr ""
+
+msgid "Road transport"
+msgstr ""
+
+msgid "Shipping"
+msgstr ""
+
+msgid "Alternative name"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Callsign"
+msgstr ""
+
+msgid "Show only major (IATA) airlines?"
+msgstr ""
+
+msgid "Record the current data as a new airline."
+msgstr ""
