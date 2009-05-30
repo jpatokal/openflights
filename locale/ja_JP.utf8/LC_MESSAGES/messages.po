@@ -19,6 +19,10 @@ msgstr ""
 msgid "Airport search"
 msgstr "空港検索"
 
+#: html/apsearch.php:23
+msgid "Language"
+msgstr "言語"
+
 #: html/apsearch.php:21
 #: html/apsearch.php:23
 #: html/apsearch.php:39
@@ -29,7 +33,7 @@ msgstr ""
 #: html/apsearch.php:26
 #: html/apsearch.php:42
 msgid "Airport name"
-msgstr "空港名"
+msgstr "空港"
 
 #: html/apsearch.php:33
 #: html/apsearch.php:35
@@ -125,7 +129,7 @@ msgstr "データベース"
 #: html/apsearch.php:74
 #: html/apsearch.php:90
 msgid "Show only major (IATA) airports?"
-msgstr "主な空港（IATAコード有り）のみ"
+msgstr "主要な空港（IATAコード有り）のみ"
 
 #: html/apsearch.php:81
 #: html/apsearch.php:83
@@ -170,12 +174,10 @@ msgid "Save changes"
 msgstr ""
 
 #: php/apsearch.php:32
-#, php-format
 msgid "Your session has timed out, please log in again."
 msgstr ""
 
 #: php/apsearch.php:45
-#, php-format
 msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
 msgstr ""
 
@@ -184,17 +186,14 @@ msgid "Adding new airport failed:"
 msgstr ""
 
 #: php/apsearch.php:84
-#, php-format
 msgid "New airport successfully added."
 msgstr ""
 
 #: php/apsearch.php:87
-#, php-format
 msgid "Airport successfully edited."
 msgstr ""
 
 #: php/apsearch.php:89
-#, php-format
 msgid "Editing airport failed:"
 msgstr ""
 
@@ -325,8 +324,4 @@ msgstr "編集"
 #: js/apsearch.js:343
 msgid "Load"
 msgstr ""
-
-#: html/apsearch.php:23
-msgid "Language"
-msgstr "言語"
 

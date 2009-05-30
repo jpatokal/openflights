@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once("../php/locale.php");
 header("Content-type: text/html");
 
