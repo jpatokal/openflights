@@ -13,7 +13,6 @@ var gt;
 
 window.onload = function init(){
   gt = new Gettext({ 'domain' : 'messages' });
-  xmlhttpPost(URL_COUNTRIES);
 }
 
 function doSearch(offset) {
@@ -39,10 +38,6 @@ function xmlhttpPost(strURL, offset, action) {
   self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   self.xmlHttpReq.onreadystatechange = function() {
     if (self.xmlHttpReq.readyState == 4) {
-
-      if(strURL == URL_COUNTRIES) {
-	loadCountries(self.xmlHttpReq.responseText);
-      }
 
       if(strURL == URL_APSEARCH) {
 	if(action == "SEARCH") {
@@ -236,25 +231,6 @@ function xmlhttpPost(strURL, offset, action) {
 }
 
 /*
- * Load up list of countries in DB
- */
-function loadCountries(str) {
-  var countries = str.split("\n");
-
-  var select = "<select name=\"country\"";
-  select += "><option value=\"\">ALL</option>";
-
-  for (c in countries) {
-    var col = countries[c].split(";");
-    // code;country
-    select += "<option value=\"" + col[0] + "\">" + col[1] + "</option>";
-  }
-  select += "</select>";
-
-  document.getElementById("country_select").innerHTML = select;
-}
-
-/*
  * Display results of search
  */
 function searchResult(str) {
@@ -438,6 +414,11 @@ function clearSearch() {
   document.getElementById('b_add').style.display = "inline";
   document.getElementById('b_edit').style.display = "none";
   document.getElementById("miniresultbox").innerHTML = "";
+}
+
+// User has changed locale, reload page with new URL
+function changeLocale() {
+  location.href = "http://" + location.host + "/html/apsearch.php?lang=" + document.getElementById("locale").value;
 }
 
 // Airport selected, kick it back to main window and close this

@@ -14,131 +14,158 @@ msgstr ""
 #: html/apsearch.php:9
 #: html/apsearch.php:20
 #: html/apsearch.php:22
+#: html/apsearch.php:11
+#: html/apsearch.php:37
 msgid "Airport search"
 msgstr "空港検索"
 
 #: html/apsearch.php:21
 #: html/apsearch.php:23
+#: html/apsearch.php:39
 msgid "Fill one or more fields below to search for matching airports."
 msgstr ""
 
 #: html/apsearch.php:24
 #: html/apsearch.php:26
+#: html/apsearch.php:42
 msgid "Airport name"
 msgstr "空港名"
 
 #: html/apsearch.php:33
 #: html/apsearch.php:35
+#: html/apsearch.php:51
 msgid "City name"
 msgstr "都市"
 
 #: html/apsearch.php:34
 #: html/apsearch.php:36
+#: html/apsearch.php:52
 msgid "Country name"
 msgstr "国"
 
 #: html/apsearch.php:41
 #: html/apsearch.php:43
+#: html/apsearch.php:59
 msgid "Latitude"
 msgstr "緯度"
 
 #: html/apsearch.php:42
 #: html/apsearch.php:44
+#: html/apsearch.php:60
 msgid "Longitude"
 msgstr "経度"
 
 #: html/apsearch.php:43
 #: html/apsearch.php:45
+#: html/apsearch.php:61
 msgid "Elevation"
 msgstr "高度"
 
 #: html/apsearch.php:44
 #: html/apsearch.php:46
+#: html/apsearch.php:62
 msgid "UTC"
 msgstr "時差"
 
 #: html/apsearch.php:45
 #: html/apsearch.php:47
+#: html/apsearch.php:63
 msgid "DST"
 msgstr "夏時間"
 
 #: html/apsearch.php:52
 #: html/apsearch.php:54
+#: html/apsearch.php:70
 msgid "Unknown"
 msgstr "不明"
 
 #: html/apsearch.php:53
 #: html/apsearch.php:55
+#: html/apsearch.php:71
 msgid "European"
 msgstr "欧州"
 
 #: html/apsearch.php:54
 #: html/apsearch.php:56
+#: html/apsearch.php:72
 msgid "US/Canada"
 msgstr "北米"
 
 #: html/apsearch.php:55
 #: html/apsearch.php:57
+#: html/apsearch.php:73
 msgid "S. American"
 msgstr "南米"
 
 #: html/apsearch.php:56
 #: html/apsearch.php:58
+#: html/apsearch.php:74
 msgid "Australia"
 msgstr "オーストラリア"
 
 #: html/apsearch.php:57
 #: html/apsearch.php:59
+#: html/apsearch.php:75
 msgid "New Zealand"
 msgstr "ニュージーランド"
 
 #: html/apsearch.php:58
 #: html/apsearch.php:60
+#: html/apsearch.php:76
 msgid "None"
 msgstr "なし"
 
 #: html/apsearch.php:62
 #: html/apsearch.php:64
+#: html/apsearch.php:80
 msgid "Database"
 msgstr "データベース"
 
 #: html/apsearch.php:72
 #: html/apsearch.php:74
+#: html/apsearch.php:90
 msgid "Show only major (IATA) airports?"
 msgstr "主な空港（IATAコード有り）のみ"
 
 #: html/apsearch.php:81
 #: html/apsearch.php:83
+#: html/apsearch.php:99
 msgid "Search"
 msgstr "検索"
 
 #: html/apsearch.php:82
 #: html/apsearch.php:84
+#: html/apsearch.php:100
 msgid "Clear"
 msgstr ""
 
 #: html/apsearch.php:83
 #: html/apsearch.php:85
+#: html/apsearch.php:101
 msgid "Cancel"
 msgstr "戻る"
 
 #: html/apsearch.php:85
 #: html/apsearch.php:87
+#: html/apsearch.php:103
 msgid "Record the current data as a new airport."
 msgstr ""
 
 #: html/apsearch.php:85
 #: html/apsearch.php:87
+#: html/apsearch.php:103
 msgid "Add as new"
 msgstr ""
 
 #: html/apsearch.php:86
 #: html/apsearch.php:88
+#: html/apsearch.php:104
 msgid "Record changes to this airport."
 msgstr ""
 
 #: html/apsearch.php:86
 #: html/apsearch.php:88
+#: html/apsearch.php:104
 msgid "Save changes"
 msgstr ""
 
@@ -265,7 +292,7 @@ msgstr ""
 
 #: js/apsearch.js:283
 msgid "No matches found in this database."
-msgstr ""
+msgstr "空港は見つかりませんでした。"
 
 #: js/apsearch.js:285
 msgid "Try unchecking 'Show only major airports' and search again."
@@ -277,7 +304,7 @@ msgstr ""
 
 #: js/apsearch.js:293
 msgid "Results %1 to %2 of %3"
-msgstr ""
+msgstr "検索結果 %3 件中 %1 - %2 件目"
 
 #: js/apsearch.js:324
 msgid "Airports in pink have been added by users of OpenFlights."
@@ -298,4 +325,8 @@ msgstr "編集"
 #: js/apsearch.js:343
 msgid "Load"
 msgstr ""
+
+#: html/apsearch.php:23
+msgid "Language"
+msgstr "言語"
 

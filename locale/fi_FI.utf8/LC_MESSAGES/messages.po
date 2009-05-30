@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-05-29 23:16+0730\n"
+"PO-Revision-Date: 2009-05-30 17:58+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,156 +23,183 @@ msgstr ""
 #: html/apsearch.php:9
 #: html/apsearch.php:20
 #: html/apsearch.php:22
+#: html/apsearch.php:11
+#: html/apsearch.php:37
 msgid "Airport search"
 msgstr "Lentokenttähaku"
 
 #: html/apsearch.php:28
 #: html/apsearch.php:21
 #: html/apsearch.php:23
+#: html/apsearch.php:39
 msgid "Fill one or more fields below to search for matching airports."
 msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
 
 #: html/apsearch.php:31
 #: html/apsearch.php:24
 #: html/apsearch.php:26
+#: html/apsearch.php:42
 msgid "Airport name"
 msgstr "Lentokentän nimi"
 
 #: html/apsearch.php:40
 #: html/apsearch.php:33
 #: html/apsearch.php:35
+#: html/apsearch.php:51
 msgid "City name"
 msgstr "Kaupunki"
 
 #: html/apsearch.php:41
 #: html/apsearch.php:34
 #: html/apsearch.php:36
+#: html/apsearch.php:52
 msgid "Country name"
 msgstr "Maa"
 
 #: html/apsearch.php:48
 #: html/apsearch.php:41
 #: html/apsearch.php:43
+#: html/apsearch.php:59
 msgid "Latitude"
 msgstr "Leveysaste"
 
 #: html/apsearch.php:49
 #: html/apsearch.php:42
 #: html/apsearch.php:44
+#: html/apsearch.php:60
 msgid "Longitude"
 msgstr "Pituusaste"
 
 #: html/apsearch.php:50
 #: html/apsearch.php:43
 #: html/apsearch.php:45
+#: html/apsearch.php:61
 msgid "Elevation"
 msgstr "Korkeus"
 
 #: html/apsearch.php:51
 #: html/apsearch.php:44
 #: html/apsearch.php:46
+#: html/apsearch.php:62
 msgid "UTC"
 msgstr "UTC"
 
 #: html/apsearch.php:52
 #: html/apsearch.php:45
 #: html/apsearch.php:47
+#: html/apsearch.php:63
 msgid "DST"
 msgstr "Kesäaika"
 
 #: html/apsearch.php:59
 #: html/apsearch.php:52
 #: html/apsearch.php:54
+#: html/apsearch.php:70
 msgid "Unknown"
 msgstr "Tuntematon"
 
 #: html/apsearch.php:60
 #: html/apsearch.php:53
 #: html/apsearch.php:55
+#: html/apsearch.php:71
 msgid "European"
 msgstr "Eurooppa"
 
 #: html/apsearch.php:61
 #: html/apsearch.php:54
 #: html/apsearch.php:56
+#: html/apsearch.php:72
 msgid "US/Canada"
 msgstr "US/Kanada"
 
 #: html/apsearch.php:62
 #: html/apsearch.php:55
 #: html/apsearch.php:57
+#: html/apsearch.php:73
 msgid "S. American"
 msgstr "Etelä-Amerikka"
 
 #: html/apsearch.php:63
 #: html/apsearch.php:56
 #: html/apsearch.php:58
+#: html/apsearch.php:74
 msgid "Australia"
 msgstr "Australia"
 
 #: html/apsearch.php:64
 #: html/apsearch.php:57
 #: html/apsearch.php:59
+#: html/apsearch.php:75
 msgid "New Zealand"
 msgstr "Uusi-Seelanti"
 
 #: html/apsearch.php:65
 #: html/apsearch.php:58
 #: html/apsearch.php:60
+#: html/apsearch.php:76
 msgid "None"
 msgstr "Ei kesäaikaa"
 
 #: html/apsearch.php:69
 #: html/apsearch.php:62
 #: html/apsearch.php:64
+#: html/apsearch.php:80
 msgid "Database"
 msgstr "Tietokanta"
 
 #: html/apsearch.php:79
 #: html/apsearch.php:72
 #: html/apsearch.php:74
+#: html/apsearch.php:90
 msgid "Show only major (IATA) airports?"
 msgstr "Näytä vain isot (IATA-koodatut) kentät?"
 
 #: html/apsearch.php:88
 #: html/apsearch.php:81
 #: html/apsearch.php:83
+#: html/apsearch.php:99
 msgid "Search"
 msgstr "Hae"
 
 #: html/apsearch.php:89
 #: html/apsearch.php:82
 #: html/apsearch.php:84
+#: html/apsearch.php:100
 msgid "Clear"
 msgstr "Tyhjennä"
 
 #: html/apsearch.php:90
 #: html/apsearch.php:83
 #: html/apsearch.php:85
+#: html/apsearch.php:101
 msgid "Cancel"
 msgstr "Poistu"
 
 #: html/apsearch.php:92
 #: html/apsearch.php:85
 #: html/apsearch.php:87
+#: html/apsearch.php:103
 msgid "Record the current data as a new airport."
 msgstr "Tallenna uutena lentokenttänä."
 
 #: html/apsearch.php:92
 #: html/apsearch.php:85
 #: html/apsearch.php:87
+#: html/apsearch.php:103
 msgid "Add as new"
 msgstr "Tallenna uutena"
 
 #: html/apsearch.php:93
 #: html/apsearch.php:86
 #: html/apsearch.php:88
+#: html/apsearch.php:104
 msgid "Record changes to this airport."
 msgstr "Tallenna muutokset tähän lentokenttään."
 
 #: html/apsearch.php:93
 #: html/apsearch.php:86
 #: html/apsearch.php:88
+#: html/apsearch.php:104
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
@@ -340,4 +367,8 @@ msgstr "Haetaan..."
 #: js/apsearch.js:233
 msgid "Recording..."
 msgstr "Kirjoitetaan..."
+
+#: html/apsearch.php:23
+msgid "Language"
+msgstr "Kieli"
 
