@@ -5,6 +5,12 @@ GRANT ALL PRIVILEGES ON flightdb.* TO openflights;
 
 CONNECT flightdb;
 
+CREATE TABLE locales
+(
+locale VARCHAR(5) PRIMARY KEY,
+name TEXT
+);
+
 CREATE TABLE users
 (
 name TEXT UNIQUE KEY,
