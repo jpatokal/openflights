@@ -19,15 +19,7 @@ require_once("../php/db.php");
   <body>
     <div id="contexthelp">
     <span style="float: right"><?php echo _("Language") ?><br>
-    <select id="locale" onChange="JavaScript:changeLocale()">
-<?php
-  $sql = "SELECT * FROM locales ORDER BY name ASC";
-  $result = mysql_query($sql, $db);
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-    $selected = ($row["locale"] . ".utf8" == $locale ? "SELECTED" : "");
-    printf("<option value='%s' %s>%s (%s)</option>\n", $row["locale"], $selected, $row["name"], $row["locale"]);
-  }
-?>
+<?php echo locale_pulldown($db, $locale); ?>
     </select>
   </span>
 
