@@ -14,10 +14,12 @@ window.onload = function init(){
   var args = window.location.href.split('?');
   if(args[1]) {
     args = args[1].split('&');
-    form = document.forms['searchform'];
-    form.name.value = unescape(args[0].split('=')[1]);
-    selectInSelect(form.mode, args[1].split('=')[1]);
-    changeMode();
+    if(args[0].split('=') == "name") {
+      form = document.forms['searchform'];
+      form.name.value = unescape(args[0].split('=')[1]);
+      selectInSelect(form.mode, args[1].split('=')[1]);
+      changeMode();
+    }
   }
 }
 
