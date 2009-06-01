@@ -1,8 +1,7 @@
 <?php
 header("Content-type: text/html");
 require_once("../php/locale.php");
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
+require_once("../php/db.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>

@@ -2,7 +2,6 @@
  * Search for airport in database(s)
  */
 URL_APSEARCH = "/php/apsearch.php";
-URL_COUNTRIES = "/php/countries.php";
 
 DB_OPENFLIGHTS = "airports";
 DB_OURAIRPORTS = "airports_oa";

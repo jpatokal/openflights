@@ -1,6 +1,8 @@
 <?php
-session_start();
-header("Content-type: text/html; charset=iso-8859-1");
+require_once("../php/locale.php");
+require_once("../php/db.php");
+
+header("Content-type: text/html");
 
 include 'helper.php';
 
@@ -28,7 +30,7 @@ mysql_select_db("flightdb",$db);
 if($action == "RECORD") {
   $uid = $_SESSION["uid"];
   if(!$uid or empty($uid)) {
-    printf("0;Your session has timed out, please log in again.");
+    printf("0;" . _("Your session has timed out, please log in again."));
     exit;
   }
 

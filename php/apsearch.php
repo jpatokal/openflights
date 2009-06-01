@@ -1,5 +1,7 @@
 <?php
 require_once("../php/locale.php");
+require_once("../php/db.php");
+
 header("Content-type: text/html");
 
 include 'helper.php';
@@ -20,9 +22,6 @@ $iatafilter = $HTTP_POST_VARS["iatafilter"];
 $offset = $HTTP_POST_VARS["offset"];
 $action = $HTTP_POST_VARS["action"];
 $apid = $HTTP_POST_VARS["apid"];
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 $uid = $_SESSION["uid"];
 
