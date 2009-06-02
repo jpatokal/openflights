@@ -1,7 +1,6 @@
 <?php
-session_start();
-header("Content-type: text/html; charset=iso-8859-1");
-
+include 'locale.php';
+include 'db.php';
 include 'helper.php';
 include 'filter.php';
 
@@ -30,9 +29,6 @@ if(! $limit) {
   $limit = "10";
 }
 
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
-
 // Verify that this trip and user are public
 if($uid == 1 && $trid && $trid != "0") {
   // Verify that we're allowed to access this trip
@@ -40,7 +36,7 @@ if($uid == 1 && $trid && $trid != "0") {
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["uid"] != $uid and $row["public"] == "N") {
-      die('Error;This trip is not public.');
+      die('Error;' . _("This trip is not public."));
     } else {
       $uid = $row["uid"];
     }
@@ -52,7 +48,7 @@ if($user && $user != "0") {
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["public"] == "N") {
-      die('Error;This user\'s flights are not public.');
+      die('Error;' . _("This user's flights are not public."));
     } else {
       $uid = $row["uid"];
     }

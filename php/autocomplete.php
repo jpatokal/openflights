@@ -1,16 +1,7 @@
 <?php
 header("Content-type: text/html; charset=iso-8859-1");
 include 'helper.php';
-?>
-
-<?php
-$host = "localhost";
-$database = "flightdb";
-$user = "openflights";
-$password = "";
-
-mysql_connect($host,$user,$password);
-mysql_select_db($database);
+include 'db.php';
 
 // If quick, then return only one row, with no UL tags
 if($_POST['quick']) {

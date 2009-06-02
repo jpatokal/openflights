@@ -1,7 +1,6 @@
 <?php
 session_start();
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
+include 'db.php';
 
 // List of all countries
 $sql = "SELECT code, name FROM countries ORDER BY name";

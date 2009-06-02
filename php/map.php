@@ -1,7 +1,6 @@
 <?php
-session_start();
-header("Content-type: text/html; charset=iso-8859-1");
-
+include 'locale.php';
+include 'db.php';
 include 'helper.php';
 include 'filter.php';
 
@@ -27,9 +26,6 @@ if(! $user) {
   $user = $HTTP_GET_VARS["user"];
 }
 
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
-
 $init = $HTTP_POST_VARS["param"];
 if(! $init) {
   $init = $HTTP_GET_VARS["init"];
@@ -50,7 +46,7 @@ if($trid && $trid != "0" && $trid != "null") {
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["uid"] != $uid and $row["public"] == "N") {
-      die('Error;This trip is not public.');
+      die('Error;' . _("This trip is not public."));
     } else {
       // Check if we're viewing out own trip
       if($uid != $row["uid"]) {
@@ -67,7 +63,7 @@ if($trid && $trid != "0" && $trid != "null") {
       }
     }
   } else {
-    die('Error;No such trip.');
+    die('Error;' . _("No such trip."));
   }
 }
 
@@ -79,11 +75,11 @@ if($user && $user != "0") {
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["public"] == "N" && $row["pwmatch"] == "N") {
       if($row["guestpw"]) {
-	die('Error;This user\'s flights are password-protected.<br><br>' .
-	    'Password: <input type="password" id="guestpw" size="10">' .
-	    '<input type="button" value="Submit" align="middle" onclick="JavaScript:refresh(true)">');
+	die("Error;" . _("This user's flights are password-protected.") . "<br><br>" .
+	    _("Password") . ": <input type='password' id='guestpw' size='10'>" .
+	    "<input type='button' value='Submit' align='middle' onclick='JavaScript:refresh(true)'>");
       } else {
-	die('Error;This user\'s flights are not public.');
+	die('Error;' . _("This user's flights are not public."));
       }
     } else {
       $uid = $row["uid"];
@@ -98,7 +94,7 @@ if($user && $user != "0") {
       mysql_query("UPDATE users SET count=count+1 WHERE uid=$uid", $db);
     }
   } else {
-    die('Error;No such user.');
+    die('Error;' . _("No such user."));
   }
 }
 
@@ -112,7 +108,7 @@ $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(dur
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($row["count"] == "0" && $user && $user != "0") {
-    die('Error;This user has no flights.');
+    die('Error;' . _("This user has no flights."));
   }
   printf("%s;%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite,
 	 $logged_in, $editor, $challenge);

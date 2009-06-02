@@ -1,7 +1,5 @@
 <?php
-header("Content-type: text/html; charset=iso-8859-1");
-
-session_start();
+include 'locale.php';
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
   printf("Not logged in, aborting");
@@ -9,6 +7,7 @@ if(!$uid or empty($uid)) {
 }
 
 include 'helper.php';
+include 'db.php';
 
 // Hack to record X-Y and Y-X flights as same in DB
 function orderAirports($src_apid, $dst_apid) {
@@ -37,9 +36,6 @@ $multi = $HTTP_POST_VARS["multi"];
 if(!$mode || $mode == "") {
   $mode = "F";
 }
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 $src_time = $HTTP_POST_VARS["src_time"];
 if(! $src_time || $src_time == "") {
@@ -132,15 +128,15 @@ switch($param) {
    $code = 1;
    $count = mysql_affected_rows();
    if($count == 1) {
-     $msg = $modes[$mode] . " added.";
+     $msg = _("Added.");
    } else {
-     $msg = $count . " flights added.";
+     $msg = sprintf(_("%s flights added."), $count);
    }
    break;
 
  case "EDIT":
    $code = 2;
-   $msg = $modes[$mode] . " edited.";
+   $msg = _("Edited.");
    break;
 }
 
