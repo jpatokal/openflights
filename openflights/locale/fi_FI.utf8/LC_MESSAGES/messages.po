@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-05-31 00:40+0730\n"
+"PO-Revision-Date: 2009-06-02 11:47+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -100,9 +100,7 @@ msgid "Your session has timed out, please log in again."
 msgstr "Sessiosi on suljettu, ole hyvä ja kirjaudu uudestaan sisään."
 
 #, php-format
-msgid ""
-"Sorry, an airport using the ICAO code %s exists already.  Please double-"
-"check."
+msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
 msgstr "ICAO-koodia %s käyttävä lentokenttä on jo olemassa."
 
 msgid "Adding new airport failed:"
@@ -126,28 +124,14 @@ msgstr "IATA/FAA-koodin pitää olla kolme kirjainta."
 msgid "ICAO codes must be exactly four letters."
 msgstr "ICAO-koodin pitää olla neljä kirjainta."
 
-msgid ""
-"Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks "
-"-.' (dash, period, apostrophe) and spaces can be used in airport and city "
-"names."
-msgstr ""
-"Lentokenttien ja kaupunkien nimissä voi käyttää vain kirjaimia A-Z ilman "
-"aksentteja, numeroita 0-9, merkkejä -.' (viiva, piste ja heittomerkki) ja "
-"välilyöntiä."
+msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgstr "Lentokenttien ja kaupunkien nimissä voi käyttää vain kirjaimia A-Z ilman aksentteja, numeroita 0-9, merkkejä -.' (viiva, piste ja heittomerkki) ja välilyöntiä."
 
-msgid ""
-"Search for IATA/FAA code '%1' limited to United States airports, since DAFIF "
-"does not contain IATA codes for cities outside the US."
-msgstr ""
-"Haku IATA/FAA-koodille '%1' rajoitettu Yhdysvaltoihin, sillä DAFIF-kannassa "
-"ei ole muiden maiden IATA-koodeja."
+msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgstr "Haku IATA/FAA-koodille '%1' rajoitettu Yhdysvaltoihin, sillä DAFIF-kannassa ei ole muiden maiden IATA-koodeja."
 
-msgid ""
-"Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities "
-"outside the United States."
-msgstr ""
-"IATA/FAA-koodia '%1' ei laskettu mukaan hakuun, sillä DAFIF-kannassa ei ole "
-"Yhdysvaltain ulkopuolisten lentokenttien IATA-koodeja."
+msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgstr "IATA/FAA-koodia '%1' ei laskettu mukaan hakuun, sillä DAFIF-kannassa ei ole Yhdysvaltain ulkopuolisten lentokenttien IATA-koodeja."
 
 msgid "Sorry, you have to be logged into OpenFlights to use this."
 msgstr "Tätä toimintoa varten täytyy kirjautua sisään OpenFlightsiin."
@@ -161,23 +145,11 @@ msgstr "Kaupungin nimi puuttuu."
 msgid "Please select a country."
 msgstr "Valitse maa, jossa lentokenttä sijaitsee."
 
-msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Lisää leveys- ja pituusasteet sekä korkeus.  Oletko tarkistanut onko kenttä "
-"kenties jo OurAirports-kannassa?  Voit ladata tiedot sieltä valmiiksi."
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgstr "Lisää leveys- ja pituusasteet sekä korkeus.  Oletko tarkistanut onko kenttä kenties jo OurAirports-kannassa?  Voit ladata tiedot sieltä valmiiksi."
 
-msgid ""
-"Latitude and longitude must be given as decimal degrees, where negative "
-"numbers indicate 'south' and 'west' respectively, and with at least three "
-"digits of precision (after the decimal point).  For example, San Francisco "
-"(SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
-msgstr ""
-"Leveys- ja pituusasteet täytyy antaa desimaalisessa muodossa, jossa "
-"negatiiviset luvut viittaavat etelään ja länteen, ja ainakin kolmen "
-"desimaalin tarkkuudella.  Esim. San Franciscon (SFO) sijainti on 37.6189 "
-"(pohjoinen), -122.3748 (itä)."
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgstr "Leveys- ja pituusasteet täytyy antaa desimaalisessa muodossa, jossa negatiiviset luvut viittaavat etelään ja länteen, ja ainakin kolmen desimaalin tarkkuudella.  Esim. San Franciscon (SFO) sijainti on 37.6189 (pohjoinen), -122.3748 (itä)."
 
 msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
 msgstr "Leveysasteen täytyy olla -180 (länsi) ja 180 (itä) asteen väliltä."
@@ -188,51 +160,23 @@ msgstr "Pituusasteen täytyy olla 90 (pohjoinen) ja -90 (etelä) asteen välill�
 msgid "Please enter a positive number for elevation."
 msgstr "Korkeuden täytyy olla positiivinen luku."
 
-msgid ""
-"Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -"
-"5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
-msgstr ""
-"Aikavyöhykkeet annetaan erotuksena UTC/GMT:stä, esim. +8 Singaporelle tai -5 "
-"New Yorkille.  Tuntien murto-osat ilmaistaan desimaaleina, esim. +5.75 "
-"Nepalille."
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgstr "Aikavyöhykkeet annetaan erotuksena UTC/GMT:stä, esim. +8 Singaporelle tai -5 New Yorkille.  Tuntien murto-osat ilmaistaan desimaaleina, esim. +5.75 Nepalille."
 
-msgid ""
-"You have not entered whether this airport follows Daylight Savings Time "
-"(DST).  Leave it as Unknown?"
-msgstr ""
-"Et ole valinnut kesäaikaa tälle lentokentälle.  Jätetäänkö Tuntemattomaksi?"
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgstr "Et ole valinnut kesäaikaa tälle lentokentälle.  Jätetäänkö Tuntemattomaksi?"
 
-msgid ""
-"You have not entered an IATA/FAA code. Are you sure the airport does not "
-"have one and you wish to proceed?"
-msgstr ""
-"Et ole kirjannut IATA/FAA-koodia tälle kentälle.  Oletko varma, ettei "
-"kentällä ole sitä?"
+msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Et ole kirjannut IATA/FAA-koodia tälle kentälle.  Oletko varma, ettei kentällä ole sitä?"
 
-msgid ""
-"You have not entered an ICAO code. Are you sure the airport does not have "
-"one and you wish to proceed?"
-msgstr ""
-"Et ole kirjannut ICAO-koodia tälle kentälle.  Oletko varma, ettei kentällä "
-"ole sitä?"
+msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Et ole kirjannut ICAO-koodia tälle kentälle.  Oletko varma, ettei kentällä ole sitä?"
 
-msgid ""
-"Are you sure you want to add %1 as a new airport, located in the %2 quadrant "
-"of the world?  Please double-check the name, airport codes and exact "
-"coordinates before confirming."
-msgstr ""
-"Oletko varma, että haluat lisätä uuden lentokentän %1, joka sijaitsee "
-"maailman %2-kvadrantissa?  Varmistathan vielä yhden kerran nimen, koodit ja "
-"koordinaatit. "
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgstr "Oletko varma, että haluat lisätä uuden lentokentän %1, joka sijaitsee maailman %2-kvadrantissa?  Varmistathan vielä yhden kerran nimen, koodit ja koordinaatit. "
 
 msgid "Cancelled."
 msgstr "Peruutettu."
-
-msgid "SEARCH"
-msgstr ""
-
-msgid "ALL"
-msgstr "KAIKKI"
 
 msgid "No matches found in this database."
 msgstr "Haku ei tuottanut osumia."
@@ -261,11 +205,8 @@ msgstr "Muokkaa"
 msgid "Load"
 msgstr "Lataa"
 
-msgid ""
-"Ignoring city '%1', since the DAFIF database does not contain city "
-"information."
-msgstr ""
-"Kaupunki '%1' poistettu hausta, sillä DAFIF-kannassa ei ole kaupunkien nimiä."
+msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
+msgstr "Kaupunki '%1' poistettu hausta, sillä DAFIF-kannassa ei ole kaupunkien nimiä."
 
 msgid "Searching..."
 msgstr "Haetaan..."
@@ -282,16 +223,14 @@ msgstr "Lentoyhtiöhaku"
 msgid "Airline, railway, road transport and shipping search"
 msgstr "Lento-, rautatie-, maantiekuljetus- ja laivayhtiöhaku"
 
-msgid ""
-"Fill one or more fields below to search for matching airlines and other "
-"transport operators."
+msgid "Fill one or more fields below to search for matching airlines and other transport operators."
 msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
 
 msgid "Name"
 msgstr "Nimi"
 
 msgid "Mode"
-msgstr "Liikennemuoto"
+msgstr "Kulkuneuvo"
 
 msgid "Airline"
 msgstr "Lentoyhtiö"
@@ -319,3 +258,515 @@ msgstr "Näytä vain isot (IATA-koodatut) lentoyhtiöt?"
 
 msgid "Record the current data as a new airline."
 msgstr "Tallenna uutena lentoyhtiönä."
+
+msgid "Add new airport"
+msgstr "Lisää uusi kenttä"
+
+msgid "Sorry, OpenFlights requires JavaScript."
+msgstr "OpenFlights vaatii JavaScriptia tukevan selaimen."
+
+msgid "News"
+msgstr "Uutta"
+
+msgid "Username"
+msgstr "Tunnus"
+
+msgid "Password"
+msgstr "Salasana"
+
+msgid "Log in"
+msgstr "Sisään"
+
+msgid "Sign up"
+msgstr "Luo tunnus"
+
+msgid "Analyze"
+msgstr "Analysoi"
+
+msgid "Top 10"
+msgstr "Top 10"
+
+msgid "Filter"
+msgstr "Suodata"
+
+msgid "Carrier"
+msgstr "Yhtiö"
+
+msgid "Year"
+msgstr "Vuosi"
+
+msgid "Trip"
+msgstr "Matka"
+
+msgid "More..."
+msgstr "Lisää..."
+
+msgid "Class"
+msgstr "Luokka"
+
+msgid "Distance"
+msgstr "Etäisyys"
+
+msgid "Note"
+msgstr "Huom."
+
+msgid "Reason"
+msgstr "Syy"
+
+msgid "Registration"
+msgstr "Rekisterinro."
+
+msgid "Control panel"
+msgstr "Ohjauspaneeli"
+
+msgid "New flight"
+msgstr "Uusi lento"
+
+msgid "List flights"
+msgstr "Lentoluettelo"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Settings"
+msgstr "Asetukset"
+
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+msgid "Date"
+msgstr "Päiväys"
+
+msgid "Departure and arrival time"
+msgstr "Lähtö- ja saapumisaika"
+
+msgid "Add new trip"
+msgstr "Lisää uusi matka"
+
+msgid "Edit this trip"
+msgstr "Muokkaa tätä matkaa"
+
+msgid "From"
+msgstr "Mistä"
+
+#, php-format
+msgid "Enter city name or airport code"
+msgstr "Kaupungin nimi tai lentokentän koodi"
+
+msgid "Swap To and From airports"
+msgstr "Vaihda Mistä ja Mihin keskenään"
+
+msgid "Plane"
+msgstr "Kone"
+
+msgid "Enter plane model"
+msgstr "Lentokoneen malli"
+
+msgid "Reg."
+msgstr "Rek.nro."
+
+msgid "To"
+msgstr "Mihin"
+
+msgid "Economy"
+msgstr "Turisti"
+
+msgid "Premium Eco."
+msgstr "Premium Eco."
+
+msgid "Business"
+msgstr "Bisnes"
+
+msgid "First"
+msgstr "Ensimmäinen"
+
+msgid "Flight"
+msgstr "Lento"
+
+msgid "Road"
+msgstr "Auto"
+
+msgid "Ship"
+msgstr "Laiva"
+
+msgid "Train"
+msgstr "Juna"
+
+msgid "Nr"
+msgstr "Nro"
+
+msgid "Seat"
+msgstr "Paikka"
+
+msgid "Type"
+msgstr "Laji"
+
+msgid "Window"
+msgstr "Ikkuna"
+
+msgid "Aisle"
+msgstr "Käytävä"
+
+msgid "Middle"
+msgstr "Keski"
+
+msgid "Work"
+msgstr "Työ"
+
+msgid "Leisure"
+msgstr "Hupi"
+
+msgid "Crew"
+msgstr "Henkilökunta"
+
+msgid "Other"
+msgstr "Muu"
+
+msgid "Enter airline name or code"
+msgstr "Lentoyhtiön nimi tai koodi"
+
+msgid "Add"
+msgstr "Lisää"
+
+msgid "Save this flight"
+msgstr "Tallenna tämä lento"
+
+msgid "Reset this entry form"
+msgstr "Tyhjennä lomake"
+
+msgid "Exit"
+msgstr "Sulje"
+
+msgid "Exit flight editor"
+msgstr "Lopeta lentojen muokkaus"
+
+msgid "Save changes made to this flight"
+msgstr "Tallenna tämän lennon muutokset"
+
+msgid "Delete"
+msgstr "Poista"
+
+msgid "Delete this flight"
+msgstr "Poista tämä lento"
+
+msgid "Previous flight"
+msgstr "Edellinen lento"
+
+msgid "Next flight"
+msgstr "Seuraava lento"
+
+msgid "Switch to basic editor"
+msgstr "Vaihda peruseditoriin"
+
+msgid "Basic"
+msgstr "Perus"
+
+msgid "Add new flights"
+msgstr "Lisää uusia lentoja"
+
+msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgstr "<font color='blue'>Siniset</font> kentät ovat pakollisia.  Valitse lentokenttä kartasta klikkaamalla, tai hae se kaupungin nimellä tai kentän koodilla."
+
+msgid "Save these flights"
+msgstr "Tallenna nämä lennot"
+
+msgid "Exit without saving"
+msgstr "Poistu tallentamatta"
+
+msgid "Add new row for faster entry of multiple flights"
+msgstr "Lisää uusi rivi, niin voit kirjata lentoja nopeammin"
+
+msgid "More"
+msgstr "Lisää"
+
+msgid "Remove a row"
+msgstr "Poista rivi"
+
+msgid "Less"
+msgstr "Vähennä"
+
+msgid "Switch to detailed editor"
+msgstr "Vaihda yksityiskohtaiseen editoriin"
+
+msgid "Detailed"
+msgstr "Extra"
+
+msgid "Toggle pan and region select mode"
+msgstr "Kartan siirto vs. alueen valinta"
+
+msgid "Toggle overview map"
+msgstr "Overview-kartta"
+
+msgid "My Flights"
+msgstr "Lentoni"
+
+msgid "My Airports"
+msgstr "Lentokenttäni"
+
+msgid "Flights:"
+msgstr "Lennot:"
+
+msgid "Select this airport"
+msgstr "Valitse tämä lentokenttä"
+
+msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
+msgstr "Päiväyksen on oltava muodossa vuosi/kuu/päivä, esim. lokakuun 30. päivä 2008 olisi 2008/10/30.  Voit kirjata päiväyksen muodossa YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD tai YYYY MM DD. "
+
+msgid "Please enter a valid source airport."
+msgstr "Tämä lentokenttä on tuntematon."
+
+msgid "Please enter a valid destination airport."
+msgstr "Tämä lentokenttä on tuntematon."
+
+msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
+msgstr "Yhtiötä '%1' ei löytynyt %2-kannasta.  Haluatko lisätä sen uutena?"
+
+msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
+msgstr "Kellonaikojen on oltava muodossa HH:MM, esim. 21:37."
+
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgstr "Lennon keston on oltava tunteina ja minuutteina, esim. 5:37.  Kesto lasketaan uudestaan automaattisesti jos tyhjennät kentän."
+
+msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgstr "Lennon pituus ilmaistaan maileina.  Pituus lasketaan uudestaan jos tyhjennät kentän."
+
+msgid "No trips. Add one? "
+msgstr "Ei matkoja. Lisää yksi?"
+
+msgid "Unassigned flights"
+msgstr "Matkoihin kuulumattomat lennot"
+
+msgid "Recent flights on %1"
+msgstr "Viimeaikaiset %1-yhtiön lennot"
+
+msgid "Recently added flights"
+msgstr "Hiljattain lisättyjä lentoja"
+
+msgid "%1's flights on %2 in %3"
+msgstr "%1:n matkat"
+
+msgid "%1's flights on %2"
+msgstr "%1:n matkat yhtiöllä %2"
+
+msgid "%1's flights in %2"
+msgstr "%1:n matkat vuonna %2"
+
+msgid "%1's flights"
+msgstr "%1:n matkat"
+
+msgid "Home"
+msgstr "Koti"
+
+msgid "Not in a trip"
+msgstr "Ei matkassa"
+
+msgid "segments"
+msgstr "lentoa"
+
+msgid "miles"
+msgstr "mi"
+
+msgid "days"
+msgstr "pv"
+
+msgid "No flights found at this airport."
+msgstr "Ei lentoja tältä kentältä."
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Comma-Separated Value, for Excel and data processing"
+msgstr "Comma-Separated Value, Exceliin ja muuhun tiedonkäsittelyyn"
+
+msgid "Keyhole Markup Language, for Google Earth and visualization"
+msgstr "Keyhole Markup Language, Google Earthia ja muita 3D-ohjelmia varten"
+
+msgid "Nr."
+msgstr "Nro."
+
+msgid "Miles"
+msgstr "Mailia"
+
+msgid "Time"
+msgstr "Aika"
+
+msgid "Vehicle"
+msgstr "Kulkuneuvo"
+
+msgid "Edit this flight"
+msgstr "Muokkaa tätä lentoa"
+
+msgid "Copy to new flight"
+msgstr "Kopioi uuden lennon pohjaksi"
+
+msgid "Unique"
+msgstr "Tilastot"
+
+msgid "Airports"
+msgstr "Lentokentät"
+
+msgid "Carriers"
+msgstr "Yhtiöitä"
+
+msgid "Countries"
+msgstr "Maita"
+
+msgid "Vehicles"
+msgstr "Kulkuneuvoja"
+
+msgid "Miles flown"
+msgstr "Maileja lennetty"
+
+msgid "Around the world"
+msgstr "Maailman ympäri"
+
+msgid "To the Moon"
+msgstr "Kuuhun"
+
+msgid "To Mars"
+msgstr "Marsiin"
+
+msgid "Journey records"
+msgstr "Ennätykset"
+
+msgid "Average"
+msgstr "Keskimäärin"
+
+msgid "Airport records"
+msgstr "Lentokenttäennätykset"
+
+msgid "Seats"
+msgstr "Paikat"
+
+msgid "Show..."
+msgstr "Näytä..."
+
+msgid "Sort by..."
+msgstr "Lajittele..."
+
+msgid "Routes"
+msgstr "Reitit"
+
+msgid "Airlines"
+msgstr "Yhtiöt"
+
+msgid "Planes"
+msgstr "Lentokoneet"
+
+msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgstr "Tähän lentoon tehtyjä muutoksia ei ole tallennettu.  Jatka tallentamatta?"
+
+msgid "Loading..."
+msgstr "Ladataan..."
+
+msgid "Edit segment %1 of %2"
+msgstr "Muokkaa lentoa %1/%2"
+
+msgid "Are you sure you want to delete this flight?"
+msgstr "Oletko varma, että haluat poistaa tämän lennon?"
+
+msgid "Deleting flight cancelled."
+msgstr "Lennon poistaminen peruutettu."
+
+msgid "Search for %1"
+msgstr "%1haku"
+
+msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
+msgstr "Lähtö %1%2%3, perillä %4%5%6, aikaero %7 tuntia"
+
+msgid "+%1 day"
+msgstr "+%1 päivä"
+
+msgid "-%1 day"
+msgstr "-%1 päivä"
+
+msgid "Flight departure and arrival times"
+msgstr "Lennon lähtö- ja saapumisajat"
+
+msgid "Logged in as <B>%1</B>"
+msgstr "Kirjautunut nimellä <B>%1</B>"
+
+msgid "Welcome, <B>%1</B> !"
+msgstr "Tervetuloa, <B>%1</B> !"
+
+msgid "Loading"
+msgstr "Ladataan"
+
+msgid "Hi, <B>%1</B> !"
+msgstr "Terve, <B>%1</B> !"
+
+msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgstr "<B>Tervetuloa takaisin</B>! <br><a href='/donate.html' target='_blank'>Lahjoitathan, niin voimme jatkaa toimintaa.</a>"
+
+msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr "<b>Tervetuloa OpenFlightsiin!</b>  %1 niin voit alkaa lisäämään lentoja, tai %2 niin voit kopioida aiemmin kirjatut lennot vaikkapa FlightMemorysta."
+
+msgid "You have been logged out."
+msgstr "Olet kirjautunut ulos."
+
+msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
+msgstr "Muokkaat jo yhtä lentoa. Haluatko peruuttaa muutokset ja lisätä uuden lennon?"
+
+msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
+msgstr "Muokkaat jo yhtä lentoa. Haluatko peruuttaa muutokset ja muokata toista lentoa?"
+
+msgid "Duration"
+msgstr "Kesto"
+
+msgid "Add new flight"
+msgstr "Lisää uusi lento"
+
+msgid "Edit flight"
+msgstr "Muokkaa lentoa"
+
+msgid "Prem.Eco"
+msgstr "Eco.Extra"
+
+msgid "Econ"
+msgstr "Econ"
+
+msgid "P.Eco"
+msgstr "EcoX"
+
+msgid "Biz"
+msgstr "Bis"
+
+msgid "Leis."
+msgstr "Hupi"
+
+msgid "flight"
+msgstr "lento"
+
+msgid "train"
+msgstr "juna"
+
+msgid "road trip"
+msgstr "automatka"
+
+msgid "ship"
+msgstr "laiva"
+
+msgid "airline"
+msgstr "lentoyhtiö"
+
+msgid "railway"
+msgstr "rautatie"
+
+msgid "road transport"
+msgstr "tiekuljetus"
+
+msgid "shipping"
+msgstr "laiva"
+
+msgid "Segments"
+msgstr "Matkat"
+
+msgid "Mileage"
+msgstr "Mailit"
+
+msgid "Action"
+msgstr "Toiminto"
+
+msgid "1st"
+msgstr "Eka"
+

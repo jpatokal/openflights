@@ -22,10 +22,10 @@ NameVirtualHost *
                 RewriteEngine on
                 # Map /trip/xxx URLs into ?trid=xxx format
                 RewriteRule   ^trip/img/(.+)$  /img/$1                 [PT,L,QSA]
-                RewriteRule   ^trip/(.+)$      /index.html?trid=$1     [PT,L,QSA]
+                RewriteRule   ^trip/(.+)$      /index.php?trid=$1     [PT,L,QSA]
                 # Map /user/xxx URLs into ?user=xxx format
                 RewriteRule   ^user/img/(.+)$  /img/$1                 [PT,L,QSA]
-                RewriteRule   ^user/(.+)$      /index.html?user=$1     [PT,L,QSA]
+                RewriteRule   ^user/(.+)$      /index.php?user=$1     [PT,L,QSA]
                 # Map /banner/xxx URLs into ?user=xxx format
                 RewriteRule   ^banner/(.+)$     /banner/banner.php?user=$1     [PT,L,QSA]
 

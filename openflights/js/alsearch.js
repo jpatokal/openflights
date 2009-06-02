@@ -266,11 +266,6 @@ function clearSearch() {
   form.iatafilter.checked = true;
 }
 
-// User has changed locale, reload page with new URL
-function changeLocale() {
-  location.href = "http://" + location.host + "/html/alsearch.php?lang=" + document.getElementById("locale").value;
-}
-
 // Airline selected, kick it back to main window and close this
 function selectAirline(data, name, mode) {
   if(! parent.opener || ! parent.opener.addNewAirline) {

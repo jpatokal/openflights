@@ -282,3 +282,251 @@ msgstr ""
 
 msgid "Record the current data as a new airline."
 msgstr ""
+
+msgid "Add new airport"
+msgstr ""
+
+msgid "Sorry, OpenFlights requires JavaScript."
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Log in"
+msgstr ""
+
+msgid "Sign up"
+msgstr ""
+
+msgid "Analyze"
+msgstr ""
+
+msgid "Top 10"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "Carrier"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Trip"
+msgstr ""
+
+msgid "More..."
+msgstr ""
+
+msgid "Class"
+msgstr ""
+
+msgid "Distance"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Registration"
+msgstr ""
+
+msgid ""
+"Control panel</b><br>\n"
+"\t\t<input type="
+msgstr ""
+
+msgid "Control panel"
+msgstr ""
+
+msgid "New flight"
+msgstr ""
+
+msgid "List flights"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Departure and arrival time"
+msgstr ""
+
+msgid "Add new trip"
+msgstr ""
+
+msgid "Edit this trip"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+#, php-format
+msgid "Enter city name or airport code"
+msgstr ""
+
+msgid "Swap To and From airports"
+msgstr ""
+
+msgid "Plane"
+msgstr ""
+
+msgid "Enter plane model"
+msgstr ""
+
+msgid "Reg."
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Economy"
+msgstr ""
+
+msgid "Premium Eco."
+msgstr ""
+
+msgid "Business"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "Flight"
+msgstr ""
+
+msgid "Road"
+msgstr ""
+
+msgid "Ship"
+msgstr ""
+
+msgid "Train"
+msgstr ""
+
+msgid "Nr"
+msgstr ""
+
+msgid "Seat"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Window"
+msgstr ""
+
+msgid "Aisle"
+msgstr ""
+
+msgid "Middle"
+msgstr ""
+
+msgid "Work"
+msgstr ""
+
+msgid "Leisure"
+msgstr ""
+
+msgid "Crew"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Enter airline name or code"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Save this flight"
+msgstr ""
+
+msgid "Reset this entry form"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "Exit flight editor"
+msgstr ""
+
+msgid "Save changes made to this flight"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete this flight"
+msgstr ""
+
+msgid "Previous flight"
+msgstr ""
+
+msgid "Next flight"
+msgstr ""
+
+msgid "Switch to basic editor"
+msgstr ""
+
+msgid "Basic"
+msgstr ""
+
+msgid "Add new flights"
+msgstr ""
+
+msgid ""
+"Fields in <font color='blue'>blue</font> are required.  Click on airports in "
+"the map to select them or search by city name or airport code."
+msgstr ""
+
+msgid "Save these flights"
+msgstr ""
+
+msgid "Exit without saving"
+msgstr ""
+
+msgid "Add new row for faster entry of multiple flights"
+msgstr ""
+
+msgid "More"
+msgstr ""
+
+msgid "Remove a row"
+msgstr ""
+
+msgid "Less"
+msgstr ""
+
+msgid "Switch to detailed editor"
+msgstr ""
+
+msgid "Detailed"
+msgstr ""
+
+msgid "Duration"
+msgstr ""
+
+msgid "Add new flight"
+msgstr ""
+
+msgid "Edit flight"
+msgstr ""

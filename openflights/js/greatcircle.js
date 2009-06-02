@@ -165,7 +165,15 @@ function isValid(point) {
         return( false );
 }
 
-// And some totally unrelated helper functions
+////
+//// And some totally unrelated helper functions
+////
+
+// User has changed locale, reload this page with new lang attribute
+function changeLocale() {
+  location.href = "http://" + location.host + location.pathname + "?lang=" + document.getElementById("locale").value;
+}
+
 //
 // Check if DST is active
 function checkDST(type, date, year) {
