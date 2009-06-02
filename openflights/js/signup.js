@@ -6,6 +6,7 @@ var URL_SIGNUP = "/php/signup.php";
 var privacyList = [ 'N', 'Y', 'O' ];
 
 window.onload = function init(){
+  gt = new Gettext({ 'domain' : 'messages' });
   if(window.location.href.indexOf("settings") != -1) {
     xmlhttpPost(URL_SIGNUP, "LOAD");
   } else {
@@ -61,7 +62,7 @@ function xmlhttpPost(strURL, type) {
     switch(type) {
     case 'NEW':
       query += '&name=' + escape(form.username.value);
-      document.getElementById("miniresultbox").innerHTML = "<I>Creating account...</I>";
+      document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Creating account...") + "</I>";
       break;
 
     case 'EDIT':
@@ -79,7 +80,7 @@ function xmlhttpPost(strURL, type) {
 	query += '&guestpw=' + escape(hex_md5(form.guestpw.value + form.username.value.toLowerCase()));
       }
       query += '&startpane=' + escape(startpane);
-      document.getElementById("miniresultbox").innerHTML = "<I>Saving changes...</I>";
+      document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Saving changes...") + "</I>";
       break;
 
     case 'RESET':
@@ -99,8 +100,8 @@ function validate(type) {
   var email = form.email.value;
 
   if(type == 'RESET') {
-    if(! confirm("This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?")) {
-      document.getElementById("miniresultbox").innerHTML = "<i>Deletion cancelled.</i>";
+    if(! confirm(gt.gettext("This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"))) {
+      document.getElementById("miniresultbox").innerHTML = "<i>" + gt.gettext("Deletion cancelled.") + "</i>";
       return;
     }
   }
@@ -108,12 +109,12 @@ function validate(type) {
   if(type == 'NEW') {
     var name = form.username.value;
     if(name == "") {
-      showError("Please enter a username.");
+      showError(gt.gettext("Please enter a username."));
       form.username.focus();
       return;
     }
     if(pw1 == "") {
-      showError("Please enter a password.");
+      showError(gt.gettext("Please enter a password."));
       form.pw1.focus();
       return;
     }
@@ -121,30 +122,30 @@ function validate(type) {
   if(type == 'EDIT') {
     var oldpw = form.oldpw.value;
     if(pw1 != "" && oldpw == "") {
-      showError("Please enter your current password if you wish to change to a new password.");
+      showError(gt.gettext("Please enter your current password if you wish to change to a new password."));
       form.oldpw.focus();
       return;
     }
     if(pw1 == "" && oldpw != "") {
-      showError("Please enter a new password, or clear current password if you do not wish to change it.");
+      showError(gt.gettext("Please enter a new password, or clear current password if you do not wish to change it."));
       form.pw1.focus();
       return;
     }
   }
 
   if(pw1 != pw2) {
-    showError("Your passwords don't match, please try again.");
+    showError(gt.gettext("Your passwords don't match, please try again."));
     form.pw1.focus();
     return;
   }
 
   if(email != "" && ! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-    showError('Invalid e-mail address, it should be "user@example.domain"');
+    showError(gt.gettext('Invalid e-mail address, it should be "user@example.domain"'));
     form.email.focus();
     return;
   }
 
-  document.getElementById("miniresultbox").innerHTML = "<i>Processing...</i>";
+  document.getElementById("miniresultbox").innerHTML = "<i>" + gt.gettext("Processing...") + "</i>";
   xmlhttpPost(URL_SIGNUP, type);
 }
 
@@ -165,7 +166,7 @@ function loadUser(str) {
     signupform.email.value = settings["email"];
     signupform.username.value = settings["name"];
     signupform.myurl.value = "http://openflights.org/user/" + settings["name"];
-    signupform.count.value = "Viewed " + settings["count"] + " times";
+    signupform.count.value = Gettext.strargs(gt.gettext("Viewed %1 times"), [settings["count"]]);
 
     $('banner_img').innerHTML = "<img src='/banner/" + settings["name"] + ".png' width=400 height=70>";
     signupform.banner_html.value = "<a href='http://openflights.org/user/" + settings["name"] + "' target='_blank'><img src='http://openflights.org/banner/" + settings["name"] + ".png' width=400 height=70></a>";
@@ -173,13 +174,13 @@ function loadUser(str) {
 
     if(settings["fbuid"]) {
       if(settings["sessionkey"]) {
-	fbstring = "Linked, automatic updates";
+	fbstring = gt.gettext("Linked, automatic updates");
       } else {
-	fbstring = "Linked, manual updates only<br><small><a target='_blank' href='http://apps.facebook.com/openflights'>Automate</a></small>";
+	fbstring = gt.gettext("Linked, manual updates only") + "<br><small><a target='_blank' href='http://apps.facebook.com/openflights'>" + gt.gettext("Automate") + "</a></small>";
       }
     } else {
-      fbstring = "Not active<br><small><a target='_blank' href='http://apps.facebook.com/openflights?ofname=" +
-	settings["name"] + "'>Add link</a></small>";
+      fbstring = gt.gettext("Not active") + "<br><small><a target='_blank' href='http://apps.facebook.com/openflights?ofname=" +
+	settings["name"] + "'>" + gt.gettext("Add link") + "</a></small>";
     }
     document.getElementById('facebook').innerHTML = fbstring;
     signupform.guestpw.value = settings["guestpw"];
@@ -230,7 +231,7 @@ function signup(str) {
 function changeName() {
   var name = document.forms['signupform'].username.value;
   var url = "http://" + location.host + "/user/" + escape(name);
-  $('profileurl').innerHTML = "Profile address: " + url;
+  $('profileurl').innerHTML = gt.gettext("Profile address:") + url;
 }
 
 function changePrivacy(type) {

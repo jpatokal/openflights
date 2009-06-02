@@ -1,5 +1,6 @@
 <?php
-session_start();
+include 'locale.php';
+include 'db.php';
 
 $type = $HTTP_POST_VARS["type"];
 $name = $HTTP_POST_VARS["name"];
@@ -19,14 +20,11 @@ $startpane = $HTTP_POST_VARS["startpane"];
 // 10 reset
 
 // Create new user
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
-
 if($type == "NEW") {
   $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "'";
   $result = mysql_query($sql, $db);
   if (mysql_fetch_array($result)) {
-    printf("0;Sorry, that name is already taken, please try another.");
+    printf("0;" . _("Sorry, that name is already taken, please try another."));
     exit;
   }
 
@@ -35,24 +33,24 @@ if($type == "NEW") {
   $uid = $_SESSION["uid"];
   $name = $_SESSION["name"];
   if(!$uid or empty($uid)) {
-    printf("0;Your session has timed out, please log in again.");
+    printf("0;" . _("Your session has timed out, please log in again."));
     exit;
   }
 
   if($type == "RESET") {
     $sql = "DELETE FROM flights WHERE uid=" . $uid;
     $result = mysql_query($sql, $db);
-    printf("10;Account reset, " . mysql_affected_rows() . " flights deleted.");
+    printf("10;" . _("Account reset, %s flights deleted."), mysql_affected_rows());
     exit;
   }
 
   if($type == "LOAD") {
-    $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, startpane, fbuid, sessionkey FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
+    $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, startpane, fbuid, sessionkey, locale FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       printf("3;" . json_encode($row));
     } else {
-      printf("0;Unknown error");
+      printf("0;" . _("Unknown error"));
     }
     exit;
   }
@@ -64,7 +62,7 @@ if($type == "NEW") {
       "password='" . mysql_real_escape_string($oldlpw) . "')";
     $result = mysql_query($sql, $db);
     if(! mysql_fetch_array($result)) {
-      printf("0;Sorry, current password is not correct.");
+      printf("0;" . _("Sorry, current password is not correct."));
       exit;
     }
   }
@@ -98,7 +96,7 @@ if($type == "NEW") {
 mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
 
 if($type == "NEW") {
-  printf("1;Successfully signed up, now logging in...");
+  printf("1;" . _("Successfully signed up, now logging in..."));
 
   // Log in the user
   $uid = mysql_insert_id();
@@ -108,6 +106,6 @@ if($type == "NEW") {
   $_SESSION['elite'] = $elite;
 
 } else {
-  printf("2;Settings changed successfully, now loading...");
+  printf("2;" . _("Settings changed successfully, returning..."));
 }
 ?>

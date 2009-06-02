@@ -1,7 +1,5 @@
 <?php
-session_start();
-header("Content-type: text/html; charset=iso-8859-1");
-
+include 'locale.php';
 include 'helper.php';
 include 'filter.php';
 
@@ -19,9 +17,6 @@ if(! $user) {
 }
 $trid = $HTTP_POST_VARS["trid"];
 
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
-
 // Verify that this trip and user are public
 $filter = "";
 
@@ -32,12 +27,12 @@ if($uid == 1 && $trid && $trid != "0") {
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $public = $row["public"];
     if($row["uid"] != $uid and $public == "N") {
-      die('Error;This trip is not public.');
+      die('Error;' . _("This trip is not public."));
     } else {
       $uid = $row["uid"];
     }
   } else {
-    die('Error;Trip not found.');
+    die('Error;' . _("Trip not found."));
   }
 }
 if($user && $user != "0") {
@@ -47,12 +42,12 @@ if($user && $user != "0") {
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $public = $row["public"];
     if($public == "N") {
-      die('Error;This user\'s flights are not public.');
+      die('Error;' . _("This user's flights are not public."));
     } else {
       $uid = $row["uid"];
     }
   } else {
-    die('Error;User not found.');
+    die('Error;' . _("User not found."));
   }
 }
 $filter = "f.uid=" . $uid . getFilterString($HTTP_POST_VARS);
@@ -75,8 +70,9 @@ print json_encode($array) . "\n";
 
 // longest and shortest
 // 0 desc, 1 distance, 2 duration, 3 src_iata, 4 src_icao, 5 src_apid, 6 dst_iata, 7 dst_icao, 8 dst_apid
-$sql = "(SELECT 'Longest',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance DESC LIMIT 1) UNION " .
-  "(SELECT 'Shortest',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance ASC LIMIT 1)";
+$sql = sprintf("(SELECT '%s',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance DESC LIMIT 1) UNION " .
+	       "(SELECT '%s',f.distance,DATE_FORMAT(duration, '%H:%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance ASC LIMIT 1)",
+	       _("Longest"), _("Shortest"));
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -93,10 +89,12 @@ printf ("\n");
 
 // North, South, West, East
 // 0 desc, 1 iata, 2 icao, 3 apid, 4 x, 5 y
-$sql = "(SELECT 'Northernmost',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MAX(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
-  "(SELECT 'Southernmost',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MIN(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
-  "(SELECT 'Westernmost',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MIN(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
-  "(SELECT 'Easternmost',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . "))";
+$sql = sprintf("(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MAX(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
+	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MIN(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
+	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MIN(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
+	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . "))",
+	       _("Northernmost"), _("Southernmost"), _("Westernmost"), _("Easternmost"));
+
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {

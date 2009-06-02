@@ -1,5 +1,6 @@
 <?php
-session_start();
+include 'locale.php';
+include 'db.php';
 
 $type = $HTTP_POST_VARS["type"];
 $name = $HTTP_POST_VARS["name"];
@@ -12,9 +13,6 @@ if(!$uid or empty($uid)) {
   printf("0;Your session has timed out, please log in again.");
   exit;
 }
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 switch($type) {
  case "LOAD":
@@ -65,15 +63,15 @@ mysql_query($sql, $db) or die ('0;Operation on trip ' . $name . ' failed: ' . $s
 switch($type) {
  case "NEW":
    $trid = mysql_insert_id();
-   printf("1;%s;Trip successfully created", $trid);
+   printf("1;%s;" . _("Trip successfully created"), $trid);
    break;
 
  case "DELETE":
-   printf("100;%s;Trip successfully deleted", $trid);
+   printf("100;%s;" . _("Trip successfully deleted"), $trid);
    break;
 
  default:
-   printf("2;%s;Trip successfully edited.", $trid);
+   printf("2;%s;" . _("Trip successfully edited."), $trid);
    break;
 }
 ?>

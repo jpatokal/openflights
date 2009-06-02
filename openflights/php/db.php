@@ -1,4 +1,9 @@
 <?php
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
+$host = "localhost";
+$dbname = "flightdb";
+$user = "openflights";
+$password = "";
+
+$db = mysql_connect($host,$user,$password);
+mysql_select_db($dbname, $db);
 ?>

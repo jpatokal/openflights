@@ -1,5 +1,6 @@
 <?php
-session_start();
+include 'locale.php';
+
 $name = $HTTP_POST_VARS["name"];
 // pw is hashed from lowercased username, legacypw is not
 $pw = $HTTP_POST_VARS["pw"];
@@ -26,10 +27,11 @@ if($name) {
     $_SESSION['email'] = $myrow["email"];
     $_SESSION['editor'] = $myrow["editor"];
     $_SESSION['elite'] = $myrow["elite"];
-
+    $_SESSION['locale'] = $myrow["locale"];
     printf("1;%s;%s;%s", $myrow["name"], $myrow["editor"], $myrow["elite"]);
   } else {
-    printf("0;Login failed. <a href='/html/signup.html'>Create account</a> or <a href='#' onclick='JavaScript:help(\"forgotpw\")'>reset password?</a>");
+    printf("0;" . _("Login failed. <%s>Create account</a> or <%s>reset password</a>?"),
+	   "a href='/html/signup.html'", "a href='#' onclick='JavaScript:help(\"forgotpw\")'");
   }
 }
 ?>

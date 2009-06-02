@@ -75,7 +75,7 @@ require_once("./php/db.php");
 		    <td></td>
 		    <td>
 		      <input type="button" value='<?php echo _("Log in") ?>' align="middle" tabindex="3" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
-		      <a href="/html/signup.html"><h7><?php echo _("Sign up") ?></a></h7>
+		      <a href="/html/settings.php?new=yes"><h7><?php echo _("Sign up") ?></a></h7>
 		    </td>
 		  </tr></table>
 	      </form>
