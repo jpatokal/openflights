@@ -69,20 +69,12 @@ var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
 		     [ '/img/icon_plane-19x19b.png', 19 ],
 		     [ '/img/icon_plane-19x19.png', 19 ] ];
 
-var classes = {"Y":"Economy", "P":"Prem.Eco", "C":"Business", "F":"First", "": ""};
-var seattypes = {"W":"Window", "A":"Aisle", "M":"Middle", "": ""};
-var reasons = {"B":"Business", "L":"Leisure", "C":"Crew", "O": "Other", "": ""};
-var classes_short = {"Y":"Econ", "P":"P.Eco", "C":"Biz", "F":"First", "": ""};
-var reasons_short = {"B":"Work", "L":"Leis.", "C":"Crew", "O":"Other", "": ""};
+// Redefined with localized strings under init
+var classes, seattypes, reasons, classes_short, reasons_short, modenames, modesegments, modeoperators, topmodes;
 var modecolors = { "F":COLOR_NORMAL, "T":COLOR_TRAIN, "R":COLOR_ROAD, "S":COLOR_SHIP };
 var modeicons = { "F":'/img/icon_airline.png', "T": '/img/icon_train.png',
 		  "R": '/img/icon_car.png', "S": '/img/icon_ship.png' };
-var modenames = { "F":"Flight", "T":"Train", "R":"Road", "S":"Ship" };
-var modesegments = { "F":"flight", "T":"train", "R":"road trip", "S":"ship" };
-var modeoperators = { "F":"airline", "T":"railway", "R":"road transport", "S":"shipping" };
 var modespeeds = { "F":500, "T":100, "R":60, "S":40 };
-
-var topmodes = { "F":"Segments", "D":"Mileage" };
 var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50" };
 
 // Validate 24-hr time ([0]0:00-23:59)
@@ -98,6 +90,17 @@ OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
 window.onload = function init(){
   $("helplink").style.display = 'inline';
+  gt = new Gettext({ 'domain' : 'messages' });
+
+  classes = {"Y": gt.gettext("Economy"), "P": gt.gettext("Prem.Eco"), "C":gt.gettext("Business"), "F":gt.gettext("First"), "": ""};
+  seattypes = {"W":gt.gettext("Window"), "A":gt.gettext("Aisle"), "M":gt.gettext("Middle"), "": ""};
+  reasons = {"B":gt.gettext("Work"), "L":gt.gettext("Leisure"), "C":gt.gettext("Crew"), "O": gt.gettext("Other"), "": ""};
+  classes_short = {"Y":gt.gettext("Econ"), "P":gt.gettext("P.Eco"), "C":gt.gettext("Biz"), "F":gt.gettext("1st"), "": ""};
+  reasons_short = {"B":gt.gettext("Work"), "L":gt.gettext("Leis."), "C":gt.gettext("Crew"), "O":gt.gettext("Other"), "": ""};
+  modenames = { "F":gt.gettext("Flight"), "T":gt.gettext("Train"), "R":gt.gettext("Road"), "S":gt.gettext("Ship") };
+  modesegments = { "F":gt.gettext("flight"), "T":gt.gettext("train"), "R":gt.gettext("road trip"), "S":gt.gettext("ship") };
+  modeoperators = { "F":gt.gettext("airline"), "T":gt.gettext("railway"), "R":gt.gettext("road transport"), "S":gt.gettext("shipping") };
+  topmodes = { "F":gt.gettext("Segments"), "D":gt.gettext("Mileage") };
 
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
   map = new OpenLayers.Map('map', {
@@ -107,10 +110,10 @@ window.onload = function init(){
 			       maxZoomLevel: 8,
 			       controls: [
 					  new OpenLayers.Control.PanZoom(),
-					  new OpenLayers.Control.NavToolbar({'title': "Toggle pan and region select mode"}),
-					  new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title':'Switch map layers'}),
+					  new OpenLayers.Control.NavToolbar({'title': gt.gettext("Toggle pan and region select mode")}),
+					  new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
 					  new OpenLayers.Control.ScaleLine(),
-					  new OpenLayers.Control.OverviewMap({'title': "Toggle overview map"})
+					  new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
 					  ] });
   
   var ol_wms = new OpenLayers.Layer.WMS( "Political (Metacarta)",
@@ -126,7 +129,7 @@ window.onload = function init(){
 					  );
   jpl_wms.setVisibility(false);
 
-  lineLayer = new OpenLayers.Layer.Vector("My Flights",
+  lineLayer = new OpenLayers.Layer.Vector(gt.gettext("My Flights"),
 					{styleMap: new OpenLayers.StyleMap({
 					    strokeColor: "${color}",
 						strokeOpacity: 1,
@@ -136,7 +139,7 @@ window.onload = function init(){
 					    });
   
   
-  airportLayer = new OpenLayers.Layer.Markers("My Airports");
+  airportLayer = new OpenLayers.Layer.Markers(gt.gettext("My Airports"));
   
   map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
   
@@ -206,7 +209,7 @@ window.onload = function init(){
   OpenLayers.Util.alphaHack = function() { return false; };
 
   xmlhttpPost(URL_MAP, 0, true);
- }    
+}
 
 // Extract arguments from URL (/trip/xxx or /user/xxx)
 // Returns null if not found
@@ -286,7 +289,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
   var y = apcols[3];
 
   // Description
-  var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
+  var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>" + gt.gettext("Flights:") + " " + count;
 
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
@@ -364,8 +367,8 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     if( logged_in || demo_mode || privacy == "O") {
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
-	  "<a href=\"#\" onclick=\"JavaScript:selectAirport(" + apid + ", true);\"><img src=\"/img/icon_plane-src.png\" width=17 height=17 title=\"Select this airport\" id='popup" + apid + "' style='visibility: hidden'></a> " +
-	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\")';\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"List flights\"></a>" +
+	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a> " +
+	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>" +
 	  "</span>" + desc;
       }
     desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
@@ -636,19 +639,19 @@ function xmlhttpPost(strURL, id, param) {
       for(i = 0; i < indexes.length; i++) {
 	var src_date = $('src_date' + indexes[i]).value;
         if(! re_date.test(src_date)) {
-	  alert("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD.");
+	  alert(gt.gettext("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."));
 	  $('src_date' + indexes[i]).focus();
 	  return;
 	}
 	var src_apid = $('src_ap' + indexes[i] + 'id').value.split(':')[1];
 	if(! src_apid || src_apid == "0") {
-	  alert("Please enter a valid source airport.");
+	  alert(gt.gettext("Please enter a valid source airport."));
 	  $('src_ap' + indexes[i]).focus();
 	  return;
 	}
 	var dst_apid = $('dst_ap' + indexes[i] + 'id').value.split(':')[1];
 	if(! dst_apid || dst_apid == "0") {
-	  alert("Please enter a valid destination airport.");
+	  alert(gt.gettext("Please enter a valid destination airport."));
 	  $('dst_ap' + indexes[i]).focus();
 	  return;
 	}
@@ -659,7 +662,7 @@ function xmlhttpPost(strURL, id, param) {
 	    alid = "-1"; // UNKNOWN
 	  } else {
 	    mode = getMode();
-	    if(confirm("'" + airline + "' not found in " + modeoperators[mode] + " database.  Do you want to add it as a new " + modeoperators[mode] + " company?")) {
+	    if(confirm(Gettext.strargs(gt.gettext("'%1' not found in %2 database.  Do you want to add it as a new %2 company?"), [airline, modeoperators[mode], modeoperators[mode]]))) {
 	      popNewAirline('airline' + indexes[i], airline, mode);
 	    } else {
 	      $('airline' + indexes[i]).focus();
@@ -676,7 +679,7 @@ function xmlhttpPost(strURL, id, param) {
 	src_time = $('src_time').value;
 	if(src_time != "" && src_time != "HH:MM") {
 	  if(! re_time.test(src_time)) {
-	    alert("Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM.");
+	    alert(gt.gettext("Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."));
 	    $('src_time').focus();
 	    return;
 	  }
@@ -688,6 +691,7 @@ function xmlhttpPost(strURL, id, param) {
 	var myClass = radioValue(inputform.myClass);
 	var reason = radioValue(inputform.reason);
 	var plane = inputform.plane.value;
+        // ##TODO## fix
 	if(plane == "Enter plane model") {
 	  plane = "";
 	}
@@ -700,13 +704,13 @@ function xmlhttpPost(strURL, id, param) {
 	var note = inputform.note.value;
 	var duration = $('duration').value;
 	if(! re_time.test(duration)) {
-	  alert("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically.");
+	  alert(gt.gettext("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."));
 	  $('duration').focus();
 	  return;
 	}
 	var distance = $('distance').value;
 	if(! re_numeric.test(distance)) {
-	  alert("Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically.");
+	  alert(gt.gettext("Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."));
 	  $('distance').focus();
 	  return;
 	}
@@ -836,8 +840,8 @@ function updateFilter(str) {
   var years = master[5];
 
   if(!trips || trips == "") {
-    $("filter_tripselect").innerHTML = "&nbsp;None";
-    $("input_trip_select").innerHTML = "&nbsp;No trips. Add one? ";
+    $("filter_tripselect").innerHTML = "&nbsp;" + gt.gettext("None");
+    $("input_trip_select").innerHTML = "&nbsp;" + gt.gettext("No trips. Add one? ");
   } else {
     var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
     $("filter_tripselect").innerHTML = tripSelect;
@@ -893,7 +897,7 @@ function updateTitle(str) {
       // do nothing
       break;
     case "null":
-      text = "Unassigned flights";
+      text = gt.gettext("Unassigned flights");
       break;
     default:
       text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
@@ -916,9 +920,9 @@ function updateTitle(str) {
     // Demo mode
     if(demo_mode) {
       if(airline != "All carriers") {
-	text = "Recent flights on " + airline;
+	text = Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]);
       } else {
-	text = "Recently added flights";
+	text = gt.gettext("Recently added flights");
       }
 
     } else {
@@ -926,16 +930,22 @@ function updateTitle(str) {
       if(trip != "All trips" && trip != "") {
 	text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
       } else {
-	text = filter_user + "'s flights";
 	if(airline != "All carriers") {
-	  text += " on " + airline;
-	}
-	if(year != "All") {
-	  text += " in " + year;
+	  if(year != "All") {
+	    text = Gettext.strargs(gt.gettext("%1's flights on %2 in %3"), [filter_user, airline, year]);
+	  } else {
+	    text = Gettext.strargs(gt.gettext("%1's flights on %2"), [filter_user, airline]);
+	  }
+	} else {
+	  if(year != "All") {
+	    text = Gettext.strargs(gt.gettext("%1's flights in %2"), [filter_user, year]);
+	  } else {
+	    text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
+	  }
 	}
       }
       $("loginstatus").innerHTML = getEliteIcon(elite) + "<b>" + text +
-	"</b> <h6><a href='/'>Home</a></h6>";
+	"</b> <h6><a href='/'>" + gt.gettext("Home") + "</a></h6>";
     }
   }
 
@@ -1011,7 +1021,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
     select += "<option value=\"" + rid + "\"" + selected + ">" + name + "</option>";
   }
   if(logged_in && selectName == "Trips") {
-    select += "<option value='null' " + (filter_trid == "null" ? " SELECTED" : "") + ">Not in a trip</option>";
+    select += "<option value='null' " + (filter_trid == "null" ? " SELECTED" : "") + ">" + gt.gettext("Not in a trip") + "</option>";
   }
   select += "</select>";
   return select;
@@ -1102,9 +1112,9 @@ function updateMap(str){
   var min = Math.floor(col[2] % 60);
   if(min < 10) min = "0" + min;
 
-  stats = col[0] + " segments<br>" +
-    miles + " miles<br>" +
-    days + " days " + hours + ":" + min;
+  stats = col[0] + " " + gt.gettext("segments") + "<br>" +
+    miles + " " + gt.gettext("miles") + "<br>" +
+    days + " " + gt.gettext("days") + " " + hours + ":" + min;
   $("stats_ajax").style.display = 'none';
   $("stats").innerHTML = stats;
   flightTotal = col[0];
@@ -1127,7 +1137,7 @@ function updateMap(str){
   }
   // Our PHP session has timed out, kick out the user
   if(logged_in && col[5] == "demo") {
-    logout("Your session has timed out, please log in again.");
+    logout(gt.gettext("Your session has timed out, please log in again."));
   }
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
@@ -1199,6 +1209,7 @@ function startListFlights() {
   }
   var airlineName = document.forms['filterform'].Airlines[document.forms['filterform'].Airlines.selectedIndex].text;
   var yearName = document.forms['filterform'].Years[document.forms['filterform'].Years.selectedIndex].text;
+  // ##TODO##
   var title = "Flights" + (tripName ? " for " + tripName : "") + " on " + airlineName + " in year " + yearName;
   xmlhttpPost(URL_FLIGHTS, 0, escape(title));
 }
@@ -1212,16 +1223,16 @@ function listFlights(str, desc) {
   var table = [];
   table.push("<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ");
   if(str == "") {
-    table.push("<i>No flights found at this airport.</i></span></div>");
+    table.push("<i>" + gt.gettext("No flights found at this airport.") + "</i></span></div>");
   } else {
     if(desc) {
       table.push(desc.replace(/\<br\>/g, " &mdash; "));
-      table.unshift("<span style='float: right'>Export <input type='button' value='CSV' title='Comma-Separated Value, for Excel and data processing' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='Keyhole Markup Language, for Google Earth and visualization' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
+      table.unshift("<span style='float: right'>" + gt.gettext("Export") + " <input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
-    table.push("<tr><th class=\"unsortable\"></th><th>From</th><th>To</th><th>Nr.</th><th>Date</th><th class=\"sorttable_numeric\">Miles</th><th>Time</th><th>Vehicle</th><th>Seat</th><th>Class</th><th>Reason</th><th>Trip</th><th>Note</th>");
+    table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Miles") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th><th>" + gt.gettext("Seat") + "</th><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Trip") + "</th><th>" + gt.gettext("Note") + "</th>");
     if(logged_in) {
-      table.push("<th class=\"unsortable\">Action</th>");
+      table.push("<th class=\"unsortable\">" + gt.gettext("Action") + "</th>");
     }
     table.push("</tr>");
 
@@ -1264,9 +1275,9 @@ function listFlights(str, desc) {
 	
       if(logged_in) {
 	table.push("<td>");
-	table.push("<a href=\"#\" onclick=\"JavaScript:preEditFlight(" + fid + "," + r + ");\"><img src=\"/img/icon_edit.png\" width=16 height=16 title=\"Edit this flight\"></a>");
-	table.push("<a href=\"#\" onclick=\"JavaScript:preCopyFlight(" + fid + ");\"><img src=\"/img/icon_copy.png\" width=16 height=16 title=\"Copy to new flight\"></a>");
-	table.push("<a href=\"#\" onclick=\"JavaScript:deleteFlight(" + fid + ");\"><img src=\"/img/icon_delete.png\" width=16 height=16 title=\"Delete this flight\"></a>");
+	table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
+	table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
+	table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
 	table.push("</td>");
       }
       table.push("</tr>");
@@ -1313,34 +1324,34 @@ function showStats(str) {
     bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17></td><td style=\"vertical-align: top\">";
 
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=2>Unique</th></tr>";
-    table += "<tr><td>Airports</td><td>" + uniques["num_airports"] + "</td></tr>";
-    table += "<tr><td>Carriers</td><td>" + uniques["num_airlines"] + "</td></tr>";
-    table += "<tr><td>Countries</td><td>" + uniques["num_countries"] + "</td></tr>";
-    table += "<tr><td>Vehicles</td><td>" + uniques["num_planes"] + "</td></tr>";
+    table += "<tr><th colspan=2>" + gt.gettext("Unique") + "</th></tr>";
+    table += "<tr><td>" + gt.gettext("Airports") + "</td><td>" + uniques["num_airports"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Carriers") + "</td><td>" + uniques["num_airlines"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Countries") + "</td><td>" + uniques["num_countries"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Vehicles") + "</td><td>" + uniques["num_planes"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
 
     var distance = uniques["distance"];
-    table += "<tr><th colspan=2>Distance</th></tr>";
-    table += "<tr><td>Miles flown</td><td>" + distance + "</td></tr>";
-    table += "<tr><td>Around the world</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
-    table += "<tr><td>To the Moon</td><td>" + (distance / MOON_DISTANCE).toFixed(3) + "x</td></tr>";
-    table += "<tr><td>To Mars</td><td>" + (distance / MARS_DISTANCE).toFixed(4) + "x</td></tr>";
+    table += "<tr><th colspan=2>" + gt.gettext("Distance") + "</th></tr>";
+    table += "<tr><td>" + gt.gettext("Miles flown") + "</td><td>" + distance + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Around the world") + "</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
+    table += "<tr><td>" + gt.gettext("To the Moon") + "</td><td>" + (distance / MOON_DISTANCE).toFixed(3) + "x</td></tr>";
+    table += "<tr><td>" + gt.gettext("To Mars") + "</td><td>" + (distance / MARS_DISTANCE).toFixed(4) + "x</td></tr>";
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
 
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th colspan=2>Journey records</th></tr>";
+    table += "<tr><th colspan=2>" + gt.gettext("Journey records") + "</th></tr>";
     var rows = longshort.split(";");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
       table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
     }
-    table += "<tr><td>Average</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
-    table += "<tr><th colspan=2>Airport records</th></tr>";
+    table += "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
     var rows = extremes.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
@@ -1363,14 +1374,14 @@ function showStats(str) {
     bigtable += table + "</td><td style=\"vertical-align: top\">";
   
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th>Class</th><th>Reason</th></tr>";
+    table += "<tr><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th></tr>";
     table += "<tr><td>";
     table += googleChart(classData, classes_short);
     table += "</td><td>";
     table += googleChart(reasonData, reasons_short);
     table += "</td></tr>";
 
-    table += "<tr><th>Seats</th><th>Mode</th></tr><tr><td>";
+    table += "<tr><th>" + gt.gettext("Seats") + "</th><th>" + gt.gettext("Mode") + "</th></tr><tr><td>";
     table += googleChart(seatData, seattypes);
     table += "</td><td>";
     table += googleChart(modeData, modenames);
@@ -1420,14 +1431,14 @@ function showTop10(str) {
     var airlines = master[2];
     var planes = master[3];
     bigtable = "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
-    table = "<br>Show...<br>";
+    table = "<br>" + gt.gettext("Show...") + "<br>";
     table += createSelectFromArray('limit', toplimits, "updateTop10()", limit) + "<br>";
-    table += "Sort by...<br>";
+    table += gt.gettext("Sort by...") + "<br>";
     table += createSelectFromArray('mode', topmodes, "updateTop10()", mode) + "<br>";
     bigtable += table + "</form></td>";
 
     bigtable += "<td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";
-    table = "<table><tr><th colspan=3'>Routes</th></tr>";
+    table = "<table><tr><th colspan=3'>" + gt.gettext("Routes") + "</th></tr>";
     var rows = routes.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
@@ -1439,7 +1450,7 @@ function showTop10(str) {
     table += "</table>";
 
     bigtable += table + "</td><td style='vertical-align: top; padding: 0px 10px'>";
-    table = "<table><tr><th colspan=3'>Airports</th></tr>";
+    table = "<table><tr><th colspan=3'>" + gt.gettext("Airports") + "</th></tr>";
     var rows = airports.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
@@ -1450,7 +1461,7 @@ function showTop10(str) {
     table += "</table>";
 
     bigtable += table + "</td><td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";    
-    table = "<table><tr><th colspan=3'>Airlines</th></tr>";
+    table = "<table><tr><th colspan=3'>" + gt.gettext("Airlines") + "</th></tr>";
     var rows = airlines.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
@@ -1460,7 +1471,7 @@ function showTop10(str) {
     table += "</table>";
 
     bigtable += table + "</td><td style='vertical-align: top; padding-left: 10px;'>";
-    table = "<table><tr><th colspan=3>Planes</th></tr>";
+    table = "<table><tr><th colspan=3>" + gt.gettext("Planes") + "</th></tr>";
     var rows = planes.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
@@ -1496,7 +1507,7 @@ function editPointer(offset) {
   var newPtr = fidPtr + offset;
   if(newPtr >= 0 && newPtr < fidList.length) {
     if(hasChanged()) {
-      if(! confirm("Changes made to this flight have not been saved.  OK to discard them?")) {
+      if(! confirm(gt.gettext("Changes made to this flight have not been saved.  OK to discard them?"))) {
 	return;
       }
     }
@@ -1510,7 +1521,7 @@ function preEditFlight(fid, idx) {
   fidPtr = idx;
   $("b_prev").disabled = (fidPtr <= 0 ? true : false);
   $("b_next").disabled = (fidPtr >= fidList.length - 1 ? true : false);
-  $("editflighttitle").innerHTML = "Loading...";
+  $("editflighttitle").innerHTML = gt.gettext("Loading...");
   xmlhttpPost(URL_FLIGHTS, fid, "EDIT");
 }
 
@@ -1555,7 +1566,7 @@ function editFlight(str, param) {
   selectInSelect(inputform.mode, col[21]);
   changeMode(col[21]);
 
-  $("editflighttitle").innerHTML = "Edit " + modesegments[col[21]] + " " + (fidPtr+1) + " of " + fidList.length;
+  $("editflighttitle").innerHTML = Gettext.strargs(gt.gettext("Edit segment %1 of %2"), [fidPtr+1, fidList.length]);
 
   var myClass = inputform.myClass;
   for(index = 0; index < myClass.length; index++) {
@@ -1666,10 +1677,10 @@ function deleteFlight(id) {
   if(id) {
     fid = id;
   }
-  if(confirm("Are you sure you want to delete this flight?")) {
+  if(confirm(gt.gettext("Are you sure you want to delete this flight?"))) {
     xmlhttpPost(URL_SUBMIT, false, "DELETE");
   } else {
-    $("input_status").innerHTML = "<B>Deleting flight cancelled.</B>";
+    $("input_status").innerHTML = "<B>" + gt.gettext("Deleting flight cancelled.") + "</B>";
   }
 }
 
@@ -1680,7 +1691,7 @@ function changeMode(mode) {
     mode=document.forms['inputform'].mode.value;
   }
   $('icon_airline').src = modeicons[mode];
-  $('icon_airline').title = "Search for " + modeoperators[mode];
+  $('icon_airline').title = Gettext.strargs(gt.gettext("Search for %1"), [modeoperators[mode]]);
   calcDuration('AIRPORT'); // recompute duration estimate
   markAsChanged(true);
 }
@@ -2082,10 +2093,12 @@ function calcDuration(param) {
       dst_tz += 1;
       dst_dst = "Y";
     }
-    $('icon_clock').title = "Departure UTC " + (src_tz > 0 ? "+" : "" ) + src_tz + (src_dst == "Y" ? " (DST)" : "") +
-      ", Arrival UTC " + (dst_tz > 0 ? "+" : "" ) + dst_tz + (dst_dst == "Y" ? " (DST)" : "") +
-      ", Time difference " + (dst_tz-src_tz) + " hours";
-    
+    $('icon_clock').title =
+      Gettext.strargs(gt.gettext("Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"),
+		      [src_tz > 0 ? "+" : "", src_tz, src_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
+		       dst_tz > 0 ? "+" : "", dst_tz, dst_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
+		       dst_tz-src_tz]);
+ 
     // Case 2: Calculate arrival time from starting time and duration
     if(dst_time == 0) {
       dst_time = src_time + duration + (dst_tz-src_tz);
@@ -2104,9 +2117,9 @@ function calcDuration(param) {
 	$('dst_days').style.display = "none";
       } else {
 	if(days > 0) {
-	  $('dst_days').value = "+" + days + " day";
+	  $('dst_days').value = Gettext.strargs(gt.gettext("+%1 day"), [days]);
 	} else {
-	  $('dst_days').value = days + " day";
+	  $('dst_days').value = Gettext.strargs(gt.gettext("-%1 day"), [days]);
 	}
 	$('dst_days').style.display = "inline";
       }
@@ -2119,7 +2132,7 @@ function calcDuration(param) {
     }
   } else {
     // Case 1: Do nothing, just use estimated duration
-    $('icon_clock').title = "Flight departure and arrival times";
+    $('icon_clock').title = gt.gettext("Flight departure and arrival times");
   }
 
   if(param == "AIRPORT" || param == "ARRIVAL") {
@@ -2354,7 +2367,7 @@ function selectAirport(apid, select, quick) {
 // Change number of rows displayed in multiinput
 function changeRows(type) {
   switch(type) {
-  case "More":
+  case gt.gettext("More"):
     if(multiinput_rows >= 3) {
       $('b_more').disabled = true;
     }
@@ -2368,7 +2381,7 @@ function changeRows(type) {
     replicateSelection(source);
     break;
 
-  case "Less":
+  case gt.gettext("Less"):
     if(multiinput_rows == 4) {
       $('b_more').disabled = false;
     }
@@ -2453,13 +2466,6 @@ function help(context) {
 }
 
 //
-// Register new account
-//
-function signUp() {
-  location.href = '/html/signup.html';
-}
-
-//
 // Import flights
 //
 function openImport() {
@@ -2516,26 +2522,26 @@ function login(str, param) {
     $("controlpanel").style.display = 'inline';
     switch(param) {
     case "REFRESH":
-      $("loginstatus").innerHTML = getEliteIcon(elite) + "Logged in as <B>" + name + "</B>";
+      $("loginstatus").innerHTML = getEliteIcon(elite) + Gettext.strargs(gt.gettext("Logged in as <B>%1</B>"), [name]);
       break;
 
     case "NEWUSER":
-      $("loginstatus").innerHTML = getEliteIcon(elite) + "Welcome, <B>" + name + "</B> !";
+      $("loginstatus").innerHTML = getEliteIcon(elite) + Gettext.strargs(gt.gettext("Welcome, <B>%1</B> !"), [name]);
       break;
 
     default:
-      $("stats").innerHTML = "<i>Loading</i>";
+      $("stats").innerHTML = "<i>" + gt.gettext("Loading") + "</i>";
       $("stats_ajax").style.display = "inline";
-      $("loginstatus").innerHTML = getEliteIcon(elite) + "Hi, <B>" + name + "</B> !";
+      $("loginstatus").innerHTML = getEliteIcon(elite) + Gettext.strargs(gt.gettext("Hi, <B>%1</B> !"), [name]);
       break;
     }
-
+    
     switch(elite) {
     case "X":
       $("news").style.display = 'inline';
       $("news").innerHTML = getEliteIcon("X") +
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-	"<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!";
+	gt.gettext("<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!");
       break;
 
     case "G":
@@ -2550,7 +2556,9 @@ function login(str, param) {
     if(param == "NEWUSER") {
       $("news").innerHTML =
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-	"<B>Welcome to OpenFlights!</b>  Click on <input type='button' value='New flight' align='middle' onclick='JavaScript:newFlight()'> to start adding flights,<br>or on <input type='button' value='Import' align='middle' onclick='JavaScript:openImport()'> to load in existing flights from sites like FlightMemory.";
+	Gettext.strargs(gt.gettext("<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."),
+			[ "<input type='button' value='" + gt.gettext("New flight") + "' align='middle' onclick='JavaScript:newFlight()'>",
+			  "<input type='button' value='" + gt.gettext("Import") + "' align='middle' onclick='JavaScript:openImport()'>" ]);
       $("news").style.display = 'inline';
     } else {
       closeNews();
@@ -2571,8 +2579,8 @@ function login(str, param) {
 
 function logout(str) {
   logged_in = false;
-  $("loginstatus").innerHTML = "<B>You have been logged out.</B>";
-  $("stats").innerHTML = "<i>Loading</i>";
+  $("loginstatus").innerHTML = "<B>" + gt.gettext("You have been logged out.") + "</B>";
+  $("stats").innerHTML = "<i>" + gt.gettext("Loading") + "</i>";
   $("stats_ajax").style.display = 'inline';
   $("loginform").style.display = 'inline';
   $("controlpanel").style.display = 'none';
@@ -2665,13 +2673,15 @@ function openDetailedInput(param) {
       switch(param) {
       case "ADD":
       case "COPY":
-	msg = "add a new";
+	msg = gt.gettext("You are already editing a flight. OK to discard your changes and add a new flight instead?");
+	break;
+
 	break;
       case "EDIT":
-	msg = "edit this";
+	msg = gt.gettext("You are already editing a flight. OK to discard your changes and edit this flight instead?");
 	break;
       }
-      if(! confirm("You are already editing a flight. OK to discard your changes and " + msg + " flight instead?")) {
+      if(! confirm(msg)) {
 	return;
       }
     }
@@ -2712,7 +2722,7 @@ function openBasicInput(param) {
   if(p) {
     // Have they changed it, and do they want to throw away the changes?
     if(hasChanged()) {
-      if(! confirm("You are already editing a flight. OK to discard your changes and add new flights instead?")) {
+      if(! confirm(gt.gettext("You are already editing a flight. OK to discard your changes and add a new flight instead?"))) {
 	return;
       }
     }
@@ -2729,7 +2739,7 @@ function openBasicInput(param) {
 
 function closeInput() {
   if(hasChanged()) {
-    if(! confirm("Changes made to this flight have not been saved.  OK to discard them?")) {
+    if(! confirm(gt.gettext("Changes made to this flight have not been saved.  OK to discard them?"))) {
       return;
     }
   }

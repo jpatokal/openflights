@@ -12,7 +12,13 @@ if (isSet($_GET["lang"])) {
 }
 $locale .= ".utf8";
 setlocale(LC_ALL, $locale);
-bindtextdomain("messages", "../locale");
+
+if(substr_count($_SERVER['SCRIPT_NAME'], '/') == 1) {
+  $path = ".";
+} else {
+  $path = "..";
+}
+bindtextdomain("messages", $path . "/locale");
 textdomain("messages");
 
 //
@@ -22,12 +28,12 @@ textdomain("messages");
 // $locale -- currently selected locale
 //
 function locale_pulldown($db, $locale) {
-  echo "<select id='locale' onChange='JavaScript:changeLocale()'";
+  echo "<select id='locale' onChange='JavaScript:changeLocale()'>\n";
   $sql = "SELECT * FROM locales ORDER BY name ASC";
   $result = mysql_query($sql, $db);
   while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $selected = ($row["locale"] . ".utf8" == $locale ? "SELECTED" : "");
-    printf("<option value='%s' %s>%s (%s)</option>\n", $row["locale"], $selected, $row["name"], $row["locale"]);
+    printf("<option value='%s' %s>%s (%s)</option>\n", $row["locale"], $selected, $row["name"], substr($row["locale"], 0, 2));
   }
   echo "</select>";
 }
