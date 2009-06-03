@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-06-02 11:47+0730\n"
+"PO-Revision-Date: 2009-06-03 18:29+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -65,6 +65,7 @@ msgstr "Australia"
 msgid "New Zealand"
 msgstr "Uusi-Seelanti"
 
+# For airports where summer time does not apply
 msgid "None"
 msgstr "Ei kesäaikaa"
 
@@ -769,4 +770,243 @@ msgstr "Toiminto"
 
 msgid "1st"
 msgstr "Eka"
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr "Kirjautuminen epäonnistui.  <%s>Luo tunnus</a> tai <%s>resetoi salasana</a>?"
+
+msgid "This trip is not public."
+msgstr "Tämä matka ei ole julkinen."
+
+msgid "No such trip."
+msgstr "Matkaa ei ole."
+
+msgid "This user's flights are password-protected."
+msgstr "Tämän käyttäjän lennot on salasanalla suojattu."
+
+msgid "This user's flights are not public."
+msgstr "Tämän käyttäjän lennot eivät ole julkisia."
+
+msgid "No such user."
+msgstr "Käyttäjää ei ole."
+
+msgid "This user has no flights."
+msgstr "Tällä käyttäjällä ei ole lentoja."
+
+#, php-format
+msgid "Sorry, that name is already taken, please try another."
+msgstr "Nimi on jo käytössä, valitse toinen."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "Resetointi onnistui, %s lentoa poistettu."
+
+#, php-format
+msgid "Sorry, current password is not correct."
+msgstr "Salasana on väärä."
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "Kirjaudutaan sisään..."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "Asetukset muutettu, hetkinen..."
+
+msgid "Trip not found."
+msgstr "Matkaa ei ole."
+
+msgid "User not found."
+msgstr "Käyttäjää ei ole."
+
+msgid "Longest"
+msgstr "Pisin"
+
+msgid "Shortest"
+msgstr "Lyhyin"
+
+msgid "Northernmost"
+msgstr "Pohjoisin"
+
+msgid "Southernmost"
+msgstr "Eteläisin"
+
+msgid "Westernmost"
+msgstr "Läntisin"
+
+msgid "Easternmost"
+msgstr "Itäisin"
+
+msgid "Added."
+msgstr "Lisätty."
+
+#, php-format
+msgid "%s flights added."
+msgstr "%s lentoa lisätty."
+
+msgid "Edited."
+msgstr "Tallennettu."
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "Matka luotu."
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "Matka poistettu."
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr "Muutokset matkaan tallennettu."
+
+msgid "Create new account"
+msgstr "Luo uusi tunnus"
+
+msgid "Account settings"
+msgstr "Asetukset"
+
+msgid "Basic information"
+msgstr "Perustiedot"
+
+msgid "This will be used as the name of your profile."
+msgstr "Tätä nimeä käytetään julkisessa profiilissasi."
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr "Valitse salasana joka on helppo muistaa mutta vaikea arvata.  Isot ja pienet kirjaimet erotellaan!"
+
+msgid "Password again"
+msgstr "Salasana taas"
+
+msgid "E-mail (optional)"
+msgstr "Sähköposti (ei pakollinen)"
+
+#, php-format
+msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "Jos unohdat salasanasi, uusi salasana voidaan lähettää tähän osoitteeseen.  Emme <i>koskaan</i> lähetä muuta postia tai jaa tietojasi muille, katso <%s>privacy policy</a>."
+
+msgid "Could not load profile data"
+msgstr "Profiilin tietoja ei voitu ladata."
+
+msgid "Profile address"
+msgstr "Profiiliosoite"
+
+#, php-format
+msgid "Viewed %s times"
+msgstr "Katsottu %s kertaa"
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr "Profiilisi julkinen osoite ja miten usein siellä on käyty."
+
+msgid "Facebook link"
+msgstr "Facebook-linkitys"
+
+msgid "Linked, automatic updates"
+msgstr "On, automaattinen päivitys"
+
+msgid "Linked, manual updates only"
+msgstr "On, päivitys käsin"
+
+msgid "Automate"
+msgstr "Automatisoi"
+
+msgid "Not active"
+msgstr "Ei linkitetty"
+
+msgid "Add link"
+msgstr "Lisää linkitys"
+
+msgid "Banners"
+msgstr "Bannerit"
+
+msgid "Blog banner (HTML)"
+msgstr "Blogibanneri (HTML)"
+
+msgid "Bulletin board banner (phpBB)"
+msgstr "Foorumibanneri (phpBB)"
+
+msgid "Profile settings"
+msgstr "Profiiliasetukset"
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr "Voit helposti muuttaa näitä myöhemmin valitsemalla <i>Asetukset</i>."
+
+msgid "Privacy"
+msgstr "Yksityisyys"
+
+msgid "Private"
+msgstr "Salainen"
+
+msgid "Public"
+msgstr "Julkinen"
+
+msgid "Open"
+msgstr "Avoin"
+
+#, php-format
+msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgstr "<b>Salaisia</b> profiileja kukaan muu ei voi nähdä.  <%s>Gold- ja Platinum-käyttäjät</a> voivat suojata profiilinsa vierassalasanalla."
+
+msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
+msgstr "<b>Julkiset</b> profiilit sallivat muiden ihailla lentokarttaasi ja tilastojasi, mutta lentojen yksityiskohtia kuten tarkkoja päiviä ja luokkia ei paljasteta. "
+
+msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
+msgstr "<b>Avoimet</b> profiilit antavat muiden nähdä yksityiskohtaiset lentotiedotkin."
+
+msgid "Flight editor"
+msgstr "Lentoeditori"
+
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgstr "<b>Peruseditori</b> on helppo ja nopea: mistä, mihin, milloin ja halutessasi lentoyhtiökin.  Nopein tapa kasata kartta!"
+
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgstr "<b>Extraeditori</b> antaa mahdollisuuden lisätä koneen mallin ja rekisterin, paikat, omia muistiinpanoja ja paljon muuta.  Täydellinen vaihtoehto ilmailuharrastajille ja spottereille."
+
+msgid "Guest password"
+msgstr "Vierassalasana"
+
+msgid "Gold Elite feature"
+msgstr "Gold Elite-ominaisuus"
+
+msgid "Password protect your Private profile, so only friends and family can see it."
+msgstr "Suojaa Salainen profiilisi salasanalla ja jaa se perheen ja kavereiden kanssa."
+
+# Choice of bottom pane for Gold/Platinum members.
+msgid "Default view"
+msgstr "Alapaneeli"
+
+msgid "Help"
+msgstr "Ohje"
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr "Näytä mainosten sijasta valitsemasi ruutu alapaneelissa."
+
+msgid "Manage flights"
+msgstr "Lentojen hallinta"
+
+msgid "Backup to CSV"
+msgstr "CSV-varmuuskopio"
+
+msgid "Delete all flights"
+msgstr "Poista kaikki lennot"
+
+msgid "Change password"
+msgstr "Muuta salasanaa"
+
+msgid "Current password"
+msgstr "Nykyinen salasana"
+
+msgid "You only need to enter this if changing your password."
+msgstr "Tämä on tarpeen vain jos haluat muuttaa salasanaasi."
+
+msgid "New password"
+msgstr "Uusi salasana"
+
+msgid "New password again"
+msgstr "Uusi salasana taas"
+
+msgid "Sign me up!"
+msgstr "Luo tunnukseni!"
+
+msgid "No trips"
+msgstr "Ei matkoja"
 

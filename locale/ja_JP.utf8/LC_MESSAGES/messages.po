@@ -530,3 +530,256 @@ msgstr ""
 
 msgid "Edit flight"
 msgstr ""
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr ""
+
+msgid "This trip is not public."
+msgstr ""
+
+msgid "No such trip."
+msgstr ""
+
+msgid "This user's flights are password-protected."
+msgstr ""
+
+msgid "This user's flights are not public."
+msgstr ""
+
+msgid "No such user."
+msgstr ""
+
+msgid "This user has no flights."
+msgstr ""
+
+#, php-format
+msgid "Sorry, that name is already taken, please try another."
+msgstr ""
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr ""
+
+#, php-format
+msgid "Sorry, current password is not correct."
+msgstr ""
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr ""
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr ""
+
+msgid "Trip not found."
+msgstr ""
+
+msgid "User not found."
+msgstr ""
+
+msgid "Longest"
+msgstr ""
+
+msgid "Shortest"
+msgstr ""
+
+msgid "Northernmost"
+msgstr ""
+
+msgid "Southernmost"
+msgstr ""
+
+msgid "Westernmost"
+msgstr ""
+
+msgid "Easternmost"
+msgstr ""
+
+msgid "Added."
+msgstr ""
+
+#, php-format
+msgid "%s flights added."
+msgstr ""
+
+msgid "Edited."
+msgstr ""
+
+#, php-format
+msgid "Trip successfully created"
+msgstr ""
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr ""
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr ""
+
+msgid "Create new account"
+msgstr ""
+
+msgid "Account settings"
+msgstr ""
+
+msgid "Basic information"
+msgstr ""
+
+msgid "This will be used as the name of your profile."
+msgstr ""
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr ""
+
+msgid "Password again"
+msgstr ""
+
+msgid "E-mail (optional)"
+msgstr ""
+
+#, php-format
+msgid ""
+"If you forget your password, we can mail you a new one to this address.  We "
+"will <i>never</i> send you any other mail or share your private information, "
+"see <%s>privacy policy</a> for details."
+msgstr ""
+
+msgid "Could not load profile data"
+msgstr ""
+
+msgid "Profile address"
+msgstr ""
+
+#, php-format
+msgid "Viewed %s times"
+msgstr ""
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr ""
+
+msgid "Facebook link"
+msgstr ""
+
+msgid "Linked, automatic updates"
+msgstr ""
+
+msgid "Linked, manual updates only"
+msgstr ""
+
+msgid "Automate"
+msgstr ""
+
+msgid "Not active"
+msgstr ""
+
+msgid "Add link"
+msgstr ""
+
+msgid "Banners"
+msgstr ""
+
+msgid "Blog banner (HTML)"
+msgstr ""
+
+msgid "Bulletin board banner (phpBB)"
+msgstr ""
+
+msgid "Profile settings"
+msgstr ""
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr ""
+
+msgid "Privacy"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+#, php-format
+msgid ""
+"<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> "
+"users can password-protect their private profiles, so only people who know "
+"the password can see them."
+msgstr ""
+
+msgid ""
+"<b>Public</b> profiles let others see your flight map and general "
+"statistics, but flight details like exact dates and class of service are not "
+"revealed."
+msgstr ""
+
+msgid ""
+"<b>Open</b> profiles let others see, but not edit, your detailed flight data "
+"as well."
+msgstr ""
+
+msgid "Flight editor"
+msgstr ""
+
+msgid ""
+"The <B>Basic</b> editor is quick and easy: from where, to where, the date "
+"and optionally the airline, up to four flights at a time.  The fastest way "
+"to build up your map!"
+msgstr ""
+
+msgid ""
+"The <B>Detailed</b> editor lets you add class of service, seat numbers, "
+"plane models and registrations, freeform notes and much more.  Perfect for "
+"aviation fans and planespotters."
+msgstr ""
+
+msgid "Guest password"
+msgstr ""
+
+msgid "Gold Elite feature"
+msgstr ""
+
+msgid ""
+"Password protect your Private profile, so only friends and family can see it."
+msgstr ""
+
+msgid "Default view"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr ""
+
+msgid "Manage flights"
+msgstr ""
+
+msgid "Backup to CSV"
+msgstr ""
+
+msgid "Delete all flights"
+msgstr ""
+
+msgid "Change password"
+msgstr ""
+
+msgid "Current password"
+msgstr ""
+
+msgid "You only need to enter this if changing your password."
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "New password again"
+msgstr ""
+
+msgid "Sign me up!"
+msgstr ""

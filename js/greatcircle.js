@@ -170,19 +170,21 @@ function isValid(point) {
 ////
 
 // User has changed locale, reload this page with new lang attribute
-// (preserve any other attributes, but overwrite existing lang if any)
+// (preserve any other attributes, but nuke anchors and overwrite existing lang if any)
 function changeLocale() {
   var locale = "lang=" + document.getElementById("locale").value;
   var re_lang = /lang=...../;
-  if(re_lang.test(location.href)) {
-    location.href = location.href.replace(re_lang, locale);
+  var url = "http://" + location.host + location.pathname + location.search; // omit #anchor
+  if(re_lang.test(url)) {
+    url = url.replace(re_lang, locale);
   } else {
-    if(location.href.indexOf("?") == -1) {
-      location.href = location.href + "?" + locale;
+    if(url.indexOf("?") == -1) {
+      url = url + "?" + locale;
     } else {
-      location.href = location.href + "&" + locale;
+      url = url + "&" + locale;
     }
   }
+  location.href = url;
 }
 
 //

@@ -6,18 +6,7 @@ var trid = 0;
 var type = "NEW";
 
 window.onload = function init(){
-  // ...?trid=X
-  var urlbits = window.location.href.split('?');
-  if(urlbits[1]) {
-    type = "EDIT";
-    trid = urlbits[1].split('=')[1];
-    document.getElementById("title").innerHTML = "<h1>Edit trip</h1>";
-    document.getElementById("miniresultbox").innerHTML = "<i>Loading...</i>";
-    xmlhttpPost(URL_TRIP, "LOAD");
-  } else {
-    document.getElementById("title").innerHTML = "<h1>Add new trip</h1>";
-    document.getElementById("miniresultbox").innerHTML = "<i>Enter your new trip's details here.</i>";
-  }
+  gt = new Gettext({ 'domain' : 'messages' });
 }
 
 function xmlhttpPost(strURL, type) {
@@ -37,11 +26,7 @@ function xmlhttpPost(strURL, type) {
     if (self.xmlHttpReq.readyState == 4) {
 
       if(strURL == URL_TRIP) {
-	if(type == "LOAD") {
-	  loadTrip(self.xmlHttpReq.responseText);
-	} else {
-	  editTrip(self.xmlHttpReq.responseText);
-	}
+	editTrip(self.xmlHttpReq.responseText);
       }
     }
   }
@@ -84,32 +69,6 @@ function deleteTrip() {
     xmlhttpPost(URL_TRIP, "DELETE");
   } else {
     document.getElementById("miniresultbox").innerHTML = "<i>Deleting trip cancelled.</i>";
-  }
-}
-
-// Load up trip data
-function loadTrip(str) {
-  var code = str.split(";")[0];
-  if(code == "1") {
-    var name = str.split(";")[2];
-    var url = str.split(";")[3];
-    var privacy = str.split(";")[4];
-
-    var form = document.forms['tripform'];
-    tripform.name.value = name;
-    tripform.url.value = url;
-    tripform.puburl.value = "http://openflights.org/trip/" + trid;
-    for (r=0; r < tripform.privacy.length; r++){
-      if (tripform.privacy[r].value == privacy) {
-	tripform.privacy[r].checked = true;
-      } else {
-	tripform.privacy[r].checked = false;
-      }
-    }
-    document.getElementById("miniresultbox").innerHTML = "<i>Edit your trip details here.</i>";
-    document.getElementById("delbutton").style.display = 'inline';
-  } else {
-    showError(str.split(";")[1]);
   }
 }
 

@@ -840,7 +840,7 @@ function updateFilter(str) {
   var years = master[5];
 
   if(!trips || trips == "") {
-    $("filter_tripselect").innerHTML = "&nbsp;" + gt.gettext("None");
+    $("filter_tripselect").innerHTML = "&nbsp;" + gt.gettext("No trips");
     $("input_trip_select").innerHTML = "&nbsp;" + gt.gettext("No trips. Add one? ");
   } else {
     var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
