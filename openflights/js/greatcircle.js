@@ -170,8 +170,19 @@ function isValid(point) {
 ////
 
 // User has changed locale, reload this page with new lang attribute
+// (preserve any other attributes, but overwrite existing lang if any)
 function changeLocale() {
-  location.href = "http://" + location.host + location.pathname + "?lang=" + document.getElementById("locale").value;
+  var locale = "lang=" + document.getElementById("locale").value;
+  var re_lang = /lang=...../;
+  if(re_lang.test(location.href)) {
+    location.href = location.href.replace(re_lang, locale);
+  } else {
+    if(location.href.indexOf("?") == -1) {
+      location.href = location.href + "?" + locale;
+    } else {
+      location.href = location.href + "&" + locale;
+    }
+  }
 }
 
 //

@@ -1698,7 +1698,7 @@ function changeMode(mode) {
 
 // Handle the "add new airports" buttons
 function popNewAirport(type) {
-  url = '/html/apsearch.html';
+  url = '/html/apsearch';
   if(type) {
     input_toggle = type;
     apid = $(type + 'id').value;
@@ -1726,7 +1726,7 @@ function popNewAirline(type, name, mode) {
   if(type) {
     input_al_toggle = type;
   }
-  url = '/html/alsearch.html';
+  url = '/html/alsearch';
   if(name) {
     url += "?name=" + escape(name) + "&mode=" + mode;
   }
@@ -1801,7 +1801,7 @@ function getSelectedPlid(text, li) {
 // thisTrip can be "ADD" (new), "EDIT" (edit selected), or a numeric trip id (edit this)
 //
 function editTrip(thisTrip) {
-  var url = '/html/trip.html';
+  var url = '/html/trip';
   var trid = 0;
   if(thisTrip == "ADD") {
     // do nothing, we'll create a new trip
@@ -2469,14 +2469,14 @@ function help(context) {
 // Import flights
 //
 function openImport() {
-  window.open('/html/import.html', 'Import', 'width=800,height=600,scrollbars=yes');
+  window.open('/html/import', 'Import', 'width=800,height=600,scrollbars=yes');
 }
 
 //
 // Change settings
 //
 function settings() {
-  location.href = '/html/settings.html';
+  location.href = '/html/settings';
 }
 
 //

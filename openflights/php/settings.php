@@ -12,11 +12,11 @@ $privacy = $HTTP_POST_VARS["privacy"];
 $editor = $HTTP_POST_VARS["editor"];
 $guestpw = $HTTP_POST_VARS["guestpw"];
 $startpane = $HTTP_POST_VARS["startpane"];
+$locale = $HTTP_POST_VARS["locale"]; // override any value in URL/session
 
 // 0 error
 // 1 new
 // 2 edited
-// 3 loaded
 // 10 reset
 
 // Create new user
@@ -29,7 +29,7 @@ if($type == "NEW") {
   }
 
 } else {
-  // EDIT, LOAD or RESET
+  // EDIT or RESET
   $uid = $_SESSION["uid"];
   $name = $_SESSION["name"];
   if(!$uid or empty($uid)) {
@@ -41,17 +41,6 @@ if($type == "NEW") {
     $sql = "DELETE FROM flights WHERE uid=" . $uid;
     $result = mysql_query($sql, $db);
     printf("10;" . _("Account reset, %s flights deleted."), mysql_affected_rows());
-    exit;
-  }
-
-  if($type == "LOAD") {
-    $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, startpane, fbuid, sessionkey, locale FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
-    $result = mysql_query($sql, $db);
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-      printf("3;" . json_encode($row));
-    } else {
-      printf("0;" . _("Unknown error"));
-    }
     exit;
   }
 
@@ -70,12 +59,13 @@ if($type == "NEW") {
 
 // Note: Password is actually an MD5 hash of pw and username
 if($type == "NEW") {
-  $sql = sprintf("INSERT INTO users(name,password,email,public,editor) VALUES('%s','%s','%s','%s', '%s')",
+  $sql = sprintf("INSERT INTO users(name,password,email,public,editor,locale) VALUES('%s','%s','%s','%s', '%s', '%s')",
 		 mysql_real_escape_string($name),
 		 mysql_real_escape_string($pw),
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
-		 mysql_real_escape_string($editor));
+		 mysql_real_escape_string($editor),
+		 mysql_real_escape_string($locale));
 } else {
   // Only change password if old password matched and a new one was given
   if($oldpw && $oldpw != "" && $pw && $pw != "") {
@@ -84,16 +74,20 @@ if($type == "NEW") {
     $pwsql = "";
   }
   if(! $guestpw) $guestpw = "";
-  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s' WHERE uid=%s",
+  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s', locale='%s' WHERE uid=%s",
 		 $pwsql,
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
 		 mysql_real_escape_string($editor),
 		 $guestpw == "" ? "NULL" : "'" . mysql_real_escape_string($guestpw) . "'",
 		 mysql_real_escape_string($startpane),
+		 mysql_real_escape_string($locale),
 		 $uid);
 }
 mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
+
+// In all cases change locale to user selection
+$_SESSION['locale'] = $locale;
 
 if($type == "NEW") {
   printf("1;" . _("Successfully signed up, now logging in..."));
@@ -104,7 +98,6 @@ if($type == "NEW") {
   $_SESSION['name'] = $name;
   $_SESSION['editor'] = $editor;
   $_SESSION['elite'] = $elite;
-
 } else {
   printf("2;" . _("Settings changed successfully, returning..."));
 }

@@ -1,14 +1,22 @@
 /*
  * Create new user accounts and modify existing ones
  */
-var URL_SIGNUP = "/php/signup.php";
+var URL_SETTINGS = "/php/settings.php";
 
 var privacyList = [ 'N', 'Y', 'O' ];
 
 window.onload = function init(){
   gt = new Gettext({ 'domain' : 'messages' });
   if(window.location.href.indexOf("settings") != -1) {
-    xmlhttpPost(URL_SIGNUP, "LOAD");
+    var form = document.forms['signupform'];
+    var elite = form.elite.value;
+    document.getElementById('eliteicon').innerHTML = getEliteIcon(elite, form.validity.value);
+    if(elite == "G" || elite == "P") {
+      signupform.guestpw.disabled = false;
+      for (r=0; r < signupform.startpane.length; r++){
+	signupform.startpane[r].disabled = false;
+      }
+    }
   } else {
     // TODO document.forms['signupform'].username.value = parent.opener.document.forms['login'].name.value;
   }
@@ -30,17 +38,13 @@ function xmlhttpPost(strURL, type) {
   self.xmlHttpReq.onreadystatechange = function() {
     if (self.xmlHttpReq.readyState == 4) {
 
-      if(strURL == URL_SIGNUP) {
-	if(type == "LOAD") {
-	  loadUser(self.xmlHttpReq.responseText);
-	} else {
-	  signup(self.xmlHttpReq.responseText);
-	}
+      if(strURL == URL_SETTINGS) {
+	signup(self.xmlHttpReq.responseText);
       }
     }
   }
   var query = "";
-  if(strURL == URL_SIGNUP) {
+  if(strURL == URL_SETTINGS) {
     var form = document.forms['signupform'];
     var privacy, editor;
 
@@ -58,7 +62,8 @@ function xmlhttpPost(strURL, type) {
       'pw=' + escape(hex_md5(form.pw1.value + form.username.value.toLowerCase())) + '&' +
       'email=' + escape(form.email.value) + '&' +
       'privacy=' + escape(privacy) + '&' +
-      'editor=' + escape(editor);
+      'editor=' + escape(editor) + '&' +
+      'locale=' + escape(form.locale.value);
     switch(type) {
     case 'NEW':
       query += '&name=' + escape(form.username.value);
@@ -146,73 +151,12 @@ function validate(type) {
   }
 
   document.getElementById("miniresultbox").innerHTML = "<i>" + gt.gettext("Processing...") + "</i>";
-  xmlhttpPost(URL_SIGNUP, type);
+  xmlhttpPost(URL_SETTINGS, type);
 }
 
-// Load up user data
-function loadUser(str) {
-  var cols = str.split(";");
-  if(cols[0] == "3") {
-    var settings = jsonParse(cols[1]);
-    var elite = settings["elite"];
-    var form = document.forms['signupform'];
-    document.getElementById('eliteicon').innerHTML = getEliteIcon(elite, settings["validity"]);
-    if(elite == "G" || elite == "P") {
-      signupform.guestpw.disabled = false;
-      for (r=0; r < signupform.startpane.length; r++){
-	signupform.startpane[r].disabled = false;
-      }
-    }
-    signupform.email.value = settings["email"];
-    signupform.username.value = settings["name"];
-    signupform.myurl.value = "http://openflights.org/user/" + settings["name"];
-    signupform.count.value = Gettext.strargs(gt.gettext("Viewed %1 times"), [settings["count"]]);
-
-    $('banner_img').innerHTML = "<img src='/banner/" + settings["name"] + ".png' width=400 height=70>";
-    signupform.banner_html.value = "<a href='http://openflights.org/user/" + settings["name"] + "' target='_blank'><img src='http://openflights.org/banner/" + settings["name"] + ".png' width=400 height=70></a>";
-    signupform.banner_phpbb.value = "[url=http://openflights.org/user/" + settings["name"] + "]\n[img]http://openflights.org/banner/" + settings["name"] + ".png[/img][/url]";
-
-    if(settings["fbuid"]) {
-      if(settings["sessionkey"]) {
-	fbstring = gt.gettext("Linked, automatic updates");
-      } else {
-	fbstring = gt.gettext("Linked, manual updates only") + "<br><small><a target='_blank' href='http://apps.facebook.com/openflights'>" + gt.gettext("Automate") + "</a></small>";
-      }
-    } else {
-      fbstring = gt.gettext("Not active") + "<br><small><a target='_blank' href='http://apps.facebook.com/openflights?ofname=" +
-	settings["name"] + "'>" + gt.gettext("Add link") + "</a></small>";
-    }
-    document.getElementById('facebook').innerHTML = fbstring;
-    signupform.guestpw.value = settings["guestpw"];
-    for (r=0; r < signupform.privacy.length; r++){
-      if (signupform.privacy[r].value == settings["public"]) {
-	signupform.privacy[r].checked = true;
-      } else {
-	signupform.privacy[r].checked = false;
-      }
-    }
-    changePrivacy(settings["public"]);
-    for (r=0; r < signupform.editor.length; r++){
-      if (signupform.editor[r].value == settings["editor"]) {
-	signupform.editor[r].checked = true;
-      } else {
-	signupform.editor[r].checked = false;
-      }
-    }
-    changeEditor(settings["editor"]);
-    for (r=0; r < signupform.startpane.length; r++){
-      if (signupform.startpane[r].value == settings["startpane"]) {
-	signupform.startpane[r].checked = true;
-      } else {
-	signupform.startpane[r].checked = false;
-      }
-    }
-  } else {
-    showError(str.split(";")[1]);
-  }
-}
-
-
+//
+// Check if user creation succeeded
+//
 function signup(str) {
   var code = str.split(";")[0];
   var message = str.split(";")[1];
@@ -234,6 +178,7 @@ function changeName() {
   $('profileurl').innerHTML = gt.gettext("Profile address:") + url;
 }
 
+// Swap privacy panes
 function changePrivacy(type) {
   for(p = 0; p < privacyList.length; p++) {
     if(type == privacyList[p]) {
@@ -245,6 +190,7 @@ function changePrivacy(type) {
   }
 }
 
+// Swap editor panes
 function changeEditor(type) {
   switch(type) {
   case "B":
