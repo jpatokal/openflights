@@ -171,7 +171,7 @@ require_once("./php/db.php");
   </td>
 
   <td><?php echo _("Trip") ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
-  <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title='<?php echo _("Add new trip") ?>' height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="<?php echo _("Edit this trip") ?>' height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td>
+  <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title='<?php echo _("Add new trip") ?>' height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="<?php echo _("Edit this trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td>
 
 </tr><tr>
   <td><font color="blue"><?php echo _("From") ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a></td>

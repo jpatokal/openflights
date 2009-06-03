@@ -10,22 +10,11 @@ $privacy = $HTTP_POST_VARS["privacy"];
 
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
-  printf("0;Your session has timed out, please log in again.");
+  printf("0;" . _("Your session has timed out, please log in again."));
   exit;
 }
 
 switch($type) {
- case "LOAD":
-   // Load data for existing trip
-   $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid) . " AND uid=" . mysql_real_escape_string($uid);
-   $result = mysql_query($sql, $db);
-   if ($row = mysql_fetch_array($result)) {
-     printf("1;%s;%s;%s;%s", $row["trid"], $row["name"], $row["url"], $row["public"]);
-   } else {
-     printf("0;Could not load trip data.");
-   }
-   exit;
-
  case "NEW":
    // Create new trip
    $sql = sprintf("INSERT INTO trips(name,url,public,uid) VALUES('%s','%s','%s', %s)",
