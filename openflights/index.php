@@ -1,12 +1,11 @@
 <?php
-header("Content-type: text/html");
 require_once("./php/locale.php");
 require_once("./php/db.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>OpenFlights.org: Flight logging, mapping, stats and sharing</title>
+    <title>OpenFlights.org: <?php echo _("Flight logging, mapping, stats and sharing") ?></title>
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
