@@ -415,11 +415,6 @@ function clearSearch() {
   document.getElementById("miniresultbox").innerHTML = "";
 }
 
-// User has changed locale, reload page with new URL
-function changeLocale() {
-  location.href = "http://" + location.host + "/html/apsearch.php?lang=" + document.getElementById("locale").value;
-}
-
 // Airport selected, kick it back to main window and close this
 function selectAirport(data, name) {
   parent.opener.addNewAirport(data, unescape(name));
