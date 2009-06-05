@@ -133,13 +133,13 @@ function xmlhttpPost(strURL, offset, action) {
       }
     }
 
-    query = 'name=' + escape(name) + '&' +
-      'alias=' + escape(alias) + '&' +
-      'iata=' + escape(iata) + '&' +
-      'icao=' + escape(icao) + '&' +
-      'country=' + escape(country) + '&' +
-      'callsign=' + escape(callsign) + '&' +
-      'mode=' + escape(mode) + '&' +
+    query = 'name=' + encodeURIComponent(name) + '&' +
+      'alias=' + encodeURIComponent(alias) + '&' +
+      'iata=' + encodeURIComponent(iata) + '&' +
+      'icao=' + encodeURIComponent(icao) + '&' +
+      'country=' + encodeURIComponent(country) + '&' +
+      'callsign=' + encodeURIComponent(callsign) + '&' +
+      'mode=' + encodeURIComponent(mode) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
       'action=' + action;
@@ -213,7 +213,7 @@ function searchResult(str) {
     }
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col["al_name"] + "</td>";
     // id = alid
-    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirline(\"" + col["alid"] + "\",\"" + escape(col["al_name"]) + "\",\"" + col["mode"] + "\")'></td>";
+    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirline(\"" + col["alid"] + "\",\"" + encodeURIComponent(col["al_name"]) + "\",\"" + col["mode"] + "\")'></td>";
     table += "</tr>";
   }
   table += "</table>";

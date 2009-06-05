@@ -208,18 +208,18 @@ function xmlhttpPost(strURL, offset, action) {
       }
     }
 
-    query = 'name=' + escape(airport) + '&' +
-      'iata=' + escape(iata) + '&' +
-      'icao=' + escape(icao) + '&' +
-      'city=' + escape(city) + '&' +
-      'country=' + escape(country) + '&' +
-      'code=' + escape(code) + '&' +
+    query = 'name=' + encodeURIReference(airport) + '&' +
+      'iata=' + encodeURIReference(iata) + '&' +
+      'icao=' + encodeURIReference(icao) + '&' +
+      'city=' + encodeURIReference(city) + '&' +
+      'country=' + encodeURIReference(country) + '&' +
+      'code=' + encodeURIReference(code) + '&' +
       'x=' + x + '&' +
       'y=' + y + '&' +
       'elevation=' + elevation + '&' +
       'timezone=' + tz + '&' +
       'dst=' + dst + '&' +
-      'db=' + escape(db) + '&' +
+      'db=' + encodeURIReference(db) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
       'apid=' + apid + '&' +
@@ -309,7 +309,7 @@ function searchResult(str) {
       // code:apid:x:y:tz:dst
       id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
 	":" + col["timezone"] + ":" + col["dst"];
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + escape(col["ap_name"]) + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + encodeURIReference(col["ap_name"]) + "\")'></td>";
     }
     if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || guest) {
       if(col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
@@ -317,7 +317,7 @@ function searchResult(str) {
       } else {
 	label = gt.gettext("Load");
       }
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + escape(airports[a]) + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + encodeURIReference(airports[a]) + "\")'></td>";
     }
     table += "</tr>";
   }

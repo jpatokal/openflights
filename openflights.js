@@ -368,7 +368,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
 	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a> " +
-	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + escape(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>" +
+	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURIComponent(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>" +
 	  "</span>" + desc;
       }
     desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
@@ -670,10 +670,10 @@ function xmlhttpPost(strURL, id, param) {
 	    return;
 	  }
 	}
-	query +='alid' + indexes[i] + '=' + escape(alid) + '&' +
-	  'src_date' + indexes[i] + '=' + escape(src_date) + '&' +
-	  'src_apid' + indexes[i] + '=' + escape(src_apid) + '&' +
-	  'dst_apid' + indexes[i] + '=' + escape(dst_apid) + '&';
+	query +='alid' + indexes[i] + '=' + encodeURIComponent(alid) + '&' +
+	  'src_date' + indexes[i] + '=' + encodeURIComponent(src_date) + '&' +
+	  'src_apid' + indexes[i] + '=' + encodeURIComponent(src_apid) + '&' +
+	  'dst_apid' + indexes[i] + '=' + encodeURIComponent(dst_apid) + '&';
       }
       if(getCurrentPane() == "input") {
 	src_time = $('src_time').value;
@@ -683,7 +683,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $('src_time').focus();
 	    return;
 	  }
-	  query += 'src_time=' + escape(src_time) + '&';
+	  query += 'src_time=' + encodeURIComponent(src_time) + '&';
 	}
 
 	var type = inputform.seat_type.value;
@@ -732,20 +732,20 @@ function xmlhttpPost(strURL, id, param) {
 	var mode = "F";
       }
     }
-    query += 'duration=' + escape(duration) + '&' +
-      'distance=' + escape(distance) + '&' +
-      'number=' + escape(number) + '&' +
-      'seat=' + escape(seat) + '&' +
-      'type=' + escape(type) + '&' +
-      'class=' + escape(myClass) + '&' +
-      'reason=' + escape(reason) + '&' +
-      'registration=' + escape(registration) + '&' +
-      'note=' + escape(note) + '&' +
-      'plane=' + escape(plane) + '&' +
-      'trid=' + escape(trid) + '&' +
-      'mode=' + escape(mode) + '&' +
-      'fid=' + escape(fid) + '&' +
-      'param=' + escape(param);
+    query += 'duration=' + encodeURIComponent(duration) + '&' +
+      'distance=' + encodeURIComponent(distance) + '&' +
+      'number=' + encodeURIComponent(number) + '&' +
+      'seat=' + encodeURIComponent(seat) + '&' +
+      'type=' + encodeURIComponent(type) + '&' +
+      'class=' + encodeURIComponent(myClass) + '&' +
+      'reason=' + encodeURIComponent(reason) + '&' +
+      'registration=' + encodeURIComponent(registration) + '&' +
+      'note=' + encodeURIComponent(note) + '&' +
+      'plane=' + encodeURIComponent(plane) + '&' +
+      'trid=' + encodeURIComponent(trid) + '&' +
+      'mode=' + encodeURIComponent(mode) + '&' +
+      'fid=' + encodeURIComponent(fid) + '&' +
+      'param=' + encodeURIComponent(param);
     if(getCurrentPane() == "multiinput") {
       $("multiinput_status").innerHTML = '<B>Saving...</B>';
     } else {
@@ -760,11 +760,11 @@ function xmlhttpPost(strURL, id, param) {
     var challenge = document.forms['login'].challenge.value;
     hash = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
     legacy_hash = hex_md5(challenge + hex_md5(pw + name));
-    query = 'name=' + escape(name) + '&pw=' + escape(hash) + '&lpw=' + escape(legacy_hash);
+    query = 'name=' + encodeURIComponent(name) + '&pw=' + encodeURIComponent(hash) + '&lpw=' + encodeURIComponent(legacy_hash);
     break;
 
   case URL_GETCODE:
-    query = escape(param) + '=' + escape(id) + '&quick=true&mode=' + getMode();
+    query = encodeURIComponent(param) + '=' + encodeURIComponent(id) + '&quick=true&mode=' + getMode();
     break;
     
   case URL_LOGOUT:
@@ -794,11 +794,11 @@ function xmlhttpPost(strURL, id, param) {
     }
     filter_alid = form.Airlines.value.split(";")[0];
     filter_year = form.Years.value;
-    query = 'user=' + escape(filter_user) + '&' +
-      'trid=' + escape(filter_trid) + '&' +
-      'alid=' + escape(filter_alid) + '&' +
-      'year=' + escape(filter_year) + '&' +
-      'param=' + escape(param);
+    query = 'user=' + encodeURIComponent(filter_user) + '&' +
+      'trid=' + encodeURIComponent(filter_trid) + '&' +
+      'alid=' + encodeURIComponent(filter_alid) + '&' +
+      'year=' + encodeURIComponent(filter_year) + '&' +
+      'param=' + encodeURIComponent(param);
     guestpw = $('guestpw');
     if(guestpw) {
       query += "&guestpw=" + hex_md5(guestpw.value + filter_user.toLowerCase());
@@ -811,10 +811,10 @@ function xmlhttpPost(strURL, id, param) {
     }
     if(strURL == URL_FLIGHTS) {
       if(param == "EDIT" || param == "COPY") {
-	query += '&fid=' + escape(id);
+	query += '&fid=' + encodeURIComponent(id);
       } else {
 	// This is a flight list query, so store its details
-	query += '&id=' + escape(id);
+	query += '&id=' + encodeURIComponent(id);
 	lastQuery = query;
 	lastDesc = param;
       }
@@ -1211,7 +1211,7 @@ function startListFlights() {
   var yearName = document.forms['filterform'].Years[document.forms['filterform'].Years.selectedIndex].text;
   // ##TODO##
   var title = "Flights" + (tripName ? " for " + tripName : "") + " on " + airlineName + " in year " + yearName;
-  xmlhttpPost(URL_FLIGHTS, 0, escape(title));
+  xmlhttpPost(URL_FLIGHTS, 0, encodeURIComponent(title));
 }
 
 function listFlights(str, desc) {
@@ -1728,7 +1728,7 @@ function popNewAirline(type, name, mode) {
   }
   url = '/html/alsearch';
   if(name) {
-    url += "?name=" + escape(name) + "&mode=" + mode;
+    url += "?name=" + encodeURIComponent(name) + "&mode=" + mode;
   }
   window.open(url, 'Airline', 'width=500,height=580,scrollbars=yes');
 }
