@@ -121,6 +121,10 @@ $loopflight = array('param' => 'ADD',
 		    'mode' => 'F',
 		    'note' => 'AddLoopFlightTest,;:\'"Chars');
 
+$trip = array('name' => 'AutoTest Trip',
+	      'url' => 'http://autotrip.example',
+	      'privacy' => 'Y');
+
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";
