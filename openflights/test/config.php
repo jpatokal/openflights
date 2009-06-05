@@ -4,12 +4,13 @@
 $webroot = 'http://192.168.1.4:8888/';
 
 // Settings for automated test user
-$settings = array('username' => 'autotest',
+$settings = array('name' => 'autotest',
 		  'password' => 'autotest',
 		  'email' => 'test@openflights.example',
 		  'privacy' => 'Y',
 		  'editor' => 'B',
 		  'fbuid' => null,
+		  'locale' => 'en_US',
 		  'sessionkey' => null);
 
 $airline = array('name' => 'AutoTest Airways',
@@ -128,24 +129,24 @@ $dbname = "flightdb";
 // *** END OF CONFIGURATION ***
 
 // Login
-// Use default settings unless username/password are given as arguments
+// Use default settings unless name/password are given as arguments
 
-function login($case, $username = NULL, $password = NULL) {
+function login($case, $name = NULL, $password = NULL) {
   global $webroot, $settings;
   
   if(! $password) {
     $password = $settings["password"];
   }
-  if(! $username) {
-    $username = $settings["username"];
+  if(! $name) {
+    $name = $settings["name"];
   }
   
   $map = $case->post($webroot . "php/map.php");
   $cols = preg_split('/[;\n]/', $map);
   $challenge = $cols[7];
-  $hash = md5($challenge . md5($password . strtolower($username)));
-  $legacyhash = md5($challenge . md5($password . $username));
-  $params = array("name" => $username,
+  $hash = md5($challenge . md5($password . strtolower($name)));
+  $legacyhash = md5($challenge . md5($password . $name));
+  $params = array("name" => $name,
 		  "pw" => $hash,
 		  "lpw" => $legacyhash);
   return $case->post($webroot . "php/login.php", $params);

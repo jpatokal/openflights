@@ -61,7 +61,7 @@ class DeleteExtraFlightsTest extends WebTestCase {
     global $settings;
 
     $db = db_connect();
-    $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["username"] . "')";
+    $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
     $result = mysql_query($sql, $db);
     $this->assertTrue(mysql_affected_rows() >= 1, "Flights deleted");
   }
