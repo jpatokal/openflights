@@ -1,5 +1,6 @@
 <?php
 require_once '../php/greatcircle.php';
+require_once '../php/db.php';
 
 function getlocationcoords($lat, $lon, $width, $height)
 {
@@ -18,8 +19,6 @@ if(! $uid) {
   return;
 }
 
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 $sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,d.x AS dx,d.y AS dy, distance FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " GROUP BY s.apid,d.apid";
 
 // First we load the background/base map. We assume it's located in same dir as the script.

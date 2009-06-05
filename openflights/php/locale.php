@@ -20,6 +20,7 @@ if(substr_count($_SERVER['SCRIPT_NAME'], '/') == 1) {
 }
 bindtextdomain("messages", $path . "/locale");
 textdomain("messages");
+header("Content-type: text/html; charset=utf-8");
 
 //
 // Generate select box (pulldown) with all known locales

@@ -1,5 +1,6 @@
 <?php
 include 'locale.php';
+include 'db.php';
 
 $name = $HTTP_POST_VARS["name"];
 // pw is hashed from lowercased username, legacypw is not
@@ -9,9 +10,6 @@ $challenge = $_SESSION["challenge"];
 
 // Log in user
 if($name) {
-  $db = mysql_connect("localhost", "openflights");
-  mysql_select_db("flightdb",$db);
-
   // CHAP: Use random challenge key in addition to password
   // user_pw == MD5(challenge, db_pw)
   $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .

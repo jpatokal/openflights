@@ -2,10 +2,9 @@
 require_once 'php/facebook.php';
 require_once 'keys.php';
 require_once 'profile.php';
+require_once '../php/db.php';
 
 $facebook = new Facebook($appapikey, $appsecret);
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 $fbtoday = 0;
 $fbupdates = 0;
 $fbfail = 0;

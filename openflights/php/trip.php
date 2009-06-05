@@ -48,7 +48,10 @@ switch($type) {
 }
 
 mysql_query($sql, $db) or die ('0;Operation on trip ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
-
+if(mysql_affected_rows() != 1) {
+  die("0;No matching trip found");
+}
+  
 switch($type) {
  case "NEW":
    $trid = mysql_insert_id();

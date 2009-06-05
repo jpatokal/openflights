@@ -2,7 +2,7 @@
 session_start();
 $export = $HTTP_GET_VARS["export"];
 if($export) {
-  header("Content-type: text/csv; charset=iso-8859-1");
+  header("Content-type: text/csv; charset=utf-8");
   header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d").".csv\"");
   if($export == "export") {
     $trid = $HTTP_GET_VARS["trid"];
@@ -12,7 +12,7 @@ if($export) {
   }
   // else export everything unfiltered
  } else {
-  header("Content-type: text/html; charset=iso-8859-1");
+  header("Content-type: text/html; charset=utf-8");
   $apid = $HTTP_POST_VARS["id"];
   $trid = $HTTP_POST_VARS["trid"];
   $alid = $HTTP_POST_VARS["alid"];
@@ -23,6 +23,7 @@ if($export) {
 
 include 'helper.php';
 include 'filter.php';
+include 'db.php';
 
 $uid = $_SESSION["uid"];
 // Logged in?
@@ -49,9 +50,6 @@ if(!$uid or empty($uid)) {
     $uid = 1;
   }
 }
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 // List of all this user's flights
 $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
