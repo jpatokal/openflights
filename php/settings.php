@@ -20,21 +20,21 @@ $locale = $HTTP_POST_VARS["locale"]; // override any value in URL/session
 // 10 reset
 
 // Create new user
-if($type == "NEW") {
-  $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "'";
-  $result = mysql_query($sql, $db);
-  if (mysql_fetch_array($result)) {
-    printf("0;" . _("Sorry, that name is already taken, please try another."));
-    exit;
-  }
-
-} else {
-  // EDIT or RESET
+switch($type) {
+ case "NEW":
+   $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "'";
+   $result = mysql_query($sql, $db);
+   if (mysql_fetch_array($result)) {
+     die("0;" . _("Sorry, that name is already taken, please try another."));
+   }
+   break;
+   
+ case "EDIT":
+ case "RESET":
   $uid = $_SESSION["uid"];
   $name = $_SESSION["name"];
   if(!$uid or empty($uid)) {
-    printf("0;" . _("Your session has timed out, please log in again."));
-    exit;
+    die("0;" . _("Your session has timed out, please log in again."));
   }
 
   if($type == "RESET") {
@@ -51,10 +51,13 @@ if($type == "NEW") {
       "password='" . mysql_real_escape_string($oldlpw) . "')";
     $result = mysql_query($sql, $db);
     if(! mysql_fetch_array($result)) {
-      printf("0;" . _("Sorry, current password is not correct."));
-      exit;
+      die("0;" . _("Sorry, current password is not correct."));
     }
   }
+  break;
+
+ default:
+   die("0;Unknown action $type");
 }
 
 // Note: Password is actually an MD5 hash of pw and username

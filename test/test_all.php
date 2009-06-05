@@ -6,8 +6,8 @@ require_once('config.php');
 print '<h1>OpenFlights PHP/SQL Test Suite</h1>';
 
 // Create user
-$test = &new TestSuite('Signup');
-$test->addTestFile('signup.php');
+$test = &new TestSuite('Settings');
+$test->addTestFile('settings.php');
 $test->run(new HtmlReporter());
 
 $test = &new TestSuite('Login');

@@ -16,24 +16,24 @@ class SuccessfulLoginTest extends WebTestCase {
   }
 }
 
-// Legacy login test (where username hash was built using uppercase chars)
+// Legacy login test (where name hash was built using uppercase chars)
 class LegacyLoginTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
 
-    $username = "LegacyUser";
+    $name = "LegacyUser";
     $password = "foobar";
-    $hash = md5($password . $username);
+    $hash = md5($password . $name);
 
     $db = db_connect();
-    $sql = "INSERT INTO users(name,password) VALUES('$username','$hash')";
+    $sql = "INSERT INTO users(name,password) VALUES('$name','$hash')";
     $result = mysql_query($sql, $db);
     $this->assertTrue(mysql_affected_rows() == 1, "Legacy user added");
 
-    login($this, $username, $password);
+    login($this, $name, $password);
     $this->assertText('1;');
 
-    $sql = "DELETE FROM users WHERE name='$username'";
+    $sql = "DELETE FROM users WHERE name='$name'";
     $result = mysql_query($sql, $db);
     $this->assertTrue(mysql_affected_rows() == 1, "Legacy user deleted");
   }
@@ -45,7 +45,7 @@ class LegacyLoginTest extends WebTestCase {
 class WrongPasswordLoginTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
-    login($this, $settings["username"], "incorrect");
+    login($this, $settings["name"], "incorrect");
     $this->assertText('0;');
   }
 }
