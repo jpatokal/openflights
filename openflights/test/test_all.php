@@ -6,7 +6,7 @@ require_once('config.php');
 print '<h1>OpenFlights PHP/SQL Test Suite</h1>';
 
 // Create user
-$test = &new TestSuite('Settings');
+$test = &new TestSuite('Signup/Settings');
 $test->addTestFile('settings.php');
 $test->run(new HtmlReporter());
 
@@ -17,6 +17,11 @@ $test->run(new HtmlReporter());
 // Add flights
 $test = &new TestSuite('Submit/Flights');
 $test->addTestFile('submit.php');
+$test->run(new HtmlReporter());
+
+// Trips
+$test = &new TestSuite('Trips');
+$test->addTestFile('trip.php');
 $test->run(new HtmlReporter());
 
 // "Analyze" stats
