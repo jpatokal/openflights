@@ -59,14 +59,14 @@ function xmlhttpPost(strURL, type) {
       }
     }
     query = 'type=' + type + '&' +
-      'pw=' + escape(hex_md5(form.pw1.value + form.username.value.toLowerCase())) + '&' +
-      'email=' + escape(form.email.value) + '&' +
-      'privacy=' + escape(privacy) + '&' +
-      'editor=' + escape(editor) + '&' +
-      'locale=' + escape(form.locale.value);
+      'pw=' + encodeURIComponent(hex_md5(form.pw1.value + form.username.value.toLowerCase())) + '&' +
+      'email=' + encodeURIComponent(form.email.value) + '&' +
+      'privacy=' + encodeURIComponent(privacy) + '&' +
+      'editor=' + encodeURIComponent(editor) + '&' +
+      'locale=' + encodeURIComponent(form.locale.value);
     switch(type) {
     case 'NEW':
-      query += '&name=' + escape(form.username.value);
+      query += '&name=' + encodeURIComponent(form.username.value);
       document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Creating account...") + "</I>";
       break;
 
@@ -77,14 +77,14 @@ function xmlhttpPost(strURL, type) {
 	}
       }
       if(form.oldpw.value != "") {
-	query += '&oldpw=' + escape(hex_md5(form.oldpw.value + form.username.value.toLowerCase()));
+	query += '&oldpw=' + encodeURIComponent(hex_md5(form.oldpw.value + form.username.value.toLowerCase()));
 	// Legacy password for case-sensitive days of yore
-	query += '&oldlpw=' + escape(hex_md5(form.oldpw.value + form.username.value));
+	query += '&oldlpw=' + encodeURIComponent(hex_md5(form.oldpw.value + form.username.value));
       }
       if(form.guestpw.value != "") {
-	query += '&guestpw=' + escape(hex_md5(form.guestpw.value + form.username.value.toLowerCase()));
+	query += '&guestpw=' + encodeURIComponent(hex_md5(form.guestpw.value + form.username.value.toLowerCase()));
       }
-      query += '&startpane=' + escape(startpane);
+      query += '&startpane=' + encodeURIComponent(startpane);
       document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Saving changes...") + "</I>";
       break;
 
@@ -174,7 +174,7 @@ function signup(str) {
 
 function changeName() {
   var name = document.forms['signupform'].username.value;
-  var url = "http://" + location.host + "/user/" + escape(name);
+  var url = "http://" + location.host + "/user/" + encodeURIComponent(name);
   $('profileurl').innerHTML = gt.gettext("Profile address:") + url;
 }
 
