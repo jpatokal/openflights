@@ -4,6 +4,7 @@
 require_once 'php/facebook.php';
 require_once 'keys.php';
 require_once 'profile.php';
+require_once '../php/db.php';
 
 // Print FB-style information box
 function fb_infobox($info) {
@@ -18,8 +19,6 @@ function fb_die($error) {
 // appapikey,appsecret must be defined in keys.php
 $facebook = new Facebook($appapikey, $appsecret);
 $fbuid = $facebook->require_login();
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 // Clear prefs, DB if user passes in reset=true, so they can reconfig
 if($_REQUEST["reset"] == "true") {

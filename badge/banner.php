@@ -1,4 +1,5 @@
 <?php
+include '../php/db.php';
 
 function endsWith( $str, $sub ) {
   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) == $sub );
@@ -35,8 +36,6 @@ if(file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 }
 
 // New banner or cache out of date, so regenerate
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights AS f,users AS u WHERE u.name='" . $user . "' and f.uid=u.uid";
 
 $result = mysql_query($sql, $db);

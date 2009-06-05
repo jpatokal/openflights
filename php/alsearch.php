@@ -2,8 +2,6 @@
 require_once("../php/locale.php");
 require_once("../php/db.php");
 
-header("Content-type: text/html");
-
 include 'helper.php';
 
 $name = $HTTP_POST_VARS["name"];
@@ -23,9 +21,6 @@ $country = $HTTP_POST_VARS["country"];
 $offset = $HTTP_POST_VARS["offset"];
 $action = $HTTP_POST_VARS["action"];
 $iatafilter = $HTTP_POST_VARS["iatafilter"];
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 
 if($action == "RECORD") {
   $uid = $_SESSION["uid"];
@@ -129,7 +124,6 @@ if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
 printf("%s;%s;%s", $offset, $max, $sql);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  $row["al_name"] = format_airline($row);
   // ##TODO## admin flag instead of hardcoding...
   if($row["uid"] || $uid == "3" ) {
     if($row["uid"] == $uid || $uid == "3") {
@@ -140,8 +134,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     $row["al_uid"] = null; // in DB
   }
-  $row["al_name"] = format_airline($row);
   unset($row["uid"]);
+  $row["al_name"] = format_airline($row);
   print "\n" . json_encode($row);
 }
 

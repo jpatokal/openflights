@@ -7,6 +7,7 @@ header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d"
 include 'greatcircle.php';
 include 'helper.php';
 include 'filter.php';
+include 'db.php';
 
 $METERSPERFOOT = 0.3048;
 
@@ -16,8 +17,6 @@ if(!$uid or empty($uid)) {
   $uid = 1;
 }
 
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
 $sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . getFilterString($HTTP_GET_VARS) . " GROUP BY s.apid,d.apid";
 
 $result = mysql_query($sql, $db);
