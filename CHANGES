@@ -1,3 +1,12 @@
+<b>2009-06-08</b>
+
+* Localization implemented
+* Launched Finnish (fi), Japanese (ja)
+* Most HTML pages changed to PHP
+* URL rewriting so ".php" tag not needed
+* Database converted to UTF-8
+* JS/PHP data input/output UTF-8 proofed (knock knock)
+
 <b>2009-05-18</b>
 
 * Bug: Flights now sorted by time as well as date
