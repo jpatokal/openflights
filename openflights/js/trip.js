@@ -41,9 +41,9 @@ function xmlhttpPost(strURL, type) {
       }
     }
     query = 'type=' + type + '&' +
-      'name=' + encodeURIReference(form.name.value) + '&' +
-      'url=' + encodeURIReference(form.url.value) + '&' +
-      'privacy=' + encodeURIReference(privacy);
+      'name=' + encodeURIComponent(form.name.value) + '&' +
+      'url=' + encodeURIComponent(form.url.value) + '&' +
+      'privacy=' + encodeURIComponent(privacy);
     if(type == 'EDIT' || type == 'LOAD' || type == 'DELETE') {
       query += '&trid=' + trid;
     }

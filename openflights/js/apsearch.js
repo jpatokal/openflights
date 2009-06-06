@@ -154,13 +154,13 @@ function xmlhttpPost(strURL, offset, action) {
       }
 
       if(Math.abs(x) > 180) {
-	alert(gt.gettext("Latitude must be in the range -180 (west) to 180 (east) degrees."));
+	alert(gt.gettext("Longitude must be in the range -180 (west) to 180 (east) degrees."));
 	form.x.focus();
 	return;
       }
 
       if(Math.abs(y) > 90) {
-	alert(gt.gettext("Longitude must be in the range 90 (north) to -90 (south) degrees."));
+	alert(gt.gettext("Latitude must be in the range 90 (north) to -90 (south) degrees."));
 	form.y.focus();
 	return;
       }
@@ -208,18 +208,18 @@ function xmlhttpPost(strURL, offset, action) {
       }
     }
 
-    query = 'name=' + encodeURIReference(airport) + '&' +
-      'iata=' + encodeURIReference(iata) + '&' +
-      'icao=' + encodeURIReference(icao) + '&' +
-      'city=' + encodeURIReference(city) + '&' +
-      'country=' + encodeURIReference(country) + '&' +
-      'code=' + encodeURIReference(code) + '&' +
+    query = 'name=' + encodeURIComponent(airport) + '&' +
+      'iata=' + encodeURIComponent(iata) + '&' +
+      'icao=' + encodeURIComponent(icao) + '&' +
+      'city=' + encodeURIComponent(city) + '&' +
+      'country=' + encodeURIComponent(country) + '&' +
+      'code=' + encodeURIComponent(code) + '&' +
       'x=' + x + '&' +
       'y=' + y + '&' +
       'elevation=' + elevation + '&' +
       'timezone=' + tz + '&' +
       'dst=' + dst + '&' +
-      'db=' + encodeURIReference(db) + '&' +
+      'db=' + encodeURIComponent(db) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
       'apid=' + apid + '&' +
@@ -309,7 +309,7 @@ function searchResult(str) {
       // code:apid:x:y:tz:dst
       id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
 	":" + col["timezone"] + ":" + col["dst"];
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + encodeURIReference(col["ap_name"]) + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + encodeURIComponent(col["ap_name"]) + "\")'></td>";
     }
     if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || guest) {
       if(col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
@@ -317,7 +317,7 @@ function searchResult(str) {
       } else {
 	label = gt.gettext("Load");
       }
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + encodeURIReference(airports[a]) + "\")'></td>";
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + encodeURIComponent(airports[a]) + "\")'></td>";
     }
     table += "</tr>";
   }
