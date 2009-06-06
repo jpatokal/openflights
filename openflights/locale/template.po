@@ -1164,10 +1164,10 @@ msgstr ""
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr ""
 
-msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
 msgstr ""
 
-msgid "Longitude must be in the range 90 (north) to -90 (south) degrees."
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
 msgstr ""
 
 msgid "Please enter a positive number for elevation."

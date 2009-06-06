@@ -179,11 +179,11 @@ msgstr ""
 "desimaalin tarkkuudella.  Esim. San Franciscon (SFO) sijainti on 37.6189 "
 "(pohjoinen), -122.3748 (itä)."
 
-msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
-msgstr "Leveysasteen täytyy olla -180 (länsi) ja 180 (itä) asteen väliltä."
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
+msgstr "Pituusasteen täytyy olla -180 (länsi) ja 180 (itä) asteen väliltä."
 
-msgid "Longitude must be in the range 90 (north) to -90 (south) degrees."
-msgstr "Pituusasteen täytyy olla 90 (pohjoinen) ja -90 (etelä) asteen välillä."
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
+msgstr "Leveysasteen täytyy olla 90 (pohjoinen) ja -90 (etelä) asteen välillä."
 
 msgid "Please enter a positive number for elevation."
 msgstr "Korkeuden täytyy olla positiivinen luku."
