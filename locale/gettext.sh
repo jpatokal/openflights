@@ -7,4 +7,7 @@ xgettext --omit-header --no-location -j -o locale/fi_FI.utf8/LC_MESSAGES/message
 xgettext --omit-header --no-location -L C -j -o locale/fi_FI.utf8/LC_MESSAGES/messages.po openflights.js js/apsearch.js
 
 xgettext --omit-header --no-location -j -o locale/ja_JP.utf8/LC_MESSAGES/messages.po index.php php/*php html/*php
-xgettext --omit-header --no-location -L C -j -o locale/fi_FI.utf8/LC_MESSAGES/messages.po openflights.js js/apsearch.js
+xgettext --omit-header --no-location -L C -j -o locale/ja_JP.utf8/LC_MESSAGES/messages.po openflights.js js/apsearch.js
+
+xgettext --omit-header --no-location -j -o locale/template.po index.php php/*php html/*php
+xgettext --omit-header --no-location -L C -j -o locale/template.po openflights.js js/apsearch.js

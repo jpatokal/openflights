@@ -1,0 +1,39 @@
+Translating OpenFlights into your language does not require any specialized technical skills.  This is a step-by-step guide for how to do it.
+
+OpenFlights currently contains about 400 strings, mostly short but some long.  You do *not* need to translate everything, and translating even a small part would be very helpful; somebody else can easily continue from where you left off.
+
+0) First, notify info@openflights.org that you want to translate a language.  This will help prevent duplication of effort.
+
+1) Download and edit POEdit (http://www.poedit.net/), a specialized editor for translation.  It's free, and versions are available for Windows, Linux and Mac.
+
+2a) To create a new language, download a copy of the blank template:
+
+  http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/locale/template.po
+
+2b) To edit an existing language, browse to:
+
+  http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/locale/
+
+...and find the existing messages.po file.  For example, the Japanese (ja) file is here under the "ja_JP.utf8" directory:
+
+  http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/locale/ja_JP.utf8/LC_MESSAGES/messages.po
+
+3) Load the .po file in POEdit.
+
+4) From the "View" menu, activate "Show comments window", so you can see string explanations (if any).
+
+5) Translate!  Press CTRL-Arrow Up/Down to move between entries.  Some style pointers:
+
+- Especially for short entries, try to roughly match the length of the existing string.  If the English uses an abbreviation ("Reg."), keep the translation short.
+
+- The special strings %s, %1, %2, %3 are automatically filled in by OpenFlights.  Keep them in the translated string, but you can change the order if you want.
+
+  "Results %1 to %2 of %3" --> "Total %3 hits, last result %2, first result %1"
+
+- HTML markup like <tag>text</tag> is used in some entries.  Do not change content inside <>, but do translate everything else, including text inside tags.  Again, you can change the order:
+
+  "<font>Blue</font> is a delicious cheese" --> "Une fromage delicieux, c'est <font>Bleu</font>"
+
+6) Finished?  Save and send the new messages.po file to info@openflights.org.
+
+Thank you for your help!
