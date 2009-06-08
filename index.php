@@ -40,7 +40,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-  	      <B><?php echo _("News")?> </b>: 13 May 2009: <a href="/blog/">Banners for blogs, websites and bulletin boards!  Details on the blog.</a>
+																										   <B><?php echo _("News")?> </b>: 8 Jun 2009: <a href="/blog/">OpenFlights nyt Finnish (suomeksi) and in Japanese (日本語)!  More languages soon, see blog.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">

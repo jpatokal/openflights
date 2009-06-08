@@ -2,6 +2,7 @@
 
 * Localization implemented
 * Launched Finnish (fi), Japanese (ja)
+* Started French (fr)
 * Most HTML pages changed to PHP
 * URL rewriting so ".php" tag not needed
 * Database converted to UTF-8

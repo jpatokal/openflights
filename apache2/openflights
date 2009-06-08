@@ -26,6 +26,8 @@ NameVirtualHost *
                 # Map /user/xxx URLs into ?user=xxx format
                 RewriteRule   ^user/img/(.+)$  /img/$1                 [PT,L,QSA]
                 RewriteRule   ^user/(.+)$      /index.php?user=$1     [PT,L,QSA]
+	        # Map /html/xxx URLs into /html/xxx.php format
+        	RewriteRule   ^/html/(.+)$     /html/$1.php             [PT,L,QSA]
                 # Map /banner/xxx URLs into ?user=xxx format
                 RewriteRule   ^banner/(.+)$     /banner/banner.php?user=$1     [PT,L,QSA]
 
@@ -37,7 +39,7 @@ NameVirtualHost *
                 BrowserMatch \bMSIE\s7 !no-gzip
                 # IE 6.0 after SP2 has no gzip bugs!
                 BrowserMatch \bMSIE.*SV !no-gzip
-                # Sometimes Opera pretends to be IE with "Mozila/4.0"
+                # Sometimes Opera pretends to be IE with "Mozilla/4.0"
                 BrowserMatch \bOpera !no-gzip
 	</Directory>
 	<Directory /var/www/openflights/blog>
