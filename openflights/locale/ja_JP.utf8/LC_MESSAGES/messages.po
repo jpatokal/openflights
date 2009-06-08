@@ -138,7 +138,7 @@ msgid "Trip"
 msgstr "旅行"
 
 msgid "More..."
-msgstr "全表示"
+msgstr "その他"
 
 msgid "Class"
 msgstr "クラス"
@@ -159,10 +159,10 @@ msgid "Control panel"
 msgstr "コントロールパネル"
 
 msgid "New flight"
-msgstr "新しいフライト"
+msgstr "フライトの追加"
 
 msgid "List flights"
-msgstr "フライト一覧表示"
+msgstr "フライト一覧"
 
 msgid "Import"
 msgstr "インポート"
@@ -259,7 +259,7 @@ msgid "Middle"
 msgstr "中央"
 
 msgid "Work"
-msgstr "ビジネス"
+msgstr "出張"
 
 msgid "Leisure"
 msgstr "休暇"
@@ -721,7 +721,7 @@ msgid "Public"
 msgstr "一部公開"
 
 msgid "Open"
-msgstr "全部開く"
+msgstr "全部公開"
 
 #, php-format
 msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
@@ -824,16 +824,16 @@ msgid "Prem.Eco"
 msgstr "プレミアムエコノミー"
 
 msgid "Econ"
-msgstr "エコノミー"
+msgstr "エコノ"
 
 msgid "P.Eco"
-msgstr "プレミアムエコノミー"
+msgstr "プレミ"
 
 msgid "Biz"
-msgstr "ビジネス"
+msgstr "ビジネ"
 
 msgid "1st"
-msgstr "ファースト"
+msgstr "ファー"
 
 msgid "Leis."
 msgstr "休暇"
@@ -944,7 +944,7 @@ msgid "segments"
 msgstr "便"
 
 msgid "miles"
-msgstr "距離"
+msgstr "マイル"
 
 msgid "days"
 msgstr "日"
