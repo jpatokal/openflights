@@ -289,7 +289,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
   var y = apcols[3];
 
   // Description
-  var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>" + gt.gettext("Flights:") + " " + count;
+  var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>__FLIGHTS__ " + count;
 
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
@@ -364,12 +364,13 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     // 2. system is in "demo mode", or
     // 3. privacy is set to (O)pen
     desc = this.marker.desc;
+
     if( logged_in || demo_mode || privacy == "O") {
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
 	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a> " +
-	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURIComponent(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>" +
-	  "</span>" + desc;
+	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>" +
+	  "</span>" + desc.replace("__FLIGHTS__", gt.gettext("Flights:"));
       }
     desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
     closePopup();
@@ -457,7 +458,7 @@ function xmlhttpPost(strURL, id, param) {
 	    // fallthru
 
 	  default:
-  	    listFlights(self.xmlHttpReq.responseText, unescape(param));
+	  listFlights(self.xmlHttpReq.responseText, unescape(param));
 	    break;
 	}
 	$("ajaxstatus").style.display = 'none';
@@ -1226,7 +1227,9 @@ function listFlights(str, desc) {
     table.push("<i>" + gt.gettext("No flights found at this airport.") + "</i></span></div>");
   } else {
     if(desc) {
-      table.push(desc.replace(/\<br\>/g, " &mdash; "));
+      desc = desc.replace("__FLIGHTS__", gt.gettext("Flights:"));
+      desc = desc.replace(/\<br\>/g, " &mdash; ")
+      table.push(desc);
       table.unshift("<span style='float: right'>" + gt.gettext("Export") + " <input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
