@@ -28,8 +28,8 @@ NameVirtualHost *
                 RewriteRule   ^user/(.+)$      /index.php?user=$1     [PT,L,QSA]
 	        # Map /html/xxx URLs into /html/xxx.php format
         	RewriteRule   ^/html/(.+)$     /html/$1.php             [PT,L,QSA]
-                # Map /badge/xxx URLs into ?user=xxx format
-                RewriteRule   ^badge/(.+)$     /badge/banner.php?user=$1     [PT,L,QSA]
+                # Map /banner/xxx URLs into ?user=xxx format
+                RewriteRule   ^banner/(.+)$     /badge/banner.php?user=$1     [PT,L,QSA]
 
                 # Compress output (enable mod_deflate)
                 AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/x-javascript
