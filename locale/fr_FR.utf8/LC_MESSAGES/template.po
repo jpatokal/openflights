@@ -1,0 +1,1226 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Mathieu Marquer <mathieu.marquer@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Flight logging, mapping, stats and sharing"
+msgstr ""
+
+# Duration of flight (time)
+msgid "Duration"
+msgstr "Durée"
+
+# of flight
+msgid "Distance"
+msgstr "Distance"
+
+msgid "Add new airport"
+msgstr "Ajouter un nouvel aéroport"
+
+msgid "Sorry, OpenFlights requires JavaScript."
+msgstr "Désolé, OpenFlights nécessite JavaScript."
+
+# New features on the OpenFlights website
+msgid "News"
+msgstr "Nouveautés"
+
+msgid "Language"
+msgstr "Langue"
+
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgid "Password"
+msgstr "Mot de passe"
+
+msgid "Log in"
+msgstr "S'identifier"
+
+msgid "Sign up"
+msgstr "Créer un compte"
+
+msgid "Analyze"
+msgstr "Analyser"
+
+msgid "Top 10"
+msgstr "Top 10"
+
+# The flight selection filter on the main page
+msgid "Filter"
+msgstr "Filtrer"
+
+# Generic term for any kind of transport (flight, road, sea, train)
+msgid "Carrier"
+msgstr "Transporteur"
+
+msgid "Year"
+msgstr "Année"
+
+msgid "Trip"
+msgstr "Trajet"
+
+# Show additional filter options
+msgid "More..."
+msgstr "Plus..."
+
+# Class of travel (economy, business, first)
+msgid "Class"
+msgstr "Classe"
+
+# Method of travel (by plane, by road, by ship, by train)
+msgid "Mode"
+msgstr "Moyen de transport"
+
+# User's own notes on this flight
+msgid "Note"
+msgstr "Note"
+
+msgid "Reason"
+msgstr "Raison"
+
+# Plane registration number
+msgid "Registration"
+msgstr "Immatriculation"
+
+msgid "Control panel"
+msgstr "Panneau de contrôle"
+
+msgid "New flight"
+msgstr "Nouveau vol"
+
+msgid "List flights"
+msgstr "Lister les vols"
+
+msgid "Import"
+msgstr "Importer"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Logout"
+msgstr "Se déconnecter"
+
+msgid "Add new flight"
+msgstr "Ajouter un nouveau vol"
+
+msgid "Edit flight"
+msgstr "Éditer un vol"
+
+msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgstr "Les champs en <font color='blue'>bleu</font> sont obligatoires. Cliquez sur les aéroports sur la carte pour les sélectionner, ou recherchez par ville ou code d'aéroport"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Departure and arrival time"
+msgstr "Heure de départ et d'arrivée"
+
+msgid "Add new trip"
+msgstr "Ajouter un nouveau trajet"
+
+msgid "Edit this trip"
+msgstr "Éditer ce trajet"
+
+# Source airport
+msgid "From"
+msgstr "De"
+
+#, php-format
+msgid "Enter city name or airport code"
+msgstr "Entrer la ville ou le code de l'aéroport"
+
+msgid "Airport search"
+msgstr "Recherche d'aéroport"
+
+msgid "Swap To and From airports"
+msgstr "Échanger aéroport d'origine et de destination"
+
+msgid "Plane"
+msgstr "Appareil"
+
+msgid "Enter plane model"
+msgstr "Entrer le type d'appareil"
+
+# Plane registration number (abbreviated)
+msgid "Reg."
+msgstr "Immat."
+
+# Destination airport
+msgid "To"
+msgstr "À"
+
+msgid "Economy"
+msgstr "Économie"
+
+msgid "Premium Eco."
+msgstr "Économie Premium"
+
+msgid "Business"
+msgstr "Affaires"
+
+msgid "First"
+msgstr "Première"
+
+# By plane
+msgid "Flight"
+msgstr "Avion"
+
+# By car, bus, etc
+msgid "Road"
+msgstr "Route"
+
+msgid "Ship"
+msgstr "Bateau"
+
+msgid "Train"
+msgstr "Train"
+
+# Seat number
+msgid "Nr"
+msgstr "N°"
+
+msgid "Seat"
+msgstr "Siège"
+
+# Seat type (window, aisle, middle)
+msgid "Type"
+msgstr "Type"
+
+msgid "Window"
+msgstr "Fenêtre"
+
+msgid "Aisle"
+msgstr "Couloir"
+
+msgid "Middle"
+msgstr "Milieu"
+
+msgid "Work"
+msgstr "Travail"
+
+msgid "Leisure"
+msgstr "Loisirs"
+
+msgid "Crew"
+msgstr "Équipage"
+
+msgid "Other"
+msgstr "Autre"
+
+msgid "Enter airline name or code"
+msgstr "Entrer le nom ou le code de la compagnie aérienne"
+
+msgid "Airline search"
+msgstr "Recherche de compagnie aérienne"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Save this flight"
+msgstr "Enregistrer ce vol"
+
+msgid "Clear"
+msgstr "Effacer"
+
+msgid "Reset this entry form"
+msgstr "Effacer ce formulaire"
+
+# Close flight editor and return to main screen
+msgid "Exit"
+msgstr "Quitter"
+
+msgid "Exit flight editor"
+msgstr "Quitter l'éditeur de vol"
+
+msgid "Save changes"
+msgstr "Enregistrer les modifications"
+
+msgid "Save changes made to this flight"
+msgstr "Enregistrer les modifications sur ce vol"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete this flight"
+msgstr "Supprimer ce vol"
+
+msgid "Previous flight"
+msgstr "Vol précédent"
+
+msgid "Next flight"
+msgstr "Vol suivant"
+
+msgid "Switch to basic editor"
+msgstr "Utiliser l'éditeur basique"
+
+# Switch to "basic" flight editor
+msgid "Basic"
+msgstr "Basique"
+
+msgid "Add new flights"
+msgstr "Ajouter de nouveaux vols"
+
+msgid "Airline"
+msgstr "Compagnie aérienne"
+
+msgid "Save these flights"
+msgstr "Enregistrer ces vols"
+
+msgid "Exit without saving"
+msgstr "Quitter sans enregistrer"
+
+msgid "Add new row for faster entry of multiple flights"
+msgstr "Ajouter une nouvelle ligne pour une saisie plus rapide de plusieurs vols"
+
+# Add new row for faster data entry
+msgid "More"
+msgstr "Plus"
+
+msgid "Remove a row"
+msgstr "Supprimer une ligne"
+
+# Remove an entry row
+msgid "Less"
+msgstr "Moins"
+
+msgid "Switch to detailed editor"
+msgstr "Utiliser l'éditeur détaillé"
+
+# Switch to "detailed" editor
+msgid "Detailed"
+msgstr "Détaillé"
+
+#, php-format
+msgid "Your session has timed out, please log in again."
+msgstr "Votre session a expiré, merci de vous identifier à nouveau."
+
+#, php-format
+msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgstr "Désolé, un aéroport utilisant le code ICAO %s existe déjà. Merci de revérifier votre saisie."
+
+msgid "Adding new airport failed:"
+msgstr "L'ajout d'un nouvel aéroport a échoué :"
+
+#, php-format
+msgid "New airport successfully added."
+msgstr "Nouvel aéroport ajouté avec succès."
+
+#, php-format
+msgid "Airport successfully edited."
+msgstr "Aéroport modifié avec succès."
+
+#, php-format
+msgid "Editing airport failed:"
+msgstr "La modification de l'aéroport à échoué :"
+
+msgid "Not logged in, aborting"
+msgstr ""
+
+msgid "Unknown"
+msgstr "Inconnu"
+
+# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
+msgid "was:"
+msgstr "fut:"
+
+msgid "No airline"
+msgstr "Pas de compagnie aérienne"
+
+msgid "Upload again"
+msgstr "Envoyer à nouveau"
+
+msgid "Cancel this import and return to file upload page"
+msgstr "Annuler cet import et retourner à la page d'envoi de fichier"
+
+msgid "Upload"
+msgstr "Envoi"
+
+msgid "Upload successful.  Parsing..."
+msgstr "Envoi réussi. Analyse..."
+
+msgid "Results"
+msgstr "Résultats"
+
+msgid "Upload failed!"
+msgstr "Échec de l'envoi !"
+
+msgid "Importing..."
+msgstr "Import..."
+
+msgid "Sorry, this file does not appear to be FlightMemory HTML."
+msgstr "Désolé, ce fichier ne semble pas être un fichier HTML FlightMemory"
+
+msgid "Sorry, this HTML file does not appear contain FlightMemory FlightData."
+msgstr "Désolé, ce fichier HTML ne semble pas contenir de données FlightMemory"
+
+msgid "Sorry, the filename must end in '.csv'."
+msgstr "Désolé, le nom du fichier doit se terminer par '.csv'"
+
+msgid "Unable to open CSV file."
+msgstr "Impossible d'ouvrir le fichier CSV."
+
+msgid "Miles"
+msgstr "Miles"
+
+# Flight duration
+msgid "Time"
+msgstr "Durée"
+
+# Plane registration number
+msgid "Reg"
+msgstr "Immat."
+
+msgid "Comment"
+msgstr "Commentaire"
+
+# Explanation of colors and codes for import
+msgid "Key to results"
+msgstr "Légende"
+
+msgid "Color"
+msgstr "Couleur"
+
+msgid "Meaning"
+msgstr "Signification"
+
+# No color
+msgid "None"
+msgstr "Aucune"
+
+msgid "Exact match"
+msgstr "Correspond exactement"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Probable match, please verify"
+msgstr "Correspond probablement, merci de vérifier"
+
+msgid "Warning"
+msgstr "Attention"
+
+msgid "No matches, will be added as new"
+msgstr "Pas de correspondance, sera ajouté en tant que nouveau"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "No matches, please correct and reupload"
+msgstr "Pas de correspondance, merci de corriger puis de réenvoyer"
+
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgstr "Note : Ce fichier CSV contient des IDs OpenFlights dans les colonnes 15-18. Ces IDs vont effacer toute modification manuelle faite aux colonnes aéroport, comapagnie aérienne et/ou appareil."
+
+msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgstr "Vos données de vols incluent des aéroports non reconnus. Merci de les ajouter à la base de données et de réessayer ensuite."
+
+msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgstr "Vos données de vols incluent des compagnies aériennes non reconnues. Cela signifie le plus souvent que le code de la compagnie aérienne dans le numéro de vol n'a pas été trouvé, et que le nom de la compagnie aérienne n'a pas été spécifié. Merci de corriger ou de supprimer le code de la compagnie aérienne, puis de réessayer."
+
+msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
+msgstr ""
+
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgstr ""
+
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgstr "<b>Analyse terminée avec succès.</b> Vous êtes maintenant prêt à importer ces vols dans votre compte OpenFlights. (Les petites erreurs peuvent être corrigées par la suite dans l'éditeur de vol.)"
+
+msgid "Add these flights to your OpenFlights"
+msgstr "Ajouter ces vols à OpenFlights"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Flights successfully imported."
+msgstr "Vols importés avec succès."
+
+msgid "Import more flights"
+msgstr "Importer plus de vols"
+
+msgid "Close"
+msgstr "Fermer"
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr "L'identification a échoué. <%s>Créer un compte</a> ou <%s>réinitialiser le mot de passe</a> ?"
+
+msgid "This trip is not public."
+msgstr "Ce trajet n'est pas public."
+
+msgid "No such trip."
+msgstr "Trajet inconnu."
+
+msgid "This user's flights are password-protected."
+msgstr "Les vols de cet utilisateur sont protégés par mot de passe."
+
+msgid "This user's flights are not public."
+msgstr "Les vols de cet utilisateur ne sont pas publics."
+
+msgid "No such user."
+msgstr "Utilisateur inconnu."
+
+msgid "This user has no flights."
+msgstr "Cet utilisateur n'a pas de vols."
+
+msgid "Sorry, that name is already taken, please try another."
+msgstr "Désolé, ce nom est déjà utilisé, merci d'en essayer un autre."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "Compte remis à zéro, %s vols supprimés."
+
+msgid "Sorry, current password is not correct."
+msgstr "Désolé, le mot de passe actuel est incorrect."
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "Compte créer avec succès, connexion en cours..."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "Paramètres modifiés avec succès, retour..."
+
+msgid "Trip not found."
+msgstr "Trajet non trouvé."
+
+msgid "User not found."
+msgstr "Utilisateur non trouvé."
+
+# Longest flight in "Analyze"
+msgid "Longest"
+msgstr "Le plus long"
+
+# Shortest flight
+msgid "Shortest"
+msgstr "Le plus court"
+
+msgid "Northernmost"
+msgstr "Le plus au nord"
+
+msgid "Southernmost"
+msgstr "Le plus au sud"
+
+msgid "Westernmost"
+msgstr "Le plus à l'ouest"
+
+msgid "Easternmost"
+msgstr "Le plus à l'est"
+
+msgid "Added."
+msgstr "Ajouté."
+
+#, php-format
+msgid "%s flights added."
+msgstr "%s vols ajoutés."
+
+msgid "Edited."
+msgstr "Modifié."
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "Trajet crée avec succès"
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "Trajet supprimé avec succès"
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr "Trajet modifié avec succès."
+
+msgid "Airline, railway, road transport and shipping search"
+msgstr ""
+
+msgid "Fill one or more fields below to search for matching airlines and other transport operators."
+msgstr ""
+
+# Of airline, train company etc
+msgid "Name"
+msgstr "Nom"
+
+msgid "Railway"
+msgstr ""
+
+msgid "Road transport"
+msgstr ""
+
+msgid "Shipping"
+msgstr ""
+
+# Second company name if any, eg. "ANA" for "All Nippon Airways"
+msgid "Alternative name"
+msgstr "Autre nom"
+
+msgid "Country"
+msgstr "Pays"
+
+# Airline radio callsign
+msgid "Callsign"
+msgstr "Indicatif"
+
+msgid "Show only major (IATA) airlines?"
+msgstr "Montrer uniquement les compagnies principales (AITA) ?"
+
+msgid "Search"
+msgstr "Chercher"
+
+msgid "Record the current data as a new airline."
+msgstr "Enregistrer les données actuelles en tant que nouvelle compagnie aérienne."
+
+msgid "Add as new"
+msgstr "Ajouter en tant que nouveau"
+
+msgid "Fill one or more fields below to search for matching airports."
+msgstr ""
+
+msgid "Airport name"
+msgstr "Nom de l'aéroport"
+
+msgid "City name"
+msgstr "Nom de la ville"
+
+msgid "Country name"
+msgstr "Nom du pays"
+
+msgid "Latitude"
+msgstr "Latitude"
+
+msgid "Longitude"
+msgstr "Longitude"
+
+msgid "Elevation"
+msgstr "Altitude"
+
+# Universal Time Coordinated (timezone)
+msgid "UTC"
+msgstr "UTC"
+
+# Daylight Savings Time
+msgid "DST"
+msgstr "Heure d'été"
+
+msgid "European"
+msgstr "Européen"
+
+msgid "US/Canada"
+msgstr "USA/Canada"
+
+msgid "S. American"
+msgstr "Amérique du S."
+
+msgid "Australia"
+msgstr "Australie"
+
+msgid "New Zealand"
+msgstr "Nouvelle Zélande"
+
+msgid "Database"
+msgstr "Base de données"
+
+msgid "Show only major (IATA) airports?"
+msgstr "Montrer uniquement les aéroports principaux (AITA) ?"
+
+msgid "Record the current data as a new airport."
+msgstr "Enregistrer les données actuelles en tant que nouvel aéroport."
+
+msgid "Record changes to this airport."
+msgstr "Enregistrer les modifications faites à cet aéroport."
+
+msgid "Import data"
+msgstr "Importer des données"
+
+msgid "OpenFlights can import two types of data:"
+msgstr "OpenFlights peut importer deux types de données :"
+
+#, php-format
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgstr ""
+
+#, php-format
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgstr ""
+
+msgid "File to upload"
+msgstr "Fichier à envoye"
+
+# Import without changing airline names
+msgid "Keep historical airline names?"
+msgstr ""
+
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgstr ""
+
+#, php-format
+msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgstr ""
+
+msgid "Create new account"
+msgstr "Créer un nouveau compte"
+
+msgid "Account settings"
+msgstr "Paramètres du compte"
+
+msgid "Basic information"
+msgstr "Informations de base"
+
+msgid "This will be used as the name of your profile."
+msgstr ""
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr "Choisir quelque chose difficile à deviner, mais facile à retenir. Sensible à la casse !"
+
+msgid "Password again"
+msgstr "Mot de passe, à nouveau"
+
+msgid "E-mail (optional)"
+msgstr "Courriel (optionnel)"
+
+#, php-format
+msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "Si vous oubliez votre mot de passe, nous pouvons vous en envoyer un nouveau à cette adresse. <i>Jamais</i> nous ne vous enverrons d'autre mail, ou partagerons vos données, voir notre <%s>politique de confidentialité</a> pour plus de détails."
+
+msgid "Could not load profile data"
+msgstr "Impossible de charger les données du profil"
+
+msgid "Profile address"
+msgstr "Adresse du profil"
+
+#, php-format
+msgid "Viewed %s times"
+msgstr "Vu %s fois"
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr "L'adresse de votre profil public, et combien de fois il a été vu."
+
+# Is this profile linked to Facebook?
+msgid "Facebook link"
+msgstr "Lien Facebook"
+
+msgid "Linked, automatic updates"
+msgstr "Lié, mises à jour automatiques"
+
+msgid "Linked, manual updates only"
+msgstr "Lié, mises à jour manuelles seulement"
+
+# Automate Facebook updates
+msgid "Automate"
+msgstr "Automatiser"
+
+msgid "Not active"
+msgstr "Non actif"
+
+# ...to Facebook
+msgid "Add link"
+msgstr "Ajouter un lien"
+
+# Advertisements to place on your blog etc
+msgid "Banners"
+msgstr "Bannières"
+
+msgid "Blog banner (HTML)"
+msgstr "Bannière pour blog (HTML)"
+
+msgid "Bulletin board banner (phpBB)"
+msgstr "Bannière pour forum (phpBB)"
+
+msgid "Profile settings"
+msgstr "Paramètres du profil"
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr "Vous pouvez facilement les modifier plus tard en cliquant sur <i>Paramètres</i>"
+
+msgid "Privacy"
+msgstr "Confidentialité"
+
+msgid "Private"
+msgstr "Privé"
+
+msgid "Public"
+msgstr "Public"
+
+msgid "Open"
+msgstr "Ouvert"
+
+#, php-format
+msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgstr ""
+
+msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
+msgstr ""
+
+msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
+msgstr ""
+
+msgid "Flight editor"
+msgstr "Éditeur de vol"
+
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgstr ""
+
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgstr ""
+
+msgid "Guest password"
+msgstr "Mot de passe invité"
+
+msgid "Gold Elite feature"
+msgstr ""
+
+msgid "Password protect your Private profile, so only friends and family can see it."
+msgstr "Protégez votre profil privé par un mot de passe, ainsi seuls vos amis et votre famille pourront le voir."
+
+msgid "Default view"
+msgstr "Vue par défaut"
+
+msgid "Help"
+msgstr "Aide"
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr ""
+
+msgid "Manage flights"
+msgstr "Gérer les vols"
+
+msgid "Backup to CSV"
+msgstr "Sauvegarder en CSV"
+
+msgid "Delete all flights"
+msgstr "Supprimer tous les vols"
+
+msgid "Change password"
+msgstr "Changer le mot de passe"
+
+msgid "Current password"
+msgstr "Mot de passe actuel"
+
+msgid "You only need to enter this if changing your password."
+msgstr ""
+
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+msgid "New password again"
+msgstr "Nouveau mot de passe, à nouveau"
+
+msgid "Sign me up!"
+msgstr ""
+
+msgid "Edit trip"
+msgstr "Éditer le trajet"
+
+msgid "Add trip"
+msgstr "Ajouter un trajet"
+
+msgid "Could not load trip data."
+msgstr ""
+
+# Address of personal web page for trips etc
+msgid "Web address <i>(optional)</i>"
+msgstr "Page web <i>(optionnel)</i>"
+
+msgid "Trip privacy"
+msgstr "Confidentialité du trajet"
+
+msgid "Private (visible only to you)"
+msgstr "Privé (uniquement visible par vous)"
+
+msgid "Public (map and stats shared)"
+msgstr "Publique (carte et statistiques partagées)"
+
+msgid "Open (all flight data shared)"
+msgstr "Ouvrir (toutes les données partagées)"
+
+msgid "OpenFlights URL"
+msgstr "Adresse OpenFlights"
+
+msgid "Not assigned yet"
+msgstr "Pas encore assigné"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Prem.Eco"
+msgstr "Prem.Éco"
+
+# Abbreviation of "Economy"
+msgid "Econ"
+msgstr "Éco"
+
+# Abbreviation of "Premium Economy"
+msgid "P.Eco"
+msgstr "P.Éco"
+
+# Business
+msgid "Biz"
+msgstr "Affaires"
+
+# First
+msgid "1st"
+msgstr "1ère"
+
+# Leisure
+msgid "Leis."
+msgstr "Loisir"
+
+msgid "flight"
+msgstr "vol"
+
+msgid "train"
+msgstr "train"
+
+# Trip by car, bus etc
+msgid "road trip"
+msgstr ""
+
+msgid "ship"
+msgstr ""
+
+msgid "airline"
+msgstr ""
+
+msgid "railway"
+msgstr ""
+
+msgid "road transport"
+msgstr ""
+
+msgid "shipping"
+msgstr ""
+
+# Rank by how many segments flown or otherwise travelled
+msgid "Segments"
+msgstr "Segments"
+
+# Rank by distance travelled
+msgid "Mileage"
+msgstr "Distance"
+
+# "Magnifying glass" and "hand" controls for map
+msgid "Toggle pan and region select mode"
+msgstr ""
+
+msgid "Toggle overview map"
+msgstr ""
+
+msgid "My Flights"
+msgstr "Mes vols"
+
+msgid "My Airports"
+msgstr "Mes aéroports"
+
+msgid "Flights:"
+msgstr "Vols :"
+
+msgid "Select this airport"
+msgstr "Sélectionner cet aéroport"
+
+msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
+msgstr "Merci de saisir une date complète au format année/mois/jour, par ex. 2008/10/30 pour le 30 octobre 2008. Les formats valides incluent AAAA-MM-JJ, AAAA/MM/JJ, AAAA.MM.JJ et AAAA MM JJ."
+
+msgid "Please enter a valid source airport."
+msgstr ""
+
+msgid "Please enter a valid destination airport."
+msgstr ""
+
+msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
+msgstr "'%1' non trouvé dans la base de données %2. Voulez-vous l'ajouter en tant que nouvelle compagnie %2 ?"
+
+msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
+msgstr ""
+
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgstr ""
+
+msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgstr ""
+
+msgid "No trips"
+msgstr "Pas de trajets"
+
+msgid "No trips. Add one? "
+msgstr "Pas de trajets. En ajouter un ?"
+
+msgid "Unassigned flights"
+msgstr ""
+
+msgid "Recent flights on %1"
+msgstr "Vols récents sur %1"
+
+msgid "Recently added flights"
+msgstr "Vols récemments ajoutés"
+
+msgid "%1's flights on %2 in %3"
+msgstr "Vols de %1 sur %2 à %3"
+
+msgid "%1's flights on %2"
+msgstr "Vols de %1 sur %2"
+
+msgid "%1's flights in %2"
+msgstr "Vols de %1 à %2"
+
+msgid "%1's flights"
+msgstr "Vols de %1"
+
+msgid "Home"
+msgstr "Domicile"
+
+msgid "Not in a trip"
+msgstr "Pas dans un trajet"
+
+# Number of flights or other segments flown
+msgid "segments"
+msgstr "segments"
+
+msgid "miles"
+msgstr "miles"
+
+msgid "days"
+msgstr "jours"
+
+msgid "No flights found at this airport."
+msgstr "Pas de vols trouvés à cet aéroport."
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Comma-Separated Value, for Excel and data processing"
+msgstr ""
+
+msgid "Keyhole Markup Language, for Google Earth and visualization"
+msgstr "Keyhole Markup Language, pour Google Earth et visualisation"
+
+# Flight, train etc number
+msgid "Nr."
+msgstr "N°"
+
+# Name of plane, train etc
+msgid "Vehicle"
+msgstr "Moyen de transport"
+
+# User actions in List flights (edit, copy, delete)
+msgid "Action"
+msgstr "Action"
+
+msgid "Edit this flight"
+msgstr "Éditer ce vol"
+
+msgid "Copy to new flight"
+msgstr "Copier vers un nouveau vol"
+
+msgid "Unique"
+msgstr "Unique"
+
+msgid "Airports"
+msgstr "Aéroports"
+
+msgid "Carriers"
+msgstr "Transporteurs"
+
+msgid "Countries"
+msgstr "Pays"
+
+msgid "Vehicles"
+msgstr "Moyens de transport"
+
+msgid "Miles flown"
+msgstr "Miles parcourus"
+
+msgid "Around the world"
+msgstr "Tour(s) du monde"
+
+msgid "To the Moon"
+msgstr "Terre-Lune"
+
+msgid "To Mars"
+msgstr "Terre-Mars"
+
+msgid "Journey records"
+msgstr ""
+
+msgid "Average"
+msgstr "Moyenne"
+
+msgid "Airport records"
+msgstr ""
+
+msgid "Seats"
+msgstr "Sièges"
+
+# Show... Top 10, 25, 50
+msgid "Show..."
+msgstr "Afficher..."
+
+# Sort by... number of flights, distance travelled
+msgid "Sort by..."
+msgstr "Trier par..."
+
+msgid "Routes"
+msgstr "Routes"
+
+msgid "Airlines"
+msgstr "Compagnies aériennes"
+
+msgid "Planes"
+msgstr "Appareils"
+
+msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgstr "Les changements faits à ce vol n'ont pas été sauvegardés. D'accord pour les annuler ?"
+
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgid "Edit segment %1 of %2"
+msgstr "Modifier le segment %1 de %2"
+
+msgid "Are you sure you want to delete this flight?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce vol ?"
+
+msgid "Deleting flight cancelled."
+msgstr "Suppression du vol annulée."
+
+msgid "Search for %1"
+msgstr "Recherche de %1"
+
+msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
+msgstr "Départ %1%2%3 UTC, arrivée %4%5%6 UTC, décalage horaire de %7 heures"
+
+msgid "+%1 day"
+msgstr "+%1 jour"
+
+msgid "-%1 day"
+msgstr "-%1 jour"
+
+msgid "Flight departure and arrival times"
+msgstr "Heure de départ et d'arrivée du vol"
+
+msgid "Logged in as <B>%1</B>"
+msgstr "Connecté en tant que <B>%1</B> !"
+
+msgid "Welcome, <B>%1</B> !"
+msgstr "Bienvenue <B>%1</B> !"
+
+msgid "Loading"
+msgstr "Chargement"
+
+msgid "Hi, <B>%1</B> !"
+msgstr "Bonjour <B>%1</B> !"
+
+msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgstr ""
+
+msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr ""
+
+msgid "You have been logged out."
+msgstr "Vous avez été déconnecté."
+
+msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
+msgstr ""
+
+msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
+msgstr ""
+
+msgid "IATA/FAA codes must be exactly three letters."
+msgstr "Les codes AITA/FAA doivent comprendre exactement 3 lettres."
+
+msgid "ICAO codes must be exactly four letters."
+msgstr "Les codes OACI doivent comprendre exactement 4 lettres."
+
+msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgstr "Seules les lettres non accentuées de A à Z, les chiffres de 0 à 9, les signes de ponctualtion -.' (tiret, point, apostrophe), et les espaces peuvent être utilisés dans le nom des aéroports et des villes."
+
+msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
+msgstr ""
+
+msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgstr ""
+
+msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgstr ""
+
+msgid "Sorry, you have to be logged into OpenFlights to use this."
+msgstr "Désolé, vous devez être connecté à OpenFlights pour utiliser ceci."
+
+msgid "Please enter an airport name."
+msgstr "Merci d'entrer un nom d'aéroport."
+
+msgid "Please enter a city name."
+msgstr "Merci d'entrer un nom de ville."
+
+msgid "Please select a country."
+msgstr "Merci de choisir un pays."
+
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgstr ""
+
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgstr ""
+
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
+msgstr "La longitude doit être comprise entre -180 (ouest) et 180 (est) degrés."
+
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
+msgstr "La latitude doit être comprise en 90 (nord) et -90 (sud) degrés."
+
+msgid "Please enter a positive number for elevation."
+msgstr "Merci d'entrer un nombre positif pour l'altitude."
+
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgstr "Merci d'entrer un fuseau horaire en tant que différence par rapport à UTC/GMT, par ex. +8 pour SIngapour ou -5 pour New York. Utiliser un point décimal pour les nombres non entiers, par ex. +5.75 pour le Népal."
+
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgstr ""
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr ""
+
+msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr ""
+
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgstr ""
+
+msgid "Cancelled."
+msgstr "Annulé."
+
+msgid "Searching..."
+msgstr "Recherche..."
+
+msgid "Recording..."
+msgstr "Enregistrement..."
+
+msgid "No matches found in this database."
+msgstr ""
+
+msgid "Try unchecking 'Show only major airports' and search again."
+msgstr ""
+
+msgid "Switch to the OurAirports database and search again."
+msgstr ""
+
+msgid "Results %1 to %2 of %3"
+msgstr "Résultats %1 à %2 sur %3"
+
+msgid "Airports in pink have been added by users of OpenFlights."
+msgstr "Les aéroports en rose ont été ajoutés par des utilisateurs d'OpenFlights."
+
+msgid "Airports in blue have been added by you and can be edited."
+msgstr ""
+
+msgid "Select"
+msgstr "Sélectionner"
+
+msgid "Edit"
+msgstr "Éditer"
+
+msgid "Load"
+msgstr "Ouvrir"
+
