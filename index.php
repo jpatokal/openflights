@@ -9,17 +9,17 @@ require_once("./php/db.php");
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
-    <link rel="stylesheet" href="/openflights.css?version=20080201" type="text/css">
+    <link rel="stylesheet" href="/openflights.css?version=20080608" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js?version=20090201"></script>
-    <script type="text/javascript" src="/js/greatcircle.js?version=20090326"></script>
+    <script type="text/javascript" src="/js/greatcircle.js?version=20090608"></script>
     <script type="text/javascript" src="/js/utilities.js?version=20090326"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090514"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090608"></script>
   </head>
 
   <body>
@@ -40,7 +40,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-																										   <B><?php echo _("News")?> </b>: 8 Jun 2009: <a href="/blog/">OpenFlights nyt Finnish (suomeksi) and in Japanese (日本語)!  More languages soon, see blog.</a>
+																										   <B><?php echo _("News")?> </b>: 8 Jun 2009: <a href="/blog/">OpenFlights now available in Finnish and Japanese!<br>More languages coming soon, see blog.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
