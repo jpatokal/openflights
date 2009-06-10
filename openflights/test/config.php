@@ -128,7 +128,7 @@ $trip = array('name' => 'AutoTest Trip',
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";
-$dbname = "flightdb";
+$dbname = "flightdb2";
 
 // *** END OF CONFIGURATION ***
 
