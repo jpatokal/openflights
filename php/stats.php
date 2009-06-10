@@ -94,7 +94,8 @@ $sql = sprintf("(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MA
 	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MIN(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
 	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MIN(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
 	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . "))",
-	       _("Northernmost"), _("Southernmost"), _("Westernmost"), _("Easternmost"));
+	       addslashes(_("Northernmost")), addslashes(_("Southernmost")),
+	       addslashes(_("Westernmost")), addslashes(_("Easternmost")));
 
 $result = mysql_query($sql, $db);
 $first = true;

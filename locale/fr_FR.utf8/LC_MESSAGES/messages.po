@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
+"Last-Translator: Mathieu Marquer <mathieu.marquer@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-Country: FRANCE\n"
 
 msgid "Flight logging, mapping, stats and sharing"
-msgstr ""
+msgstr "Journal de vols, cartographie, statistiques et partage"
 
 # Duration of flight (time)
 msgid "Duration"
@@ -94,10 +94,10 @@ msgid "Control panel"
 msgstr "Panneau de contrôle"
 
 msgid "New flight"
-msgstr "Nouveau vol"
+msgstr "Créer vol"
 
 msgid "List flights"
-msgstr "Lister les vols"
+msgstr "Liste vols"
 
 msgid "Import"
 msgstr "Importer"
@@ -106,13 +106,13 @@ msgid "Settings"
 msgstr "Paramètres"
 
 msgid "Logout"
-msgstr "Se déconnecter"
+msgstr "Déconnecter"
 
 msgid "Add new flight"
 msgstr "Ajouter un nouveau vol"
 
 msgid "Edit flight"
-msgstr "Éditer un vol"
+msgstr "Modifier un vol"
 
 msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
 msgstr "Les champs en <font color='blue'>bleu</font> sont obligatoires. Cliquez sur les aéroports sur la carte pour les sélectionner, ou recherchez par ville ou code d'aéroport"
@@ -127,7 +127,7 @@ msgid "Add new trip"
 msgstr "Ajouter un nouveau trajet"
 
 msgid "Edit this trip"
-msgstr "Éditer ce trajet"
+msgstr "Modifier ce trajet"
 
 # Source airport
 msgid "From"
@@ -322,14 +322,14 @@ msgid "Editing airport failed:"
 msgstr "La modification de l'aéroport à échoué :"
 
 msgid "Not logged in, aborting"
-msgstr ""
+msgstr "Non identifié, abandon"
 
 msgid "Unknown"
 msgstr "Inconnu"
 
 # Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
 msgid "was:"
-msgstr "fut:"
+msgstr "s'appelait :"
 
 msgid "No airline"
 msgstr "Pas de compagnie aérienne"
@@ -426,10 +426,10 @@ msgid "Your flight data includes unrecognized airlines.  This usually means that
 msgstr "Vos données de vols incluent des compagnies aériennes non reconnues. Cela signifie le plus souvent que le code de la compagnie aérienne dans le numéro de vol n'a pas été trouvé, et que le nom de la compagnie aérienne n'a pas été spécifié. Merci de corriger ou de supprimer le code de la compagnie aérienne, puis de réessayer."
 
 msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
-msgstr ""
+msgstr "Quelques champs de données n'ont pas pu être analysés. Merci d'utiliser un des formats suivants : AAAA-MM-JJ, JJ.MM.AAAA, MM/JJ/AAAA, ou AAAA seulement. Notez que JJ/MM/AAAA n'est <b>pas</b> accepté."
 
 msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
-msgstr ""
+msgstr "Vos données de vol incluent des IDs de trajet qui ne sont soit pas définis, soit qui ne vous appartiennent pas. Merci de vérifier l'ID des trajets."
 
 msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
 msgstr "<b>Analyse terminée avec succès.</b> Vous êtes maintenant prêt à importer ces vols dans votre compte OpenFlights. (Les petites erreurs peuvent être corrigées par la suite dans l'éditeur de vol.)"
@@ -538,23 +538,23 @@ msgid "Trip successfully edited."
 msgstr "Trajet modifié avec succès."
 
 msgid "Airline, railway, road transport and shipping search"
-msgstr ""
+msgstr "Recherche de compagnie aérienne, transporteur ferroviaire, routier, maritime"
 
 msgid "Fill one or more fields below to search for matching airlines and other transport operators."
-msgstr ""
+msgstr "Remplir au moins un des champs ci-dessous pour rechercher des compagnies aériennes ou autres transporteurs."
 
 # Of airline, train company etc
 msgid "Name"
 msgstr "Nom"
 
 msgid "Railway"
-msgstr ""
+msgstr "Rail"
 
 msgid "Road transport"
-msgstr ""
+msgstr "Route"
 
 msgid "Shipping"
-msgstr ""
+msgstr "Navigation"
 
 # Second company name if any, eg. "ANA" for "All Nippon Airways"
 msgid "Alternative name"
@@ -580,7 +580,7 @@ msgid "Add as new"
 msgstr "Ajouter en tant que nouveau"
 
 msgid "Fill one or more fields below to search for matching airports."
-msgstr ""
+msgstr "Remplir au moins un des champs ci-dessous pour rechercher des aéroports."
 
 msgid "Airport name"
 msgstr "Nom de l'aéroport"
@@ -643,25 +643,25 @@ msgstr "OpenFlights peut importer deux types de données :"
 
 #, php-format
 msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
-msgstr ""
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory ne dispose pas de fonction d'export, mais OpenFlights peut 'lire' ses données. Connectez-vous à votre compte FlightMemory, allez à la page de données des vols, et sélectionner 'Sauvegarder la page web' dans votre navigateur. Envoyez le fichier HTML résultant. Le refaire pour chaque page de données.</p><p><i>Attention</I> : Vérifiez que la langue de FlightMemory est réglée sur <b>Anglais</b> avant de sauvegarder les pages.</p><p><i>Note</i> : Il n'y a <b>pas de détection de doublon</b> pour le moment. Si vous importez un fichier FlightMemory deux fois, tous les vols seront ajoutés deux fois.</p><p><i>Note</i> : Le <b>format FlightMemory</b> change de temps en temps. Merci de <%s>rapporter</a> tout bug ou comportement étrange, en incluant le message d'erreur exact et la valeur 'Tmpfile' en haut de la page d'import."
 
 #, php-format
 msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
-msgstr ""
+msgstr "<b> OpenFlights (.csv)</b> &mdash; Valeurs séparées par des virgules (CSV), exportés d'OpenFlights 'Exporter' ou 'Sauvegarder'), et facilement modifiés dans Excel ou tout autre tableur. Voir les <%s'>spécifications du format</a>"
 
 msgid "File to upload"
 msgstr "Fichier à envoye"
 
 # Import without changing airline names
 msgid "Keep historical airline names?"
-msgstr ""
+msgstr "Garder les noms des compagnies tels quels ?"
 
 msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
-msgstr ""
+msgstr "OpenFlights essaye normalement de faire correspondre compagnies aériennes et numéros de vols aux compagnies connues/existantes. Si vous cochez la case ci-dessus, tous les noms des compagnies resteront <i>inchangés</i> (typographie, etc.)"
 
 #, php-format
 msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
-msgstr ""
+msgstr "Vous pourrez vérifier les vols avant qu'ils ne soient réellement importés. Voir %s pour sauvegarder ou effacer vos vols avant l'import."
 
 msgid "Create new account"
 msgstr "Créer un nouveau compte"
@@ -673,7 +673,7 @@ msgid "Basic information"
 msgstr "Informations de base"
 
 msgid "This will be used as the name of your profile."
-msgstr ""
+msgstr "Sera utilisé comme nom de votre profil."
 
 msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
 msgstr "Choisir quelque chose difficile à deviner, mais facile à retenir. Sensible à la casse !"
@@ -752,28 +752,28 @@ msgstr "Ouvert"
 
 #, php-format
 msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
-msgstr ""
+msgstr "Les profils <b>privés</b> ne sont visibles que par vous-même. Les utilisateurs <%s>Gold et Platinium</a> peuvent protéger leur profil par mot de passe, ne laissant que ceux qui connaissent le mot de passe le voir."
 
 msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
-msgstr ""
+msgstr "Les profils <b>publics</b> permettent aux autres de voir votre carte de vol et vos statistiques, mais les détails des vols comme les dates exactes et la classe de voyage ne sont pas révélés."
 
 msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
-msgstr ""
+msgstr "Les profils <b>ouverts</b> permettent aux autres de voir également vos données de vols, mais pas de les modifier."
 
 msgid "Flight editor"
 msgstr "Éditeur de vol"
 
 msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
-msgstr ""
+msgstr "L'éditeur <b>basique</b> est rapide est facile à utiliser. D'où, à où, la date, éventuellement la compagnie, jusqu'à 4 vols à la fois. La manière la plus rapide de construire votre carte !"
 
 msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
-msgstr ""
+msgstr "L'éditeur <B>détaillé</b> vous permet d'ajouter la classe, le numéro de siège, le type et l'immatriculation de l'appareil, des remarques, et bien d'autres choses. Parfait pour les fans d'aviation et les spotteurs."
 
 msgid "Guest password"
 msgstr "Mot de passe invité"
 
 msgid "Gold Elite feature"
-msgstr ""
+msgstr "Fonction \"Gold Elite\""
 
 msgid "Password protect your Private profile, so only friends and family can see it."
 msgstr "Protégez votre profil privé par un mot de passe, ainsi seuls vos amis et votre famille pourront le voir."
@@ -785,7 +785,7 @@ msgid "Help"
 msgstr "Aide"
 
 msgid "Display a screen of your choice instead of banner ads."
-msgstr ""
+msgstr "Afficher un écran de votre choix à la place des bannières publicitaires."
 
 msgid "Manage flights"
 msgstr "Gérer les vols"
@@ -803,7 +803,7 @@ msgid "Current password"
 msgstr "Mot de passe actuel"
 
 msgid "You only need to enter this if changing your password."
-msgstr ""
+msgstr "Vous ne devez le saisir que si vous changez votre mot de passe"
 
 msgid "New password"
 msgstr "Nouveau mot de passe"
@@ -812,16 +812,16 @@ msgid "New password again"
 msgstr "Nouveau mot de passe, à nouveau"
 
 msgid "Sign me up!"
-msgstr ""
+msgstr "M'inscrire !"
 
 msgid "Edit trip"
-msgstr "Éditer le trajet"
+msgstr "Modifier le trajet"
 
 msgid "Add trip"
 msgstr "Ajouter un trajet"
 
 msgid "Could not load trip data."
-msgstr ""
+msgstr "Impossible de charger les données du trajet."
 
 # Address of personal web page for trips etc
 msgid "Web address <i>(optional)</i>"
@@ -879,22 +879,22 @@ msgstr "train"
 
 # Trip by car, bus etc
 msgid "road trip"
-msgstr ""
+msgstr "trajet routier"
 
 msgid "ship"
-msgstr ""
+msgstr "navire"
 
 msgid "airline"
-msgstr ""
+msgstr "compagnie aérienne"
 
 msgid "railway"
-msgstr ""
+msgstr "Transporteur ferroviaire"
 
 msgid "road transport"
-msgstr ""
+msgstr "Transporteur routier"
 
 msgid "shipping"
-msgstr ""
+msgstr "Compagnie de navigation"
 
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
@@ -906,10 +906,10 @@ msgstr "Distance"
 
 # "Magnifying glass" and "hand" controls for map
 msgid "Toggle pan and region select mode"
-msgstr ""
+msgstr "Changer de mode déplacement / zoom"
 
 msgid "Toggle overview map"
-msgstr ""
+msgstr "Afficher/Masquer la vue globale"
 
 msgid "My Flights"
 msgstr "Mes vols"
@@ -927,22 +927,22 @@ msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 
 msgstr "Merci de saisir une date complète au format année/mois/jour, par ex. 2008/10/30 pour le 30 octobre 2008. Les formats valides incluent AAAA-MM-JJ, AAAA/MM/JJ, AAAA.MM.JJ et AAAA MM JJ."
 
 msgid "Please enter a valid source airport."
-msgstr ""
+msgstr "Merci de saisir un aéroport d'origine valide."
 
 msgid "Please enter a valid destination airport."
-msgstr ""
+msgstr "Merci de saisir un aéroport de destination valide."
 
 msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
 msgstr "'%1' non trouvé dans la base de données %2. Voulez-vous l'ajouter en tant que nouvelle compagnie %2 ?"
 
 msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
-msgstr ""
+msgstr "Merci de saisir les heures au format \"24 heures\", avec un deux-points entre heures et minutes, ex. 21:37 pour 9:37 PM."
 
 msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
-msgstr ""
+msgstr "Merci de saisir la durée du vol au format heures et minutes avec un deux-points entre heures et minutes, ex. 5:37 pour 5 heures 37 minutes. Si vous laissez vide la durée, elle sera recalculée automatiquement."
 
 msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
-msgstr ""
+msgstr "Merci de saisir la distance de vol en un nombre entier de miles. Si vous laissez vide la distance, elle sera recalculée automatiquement."
 
 msgid "No trips"
 msgstr "Pas de trajets"
@@ -951,7 +951,7 @@ msgid "No trips. Add one? "
 msgstr "Pas de trajets. En ajouter un ?"
 
 msgid "Unassigned flights"
-msgstr ""
+msgstr "Vols non assignés"
 
 msgid "Recent flights on %1"
 msgstr "Vols récents sur %1"
@@ -994,7 +994,7 @@ msgid "Export"
 msgstr "Export"
 
 msgid "Comma-Separated Value, for Excel and data processing"
-msgstr ""
+msgstr "Valeurs séparées par des points (CSV), pour Excel et tableur"
 
 msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Keyhole Markup Language, pour Google Earth et visualisation"
@@ -1012,7 +1012,7 @@ msgid "Action"
 msgstr "Action"
 
 msgid "Edit this flight"
-msgstr "Éditer ce vol"
+msgstr "Modifier ce vol"
 
 msgid "Copy to new flight"
 msgstr "Copier vers un nouveau vol"
@@ -1045,13 +1045,13 @@ msgid "To Mars"
 msgstr "Terre-Mars"
 
 msgid "Journey records"
-msgstr ""
+msgstr "Voyages records"
 
 msgid "Average"
 msgstr "Moyenne"
 
 msgid "Airport records"
-msgstr ""
+msgstr "Positions records"
 
 msgid "Seats"
 msgstr "Sièges"
@@ -1116,19 +1116,19 @@ msgid "Hi, <B>%1</B> !"
 msgstr "Bonjour <B>%1</B> !"
 
 msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
-msgstr ""
+msgstr "<b>Bienvenue !</b> Nous sommes heureux de voir que vous aimez OpenFlights. <br>Merci de <a href='/donate.html' target='_blank'>faire un don, et d'aider le site à vivre</a> !"
 
 msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
-msgstr ""
+msgstr "<B>Bienvenue sur OpenFlights !</b> Cliquez sur %1 pour commencer à ajouter des vols, ou sur %2 pour importer des vols existants de sites comme FlightMemory."
 
 msgid "You have been logged out."
 msgstr "Vous avez été déconnecté."
 
 msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
-msgstr ""
+msgstr "Vous êtes déjà en train de modifier un vol. D'accord pour annuler vos changements et ajouter un nouveau vol à la place ?"
 
 msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
-msgstr ""
+msgstr "Vous êtes déjà en train de modifier un vol. D'accord pour annuler vos changements et modifier ce vol à la place ?"
 
 msgid "IATA/FAA codes must be exactly three letters."
 msgstr "Les codes AITA/FAA doivent comprendre exactement 3 lettres."
@@ -1140,13 +1140,13 @@ msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -
 msgstr "Seules les lettres non accentuées de A à Z, les chiffres de 0 à 9, les signes de ponctualtion -.' (tiret, point, apostrophe), et les espaces peuvent être utilisés dans le nom des aéroports et des villes."
 
 msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
-msgstr ""
+msgstr "Ville '%1' ignorée, la base de données DAFIF ne contient pas d'information sur cette ville."
 
 msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
-msgstr ""
+msgstr "Recherche du code AITA/FAA '%1' limitée aux aéroport des États-Unis, le DAFIF ne contenant pas de codes AITA pour les villes en dehors des USA."
 
 msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
-msgstr ""
+msgstr "Code AITA '%1' ignoré, le DAFIF ne contenant pas d'information pour les villes situées en dehors des États-Unis"
 
 msgid "Sorry, you have to be logged into OpenFlights to use this."
 msgstr "Désolé, vous devez être connecté à OpenFlights pour utiliser ceci."
@@ -1161,10 +1161,10 @@ msgid "Please select a country."
 msgstr "Merci de choisir un pays."
 
 msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
-msgstr ""
+msgstr "Merci d'entrer latitude, longitude et altitude. Astuce : Vérifiez si la base OurAirport contient déjà votre aéroport, et \"chargez-y\" les données."
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
-msgstr ""
+msgstr "Latitude et longitude doivent être données sous forme de nombre décimal en degrés, où les nombres négatifs signifient \"sud\" et \"ouest\" respectivement, et avec au moins 3 chiffres après la virgule. Par exemple, San Francisco (SFO) est à 37.6189(N) de latitude et -122.3748(O) de longitude."
 
 msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
 msgstr "La longitude doit être comprise entre -180 (ouest) et 180 (est) degrés."
@@ -1179,16 +1179,16 @@ msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore o
 msgstr "Merci d'entrer un fuseau horaire en tant que différence par rapport à UTC/GMT, par ex. +8 pour SIngapour ou -5 pour New York. Utiliser un point décimal pour les nombres non entiers, par ex. +5.75 pour le Népal."
 
 msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
-msgstr ""
+msgstr "Vous n'avez pas indiquer si cet aéroport suivait ou non l'heure d'été. Le laisser comme étant information inconnue ?"
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr ""
+msgstr "Vous n'avez pas saisi de code AITA/FAA. Êtes-vous sûr que l'aéroport n'en possède pas, et voulez-vous continuer ?"
 
 msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr ""
+msgstr "Vous n'avez pas saisi de code OACI. Êtes-vous sûr que l'aéroport n'en possède pas, et voulez-vous continuer ?"
 
 msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir ajouter %1 comme nouvel aéroport, situé dans le %2 quadrant du monde ? Merci de revérifier le nom, les codes aéroport, et les coordonnées exactes avant de valider."
 
 msgid "Cancelled."
 msgstr "Annulé."
@@ -1200,13 +1200,13 @@ msgid "Recording..."
 msgstr "Enregistrement..."
 
 msgid "No matches found in this database."
-msgstr ""
+msgstr "Pas de résultat trouvé dans cette base de données."
 
 msgid "Try unchecking 'Show only major airports' and search again."
-msgstr ""
+msgstr "Essayez de décocher 'Montrer uniquement les aéroports principaux' et relancez la recherche"
 
 msgid "Switch to the OurAirports database and search again."
-msgstr ""
+msgstr "Passer à la base de données OurAirports, et chercher à nouveau"
 
 msgid "Results %1 to %2 of %3"
 msgstr "Résultats %1 à %2 sur %3"
@@ -1215,13 +1215,13 @@ msgid "Airports in pink have been added by users of OpenFlights."
 msgstr "Les aéroports en rose ont été ajoutés par des utilisateurs d'OpenFlights."
 
 msgid "Airports in blue have been added by you and can be edited."
-msgstr ""
+msgstr "Les aéroports en bleu ont été ajoutés par vous-même et peuvent être modifiés."
 
 msgid "Select"
 msgstr "Sélectionner"
 
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 msgid "Load"
 msgstr "Ouvrir"
