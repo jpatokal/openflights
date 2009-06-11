@@ -84,7 +84,7 @@ msgid "Note"
 msgstr "Note"
 
 msgid "Reason"
-msgstr "Raison"
+msgstr "Motif"
 
 # Plane registration number
 msgid "Registration"
@@ -195,7 +195,7 @@ msgid "Type"
 msgstr "Type"
 
 msgid "Window"
-msgstr "Fenêtre"
+msgstr "Hublot"
 
 msgid "Aisle"
 msgstr "Couloir"
@@ -773,7 +773,7 @@ msgid "Guest password"
 msgstr "Mot de passe invité"
 
 msgid "Gold Elite feature"
-msgstr "Fonction \"Gold Elite\""
+msgstr "Fonction Gold Elite"
 
 msgid "Password protect your Private profile, so only friends and family can see it."
 msgstr "Protégez votre profil privé par un mot de passe, ainsi seuls vos amis et votre famille pourront le voir."
@@ -994,7 +994,7 @@ msgid "Export"
 msgstr "Export"
 
 msgid "Comma-Separated Value, for Excel and data processing"
-msgstr "Valeurs séparées par des points (CSV), pour Excel et tableur"
+msgstr "Valeurs séparées par des virgules (CSV), pour Excel et tableur"
 
 msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Keyhole Markup Language, pour Google Earth et visualisation"
