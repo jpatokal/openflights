@@ -1404,7 +1404,7 @@ function googleChart(data, labeldata) {
     cols += (r == 0 ? "" : ",") + col[1];
     labels += (r == 0 ? "" : "|") + labeldata[col[0]];
   }
-  return "<img width=180 height=80 src='http://chart.apis.google.com/chart?cht=p&chd=t:" + cols + "&chs=180x80&chl=" + labels + "&chco=2A416A,39588E,688BC3,B2C3DF'>";
+  return "<img width=200 height=80 src='http://chart.apis.google.com/chart?cht=p&chd=t:" + cols + "&chs=200x80&chl=" + labels + "&chco=2A416A,39588E,688BC3,B2C3DF'>";
 }
 
 function showTop10(str) {
