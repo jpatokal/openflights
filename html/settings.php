@@ -54,7 +54,7 @@ if(isSet($_GET["new"])) {
 	            <td colspan="3"><h2><?php echo _("Basic information") ?></h2></td>
 		  </tr>
 		  <tr>
-	            <td class="key"><?php echo _("Name") ?></td>
+	            <td class="key"><?php echo _("Username") ?></td>
 		    <td class="value"><INPUT type="text" name="username" size="20" onChange="changeName();"></td>
 	            <td class="value"><p><?php echo _("This will be used as the name of your profile.") ?></p>
 		      <span id="profileurl"></span></td>
