@@ -126,7 +126,7 @@ msgid "Top 10"
 msgstr "トップ 10"
 
 msgid "Filter"
-msgstr "フィルター"
+msgstr "選択"
 
 msgid "Carrier"
 msgstr "航空会社"
@@ -135,7 +135,7 @@ msgid "Year"
 msgstr "年"
 
 msgid "Trip"
-msgstr "旅行"
+msgstr "旅"
 
 msgid "More..."
 msgstr "その他"
@@ -144,7 +144,7 @@ msgid "Class"
 msgstr "クラス"
 
 msgid "Mode"
-msgstr "乗物"
+msgstr "交通手段"
 
 msgid "Note"
 msgstr "コメント"
@@ -156,7 +156,7 @@ msgid "Registration"
 msgstr "機体記号"
 
 msgid "Control panel"
-msgstr "コントロールパネル"
+msgstr "操作"
 
 msgid "New flight"
 msgstr "フライトの追加"
@@ -183,7 +183,7 @@ msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports
 msgstr "<font color='blue'>青色</font>の項目は必須項目。地図上の空港をクリックもしくは都市名、空港コードで検索。"
 
 msgid "Date"
-msgstr "日"
+msgstr "出発日"
 
 msgid "Departure and arrival time"
 msgstr "出発および到着時間"
@@ -202,7 +202,7 @@ msgid "Enter city name or airport code"
 msgstr "都市名と空港コードを入力"
 
 msgid "Swap To and From airports"
-msgstr "目的地と出発地の空港を交換"
+msgstr "目的地と出発地の空港を入れ替え"
 
 msgid "Plane"
 msgstr "航空機"
@@ -229,7 +229,7 @@ msgid "First"
 msgstr "ファースト"
 
 msgid "Flight"
-msgstr "便"
+msgstr "飛行機"
 
 msgid "Road"
 msgstr "車"
@@ -238,7 +238,7 @@ msgid "Ship"
 msgstr "船"
 
 msgid "Train"
-msgstr "電車"
+msgstr "鉄道"
 
 msgid "Nr"
 msgstr "番号"
@@ -313,7 +313,7 @@ msgid "Next flight"
 msgstr "次のフライト"
 
 msgid "Switch to basic editor"
-msgstr "基本編集ページに移動"
+msgstr "基本エディターに進む"
 
 msgid "Basic"
 msgstr "基本"
@@ -322,7 +322,7 @@ msgid "Add new flights"
 msgstr "新しいフライトの追加"
 
 msgid "Airline"
-msgstr "航空会社"
+msgstr "飛行機"
 
 msgid "Save these flights"
 msgstr "フライトの保存"
@@ -343,10 +343,10 @@ msgid "Less"
 msgstr "列の削除"
 
 msgid "Switch to detailed editor"
-msgstr "詳細編集ページに移動"
+msgstr "詳細エディターに進む"
 
 msgid "Detailed"
-msgstr "詳細ページ"
+msgstr "詳細"
 
 #, php-format
 msgid "Your session has timed out, please log in again."
@@ -487,7 +487,7 @@ msgstr "閉じる"
 
 #, php-format
 msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
-msgstr "ログイン出来ませんでした。<%s>アカウントの作成t</a> もしくは <%s>パスワードの変更</a>?"
+msgstr "ログイン出来ませんでした。<%s>新規アカウントの作成</a> もしくは <%s>パスワードの変更</a>をしますか?"
 
 msgid "This trip is not public."
 msgstr "この旅は公開されていません。"
@@ -572,13 +572,13 @@ msgid "Trip successfully edited."
 msgstr "旅が編集されました"
 
 msgid "Airline, railway, road transport and shipping search"
-msgstr "飛行機、電車、車および船検索"
+msgstr "航空、鉄道、車および船会社検索"
 
 msgid "Fill one or more fields below to search for matching airlines and other transport operators."
 msgstr "航空会社やその他のオペレーターの検索。1つ以上の項目を入力してください。"
 
 msgid "Name"
-msgstr "名前"
+msgstr "会社名"
 
 msgid "Railway"
 msgstr "電車"
@@ -625,7 +625,7 @@ msgstr ""
 
 #, php-format
 msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
-msgstr ""
+msgstr "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, OpenFlights 'エクスポート' もしくは 'バックアップ'からエクスポートし、エクセルまたは他のスプレッドシートで簡単に編集や作成ができます。詳細は <%s'>フォーマット仕様</a>を参照してください。"
 
 msgid "File to upload"
 msgstr "ファイル名"
@@ -653,7 +653,7 @@ msgid "This will be used as the name of your profile."
 msgstr "プロファイル名として使用されます。"
 
 msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
-msgstr "予想しにくく、覚えやすい物を選んでください。大文字と小文字を識別します。"
+msgstr "予想しずらく、覚えやすいパスワードを選んでください。大文字と小文字を識別します。"
 
 msgid "Password again"
 msgstr "パスワードを再入力"
@@ -679,7 +679,7 @@ msgid "The public address of your profile and how often it has been viewed."
 msgstr "プロファイルのURLとアクセス件数"
 
 msgid "Facebook link"
-msgstr "Facebookへのリンク"
+msgstr "Facebookへの<br>リンク"
 
 msgid "Linked, automatic updates"
 msgstr "リンク済み、自動アップデート"
@@ -709,7 +709,7 @@ msgid "Profile settings"
 msgstr "プロファイルの設定"
 
 msgid "You can easily change these later by clicking on <i>Settings</i>."
-msgstr "<i>設定</i>をクリックすることにより、後ほど変更可能です。"
+msgstr "<i>設定</i>をクリックすることにより、後から変更可能です。"
 
 msgid "Privacy"
 msgstr "プライバシー"
@@ -721,7 +721,7 @@ msgid "Public"
 msgstr "一部公開"
 
 msgid "Open"
-msgstr "全部公開"
+msgstr "全公開"
 
 #, php-format
 msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
@@ -731,13 +731,13 @@ msgid "<b>Public</b> profiles let others see your flight map and general statist
 msgstr "<b>一部公開</b>プロファイルは他人がフライト地図や一般的な統計をみることができますが、日時やサービスクラス等のフライトの詳細は公開されません。"
 
 msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
-msgstr "<b>全部公開</b>プロファイルは他人がフライトの詳細を見ることができますが、編集はできません。"
+msgstr "<b>全公開</b>プロファイルは他人がフライトの詳細を見ることができますが、編集はできません。"
 
 msgid "Flight editor"
 msgstr "フライト編集"
 
 msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
-msgstr " <B>基本</b>エディターは簡単で時間がかかりません。出発地、目的地、日時、航空会社（オプション）を1回４フライトまで入力できます。すばやくあなたの旅の地図を作ることができます。"
+msgstr " <B>基本</b>エディターは入力項目が少なく簡単に使えます。出発地、目的地、日時、航空会社（オプション）を1回４フライトまで入力できます。簡単にすばやくあなたの旅の地図を作ることができます。"
 
 msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
 msgstr "<B>詳細</b>エディターはサービスクラス、座席番号、機体モデル、機体番号、自由入力コメント等が追加できます。航空ファン向けです。"
@@ -809,7 +809,7 @@ msgid "Public (map and stats shared)"
 msgstr "一部公開（地図と統計を共有）"
 
 msgid "Open (all flight data shared)"
-msgstr "全部公開（全てのフライトデータを共有）"
+msgstr "全公開（全てのフライトデータを共有）"
 
 msgid "OpenFlights URL"
 msgstr "OpenFlights URL"
@@ -824,16 +824,16 @@ msgid "Prem.Eco"
 msgstr "プレミアムエコノミー"
 
 msgid "Econ"
-msgstr "エコノ"
+msgstr "ｴｺﾉﾐｰ"
 
 msgid "P.Eco"
-msgstr "プレミ"
+msgstr "ﾌﾟﾚﾐｱ"
 
 msgid "Biz"
-msgstr "ビジネ"
+msgstr "ﾋﾞｼﾞﾈｽ"
 
 msgid "1st"
-msgstr "ファー"
+msgstr "ﾌｧｰｽﾄ"
 
 msgid "Leis."
 msgstr "休暇"
@@ -887,7 +887,7 @@ msgid "Select this airport"
 msgstr "この空港を選択"
 
 msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
-msgstr ""
+msgstr "年月日を年/月/日の順番で半角で入力してください。例）2008年10月30日は 2008/10/30 。有効な形式は半角でYYYY-MM-DD、 YYYY/MM/DD、 YYYY.MM.DD、 YYYY MM DDです。"
 
 msgid "Please enter a valid source airport."
 msgstr "有効な出発地の空港を入力してください。"
@@ -902,16 +902,16 @@ msgid "Please enter times in 24-hour format with a colon between hour and minute
 msgstr "24-時間フォーマットで時間と分の間にコロン（：）を使って時間を入力してください。例9:37 PMは21:37と入力。"
 
 msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
-msgstr ""
+msgstr "フライト時間を半角で入力してください。時間と分の間はセミコロン（：）を使用。例）5時間37分は5:37。空欄にすると自動で再計算されます。"
 
 msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
-msgstr ""
+msgstr "飛行距離をマイルで入力してください。小数点以下は入力できません。空欄にすると自動で再計算されます。"
 
 msgid "No trips"
-msgstr "旅はありません"
+msgstr "登録されていません"
 
 msgid "No trips. Add one? "
-msgstr "旅はありません。追加しますか？"
+msgstr "登録されていません。追加しますか？"
 
 msgid "Unassigned flights"
 msgstr "紐付けされていないフライト"
@@ -968,7 +968,7 @@ msgid "Vehicle"
 msgstr "乗り物"
 
 msgid "Action"
-msgstr "動作"
+msgstr "操作"
 
 msgid "Edit this flight"
 msgstr "このフライトを編集"
@@ -1034,7 +1034,7 @@ msgid "Changes made to this flight have not been saved.  OK to discard them?"
 msgstr "このフライトの変更は保存されていません。破棄しますか？"
 
 msgid "Loading..."
-msgstr "ロード中"
+msgstr "読み込み中"
 
 msgid "Edit segment %1 of %2"
 msgstr "%2中 %1 番目のフライトを編集"
@@ -1046,7 +1046,7 @@ msgid "Deleting flight cancelled."
 msgstr "フライトの削除を中止しました。"
 
 msgid "Search for %1"
-msgstr "%1を検索中"
+msgstr "%1を検索"
 
 msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
 msgstr "出発 UTC %1%2%3、 到着UTC %4%5%6、時差%7 時間"
@@ -1094,13 +1094,13 @@ msgid "ICAO codes must be exactly four letters."
 msgstr "ICAOコードは4文字です。 "
 
 msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
-msgstr ""
+msgstr "空港および市町村名には半角のアルファベットAからZ、数字0から9、記号-,'(ダッシュ、ピリオッド、アポストロフィー）およびスペースが使えます。"
 
 msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
 msgstr "都市 '%1'は無視されました。DAFIFデータベースは都市の情報を含みません。"
 
 msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
-msgstr ""
+msgstr " IATA/FAA code '%1'での検索はアメリカ合衆国の空港のみに限られます（DAFIFはアメリカ合衆国外の都市のIATAを含まないため）。"
 
 msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
 msgstr "IATA コード'%1'は無視されました。DAFIFはアメリカ合衆国以外の都市の IATAコードを含みません。"
@@ -1118,7 +1118,7 @@ msgid "Please select a country."
 msgstr "国を選択してください。"
 
 msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
-msgstr ""
+msgstr "緯度、経度、高度を入力してください。ヒント：OurAirportデータベースに既に空港が登録されているかどうかを確認し、データをデータベースから読み込む。"
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr ""
@@ -1133,19 +1133,19 @@ msgid "Please enter a positive number for elevation."
 msgstr "高度には１以上の数字を入れてください。"
 
 msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
-msgstr ""
+msgstr "タイムゾーンをUTC/GMT時間を基準に入力してください。例）日本は+9、ニューヨークは-5 分は小数点を使用してください。例）ネパールは+5.75"
 
 msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
 msgstr "この空港が夏時間を採用しているかどうかが未入力です。不明としますか？"
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr ""
+msgstr "IATA/FAAコードが入力されていません。次へ進みますか？"
 
 msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr ""
+msgstr "ICAOコードが入力されていません。次へ進みますか？"
 
 msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
-msgstr ""
+msgstr "%2地域にある %1を新しい空港として追加しますか？空港名、空港コード、緯度、経度等を再確認してください。"
 
 msgid "Cancelled."
 msgstr "中止されました。"
