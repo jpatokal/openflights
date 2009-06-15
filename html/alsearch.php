@@ -9,6 +9,8 @@ require_once("../php/db.php");
 <title>OpenFlights:  <?php echo _("Airline search") ?></title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po" />
+    <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
 
     <script type="text/javascript" src="/js/utilities.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
