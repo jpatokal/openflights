@@ -2370,7 +2370,7 @@ function selectAirport(apid, select, quick) {
 // Change number of rows displayed in multiinput
 function changeRows(type) {
   switch(type) {
-  case gt.gettext("More"):
+  case "More":
     if(multiinput_rows >= 3) {
       $('b_more').disabled = true;
     }
@@ -2384,7 +2384,7 @@ function changeRows(type) {
     replicateSelection(source);
     break;
 
-  case gt.gettext("Less"):
+  case "Less":
     if(multiinput_rows == 4) {
       $('b_more').disabled = false;
     }
