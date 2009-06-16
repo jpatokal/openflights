@@ -22,11 +22,18 @@ select distinct CONCAT(s.iata,' &harr;') as '</pre></td></tr><tr><td style="vert
 
 select rpad(a.name,20,' ') as '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airlines</b>', lpad(count(*),6," ") as '' from airlines as a,flights as f where f.uid != 1 and a.alid > 1 and a.alid=f.alid group by f.alid order by count(*) desc limit 10;
 
-select rpad(a.name,20,' ') as '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airports</b>',a.iata as '', lpad(count(*),6," ") as '' from airports as a,
-	(select src_apid as apid from flights where uid != 1
-	UNION ALL
-	select dst_apid as apid from flights where uid != 1) as f where f.apid=a.apid
-	group by a.apid
-	order by count(*) desc limit 10;
+select rpad(a.name,20,' ') as '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airports</b>',a.iata as '', lpad(sum(x.ct),6," ") as '' from 
+   ( select src_apid as apid, count(*) as ct	
+     from flights	
+     GROUP BY src_apid	
+   UNION ALL	
+     select dst_apid as apid, count(*) as ct
+     from flights	
+     GROUP BY dst_apid	
+   ) x, airports as a
+   where a.apid=x.apid
+   group by x.apid
+   order by sum(x.ct) desc
+   limit 10;
 
 select "</pre></td></tr></table>" AS "";
