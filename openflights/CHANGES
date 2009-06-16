@@ -1,3 +1,8 @@
+<b>2009-06-16</b>
+
+* Top 10 Airports generation sped up 100x
+* Bug: __FLIGHTS__ raw string popping up in English
+
 <b>2009-06-15</b>
 
 * Fixes for Basic editor in non-English languages
