@@ -73,7 +73,24 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 printf ("\n");
 
 // List top 10 airports
-$sql = "select a.name, a.iata, a.icao, $mode as count, a.apid from airports as a, flights as f where f.uid=$uid and (f.src_apid=a.apid or f.dst_apid=a.apid) $filter group by a.apid order by count desc limit $limit";
+
+//$sql = "select a.name, a.iata, a.icao, $mode as count, a.apid from airports as a, " .
+//  "(select src_apid as apid, distance, count(*) as fid from flights where uid = $uid group by src_apid" .
+//  "  UNION ALL " .
+//  "select dst_apid as apid, distance, count(*) as fid from flights where uid = $uid group by dst_apid ) as f " .
+//  "where f.apid=a.apid $filter " .
+//  "group by a.apid order by count desc limit $limit";
+//print $sql;
+//
+// ^^^ this is even faster, but $mode has to be SUM(fid), not COUNT(fid), to count flights correctly...
+
+$sql = "select a.name, a.iata, a.icao, $mode as count, a.apid from airports as a, " .
+  "(select src_apid as apid, distance, fid from flights where uid = $uid " .
+  "  UNION ALL " .
+  "select dst_apid as apid, distance, fid from flights where uid = $uid ) as f " .
+  "where f.apid=a.apid $filter " .
+  "group by a.apid order by count desc limit $limit";
+
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
