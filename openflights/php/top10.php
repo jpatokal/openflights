@@ -85,10 +85,10 @@ printf ("\n");
 // ^^^ this is even faster, but $mode has to be SUM(fid), not COUNT(fid), to count flights correctly...
 
 $sql = "select a.name, a.iata, a.icao, $mode as count, a.apid from airports as a, " .
-  "(select src_apid as apid, distance, fid from flights where uid = $uid " .
+  "(select src_apid as apid, distance, fid from flights as f where uid = $uid $filter " .
   "  UNION ALL " .
-  "select dst_apid as apid, distance, fid from flights where uid = $uid ) as f " .
-  "where f.apid=a.apid $filter " .
+  "select dst_apid as apid, distance, fid from flights as f where uid = $uid $filter ) as f " .
+  "where f.apid=a.apid " .
   "group by a.apid order by count desc limit $limit";
 
 $result = mysql_query($sql, $db);
