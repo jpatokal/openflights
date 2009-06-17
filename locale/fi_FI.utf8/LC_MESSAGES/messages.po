@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-06-10 14:40+0800\n"
+"PO-Revision-Date: 2009-06-17 15:33+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -1180,3 +1180,74 @@ msgstr "Tallenna"
 msgid "Probable match, please verify"
 msgstr "Todennäköinen osuma, varmista"
 
+msgid "All trips"
+msgstr "Kaikki matkat"
+
+msgid "All carriers"
+msgstr "Kaikki yhtiöt"
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid "IATA codes must be exactly two letters."
+msgstr ""
+
+msgid "ICAO codes must be exactly three letters."
+msgstr ""
+
+msgid "Please enter a name."
+msgstr ""
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
+msgstr ""
+
+msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
+msgstr ""
+
+msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
+msgstr ""
+
+msgid "No matches found."
+msgstr ""
+
+msgid "Operators in pink have been added by users of OpenFlights."
+msgstr ""
+
+msgid "Operators in blue have been added by you and can be edited."
+msgstr ""
+
+msgid "Sorry, you have to be logged into OpenFlights to do this."
+msgstr ""
+
+msgid "Creating account..."
+msgstr ""
+
+msgid "Saving changes..."
+msgstr ""
+
+msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
+msgstr ""
+
+msgid "Deletion cancelled."
+msgstr ""
+
+msgid "Please enter a username."
+msgstr ""
+
+msgid "Please enter a password."
+msgstr ""
+
+msgid "Please enter your current password if you wish to change to a new password."
+msgstr ""
+
+msgid "Please enter a new password, or clear current password if you do not wish to change it."
+msgstr ""
+
+msgid "Your passwords don't match, please try again."
+msgstr ""
+
+msgid "Processing..."
+msgstr ""
+
+msgid "Profile address:"
+msgstr ""
