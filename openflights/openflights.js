@@ -457,6 +457,7 @@ function xmlhttpPost(strURL, id, param) {
 	    // param contains previously escaped semi-random HTML title
 	    // fallthru
 
+	  case "MAP":
 	  default:
 	  listFlights(self.xmlHttpReq.responseText, unescape(param));
 	    break;
@@ -531,7 +532,8 @@ function xmlhttpPost(strURL, id, param) {
 	  if(param) {
 	    updateFilter(str);
 	  }
-	  updateTitle();
+	  
+	  $("maptitle").innerHTML = getMapTitle(true);
 
 	  // Map now completely drawn for the first time
 	  if(initializing) {
@@ -692,8 +694,7 @@ function xmlhttpPost(strURL, id, param) {
 	var myClass = radioValue(inputform.myClass);
 	var reason = radioValue(inputform.reason);
 	var plane = inputform.plane.value;
-        // ##TODO## fix
-	if(plane == "Enter plane model") {
+	if(plane == gt.gettext("Enter plane model")) {
 	  plane = "";
 	}
 	var trid = 0;
@@ -844,7 +845,7 @@ function updateFilter(str) {
     $("filter_tripselect").innerHTML = "&nbsp;" + gt.gettext("No trips");
     $("input_trip_select").innerHTML = "&nbsp;" + gt.gettext("No trips. Add one? ");
   } else {
-    var tripSelect = createSelect("Trips", "All trips", filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
+    var tripSelect = createSelect("Trips", gt.gettext("All trips"), filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
     $("filter_tripselect").innerHTML = tripSelect;
     var editTripSelect = document.forms['inputform'].trips;
     if(editTripSelect) {
@@ -871,23 +872,24 @@ function updateFilter(str) {
     document.forms['inputform'].trips[0].text = "Select trip";
   }
 
-  var airlineSelect = createSelect("Airlines", "All carriers", filter_alid, airlines.split("\t"), SELECT_MAXLEN, "refresh(true)");
+  var airlineSelect = createSelect("Airlines", gt.gettext("All carriers"), filter_alid, airlines.split("\t"), SELECT_MAXLEN, "refresh(true)");
   $("filter_airlineselect").innerHTML = airlineSelect;
-  var yearSelect = createSelect("Years", "All", filter_year, years.split("\t"), 20, "refresh(true)");
+  var yearSelect = createSelect("Years", gt.gettext("All"), filter_year, years.split("\t"), 20, "refresh(true)");
   $("filter_yearselect").innerHTML = yearSelect;
 
 }
 
 
-// Refresh current map title
-function updateTitle(str) {
+// Generate title for current map
+function getMapTitle(closable) {
   var form = document.forms['filterform'];
   var text = "";
+  var alid = form.Airlines[form.Airlines.selectedIndex].value.split(";")[0];
   var airline = form.Airlines[form.Airlines.selectedIndex].value.split(";")[1];
-  var year = form.Years[form.Years.selectedIndex].text;
-  var trip = "";
+  var year = form.Years[form.Years.selectedIndex].value;
+  var trid = 0;
   if(form.Trips) {
-    trip = form.Trips[form.Trips.selectedIndex].value.split(";")[1];
+    trid = form.Trips[form.Trips.selectedIndex].value.split(";")[0];
   }
 
   // Logged in users
@@ -904,23 +906,19 @@ function updateTitle(str) {
       text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
       break;
     }
-    if(airline != "All carriers") {
+    if(alid != "0") {
       if(text != "") text += ", ";
       text += airline;
     }
-    if(year != "All") {
-      if(text != "") text += " in ";
+    if(year != "0") {
+      if(text != "") text += ", ";
       text += year;
-    }
-    // For non-null titles, add X for easy filter removal
-    if(text != "") {
-      text = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> " + text;
     }
 
   } else {
     // Demo mode
     if(demo_mode) {
-      if(airline != "All carriers") {
+      if(alid != "0") {
 	text = Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]);
       } else {
 	text = gt.gettext("Recently added flights");
@@ -928,17 +926,17 @@ function updateTitle(str) {
 
     } else {
       // Viewing another's profile
-      if(trip != "All trips" && trip != "") {
+      if(trid != "0") {
 	text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
       } else {
-	if(airline != "All carriers") {
-	  if(year != "All") {
+	if(alid != "0") {
+	  if(year != "0") {
 	    text = Gettext.strargs(gt.gettext("%1's flights on %2 in %3"), [filter_user, airline, year]);
 	  } else {
 	    text = Gettext.strargs(gt.gettext("%1's flights on %2"), [filter_user, airline]);
 	  }
 	} else {
-	  if(year != "All") {
+	  if(year != "0") {
 	    text = Gettext.strargs(gt.gettext("%1's flights in %2"), [filter_user, year]);
 	  } else {
 	    text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
@@ -950,18 +948,20 @@ function updateTitle(str) {
     }
   }
 
-  // And finally tack on the extra filter, if any
+  // Tack on the extra filter, if any
   filter_extra_key = form.Extra.value;
   if(filter_extra_key != "" && $('filter_extra_value')) {
-    if(text == "") {
-      text = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> ";
-    } else {
-      text = ", ";
+    if(text != "") {
+      text = text + ", ";
     }
     text += form.Extra[form.Extra.selectedIndex].text + ' ' + $('filter_extra_value').value;
   }
 
-  $("maptitle").innerHTML = text;
+  // Add X for easy filter removal (only for logged-in users with non-null titles)
+  if(closable && logged_in && text != "") {
+    text = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> " + text;
+  }
+  return text;
 }
 
 /*
@@ -1032,7 +1032,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
 function createSelectFromArray(selectName, opts, hook, current) {
   var select = "<select style='width: 100px' id='" + selectName + "' name='" + selectName +
     "' onChange='JavaScript:" + hook + "'>";
-  if(! current) select += "<option value=''>All</option>";
+  if(! current) select += "<option value=''>" + gt.gettext("All") + "</option>";
   for (r in opts) {
     if(r.length > 2) continue; // filter out Prototype.js cruft
     select += "<option value='" + r + "' " + (r == current ? "SELECTED" : "") + ">" + opts[r] + "</option>";
@@ -1204,21 +1204,16 @@ function updateMap(str){
 }
 
 function startListFlights() {
-  var form = document.forms['filterform'];
-  if(form.Trips) {
-    var tripName = form.Trips[document.forms['filterform'].Trips.selectedIndex].text;
-  }
-  var airlineName = document.forms['filterform'].Airlines[document.forms['filterform'].Airlines.selectedIndex].text;
-  var yearName = document.forms['filterform'].Years[document.forms['filterform'].Years.selectedIndex].text;
-  // ##TODO##
-  var title = "Flights" + (tripName ? " for " + tripName : "") + " on " + airlineName + " in year " + yearName;
-  xmlhttpPost(URL_FLIGHTS, 0, encodeURIComponent(title));
+  xmlhttpPost(URL_FLIGHTS, 0, "MAP");
 }
 
 function listFlights(str, desc) {
   openPane("result");
   fidList = new Array();
   var today = new Date().getTime();
+  if(desc == "MAP") {
+    desc = gt.gettext("Flights:") + " " + getMapTitle(false);
+  }
 
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
