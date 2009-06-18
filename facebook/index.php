@@ -65,7 +65,7 @@ if(! $ofname || $ofname == "") {
     echo "<p>To start, please enter your username on OpenFlights: <input type='text' name='ofname' value='$ofname' /></p>";
     echo "<input type='submit' value='Submit' />";
 
-    echo "<p>This application requires an <a target='_blank' href='http://openflights.org'>OpenFlights</a> account.</b>  If you don't have one already, you can <a target='_blank' href='http://openflights.org/html/signup.html'>sign up</a> for one now.</p>";
+    echo "<p>This application requires an <a target='_blank' href='http://openflights.org'>OpenFlights</a> account.</b>  If you don't have one already, you can <a target='_blank' href='http://openflights.org/html/settings?new=yes'>sign up</a> for one now.</p>";
 
     echo "</form>";
     return;
