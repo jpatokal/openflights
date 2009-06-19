@@ -2573,9 +2573,9 @@ function login(str, param) {
     break;
 
   case "2":
-    // Reload to force UI language switch
+    // Successful but need to switch UI language, so reload, stripping out any "?lang" in the URL
     $("loginstatus").innerHTML = "<B>" + gt.gettext("Loading") + "</B>";
-    window.location.reload();
+    location.href = "http://" + location.host + location.pathname;
     break;
 
   default:
