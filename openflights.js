@@ -2518,6 +2518,7 @@ function login(str, param) {
     if(elite) elite = elite.trim();
     logged_in = true;
     $("loginform").style.display = 'none';
+    $("langselect").style.display = 'none';
     $("controlpanel").style.display = 'inline';
     switch(param) {
     case "REFRESH":
@@ -2591,6 +2592,7 @@ function logout(str) {
   $("stats").innerHTML = "<i>" + gt.gettext("Loading") + "</i>";
   $("stats_ajax").style.display = 'inline';
   $("loginform").style.display = 'inline';
+  $("langselect").style.display = 'block';
   $("controlpanel").style.display = 'none';
   $(getCurrentPane()).style.display = 'none';
   $("ad").style.display = 'inline';
