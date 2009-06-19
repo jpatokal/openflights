@@ -19,7 +19,7 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090615"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090619"></script>
   </head>
 
   <body>
@@ -39,8 +39,8 @@ require_once("./php/db.php");
 	    </div>
 
 	    <div id="news" style="display: none">
-	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'> 
-																										   <B><?php echo _("News")?> </b>: 12 Jun 2009: <a href="/blog/">French (français) and Russian (русский) versions of OpenFlights now available!</a>
+	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
+	      <B><?php echo _("News")?> </b>: 19 Jun 2009: <a href="/blog/">Language selector now available for public profile, trips</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -53,15 +53,16 @@ require_once("./php/db.php");
 	  <div id="sideBar">
 	    <?php include("./sidebar.html") ?>
 	    <div id="login">
+	      <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
+                <?php echo locale_pulldown($db, $locale) ?>
+	      </div>
+
 	      <div id="loginstatus" style="display: none"></div>
-	      
+ 
 	      <div id="loginform" style="display: none">
 		<form name="login">
 		<table cellspacing="5" cellpadding="0" border="0">
  		  <tr>
-	            <td><?php echo _("Language") ?>&nbsp;</td>
-                    <td><?php echo locale_pulldown($db, $locale) ?></td>
-                  </tr><tr>
                     <td><?php echo _("Username") ?>&nbsp;</td><td>
 		      <input type="Text" name="name" align="top" size="10" tabindex="1">
 		    </td>

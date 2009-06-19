@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-06-17 15:33+0730\n"
+"PO-Revision-Date: 2009-06-19 16:57+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -1010,7 +1010,7 @@ msgid "No trips"
 msgstr "Ei matkoja"
 
 msgid "Flight logging, mapping, stats and sharing"
-msgstr "Logita, kartoita, tutki ja jaa lentosi"
+msgstr "Kirjaa, kartoita, tutki ja jaa lentosi"
 
 msgid "Not logged in, aborting"
 msgstr "Et ole kirjautunut sisään"
@@ -1190,64 +1190,65 @@ msgid "All"
 msgstr "Kaikki"
 
 msgid "IATA codes must be exactly two letters."
-msgstr ""
+msgstr "IATA-koodin on oltava kaksikirjaiminen."
 
 msgid "ICAO codes must be exactly three letters."
-msgstr ""
+msgstr "ICAO-koodin on oltava kolmekirjaiminen."
 
 msgid "Please enter a name."
-msgstr ""
+msgstr "Nimi puuttuu."
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
-msgstr ""
+msgstr "Et ole kirjannut IATA/FAA-koodia tälle yhtiölle.  Oletko varma, ettei yhtiöllä ole sitä?"
 
 msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
-msgstr ""
+msgstr "Et ole kirjannut ICAO-koodia.  Oletko varma, ettei yhtiöllä ole sitä?"
 
 msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
-msgstr ""
+msgstr "Oletko varma, että haluat lisätä uuden yhtiön %1?  Tarkistathan vielä kerran, että nimi ja koodit ovat oikein."
 
 msgid "No matches found."
-msgstr ""
+msgstr "Ei osumia."
 
 msgid "Operators in pink have been added by users of OpenFlights."
-msgstr ""
+msgstr "Vaaleanpunaiset yhtiöt ovat OpenFlightsin käyttäjien lisäämiä."
 
 msgid "Operators in blue have been added by you and can be edited."
-msgstr ""
+msgstr "Siniset yhtiöt ovat itse lisäämiäsi ja voit muokata niitä."
 
 msgid "Sorry, you have to be logged into OpenFlights to do this."
-msgstr ""
+msgstr "Tätä toimintoa varten täytyy ensin kirjautua sisään OpenFlightsiin."
 
 msgid "Creating account..."
-msgstr ""
+msgstr "Luodaan tunnusta..."
 
 msgid "Saving changes..."
-msgstr ""
+msgstr "Tallennetaan muutoksia..."
 
 msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
-msgstr ""
+msgstr "Tämä toiminto POISTAA KAIKKI LENTOSI.  Otithan varmuuskopion, ja oletko varma, että haluat jatkaa?"
 
 msgid "Deletion cancelled."
-msgstr ""
+msgstr "Lentojen poisto keskeytetty."
 
 msgid "Please enter a username."
-msgstr ""
+msgstr "Käyttäjätunnus puuttuu."
 
 msgid "Please enter a password."
-msgstr ""
+msgstr "Salasana puuttuu."
 
 msgid "Please enter your current password if you wish to change to a new password."
-msgstr ""
+msgstr "Täytä nykyinen salasanasi jos haluat vaihtaa sen uuteen."
 
 msgid "Please enter a new password, or clear current password if you do not wish to change it."
-msgstr ""
+msgstr "Anna uusi salasana, tai tyhjennä salasana-kenttä ellet haluat muuttaa sitä."
 
 msgid "Your passwords don't match, please try again."
-msgstr ""
+msgstr "Salasanasi eivät täsmää, yritä uudestaan."
 
 msgid "Processing..."
-msgstr ""
+msgstr "Käsitellään..."
 
 msgid "Profile address:"
-msgstr ""
+msgstr "Profiiliosoite:"
+
