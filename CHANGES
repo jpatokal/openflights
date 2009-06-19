@@ -1,3 +1,8 @@
+<b>2009-06-19</b>
+
+* Switch UI language to user preference on login
+* Bug: Facebook "Sign up" link was broken
+
 <b>2009-06-16</b>
 
 * Top 10 Airports generation sped up 100x

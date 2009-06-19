@@ -25,8 +25,13 @@ if($name) {
     $_SESSION['email'] = $myrow["email"];
     $_SESSION['editor'] = $myrow["editor"];
     $_SESSION['elite'] = $myrow["elite"];
+    if($_SESSION['locale'] != $myrow["locale"]) {
+      $rc = 2; // force reload, so UI is changed into user's language
+    } else {
+      $rc = 1;
+    }
     $_SESSION['locale'] = $myrow["locale"];
-    printf("1;%s;%s;%s", $myrow["name"], $myrow["editor"], $myrow["elite"]);
+    printf("%s;%s;%s;%s", $rc, $myrow["name"], $myrow["editor"], $myrow["elite"]);
   } else {
     printf("0;" . _("Login failed. <%s>Create account</a> or <%s>reset password</a>?"),
 	   "a href='/html/signup.html'", "a href='#' onclick='JavaScript:help(\"forgotpw\")'");

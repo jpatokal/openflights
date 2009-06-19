@@ -2511,7 +2511,8 @@ function login(str, param) {
   $("loginstatus").style.display = 'inline';
 
   // Login successful
-  if(status == "1") {
+  switch(status) {
+  case "1":
     prefs_editor = cols[2].trim();
     elite = cols[3];
     if(elite) elite = elite.trim();
@@ -2568,7 +2569,16 @@ function login(str, param) {
       clearMap();
       clearFilter(true);
     }
-  } else {
+    break;
+
+  case "2":
+    // Reload to force UI language switch
+    $("loginstatus").innerHTML = "<B>" + gt.gettext("Loading") + "</B>";
+    window.location.reload();
+    break;
+
+  default:
+    // Login failed
     logged_in = false;
     $("loginstatus").innerHTML = "<B>" + name + "</B>";
     $("ajaxstatus").style.display = 'none';
