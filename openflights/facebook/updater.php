@@ -2,7 +2,7 @@
 require_once 'php/facebook.php';
 require_once 'keys.php';
 require_once 'profile.php';
-require_once '../php/db.php';
+require_once 'db.php';
 
 $facebook = new Facebook($appapikey, $appsecret);
 $fbtoday = 0;
@@ -107,5 +107,4 @@ if($fbtoday > 0) {
 if($fbupdates > 0 || $fbfail > 0) {
   echo date(DATE_RFC822) . ": $fbupdates new flights, $fbfail failed";
 }
-
 ?>
