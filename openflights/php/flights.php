@@ -14,6 +14,9 @@ if($export) {
  } else {
   header("Content-type: text/html; charset=utf-8");
   $apid = $HTTP_POST_VARS["id"];
+  if(! $apid) {
+    $apid = $HTTP_GET_VARS["id"];
+  }
   $trid = $HTTP_POST_VARS["trid"];
   $alid = $HTTP_POST_VARS["alid"];
   $fid = $HTTP_POST_VARS["fid"];
@@ -24,6 +27,7 @@ if($export) {
 include 'helper.php';
 include 'filter.php';
 include 'db.php';
+include 'greatcircle.php';
 
 $uid = $_SESSION["uid"];
 // Logged in?
@@ -51,12 +55,28 @@ if(!$uid or empty($uid)) {
   }
 }
 
-// List of all this user's flights
-$sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
-
-// ...filtered by airport (optional)
-if($apid && $apid != 0) {
-  $sql = $sql . " AND (s.apid=" . mysql_real_escape_string($apid) . " OR d.apid=" . mysql_real_escape_string($apid) . ")";
+// Special handling of "route" apids in form R<apid>,<coreid>
+// <apid> is user selection, <coreid> is ID of airport map is centered around
+if(substr($apid, 0, 1) == "R") {
+  $route = true;
+  $ids = explode(',', substr($apid, 1));
+  $apid = $ids[0];
+  $coreid = $ids[1];
+  if($apid == $coreid) {
+    $match = "r.src_apid=$apid"; // all flights from $apid
+  } else {
+    $match = "r.src_apid=$coreid AND r.dst_apid=$apid"; // flight from $coreid to $apid only
+  }
+  $sql = "SELECT s.x AS sx,s.y AS sy,s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.x AS dx,d.y AS dy,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,l.iata as code, '-' as src_date, '-' as src_time, '-' as distance, '-:-' AS duration, '' as seat, '' as seat_type, '' as class, '' as reason, r.equipment AS name, '' as registration,rid AS fid,l.alid,concat('Stops: ', stops) as note,NULL as trid,'N' AS opp,NULL as plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,'F' AS mode FROM airports AS s,airports AS d, airlines AS l,routes AS r WHERE $match AND r.src_apid=s.apid AND r.dst_apid=d.apid AND r.alid=l.alid";
+ 
+} else {
+  // List of all this user's flights
+  $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
+  
+  // ...filtered by airport (optional)
+  if($apid && $apid != 0) {
+    $sql = $sql . " AND (s.apid=" . mysql_real_escape_string($apid) . " OR d.apid=" . mysql_real_escape_string($apid) . ")";
+  }
 }
 
 // Add filters, if any
@@ -78,7 +98,11 @@ if($fid && $fid != "0") {
 }
 
 // And sort order
-$sql = $sql . " ORDER BY src_date DESC, src_time DESC";
+if($route) {
+  $sql .= " ORDER BY d.iata ASC";
+} else {
+  $sql .= " ORDER BY src_date DESC, src_time DESC";
+}
 
 // Execute!
 $result = mysql_query($sql, $db);
@@ -88,6 +112,12 @@ if($export) {
   printf("Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n");
 }
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  if($route) {
+    $row["distance"] = gcPointDistance(array("x" => $row["sx"], "y" => $row["sy"]),
+				       array("x" => $row["dx"], "y" => $row["dy"]));
+    $row["duration"] = gcDuration($row["distance"]);
+  }
+
   if($first) {
     $first = false;
   } else {

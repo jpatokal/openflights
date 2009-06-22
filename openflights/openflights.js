@@ -282,7 +282,7 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
 // Draw airport (or just update marker if it exists already)
 // Returns true if a new marker was created, or false if it existed already
 //
-function drawAirport(airportLayer, apdata, name, city, country, count, formattedName, opacity) {
+function drawAirport(airportLayer, apdata, name, city, country, count, formattedName, opacity, id) {
   var apcols = apdata.split(":");
   var code = apcols[0];
   var apid = apcols[1];
@@ -291,7 +291,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 
   // Description
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
-  var sdesc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small>";
+  var rdesc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small>";
 
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
@@ -370,11 +370,20 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     if( logged_in || demo_mode || privacy == "O") {
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
-	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a> " +
-	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>";
+	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
+	if(id == 0) {
+	  // Get list of user flights
+	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(this.marker.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
+	} else {
+	  if(code.length == 3) {
+	    // Get list of airport routes
+	    coreid = "R" + apid + "," + id;
+	    desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+	  }
+	}
 	if(code.length == 3) {
 	  // IATA airport, we know its routes
-	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ", \"" + encodeURI(sdesc) + "\");'><img src='/img/icon_routes.png' width=16 height=16 title='" + gt.gettext("All routes from this airport") + "'></a>";
+	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
 	}
 	desc += "</span>" + this.marker.desc.replace("Flights:", gt.gettext("Flights:"));
       }
@@ -465,7 +474,7 @@ function xmlhttpPost(strURL, id, param) {
 
 	  case "MAP":
 	  default:
-	  listFlights(self.xmlHttpReq.responseText, unescape(param));
+	  listFlights(self.xmlHttpReq.responseText, unescape(param), id);
 	    break;
 	}
 	$("ajaxstatus").style.display = 'none';
@@ -530,7 +539,7 @@ function xmlhttpPost(strURL, id, param) {
 	  openPane("result");
 	} else {
 	  // Zoom map to fit when first loading another's flights/trip
-	  updateMap(str, strURL, param);
+	  updateMap(str, id);
 	  if(! logged_in && ! demo_mode && initializing) {
 	    closePane();
 	    map.zoomToExtent(airportLayer.getDataExtent());
@@ -541,7 +550,6 @@ function xmlhttpPost(strURL, id, param) {
 	    }
 	    $("maptitle").innerHTML = getMapTitle(true);
 	  } else {
-	    $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + unescape(param);
 	    closePopup();
 	  }
 	  
@@ -825,10 +833,13 @@ function xmlhttpPost(strURL, id, param) {
       query += '&apid=' + encodeURIComponent(id);
     }
     if(strURL == URL_FLIGHTS) {
-      if(param == "EDIT" || param == "COPY") {
+      switch(param) {
+      case "EDIT":
+      case "COPY":
 	query += '&fid=' + encodeURIComponent(id);
-      } else {
-	// This is a flight list query, so store its details
+	break;
+
+      default:
 	query += '&id=' + encodeURIComponent(id);
 	lastQuery = query;
 	lastDesc = param;
@@ -1103,7 +1114,7 @@ function clearMap() {
 }
 
 // Reinsert all flights, airports from database result
-function updateMap(str, url, param){
+function updateMap(str, id){
   lineLayer.destroyFeatures();
 
   // Default all markers to be turned off
@@ -1113,10 +1124,12 @@ function updateMap(str, url, param){
   }
 
   var master = str.split("\n");
-  if(url == URL_MAP) {
-    var stats = master[0];
-    var flights = master[1];
-    var airports = master[2];
+  var stats = master[0];
+  var flights = master[1];
+  var airports = master[2];
+
+  if(id == 0) {
+    // User flight map
     var col = stats.split(";");
     var miles = col[1];
     if(! miles) miles = 0;
@@ -1154,9 +1167,9 @@ function updateMap(str, url, param){
       logout(gt.gettext("Your session has timed out, please log in again."));
     }
   } else {
-    // URL_ROUTES
-    var flights = master[0];
-    var airports = master[1];
+    // Route map
+    var coreid = "R" + id + "," + id;
+    $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + stats + " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(stats) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List all routes from this airport") + "'></a>";
     flightTotal = 1;
   }
 
@@ -1190,7 +1203,7 @@ function updateMap(str, url, param){
       } else {
 	opacity = 1;
       }
-      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity);
+      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, id);
     }
     //zoomEvent(); // filter in/out airports based on zoom level
   }
@@ -1226,14 +1239,15 @@ function startListFlights() {
   xmlhttpPost(URL_FLIGHTS, 0, "MAP");
 }
 
-function listFlights(str, desc) {
+function listFlights(str, desc, id) {
   openPane("result");
   fidList = new Array();
+  var route = ! re_numeric.test(id); // ids starting with R are routes
   var today = new Date().getTime();
   if(desc == "MAP") {
     desc = gt.gettext("Flights:") + " " + getMapTitle(false);
   }
-
+  
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
   table.push("<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ");
@@ -1290,7 +1304,7 @@ function listFlights(str, desc) {
 		      "</td><td>" + trip + "</td>" +
 		      "</td><td>" + col[16].substring(0,15) + "</td>");
 	
-      if(logged_in) {
+      if(logged_in && !route) {
 	table.push("<td>");
 	table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
 	table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
