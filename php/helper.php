@@ -120,10 +120,13 @@ function gcDistance($db, $src_apid, $dst_apid) {
     if ($dist < 0) { $dist += $pi; }
     $dist = floor($dist * 6371.2 * 0.621);
   }
-
-  $rawtime = floor(30 + ($dist / 500) * 60);
-  $duration = sprintf("%02d:%02d",  floor($rawtime/60), $rawtime % 60);
-
+  $duration = gcDuration($dist);
   return array($dist, $duration);
 }
+
+function gcDuration($dist) {
+  $rawtime = floor(30 + ($dist / 500) * 60);
+  return sprintf("%02d:%02d",  floor($rawtime/60), $rawtime % 60);
+}
+
 ?>
