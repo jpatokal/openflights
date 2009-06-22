@@ -43,6 +43,7 @@ var URL_GETCODE = "/php/autocomplete.php";
 var URL_LOGIN = "/php/login.php";
 var URL_LOGOUT = "/php/logout.php";
 var URL_MAP = "/php/map.php";
+var URL_ROUTES = "/php/routes.php";
 var URL_STATS = "/php/stats.php";
 var URL_SUBMIT = "/php/submit.php";
 var URL_TOP10 = "/php/top10.php";
@@ -290,6 +291,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 
   // Description
   var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
+  var sdesc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small>";
 
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
@@ -369,8 +371,12 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
 	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a> " +
-	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>" +
-	  "</span>" + desc.replace("Flights:", gt.gettext("Flights:"));
+	  "<a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List flights") + "'></a>";
+	if(code.length == 3) {
+	  // IATA airport, we know its routes
+	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ", \"" + encodeURI(sdesc) + "\");'><img src='/img/icon_routes.png' width=16 height=16 title='" + gt.gettext("All routes from this airport") + "'></a>";
+	}
+	desc += "</span>" + this.marker.desc.replace("Flights:", gt.gettext("Flights:"));
       }
     desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
     closePopup();
@@ -516,7 +522,7 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_LOGOUT) {
 	logout(self.xmlHttpReq.responseText);
       }
-      if(strURL == URL_MAP) {
+      if(strURL == URL_MAP || strURL == URL_ROUTES) {
 	var str = self.xmlHttpReq.responseText;
 	if(str.substring(0,5) == "Error") {
 	  $("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
@@ -524,17 +530,21 @@ function xmlhttpPost(strURL, id, param) {
 	  openPane("result");
 	} else {
 	  // Zoom map to fit when first loading another's flights/trip
-	  updateMap(str);
+	  updateMap(str, strURL, param);
 	  if(! logged_in && ! demo_mode && initializing) {
 	    closePane();
 	    map.zoomToExtent(airportLayer.getDataExtent());
 	  }
-	  if(param) {
-	    updateFilter(str);
+	  if(strURL == URL_MAP) {
+	    if(param) {
+	      updateFilter(str);
+	    }
+	    $("maptitle").innerHTML = getMapTitle(true);
+	  } else {
+	    $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + unescape(param);
+	    closePopup();
 	  }
 	  
-	  $("maptitle").innerHTML = getMapTitle(true);
-
 	  // Map now completely drawn for the first time
 	  if(initializing) {
 	    initializing = false;
@@ -787,7 +797,7 @@ function xmlhttpPost(strURL, id, param) {
     }
     // ...else fallthru and generate new query
 
-  // URL_MAP, URL_FLIGHTS, URL_STATS, URL_TOP10
+  // URL_MAP, URL_ROUTES, URL_FLIGHTS, URL_STATS, URL_TOP10
   default:
     $("ajaxstatus").style.display = 'inline';
     var form = document.forms['filterform'];    
@@ -810,6 +820,9 @@ function xmlhttpPost(strURL, id, param) {
       filter_extra_value = $('filter_extra_value').value;
       query += '&xkey=' + filter_extra_key +
 	'&xvalue=' + filter_extra_value;
+    }
+    if(strURL == URL_ROUTES) {
+      query += '&apid=' + encodeURIComponent(id);
     }
     if(strURL == URL_FLIGHTS) {
       if(param == "EDIT" || param == "COPY") {
@@ -1090,7 +1103,7 @@ function clearMap() {
 }
 
 // Reinsert all flights, airports from database result
-function updateMap(str){
+function updateMap(str, url, param){
   lineLayer.destroyFeatures();
 
   // Default all markers to be turned off
@@ -1100,45 +1113,51 @@ function updateMap(str){
   }
 
   var master = str.split("\n");
-  var stats = master[0];
-  var flights = master[1];
-  var airports = master[2];
-  
-  var col = stats.split(";");
-  var miles = col[1];
-  if(! miles) miles = 0;
-  var duration = col[2]; // minutes
-  var days = Math.floor(col[2] / (60*24));
-  var hours = Math.floor((col[2] / 60) % 24);
-  var min = Math.floor(col[2] % 60);
-  if(min < 10) min = "0" + min;
+  if(url == URL_MAP) {
+    var stats = master[0];
+    var flights = master[1];
+    var airports = master[2];
+    var col = stats.split(";");
+    var miles = col[1];
+    if(! miles) miles = 0;
+    var duration = col[2]; // minutes
+    var days = Math.floor(col[2] / (60*24));
+    var hours = Math.floor((col[2] / 60) % 24);
+    var min = Math.floor(col[2] % 60);
+    if(min < 10) min = "0" + min;
 
-  stats = col[0] + " " + gt.gettext("segments") + "<br>" +
-    miles + " " + gt.gettext("miles") + "<br>" +
-    days + " " + gt.gettext("days") + " " + hours + ":" + min;
-  $("stats_ajax").style.display = 'none';
-  $("stats").innerHTML = stats;
-  flightTotal = col[0];
-  privacy = col[3];
-  if(! logged_in) {
-    elite = col[4];
-    editor = col[6];
-    document.forms['login'].challenge.value = col[7];
-
-    // Does user have a PHP session open?  Log him in!
-    // Simulate login.php: "1;name;editor;elite"
-    if(col[5] != "demo") {
-      if(flightTotal == "0") {
-	op = "NEWUSER";
-      } else {
-	op = "REFRESH";
+    stats = col[0] + " " + gt.gettext("segments") + "<br>" +
+      miles + " " + gt.gettext("miles") + "<br>" +
+      days + " " + gt.gettext("days") + " " + hours + ":" + min;
+    $("stats_ajax").style.display = 'none';
+    $("stats").innerHTML = stats;
+    flightTotal = col[0];
+    privacy = col[3];
+    if(! logged_in) {
+      elite = col[4];
+      editor = col[6];
+      document.forms['login'].challenge.value = col[7];
+      
+      // Does user have a PHP session open?  Log him in!
+      // Simulate login.php: "1;name;editor;elite"
+      if(col[5] != "demo") {
+	if(flightTotal == "0") {
+	  op = "NEWUSER";
+	} else {
+	  op = "REFRESH";
+	}
+	login("1;" + col[5] + ";" + col[6] + ";" + elite, op);
       }
-      login("1;" + col[5] + ";" + col[6] + ";" + elite, op);
     }
-  }
-  // Our PHP session has timed out, kick out the user
-  if(logged_in && col[5] == "demo") {
-    logout(gt.gettext("Your session has timed out, please log in again."));
+    // Our PHP session has timed out, kick out the user
+    if(logged_in && col[5] == "demo") {
+      logout(gt.gettext("Your session has timed out, please log in again."));
+    }
+  } else {
+    // URL_ROUTES
+    var flights = master[0];
+    var airports = master[1];
+    flightTotal = 1;
   }
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
