@@ -87,6 +87,15 @@
   padding: 10px;
 } 
 
+#quicksearch { 
+  right: 260px;
+  top: 55%;
+  position: absolute;
+  font-size:1em;
+  z-index: 1000;
+  padding: 10px;
+} 
+
 #ajaxloader { 
   left: 40%;
   top: 25%;
