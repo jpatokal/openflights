@@ -29,13 +29,7 @@ require_once("./php/db.php");
 	<div id="contentContainer">
 	  <div id="map" class="smallmap"></div>
 
-	    <div id="newairport" style="display: none">
-              <?php echo _("Duration") ?> <input type="text" id="duration" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DURATION');" value=""/>
-              <?php echo _("Distance") ?> <input type="text" id="distance" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DISTANCE');" value=""/> mi&nbsp;&nbsp;
-	      <input type="button" value="<?php echo _("Add new airport") ?>" align="middle" onclick='JavaScript:popNewAirport(null)'>	    
-	    </div>
-
-	      <div id="maptitle"><noscript><?php echo _("Sorry, OpenFlights requires JavaScript.") ?></noscript>
+            <div id="maptitle"><noscript><?php echo _("Sorry, OpenFlights requires JavaScript.") ?></noscript>
 	    </div>
 
 	    <div id="news" style="display: none">
@@ -45,6 +39,19 @@ require_once("./php/db.php");
 	    
 	    <div id="ajaxloader">
 	      <span id="ajaxstatus" style="display: none"><img src="/img/ajax-wait.gif" height=100 width=100/></span>
+	    </div>
+
+	    <div id="quicksearch" style="display: none">
+              <b><?php echo _("Quick search") ?></b><br>
+              <input type="text" name="qs" id="qs" size="60" onChange='airportCodeToAirport("qs")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="qsAC"></div>
+	      <input type="hidden" name="qsid" id="qsid"/>
+	      <input type="button" id="qsgo" value="<?php echo _("Go!") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>	    
+	    </div>
+
+	    <div id="newairport" style="display: none">
+              <?php echo _("Duration") ?> <input type="text" id="duration" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DURATION');" value=""/>
+              <?php echo _("Distance") ?> <input type="text" id="distance" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DISTANCE');" value=""/> mi&nbsp;&nbsp;
+	      <input type="button" value="<?php echo _("Add new airport") ?>" align="middle" onclick='JavaScript:popNewAirport(null)'>	    
 	    </div>
 	    
 	  </div>

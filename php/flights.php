@@ -116,6 +116,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $row["distance"] = gcPointDistance(array("x" => $row["sx"], "y" => $row["sy"]),
 				       array("x" => $row["dx"], "y" => $row["dy"]));
     $row["duration"] = gcDuration($row["distance"]);
+    $row["code"] = $row["al_name"] . " (" . $row["code"] . ")";
   }
 
   if($first) {

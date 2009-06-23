@@ -13,13 +13,19 @@ if(! $apid) {
   die('Error;Airport ID is mandatory');
 }
 
-// Title for this airport route data
-$sql = "SELECT name, iata, icao, city, country FROM airports WHERE apid=$apid";
+// Title for this airport route data plus count of routes
+// (count = 0 when airport exists but has no routes)
+$sql = "SELECT COUNT(src_apid) AS count, name, iata, icao, city, country FROM airports AS a LEFT OUTER JOIN routes AS r ON r.src_apid=a.apid WHERE a.apid=$apid GROUP BY src_apid";
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf ("%s (<b>%s</b>)<br><small>%s, %s</small>\n", $row["name"], format_apcode($row), $row["city"], $row["country"]);
+  printf ("%s;%s (<b>%s</b>)<br><small>%s, %s</small><br>%s routes\n", $row["count"], $row["name"], format_apcode($row), $row["city"], $row["country"], $row["count"]);
 } else {
   die('Error;No airport with ID $apid found');
+}
+if($row["count"] == 0) {
+  // No routes, abort
+  printf ("\n\n");
+  exit;
 }
 
 // List of all flights FROM this airport

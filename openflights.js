@@ -157,9 +157,13 @@ window.onload = function init(){
     }
   } else {
     $("news").style.display = 'inline';
+    $("quicksearch").style.display = 'inline';
 
     // Nope, set up hinting and autocompletes for editor
     initHintTextboxes();
+
+    new Ajax.Autocompleter("qs", "qsAC", "php/autocomplete.php",
+    			   {afterUpdateElement : getQuickSearchApid});
 
     new Ajax.Autocompleter("src_ap", "src_apAC", "php/autocomplete.php",
     			   {afterUpdateElement : getSelectedApid});
@@ -438,6 +442,9 @@ function xmlhttpPost(strURL, id, param) {
   var xmlHttpReq = false;
   var self = this;
   var query = "";
+
+  if(! initializing) closeNews();
+
   // Mozilla/Safari
   if (window.XMLHttpRequest) {
     self.xmlHttpReq = new XMLHttpRequest();
@@ -482,6 +489,20 @@ function xmlhttpPost(strURL, id, param) {
       if(strURL == URL_GETCODE) {
 	var cols = self.xmlHttpReq.responseText.split(";");
 	switch(param) {
+	case 'qs':
+	  var alid = cols[0];
+	  if(alid != "" && alid != 0) {
+	    $('qsid').value = cols[0].split(":")[1];
+	    $('qs').value = cols[1];
+	    $('qs').style.color = '#000000';
+	    $('qsgo').disabled = false;
+	  } else {
+	    $('qsid').value = 0;
+	    $('qs').style.color = '#FF0000';
+	    $('qsgo').disabled = true;
+	  }
+	  break;
+
 	case 'airline':
 	case 'airline1':
 	case 'airline2':
@@ -551,6 +572,8 @@ function xmlhttpPost(strURL, id, param) {
 	    $("maptitle").innerHTML = getMapTitle(true);
 	  } else {
 	    closePopup();
+	    $('qs').value = $('qs').hintText;
+	    $('qs').style.color = '#888';
 	  }
 	  
 	  // Map now completely drawn for the first time
@@ -1168,9 +1191,10 @@ function updateMap(str, id){
     }
   } else {
     // Route map
+    flightTotal = stats.split(';')[0];
+    desc = stats.split(';')[1];
     var coreid = "R" + id + "," + id;
-    $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + stats + " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(stats) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List all routes from this airport") + "'></a>";
-    flightTotal = 1;
+    $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + desc + " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List all routes from this airport") + "'></a>";
   }
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
@@ -1828,6 +1852,21 @@ function getSelectedPlid(text, li) {
 }
 
 //
+// Quick search
+//
+
+// Autocompleted airport
+function getQuickSearchApid(text, li) {
+  $('qsid').value = li.id.split(":")[1];
+  $('qsgo').disabled = false;
+}
+
+// Show map!
+function goQuickSearch() {
+  xmlhttpPost(URL_ROUTES, $('qsid').value);
+}
+
+//
 // Handle the "add new/edit trip" buttons in input
 // thisTrip can be "ADD" (new), "EDIT" (edit selected), or a numeric trip id (edit this)
 //
@@ -1914,6 +1953,11 @@ function airportCodeToAirport(type) {
     if(markers[m].code == code) {
       selectAirport(markers[m].apid, true);
       found = true;
+      if(type == 'qs') {
+	$('qsid').value = markers[m].apid;
+	$('qsgo').disabled = false;
+	$('qsgo').focus();
+      }
       break;
     }
   }
@@ -2688,6 +2732,7 @@ function closePane() {
   if(currentPane == "input" || currentPane == "multiinput") {
     unmarkAirports();
     $("newairport").style.display = 'none';
+    $("quicksearch").style.display = 'inline';
   }
   if(currentPane == "result") {
     apid = 0;
@@ -2753,6 +2798,7 @@ function openDetailedInput(param) {
   }
   input_toggle = "src_ap";
   input_al_toggle = "airline";
+  $("quicksearch").style.display = 'none';
   $("newairport").style.display = 'inline';
   $("input_status").innerHTML = "";
 }
