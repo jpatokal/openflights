@@ -31,6 +31,20 @@ if($action == "RECORD") {
     exit;
   }
 
+  // Check for duplicates (by IATA)
+  if($iata != "") {
+    $sql = "SELECT * FROM airports WHERE iata='" . mysql_real_escape_string($iata) . "'";
+    // Editing an existing entry, so make sure we're not overwriting something else
+    if($apid && $apid != "") {
+      $sql .= " AND apid != " . mysql_real_escape_string($apid);
+    }
+    $result = mysql_query($sql, $db);
+    if(mysql_num_rows($result) != 0) {
+      printf("0;" . _("Sorry, an airport using the IATA code %s exists already.  Please double-check."), $iata);
+      exit;
+    }
+  }
+
   // Check for duplicates (by ICAO)
   if($icao != "") {
     $sql = "SELECT * FROM airports WHERE icao='" . mysql_real_escape_string($icao) . "'";
