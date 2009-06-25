@@ -29,7 +29,8 @@ var autocompleted = {"src_ap": false, "dst_ap": false, "airline": false,
 		     "src_ap1": false, "dst_ap1": false, "airline1": false, 
 		     "src_ap2": false, "dst_ap2": false, "airline2": false, 
 		     "src_ap3": false, "dst_ap3": false, "airline3": false, 
-		     "src_ap4": false, "dst_ap4": false, "airline4": false };
+		     "src_ap4": false, "dst_ap4": false, "airline4": false,
+		     "qs": false};
 
 // Some helpers for multiinput handling
 var multiinput_order = [ "src_ap1", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
@@ -286,7 +287,9 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
 // Draw airport (or just update marker if it exists already)
 // Returns true if a new marker was created, or false if it existed already
 //
-function drawAirport(airportLayer, apdata, name, city, country, count, formattedName, opacity, id) {
+// coreid -- apid of "core" airport at the center of a map of routes
+//
+function drawAirport(airportLayer, apdata, name, city, country, count, formattedName, opacity, coreid) {
   var apcols = apdata.split(":");
   var code = apcols[0];
   var apid = apcols[1];
@@ -308,7 +311,8 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     colorIndex = Math.max(1, colorIndex);
   }
   // Max out at top color
-  if(colorIndex >= airportIcons.length) {
+  // Core airport of route map always uses max color
+  if(colorIndex >= airportIcons.length || apid == coreid) {
     colorIndex = airportIcons.length - 1;
   }
   // This should never happen
@@ -332,6 +336,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
  	markers[m].setUrl(airportIcons[colorIndex][0]);
       }
       markers[m].setOpacity(opacity);
+      markers[m].coreid = coreid;
       return false;
     }
   }
@@ -351,6 +356,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 
   // These are used to do airport lookups
   marker.apid = apid;
+  marker.coreid = coreid;
   marker.code = code;
   marker.count = count;
   marker.name = formattedName;
@@ -370,19 +376,19 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     // 2. system is in "demo mode", or
     // 3. privacy is set to (O)pen
     desc = this.marker.desc;
-
+    coreid = this.marker.coreid;
     if( logged_in || demo_mode || privacy == "O") {
 	// Add toolbar to popup
 	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
 	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
-	if(id == 0) {
+	if(coreid == 0) {
 	  // Get list of user flights
 	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(this.marker.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
 	} else {
 	  if(code.length == 3) {
 	    // Get list of airport routes
-	    coreid = "R" + apid + "," + id;
-	    desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+	    idstring = "R" + apid + "," + coreid;
+	    desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
 	  }
 	}
 	if(code.length == 3) {
@@ -496,6 +502,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $('qs').value = cols[1];
 	    $('qs').style.color = '#000000';
 	    $('qsgo').disabled = false;
+	    $('qsgo').focus();
 	  } else {
 	    $('qsid').value = 0;
 	    $('qs').style.color = '#FF0000';
@@ -574,6 +581,8 @@ function xmlhttpPost(strURL, id, param) {
 	    closePopup();
 	    $('qs').value = $('qs').hintText;
 	    $('qs').style.color = '#888';
+	    $('qsid').value = 0;
+	    map.zoomToExtent(getVisibleDataExtent(lineLayer));
 	  }
 	  
 	  // Map now completely drawn for the first time
@@ -1214,7 +1223,10 @@ function updateMap(str, id){
 				     parseFloat(rCol[4]), parseFloat(rCol[5]),
 				     rCol[6], rCol[7], color, stroke));
     }
-    
+  }
+
+  // Route maps draw the core airport even if there are no routes
+  if(flightTotal != "0" || id != 0) {
     var rows = airports.split("\t");
     
     // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
@@ -1285,8 +1297,12 @@ function listFlights(str, desc, id) {
       table.unshift("<span style='float: right'>" + gt.gettext("Export") + " <input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
-    table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Miles") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th><th>" + gt.gettext("Seat") + "</th><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Trip") + "</th><th>" + gt.gettext("Note") + "</th>");
-    if(logged_in) {
+    table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Miles") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th>");
+    if(!route) {
+      table.push("<th>" + gt.gettext("Seat") + "</th><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Trip") + "</th>");
+    }
+    table.push("<th>" + gt.gettext("Note") + "</th>");
+    if(logged_in || route) {
       table.push("<th class=\"unsortable\">" + gt.gettext("Action") + "</th>");
     }
     table.push("</tr>");
@@ -1323,17 +1339,23 @@ function listFlights(str, desc, id) {
 		 "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
 		      "<td>" + code + "</td><td>" + date + "</td><td>" + col[6] + "</td><td>" + col[7] +
-		      "</td><td>" + plane + "</td><td>" + seat +
-		      "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
-		      "</td><td>" + trip + "</td>" +
-		      "</td><td>" + col[16].substring(0,15) + "</td>");
-	
-      if(logged_in && !route) {
-	table.push("<td>");
-	table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
-	table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
-	table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
-	table.push("</td>");
+		 "</td><td>" + plane + "</td>");
+      if(!route) {
+	table.push("<td>" + seat +
+		   "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
+		   "</td><td>" + trip + "</td>");
+      }
+      table.push("<td>" + col[16].substring(0,15) + "</td>");
+      if(route) {
+	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + gt.gettext("Buy tickets on Kayak.com") + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
+      } else {
+	if(logged_in) {
+	  table.push("<td>");
+	  table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
+	  table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
+	  table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
+	  table.push("</td>");
+	}
       }
       table.push("</tr>");
       fidList.push(fid);
@@ -1859,6 +1881,7 @@ function getSelectedPlid(text, li) {
 function getQuickSearchApid(text, li) {
   $('qsid').value = li.id.split(":")[1];
   $('qsgo').disabled = false;
+  autocompleted['qs'] = true;
 }
 
 // Show map!
@@ -2820,6 +2843,8 @@ function openBasicInput(param) {
   }
 
   openPane("multiinput");
+  $("quicksearch").style.display = 'none';
+  $("newairport").style.display = 'inline';
   $("multiinput_status").innerHTML = "";
   clearInput();
   input_toggle = multiinput_order[0];
