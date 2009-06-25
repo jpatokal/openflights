@@ -25,7 +25,7 @@ if($name) {
     $_SESSION['email'] = $myrow["email"];
     $_SESSION['editor'] = $myrow["editor"];
     $_SESSION['elite'] = $myrow["elite"];
-    if($_SESSION['locale'] != $myrow["locale"]) {
+    if($_SESSION['locale'] && $_SESSION['locale'] != $myrow["locale"]) {
       $rc = 2; // force reload, so UI is changed into user's language
     } else {
       $rc = 1;

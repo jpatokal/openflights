@@ -58,6 +58,7 @@ var INPUT_MAXLEN = 50;
 var SELECT_MAXLEN = 25;
 
 var COLOR_NORMAL = "#ee9900"; //orange
+var COLOR_ROUTE = "#eeee00"; //yellow
 var COLOR_TRAIN = "#ee5555"; //dull red
 var COLOR_ROAD = "#9f6500"; //brown
 var COLOR_SHIP = "#00ccff"; //cyany blue
@@ -142,15 +143,19 @@ window.onload = function init(){
   
   
   airportLayer = new OpenLayers.Layer.Markers(gt.gettext("My Airports"));
-  
   map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
   
+  initHintTextboxes();
+    new Ajax.Autocompleter("qs", "qsAC", "php/autocomplete.php",
+			 {afterUpdateElement : getQuickSearchApid});  
+
   // Extract any arguments from URL
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
+  query = parseArgument("query");
 
   // Are we viewing another user's flights or trip?
-  if(filter_user != "0" || filter_trid != 0) {
+  if(filter_user != "0" || filter_trid != 0 || query != 0) {
     demo_mode = false;
     $("loginstatus").style.display = 'inline';
     if(filter_trid != 0) {
@@ -161,11 +166,6 @@ window.onload = function init(){
     $("quicksearch").style.display = 'inline';
 
     // Nope, set up hinting and autocompletes for editor
-    initHintTextboxes();
-
-    new Ajax.Autocompleter("qs", "qsAC", "php/autocomplete.php",
-    			   {afterUpdateElement : getQuickSearchApid});
-
     new Ajax.Autocompleter("src_ap", "src_apAC", "php/autocomplete.php",
     			   {afterUpdateElement : getSelectedApid});
     new Ajax.Autocompleter("dst_ap", "dst_apAC", "php/autocomplete.php",
@@ -214,7 +214,11 @@ window.onload = function init(){
 
   OpenLayers.Util.alphaHack = function() { return false; };
 
-  xmlhttpPost(URL_MAP, 0, true);
+  if(query != 0) {
+    xmlhttpPost(URL_ROUTES, 0, query);
+  } else {
+    xmlhttpPost(URL_MAP, 0, true);
+  }
 }
 
 // Extract arguments from URL (/trip/xxx or /user/xxx)
@@ -567,7 +571,7 @@ function xmlhttpPost(strURL, id, param) {
 	  openPane("result");
 	} else {
 	  // Zoom map to fit when first loading another's flights/trip
-	  updateMap(str, id);
+	  updateMap(str, strURL);
 	  if(! logged_in && ! demo_mode && initializing) {
 	    closePane();
 	    map.zoomToExtent(airportLayer.getDataExtent());
@@ -582,6 +586,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $('qs').value = $('qs').hintText;
 	    $('qs').style.color = '#888';
 	    $('qsid').value = 0;
+	    $('qsgo').disabled = true;
 	    map.zoomToExtent(getVisibleDataExtent(lineLayer));
 	  }
 	  
@@ -1146,7 +1151,7 @@ function clearMap() {
 }
 
 // Reinsert all flights, airports from database result
-function updateMap(str, id){
+function updateMap(str, url){
   lineLayer.destroyFeatures();
 
   // Default all markers to be turned off
@@ -1159,10 +1164,11 @@ function updateMap(str, id){
   var stats = master[0];
   var flights = master[1];
   var airports = master[2];
+  var col = stats.split(";");
+  var id = 0;
 
-  if(id == 0) {
+  if(url == URL_MAP) {
     // User flight map
-    var col = stats.split(";");
     var miles = col[1];
     if(! miles) miles = 0;
     var duration = col[2]; // minutes
@@ -1200,8 +1206,9 @@ function updateMap(str, id){
     }
   } else {
     // Route map
-    flightTotal = stats.split(';')[0];
-    desc = stats.split(';')[1];
+    id = col[0];
+    flightTotal = col[1];
+    desc = col[2];
     var coreid = "R" + id + "," + id;
     $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + desc + " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List all routes from this airport") + "'></a>";
   }
@@ -1217,8 +1224,12 @@ function updateMap(str, id){
       } else {
 	stroke = "solid";
       }
-      color = modecolors[rCol[9]];
-      if(!color) color = COLOR_NORMAL;
+      if(url == URL_ROUTES) {
+	color = COLOR_ROUTE;
+      } else {
+	color = modecolors[rCol[9]];
+	if(!color) color = COLOR_NORMAL;
+      }
       lineLayer.addFeatures(drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]),
 				     parseFloat(rCol[4]), parseFloat(rCol[5]),
 				     rCol[6], rCol[7], color, stroke));
@@ -1226,7 +1237,7 @@ function updateMap(str, id){
   }
 
   // Route maps draw the core airport even if there are no routes
-  if(flightTotal != "0" || id != 0) {
+  if(flightTotal != "0" || url == URL_ROUTES) {
     var rows = airports.split("\t");
     
     // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
@@ -1347,7 +1358,7 @@ function listFlights(str, desc, id) {
       }
       table.push("<td>" + col[16].substring(0,15) + "</td>");
       if(route) {
-	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + gt.gettext("Buy tickets on Kayak.com") + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
+	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=zHW24zij/dU&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + gt.gettext("Buy tickets on Kayak.com") + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
       } else {
 	if(logged_in) {
 	  table.push("<td>");
@@ -1879,9 +1890,11 @@ function getSelectedPlid(text, li) {
 
 // Autocompleted airport
 function getQuickSearchApid(text, li) {
-  $('qsid').value = li.id.split(":")[1];
+  var apid = li.id.split(":")[1];
+  $('qsid').value = apid; 
   $('qsgo').disabled = false;
   autocompleted['qs'] = true;
+  selectAirport(apid, false, true); // pop it up if we can find it
 }
 
 // Show map!
@@ -2455,7 +2468,7 @@ function selectAirport(apid, select, quick) {
       break;
     }
   }
-  if (!found) {
+  if (!found && !quick) {
     if(confirm("This airport is currently filtered out. Clear filter?")) {
       clearFilter(false);
     }
@@ -2578,21 +2591,34 @@ function settings() {
 }
 
 //
-// Let users log in by pressing ENTER (from onKeyPress) or TAB (from onChange)
+// Handle keypresses
+// 1. Let users log in by pressing ENTER (from onKeyPress) or TAB (from onChange)
+// 2. Reset autocompleted entries if user hits BACKSPACE
 // 
-function submitEnter(e) {
+function keyPress(e, element) {
   var keycode;
-  if(e == "CHANGE") {
-    if(logged_in == "pending") return true;
-  } else {
-    if (window.event) keycode = window.event.keyCode;
-    else if (e) keycode = e.which;
-    else return true;
-  }
+  if (window.event) keycode = window.event.keyCode;
+  else if (e) keycode = e.which;
 
-  if (keycode == 13 || e == "CHANGE") {
-    logged_in = "pending";
-    xmlhttpPost("/php/login.php");
+  if(element == "login") {
+    if(e == "CHANGE") {
+      if(logged_in == "pending") return true;
+    }
+    if (keycode == 13 || e == "CHANGE") {
+      logged_in = "pending";
+      xmlhttpPost("/php/login.php");
+    }
+  } else {
+    if(keycode == 8 && autocompleted[element]) {
+      $(element).value = "";
+      $(element + 'id').value = 0;
+      autocompleted[element] = false;
+      if(element.startsWith("src_ap") || element.startsWith("dst_ap")) {
+	invalidateAirport(element);
+      }
+      if(element == 'qs') $('qsgo').disabled = true;
+      return false; // swallow backspace
+    }
   }
   return true;
 }
@@ -2755,7 +2781,7 @@ function closePane() {
   if(currentPane == "input" || currentPane == "multiinput") {
     unmarkAirports();
     $("newairport").style.display = 'none';
-    $("quicksearch").style.display = 'inline';
+    $("qsmini").style.display = 'block';
   }
   if(currentPane == "result") {
     apid = 0;
@@ -2822,6 +2848,7 @@ function openDetailedInput(param) {
   input_toggle = "src_ap";
   input_al_toggle = "airline";
   $("quicksearch").style.display = 'none';
+  $("qsmini").style.display = 'none';
   $("newairport").style.display = 'inline';
   $("input_status").innerHTML = "";
 }
@@ -2844,6 +2871,7 @@ function openBasicInput(param) {
 
   openPane("multiinput");
   $("quicksearch").style.display = 'none';
+  $("qsmini").style.display = 'none';
   $("newairport").style.display = 'inline';
   $("multiinput_status").innerHTML = "";
   clearInput();

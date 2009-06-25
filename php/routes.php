@@ -13,15 +13,28 @@ $alid = $HTTP_POST_VARS["alid"];
 if(! $alid) {
   $alid = $HTTP_GET_VARS["alid"];
 }
+if(! $apid && ! $alid) {
+  $param = $HTTP_POST_VARS["param"];
+  if($param) {
+    $sql = "SELECT apid FROM airports WHERE iata='" . mysql_real_escape_string($param) . "'";
+    $result = mysql_query($sql, $db);
+    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      $apid = $row["apid"];
+    } else {
+      die('Error;Airport code ' . $param . ' not found');
+    }
+  } else {
+    die('Error;Airport or airline ID is mandatory');
+  }
+}
 
 if($apid) {
+  $apid = mysql_real_escape_string($apid);
   $condition = "r.src_apid=$apid";
 }
 if($alid) {
+  $alid = mysql_real_escape_string($alid);
   $condition = "r.alid=$alid";
-}
-if(! $apid && ! $alid) {
-  die('Error;Airport or airline ID is mandatory');
 }
 
 // Title for this airport route data plus count of routes
@@ -29,7 +42,7 @@ if(! $apid && ! $alid) {
 $sql = "SELECT COUNT(src_apid) AS count, apid, x, y, name, iata, icao, city, country, timezone, dst FROM airports AS a LEFT OUTER JOIN routes AS r ON r.src_apid=a.apid WHERE a.apid=$apid GROUP BY src_apid";
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  printf ("%s;%s (<b>%s</b>)<br><small>%s, %s</small><br>%s routes\n", $row["count"], $row["name"], format_apcode($row), $row["city"], $row["country"], $row["count"]);
+  printf ("%s;%s;%s (<b>%s</b>)<br><small>%s, %s</small><br>%s routes\n", $apid, $row["count"], $row["name"], format_apcode($row), $row["city"], $row["country"], $row["count"]);
 } else {
   die('Error;No airport with ID $apid found');
 }
