@@ -42,10 +42,10 @@ require_once("./php/db.php");
 	    </div>
 
 	    <div id="quicksearch" style="display: none">
-              <b><?php echo _("Quick search") ?></b><br>
+              <b><?php echo _("Quick airport search") ?></b><br>
               <input type="text" name="qs" id="qs" size="60" onChange='airportCodeToAirport("qs")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="qsAC"></div>
 	      <input type="hidden" name="qsid" id="qsid"/>
-	      <input type="button" id="qsgo" value="<?php echo _("Go!") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>	    
+	      <input type="button" id="qsgo" value="<?php echo _("Go!") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>	    
 	    </div>
 
 	    <div id="newairport" style="display: none">

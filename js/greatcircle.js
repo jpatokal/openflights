@@ -165,6 +165,19 @@ function isValid(point) {
         return( false );
 }
 
+// Compute extent for visible data (-180 to 180)
+// Do not enlarge (zoom out), only shrink it (zoom in)
+function getVisibleDataExtent(layer) {
+  var bounds = layer.getDataExtent();
+  if(bounds.left < -180 && bounds.right > 180) {
+    // do nothing
+  } else {
+    if(bounds.left < -180) bounds.left += 360;
+    if(bounds.right > 180) bounds.right -= 360;
+  }
+  return bounds;
+}
+
 ////
 //// And some totally unrelated helper functions
 ////

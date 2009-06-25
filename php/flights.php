@@ -67,8 +67,8 @@ if(substr($apid, 0, 1) == "R") {
   } else {
     $match = "r.src_apid=$coreid AND r.dst_apid=$apid"; // flight from $coreid to $apid only
   }
-  $sql = "SELECT s.x AS sx,s.y AS sy,s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.x AS dx,d.y AS dy,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,l.iata as code, '-' as src_date, '-' as src_time, '-' as distance, '-:-' AS duration, '' as seat, '' as seat_type, '' as class, '' as reason, r.equipment AS name, '' as registration,rid AS fid,l.alid,concat('Stops: ', stops) as note,NULL as trid,'N' AS opp,NULL as plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,'F' AS mode FROM airports AS s,airports AS d, airlines AS l,routes AS r WHERE $match AND r.src_apid=s.apid AND r.dst_apid=d.apid AND r.alid=l.alid";
- 
+  $sql = "SELECT s.x AS sx,s.y AS sy,s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.x AS dx,d.y AS dy,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,l.iata as code, '-' as src_date, '-' as src_time, '-' as distance, '-:-' AS duration, '' as seat, '' as seat_type, '' as class, '' as reason, r.equipment AS name, '' as registration,rid AS fid,l.alid,'' AS note,NULL as trid,'N' AS opp,NULL as plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,'F' AS mode,codeshare,stops FROM airports AS s,airports AS d, airlines AS l,routes AS r WHERE $match AND r.src_apid=s.apid AND r.dst_apid=d.apid AND r.alid=l.alid";
+
 } else {
   // List of all this user's flights
   $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
@@ -112,11 +112,22 @@ if($export) {
   printf("Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n");
 }
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  $note = $row["note"];
+
   if($route) {
     $row["distance"] = gcPointDistance(array("x" => $row["sx"], "y" => $row["sy"]),
 				       array("x" => $row["dx"], "y" => $row["dy"]));
     $row["duration"] = gcDuration($row["distance"]);
     $row["code"] = $row["al_name"] . " (" . $row["code"] . ")";
+    $note = "";
+    if($row["stops"] == "0") {
+      $note = "Direct";
+    } else {
+      $note = $row["stops"] . " stops";
+    }
+    if($row["codeshare"] == "Y") {
+      $note = "Codeshare";
+    }
   }
 
   if($first) {
@@ -147,7 +158,6 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }
 
   if($export) {
-    $note = $row["note"];
     // Escape strings with commas
     if(strpos($note, ",") !== false) {
       $note = "\"" . $note . "\"";
@@ -166,7 +176,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	   $src_apid, $dst_apid, $row["alid"], $row["plid"]);
   } else {
     // Filter out any carriage returns or tabs
-    $note = str_replace(array("\n", "\r", "\t"), "", $row["note"]);
+    $note = str_replace(array("\n", "\r", "\t"), "", $note);
 
     printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code, $row["src_time"], $row["mode"]);
   }
