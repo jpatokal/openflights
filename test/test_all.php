@@ -49,6 +49,11 @@ $test = &new TestSuite('Autocomplete');
 $test->addTestFile('autocomplete.php');
 $test->run(new HtmlReporter());
 
+// Route maps
+$test = &new TestSuite('Routes');
+$test->addTestFile('routes.php');
+$test->run(new HtmlReporter());
+
 // ...and cleanup after all that
 $test = &new TestSuite('Cleanup');
 $test->addTestFile('cleanup.php');

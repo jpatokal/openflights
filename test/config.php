@@ -3,6 +3,15 @@
 // Address of OpenFlights install
 $webroot = 'http://192.168.1.4:8888/';
 
+// Database configuration
+$dbhost = "localhost";
+$dbuser = "openflights";
+$dbname = "flightdb2";
+
+//
+// TEST CASES
+//
+
 // Settings for automated test user
 $settings = array('name' => 'autotest',
 		  'password' => 'autotest',
@@ -125,10 +134,9 @@ $trip = array('name' => 'AutoTest Trip',
 	      'url' => 'http://autotrip.example',
 	      'privacy' => 'Y');
 
-// Database configuration
-$dbhost = "localhost";
-$dbuser = "openflights";
-$dbname = "flightdb2";
+$route = array('core_iata' => 'TOD',
+	       'noroute_iata' => 'SQQ',
+	       'invalid_apid' => '99999');
 
 // *** END OF CONFIGURATION ***
 

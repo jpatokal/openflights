@@ -81,7 +81,9 @@ class ChangePasswordTest extends WebTestCase {
     $msg = $this->post($webroot . "php/settings.php", $params);
     $this->assertText('2;');
 
-    // Validate new password
+    
+    // Log out and validate new password
+    $msg = $this->post($webroot . "php/logout.php");
     login($this, $settings["name"], "newpw");
     $this->assertText('1;');
 
