@@ -1,0 +1,1227 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenFlights\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
+"Language-Team: Gustav Gnosspelius <gosweede at lindesign.se>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Swedish\n"
+
+msgid "Flight logging, mapping, stats and sharing"
+msgstr "Flygloggar, kartor, statistik att dela med sig"
+
+# Duration of flight (time)
+msgid "Duration"
+msgstr "Längd"
+
+# of flight
+msgid "Distance"
+msgstr "Distans"
+
+msgid "Add new airport"
+msgstr "Lägg till ny flygplats"
+
+msgid "Sorry, OpenFlights requires JavaScript."
+msgstr "Tyvärr, OpenFlights kräver JavaScript"
+
+# New features on the OpenFlights website
+msgid "News"
+msgstr "Nyheter"
+
+msgid "Language"
+msgstr "Språk"
+
+msgid "Username"
+msgstr "Användarnamn"
+
+msgid "Password"
+msgstr "Lösenord"
+
+msgid "Log in"
+msgstr "Logga in"
+
+msgid "Sign up"
+msgstr "Registrera"
+
+msgid "Analyze"
+msgstr "Analysera"
+
+msgid "Top 10"
+msgstr "Topp 10"
+
+# The flight selection filter on the main page
+msgid "Filter"
+msgstr "Filtrera"
+
+# Generic term for any kind of transport (flight, road, sea, train)
+msgid "Carrier"
+msgstr "Bolag"
+
+msgid "Year"
+msgstr "År"
+
+msgid "Trip"
+msgstr "Resa"
+
+# Show additional filter options
+msgid "More..."
+msgstr "Mer..."
+
+# Class of travel (economy, business, first)
+msgid "Class"
+msgstr "Klass"
+
+# Method of travel (by plane, by road, by ship, by train)
+msgid "Mode"
+msgstr "Typ"
+
+# User's own notes on this flight
+msgid "Note"
+msgstr "Anteckning"
+
+msgid "Reason"
+msgstr "Anledning"
+
+# Plane registration number
+msgid "Registration"
+msgstr "Registrering"
+
+msgid "Control panel"
+msgstr "Kontrollpanel"
+
+msgid "New flight"
+msgstr "Nytt flyg"
+
+msgid "List flights"
+msgstr "Lista flyg"
+
+msgid "Import"
+msgstr "Importera"
+
+msgid "Settings"
+msgstr "Inställningar"
+
+msgid "Logout"
+msgstr "Avsluta"
+
+msgid "Add new flight"
+msgstr "Lägg till nytt flyg"
+
+msgid "Edit flight"
+msgstr "Ändra flyg"
+
+msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgstr "De <font color='blue'>blåmarkerade</font> fälten är obligatoriska. Klicka antingen på flygplatser i kartan eller sök via stadsnamn eller flygplatskod."
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Departure and arrival time"
+msgstr "Avgångs- och ankomstid"
+
+msgid "Add new trip"
+msgstr "Lägg till ny resa"
+
+msgid "Edit this trip"
+msgstr "Ändra den här resan"
+
+# Source airport
+msgid "From"
+msgstr "Från"
+
+#, php-format
+msgid "Enter city name or airport code"
+msgstr "Skriv stadsnamn eller flygplatskod"
+
+msgid "Airport search"
+msgstr "Sök flygplats"
+
+msgid "Swap To and From airports"
+msgstr "Växla Till/Från flygplatser"
+
+msgid "Plane"
+msgstr "Flygplan"
+
+msgid "Enter plane model"
+msgstr "Skriv flygplansmodell"
+
+# Plane registration number (abbreviated)
+msgid "Reg."
+msgstr "Reg."
+
+# Destination airport
+msgid "To"
+msgstr "Till"
+
+msgid "Economy"
+msgstr "Ekonomi"
+
+msgid "Premium Eco."
+msgstr "Ekonomi Plus"
+
+msgid "Business"
+msgstr "Affärsklass"
+
+msgid "First"
+msgstr "Första klass"
+
+# By plane
+msgid "Flight"
+msgstr "Flyg"
+
+# By car, bus, etc
+msgid "Road"
+msgstr "Väg"
+
+msgid "Ship"
+msgstr "Fartyg"
+
+msgid "Train"
+msgstr "Tåg"
+
+# Seat number
+msgid "Nr"
+msgstr "Nr"
+
+msgid "Seat"
+msgstr "Säte"
+
+# Seat type (window, aisle, middle)
+msgid "Type"
+msgstr "Plats"
+
+msgid "Window"
+msgstr "Fönster"
+
+msgid "Aisle"
+msgstr "Gång"
+
+msgid "Middle"
+msgstr "Mitten"
+
+msgid "Work"
+msgstr "Arbete"
+
+msgid "Leisure"
+msgstr "Nöje"
+
+msgid "Crew"
+msgstr "Personal"
+
+msgid "Other"
+msgstr "Annat"
+
+msgid "Enter airline name or code"
+msgstr "Skriv flygbolagsnamn eller kod"
+
+msgid "Airline search"
+msgstr "Sök flygbolag"
+
+msgid "Add"
+msgstr "Lägg till"
+
+msgid "Save this flight"
+msgstr "Spara detta flyg"
+
+msgid "Clear"
+msgstr "Rensa"
+
+msgid "Reset this entry form"
+msgstr "Återställ dessa inmatningar"
+
+# Close flight editor and return to main screen
+msgid "Exit"
+msgstr "Avbryt"
+
+msgid "Exit flight editor"
+msgstr "Avbryt ändringar"
+
+msgid "Save changes"
+msgstr "Spara ändringar"
+
+msgid "Save changes made to this flight"
+msgstr "Spara ändringar till detta flyg"
+
+msgid "Delete"
+msgstr "Radera"
+
+msgid "Delete this flight"
+msgstr "Radera detta flyg"
+
+msgid "Previous flight"
+msgstr "Föregående flyg"
+
+msgid "Next flight"
+msgstr "Nästa flyg"
+
+msgid "Switch to basic editor"
+msgstr "Växla till enkelt läge"
+
+# Switch to "basic" flight editor
+msgid "Basic"
+msgstr "Enkelt"
+
+msgid "Add new flights"
+msgstr "Lägg till nya flyg"
+
+msgid "Airline"
+msgstr "Flygbolag"
+
+msgid "Save these flights"
+msgstr "Spara dessa flyg"
+
+msgid "Exit without saving"
+msgstr "Avbryt utan att spara"
+
+msgid "Add new row for faster entry of multiple flights"
+msgstr "Lägg till rad för att snabbare lägga till flera flyg"
+
+# Add new row for faster data entry
+msgid "More"
+msgstr "Fler"
+
+msgid "Remove a row"
+msgstr "Ta bort en rad"
+
+# Remove an entry row
+msgid "Less"
+msgstr "Färre"
+
+msgid "Switch to detailed editor"
+msgstr "Växla till avancerat läge"
+
+# Switch to "detailed" editor
+msgid "Detailed"
+msgstr "Avancerat"
+
+#, php-format
+msgid "Your session has timed out, please log in again."
+msgstr "Din session har gått ut, var vänlig och logga in igen."
+
+#, php-format
+msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgstr "Tyvärr, det finns redan en flygplats med ICAO kod %s. Var vänlig och kontrollera."
+
+msgid "Adding new airport failed:"
+msgstr "Flygplatsen kunde inte läggas till:"
+
+#, php-format
+msgid "New airport successfully added."
+msgstr "Den nya flygplatsen har lagts till."
+
+#, php-format
+msgid "Airport successfully edited."
+msgstr "Flygplatsen har blivit ändrad."
+
+#, php-format
+msgid "Editing airport failed:"
+msgstr "Flygplatsen kunde inte ändras:"
+
+msgid "Not logged in, aborting"
+msgstr "Inte inloggad, avbryter"
+
+msgid "Unknown"
+msgstr "Okänt"
+
+# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
+msgid "was:"
+msgstr "var:"
+
+msgid "No airline"
+msgstr "Inget flygbolag"
+
+msgid "Upload again"
+msgstr "Ladda upp igen"
+
+msgid "Cancel this import and return to file upload page"
+msgstr "Avbryt importering och återgå till att ladda upp fil"
+
+msgid "Upload"
+msgstr "Ladda upp"
+
+msgid "Upload successful.  Parsing..."
+msgstr "Uppladdningen lyckades. Tolkar..."
+
+msgid "Results"
+msgstr "Resultat"
+
+msgid "Upload failed!"
+msgstr "Uppladdningen misslyckades!"
+
+msgid "Importing..."
+msgstr "Importerar..."
+
+msgid "Sorry, this file does not appear to be FlightMemory HTML."
+msgstr "Tyvärr, den här filen verkar inte vara FlightMemory HTML."
+
+msgid "Sorry, this HTML file does not appear contain FlightMemory FlightData."
+msgstr "Tyvärr, den här HTML-filen verkar inte innehålla data från FlightMemory."
+
+msgid "Sorry, the filename must end in '.csv'."
+msgstr "Tyvärr, filnamnet måste sluta med '.csv'."
+
+msgid "Unable to open CSV file."
+msgstr "Kunde inte öppnta CSV-filen."
+
+msgid "Miles"
+msgstr "Mil"
+
+# Flight duration
+msgid "Time"
+msgstr "Tid"
+
+# Plane registration number
+msgid "Reg"
+msgstr "Reg"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+# Explanation of colors and codes for import
+msgid "Key to results"
+msgstr "Förklaring"
+
+msgid "Color"
+msgstr "Färg"
+
+msgid "Meaning"
+msgstr "Betydelse"
+
+# No color
+msgid "None"
+msgstr "Färglös"
+
+msgid "Exact match"
+msgstr "Exakt matchning"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Probable match, please verify"
+msgstr "Matchar antagligen, vänligen kolla"
+
+msgid "Warning"
+msgstr "Varning"
+
+msgid "No matches, will be added as new"
+msgstr "Ingen matching, kommer läggas till som ny"
+
+msgid "Error"
+msgstr "Fel"
+
+msgid "No matches, please correct and reupload"
+msgstr "Inga matchningar, vänligen rätta och försök igen"
+
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgstr "Obs: Denna CSV-fil innehåller OpenFlight ID-koder i kolumnerna 15-18. Alla ändringar av kolumnerna för flygplatser, flygbolag och/eller flygplan kommer överskrivas med dessa ID-koder."
+
+msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgstr "Din data innehåller okända flygplatser. Var vänlig och lägg till dem till databasen och försök igen."
+
+msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgstr "Din data innehåller okända flygbolag. Detta betyder vanligen att flygbolagskoden i flygnumret inte hittades och att flygbolagsnamnet inte har speciferats. Var vänlig och rätta eller ta bort flygbolagskoden och försök igen."
+
+msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
+msgstr "Några av datumen kunde inte tolkas. Var vänlig och ändra dem till något av dessa format: ÅÅÅÅ-MM-DD, DD.MM.ÅÅÅÅ, MM/DD/ÅÅÅÅ, eller endast ÅÅÅÅ. Obs DD/MM/ÅÅÅÅ är <b>inte</b> tillåtet."
+
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgstr "Din data innehåller rese-ID som antingen är odefinierade eller inte tillhör dig. Var vänlig och kontrollera dessa rese-ID."
+
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgstr "<b>Tolkningen färdig.</b> Du kan nu importera dessa flyg till OpenFligts. (mindre fel kan rättas till efteråt i flygredigeraren.)"
+
+msgid "Add these flights to your OpenFlights"
+msgstr "Lägg till dessa flyg till OpenFlights"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Flights successfully imported."
+msgstr "Flygen har lagts till."
+
+msgid "Import more flights"
+msgstr "Importera fler flyg"
+
+msgid "Close"
+msgstr "Stäng"
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr "Inloggningen misslyckades. <%s>Registrera</a> eller <%s>återställ lösenord</a>?"
+
+msgid "This trip is not public."
+msgstr "Denna resa är privat."
+
+msgid "No such trip."
+msgstr "Ingen sådan resa."
+
+msgid "This user's flights are password-protected."
+msgstr "Denna användares flyg är lösenordsskyddade."
+
+msgid "This user's flights are not public."
+msgstr "Denna användares flyg är privata."
+
+msgid "No such user."
+msgstr "Ingen sådan användare."
+
+msgid "This user has no flights."
+msgstr "Denna användare har inga flyg."
+
+msgid "Sorry, that name is already taken, please try another."
+msgstr "Tyvärr, det användarnamnet är upptaget, försök med ett annat."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "Kontot rensat, %s flyg raderade."
+
+msgid "Sorry, current password is not correct."
+msgstr "Tyvärr, lösenordet är inte korrekt."
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "Du är nu registrerad, loggar in..."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "Inställningarna ändrade, återvänder..."
+
+msgid "Trip not found."
+msgstr "Kunde inte hitta resan."
+
+msgid "User not found."
+msgstr "Okänd användare."
+
+# Longest flight in "Analyze"
+msgid "Longest"
+msgstr "Längsta"
+
+# Shortest flight
+msgid "Shortest"
+msgstr "Kortaste"
+
+msgid "Northernmost"
+msgstr "Mest norrut"
+
+msgid "Southernmost"
+msgstr "Mest söderut"
+
+msgid "Westernmost"
+msgstr "Mest västerut"
+
+msgid "Easternmost"
+msgstr "Mest österut"
+
+msgid "Added."
+msgstr "Tillagd."
+
+#, php-format
+msgid "%s flights added."
+msgstr "%s flyg tillagda."
+
+msgid "Edited."
+msgstr "Ändrade."
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "Resan har skapats"
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "Resan har raderats"
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr "Resan har ändrats."
+
+msgid "Airline, railway, road transport and shipping search"
+msgstr "Flygbolags-, tåg-, väg- eller fartygssök"
+
+msgid "Fill one or more fields below to search for matching airlines and other transport operators."
+msgstr "Fyll i fälten nedan för att söka efter flygbolag eller andra transportföretag."
+
+# Of airline, train company etc
+msgid "Name"
+msgstr "Namn"
+
+msgid "Railway"
+msgstr "Järnväg"
+
+msgid "Road transport"
+msgstr "Vägtransport"
+
+msgid "Shipping"
+msgstr "Fartyg"
+
+# Second company name if any, eg. "ANA" for "All Nippon Airways"
+msgid "Alternative name"
+msgstr "Alternativt namn"
+
+msgid "Country"
+msgstr "Land"
+
+# Airline radio callsign
+msgid "Callsign"
+msgstr "Callsign"
+
+msgid "Show only major (IATA) airlines?"
+msgstr "Visa endast större (IATA) flygbolag?"
+
+msgid "Search"
+msgstr "Sök"
+
+msgid "Record the current data as a new airline."
+msgstr "Spara dessa data som nytt flygbolag"
+
+msgid "Add as new"
+msgstr "Lägg till som ny"
+
+msgid "Fill one or more fields below to search for matching airports."
+msgstr "Fyll i nedan för att söka efter flygbolag."
+
+msgid "Airport name"
+msgstr "Namn på flygplats"
+
+msgid "City name"
+msgstr "Namn på stad"
+
+msgid "Country name"
+msgstr "Namn på land"
+
+msgid "Latitude"
+msgstr "Latitud"
+
+msgid "Longitude"
+msgstr "Longitud"
+
+msgid "Elevation"
+msgstr "Höjd"
+
+# Universal Time Coordinated (timezone)
+msgid "UTC"
+msgstr "UTC"
+
+# Daylight Savings Time
+msgid "DST"
+msgstr "Sommartid"
+
+msgid "European"
+msgstr "Europeisk"
+
+msgid "US/Canada"
+msgstr "USA/Kanada"
+
+msgid "S. American"
+msgstr "Sydamerikansk"
+
+msgid "Australia"
+msgstr "Australien"
+
+msgid "New Zealand"
+msgstr "Nya Zeeland"
+
+msgid "Database"
+msgstr "Databas"
+
+msgid "Show only major (IATA) airports?"
+msgstr "Visa endast större (IATA) flygplatser?"
+
+msgid "Record the current data as a new airport."
+msgstr "Spara nuvarande data som en ny flygplats."
+
+msgid "Record changes to this airport."
+msgstr "Ändra denna flygplats."
+
+msgid "Import data"
+msgstr "Importera data"
+
+msgid "OpenFlights can import two types of data:"
+msgstr "OpenFlights can importera two sorters data:"
+
+#, php-format
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory kan inte exportera data, men OpenFlights kan läsa datan du har på skärmen när du är inloggad på FlightMemory.  Logga in på dit FlightMemory-konto, gå till sidan med flygdata, och välj 'Spara webbsida' i din webbläsare. Ladda sedan upp denna sida till OpenFlights.  Upprepa för varje sida med flygdata du har.</p><p><i>Obs</I>: FlightMemory måste visas på <b>Engelska</b> innan du sparar sidorna.</p><p><i>Lägg märke</i> till att <b>dubbla flyg inte raderas</b> för närvarande.  Om du importerar samma FlightMemory-sida två gånger kommer flygen läggas til två gånger.</p><p><i>Lägg märke</i> till att FlightMemory <b>ändrar sitt format</b> då och då.  Var vänlig och <%s>rapportera</a> buggar eller fel du upptäcker, beskriv då exakt fel och inkludera 'Tmpfile'-värdet från överst på importsidan."
+
+#, php-format
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgstr "<b>OpenFlights (.csv)</b> &mdash; CSV-fil, exporterad från 'Exportera' eller 'Spara' i OpenFlights) som lätt kan ändras i Excel eller liknande program.  Se <%s'>formatspecifikationer</a>."
+
+msgid "File to upload"
+msgstr "Fil som ska laddas upp"
+
+# Import without changing airline names
+msgid "Keep historical airline names?"
+msgstr "Behålla gamla flygbolagsnamn?"
+
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgstr "OpenFlights försöker att matcha flygbolag och flygnummer med nuvurande flygbolag.  Om du markerar ovanstående ruta, kommer alla flygbolagsnamn att behållas <i>exakt</i> som de var tidigare, även om de är felstavade."
+
+#, php-format
+msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgstr "Du kommer kunna se all ny data innan den importeras till ditt konto. See %s för att spara eller rensa dina flyg innan du importerar."
+
+msgid "Create new account"
+msgstr "Skapa nytt konto"
+
+msgid "Account settings"
+msgstr "Kontoinställningar"
+
+msgid "Basic information"
+msgstr "Grundläggande information"
+
+msgid "This will be used as the name of your profile."
+msgstr "Det här kommer användas som namn på din profil."
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr "Välj någonting svårt att gissa, men enkelt att komma ihåg. Stora och små bokstäver åtskiljs!"
+
+msgid "Password again"
+msgstr "Lösenord igen"
+
+msgid "E-mail (optional)"
+msgstr "Epost-adress (valfritt)"
+
+#, php-format
+msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "Om du glömmer ditt lösenord kan vi skicka ett nytt till denna adress. Vi kommer <i>aldrig</i> skicka något annat eller vidarebefordra din information, se <%s>privacy policy</a> för närmare detaljer."
+
+msgid "Could not load profile data"
+msgstr "Kunde inte ladda profildata"
+
+msgid "Profile address"
+msgstr "Profiladress"
+
+#, php-format
+msgid "Viewed %s times"
+msgstr "Visad %s gånger"
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr "Din profils adress och hur många gånger den har visats."
+
+# Is this profile linked to Facebook?
+msgid "Facebook link"
+msgstr "Facebook-länk"
+
+msgid "Linked, automatic updates"
+msgstr "Länkad, uppdateras manuellt"
+
+msgid "Linked, manual updates only"
+msgstr "Länkad, uppdateras endast manuellt"
+
+# Automate Facebook updates
+msgid "Automate"
+msgstr "Automatisk uppdatering"
+
+msgid "Not active"
+msgstr "Inte aktiv"
+
+# ...to Facebook
+msgid "Add link"
+msgstr "Lägg till länk"
+
+# Advertisements to place on your blog etc
+msgid "Banners"
+msgstr "Banners"
+
+msgid "Blog banner (HTML)"
+msgstr "Blogg-banner (HTML)"
+
+msgid "Bulletin board banner (phpBB)"
+msgstr "Forumsbanner (phpBB)"
+
+msgid "Profile settings"
+msgstr "Profilinställningar"
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr "Du kan enkelt ändra dessa inställningar senare genom att klicka på <i>Inställningar</i>."
+
+msgid "Privacy"
+msgstr "Synlighet"
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Public"
+msgstr "Allmän"
+
+msgid "Open"
+msgstr "Öppen"
+
+#, php-format
+msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgstr "En <b>privat</b> profil kan endast ses av dig.  <%s>Guld och Platina</a> medlemmer kan lösenordsskydda sina privata profiler, så att endast besökare som vet lösenordet kan se dem."
+
+msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
+msgstr "En <b>allmän</b> låter besökare se din karta och allmän statistik, men flygdetaljer som exakta datum och resklass visas inte."
+
+msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
+msgstr "En <b>öppen</b> låter besökare se (men inte ändra) din karta och all statistik."
+
+msgid "Flight editor"
+msgstr "Flygredigerare"
+
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgstr "Den <B>Enkla</b> flygredigeraren är snabb och lätt: varifrån, vart, datum och flygbolag om du bill, upp till fyra flyg åt gången. Det snabbaste sättet att skapa din karta!"
+
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgstr "Den <B>Avancerade</b> flygredigeraren låter dig lägga till resklass, flygplansmodell och registrering, anteckningar och mycket mer. Perfekt för flygentusiaster och planespotters."
+
+msgid "Guest password"
+msgstr "Lösenord för gäster"
+
+msgid "Gold Elite feature"
+msgstr "Guld-funktion"
+
+msgid "Password protect your Private profile, so only friends and family can see it."
+msgstr "Lösenordsskydda din Privata profil, så att endast familj och vänner kan se den."
+
+msgid "Default view"
+msgstr "Standardutseende"
+
+msgid "Help"
+msgstr "Hjälp"
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr "Visa en valfri skärm istället för reklam."
+
+msgid "Manage flights"
+msgstr "Hantera flyg"
+
+msgid "Backup to CSV"
+msgstr "Spara som CSV-fil"
+
+msgid "Delete all flights"
+msgstr "Radera alla flyg"
+
+msgid "Change password"
+msgstr "Ändra lösenord"
+
+msgid "Current password"
+msgstr "Nuvarande lösenord"
+
+msgid "You only need to enter this if changing your password."
+msgstr "Behöver endast matas in om du ändrar ditt lösenord."
+
+msgid "New password"
+msgstr "Nytt lösenord"
+
+msgid "New password again"
+msgstr "Upprepa nytt lösenord"
+
+msgid "Sign me up!"
+msgstr "Registrera mig!"
+
+msgid "Edit trip"
+msgstr "Ändra resa"
+
+msgid "Add trip"
+msgstr "Lägg till resa"
+
+msgid "Could not load trip data."
+msgstr "Kunde inte ladda resan."
+
+# Address of personal web page for trips etc
+msgid "Web address <i>(optional)</i>"
+msgstr "Hemsida <i>(valfritt)</i>"
+
+msgid "Trip privacy"
+msgstr "REsesynlighet"
+
+msgid "Private (visible only to you)"
+msgstr "Privat (synlig endast för dig)"
+
+msgid "Public (map and stats shared)"
+msgstr "Allmän (karta och statistik visas)"
+
+msgid "Open (all flight data shared)"
+msgstr "Öppen (all information visas)"
+
+msgid "OpenFlights URL"
+msgstr "OpenFlights hemsida"
+
+msgid "Not assigned yet"
+msgstr "Inte tilldelad än"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "Prem.Eco"
+msgstr "Eko.Plus"
+
+# Abbreviation of "Economy"
+msgid "Econ"
+msgstr "Ekon"
+
+# Abbreviation of "Premium Economy"
+msgid "P.Eco"
+msgstr "E.Plus"
+
+# Business
+msgid "Biz"
+msgstr "Aff"
+
+# First
+msgid "1st"
+msgstr "För"
+
+# Leisure
+msgid "Leis."
+msgstr "Nöje"
+
+msgid "flight"
+msgstr "flyg"
+
+msgid "train"
+msgstr "tåg"
+
+# Trip by car, bus etc
+msgid "road trip"
+msgstr "resa på väg"
+
+msgid "ship"
+msgstr "fartyg"
+
+msgid "airline"
+msgstr "flygbolag"
+
+msgid "railway"
+msgstr "järnväg"
+
+msgid "road transport"
+msgstr "vägtransport"
+
+msgid "shipping"
+msgstr "frakt"
+
+# Rank by how many segments flown or otherwise travelled
+msgid "Segments"
+msgstr "Antal segment"
+
+# Rank by distance travelled
+msgid "Mileage"
+msgstr "Antal mil"
+
+# "Magnifying glass" and "hand" controls for map
+msgid "Toggle pan and region select mode"
+msgstr "Växla förstoringsglas/markering"
+
+msgid "Toggle overview map"
+msgstr "Översiktskarta av/på"
+
+msgid "My Flights"
+msgstr "Mina flyg"
+
+msgid "My Airports"
+msgstr "Mina flygplatser"
+
+msgid "Flights:"
+msgstr "Flyg:"
+
+msgid "Select this airport"
+msgstr "Välj denna flygplats"
+
+msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
+msgstr "Skriv ett datum med år/månad/dag, t.ex 2008/10/30 för 30 oktober 2008. Möjliga format är ÅÅÅÅ-MM-DD, ÅÅÅÅ/MM/DD, ÅÅÅÅ.MM.DD och ÅÅÅÅ MM DD."
+
+msgid "Please enter a valid source airport."
+msgstr "Skriv en giltig avreseflygplats."
+
+msgid "Please enter a valid destination airport."
+msgstr "Skriv en giltig ankomstflygplats."
+
+msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
+msgstr "'%1' kunde inte hittas %2 databasen.  Vill du lägga till det som ett nytt %2 företag?"
+
+msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
+msgstr "Skriv tider i 24-timmars format med ett kolon mellan timmar och minter, t.ex 21:37 för 9:37 PM."
+
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgstr "Skriv flygtid som timmar och minuter med ett kolon mellan timme och minut, t.ex 5:37 för 5 timmar och 37 minuter. Om du inte skriver något räknas tiden ut automatiskt."
+
+msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgstr "Skriv flygdistans som engelska miles, utan decimaler. Om du inte skriver något räknas den ut automatiskt."
+
+msgid "No trips"
+msgstr "Inga resor"
+
+msgid "No trips. Add one? "
+msgstr "Inga resor. Skapa en?"
+
+msgid "Unassigned flights"
+msgstr "Flyg utan resor"
+
+msgid "Recent flights on %1"
+msgstr "Senaste flyg på %1"
+
+msgid "Recently added flights"
+msgstr "Nyligen tillagda flyg"
+
+msgid "%1's flights on %2 in %3"
+msgstr "%1's flyg med %2 i %3"
+
+msgid "%1's flights on %2"
+msgstr "%1's flyg med %2"
+
+msgid "%1's flights in %2"
+msgstr "%1's flyg i %2"
+
+msgid "%1's flights"
+msgstr "%1s flyg"
+
+msgid "Home"
+msgstr "Hem"
+
+msgid "Not in a trip"
+msgstr "Inte i en resa"
+
+# Number of flights or other segments flown
+msgid "segments"
+msgstr "segment"
+
+msgid "miles"
+msgstr "mil"
+
+msgid "days"
+msgstr "dagar"
+
+msgid "No flights found at this airport."
+msgstr "Inga flyg funna på den här flygplatsen."
+
+msgid "Export"
+msgstr "Exportera"
+
+msgid "Comma-Separated Value, for Excel and data processing"
+msgstr "CSV (Komma-Separerade Värden, för Excel och databaser"
+
+msgid "Keyhole Markup Language, for Google Earth and visualization"
+msgstr "Keyhole Markup Language, för Google Earth och visualisering"
+
+# Flight, train etc number
+msgid "Nr."
+msgstr "Nr"
+
+# Name of plane, train etc
+msgid "Vehicle"
+msgstr "Maskin"
+
+# User actions in List flights (edit, copy, delete)
+msgid "Action"
+msgstr "Åtgärd"
+
+msgid "Edit this flight"
+msgstr "Ändra detta flyg"
+
+msgid "Copy to new flight"
+msgstr "Kopiera till nytt flyg"
+
+msgid "Unique"
+msgstr "Unik"
+
+msgid "Airports"
+msgstr "Flygplatser"
+
+msgid "Carriers"
+msgstr "Flygbolag"
+
+msgid "Countries"
+msgstr "Länder"
+
+msgid "Vehicles"
+msgstr "Fordon"
+
+msgid "Miles flown"
+msgstr "Flugna mil"
+
+msgid "Around the world"
+msgstr "Jorden runt"
+
+msgid "To the Moon"
+msgstr "Till Månen"
+
+msgid "To Mars"
+msgstr "Till Mars"
+
+msgid "Journey records"
+msgstr "Reserekord"
+
+msgid "Average"
+msgstr "Genomsnittlig"
+
+msgid "Airport records"
+msgstr "Flygplatsrekord"
+
+msgid "Seats"
+msgstr "Säten"
+
+# Show... Top 10, 25, 50
+msgid "Show..."
+msgstr "Visa..."
+
+# Sort by... number of flights, distance travelled
+msgid "Sort by..."
+msgstr "Sortera efter..."
+
+msgid "Routes"
+msgstr "Sträckor"
+
+msgid "Airlines"
+msgstr "Flygbolag"
+
+msgid "Planes"
+msgstr "Flygplan"
+
+msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgstr "Ändringar du gjort på detta flyget har inte sparat. Vill du kasta bort dem?"
+
+msgid "Loading..."
+msgstr "Laddar..."
+
+msgid "Edit segment %1 of %2"
+msgstr "Ändra segment %1 från %2"
+
+msgid "Are you sure you want to delete this flight?"
+msgstr "Vill du verkligen radera det här flyget?"
+
+msgid "Deleting flight cancelled."
+msgstr "Flyg raderas ej."
+
+msgid "Search for %1"
+msgstr "Sök efter %1"
+
+msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
+msgstr "Avgång UTC %1%2%3, Ankomst UTC %4%5%6, Tidsskillnad %7 timmar"
+
+msgid "+%1 day"
+msgstr "+%1 dag"
+
+msgid "-%1 day"
+msgstr "-%1 dag"
+
+msgid "Flight departure and arrival times"
+msgstr "Flygets avgångs- och ankomsttid"
+
+msgid "Logged in as <B>%1</B>"
+msgstr "Inloggad som <B>%1</B>"
+
+msgid "Welcome, <B>%1</B> !"
+msgstr "Välkommen, <B>%1</B> !"
+
+msgid "Loading"
+msgstr "Laddar"
+
+msgid "Hi, <B>%1</B> !"
+msgstr "Hej, <B>%1</B> !"
+
+msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgstr "<b>Välkommen tillbaka!</b>  Vi är glada att du gillar OpenFlights.<br>Du får gärna <a href='/donate.html' target='_blank'>donera för att hjälpa till att stödja sidan</a>!"
+
+msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr "<B>Välkommen till OpenFlights!</b>  Tryck på %1 för att börja lägga till flyg, eller på %2 för att importera flyg från liknande sidor som FlightMemory."
+
+msgid "You have been logged out."
+msgstr "Du har loggats ut."
+
+msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
+msgstr "Du håller redan på att ändra ett flyg. Vill du verkligen ignorera dina ändringar och lägga till ett nytt flyg istället?"
+
+msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
+msgstr "Du håller redan på att ändra ett flyg. Vill du verkligen ignorera dina ändringar och ändra detta flyg istället?"
+
+msgid "IATA/FAA codes must be exactly three letters."
+msgstr "IATA/FAA-koder måste bestå av exakt tre bokstäver."
+
+msgid "ICAO codes must be exactly four letters."
+msgstr "ICAO-koder måste bestå av exakt fyra bokstäver."
+
+msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgstr "Endast bokstäverna A-Z, siffrorna 0-9, skiljetecken (bindestreck, punkt, apostrof) och mellanslag kan användas i flygplats- och stadsnamn."
+
+msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
+msgstr "Ignorerar stad '%1', eftersom DAFIF-databasen inte innehåller den informationen."
+
+msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgstr "Sökning av IATA/FAA-koden '%1' är begränsad till flygplatser i USA, eftersom DAFIF inte innehåller IATA-koder för städer i andra länder."
+
+msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgstr "Ignorerar IATA-koden '%1', eftersom DAFIF inte innehåller IATA-koder för andra länder än USA."
+
+msgid "Sorry, you have to be logged into OpenFlights to use this."
+msgstr "Tyvärr, du måste vara inloggad på OpenFlights för att använda den här."
+
+msgid "Please enter an airport name."
+msgstr "Skriv ett flygplatsnamn."
+
+msgid "Please enter a city name."
+msgstr "Skriv ett stadsnamn."
+
+msgid "Please select a country."
+msgstr "Välj ett land."
+
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgstr "Skriv latitud, longitud och höjd. Tips: Kolla först om OurAirport-databasen redan innehåller din flygplats, och \"Läs\" datan därifrån."
+
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgstr "Latitud och longitud måste anges med grader, där negativa tal står för 'syd' och 'väst', och med åtminstone tre decimalers precision. Till exempel, San Francisco (SFO) ligger på latitud 37.6189(N), longitud -122.3748(V)."
+
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
+msgstr "Longitud måste vara mellan -180 (väst) och 180 (öst) grader."
+
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
+msgstr "Latitud måste vara mellan 90 (norr) och -90 (syd) grader."
+
+msgid "Please enter a positive number for elevation."
+msgstr "Skriv ett positivt nummer som höjd."
+
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgstr "Skriv tidszon som en skillnad från UTC/GMT, t.ex +8 för Singapore eller -5 för New York. Använd decimaler om nödvändigt, t.ex +5.75 för Nepal."
+
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgstr "Du har inte angett om denna flygplats använder sig av sommartid eller ej (DST). Vill du fortsätta ändå?"
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Du har inte angett någon IATA/FAA-kod. Är du säker på att flygplatsen inte har någon och att du vill fortsätta ändå?"
+
+msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Du har inte angett någon ICAO-kod. Är du säker på att flygplatsen inte har någon och att du vill fortsätta ändå?"
+
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgstr "Är du säker på att du vill lägga till %1 som en ny flygplats i %2? Var vänlig och dubbelkolla namn, koder och exakta koordinater innan du fortsätter."
+
+msgid "Cancelled."
+msgstr "Avbruten."
+
+msgid "Searching..."
+msgstr "Söker..."
+
+msgid "Recording..."
+msgstr "Sparar..."
+
+msgid "No matches found in this database."
+msgstr "Inga träffar i den här databasen."
+
+msgid "Try unchecking 'Show only major airports' and search again."
+msgstr "Försök med att avmarkera 'Visa endast större flygplatser' och sök igen."
+
+msgid "Switch to the OurAirports database and search again."
+msgstr "Byt till OurAirports-databasen och sök igen."
+
+msgid "Results %1 to %2 of %3"
+msgstr "Resultat %1 till %2 av %3"
+
+msgid "Airports in pink have been added by users of OpenFlights."
+msgstr "Rosa flygplatser har lagst till av OpenFlights-användare."
+
+msgid "Airports in blue have been added by you and can be edited."
+msgstr "Blåa flygplatser har lagts till av dig och kan ändras."
+
+msgid "Select"
+msgstr "Välj"
+
+msgid "Edit"
+msgstr "Ända"
+
+msgid "Load"
+msgstr "Ladda"
+
