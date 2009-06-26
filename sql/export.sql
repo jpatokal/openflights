@@ -8,4 +8,3 @@ SELECT name,alias,iata,icao,callsign,country INTO OUTFILE '/tmp/airlines.dat'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airlines;
-

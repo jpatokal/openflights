@@ -19,7 +19,7 @@ FOREIGN KEY (alid) REFERENCES airlines (alid)
 
 \! echo Filtering out duplicates...
 
-\! uniq -w 10 <arm/routes.dat >arm/routes2.dat
+\! uniq -w 10 <routes.dat >routes2.dat
 
 \! echo Importing...
 
@@ -42,5 +42,5 @@ UPDATE routes AS r,airports as a SET r.dst_apid=a.apid WHERE a.iata=r.dst_ap;
 
 UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE l.iata=r.airline;
 
+\! delete routes2.dat
 \! echo Done.
-

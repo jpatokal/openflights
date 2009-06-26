@@ -16,8 +16,11 @@
 	<div id="contentContainer">
 	  <div id="nonmap">
 
-	    <h1>Airport and airline data</h1>
-	    
+	    <h1>Airport, airline and route data</h1>
+
+	    Navigation: <a href="#airport">Airport</a> | <a href="#airline">Airline</a> | <a href="#route">Route</a>
+
+	    <a name="airport"></a>
 	    <h2>Airport database</h2>
 
 	    <p><center><a href="/demo/openflights-apdb-2048.png"><img src="/demo/openflights-apdb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
@@ -114,6 +117,7 @@
 
 	    <p>If you'd like an even more thorough database, with extensive coverage of airstrips, heliports and other places of less interest for commercial airline frequent flyers, do check out <a href="http://ourairports.com">OurAirports</a>, whose public domain database covers over 40,000 places to fly from.<p>
 
+	    <a name="airline"></a>
 	    <h2>Airline database</h2>
 
 	    <p>As of February 2009, the OpenFlights Airlines Database contains <b>5971</b> airlines.  Each entry contains the following information:</p>
@@ -184,9 +188,79 @@
 
 	    <p>The SourceForge copy is only a sporadically updated static snapshot of the live OpenFlights database (see <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airlines.dat?view=log">revision log</a>).  If you would like an up-to-the-minute copy, or you would like your data filtered by any information available to us (eg. number of flights by airline), do not hesitate to <a href="/about.html">contact us</a>.<p>
 
+	    <a name="route"></a>
+	    <h2>Route database</h2>
+
+	    <p><center><a href="/demo/openflights-routedb-2048.png"><img src="/demo/openflights-routedb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
+
+	    <p>As of June 2009, the OpenFlights/Airline Route Mapper Route Database contains <b>54317</b> scheduled airline routes spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
+
+	    <table>
+		<tr>
+		  <td class="head">Airline</td>
+		  <td class="data">2-letter IATA code of the airline.
+		</tr>
+		<tr>
+		  <td class="head">Source airport</td>
+		  <td class="data">3-letter IATA code of the source airport.<br>
+		</tr>
+		<tr>
+		  <td class="head">Destination airport</td>
+		  <td class="data">3-letter IATA code of the destination airport.<br>
+		</tr>
+		<tr>
+		  <td class="head">Codeshare</td>
+		  <td class="data">"*" if this flight is a codeshare (that is, not operated by <i>Airline</i>, but another carrier)</td>
+		</tr>
+		<tr>
+		  <td class="head">Stops</td>
+		  <td class="data">Number of stops on this flight ("0" for direct)</td>
+		</tr>
+		<tr>
+		  <td class="head">Equipment</td>
+		  <td class="data">3-letter codes for plane type(s) generally used on this flight, separated by spaces</td>
+		</tr>
+	    </table>
+
+	    <i>Note</i>: Routes where one carrier operates both its own and codeshare flights are listed twice.  These can be filtered out with the UNIX command <tt>uniq -w 10 &lt;routes.dat &gt;routes2.dat</tt>.
+
+	    <h4>Sample entries</h4>
+	    <pre>BA      LHR     SFO             0       744
+BA      LHR     SIN             0       744 777
+BA      LHR     SIN     *       0       744 388</pre>
+
+	    <h4>Download</h4>
+
+	    <p>To download the current data dump from <a href="http://sourceforge.net/projects/openflights">SourceForge</a> as a tab-delimited file, suitable for use in spreadsheets etc, simply click below:</p>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat">routes.dat</a> (~1.1 MB)</p>
+
+	    <table><tr><td>
+
+	    <p>Creating and maintaining this database has required and continues to require an <i>immense amount</i> of work.  We need your support to keep this database up-to-date: just click on the PayPal link to the right (Visa, MasterCard, American Express and Discover also accepted).  We suggest <b>US$20</b>, but any amount at all is welcome, and you may use the data for free if you feel that you are unable to pay.  If you do donate, please specify in the comments if you would like a itemized receipt for business expense or tax purposes.</p>
+
+		  </td><td>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="jani@contentshare.sg">
+<input type="hidden" name="item_name" value="OpenFlights.org">
+<input type="hidden" name="no_shipping" value="0">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		    </form>
+		  </td></tr></table>
+
+	    <p>The SourceForge copy is only a sporadically updated static snapshot of the live OpenFlights database (see <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat?view=log">revision log</a>).  If you would like an up-to-the-minute copy, or you would like your data filtered by any information available to us (eg. number of flights by airline), do not hesitate to <a href="/about.html">contact us</a>.<p>
+
 	    <h2>Licensing and disclaimer</h2>
 
-	    <p>Like all of OpenFlights, the OpenFlights Airport and Airline databases are licensed under the <a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">GNU Affero General Public License</a>.  Airport data derived <a href="http://ourairports.com">OurAirports</a> and DAFIF is in the public domain, while airline data derived from Wikipedia may be subject to the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License</a>.  Whether these databases pass the <a href="http://en.wikipedia.org/wiki/Threshold_of_originality">threshold of originality</a> and are thus copyrightable in the United States is an open question, and Contentshare does not assert the validity or lack thereof of such a claim.</p>
+	    <p>The OpenFlights Airport, Airline and Route Databases are made available under the <a href="http://opendatacommons.org/licenses/odbl/1.0/">Open Database License</a>. Any rights in individual contents of the database are licensed under the <a href="http://opendatacommons.org/licenses/dbcl/1.0/">Database Contents License</a>.</p>
+
+	    <p>Airport data derived <a href="http://ourairports.com">OurAirports</a> and DAFIF, as well as route data from <a href="http://arm.64hosts.com/">Airline Route Mapper</a>, are in the public domain.  Airline data derived from Wikipedia may be subject to the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License</a>.  Whether these databases pass the <a href="http://en.wikipedia.org/wiki/Threshold_of_originality">threshold of originality</a> and are thus copyrightable in the United States is an open question, and Contentshare does not assert the validity or lack thereof of such a claim.</p>
 
 	    <p><b>This data is not suitable for navigation.</b>  OpenFlights does not assume any responsibility whatsoever for its accuracy, and consequently assumes no liability whatsoever for results obtained or loss or damage incurred as a result of application of the data.  OpenFlights expressly disclaims all warranties, expressed or implied, including but not limited to implied warranties of merchantability and fitness for any particular purpose.</p>
 
@@ -197,6 +271,8 @@
 	    <p>Airport base data was generated by from DAFIF (October 2006 cycle) and <a href="http://ourairports.com">OurAirports</a>, plus timezone information from <a href="http://www.earthtools.org">EarthTools</a>.  All DST information added manually.  Significant revisions and additions made by the users of OpenFlights.</p>
 
 	    <p>Airline data was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.  Significant revisions and additions made by the users of OpenFlights.</p>
+
+	    <p>Route data is maintained by and imported directly from <a href="http://arm.64hosts.com/">Airline Route Mapper</a>.  Duplicate entries have been removed by OpenFlights.</p>
 
 	    <p><i>See also: <a target="_blank" href="help/database.html">Help: Database</i></p>
 
