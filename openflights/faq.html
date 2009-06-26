@@ -19,7 +19,7 @@
 	    
 	    <h4>What is OpenFlights?</h4>
 	    
-	    <p>In a nutshell, it's a tool that lets you <b>map</b> your flights around the world, <b>search and filter</b> them in all sorts of interesting ways, calculate <b>statistics</b> automatically, and <b>share</b> the resulting maps with friends and the world &mdash; if you want to.</p>
+	    <p>In a nutshell, it's a tool that lets you <b>map</b> your flights around the world, <b>search and filter</b> them in all sorts of interesting ways, calculate <b>statistics</b> automatically, and <b>share</b> the resulting maps with friends and the world.  You can also check <b>airport route maps</b> for nearly every airport in the world and find out <b>what airlines fly where</b>.</p>
 
 	    <h4>What can I do with OpenFlights?</h4>
 
@@ -31,6 +31,7 @@
 	      <li>See at a glance where you've been and where you're going.</li>
 	      <li>Rapidly search your flight history: now when did I go to the Bahamas, and on what airline?</li>
 	      <li>Share your flights and trips with friends.</li>
+	      <li>Check where you can fly to from any airport, or any pair of airports.</li>
 	      <li>Coordinate flights for conferences and other events. (<a href="http://openflights.org/blog/2009/01/10/interesting-uses-of-openflights/">Learn more</a>)</li>
 	      <li>View your flights in gorgeous 3D with Google Earth and other visualization apps. (<a href="http://openflights.org/blog/2009/02/23/give-your-flights-a-spin-in-3d-on-google-earth/">Learn more</a>)</li>
 	    </ul>
@@ -60,7 +61,7 @@
 
 	    <h4>Are you sure this thing will scale?</h4>
 
-	    <p>Yes!  The heavy lifting of drawing the maps is handled by your browser, not any central server.  The database is built to scale up and has been stress-tested by loading in over 100,000 flights, but key operations still took under 0.1 seconds each.</p>
+	    <p>Yes!  The heavy lifting of drawing the maps is handled by your browser, not any central server.  The database is built to scale up and already has around 200,000 flights and routes loaded.</p>
 
 	    <h4>How do I start punching in my own flights?</h4>
 	    
@@ -97,6 +98,10 @@
 	    <p>If you can't find your airport right away, click on the <img src="/img/icon_plane-src.png" height=17 width=17> or <img src="/img/icon_plane-dst.png" height=17 width=17> icons to launch the advanced search.  If you're looking for a decommissioned airport, you may need to use the ICAO code instead of the IATA code.  For example, ATH points to Athens-Eleftherios Venizelos (LGAV), but you can still find Athens-Ellinikon as LGAT.  If the main OpenFlights DB doesn't have it, try a search in the OurAirports database with the airport's name or ICAO code. If you find it in OurAirports, click <input type="button" value="Load" align="middle"> to load its data, double-check that it all looks correct, and then <input type="button" value="Save as new" align="middle"> to copy it over.</p>
 
 	    <p>If you still can't find it, you can click on <input type="button" value="Add new airport" align="middle"> while creating a new flight to add your own airport.  You can also enter heliports, landing strips and other informal airports which do not have IATA or ICAO codes, just leave the IATA/ICAO fields blank and click "OK" when warned about it.</p>
+
+	    <h4>Why is the route map missing the Rutungu Airlines flight from Mambo-Jambo to Bingo-Bongo?</h4>
+
+	    <p>Our route data is provided by <a href="http://arm.64hosts.com/">Airline Route Mapper</a>, please let them know your suggestions and corrections.</p>
 
 	    <h4>Your calendar only goes back to 1970, how do I enter an earlier flight?</h4>
 
@@ -155,9 +160,9 @@
 	    
 	    <p>JavaScript frontend chock full of AJAX-y goodness served off Apache running on Ubuntu Linux, plus PHP scripts on the backend shifting through reams of data pulled from MySQL.</p>
 	    
-	    <h4>Can I get a copy of your airport and airline data?</h4>
+	    <h4>Can I get a copy of your airport, airline or route data?</h4>
 	    
-	    <p>Yes!  See <a href="/data.html">Airport and airline data</a> for free downloads and more information.</p>
+	    <p>Yes!  See <a href="/data.html">Airport, airline and route data</a> for free downloads and more information.</p>
 
 	    <h4>I want to export to/import from OpenFlights format.  Where is your CSV specification?</h4>
 

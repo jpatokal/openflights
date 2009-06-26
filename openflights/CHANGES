@@ -1,3 +1,10 @@
+<b>2009-06-26</b>
+
+* Airport route maps added (courtesy of Airline Route Mapper)
+* Quick search widget added
+* Autocomplete functionality changed, with fast delete (reset) of previously autocompleted entries
+* DB licenses changed to Open Database License
+
 <b>2009-06-23</b>
 
 * Duplicate IATA codes no longer allowed

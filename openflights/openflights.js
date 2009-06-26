@@ -58,7 +58,7 @@ var INPUT_MAXLEN = 50;
 var SELECT_MAXLEN = 25;
 
 var COLOR_NORMAL = "#ee9900"; //orange
-var COLOR_ROUTE = "#eeee00"; //yellow
+var COLOR_ROUTE = "#99ee00"; //yellow
 var COLOR_TRAIN = "#ee5555"; //dull red
 var COLOR_ROAD = "#9f6500"; //brown
 var COLOR_SHIP = "#00ccff"; //cyany blue
@@ -145,14 +145,14 @@ window.onload = function init(){
   airportLayer = new OpenLayers.Layer.Markers(gt.gettext("My Airports"));
   map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
   
-  initHintTextboxes();
-    new Ajax.Autocompleter("qs", "qsAC", "php/autocomplete.php",
-			 {afterUpdateElement : getQuickSearchApid});  
-
   // Extract any arguments from URL
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
   query = parseArgument("query");
+
+  initHintTextboxes();
+  new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
+  			 {afterUpdateElement : getQuickSearchApid});
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0 || query != 0) {
@@ -374,33 +374,33 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
   // this == the feature, *not* the marker
   var markerClick = function (evt) {
     this.popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {'autoSize': true, 'minSize': new OpenLayers.Size(200,110) });
-
-    // Detailed flights accessible only if...
-    // 1. user is logged in, or
-    // 2. system is in "demo mode", or
-    // 3. privacy is set to (O)pen
-    desc = this.marker.desc;
     coreid = this.marker.coreid;
-    if( logged_in || demo_mode || privacy == "O") {
-	// Add toolbar to popup
-	desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
-	  "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
-	if(coreid == 0) {
+
+    // Add toolbar to popup
+    desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
+    "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
+    
+    if(coreid == 0) {
+      // Detailed flights accessible only if...
+      // 1. user is logged in, or
+      // 2. system is in "demo mode", or
+      // 3. privacy is set to (O)pen
+      if( logged_in || demo_mode || privacy == "O") {
 	  // Get list of user flights
 	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(this.marker.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
-	} else {
-	  if(code.length == 3) {
-	    // Get list of airport routes
-	    idstring = "R" + apid + "," + coreid;
-	    desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
-	  }
-	}
-	if(code.length == 3) {
-	  // IATA airport, we know its routes
-	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
-	}
-	desc += "</span>" + this.marker.desc.replace("Flights:", gt.gettext("Flights:"));
       }
+    } else {
+      if(code.length == 3) {
+	// Get list of airport routes
+	idstring = "R" + apid + "," + coreid;
+	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+      }
+    }
+    if(code.length == 3) {
+      // IATA airport, we know its routes
+      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
+    }
+    desc += "</span>" + this.marker.desc.replace("Flights:", gt.gettext("Flights:"));
     desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
     closePopup();
 
@@ -507,10 +507,12 @@ function xmlhttpPost(strURL, id, param) {
 	    $('qs').style.color = '#000000';
 	    $('qsgo').disabled = false;
 	    $('qsgo').focus();
+	    autocompleted['qs'] = true;
 	  } else {
 	    $('qsid').value = 0;
 	    $('qs').style.color = '#FF0000';
 	    $('qsgo').disabled = true;
+	    autocompleted['qs'] = false;
 	  }
 	  break;
 
@@ -889,9 +891,6 @@ function xmlhttpPost(strURL, id, param) {
     }
   }
   self.xmlHttpReq.send(query);
-}
-
-function getquerystring(id, param) {
 }
 
 // Set up filter options from database result
@@ -1699,6 +1698,9 @@ function editFlight(str, param) {
   $('airline').style.color = '#000000';
   $('plane').style.color = '#000000';
 
+  autocompleted['src_ap'] = true;
+  autocompleted['dst_ap'] = true;
+
   // Don't allow saving until something is changed
   setCommitAllowed(false);
   majorEdit = false;
@@ -1967,7 +1969,6 @@ function newTrip(code, newTrid, name, url) {
 function airportCodeToAirport(type) {
   // Ignore autocomplete results
   if(autocompleted[type]) {
-    autocompleted[type] = false;
     return;
   }
   input_toggle = type;

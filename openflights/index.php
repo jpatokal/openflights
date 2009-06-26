@@ -9,17 +9,17 @@ require_once("./php/db.php");
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
-    <link rel="stylesheet" href="/openflights.css?version=20080608" type="text/css">
+    <link rel="stylesheet" href="/openflights.css?version=20080626" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po?20090615" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js?version=20090201"></script>
-    <script type="text/javascript" src="/js/greatcircle.js?version=20090608"></script>
+    <script type="text/javascript" src="/js/greatcircle.js?version=20090626"></script>
     <script type="text/javascript" src="/js/utilities.js?version=20090326"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090619"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090626"></script>
   </head>
 
   <body>
@@ -34,7 +34,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-	      <B><?php echo _("News")?> </b>: 19 Jun 2009: <a href="/blog/">Language selector now available for public profile, trips</a>
+	      <B><?php echo _("News")?> </b>: 26 Jun 2009: <a href="/blog/">Airport route maps and quick search added!  See blog for details.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -42,14 +42,14 @@ require_once("./php/db.php");
 	    </div>
 
 	    <div id="quicksearch" style="display: none">
-              <img src="/img/layer-switcher-minimize.png" height=18 width=18 onClick="$('quicksearch').style.display='none'">
+              <img src="/img/layer-switcher-minimize.png" height=18 width=18 title="<?php echo _("Hide search bar") ?>" onClick="$('quicksearch').style.display='none'">
               <input type="text" name="qs" id="qs" size="60" onChange='airportCodeToAirport("qs")' onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="qsAC"></div>
 	      <input type="hidden" name="qsid" id="qsid"/>
 	      <input type="button" id="qsgo" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>	    
 	    </div>
 
 	    <div id="qsmini" style="display: block">
-              <img src="/img/icon-search.png" height=18 width=18 onClick="$('quicksearch').style.display='inline'">
+              <img src="/img/icon-search.png" height=18 width=18 title="<?php echo _("Search") ?>" onClick="$('quicksearch').style.display='inline'">
             </div>
 
 	    <div id="newairport" style="display: none">
