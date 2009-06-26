@@ -125,7 +125,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     } else {
       $note = $row["stops"] . " stops";
     }
-    if($row["codeshare"] == "Y") {
+    if($row["codeshare"] == "*") {
       $note = "Codeshare";
     }
   }
