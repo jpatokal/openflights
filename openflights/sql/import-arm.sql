@@ -23,7 +23,7 @@ FOREIGN KEY (alid) REFERENCES airlines (alid)
 
 \! echo Importing...
 
-LOAD DATA LOCAL INFILE 'arm/routes2.dat'
+LOAD DATA LOCAL INFILE 'routes2.dat'
 INTO TABLE routes
 FIELDS TERMINATED BY '\t' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -42,5 +42,5 @@ UPDATE routes AS r,airports as a SET r.dst_apid=a.apid WHERE a.iata=r.dst_ap;
 
 UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE l.iata=r.airline;
 
-\! delete routes2.dat
+\! rm routes2.dat
 \! echo Done.
