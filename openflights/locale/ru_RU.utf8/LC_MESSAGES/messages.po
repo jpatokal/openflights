@@ -1307,3 +1307,28 @@ msgstr ""
 
 msgid "Profile address:"
 msgstr ""
+
+msgid "Hide search bar"
+msgstr ""
+
+msgid "Map of routes from this airport"
+msgstr ""
+
+#, php-format
+msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgstr ""
+
+msgid "List my flights"
+msgstr ""
+
+msgid "List routes"
+msgstr ""
+
+msgid "List all routes from this airport"
+msgstr ""
+
+msgid "Buy tickets on Kayak.com"
+msgstr ""
+
+msgid "Buy tickets on %1"
+msgstr ""

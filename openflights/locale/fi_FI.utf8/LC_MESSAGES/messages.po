@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-06-19 16:57+0730\n"
+"PO-Revision-Date: 2009-06-27 08:44+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -543,22 +543,22 @@ msgid "Recently added flights"
 msgstr "Hiljattain lisättyjä lentoja"
 
 msgid "%1's flights on %2 in %3"
-msgstr "%1:n matkat"
+msgstr "%1'n matkat"
 
 msgid "%1's flights on %2"
-msgstr "%1:n matkat yhtiöllä %2"
+msgstr "%1'n matkat yhtiöllä %2"
 
 msgid "%1's flights in %2"
-msgstr "%1:n matkat vuonna %2"
+msgstr "%1'n matkat vuonna %2"
 
 msgid "%1's flights"
-msgstr "%1:n matkat"
+msgstr "%1'n matkat"
 
 msgid "Home"
 msgstr "Koti"
 
 msgid "Not in a trip"
-msgstr "Ei matkassa"
+msgstr "Ei osa matkaa"
 
 msgid "segments"
 msgstr "lentoa"
@@ -1252,3 +1252,24 @@ msgstr "Käsitellään..."
 msgid "Profile address:"
 msgstr "Profiiliosoite:"
 
+msgid "Hide search bar"
+msgstr "Piilota hakupalkki"
+
+msgid "Map of routes from this airport"
+msgstr "Kartta tämän lentokentän reiteistä"
+
+#, php-format
+msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgstr "IATA-koodia %s käyttävä lentokenttä on jo olemassa."
+
+msgid "List my flights"
+msgstr "Luettelo lennoistani"
+
+msgid "List routes"
+msgstr "Luettelo reiteistä"
+
+msgid "List all routes from this airport"
+msgstr "Luettelo kaikista tämän lentokentän reiteistä"
+
+msgid "Buy tickets on %1"
+msgstr "Osta lentolippu %1'sta"
