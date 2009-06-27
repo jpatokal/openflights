@@ -6,7 +6,7 @@
 PHP="index.php php/*php html/*php"
 JS="openflights.js js/alsearch.js js/apsearch.js js/settings.js js/trip.js"
 
-for lang in fi_FI fr_FR ja_JP ru_RU; do
+for lang in fi_FI fr_FR ja_JP sv_SE ru_RU; do
   echo $lang
   xgettext --omit-header --no-location --no-wrap -j -o locale/$lang.utf8/LC_MESSAGES/messages.po $PHP
   xgettext --omit-header --no-location  --no-wrap -L C -j -o locale/$lang.utf8/LC_MESSAGES/messages.po $JS
