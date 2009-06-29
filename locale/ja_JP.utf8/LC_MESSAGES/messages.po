@@ -1279,4 +1279,3 @@ msgstr "Kayak.comで航空券を購入"
 
 msgid "Buy tickets on %1"
 msgstr "%1で航空券を購入"
-
