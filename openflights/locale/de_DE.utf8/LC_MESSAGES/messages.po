@@ -6,7 +6,7 @@ msgstr ""
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: David Weck\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Flight logging, mapping, stats and sharing"
@@ -1304,3 +1304,24 @@ msgstr "Bearbeitung..."
 msgid "Profile address:"
 msgstr "Profil Adresse:"
 
+msgid "Hide search bar"
+msgstr ""
+
+msgid "Map of routes from this airport"
+msgstr ""
+
+#, php-format
+msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgstr ""
+
+msgid "List my flights"
+msgstr ""
+
+msgid "List routes"
+msgstr ""
+
+msgid "List all routes from this airport"
+msgstr ""
+
+msgid "Buy tickets on %1"
+msgstr ""
