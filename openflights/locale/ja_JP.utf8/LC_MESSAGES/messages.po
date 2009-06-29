@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
+"Last-Translator: Izumi Takeda <izumi@openflights.org>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -199,7 +199,7 @@ msgstr "出発地"
 
 #, php-format
 msgid "Enter city name or airport code"
-msgstr "都市名と空港コードを入力"
+msgstr "都市名または空港コードを入力"
 
 msgid "Swap To and From airports"
 msgstr "目的地と出発地の空港を入れ替え"
@@ -621,7 +621,7 @@ msgstr "OpenFlightsは2種類のデータタイプをインポート出来ます
 
 #, php-format
 msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
-msgstr ""
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemoryにはエクスポート機能はありませんがOpenFlightsはFlightDataページから情報を取得できます.  FlightMemoryにログインし、 FlightDataページで ブラウザーから 'ウエッブページとして保存' を選択し保存したHTMLファイルをアップロードします。各ページ毎に前記の動作を繰り返します。</p><p><i>注意</I>: FlightMemoryの言語は<b>英語</b>を選択してください。</p><p><i>注意</i>: <b>重複データをフィルターする機能はありません</b>FlightMemoryファイルを2回インポートした場合にはフライトが重複して追加されます。</p><p><i>注意</i>: <b>FlightMemoryのフォーマット</b>は変更される場合があります。バグを見つけた場合には<%s>報告し</a> エラーとインポートページのトップにある 'Tmpfile' 名を記載してください。"
 
 #, php-format
 msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
@@ -1121,7 +1121,7 @@ msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirp
 msgstr "緯度、経度、高度を入力してください。ヒント：OurAirportデータベースに既に空港が登録されているかどうかを確認し、データをデータベースから読み込む。"
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
-msgstr ""
+msgstr "経度と緯度は小数点を使って入力してください。マイナスは'南'と'西'で小数点以下は3桁以上です。例、サンフランシスコ(SFO)は緯度37.6189(北)、緯度122.3748(西)。"
 
 msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
 msgstr "経度は-180 (西経) から 180 (東経)です。"
@@ -1172,110 +1172,111 @@ msgid "Load"
 msgstr "読み込み"
 
 msgid "Search for airport"
-msgstr ""
+msgstr "空港検索"
 
 msgid "Search for airline"
-msgstr ""
+msgstr "航空会社検索"
 
 msgid "All trips"
-msgstr ""
+msgstr "全ての旅"
 
 msgid "All carriers"
-msgstr ""
+msgstr "全ての輸送会社"
 
 msgid "All"
-msgstr ""
+msgstr "全て"
 
 msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
-msgstr ""
+msgstr "経度は-180(西）から180（東）を入力してください。"
 
 msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
-msgstr ""
+msgstr "緯度は90 (北)から-90(南)を入力してください。"
 
 msgid "IATA codes must be exactly two letters."
-msgstr ""
+msgstr "IATAコードは2文字で入力してください。"
 
 msgid "ICAO codes must be exactly three letters."
-msgstr ""
+msgstr "ICAOコードは3文字で入力してください。"
 
 msgid "Please enter a name."
-msgstr ""
+msgstr "名前を入力してください。"
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
-msgstr ""
+msgstr "IATA/FAAコードが入力されていません。空欄のまま進みますか?"
 
 msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
-msgstr ""
+msgstr "ICAOコードが入力されていません。空欄のまま進みますか？"
 
 msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
-msgstr ""
+msgstr "%1を新しい航空会社として追加しますか?航空会社名と、航空会社コードを再確認してください。"
 
 msgid "No matches found."
-msgstr ""
+msgstr "該当するレコードがありません。"
 
 msgid "Operators in pink have been added by users of OpenFlights."
-msgstr ""
+msgstr "ピンクの航空会社はOpenFlightsのユーザーが追加しました。"
 
 msgid "Operators in blue have been added by you and can be edited."
-msgstr ""
+msgstr "青色の航空会社はユーザーにより追加され、編集可能です。"
 
 msgid "Sorry, you have to be logged into OpenFlights to do this."
-msgstr ""
+msgstr "OpenFlightsにログインしてください。"
 
 msgid "Creating account..."
-msgstr ""
+msgstr "ユーザーアカウントを作成中"
 
 msgid "Saving changes..."
-msgstr ""
+msgstr "変更を保存中"
 
 msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
-msgstr ""
+msgstr "全てのフライトが削除されます。削除を行いますか?"
 
 msgid "Deletion cancelled."
-msgstr ""
+msgstr "削除中止"
 
 msgid "Please enter a username."
-msgstr ""
+msgstr "ユーザー名を入力してください。"
 
 msgid "Please enter a password."
-msgstr ""
+msgstr "パスワードを入力してください。"
 
 msgid "Please enter your current password if you wish to change to a new password."
-msgstr ""
+msgstr "パスワードを変更する場合には現在のパスワードを入力してください。"
 
 msgid "Please enter a new password, or clear current password if you do not wish to change it."
-msgstr ""
+msgstr "新しいパスワードを入力するか、変更しない場合は現在のパスワードを消してください。"
 
 msgid "Your passwords don't match, please try again."
-msgstr ""
+msgstr "パスワードが間違っています。再入力してください。"
 
 msgid "Processing..."
-msgstr ""
+msgstr "処理中"
 
 msgid "Profile address:"
-msgstr ""
+msgstr "プロファイルの住所："
 
 msgid "Hide search bar"
-msgstr ""
+msgstr "検索バーを非表示"
 
 msgid "Map of routes from this airport"
-msgstr ""
+msgstr "この空港からのルートマップ"
 
 #, php-format
 msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
-msgstr ""
+msgstr "IATAコード%s は既に存在します。再確認してください。"
 
 msgid "List my flights"
-msgstr ""
+msgstr "ユーザーのフライトを表示"
 
 msgid "List routes"
-msgstr ""
+msgstr "ルートを表示"
 
 msgid "List all routes from this airport"
-msgstr ""
+msgstr "この空港からの全てのルートを表示"
 
 msgid "Buy tickets on Kayak.com"
-msgstr ""
+msgstr "Kayak.comで航空券を購入"
 
 msgid "Buy tickets on %1"
-msgstr ""
+msgstr "%1で航空券を購入"
+
