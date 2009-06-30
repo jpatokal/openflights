@@ -1279,3 +1279,11 @@ msgstr "Kayak.comで航空券を購入"
 
 msgid "Buy tickets on %1"
 msgstr "%1で航空券を購入"
+
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr ""
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr ""

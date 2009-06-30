@@ -1327,3 +1327,11 @@ msgstr ""
 
 msgid "Buy tickets on %1"
 msgstr ""
+
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr ""
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr ""
