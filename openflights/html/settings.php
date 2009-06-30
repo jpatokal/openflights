@@ -106,8 +106,7 @@ if($settings["fbuid"]) {
 }
 ?></i></span></td>
 		    <td class="desc">
-  <?php printf("Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile.",
-	       "a href='http://apps.facebook.com/openflights'", "a href='http://facebook.com'"); ?></td>
+      <?php printf(_("Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."), "a href='http://apps.facebook.com/openflights'", "a href='http://facebook.com'"); ?></td>
 		  </tr><tr>
 	       <td class="key"><?php echo _("Banners") ?></td>
 	       <td class="value" colspan=2><?php echo _("Blog banner (HTML)") ?><br>
@@ -167,7 +166,7 @@ echo "[url=http://openflights.org/user/" . $settings["name"] . "]\n[img]http://o
 		      <INPUT type='button' value='<?php echo _("Backup to CSV") ?>' onClick='javascript:backupFlights()'>
 		      <INPUT type='button' value='<?php echo _("Delete all flights") ?>' onClick='javascript:validate("RESET")'></td>
 		    <td class="desc" colspan=2>
-		      <a href="/help/csv.html">CSV</a> files can be opened and edited with spreadsheets like Excel.
+	 	      <?php printf(_("<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."), "a href='/help/csv.html'"); ?>
 		    </td>
 		  </tr><tr>
 		    <td colspan="4"><h2><?php echo _("Change password") ?></h2></td>
