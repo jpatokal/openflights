@@ -82,7 +82,7 @@ msgid "Note"
 msgstr "Bemerkungen"
 
 msgid "Reason"
-msgstr "Begründung"
+msgstr "Reisegrund"
 
 # Plane registration number
 msgid "Registration"
@@ -113,7 +113,7 @@ msgid "Edit flight"
 msgstr "Flug verändern"
 
 msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
-msgstr "Bitte <font color='blue'>blau</font> markierte Felder ausfüllen. Um Airports hinzuzufügen diese bitte auf der Karte auswählen oder via Stadtname oder Flughafen Code suchen"
+msgstr "Bitte <font color='blue'>blau</font> markierte Felder ausfüllen. Flughäfen fügen Sie hinzu indem Sie sie auf der Karte auswählen oder via Stadtnamen oder Flughafen Code suchen"
 
 msgid "Date"
 msgstr "Datum"
@@ -142,7 +142,7 @@ msgid "Swap To and From airports"
 msgstr "Abflug- und Ankunftsort vertauschen"
 
 msgid "Plane"
-msgstr "Flugzeug"
+msgstr "Flugzeugtyp"
 
 msgid "Enter plane model"
 msgstr "Flugzeugmodell eingeben"
@@ -233,7 +233,7 @@ msgstr "Zurücksetzen der Eingaben"
 
 # Close flight editor and return to main screen
 msgid "Exit"
-msgstr "Verlassen"
+msgstr "Abbrechen"
 
 msgid "Exit flight editor"
 msgstr "Verlassen des Flugeditors"
@@ -280,7 +280,7 @@ msgstr "Für schnelle Eingabe von mehrfachen Flügen bitte neue Zeile hinzufüge
 
 # Add new row for faster data entry
 msgid "More"
-msgstr "Für schnellere Dateneingabe bitte neue Zeile hinzufügen"
+msgstr "Weiter Zeile"
 
 msgid "Remove a row"
 msgstr "Zeile entfernen"
@@ -539,7 +539,7 @@ msgid "Airline, railway, road transport and shipping search"
 msgstr "Fluglinie, Bahn, Straßenverkehr und Shifffahrt suche"
 
 msgid "Fill one or more fields below to search for matching airlines and other transport operators."
-msgstr "Füllen Sie mindestens eins der Felder unten um nach Fluglinien und anderen Transport Anbietern zu suchen"
+msgstr "Füllen Sie mindestens eins der Felder unten aus um nach Fluglinien und anderen Transport Anbietern zu suchen"
 
 # Of airline, train company etc
 msgid "Name"
@@ -645,7 +645,7 @@ msgstr "<b>FlugStatistik (.html)</b> &mdash; FlugStatistik hat keine Exportfunkt
 
 #, php-format
 msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
-msgstr "<b>OpenFlights (.csv)</b> &mdash; Komma getrennte Werte, exportiert aus OpenFlights via 'Export' oder 'Backup' und einfach verändert oder erstellt in Excel oder anderen Tabellenkalkulationen. <%s'> zeigt eine genaue Formatbeschreibung"
+msgstr "<b>OpenFlights (.csv)</b> &mdash; Komma getrennte Werte, exportiert aus OpenFlights via 'Export' oder 'Backup' die sehr einfach in Excel oder anderen Tabellenkalkulationen verändert und erstellt werden können. <%s'> Zeigt eine genaue Formatbeschreibung"
 
 msgid "File to upload"
 msgstr "Datei für Upload"
@@ -655,11 +655,11 @@ msgid "Keep historical airline names?"
 msgstr "Namen historischer Fluglinien beibehalten?"
 
 msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
-msgstr "OpenFlights versucht normalerweise Fluglinien Flugnummern zuzuordnen. Setzen Sie obige Checkbox um Namen aller Fluglininen <i>exakt</i> so zu übernehmen wie Sie importiert wurden (inkl. möglicher Fehler)."
+msgstr "OpenFlights versucht normalerweise Fluglinien anhand von Flugnummern zuzuordnen. Setzen Sie obige Checkbox um Namen aller Fluglininen <i>exakt</i> so zu übernehmen wie Sie importiert wurden (inkl. möglicher Fehler)."
 
 #, php-format
 msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
-msgstr "Sie haben die Möglichkeit die zu importierenden Flüge vor dem sichern noch einmal zu überprüfen.  %s erklärt wie Sie eni Backup anlegen können bevor Sie Flüge importieren."
+msgstr "Sie haben die Möglichkeit die zu importierenden Flüge vor dem sichern noch einmal zu überprüfen.  %s erklärt wie Sie ein Backup anlegen können bevor Sie Flüge importieren."
 
 msgid "Create new account"
 msgstr "Neuen Account erstellen"
@@ -684,7 +684,7 @@ msgstr "E-Mail (optional)"
 
 #, php-format
 msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
-msgstr "Wenn Sie das Passwort vergessen haben, senden wir ein neues zu. OpenFlights wird die Emailadresse <i>niemals</i> für andere Zwecke mißbrauchen oder andere sensible Informationen preisgeben. Siehe <%s>privacy policy</a> für Details."
+msgstr "Wenn Sie das Passwort vergessen haben, senden wir ein Neues zu. OpenFlights wird die Emailadresse <i>niemals</i> für andere Zwecke mißbrauchen oder andere sensible Informationen preisgeben. Siehe <%s>privacy policy</a> für Details."
 
 msgid "Could not load profile data"
 msgstr "Profil konnte nicht geladen werden"
@@ -725,7 +725,7 @@ msgid "Banners"
 msgstr "Banner"
 
 msgid "Blog banner (HTML)"
-msgstr "Blog banner (HTML)"
+msgstr "Blog Banner (HTML)"
 
 msgid "Bulletin board banner (phpBB)"
 msgstr "Forum Banner (phpBB)"
@@ -753,7 +753,7 @@ msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</
 msgstr "<b>Private</b> Profile sind nur für Sie selbst sichtbar.  <%s>Gold und Platin</a> Benutzer können private Profile mit Passwort schützen um einem eingeschränkten Personenkreis Zugang zu gewähren."
 
 msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
-msgstr "<b>Öffentliche </b> Profile"
+msgstr "<b>Öffentliches </b> Profil"
 
 msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
 msgstr "<b>Öffentliche </b> Profile erlauben anderen die Flugdaten zu sehen jedoch nicht zu verändern"
@@ -762,7 +762,7 @@ msgid "Flight editor"
 msgstr "Flugeditor"
 
 msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
-msgstr "Der <B>Basis</b> Editor ist einfach und schnell: woher, wohin, das Datum und ergänzend die Flugline - bis zu vier Flüge gleichzeitig. Der schnellste Weg die eigene Karte zu erstellen"
+msgstr "Der <B>Basis</b> Editor ist einfach und schnell: Abflugort, Ziel und Datum, ergänzt durch die Flugline - mit bis zu vier Flügen gleichzeitig. Der schnellste Weg die eigene Karte zu erstellen"
 
 msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
 msgstr "The <B>erweiterte </b> Editor erlaubt das hinzufügen von Serviceklasse, Sitznummern, Flugzeugmodellen und Registrierungen, ein Feld für Notizen und vieles mehr. Perfekt für Aviation Fans und Planespotter"
@@ -896,7 +896,7 @@ msgstr "Schifffahrt"
 
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
-msgstr "Segmente"
+msgstr "Flüge"
 
 # Rank by distance travelled
 msgid "Mileage"
@@ -970,7 +970,7 @@ msgid "%1's flights"
 msgstr "%1's Flüge"
 
 msgid "Home"
-msgstr "Start"
+msgstr "Startseite"
 
 msgid "Not in a trip"
 msgstr "Nicht Teil einer Reise"
@@ -1003,7 +1003,7 @@ msgstr "Nr."
 
 # Name of plane, train etc
 msgid "Vehicle"
-msgstr "Gerät"
+msgstr "Flugzeug"
 
 # User actions in List flights (edit, copy, delete)
 msgid "Action"
@@ -1016,25 +1016,25 @@ msgid "Copy to new flight"
 msgstr "Flug zu neuem kopieren"
 
 msgid "Unique"
-msgstr "Eindeutig"
+msgstr "Spezifisch"
 
 msgid "Airports"
 msgstr "Flughäfen"
 
 msgid "Carriers"
-msgstr "Fluggesellschaft"
+msgstr "Fluglinien"
 
 msgid "Countries"
 msgstr "Länder"
 
 msgid "Vehicles"
-msgstr "Fluggeräte"
+msgstr "Flugzeugtyp"
 
 msgid "Miles flown"
 msgstr "Meilen geflogen"
 
 msgid "Around the world"
-msgstr "U die Erde"
+msgstr "Um die Erde"
 
 msgid "To the Moon"
 msgstr "Bis zum Mond"
@@ -1049,7 +1049,7 @@ msgid "Average"
 msgstr "Durschnittlich"
 
 msgid "Airport records"
-msgstr "Flughafen Einträge"
+msgstr "Flughafenrekorde"
 
 msgid "Seats"
 msgstr "Sitze"
@@ -1060,7 +1060,7 @@ msgstr "Anzeigen..."
 
 # Sort by... number of flights, distance travelled
 msgid "Sort by..."
-msgstr "Sortieren bei..."
+msgstr "Sortieren nach..."
 
 msgid "Routes"
 msgstr "Routen"
@@ -1305,23 +1305,31 @@ msgid "Profile address:"
 msgstr "Profil Adresse:"
 
 msgid "Hide search bar"
-msgstr ""
+msgstr "Suchleiste ausblenden"
 
 msgid "Map of routes from this airport"
-msgstr ""
+msgstr "Routen von diesem Flughafen ausgehend"
 
 #, php-format
 msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
-msgstr ""
+msgstr "Ein Flughafen mit dem IATA Code %s existiert bereits. Bitte überprüfen Sie die Eingabe"
 
 msgid "List my flights"
-msgstr ""
+msgstr "Meine Flüge"
 
 msgid "List routes"
-msgstr ""
+msgstr "Meine Routen"
 
 msgid "List all routes from this airport"
-msgstr ""
+msgstr "All Routen von diesem Flughafen"
 
 msgid "Buy tickets on %1"
-msgstr ""
+msgstr "Kaufen Sie Tickets bei %1"
+
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr "Installieren Sie die <%s>OpenFlights Facebook Anwendung</a> um Ihre Flüge im <%s>Facebook</a> Profil anzuzeigen."
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr "<%s>CSV</a> Dateien können mit Tabellenkalkulationen wie z.B. Excel bearbeitet und erstellt werden."
