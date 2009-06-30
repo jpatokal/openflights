@@ -1,0 +1,1334 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenFlights Lithuanian\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
+"Language-Team: dreamsite.lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Flight logging, mapping, stats and sharing"
+msgstr "Skrydžių informacijos peržiūra, statistika ir platinimas"
+
+# Duration of flight (time)
+msgid "Duration"
+msgstr "Trukmė"
+
+# of flight
+msgid "Distance"
+msgstr "Atstumas"
+
+msgid "Add new airport"
+msgstr "Pridėti naują oro uostą"
+
+msgid "Sorry, OpenFlights requires JavaScript."
+msgstr "Atsiprašome, OpenFlights reikalauja JavaScript."
+
+# New features on the OpenFlights website
+msgid "News"
+msgstr "Naujienos"
+
+msgid "Language"
+msgstr "Kalba"
+
+msgid "Username"
+msgstr "Vartotojo vardas"
+
+msgid "Password"
+msgstr "Slaptažodis"
+
+msgid "Log in"
+msgstr "Prisijungti"
+
+msgid "Sign up"
+msgstr "Prisiregistruoti"
+
+msgid "Analyze"
+msgstr "Analizuoti"
+
+msgid "Top 10"
+msgstr "Top 10"
+
+# The flight selection filter on the main page
+msgid "Filter"
+msgstr "Filtras"
+
+# Generic term for any kind of transport (flight, road, sea, train)
+msgid "Carrier"
+msgstr "Vežėjas"
+
+msgid "Year"
+msgstr "Metai"
+
+msgid "Trip"
+msgstr "Kelionė"
+
+# Show additional filter options
+msgid "More..."
+msgstr "Daugiau..."
+
+# Class of travel (economy, business, first)
+msgid "Class"
+msgstr "Klasė"
+
+# Method of travel (by plane, by road, by ship, by train)
+msgid "Mode"
+msgstr "Kelionės būdas"
+
+# User's own notes on this flight
+msgid "Note"
+msgstr "Pastaba"
+
+msgid "Reason"
+msgstr "Priežastis"
+
+# Plane registration number
+msgid "Registration"
+msgstr "Registracijos numeris"
+
+msgid "Control panel"
+msgstr "Valdymo skydelis"
+
+msgid "New flight"
+msgstr "Naujas skrydis"
+
+msgid "List flights"
+msgstr "Skrydžių sąrašas"
+
+msgid "Import"
+msgstr "Importuoti"
+
+msgid "Settings"
+msgstr "Nustatymai"
+
+msgid "Logout"
+msgstr "Atsijungti"
+
+msgid "Add new flight"
+msgstr "Pridėti naują skrydį"
+
+msgid "Edit flight"
+msgstr "Redaguoti skrytį"
+
+msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgstr "Laukai <font color='blue'>mėlyna</font> spalva yra būtini. Pasirinkti juos  spauskite oro uostus žemėlapyje arba ieškokite pagal miesto pavadinimą arba oro uosto kodą."
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Departure and arrival time"
+msgstr "Išvykimo ir atvykimo laikas"
+
+msgid "Add new trip"
+msgstr "Pridėti naują kelionę"
+
+msgid "Edit this trip"
+msgstr "Redaguoti kelionę"
+
+# Source airport
+msgid "From"
+msgstr "Iš"
+
+#, php-format
+msgid "Enter city name or airport code"
+msgstr "Įveskite miesto pavadinimą arba oro uosto kodą"
+
+msgid "Airport search"
+msgstr "Oro uostų paieška"
+
+msgid "Swap To and From airports"
+msgstr "Pakeisti vietomis Į ir Iš oro uostus"
+
+msgid "Plane"
+msgstr "Lėktuvas"
+
+msgid "Enter plane model"
+msgstr "Įveskite lėktuvo modelį"
+
+# Plane registration number (abbreviated)
+msgid "Reg."
+msgstr "Reg."
+
+# Destination airport
+msgid "To"
+msgstr "Į"
+
+msgid "Economy"
+msgstr "Ekonominė"
+
+msgid "Premium Eco."
+msgstr " Premium Eko."
+
+msgid "Business"
+msgstr "Verslo"
+
+msgid "First"
+msgstr "Pirma"
+
+# By plane
+msgid "Flight"
+msgstr "Oru"
+
+# By car, bus, etc
+msgid "Road"
+msgstr "Keliais"
+
+msgid "Ship"
+msgstr "Laivu"
+
+msgid "Train"
+msgstr "Traukiniu"
+
+# Seat number
+msgid "Nr"
+msgstr "Nr"
+
+msgid "Seat"
+msgstr "Vieta"
+
+# Seat type (window, aisle, middle)
+msgid "Type"
+msgstr "Vietos tipas"
+
+msgid "Window"
+msgstr "Langas"
+
+msgid "Aisle"
+msgstr "Tarpas"
+
+msgid "Middle"
+msgstr "Viduryje"
+
+msgid "Work"
+msgstr "Darbas"
+
+msgid "Leisure"
+msgstr "Laisvalaikis"
+
+msgid "Crew"
+msgstr "Įgula"
+
+msgid "Other"
+msgstr "Kita"
+
+msgid "Enter airline name or code"
+msgstr "Įveskite aviakompanijos pavadinimą arba kodą"
+
+msgid "Airline search"
+msgstr "Aviakompanijos paieška"
+
+msgid "Add"
+msgstr "Pridėti"
+
+msgid "Save this flight"
+msgstr "Išsaugoti skrydį"
+
+msgid "Clear"
+msgstr "Išvalyti"
+
+msgid "Reset this entry form"
+msgstr "Išvalyti laukus"
+
+# Close flight editor and return to main screen
+msgid "Exit"
+msgstr "Baigti"
+
+msgid "Exit flight editor"
+msgstr "Išeiti iš redaktoriaus"
+
+msgid "Save changes"
+msgstr "Išsaugoti pakeitimus"
+
+msgid "Save changes made to this flight"
+msgstr "Išsaugoti pakeitimus šiam skrydžiui"
+
+msgid "Delete"
+msgstr "Pašalinti"
+
+msgid "Delete this flight"
+msgstr "Pašalinti šį skrydį"
+
+msgid "Previous flight"
+msgstr "Ankstesnis skrydis"
+
+msgid "Next flight"
+msgstr "Sekantis skrydis"
+
+msgid "Switch to basic editor"
+msgstr "Pereiti į supaprastiną redaktorių"
+
+# Switch to "basic" flight editor
+msgid "Basic"
+msgstr "Supaprastintas"
+
+msgid "Add new flights"
+msgstr "Pridėti naują skrydį"
+
+msgid "Airline"
+msgstr "Aviakompanija"
+
+msgid "Save these flights"
+msgstr "Išsaugoti šiuos skrydžius"
+
+msgid "Exit without saving"
+msgstr "Išeiti neišsaugant"
+
+msgid "Add new row for faster entry of multiple flights"
+msgstr "Pridėti naują eilutę greitesniam įterpimui kelių skrydžių"
+
+# Add new row for faster data entry
+msgid "More"
+msgstr "Daugiau"
+
+msgid "Remove a row"
+msgstr "Šalinti eilutę"
+
+# Remove an entry row
+msgid "Less"
+msgstr "Mažiau"
+
+msgid "Switch to detailed editor"
+msgstr "Pereiti prie detalaus redaktoriaus"
+
+# Switch to "detailed" editor
+msgid "Detailed"
+msgstr "Detalus"
+
+#, php-format
+msgid "Your session has timed out, please log in again."
+msgstr "Jūsų sesija pasibaigė, prašome prisijungti iš naujo."
+
+#, php-format
+msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgstr "Atsiprašome, oro uostas naudojantis ICAO kodą %s jau yra. Prašome patikrinti kelis kartus."
+
+msgid "Adding new airport failed:"
+msgstr "Pridėti naują oro uosto lauką:"
+
+#, php-format
+msgid "New airport successfully added."
+msgstr "Naujas oro uostas sėkmingai pridėtas."
+
+#, php-format
+msgid "Airport successfully edited."
+msgstr "Oro uostas sėkmingai pakeistas."
+
+#, php-format
+msgid "Editing airport failed:"
+msgstr "Klaida išsaugant oro uostą:"
+
+msgid "Not logged in, aborting"
+msgstr "Jus neprisijungęs, nutraukiama"
+
+msgid "Unknown"
+msgstr "Nežinomas"
+
+# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
+msgid "was:"
+msgstr "buvo:"
+
+msgid "No airline"
+msgstr "Nėra aviakompanijos"
+
+msgid "Upload again"
+msgstr "Įkeltiama iš naujo"
+
+msgid "Cancel this import and return to file upload page"
+msgstr "Nutraukti šį įkėlimą ir pereiti į bylos įkėlimo puslpį"
+
+msgid "Upload"
+msgstr "Įkelti"
+
+msgid "Upload successful.  Parsing..."
+msgstr "Sekimingai įkelta. Apdorojama..."
+
+msgid "Results"
+msgstr "Rezultatai"
+
+msgid "Upload failed!"
+msgstr "Įkėlimas nesėkmingas!"
+
+msgid "Importing..."
+msgstr "Įkeliama..."
+
+msgid "Sorry, this file does not appear to be FlightMemory HTML."
+msgstr "Atsiprašome, panašu kad ši byla nėra FlightMemory HTML."
+
+msgid "Sorry, this HTML file does not appear contain FlightMemory FlightData."
+msgstr " Atsiprašome, panašu kad ši HTML byla neturi FlightMemory FlightData."
+
+msgid "Sorry, the filename must end in '.csv'."
+msgstr "Atsiprašome, byla turi baigtis '.csv'."
+
+msgid "Unable to open CSV file."
+msgstr "Nepavyksta atidaryti CSV bylos"
+
+msgid "Miles"
+msgstr "Milių"
+
+# Flight duration
+msgid "Time"
+msgstr "Laikas"
+
+# Plane registration number
+msgid "Reg"
+msgstr "Reg"
+
+msgid "Comment"
+msgstr "Komentaras"
+
+# Explanation of colors and codes for import
+msgid "Key to results"
+msgstr "Raktas rezultatams"
+
+msgid "Color"
+msgstr "Spalva"
+
+msgid "Meaning"
+msgstr "Reikšmė"
+
+# No color
+msgid "None"
+msgstr "Jokia"
+
+msgid "Exact match"
+msgstr "Tikslus sutapimas"
+
+msgid "Info"
+msgstr "Informacija"
+
+msgid "Probable match, please verify"
+msgstr "Galimas sutapimas, prašome patikrinti"
+
+msgid "Warning"
+msgstr "Ispėjimas"
+
+msgid "No matches, will be added as new"
+msgstr "Nėra sutapimų, bus pridėtas kaip naujas"
+
+msgid "Error"
+msgstr "Klaida"
+
+msgid "No matches, please correct and reupload"
+msgstr "Nėra sutapimų, prašome ištaisyti ir įkelti pakartotinai"
+
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgstr "Ši CSV byla turi OpenFlights identifikatorius 15-18 stulpeliuose. Šie identifikatoriai panaikins reikšmes bet kurių rankinių nustatymų atliktų oro uosto, aviakompanijų ir/ar lėktuvų stulpeliuose."
+
+msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgstr "Jūsų skrydžių duomenys turi neatpažintų oro uostų. Prašome pridėti juos į duomenų bazę ir bandyti iš naujo."
+
+msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgstr " Jūsų skrydžių duomenys turi neatpažintų aviakompanijų. Dažniausiai tas reiškia, kad aviakompanijos kodas skrydžio numeryje nebuvo rastas ir aviakompanijos pavadinimas nebuvo nurodytas. Prašome ištaisykite arba pašalinkite aviakompanijos kodą ir bandykite dar kartą."
+
+msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
+msgstr "Dalis laukų negali būti apdorota. Prašome ištaisyti juos tik pagal vieną iš šitų formatų: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, arba YYYY. Formatas DD/MM/YYYY <b>nėra</b> priimamas."
+
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgstr "Jūsų skrydžio duomenys turi keliones ID kuri nenustatyta arba nepriklauso Jums. Prašome patikrinti keliones identifikatorius."
+
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgstr "<b>Apdorojimas sėkmingai baigtas.</b> Jus galyte dabar įkelti šiuose skrydžius į Jūsų OpenFlights. (Smulkios korekcijos gali būti atliktos vėliau skrydžių redaktoriuje.)"
+
+msgid "Add these flights to your OpenFlights"
+msgstr "Pridėti šiuos skrydžius į Jūsų OpenFlights "
+
+msgid "Cancel"
+msgstr "Nutraukti"
+
+msgid "Flights successfully imported."
+msgstr "Skrydžiai sėkmingai įkelti."
+
+msgid "Import more flights"
+msgstr "Įkelti daugiau skrydžių"
+
+msgid "Close"
+msgstr "Uždaryti"
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr "Nepavyko prisijungti. <%s>Prisiregistruoti</a> arba <%s>atitaisyti slaptažodį</a>?"
+
+msgid "This trip is not public."
+msgstr "Šis skrydis ne viešas."
+
+msgid "No such trip."
+msgstr "Nėra tokio skrydžio."
+
+msgid "This user's flights are password-protected."
+msgstr "Šio naudotojo skrydžiai apsaugoti slaptažodžiu."
+
+msgid "This user's flights are not public."
+msgstr "Šie naudotojo skrydžiai nėra vieši."
+
+msgid "No such user."
+msgstr "Nėra tokio naudotojo."
+
+msgid "This user has no flights."
+msgstr "Šis naudotojas neturi skrydžių"
+
+msgid "Sorry, that name is already taken, please try another."
+msgstr "Atsiprašome, šis vardas jau užimtas, prašome pasirinkti kitą."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "Paskyra perrašyta, %s skydžių pašalinta."
+
+msgid "Sorry, current password is not correct."
+msgstr "Atsiprašome, dabartinis slaptažodis neteisingas."
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "Sėkmingai prisiregistruota, dabar prisijungiama..."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "Nustatymai sėkmingai pakeisti, grįžtam..."
+
+msgid "Trip not found."
+msgstr "Kelionė nerasta."
+
+msgid "User not found."
+msgstr "Naudotojas nerastas"
+
+# Longest flight in "Analyze"
+msgid "Longest"
+msgstr "Ilgiausias"
+
+# Shortest flight
+msgid "Shortest"
+msgstr "Trumpiausias"
+
+msgid "Northernmost"
+msgstr "Šiauriausias"
+
+msgid "Southernmost"
+msgstr "Piečiausias"
+
+msgid "Westernmost"
+msgstr "Vakariausias"
+
+msgid "Easternmost"
+msgstr "Ryčiausias"
+
+msgid "Added."
+msgstr "Pridėta."
+
+#, php-format
+msgid "%s flights added."
+msgstr ""
+
+msgid "Edited."
+msgstr "%s skrydžių pridėta."
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "Kelionė sėkmingai sukurta"
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "Kelionė sėkmingai pašalinta"
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr " Kelionė sėkmingai pakeista"
+
+msgid "Airline, railway, road transport and shipping search"
+msgstr "Oro, traukinių, kelių arba laivų transporto paieška"
+
+msgid "Fill one or more fields below to search for matching airlines and other transport operators."
+msgstr "Užpildykite vieną iš žemiau esančių laukų surasti aviakompaniją arba tiko transporto operatorių"
+
+# Of airline, train company etc
+msgid "Name"
+msgstr "Pavadinimas"
+
+msgid "Railway"
+msgstr "Traukinių"
+
+msgid "Road transport"
+msgstr "Keliu transportas"
+
+msgid "Shipping"
+msgstr "Laivai"
+
+# Second company name if any, eg. "ANA" for "All Nippon Airways"
+msgid "Alternative name"
+msgstr "Kitas pavadinimas"
+
+msgid "Country"
+msgstr "Šalis"
+
+# Airline radio callsign
+msgid "Callsign"
+msgstr "Šaukinys"
+
+msgid "Show only major (IATA) airlines?"
+msgstr "Rodyti tik didžiausias aviakompanijas?"
+
+msgid "Search"
+msgstr "Paieška"
+
+msgid "Record the current data as a new airline."
+msgstr "Įrašyti duomenis kaip naują aviakompaniją."
+
+msgid "Add as new"
+msgstr "Įrašyti kaip naują"
+
+msgid "Fill one or more fields below to search for matching airports."
+msgstr "Užpildykite vieną arba daugiau laukų surasti reikiamą oro uostą."
+
+msgid "Airport name"
+msgstr "Oro uosto pavadinimas"
+
+msgid "City name"
+msgstr "Miesto pavadinimas"
+
+msgid "Country name"
+msgstr "Šalies pavadinimas"
+
+msgid "Latitude"
+msgstr "Platumas"
+
+msgid "Longitude"
+msgstr "Ilgumas"
+
+msgid "Elevation"
+msgstr "Aukštis"
+
+# Universal Time Coordinated (timezone)
+msgid "UTC"
+msgstr "UTC"
+
+# Daylight Savings Time
+msgid "DST"
+msgstr "DST"
+
+msgid "European"
+msgstr "Europos"
+
+msgid "US/Canada"
+msgstr " US/Kanada "
+
+msgid "S. American"
+msgstr "Pietų Amerika"
+
+msgid "Australia"
+msgstr "Australija"
+
+msgid "New Zealand"
+msgstr "Naujoji Zelandija"
+
+msgid "Database"
+msgstr "Duomenų bazė"
+
+msgid "Show only major (IATA) airports?"
+msgstr "Rodyti tik didžiausius (IATA) oro uostus?"
+
+msgid "Record the current data as a new airport."
+msgstr "Įrašyti duomenys kaip naują oro uostą"
+
+msgid "Record changes to this airport."
+msgstr "Išsaugoti pakeitimus šiam oro uostui."
+
+msgid "Import data"
+msgstr "Įkelti duomenys"
+
+msgid "OpenFlights can import two types of data:"
+msgstr " OpenFlights  gali įkelti kelių tipų duomenys:"
+
+#, php-format
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory neturi eksportavimo funkcijos, bet OpenFlights gali nugramdyti nuo ekrano' savo FlightData puslapius.  Prisijunkite prie FlightMemory, eikite į the FlightData puslapį, ir pasirinkyte 'Išsaugoti Svetainės puslapį' savo naršyklėje. Įkelkite išsaugotą HTML bylą.  Pakartokite šį žingsnį kiekvienam puslapiui.</p><p><i>Dėmesio</I>: Įsitikinkite kad  FlightMemory kalba yra <b>English</b> prieš saugant puslapį.</p><p><i>Pastaba</i>: Šiuo atveju <b>nėra pasikartojančių įrašų</b> suradimo įrankio.  Jeigu įkelsite bylą į FlightMemory kelis kartus – visi skrydžiai bus įkelti kelis kartus.</p><p><i>Pastaba</i>: <b>FlightMemory formatas</b> keičiamas kartas nuo karto.  Prašome <%s>pranešti</a> betkokias klaidas ar keistumus, įsitikinkite kad prisegate tikslią klaidą bei 'Tmpfile' reikšmę nuo įkėlimo puslapio viršaus."
+
+#, php-format
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgstr "<b>OpenFlights (.csv)</b> &mdash; Kableliais atskirti duomenys, eksportuoti iš OpenFlights 'Eksportuoti' arba 'Daryti rezervinę kopiją') ir lengvai kuriami arba redaguojami naudojant Excel ar daug kitų skaičiuoklių.  Žiūrėti <%s'>formato specifikacijos</a>."
+
+msgid "File to upload"
+msgstr "Byla įkelimui"
+
+# Import without changing airline names
+msgid "Keep historical airline names?"
+msgstr "Saugoti istorinius aviakompanijų pavadinimus?"
+
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgstr "OpenFlights bando atitaikyti aviakompanijas ir skrydžių numerius su žinomomis/dabartinėmis aviakompanijos. Jeigu pažymėsite langelyje, visi aviakompanijų pavadinimai bus <i>tiksliai</i> išsaugoti taip kaip ir ankčiau."
+
+#, php-format
+msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgstr "Jūs galėsite periūrėti skrydžius prieš juos importuojant. Peržiūrėkite %s norint padaryti atsarginę kopiją ar išvalyti jūsų skrydžius prieš importuojant"
+
+msgid "Create new account"
+msgstr "Sukurti naują paskyrą"
+
+msgid "Account settings"
+msgstr "Paskyros nustatymai"
+
+msgid "Basic information"
+msgstr "Pagrindinė informacija"
+
+msgid "This will be used as the name of your profile."
+msgstr "Panaudoti kaip paskyros pavadinimą."
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr "Pasirinkite sunkiai atspėjamą bet lengvai įsimintiną. Registrui jautru!"
+
+msgid "Password again"
+msgstr "Slaptažodis dar kartą"
+
+msgid "E-mail (optional)"
+msgstr "El. pašto adresas (nebūtina)"
+
+#, php-format
+msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "Jeigu pamiršote slaptažodį, mes galėsime išsiųsti Jums naują į šį adresą. Mes <i>niekada</i> nesiųsime Jums jokio kito pranešimo ir neplatinsime Jūsų asmeninę informaciją. Peržiūrėkite  <%s>privatumo politiką</a>."
+
+msgid "Could not load profile data"
+msgstr "Nepavyko užkrauti paskyros duomenis"
+
+msgid "Profile address"
+msgstr "Paskyros adresas"
+
+#, php-format
+msgid "Viewed %s times"
+msgstr "Peržiūrėta %s kartų"
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr "Viešasis paskyros adresas ir kaip dažnai jis buvo peržiūrėtas."
+
+# Is this profile linked to Facebook?
+msgid "Facebook link"
+msgstr "Facebook nuoroda"
+
+msgid "Linked, automatic updates"
+msgstr "Sujungta, automatiškai atnaujinama"
+
+msgid "Linked, manual updates only"
+msgstr "Sujungta, atnaujinama rankiniu budu"
+
+# Automate Facebook updates
+msgid "Automate"
+msgstr "Automatizuoti"
+
+msgid "Not active"
+msgstr "Neaktyvus"
+
+# ...to Facebook
+msgid "Add link"
+msgstr "Pridėti nuorodą"
+
+# Advertisements to place on your blog etc
+msgid "Banners"
+msgstr "Skydeliai"
+
+msgid "Blog banner (HTML)"
+msgstr "Tinklaraščio skydelis (HTML)"
+
+msgid "Bulletin board banner (phpBB)"
+msgstr "Bulletin skydelis (phpBB)"
+
+msgid "Profile settings"
+msgstr "Paskyros nustatymai"
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr "Galėsite lengvai pakeisti šiuos parametrus vėliau paspaudus <i>Nustatymai</i>"
+
+msgid "Privacy"
+msgstr "Privatumas"
+
+msgid "Private"
+msgstr "Asmeninė"
+
+msgid "Public"
+msgstr "Viešoji"
+
+msgid "Open"
+msgstr "Atviroji"
+
+#, php-format
+msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgstr "<b>Asmeninės</b> paskyros prieinamos tik Jums. <%s>Auksiniai ir Platininiai</a> naudotojai gali apsaugoti slaptažodžiu jų asmenines paskyras, tik naudotojai kurie žino slaptažodį galės jas peržiūrėti."
+
+msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
+msgstr "<b>Viešosios</b> paskyros leidžia kietiems peržiūrėti Jūsų skrydžių žemėlapį bei pagrindinę statistiką, tačiau skrydžio informacija tokia kaip tikslios datos ir aptarnavimo lygis neatskleidžiami."
+
+msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
+msgstr "<b>Atviroji</b> paskyra leidžia kitiems naudotojams taip pat peržiūrėti detalią Jūsų skrydžių informaciją"
+
+msgid "Flight editor"
+msgstr "Skrydžių redaktorius"
+
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgstr "<b>Pagrindinis</b> redaktorius yra lengvas ir paprastas: Iš kur, kur, data ir aviakompanija, iki keturių skrydžių vienu metu. Greičiausias būdas sukurti Jūsų žemėlapį!"
+
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgstr "<b>Detalizuotas</b> redaktorius leidžia pridėti aptarnavimo lygį, vietų skaičių, lėktuvo modelį ir apribojimus, pastabas ir daugiau. Idealus įrankis aviacijos fanams ir lėktuvų gaudytojams."
+
+msgid "Guest password"
+msgstr "Svečio slaptažodis"
+
+msgid "Gold Elite feature"
+msgstr "Auksinio Elito savybė"
+
+msgid "Password protect your Private profile, so only friends and family can see it."
+msgstr "Apsaugoti savo Asmeninę paskyrą, tik draugai ir šeimos nariai gali peržiūrėti ją."
+
+msgid "Default view"
+msgstr "Atvaizdas pagal nutylėjimą"
+
+msgid "Help"
+msgstr "Pagalba"
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr "Atvaizduoti vaizdą pagal pasirinkimą vietoje reklaminių skydelių."
+
+msgid "Manage flights"
+msgstr "Tvarkyti skrydžius"
+
+msgid "Backup to CSV"
+msgstr "Atsarginė kopija į CSV"
+
+msgid "Delete all flights"
+msgstr "Šalinti visus skrydžius"
+
+msgid "Change password"
+msgstr "Keisti slaptažodį"
+
+msgid "Current password"
+msgstr "Galiojantis slaptažodis"
+
+msgid "You only need to enter this if changing your password."
+msgstr "Turite įvesti tuo atveju jeigu norite pakeisti slaptažodį."
+
+msgid "New password"
+msgstr "Naujas slaptažodis"
+
+msgid "New password again"
+msgstr "Naujas slaptaždis dar kartą"
+
+msgid "Sign me up!"
+msgstr "Registruoti mane!"
+
+msgid "Edit trip"
+msgstr "Redaguoti kelionę"
+
+msgid "Add trip"
+msgstr "Pridėti kelionę"
+
+msgid "Could not load trip data."
+msgstr "Nepavyko įkrauti kelionės duomenis."
+
+# Address of personal web page for trips etc
+msgid "Web address <i>(optional)</i>"
+msgstr "Interneto adresas <i>nebūtinas</i>"
+
+msgid "Trip privacy"
+msgstr "Kelionės privatumas"
+
+msgid "Private (visible only to you)"
+msgstr "Asmeninė (matoma tik jums)"
+
+msgid "Public (map and stats shared)"
+msgstr "Viešoji (žemėlapis ir statistika prieinama visiems)"
+
+msgid "Open (all flight data shared)"
+msgstr "Atviroji (visa skrydžio infromacija prieinama visiems)"
+
+msgid "OpenFlights URL"
+msgstr "OpenFlights URL"
+
+msgid "Not assigned yet"
+msgstr "Dar nepriskirta"
+
+msgid "Save"
+msgstr "Saugoti"
+
+msgid "Prem.Eco"
+msgstr "Prem.Eko"
+
+# Abbreviation of "Economy"
+msgid "Econ"
+msgstr "Ekon"
+
+# Abbreviation of "Premium Economy"
+msgid "P.Eco"
+msgstr "P.Eko"
+
+# Business
+msgid "Biz"
+msgstr "Biz"
+
+# First
+msgid "1st"
+msgstr "1as"
+
+# Leisure
+msgid "Leis."
+msgstr "Poils."
+
+msgid "flight"
+msgstr "skrydis"
+
+msgid "train"
+msgstr "traukinys"
+
+# Trip by car, bus etc
+msgid "road trip"
+msgstr "kelionė keliu"
+
+msgid "ship"
+msgstr "laivas"
+
+msgid "airline"
+msgstr "aviakompanija"
+
+msgid "railway"
+msgstr "geležinkelis"
+
+msgid "road transport"
+msgstr "kelio transportas"
+
+msgid "shipping"
+msgstr "persiuntimas"
+
+# Rank by how many segments flown or otherwise travelled
+msgid "Segments"
+msgstr "Segmentai"
+
+# Rank by distance travelled
+msgid "Mileage"
+msgstr "Atstumas"
+
+# "Magnifying glass" and "hand" controls for map
+msgid "Toggle pan and region select mode"
+msgstr "Perjungti stumdymo ir regiono pasirinkimo režimus"
+
+msgid "Toggle overview map"
+msgstr "Perjungti žemėlapio peržiūrą"
+
+msgid "My Flights"
+msgstr "Mano skrydžiai"
+
+msgid "My Airports"
+msgstr "Mano Oro uostai"
+
+msgid "Flights:"
+msgstr "Skrydžiai:"
+
+msgid "Select this airport"
+msgstr "Pasirinkite šį oro uostą"
+
+msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
+msgstr "Įveskite pilną datą sekančia tvarka metai/mėnuo/diena, pvz. 2008/10/30 šiai datai 30 Spalio 2008. Teisingi formatai YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD ir YYYY MM DD."
+
+msgid "Please enter a valid source airport."
+msgstr "Įveskite pradinį oro uostą."
+
+msgid "Please enter a valid destination airport."
+msgstr "Įveskite tikslo oro uostą."
+
+msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
+msgstr "'%1' nerasta duomenų bazėje %2.  Ar norite pridėti naują kompaniją %2?"
+
+msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
+msgstr "Įveskite laikus 24 val. formate atskiriant minutes dvitaškiu, pvz. 21:37"
+
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgstr "Įveskite skrydžio trukmę valandom ir minutėmis atskiriant minutes dvitaškiu, pvz. 5:37. Norint skyrdžio trukmę perskaičiuoti automatiškai palikite šį lauką tuščia."
+
+msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgstr "Įveskite skrydžio atstumą myliomis. Norint perskaičiuoti atstumą automatiškai palikite šį lauką tuščia."
+
+msgid "No trips"
+msgstr "Nėra skrydžių"
+
+msgid "No trips. Add one? "
+msgstr "Nėra skrydžių. Pridėti? "
+
+msgid "Unassigned flights"
+msgstr "Nepriskirti skrydžiai"
+
+msgid "Recent flights on %1"
+msgstr "Paskutinieji skrydžiai %1"
+
+msgid "Recently added flights"
+msgstr "Paskutinieji pridėti skrydžiai"
+
+msgid "%1's flights on %2 in %3"
+msgstr "%1 skrydžiai %2 %3"
+
+msgid "%1's flights on %2"
+msgstr "%1 skrydžiai %2"
+
+msgid "%1's flights in %2"
+msgstr "%1 skrydžiai %2"
+
+msgid "%1's flights"
+msgstr "%1 skrydžiai"
+
+# Return to main page
+msgid "Home"
+msgstr "Pradinis"
+
+msgid "Not in a trip"
+msgstr "Nėra kelionėje"
+
+# Number of flights or other segments flown
+msgid "segments"
+msgstr "segmentai"
+
+msgid "miles"
+msgstr "mylios"
+
+msgid "days"
+msgstr "dienų"
+
+msgid "No flights found at this airport."
+msgstr "Šiame oro uoste nerasta skrydžių."
+
+msgid "Export"
+msgstr "Eksportas"
+
+msgid "Comma-Separated Value, for Excel and data processing"
+msgstr "Kableliu atskirtos reikšmės CSV, eksportui į Excelį"
+
+msgid "Keyhole Markup Language, for Google Earth and visualization"
+msgstr "Keyhole Markup Language, Google Earth ir vizualizacijai"
+
+# Flight, train etc number
+msgid "Nr."
+msgstr "Nr."
+
+# Name of plane, train etc
+msgid "Vehicle"
+msgstr "Transportas"
+
+# User actions in List flights (edit, copy, delete)
+msgid "Action"
+msgstr "Veiksmas"
+
+msgid "Edit this flight"
+msgstr "Redaguoti šį skrydį"
+
+msgid "Copy to new flight"
+msgstr "Kopijuoti į naują skrydį"
+
+msgid "Unique"
+msgstr "Unikalus"
+
+msgid "Airports"
+msgstr "Oro uostai"
+
+msgid "Carriers"
+msgstr "Vežėjai"
+
+msgid "Countries"
+msgstr "Šalys"
+
+msgid "Vehicles"
+msgstr "Transportas"
+
+msgid "Miles flown"
+msgstr "Nuskrista mylių"
+
+msgid "Around the world"
+msgstr "Aplink pasaulį"
+
+msgid "To the Moon"
+msgstr "Į Mėnulį"
+
+msgid "To Mars"
+msgstr "Į Marsą"
+
+msgid "Journey records"
+msgstr "Kelionės įrašai"
+
+msgid "Average"
+msgstr "Vidutiniškai"
+
+msgid "Airport records"
+msgstr "Oro uosto įrašai"
+
+msgid "Seats"
+msgstr "Vietų"
+
+# Show... Top 10, 25, 50
+msgid "Show..."
+msgstr "Atvaizduoti"
+
+# Sort by... number of flights, distance travelled
+msgid "Sort by..."
+msgstr "Rušiuoti pagal..."
+
+msgid "Routes"
+msgstr "Maršrutai"
+
+msgid "Airlines"
+msgstr "Aviakompanijos"
+
+msgid "Planes"
+msgstr "Lėktuvai"
+
+msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgstr "Šio skrydžio pakeitimai nebuvo išsaugoti. Nesaugoti pakeitimų?"
+
+msgid "Loading..."
+msgstr "Įkraunama..."
+
+msgid "Edit segment %1 of %2"
+msgstr "Redaguoti segmentą %1 iš %2"
+
+msgid "Are you sure you want to delete this flight?"
+msgstr "Ar tikrai norite pašalinti šį skrydį?"
+
+msgid "Deleting flight cancelled."
+msgstr "Skrydžio šalinimas atšauktas."
+
+msgid "Search for %1"
+msgstr "Ieškoti %1"
+
+msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
+msgstr "Išvykimas UTC %1%2%3, Atvykimas UTC %4%5%6, Laiko skirtumas %7 valandos(ų)"
+
+msgid "+%1 day"
+msgstr "+%1 dienų"
+
+msgid "-%1 day"
+msgstr "-%1 dienų"
+
+msgid "Flight departure and arrival times"
+msgstr "Skrydžio išvykimo ir atvykimo laikai"
+
+msgid "Logged in as <B>%1</B>"
+msgstr "Prisijungęs kaip <B>%1</B>"
+
+msgid "Welcome, <B>%1</B> !"
+msgstr "Sveiki, <B>%1</B> !"
+
+msgid "Loading"
+msgstr "Įkraunama"
+
+msgid "Hi, <B>%1</B> !"
+msgstr "Sveiki, <B>%1</B> !"
+
+msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgstr "<b>Sveiki sugrįžę!</b> Mums malonu, kad Jums patiko OpenFlights.<br>Apsilankykite <a href='/donate.html' target='_blank'>ir paaukokite svetainės palaikymui</a>!"
+
+msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr "<B>Sveikiname prisijungus prie OpenFlights!</b>  Spragtelėkite %1 norint pridėti skrydį, arba %2 norint įkrauti duomenis iš svetainės panšios į FlightMemory."
+
+msgid "You have been logged out."
+msgstr "Jūs sėkmingai atsijungėte."
+
+msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
+msgstr "Jūs jau redaguote skrydžio informaciją. Atšaukti skrydžio koregavimą ir pridėti naujo skrydžio informaciją?"
+
+msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
+msgstr "Jūs jau redaguote skrydžio informaciją. Atšaukti skrydžio koregavimą ir redaguoti šio skrydžio informaciją?"
+
+msgid "IATA/FAA codes must be exactly three letters."
+msgstr "IATA/FAA kodai turi būti sudaryti iš trijų raidžių."
+
+msgid "ICAO codes must be exactly four letters."
+msgstr "ICAO kodai turi būti sudaryti iš keturių raidžių."
+
+msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgstr "Tik raidės A-Z, skaičiai 0-9, punktuacijos ženklai -.' (brukšnys, taškas, apostrofas) ir tarpai gali būti panaudoti oro uosto ir miesto pavadinime."
+
+msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
+msgstr "Miestas '%1' praleidžiamas, DAFIF duomenų bazėje nėra informacijos apie šį miestą."
+
+msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgstr "Paieška pagal IATA/FAA kodą '%1' apribota JAV oro uostais. DAFIF neturi miestų IATA kodų už JAV ribų."
+
+msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgstr "IATA kodas '%1' praleidžiamas, DAFIF neturi miestų  IATA kodų už JAV ribų."
+
+msgid "Sorry, you have to be logged into OpenFlights to use this."
+msgstr "Atsiprašome, tam kad šiuo naudotis Jūs turite prisijungti prie OpenFlights."
+
+msgid "Please enter an airport name."
+msgstr "Įveskite oro uosto pavadinimą."
+
+msgid "Please enter a city name."
+msgstr "Įveskite miesto pavadinimą."
+
+msgid "Please select a country."
+msgstr "Pasririnkite šalį."
+
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgstr "Įveskite platumą, ilgumą ir aukštį. Pastaba: Patikrinkite mūsų duomenų bazę, gal joje jau yra jus dominantis oro uostas ir pasirinkite\"Įkrauti\" duomenis."
+
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgstr "Ilguma ir platuma turi būti nurodyta dešimtainiais laipsniais, neigiami skaičiai nurodo 'pietūs' ir 'vakarai' atitinkamai. Tikslumas trys skaičiai po kablelio. Pvz., San Francisco (SFO) yra platumoje 37.6189(N), ilgumoje -122.3748(W)."
+
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
+msgstr "Ilguma turi būti nurodyta iš intervalo nuo -180 (vakarai) iki 180 (rytai) laipsnių."
+
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
+msgstr "Platuma turi būti nurodyta iš intervalo nuo 90 (šiaurė) iki -90 (pietūs) laipsnių."
+
+msgid "Please enter a positive number for elevation."
+msgstr "Įveskite teigiamą aukščio reikšmę."
+
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgstr "Įveskite laiko juosto poslinkį UTC/GMT atžvilgiu, pvz. +2 Vilnius arba -5 New York."
+
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgstr "Jūs nenurodėte ar šis oro uostas atsižvelgia į vasaros/žiemos laiką (Daylight Savings Time (DST)). Nenurodyti?"
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Neįvestas IATA/FAA kodas. Ar įsitikinę kad šis oro uostas neturi šio kodo ir norite tęsti?"
+
+msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Neįvestas ICAO kodas. Ar įsitikinę kad šis oro uostas neturi šio kodo ir norite tęsti?"
+
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgstr "Ar norite pridėti nauja oro uostą %1 kuris yra pasaulio kvadrante %2? Patikrinkite pavadinimą, oro uosto kodus ir tikslias koordinates prieš patvirtinant."
+
+msgid "Cancelled."
+msgstr "Atšaukta."
+
+msgid "Searching..."
+msgstr "Ieškoma...."
+
+msgid "Recording..."
+msgstr "Įrašoma..."
+
+msgid "No matches found in this database."
+msgstr "Duomenų bazėje nerasta."
+
+msgid "Try unchecking 'Show only major airports' and search again."
+msgstr "Bandykite nužymėti 'Atvaizduoti tik didžiausius oro uostus' ir ieškokite dar kartą."
+
+msgid "Switch to the OurAirports database and search again."
+msgstr "Persijungti į Mūsų Oro uostai duomenų bazę ir ieškoti dat kartą"
+
+msgid "Results %1 to %2 of %3"
+msgstr "Rezultatai %1 iki %2 iš %3"
+
+msgid "Airports in pink have been added by users of OpenFlights."
+msgstr "Oro uostai pažymėti rožine spalva yra pridėti OpenFlights naudotoju."
+
+msgid "Airports in blue have been added by you and can be edited."
+msgstr "Oro uostai pažymėti mėlyna spalva yra pridėti jūsų ir gali būti redaguojami."
+
+msgid "Select"
+msgstr "Pasirinkti"
+
+msgid "Edit"
+msgstr "Redaguoti"
+
+msgid "Load"
+msgstr "Įkrauti"
+
+msgid "Search for airport"
+msgstr "ieškoti oro uosto"
+
+msgid "Search for airline"
+msgstr "Ieškoti aviakompanijos"
+
+msgid "All trips"
+msgstr "Visos kelionės"
+
+msgid "All carriers"
+msgstr "Visi vežėjai"
+
+msgid "All"
+msgstr "Visi"
+
+msgid "IATA codes must be exactly two letters."
+msgstr "IATA kodas turi būti iš dviejų raidžių."
+
+msgid "ICAO codes must be exactly three letters."
+msgstr "ICAO kodas turi būti iš trijų raidžių."
+
+msgid "Please enter a name."
+msgstr "Įveskite pavadinimą."
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
+msgstr "Neįvestas IATA/FAA kodas. Ar įsitikinę kad ši aviakompanija neturi šio kodo ir norite tęsti?"
+
+msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
+msgstr "Neįvestas ICAO kodas. Ar įsitikinę kad ši aviakompanija neturi šio kodo ir norite tęsti?"
+
+msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
+msgstr "Ar norite pridėtį naują operatorių %1? Patikrinkite pavadinimą ir aviakompanijų kodus prieš patvirtinant."
+
+msgid "No matches found."
+msgstr "Nieko nerasta."
+
+msgid "Operators in pink have been added by users of OpenFlights."
+msgstr "Operatoriai pažymėti rožine spalva yra pridėti OpenFlights naudotoju."
+
+msgid "Operators in blue have been added by you and can be edited."
+msgstr "Operatoriai pažymėti mėlyna spalva yra pridėti jūsų ir gali būti redaguojami."
+
+msgid "Sorry, you have to be logged into OpenFlights to do this."
+msgstr "Atsiprašome, Norint atlikti šį veiksmą turite prisijungti prie OpenFlights."
+
+msgid "Creating account..."
+msgstr "Kūriama paskyra..."
+
+msgid "Saving changes..."
+msgstr "Saugomi pakeitimai..."
+
+msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
+msgstr "Šis veiksmas NEATSTATOMAI pašalins VISUS JŪSŲ SKRYDŽIUS. Ar išsaugojote atsarginę kopiją, norite tęsti?"
+
+msgid "Deletion cancelled."
+msgstr "Šalinimas atšauktas."
+
+msgid "Please enter a username."
+msgstr "Įveskite naudotojo vardą."
+
+msgid "Please enter a password."
+msgstr "Įveskite slaptažodį."
+
+msgid "Please enter your current password if you wish to change to a new password."
+msgstr "Įveskite galiojantį slaptažodį jeigu norite pakeisti jį į naująjį."
+
+msgid "Please enter a new password, or clear current password if you do not wish to change it."
+msgstr "Įveskite naująjį slaptažodį, arba išvalykite esamą slaptažodį jeigu nenorite jo keisti."
+
+msgid "Your passwords don't match, please try again."
+msgstr "Slaptažodis neatitinka, bandykite dar kartą."
+
+msgid "Processing..."
+msgstr "Vykdoma..."
+
+msgid "Profile address:"
+msgstr "Paskyros adresas:"
+
+msgid "Hide search bar"
+msgstr ""
+
+msgid "Map of routes from this airport"
+msgstr ""
+
+#, php-format
+msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgstr ""
+
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr ""
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr ""
+
+msgid "List my flights"
+msgstr ""
+
+msgid "List routes"
+msgstr ""
+
+msgid "List all routes from this airport"
+msgstr ""
+
+msgid "Buy tickets on %1"
+msgstr ""
