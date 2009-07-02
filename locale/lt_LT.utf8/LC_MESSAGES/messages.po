@@ -34,7 +34,7 @@ msgid "Language"
 msgstr "Kalba"
 
 msgid "Username"
-msgstr "Vartotojo vardas"
+msgstr "Vartotojas"
 
 msgid "Password"
 msgstr "Slaptažodis"
@@ -110,10 +110,10 @@ msgid "Add new flight"
 msgstr "Pridėti naują skrydį"
 
 msgid "Edit flight"
-msgstr "Redaguoti skrytį"
+msgstr "Redaguoti skrydį"
 
 msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
-msgstr "Laukai <font color='blue'>mėlyna</font> spalva yra būtini. Pasirinkti juos  spauskite oro uostus žemėlapyje arba ieškokite pagal miesto pavadinimą arba oro uosto kodą."
+msgstr "Laukai pažymėti <font color='blue'>mėlyna</font> spalva yra būtini. Pasirinkti juos spauskite oro uostus žemėlapyje arba ieškokite pagal miesto pavadinimą arba oro uosto kodą."
 
 msgid "Date"
 msgstr "Data"
@@ -257,7 +257,7 @@ msgid "Next flight"
 msgstr "Sekantis skrydis"
 
 msgid "Switch to basic editor"
-msgstr "Pereiti į supaprastiną redaktorių"
+msgstr "Pereiti į supaprastintą redaktorių"
 
 # Switch to "basic" flight editor
 msgid "Basic"
@@ -276,7 +276,7 @@ msgid "Exit without saving"
 msgstr "Išeiti neišsaugant"
 
 msgid "Add new row for faster entry of multiple flights"
-msgstr "Pridėti naują eilutę greitesniam įterpimui kelių skrydžių"
+msgstr "Pridėti naują eilutę greitesniam kelių skrydžių įterpimui"
 
 # Add new row for faster data entry
 msgid "More"
@@ -305,7 +305,7 @@ msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-c
 msgstr "Atsiprašome, oro uostas naudojantis ICAO kodą %s jau yra. Prašome patikrinti kelis kartus."
 
 msgid "Adding new airport failed:"
-msgstr "Pridėti naują oro uosto lauką:"
+msgstr "Nepavyko pridėti naują oro uosto lauką:"
 
 #, php-format
 msgid "New airport successfully added."
@@ -320,7 +320,7 @@ msgid "Editing airport failed:"
 msgstr "Klaida išsaugant oro uostą:"
 
 msgid "Not logged in, aborting"
-msgstr "Jus neprisijungęs, nutraukiama"
+msgstr "Jūs neprisijungęs, nutraukiama"
 
 msgid "Unknown"
 msgstr "Nežinomas"
@@ -336,19 +336,19 @@ msgid "Upload again"
 msgstr "Įkeltiama iš naujo"
 
 msgid "Cancel this import and return to file upload page"
-msgstr "Nutraukti šį įkėlimą ir pereiti į bylos įkėlimo puslpį"
+msgstr "Nutraukti šį įkėlimą ir pereiti į bylos įkėlimo puslapį"
 
 msgid "Upload"
 msgstr "Įkelti"
 
 msgid "Upload successful.  Parsing..."
-msgstr "Sekimingai įkelta. Apdorojama..."
+msgstr "Sėkimingai įkelta. Apdorojama..."
 
 msgid "Results"
 msgstr "Rezultatai"
 
 msgid "Upload failed!"
-msgstr "Įkėlimas nesėkmingas!"
+msgstr "Nepavyko įkėlti!"
 
 msgid "Importing..."
 msgstr "Įkeliama..."
@@ -363,10 +363,10 @@ msgid "Sorry, the filename must end in '.csv'."
 msgstr "Atsiprašome, byla turi baigtis '.csv'."
 
 msgid "Unable to open CSV file."
-msgstr "Nepavyksta atidaryti CSV bylos"
+msgstr "Nepavyksta atidaryti CSV bylos."
 
 msgid "Miles"
-msgstr "Milių"
+msgstr "Mylių"
 
 # Flight duration
 msgid "Time"
@@ -430,7 +430,7 @@ msgid "Your flight data includes trip IDs which are either undefined or do not b
 msgstr "Jūsų skrydžio duomenys turi keliones ID kuri nenustatyta arba nepriklauso Jums. Prašome patikrinti keliones identifikatorius."
 
 msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
-msgstr "<b>Apdorojimas sėkmingai baigtas.</b> Jus galyte dabar įkelti šiuose skrydžius į Jūsų OpenFlights. (Smulkios korekcijos gali būti atliktos vėliau skrydžių redaktoriuje.)"
+msgstr "<b>Apdorojimas sėkmingai baigtas.</b> Dabar Jūs galite įkelti šiuos skrydžius į Jūsų OpenFlights. (Smulkios korekcijos gali būti atliktos vėliau skrydžių redaktoriuje.)"
 
 msgid "Add these flights to your OpenFlights"
 msgstr "Pridėti šiuos skrydžius į Jūsų OpenFlights "
@@ -452,10 +452,10 @@ msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
 msgstr "Nepavyko prisijungti. <%s>Prisiregistruoti</a> arba <%s>atitaisyti slaptažodį</a>?"
 
 msgid "This trip is not public."
-msgstr "Šis skrydis ne viešas."
+msgstr "Šis skrydis nėra viešas."
 
 msgid "No such trip."
-msgstr "Nėra tokio skrydžio."
+msgstr "Tokio skrydžio nėra."
 
 msgid "This user's flights are password-protected."
 msgstr "Šio naudotojo skrydžiai apsaugoti slaptažodžiu."
@@ -477,11 +477,11 @@ msgid "Account reset, %s flights deleted."
 msgstr "Paskyra perrašyta, %s skydžių pašalinta."
 
 msgid "Sorry, current password is not correct."
-msgstr "Atsiprašome, dabartinis slaptažodis neteisingas."
+msgstr "Atsiprašome, galiojantis slaptažodis neteisingas."
 
 #, php-format
 msgid "Successfully signed up, now logging in..."
-msgstr "Sėkmingai prisiregistruota, dabar prisijungiama..."
+msgstr "Sėkmingai prisiregistruota, dabar jungiamasi..."
 
 #, php-format
 msgid "Settings changed successfully, returning..."
@@ -518,10 +518,10 @@ msgstr "Pridėta."
 
 #, php-format
 msgid "%s flights added."
-msgstr ""
+msgstr "%s skyrdžių pridėta."
 
 msgid "Edited."
-msgstr "%s skrydžių pridėta."
+msgstr "Atnaujinta."
 
 #, php-format
 msgid "Trip successfully created"
@@ -533,13 +533,13 @@ msgstr "Kelionė sėkmingai pašalinta"
 
 #, php-format
 msgid "Trip successfully edited."
-msgstr " Kelionė sėkmingai pakeista"
+msgstr "Kelionė sėkmingai pakeista"
 
 msgid "Airline, railway, road transport and shipping search"
 msgstr "Oro, traukinių, kelių arba laivų transporto paieška"
 
 msgid "Fill one or more fields below to search for matching airlines and other transport operators."
-msgstr "Užpildykite vieną iš žemiau esančių laukų surasti aviakompaniją arba tiko transporto operatorių"
+msgstr "Užpildykite vieną iš žemiau esančių laukų surasti aviakompaniją arba kitą transporto operatorių"
 
 # Of airline, train company etc
 msgid "Name"
@@ -637,7 +637,7 @@ msgid "Import data"
 msgstr "Įkelti duomenys"
 
 msgid "OpenFlights can import two types of data:"
-msgstr " OpenFlights  gali įkelti kelių tipų duomenys:"
+msgstr "OpenFlights  gali įkelti kelių tipų duomenys:"
 
 #, php-format
 msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
@@ -1304,31 +1304,32 @@ msgid "Profile address:"
 msgstr "Paskyros adresas:"
 
 msgid "Hide search bar"
-msgstr ""
+msgstr "Paslėpti paieškos juostą"
 
 msgid "Map of routes from this airport"
-msgstr ""
+msgstr "Skrydžių iš šio oro uosto žemėlapis"
 
 #, php-format
 msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
-msgstr ""
+msgstr "Atsiprašome, oro uostas kurio IATA kodas %s jau egzistuoja. Prašome patikrinti."
 
 #, php-format
 msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
-msgstr ""
+msgstr "Reikia įdiegti <%s>OpenFlights Facebook app</a> Jūsų skrydžių atnaujinimui <%s>Facebook</a> paskyroje."
 
 #, php-format
 msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
-msgstr ""
+msgstr "<%s>CSV</a> byla gali būti atidaryta ir redaguojama Excel skaičiuoklėje."
 
 msgid "List my flights"
-msgstr ""
+msgstr "Peržiūrėti mano skrydžius"
 
 msgid "List routes"
-msgstr ""
+msgstr "Peržiūrėti maršrutus"
 
 msgid "List all routes from this airport"
-msgstr ""
+msgstr "Peržiūrėti visus maršrutus iš šio oro uosto"
 
 msgid "Buy tickets on %1"
-msgstr ""
+msgstr "Įsigyti bilietą per %1"
+

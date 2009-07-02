@@ -280,7 +280,7 @@ msgstr "Für schnelle Eingabe von mehrfachen Flügen bitte neue Zeile hinzufüge
 
 # Add new row for faster data entry
 msgid "More"
-msgstr "Weiter Zeile"
+msgstr "Weitere Zeile"
 
 msgid "Remove a row"
 msgstr "Zeile entfernen"
@@ -977,7 +977,7 @@ msgstr "Nicht Teil einer Reise"
 
 # Number of flights or other segments flown
 msgid "segments"
-msgstr "Segmente"
+msgstr "Flüge"
 
 msgid "miles"
 msgstr "Meilen"
@@ -1034,13 +1034,13 @@ msgid "Miles flown"
 msgstr "Meilen geflogen"
 
 msgid "Around the world"
-msgstr "Um die Erde"
+msgstr "Erdumrundungen"
 
 msgid "To the Moon"
-msgstr "Bis zum Mond"
+msgstr "Distanz zum Mond"
 
 msgid "To Mars"
-msgstr "Zum Mars"
+msgstr "Distanz zum Mars"
 
 msgid "Journey records"
 msgstr "Reiserekorde"
@@ -1069,7 +1069,7 @@ msgid "Airlines"
 msgstr "Fluglinien"
 
 msgid "Planes"
-msgstr "Flugzeuge"
+msgstr "Flugzeugtypen"
 
 msgid "Changes made to this flight have not been saved.  OK to discard them?"
 msgstr "Änderung an diesem Flug wurden nicht gesichert. OK zum verwerfen?"
@@ -1207,9 +1207,8 @@ msgid "Switch to the OurAirports database and search again."
 msgstr "Wechseln Sie zu OurAirports Datenbank und suchen Sie noch einmal."
 
 # Context?
-#, fuzzy
 msgid "Results %1 to %2 of %3"
-msgstr "Ergebnis %1 nach %2 von %3"
+msgstr "Ergebnisse %1 bis %2 von %3"
 
 msgid "Airports in pink have been added by users of OpenFlights."
 msgstr "Flughäfen in Pink wurden von Benutzern von OpenFlights hinzugefügt"
@@ -1326,10 +1325,3 @@ msgstr "All Routen von diesem Flughafen"
 msgid "Buy tickets on %1"
 msgstr "Kaufen Sie Tickets bei %1"
 
-#, php-format
-msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
-msgstr "Installieren Sie die <%s>OpenFlights Facebook Anwendung</a> um Ihre Flüge im <%s>Facebook</a> Profil anzuzeigen."
-
-#, php-format
-msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
-msgstr "<%s>CSV</a> Dateien können mit Tabellenkalkulationen wie z.B. Excel bearbeitet und erstellt werden."
