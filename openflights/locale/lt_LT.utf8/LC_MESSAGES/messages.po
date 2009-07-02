@@ -1333,3 +1333,5 @@ msgstr "Peržiūrėti visus maršrutus iš šio oro uosto"
 msgid "Buy tickets on %1"
 msgstr "Įsigyti bilietą per %1"
 
+msgid "List all routes on this airline"
+msgstr ""

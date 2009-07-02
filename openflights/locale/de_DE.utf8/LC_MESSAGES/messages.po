@@ -1325,3 +1325,14 @@ msgstr "All Routen von diesem Flughafen"
 msgid "Buy tickets on %1"
 msgstr "Kaufen Sie Tickets bei %1"
 
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr "Installieren Sie die <%s>OpenFlights Facebook Anwendung</a> um Ihre Flüge im <%s>Facebook</a> Profil anzuzeigen."
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr "<%s>CSV</a> Dateien können mit Tabellenkalkulationen wie z.B. Excel bearbeitet und erstellt werden."
+
+msgid "List all routes on this airline"
+msgstr ""
+

@@ -1335,3 +1335,6 @@ msgstr ""
 #, php-format
 msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
 msgstr ""
+
+msgid "List all routes on this airline"
+msgstr ""
