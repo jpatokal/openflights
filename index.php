@@ -34,7 +34,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-	      <B><?php echo _("News")?> </b>: 26 Jun 2009: <a href="/blog/">Airport route maps and quick search added!  See blog for details.</a>
+  <B><?php echo _("News")?> </b>: 02 Jul 2009: <a href="/blog/">German, Lithuanian, Polish, Swedish launched!  See blog for details.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -43,9 +43,9 @@ require_once("./php/db.php");
 
 	    <div id="quicksearch" style="display: none">
               <img src="/img/layer-switcher-minimize.png" height=18 width=18 title="<?php echo _("Hide search bar") ?>" onClick="$('quicksearch').style.display='none'">
-              <input type="text" name="qs" id="qs" size="60" onChange='airportCodeToAirport("qs")' onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="qsAC"></div>
+              <input type="text" name="qs" id="qs" size="60" tabindex="1" onChange='airportCodeToAirport("qs")' onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="qsAC"></div>
 	      <input type="hidden" name="qsid" id="qsid"/>
-	      <input type="button" id="qsgo" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>	    
+	      <input type="button" id="qsgo" tabindex="2" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
 	    </div>
 
 	    <div id="qsmini" style="display: block">
