@@ -193,7 +193,7 @@
 
 	    <p><center><a href="/demo/openflights-routedb-2048.png"><img src="/demo/openflights-routedb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
 
-	    <p>As of June 2009, the OpenFlights/Airline Route Mapper Route Database contains <b>54317</b> scheduled airline routes spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
+	    <p>As of June 2009, the OpenFlights/Airline Route Mapper Route Database contains <b>54317</b> routes between <b>2794</b> airports on <b>494</b> airlines spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
 
 	    <table>
 		<tr>
@@ -222,7 +222,11 @@
 		</tr>
 	    </table>
 
-	    <i>Note</i>: Routes where one carrier operates both its own and codeshare flights are listed twice.  These can be filtered out with the UNIX command <tt>uniq -w 10 &lt;routes.dat &gt;routes2.dat</tt>.
+	    <i>Notes</i>:
+	    <ul>
+	      <li>Routes are directional: if an airline operates services from A to B and from B to A, both A-B and B-A are listed separately.
+	      <li>Routes where one carrier operates both its own and codeshare flights are listed twice.  These can be filtered out with the UNIX command <tt>uniq -w 10 &lt;routes.dat &gt;routes2.dat</tt>.
+	    </ul>
 
 	    <h4>Sample entries</h4>
 	    <pre>BA      LHR     SFO             0       744
@@ -260,7 +264,7 @@ BA      LHR     SIN     *       0       744 388</pre>
 
 	    <p>The OpenFlights Airport, Airline and Route Databases are made available under the <a href="http://opendatacommons.org/licenses/odbl/1.0/">Open Database License</a>. Any rights in individual contents of the database are licensed under the <a href="http://opendatacommons.org/licenses/dbcl/1.0/">Database Contents License</a>.</p>
 
-	    <p>Airport data derived <a href="http://ourairports.com">OurAirports</a> and DAFIF, as well as route data from <a href="http://arm.64hosts.com/">Airline Route Mapper</a>, are in the public domain.  Airline data derived from Wikipedia may be subject to the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License</a>.  Whether these databases pass the <a href="http://en.wikipedia.org/wiki/Threshold_of_originality">threshold of originality</a> and are thus copyrightable in the United States is an open question, and Contentshare does not assert the validity or lack thereof of such a claim.</p>
+	    <p>Airport data derived <a href="http://ourairports.com">OurAirports</a> and DAFIF, as well as route data from <a href="http://arm.64hosts.com/">Airline Route Mapper</a>, is in the public domain.  Airline data derived from Wikipedia may be subject to the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License</a>.  Whether these databases pass the <a href="http://en.wikipedia.org/wiki/Threshold_of_originality">threshold of originality</a> and are thus copyrightable in the United States is an open question, and Contentshare does not assert the validity or lack thereof of such a claim.</p>
 
 	    <p><b>This data is not suitable for navigation.</b>  OpenFlights does not assume any responsibility whatsoever for its accuracy, and consequently assumes no liability whatsoever for results obtained or loss or damage incurred as a result of application of the data.  OpenFlights expressly disclaims all warranties, expressed or implied, including but not limited to implied warranties of merchantability and fitness for any particular purpose.</p>
 

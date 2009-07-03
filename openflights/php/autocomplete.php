@@ -8,6 +8,8 @@ if($_POST['quick']) {
 } else {
   $limit = 6;
 }
+// If multi, then search airports and airlines
+$multi = $_POST["qs"];
 
 // Autocompletion for airports
 // 3 chars: match on IATA or name (major airports only)
@@ -69,14 +71,16 @@ if($query) {
       }
     }
   }
+}
+
+if(! $query || $multi) {
 
 // Autocompletion for airlines
 // 2 chars: match on IATA or name (major airlines only)
 // 3 chars: match on ICAO or name (major airlines only)
 // >3 chars: match on name (any airline)
-
- } else {
-  $airlines = array("airline", "airline1", "airline2", "airline3", "airline4");
+  
+  $airlines = array("qs", "airline", "airline1", "airline2", "airline3", "airline4");
   foreach($airlines as $al) {
     if($_POST[$al]) {
       $query = mysql_real_escape_string($_POST[$al]);
@@ -126,7 +130,7 @@ if($query) {
       $sql = sprintf("%s ORDER BY name LIMIT %s", $sql, $limit);
     }
     
-    if($limit > 1) print ("<ul class='autocomplete'>");
+    if($limit > 1 && ! $multi) print ("<ul class='autocomplete'>");
     $rs = mysql_query($sql) or die($sql);
     if(mysql_num_rows($rs) > 0) {
       while($row = mysql_fetch_assoc($rs)) {
@@ -169,7 +173,7 @@ if($query) {
       echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
     }
   }
-}
+ }
 
 if($limit > 1) printf("</ul>");
 ?>
