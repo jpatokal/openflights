@@ -24,6 +24,7 @@ var alid = 0, plane;
 var logged_in = false, demo_mode = true, initializing = true;
 var input_srcmarker, input_dstmarker, input_line, input_toggle, input_al_toggle;
 var changed = false, majorEdit = false;
+
 // If true, the value has been set by autocomplete
 var autocompleted = {"src_ap": false, "dst_ap": false, "airline": false,
 		     "src_ap1": false, "dst_ap1": false, "airline1": false, 
@@ -108,8 +109,9 @@ window.onload = function init(){
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
   map = new OpenLayers.Map('map', {
       //eventListeners: { "zoomend": zoomEvent },
-    maxExtent: bounds,
-			       maxResolution: "auto",
+                               maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
+			       restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
+			       maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
 			       maxZoomLevel: 8,
 			       controls: [
 					  new OpenLayers.Control.PanZoom(),
@@ -152,7 +154,8 @@ window.onload = function init(){
 
   initHintTextboxes();
   new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
-  			 {afterUpdateElement : getQuickSearchApid});
+  			 {afterUpdateElement : getQuickSearchApid,
+			  indicator: ajaxstatus});
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0 || query != 0) {
@@ -392,7 +395,11 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     } else {
       if(code.length == 3) {
 	// Get list of airport routes
-	idstring = "R" + apid + "," + coreid;
+	if(coreid.startsWith("L")) {
+	  idstring = coreid + "," + apid;
+	} else {
+	  idstring = "R" + apid + "," + coreid;
+	}
 	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
       }
     }
@@ -584,6 +591,7 @@ function xmlhttpPost(strURL, id, param) {
 	    }
 	    $("maptitle").innerHTML = getMapTitle(true);
 	  } else {
+	    updateFilter(str);
 	    closePopup();
 	    $('qs').value = $('qs').hintText;
 	    $('qs').style.color = '#888';
@@ -890,6 +898,7 @@ function xmlhttpPost(strURL, id, param) {
       }
     }
   }
+  alert(query);
   self.xmlHttpReq.send(query);
 }
 
@@ -944,9 +953,9 @@ function updateFilter(str) {
 function getMapTitle(closable) {
   var form = document.forms['filterform'];
   var text = "";
-  var alid = form.Airlines[form.Airlines.selectedIndex].value.split(";")[0];
-  var airline = form.Airlines[form.Airlines.selectedIndex].value.split(";")[1];
-  var year = form.Years[form.Years.selectedIndex].value;
+  var alid = form.Airlines.value.split(";")[0];
+  var airline = form.Airlines.value.split(";")[1];
+  var year = form.Years.value;
   var trid = 0;
   if(form.Trips) {
     trid = form.Trips[form.Trips.selectedIndex].value.split(";")[0];
@@ -1152,6 +1161,7 @@ function clearMap() {
 // Reinsert all flights, airports from database result
 function updateMap(str, url){
   lineLayer.destroyFeatures();
+  lasturl = url; // used for refresh
 
   // Default all markers to be turned off
   var markers = airportLayer.markers;
@@ -1181,6 +1191,8 @@ function updateMap(str, url){
       days + " " + gt.gettext("days") + " " + hours + ":" + min;
     $("stats_ajax").style.display = 'none';
     $("stats").innerHTML = stats;
+    $('statsbox').style.visibility = "visible";
+
     flightTotal = col[0];
     privacy = col[3];
     if(! logged_in) {
@@ -1205,11 +1217,28 @@ function updateMap(str, url){
     }
   } else {
     // Route map
-    id = col[0];
+    $('statsbox').style.visibility = "hidden";
+
+    apid = col[0];
     flightTotal = col[1];
     desc = col[2];
-    var coreid = "R" + id + "," + id;
-    $("maptitle").innerHTML = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + desc + " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List all routes from this airport") + "'></a>";
+    if(apid.startsWith("L")) {
+      coreid = apid;
+      title = gt.gettext("List all routes on this airline");
+    } else {
+      coreid = "R" + apid + "," + apid;
+      title = gt.gettext("List all routes from this airport");
+    }
+
+    maptitle = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + desc;
+    var form = document.forms['filterform'];    
+    filter_alid = form.Airlines.value.split(";")[0];
+    if(filter_alid != 0) {
+      maptitle += " <small>on <a href='#' onclick='JavaScript:showAirlineMap(" + filter_alid + ")'>" + 
+	form.Airlines.value.split(";")[1] + "</a></small>";
+    }
+    maptitle += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + title + "'></a>";
+    $("maptitle").innerHTML = maptitle;
   }
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
@@ -1249,7 +1278,7 @@ function updateMap(str, url){
       } else {
 	opacity = 1;
       }
-      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, id);
+      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid);
     }
     //zoomEvent(); // filter in/out airports based on zoom level
   }
@@ -1286,6 +1315,7 @@ function startListFlights() {
 }
 
 function listFlights(str, desc, id) {
+  alert(str);
   openPane("result");
   fidList = new Array();
   var route = ! re_numeric.test(id); // ids starting with R are routes
@@ -1348,8 +1378,13 @@ function listFlights(str, desc, id) {
       table.push("<tr><td><img src='" + modeicon + "' title='" + modename + "' width=17 height=17></td>" +
 		 "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
 		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
-		      "<td>" + code + "</td><td>" + date + "</td><td>" + col[6] + "</td><td>" + col[7] +
-		 "</td><td>" + plane + "</td>");
+		 "<td>");
+      if(route) {
+	table.push("<a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[15] + ");\">" + code + "</a>");
+      } else {
+	table.push(code);
+      }
+      table.push("</td><td>" + date + "</td><td>" + col[6] + "</td><td>" + col[7] + "</td><td>" + plane + "</td>");
       if(!route) {
 	table.push("<td>" + seat +
 		   "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
@@ -1357,7 +1392,7 @@ function listFlights(str, desc, id) {
       }
       table.push("<td>" + col[16].substring(0,15) + "</td>");
       if(route) {
-	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=zHW24zij/dU&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + gt.gettext("Buy tickets on Kayak.com") + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
+	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=zHW24zij/dU&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + Gettext.strargs(gt.gettext("Buy tickets on %1"), ["Kayak.com"]) + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
       } else {
 	if(logged_in) {
 	  table.push("<td>");
@@ -1788,6 +1823,7 @@ function changeMode(mode) {
 
 // Handle the "add new airports" buttons
 function popNewAirport(type) {
+  var apid = 0;
   url = '/html/apsearch';
   if(type) {
     input_toggle = type;
@@ -1890,13 +1926,19 @@ function getSelectedPlid(text, li) {
 // Quick search
 //
 
-// Autocompleted airport
+// Autocompleted airport or airline
 function getQuickSearchApid(text, li) {
-  var apid = li.id.split(":")[1];
-  $('qsid').value = apid; 
+  var id = li.id;
+  if(id.indexOf(":") > 0) {
+    // code:apid:x:y
+    id = li.id.split(":")[1];
+    selectAirport(apid, false, true); // pop it up if we can find it
+  } else {
+    id = "L" + id;
+  }
+  $('qsid').value = id; 
   $('qsgo').disabled = false;
   autocompleted['qs'] = true;
-  selectAirport(apid, false, true); // pop it up if we can find it
 }
 
 // Show map!
@@ -2570,6 +2612,10 @@ function selectAirline(new_alid, edit) {
   return false;
 }
 
+function showAirlineMap(alid) {
+  xmlhttpPost(URL_ROUTES, "L" + alid);
+}
+
 //
 // Context help
 //
@@ -3020,10 +3066,11 @@ function clearFilter(refresh_all) {
 // Refresh user's display after change in filter
 // init = true: reloads all user data
 // init = false: loads flight data and stats only
+// lasturl: either URL_MAP or URL_ROUTES (set in updateMap())
 function refresh(init) {
   closePopup();
-  apid = 0;
-  xmlhttpPost(URL_MAP, 0, init);
+  if(lasturl == URL_MAP) apid = 0;
+  xmlhttpPost(lasturl, apid, init);
 }
 
 // Filter out airports based on current map zoom level
