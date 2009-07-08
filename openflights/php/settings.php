@@ -10,6 +10,7 @@ $oldlpw = $HTTP_POST_VARS["oldlpw"];
 $email = $HTTP_POST_VARS["email"];
 $privacy = $HTTP_POST_VARS["privacy"];
 $editor = $HTTP_POST_VARS["editor"];
+$units = $HTTP_POST_VARS["units"];
 $guestpw = $HTTP_POST_VARS["guestpw"];
 $startpane = $HTTP_POST_VARS["startpane"];
 $locale = $HTTP_POST_VARS["locale"]; // override any value in URL/session
@@ -62,13 +63,14 @@ switch($type) {
 
 // Note: Password is actually an MD5 hash of pw and username
 if($type == "NEW") {
-  $sql = sprintf("INSERT INTO users(name,password,email,public,editor,locale) VALUES('%s','%s','%s','%s', '%s', '%s')",
+  $sql = sprintf("INSERT INTO users(name,password,email,public,editor,locale,units) VALUES('%s','%s','%s','%s', '%s', '%s')",
 		 mysql_real_escape_string($name),
 		 mysql_real_escape_string($pw),
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
 		 mysql_real_escape_string($editor),
-		 mysql_real_escape_string($locale));
+		 mysql_real_escape_string($locale),
+		 mysql_real_escape_string($units));
 } else {
   // Only change password if old password matched and a new one was given
   if($oldpw && $oldpw != "" && $pw && $pw != "") {
@@ -77,7 +79,7 @@ if($type == "NEW") {
     $pwsql = "";
   }
   if(! $guestpw) $guestpw = "";
-  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s', locale='%s' WHERE uid=%s",
+  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s', locale='%s', units='%s' WHERE uid=%s",
 		 $pwsql,
 		 mysql_real_escape_string($email),
 		 mysql_real_escape_string($privacy),
@@ -85,12 +87,14 @@ if($type == "NEW") {
 		 $guestpw == "" ? "NULL" : "'" . mysql_real_escape_string($guestpw) . "'",
 		 mysql_real_escape_string($startpane),
 		 mysql_real_escape_string($locale),
+		 mysql_real_escape_string($units),
 		 $uid);
 }
 mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
 
-// In all cases change locale to user selection
+// In all cases change locale and units to user selection
 $_SESSION['locale'] = $locale;
+$_SESSION['units'] = $units;
 
 if($type == "NEW") {
   printf("1;" . _("Successfully signed up, now logging in..."));
@@ -101,6 +105,7 @@ if($type == "NEW") {
   $_SESSION['name'] = $name;
   $_SESSION['editor'] = $editor;
   $_SESSION['elite'] = $elite;
+  $_SESSION['units'] = $units;
 } else {
   printf("2;" . _("Settings changed successfully, returning..."));
 }

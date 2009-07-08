@@ -12,11 +12,13 @@ if(!$uid or empty($uid)) {
 // This applies only when viewing another's flights
 $user = $HTTP_POST_VARS["user"];
 $trid = $HTTP_POST_VARS["trid"];
+$units = $_SESSION["units"];
 
 $mode = $HTTP_POST_VARS["mode"];
 switch($mode) {
  case "D":
-   $mode = "SUM(distance)";   
+   $mode = "SUM(distance)";
+   if($units == "K") $mode = "ROUND($mode * $KMPERMILE)";
    break;
 
  case "F":

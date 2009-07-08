@@ -48,6 +48,7 @@ if(isSet($_GET["new"])) {
 	      <table>
 <?php if($type == "signup") {
   $settings = array("public" => "Y",
+		    "units" => "M",
 		    "editor" => "B");
 ?>
 		  <tr>
@@ -77,7 +78,7 @@ if(isSet($_GET["new"])) {
   if(!$uid or empty($uid)) {
     die(_("Your session has timed out, please log in again."));
   }
-  $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, startpane, fbuid, sessionkey, locale FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
+  $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, fbuid, sessionkey, locale FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
   $result = mysql_query($sql, $db);
   if(! $settings = mysql_fetch_array($result, MYSQL_ASSOC)) {
     die(_("Could not load profile data"));
@@ -148,6 +149,15 @@ echo "[url=http://openflights.org/user/" . $settings["name"] . "]\n[img]http://o
 		    <td class="desc">
 		    <span id="basiceditor" style="display: inline"><?php echo _("The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!") ?></span>
 		    <span id="detaileditor" style="display: none"><?php echo _("The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters.") ?></span></td></tr>
+		  </tr><tr>
+		    <td class="key"><?php echo _("Distances") ?></td>
+		    <td class="value">
+                      <input type="radio" name="units" value="M" <?php if($settings["units"] == "M") { echo "CHECKED"; } echo ">" . _("Miles") ?></br>
+		      <input type="radio" name="units" value="K" <?php if($settings["units"] == "K") { echo "CHECKED"; } echo ">" . _("Kilometers") ?></br>
+		    <td class="desc">
+                    <?php echo _("Preferred unit for flight distances") ?></span>
+                  </td></tr>
+
 <?php if($type == "settings") { ?>
 		  <tr class="gold">
 		    <td class="key"><?php echo _("Guest password") ?></td>
