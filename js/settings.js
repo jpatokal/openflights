@@ -46,7 +46,7 @@ function xmlhttpPost(strURL, type) {
   var query = "";
   if(strURL == URL_SETTINGS) {
     var form = document.forms['signupform'];
-    var privacy, editor;
+    var privacy, editor, units;
 
     for (r=0; r < signupform.privacy.length; r++){
       if (signupform.privacy[r].checked) {
@@ -58,11 +58,17 @@ function xmlhttpPost(strURL, type) {
 	editor = signupform.editor[r].value;
       }
     }
+    for (r=0; r < signupform.units.length; r++){
+      if (signupform.units[r].checked) {
+	units = signupform.units[r].value;
+      }
+    }
     query = 'type=' + type + '&' +
       'pw=' + encodeURIComponent(hex_md5(form.pw1.value + form.username.value.toLowerCase())) + '&' +
       'email=' + encodeURIComponent(form.email.value) + '&' +
       'privacy=' + encodeURIComponent(privacy) + '&' +
       'editor=' + encodeURIComponent(editor) + '&' +
+      'units=' + encodeURIComponent(units) + '&' +
       'locale=' + encodeURIComponent(form.locale.value);
     switch(type) {
     case 'NEW':

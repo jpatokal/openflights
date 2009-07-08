@@ -54,6 +54,16 @@ if($user && $user != "0") {
 $filter = "f.uid=" . $uid . getFilterString($HTTP_POST_VARS);
 $array = array();
 
+// Convert mi to km if units=K
+$units = $_SESSION["units"];
+if($units == "K") {
+  $unit = _("km");
+  $multiplier = "* " . $KMPERMILE;
+} else {
+  $unit = _("mi");
+  $multiplier = "";
+}
+
 // unique airports, and countries
 $sql = "SELECT COUNT(DISTINCT a.apid) AS num_airports, COUNT(DISTINCT a.country) AS num_countries FROM flights AS f,airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter;
 $result = mysql_query($sql, $db);
@@ -62,7 +72,7 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 }
 
 // unique airlines, unique planes, total distance, average distance, average duration
-$sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, SUM(distance) AS distance, ROUND(AVG(distance)) AS avg_distance, TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i') AS avg_duration FROM flights AS f WHERE " . $filter;
+$sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, ROUND(SUM(distance) $multiplier) AS distance, ROUND(AVG(distance) $multiplier) AS avg_distance, TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i') AS avg_duration FROM flights AS f WHERE " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $array += $row;
@@ -71,9 +81,10 @@ print json_encode($array) . "\n";
 
 // longest and shortest
 // 0 desc, 1 distance, 2 duration, 3 src_iata, 4 src_icao, 5 src_apid, 6 dst_iata, 7 dst_icao, 8 dst_apid
-$sql = sprintf("(SELECT '%s',f.distance,DATE_FORMAT(duration, '%%H:%%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance DESC LIMIT 1) UNION " .
-	       "(SELECT '%s',f.distance,DATE_FORMAT(duration, '%%H:%%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance ASC LIMIT 1)",
-	       _("Longest"), _("Shortest"));
+$sql = sprintf("(SELECT '%s',ROUND(f.distance %s) AS distance,DATE_FORMAT(duration, '%%H:%%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance DESC LIMIT 1) UNION " .
+	       "(SELECT '%s',ROUND(f.distance %s) AS distance,DATE_FORMAT(duration, '%%H:%%i') AS duration,s.iata,s.icao,s.apid,d.iata,d.icao,d.apid FROM flights AS f,airports AS s,airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND " . $filter . " ORDER BY distance ASC LIMIT 1)",
+	       _("Longest"), $multiplier,
+	       _("Shortest"), $multiplier);
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
@@ -84,7 +95,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   }
   $src_code = format_apcode2($row[3], $row[4]);
   $dst_code = format_apcode2($row[6], $row[7]);
-  printf ("%s,%s,%s,%s,%s,%s,%s", $row[0], $row[1], $row[2], $src_code, $row[5], $dst_code, $row[8]);
+  printf ("%s,%s %s,%s,%s,%s,%s,%s", $row[0], $row[1], $unit, $row[2], $src_code, $row[5], $dst_code, $row[8]);
 }
 printf ("\n");
 

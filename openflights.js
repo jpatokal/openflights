@@ -1178,8 +1178,8 @@ function updateMap(str, url){
 
   if(url == URL_MAP) {
     // User flight map
-    var miles = col[1];
-    if(! miles) miles = 0;
+    var distance = col[1];
+    if(! distance) distance = 0;
     var duration = col[2]; // minutes
     var days = Math.floor(col[2] / (60*24));
     var hours = Math.floor((col[2] / 60) % 24);
@@ -1187,7 +1187,7 @@ function updateMap(str, url){
     if(min < 10) min = "0" + min;
 
     stats = col[0] + " " + gt.gettext("segments") + "<br>" +
-      miles + " " + gt.gettext("miles") + "<br>" +
+      distance + "<br>" +
       days + " " + gt.gettext("days") + " " + hours + ":" + min;
     $("stats_ajax").style.display = 'none';
     $("stats").innerHTML = stats;
@@ -1337,7 +1337,7 @@ function listFlights(str, desc, id) {
       table.unshift("<span style='float: right'>" + gt.gettext("Export") + " <input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
-    table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Miles") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th>");
+    table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Distance") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th>");
     if(!route) {
       table.push("<th>" + gt.gettext("Seat") + "</th><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Trip") + "</th>");
     }
@@ -1455,7 +1455,7 @@ function showStats(str) {
 
     var distance = uniques["distance"];
     table += "<tr><th colspan=2>" + gt.gettext("Distance") + "</th></tr>";
-    table += "<tr><td>" + gt.gettext("Miles flown") + "</td><td>" + distance + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Total flown") + "</td><td>" + distance + "</td></tr>";
     table += "<tr><td>" + gt.gettext("Around the world") + "</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
     table += "<tr><td>" + gt.gettext("To the Moon") + "</td><td>" + (distance / MOON_DISTANCE).toFixed(3) + "x</td></tr>";
     table += "<tr><td>" + gt.gettext("To Mars") + "</td><td>" + (distance / MARS_DISTANCE).toFixed(4) + "x</td></tr>";
@@ -1468,7 +1468,7 @@ function showStats(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + " mi, " + col[2] + "</td></tr>";
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + ", " + col[2] + "</td></tr>";
     }
     table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";

@@ -110,7 +110,12 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($row["count"] == "0" && $user && $user != "0") {
     die('Error;' . _("This user has no flights."));
   }
-  printf("%s;%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $row["distance"], $row["duration"], $public, $elite,
+  if($_SESSION["units"] == "K") {
+    $distance = round($row["distance"] * $KMPERMILE) . " " . _("km");
+  } else {
+    $distance = $row["distance"] . " " . _("miles");
+  }
+  printf("%s;%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $distance, $row["duration"], $public, $elite,
 	 $logged_in, $editor, $challenge);
 }
 

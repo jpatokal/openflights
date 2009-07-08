@@ -30,6 +30,8 @@ include 'db.php';
 include 'greatcircle.php';
 
 $uid = $_SESSION["uid"];
+$units = $_SESSION["units"];
+
 // Logged in?
 if(!$uid or empty($uid)) {
 
@@ -197,6 +199,11 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   } else {
     // Filter out any carriage returns or tabs
     $note = str_replace(array("\n", "\r", "\t"), "", $note);
+
+    // Convert mi to km if units=K
+    if($units == "K") {
+      $row["distance"] = round($row["distance"] * $KMPERMILE);
+    }
 
     printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code, $row["src_time"], $row["mode"]);
   }
