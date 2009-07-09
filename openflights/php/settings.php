@@ -63,7 +63,7 @@ switch($type) {
 
 // Note: Password is actually an MD5 hash of pw and username
 if($type == "NEW") {
-  $sql = sprintf("INSERT INTO users(name,password,email,public,editor,locale,units) VALUES('%s','%s','%s','%s', '%s', '%s')",
+  $sql = sprintf("INSERT INTO users(name,password,email,public,editor,locale,units) VALUES('%s','%s','%s','%s','%s','%s','%s')",
 		 mysql_real_escape_string($name),
 		 mysql_real_escape_string($pw),
 		 mysql_real_escape_string($email),
