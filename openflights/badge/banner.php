@@ -36,7 +36,7 @@ if(file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 }
 
 // New banner or cache out of date, so regenerate
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights AS f,users AS u WHERE u.name='" . $user . "' and f.uid=u.uid";
+$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights AS f,users AS u WHERE u.name='" . mysql_real_escape_string($user) . "' and f.uid=u.uid";
 
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
