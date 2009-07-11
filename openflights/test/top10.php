@@ -51,7 +51,7 @@ class CheckTop10AirlineFilteredFlightCountStats extends WebTestCase {
     $this->assertText("1;");
 
     $filter = array("alid" => $flight2["alid"]);
-    $top10 = $this->post($webroot . "php/top10.php");
+    $top10 = $this->post($webroot . "php/top10.php", $filter);
     $rows = preg_split('/\n/', $top10);
     $this->assertTrue(sizeof($rows) == 4);
 

@@ -24,6 +24,11 @@ $test = &new TestSuite('Trips');
 $test->addTestFile('trip.php');
 $test->run(new HtmlReporter());
 
+// Map
+$test = &new TestSuite('Map');
+$test->addTestFile('map.php');
+$test->run(new HtmlReporter());
+
 // "Analyze" stats
 $test = &new TestSuite('Analyse (Stats)');
 $test->addTestFile('stats.php');

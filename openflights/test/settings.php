@@ -106,6 +106,7 @@ class ChangeSettingsTest extends WebTestCase {
 		    "email" => "new@email.example",
 		    "privacy" => "N",
 		    "locale" => "fi_FI",
+		    "units" => "M",
 		    "editor" => "D");
     $msg = $this->post($webroot . "php/settings.php", $params);
     $this->assertText('2;');
@@ -115,10 +116,23 @@ class ChangeSettingsTest extends WebTestCase {
     $sql = "SELECT * FROM users WHERE name='" . $settings["name"] . "'";
     $result = mysql_query($sql, $db);
     $row = mysql_fetch_array($result);
-    $this->assertTrue($row["public"] == "N", "Public");
-    $this->assertTrue($row["email"] == "new@email.example", "Email");
-    $this->assertTrue($row["editor"] == "D", "Editor");
-    $this->assertTrue($row["locale"] == "fi_FI", "Locale");
+    $this->assertTrue($row["public"] == $params["privacy"], "Public");
+    $this->assertTrue($row["email"] == $params["email"], "Email");
+    $this->assertTrue($row["editor"] == $params["editor"], "Editor");
+    $this->assertTrue($row["units"] == $params["units"], "Units");
+    $this->assertTrue($row["locale"] == $params["locale"], "Locale");
+  }
+}
+
+// Restore original settings
+class RestoreSettingsTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings;
+
+    login($this);
+    $settings["type"] = "EDIT";
+    $msg = $this->post($webroot . "php/settings.php", $settings);
+    $this->assertText('2;');
   }
 }
 
