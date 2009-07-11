@@ -15,11 +15,14 @@ $dbname = "flightdb2";
 // Settings for automated test user
 $settings = array('name' => 'autotest',
 		  'password' => 'autotest',
+		  'guestpw' => 'guesttest',
 		  'email' => 'test@openflights.example',
-		  'privacy' => 'Y',
+		  'privacy' => 'Y', // should be Y/O for public profile tests
 		  'editor' => 'B',
 		  'fbuid' => null,
 		  'locale' => 'en_US',
+		  'units' => 'M',
+		  'elite' => '', // keep blank, elite users cannot be created by normal means
 		  'sessionkey' => null);
 
 $airline = array('name' => 'AutoTest Airways',
@@ -134,9 +137,13 @@ $trip = array('name' => 'AutoTest Trip',
 	      'url' => 'http://autotrip.example',
 	      'privacy' => 'Y');
 
-$route = array('core_iata' => 'TOD',
-	       'noroute_iata' => 'SQQ',
-	       'invalid_apid' => '99999');
+$route = array('core_ap_iata' => 'ISG',
+	       'core_ap_filter_iata' => 'NH', // airline that flies to the airport above
+	       'noroute_ap_iata' => 'SQQ',
+	       'invalid_apid' => '99999',
+	       'core_al_iata' => 'SQ',
+	       'noroute_al_iata' => 'PA',
+	       'invalid_alid' => '99999');
 
 // *** END OF CONFIGURATION ***
 
