@@ -112,10 +112,6 @@ function xmlhttpPost(strURL, offset, action) {
     }
 
     if(action == "RECORD") {
-      if(! parent.opener || ! parent.opener.addNewAirport) {
-	alert(gt.gettext("Sorry, you have to be logged into OpenFlights to use this."));
-	return;
-      }
       if(airport == "") {
 	alert(gt.gettext("Please enter an airport name."));
 	form.airport.focus();

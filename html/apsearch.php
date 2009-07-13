@@ -2,6 +2,9 @@
 header("Content-type: text/html");
 require_once("../php/locale.php");
 require_once("../php/db.php");
+
+$uid = $_SESSION["uid"];
+$logged_in = $uid and !empty($uid);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -100,8 +103,9 @@ require_once("../php/db.php");
 		<INPUT type="button" value='<?php echo _("Clear") ?>' onClick="clearSearch()">
 		<INPUT type="button" value='<?php echo _("Cancel") ?>' onClick="window.close()">
 		</td><td style="text-align: right">
-		<INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airport.") ?>' value='<?php echo _("Add as new") ?>' onClick="doRecord()">
-		<INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airport.") ?>' value='<?php echo _("Save changes") ?>' onClick="doRecord()" style="display: none">
+		<?php if(! $logged_in) echo "<small>" . _("Please log in to enable editing.") . "</small><br>"; ?>
+ 		<INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airport.") ?>' value='<?php echo _("Add as new") ?>' <?php if(! $logged_in) echo "DISABLED" ?> onClick="doRecord()">
+		<INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airport.") ?>' value='<?php echo _("Save changes") ?>'  <?php if(! $logged_in) echo "DISABLED" ?> onClick="doRecord()" style="display: none">
 		</td>
 	    </tr>
 	</table>
