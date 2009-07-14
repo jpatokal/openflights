@@ -3,6 +3,16 @@ require_once(dirname(__FILE__) . '/simpletest/autorun.php');
 require_once(dirname(__FILE__) . '/simpletest/web_tester.php');
 include_once(dirname(__FILE__) . '/config.php');
 
+// ID missing entirely
+class RouteMapNoIDTest extends WebTestCase {
+  function test() {
+    global $webroot, $route;
+
+    $map = $this->post($webroot . "php/routes.php");
+    $this->assertText('Error');
+  }
+}
+
 // Fetch route map for core airport
 class RouteMapCoreAirportTest extends WebTestCase {
   function test() {
@@ -166,6 +176,7 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
   }
 }
 
+// Invalid airline ID
 class RouteMapInvalidAirlineTest extends WebTestCase {
   function test() {
     global $webroot, $route;

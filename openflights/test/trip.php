@@ -60,6 +60,26 @@ class EditWrongTridTripTest extends WebTestCase {
   }
 }
 
+// Check public trip 
+class CheckPublicFullTripMap extends WebTestCase {
+  function test() {
+    global $webroot, $trip, $trid;
+
+    $params = array("param" => "true",
+		    "trid" => $trid);
+    $map = $this->post($webroot . "php/map.php", $params);
+    $rows = preg_split('/\n/', $map);
+    $this->assertTrue(sizeof($rows) == 6, "Number of rows" . sizeof($rows));
+
+    // Statistics
+    $stats = preg_split('/;/', $rows[0]);
+    $this->assertTrue($stats[0] == 0, "Flight count");
+    $this->assertTrue(strstr($stats[1], "0"), "Distance");
+    $this->assertTrue($stats[3] == $trip["privacy"], "Public");
+    $this->assertTrue($stats[5] == "demo", "Username"); // we are not this user!
+  }
+}
+
 // Change trip settings
 class SuccessfulEditTripTest extends WebTestCase {
   function test() {
@@ -82,6 +102,33 @@ class SuccessfulEditTripTest extends WebTestCase {
     $this->assertTrue($row["name"] == "New AutoTest Trip", "Name");
     $this->assertTrue($row["public"] == "N", "Public");
     $this->assertTrue($row["url"] == "http://new.autotest.example", "URL");
+  }
+}
+
+// Check private trip (should fail)
+class CheckPrivateFullTripMap extends WebTestCase {
+  function test() {
+    global $webroot, $trip, $trid;
+
+    $params = array("param" => "true",
+		    "trid" => $trid);
+    $map = $this->post($webroot . "php/map.php", $params);
+    $rows = preg_split('/;/', $map);
+    $this->assertTrue($rows[0] == "Error", "Private trip blocked");
+  }
+}
+
+
+// Check invalid trid trip map (should fail)
+class CheckNonExistentFullTripMap extends WebTestCase {
+  function test() {
+    global $webroot, $trip, $trid;
+
+    $params = array("param" => "true",
+		    "trid" => "-1");
+    $map = $this->post($webroot . "php/map.php", $params);
+    $rows = preg_split('/;/', $map);
+    $this->assertTrue($rows[0] == "Error", "Invalid trid blocked");
   }
 }
 

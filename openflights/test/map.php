@@ -5,10 +5,10 @@ include_once(dirname(__FILE__) . '/config.php');
 
 //
 // Test cases for php/map.php
-// NB: Assumes the test user exists and flights.php has been run, so that $flight2[] is already in DB
-//
+// NB 1: Assumes the test user exists and flights.php has been run, so that $flight2[] is already in DB
+// NB 2: Trip map tests found under map.php
 
-// ##TODO## Trips, filters
+// ##TODO## filters
 
 // Check demo user map
 class CheckDemoFullUserMap extends WebTestCase {
