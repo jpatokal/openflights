@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: OpenFlights\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-05-29 15:11+0800\n"
-"PO-Revision-Date: 2009-06-27 08:44+0730\n"
+"PO-Revision-Date: 2009-07-14 16:13+0730\n"
 "Last-Translator: Jani Patokallio <jani@contentshare.sg>\n"
 "Language-Team: Contentshare <info@openflights.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,256 +17,35 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-Country: FINLAND\n"
 
-msgid "Airport search"
-msgstr "Lentokenttähaku"
-
-msgid "Fill one or more fields below to search for matching airports."
-msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
-
-msgid "Airport name"
-msgstr "Lentokentän nimi"
-
-msgid "City name"
-msgstr "Kaupunki"
-
-msgid "Country name"
-msgstr "Maa"
-
-msgid "Latitude"
-msgstr "Leveysaste"
-
-msgid "Longitude"
-msgstr "Pituusaste"
-
-msgid "Elevation"
-msgstr "Korkeus"
-
-msgid "UTC"
-msgstr "UTC"
-
-msgid "DST"
-msgstr "Kesäaika"
-
-msgid "Unknown"
-msgstr "Tuntematon"
-
-msgid "European"
-msgstr "Eurooppa"
-
-msgid "US/Canada"
-msgstr "US/Kanada"
-
-msgid "S. American"
-msgstr "Etelä-Amerikka"
-
-msgid "Australia"
-msgstr "Australia"
-
-msgid "New Zealand"
-msgstr "Uusi-Seelanti"
-
-msgid "None"
-msgstr "Ei ole"
-
-msgid "Database"
-msgstr "Tietokanta"
-
-msgid "Show only major (IATA) airports?"
-msgstr "Näytä vain isot (IATA-koodatut) kentät?"
-
-msgid "Search"
-msgstr "Hae"
-
-msgid "Clear"
-msgstr "Tyhjennä"
-
-msgid "Cancel"
-msgstr "Poistu"
-
-msgid "Record the current data as a new airport."
-msgstr "Tallenna uutena lentokenttänä."
-
-msgid "Add as new"
-msgstr "Tallenna uutena"
-
-msgid "Record changes to this airport."
-msgstr "Tallenna muutokset tähän lentokenttään."
-
-msgid "Save changes"
-msgstr "Tallenna muutokset"
-
-#, php-format
-msgid "Your session has timed out, please log in again."
-msgstr "Sessiosi on suljettu, ole hyvä ja kirjaudu uudestaan sisään."
-
-#, php-format
-msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
-msgstr "ICAO-koodia %s käyttävä lentokenttä on jo olemassa."
-
-msgid "Adding new airport failed:"
-msgstr "Uuden lentokentän lisääminen epäonnistui:"
-
-#, php-format
-msgid "New airport successfully added."
-msgstr "Uusi lentokenttä lisätty."
-
-#, php-format
-msgid "Airport successfully edited."
-msgstr "Lentokentän tietoja muokattu."
-
-#, php-format
-msgid "Editing airport failed:"
-msgstr "Lentokentän muokkaaminen epäonnistui:"
-
-msgid "IATA/FAA codes must be exactly three letters."
-msgstr "IATA/FAA-koodin pitää olla kolme kirjainta."
-
-msgid "ICAO codes must be exactly four letters."
-msgstr "ICAO-koodin pitää olla neljä kirjainta."
-
-msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
-msgstr "Lentokenttien ja kaupunkien nimissä voi käyttää vain kirjaimia A-Z ilman aksentteja, numeroita 0-9, merkkejä -.' (viiva, piste ja heittomerkki) ja välilyöntiä."
-
-msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
-msgstr "Haku IATA/FAA-koodille '%1' rajoitettu Yhdysvaltoihin, sillä DAFIF-kannassa ei ole muiden maiden IATA-koodeja."
-
-msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
-msgstr "IATA/FAA-koodia '%1' ei laskettu mukaan hakuun, sillä DAFIF-kannassa ei ole Yhdysvaltain ulkopuolisten lentokenttien IATA-koodeja."
-
-msgid "Sorry, you have to be logged into OpenFlights to use this."
-msgstr "Tätä toimintoa varten täytyy kirjautua sisään OpenFlightsiin."
-
-msgid "Please enter an airport name."
-msgstr "Lentokentän nimi puuttuu."
-
-msgid "Please enter a city name."
-msgstr "Kaupungin nimi puuttuu."
-
-msgid "Please select a country."
-msgstr "Valitse maa, jossa lentokenttä sijaitsee."
-
-msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
-msgstr "Lisää leveys- ja pituusasteet sekä korkeus.  Oletko tarkistanut onko kenttä kenties jo OurAirports-kannassa?  Voit ladata tiedot sieltä valmiiksi."
-
-msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
-msgstr "Leveys- ja pituusasteet täytyy antaa desimaalisessa muodossa, jossa negatiiviset luvut viittaavat etelään ja länteen, ja ainakin kolmen desimaalin tarkkuudella.  Esim. San Franciscon (SFO) sijainti on 37.6189 (pohjoinen), -122.3748 (itä)."
-
-msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
-msgstr "Pituusasteen täytyy olla -180 (länsi) ja 180 (itä) asteen väliltä."
-
-msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
-msgstr "Leveysasteen täytyy olla 90 (pohjoinen) ja -90 (etelä) asteen välillä."
-
-msgid "Please enter a positive number for elevation."
-msgstr "Korkeuden täytyy olla positiivinen luku."
-
-msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
-msgstr "Aikavyöhykkeet annetaan erotuksena UTC/GMT:stä, esim. +8 Singaporelle tai -5 New Yorkille.  Tuntien murto-osat ilmaistaan desimaaleina, esim. +5.75 Nepalille."
-
-msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
-msgstr "Et ole valinnut kesäaikaa tälle lentokentälle.  Jätetäänkö Tuntemattomaksi?"
-
-msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr "Et ole kirjannut IATA/FAA-koodia tälle kentälle.  Oletko varma, ettei kentällä ole sitä?"
-
-msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr "Et ole kirjannut ICAO-koodia tälle kentälle.  Oletko varma, ettei kentällä ole sitä?"
-
-msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
-msgstr "Oletko varma, että haluat lisätä uuden lentokentän %1, joka sijaitsee maailman %2-kvadrantissa?  Varmistathan vielä yhden kerran nimen, koodit ja koordinaatit. "
-
-msgid "Cancelled."
-msgstr "Peruutettu."
-
-msgid "No matches found in this database."
-msgstr "Haku ei tuottanut osumia."
-
-msgid "Try unchecking 'Show only major airports' and search again."
-msgstr "Ota 'Näytä vain isot kentät' pois päältä ja hae uudestaan."
-
-msgid "Switch to the OurAirports database and search again."
-msgstr "Vaihda OurAirports-tietokantaan ja hae uudestaan."
-
-msgid "Results %1 to %2 of %3"
-msgstr "Osumat %1 kautta %2, yhteensä %3"
-
-msgid "Airports in pink have been added by users of OpenFlights."
-msgstr "Vaaleanpunaiset lentokentät ovat OpenFlightsin käyttäjien lisäämiä."
-
-msgid "Airports in blue have been added by you and can be edited."
-msgstr "Siniset kentät ovat itse lisäämiäsi, joten voit muokata niitä."
-
-msgid "Select"
-msgstr "Valitse"
-
-msgid "Edit"
-msgstr "Muokkaa"
-
-msgid "Load"
-msgstr "Lataa"
-
-msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
-msgstr "Kaupunki '%1' poistettu hausta, sillä DAFIF-kannassa ei ole kaupunkien nimiä."
-
-msgid "Searching..."
-msgstr "Haetaan..."
-
-msgid "Recording..."
-msgstr "Kirjoitetaan..."
-
-msgid "Language"
-msgstr "Kieli"
-
-msgid "Airline search"
-msgstr "Lentoyhtiöhaku"
-
-msgid "Airline, railway, road transport and shipping search"
-msgstr "Lento-, rautatie-, maantiekuljetus- ja laivayhtiöhaku"
-
-msgid "Fill one or more fields below to search for matching airlines and other transport operators."
-msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
-
-msgid "Name"
-msgstr "Nimi"
-
-msgid "Mode"
-msgstr "Kulkuneuvo"
-
-msgid "Airline"
-msgstr "Lentoyhtiö"
-
-msgid "Railway"
-msgstr "Rautatie"
-
-msgid "Road transport"
-msgstr "Maantiekuljetus"
-
-msgid "Shipping"
-msgstr "Laivayhtiö"
-
-msgid "Alternative name"
-msgstr "Vaihtoehtoinen nimi"
-
-msgid "Country"
-msgstr "Maa"
-
-msgid "Callsign"
-msgstr "Kutsutunnus"
-
-msgid "Show only major (IATA) airlines?"
-msgstr "Näytä vain isot (IATA-koodatut) lentoyhtiöt?"
-
-msgid "Record the current data as a new airline."
-msgstr "Tallenna uutena lentoyhtiönä."
-
-msgid "Add new airport"
-msgstr "Lisää uusi kenttä"
+msgid "Flight logging, mapping, stats and sharing"
+msgstr "Kirjaa, kartoita, tutki ja jaa lentosi"
 
 msgid "Sorry, OpenFlights requires JavaScript."
 msgstr "OpenFlights vaatii JavaScriptia tukevan selaimen."
 
 msgid "News"
 msgstr "Uutta"
+
+msgid "Hide search bar"
+msgstr "Piilota hakupalkki"
+
+msgid "Enter city, airport, airline name or code"
+msgstr "Kaupunki, lentokenttä, lentoyhtiö tai koodi"
+
+msgid "Search"
+msgstr "Hae"
+
+msgid "Map of routes from this airport"
+msgstr "Kartta tämän lentokentän reiteistä"
+
+msgid "Duration"
+msgstr "Kesto"
+
+msgid "Distance"
+msgstr "Etäisyys"
+
+msgid "Add new airport"
+msgstr "Lisää uusi kenttä"
 
 msgid "Username"
 msgstr "Tunnus"
@@ -304,8 +83,8 @@ msgstr "Lisää..."
 msgid "Class"
 msgstr "Luokka"
 
-msgid "Distance"
-msgstr "Etäisyys"
+msgid "Mode"
+msgstr "Kulkuneuvo"
 
 msgid "Note"
 msgstr "Huom."
@@ -334,6 +113,15 @@ msgstr "Asetukset"
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
+msgid "Add new flight"
+msgstr "Lisää uusi lento"
+
+msgid "Edit flight"
+msgstr "Muokkaa lentoa"
+
+msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgstr "<font color='blue'>Siniset</font> kentät ovat pakollisia.  Valitse lentokenttä kartasta, tai hae se kaupungin nimellä tai kentän koodilla."
+
 msgid "Date"
 msgstr "Päiväys"
 
@@ -349,9 +137,11 @@ msgstr "Muokkaa tätä matkaa"
 msgid "From"
 msgstr "Mistä"
 
-#, php-format
 msgid "Enter city name or airport code"
 msgstr "Kaupungin nimi tai lentokentän koodi"
+
+msgid "Airport search"
+msgstr "Lentokenttähaku"
 
 msgid "Swap To and From airports"
 msgstr "Vaihda Mistä ja Mihin keskenään"
@@ -392,7 +182,7 @@ msgstr "Laiva"
 msgid "Train"
 msgstr "Juna"
 
-msgid "Nr"
+msgid "Nr."
 msgstr "Nro"
 
 msgid "Seat"
@@ -425,11 +215,17 @@ msgstr "Muu"
 msgid "Enter airline name or code"
 msgstr "Lentoyhtiön nimi tai koodi"
 
+msgid "Airline search"
+msgstr "Lentoyhtiöhaku"
+
 msgid "Add"
-msgstr "Lisää"
+msgstr "Tallenna"
 
 msgid "Save this flight"
 msgstr "Tallenna tämä lento"
+
+msgid "Clear"
+msgstr "Tyhjennä"
 
 msgid "Reset this entry form"
 msgstr "Tyhjennä lomake"
@@ -439,6 +235,9 @@ msgstr "Sulje"
 
 msgid "Exit flight editor"
 msgstr "Lopeta lentojen muokkaus"
+
+msgid "Save changes"
+msgstr "Tallenna muutokset"
 
 msgid "Save changes made to this flight"
 msgstr "Tallenna tämän lennon muutokset"
@@ -464,8 +263,8 @@ msgstr "Perus"
 msgid "Add new flights"
 msgstr "Lisää uusia lentoja"
 
-msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
-msgstr "<font color='blue'>Siniset</font> kentät ovat pakollisia.  Valitse lentokenttä kartasta klikkaamalla, tai hae se kaupungin nimellä tai kentän koodilla."
+msgid "Airline"
+msgstr "Lentoyhtiö"
 
 msgid "Save these flights"
 msgstr "Tallenna nämä lennot"
@@ -491,6 +290,623 @@ msgstr "Vaihda yksityiskohtaiseen editoriin"
 msgid "Detailed"
 msgstr "Extra"
 
+#, php-format
+msgid "Your session has timed out, please log in again."
+msgstr "Sessiosi on suljettu, ole hyvä ja kirjaudu uudestaan sisään."
+
+#, php-format
+msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgstr "IATA-koodia %s käyttävä lentokenttä on jo olemassa."
+
+#, php-format
+msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgstr "ICAO-koodia %s käyttävä lentokenttä on jo olemassa."
+
+msgid "Adding new airport failed:"
+msgstr "Uuden lentokentän lisääminen epäonnistui:"
+
+#, php-format
+msgid "New airport successfully added."
+msgstr "Uusi lentokenttä lisätty."
+
+#, php-format
+msgid "Airport successfully edited."
+msgstr "Lentokentän tietoja muokattu."
+
+#, php-format
+msgid "Editing airport failed:"
+msgstr "Lentokentän muokkaaminen epäonnistui:"
+
+msgid "Not logged in, aborting"
+msgstr "Et ole kirjautunut sisään"
+
+msgid "Unknown"
+msgstr "Tuntematon"
+
+msgid "was:"
+msgstr "oli:"
+
+msgid "No airline"
+msgstr "Ei lentoyhtiötä"
+
+msgid "Upload again"
+msgstr "Lähetä uudestaan"
+
+msgid "Cancel this import and return to file upload page"
+msgstr "Peruuta tämä tuonti ja palaa edelliselle sivulle"
+
+msgid "Upload"
+msgstr "Lähetä"
+
+msgid "Upload successful.  Parsing..."
+msgstr "Lähetys vastaanotettu.  Analysoidaan..."
+
+msgid "Results"
+msgstr "Tulokset"
+
+msgid "Upload failed!"
+msgstr "Lähetys epäonnistui!"
+
+msgid "Importing..."
+msgstr "Tuodaan..."
+
+msgid "Sorry, this file does not appear to be FlightMemory HTML."
+msgstr "Tämä tiedosto ei näytä olevan FlightMemoryn HTML-muodossa."
+
+msgid "Sorry, this HTML file does not appear contain FlightMemory FlightData."
+msgstr "Tämä tiedosto ei näytä sisältävän FlightMemoryn tietoja."
+
+msgid "Sorry, the filename must end in '.csv'."
+msgstr "Tiedoston nimen on päätetyttyvä kirjaimiin '.csv'."
+
+msgid "Unable to open CSV file."
+msgstr "CSV-tiedostoa ei voitu avata."
+
+msgid "Miles"
+msgstr "Mailia"
+
+msgid "Time"
+msgstr "Kesto"
+
+msgid "Reg"
+msgstr "Rek.nro."
+
+msgid "Comment"
+msgstr "Huom."
+
+msgid "Key to results"
+msgstr "Tulosten avain"
+
+msgid "Color"
+msgstr "Väri"
+
+msgid "Meaning"
+msgstr "Merkitys"
+
+msgid "None"
+msgstr "Ei ole"
+
+msgid "Exact match"
+msgstr "Tarkka osuma"
+
+msgid "Info"
+msgstr "Huomaa"
+
+msgid "Probable match, please verify"
+msgstr "Todennäköinen osuma, varmista"
+
+msgid "Warning"
+msgstr "Varoitus"
+
+msgid "No matches, will be added as new"
+msgstr "Ei osumia, lisätään uutena"
+
+msgid "Error"
+msgstr "Virhe"
+
+msgid "No matches, please correct and reupload"
+msgstr "Ei osumia, korjaa virhe ja lähetä uudestaan"
+
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgstr "Huom: Tässä CSV-tiedostossa on OpenFlights ID:itä kentissä 15-18.  Nämä ID:t korvaavat mahdolliset käsin tehdyt muutokset lentokenttä, -yhtiö ja -kone kenttiin."
+
+msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgstr "Lentotiedoissasi oli tuntemattomia lentokenttiä.  Lisää ne tietokantaan ensin ja yritä uudestaan."
+
+msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgstr "Lentotiedoissasi oli tuntemattomia lentoyhtiöitä.   Tämä yleensä tarkoittaa, että yhtiön koodia ei tunnistettu eikä sen nimeä annettu.  Korjaa tai poista koodi ja yritä uudestaan."
+
+msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
+msgstr "Joitain päiväyksiä ei voitu tulkita.  Muuta ne muotoon YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY tai pelkkä YYYY ja yritä uudestaan.  Huomaa, että DD/MM/YYYY <b>ei</b> kelpaa."
+
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgstr "Lentotiedoissasi oli matka-ID:itä, joita ei tunnistettu tai jotka eivät ole omia matkojasi."
+
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgstr "<b>Analyysi onnistui.</b>  Voit nyt tuoda nämä lennot OpenFlightsiin.  (Mahdolliset pienet muutokset voi tehdä jälkeenpäin lentoeditorilla.)"
+
+msgid "Add these flights to your OpenFlights"
+msgstr "Lisää nämä lennot OpenFlightsiin"
+
+msgid "Cancel"
+msgstr "Poistu"
+
+msgid "Flights successfully imported."
+msgstr "Lennot tuotu onnistuneesti."
+
+msgid "Import more flights"
+msgstr "Tuo lisää lentoja"
+
+msgid "Close"
+msgstr "Sulje"
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr "Kirjautuminen epäonnistui.  <%s>Luo tunnus</a> tai <%s>resetoi salasana</a>?"
+
+msgid "This trip is not public."
+msgstr "Tämä matka ei ole julkinen."
+
+msgid "No such trip."
+msgstr "Matkaa ei ole."
+
+msgid "This user's flights are password-protected."
+msgstr "Tämän käyttäjän lennot on salasanalla suojattu."
+
+msgid "This user's flights are not public."
+msgstr "Tämän käyttäjän lennot eivät ole julkisia."
+
+msgid "No such user."
+msgstr "Käyttäjää ei ole."
+
+msgid "This user has no flights."
+msgstr "Tällä käyttäjällä ei ole lentoja."
+
+msgid "km"
+msgstr "km"
+
+msgid "miles"
+msgstr "mi"
+
+msgid "routes"
+msgstr "reittiä"
+
+msgid "Sorry, that name is already taken, please try another."
+msgstr "Nimi on jo käytössä, valitse toinen."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "Resetointi onnistui, %s lentoa poistettu."
+
+msgid "Sorry, current password is not correct."
+msgstr "Salasana on väärä."
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "Kirjaudutaan sisään..."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "Asetukset muutettu, hetkinen..."
+
+msgid "Trip not found."
+msgstr "Matkaa ei ole."
+
+msgid "User not found."
+msgstr "Käyttäjää ei ole."
+
+msgid "mi"
+msgstr "mi"
+
+msgid "Longest"
+msgstr "Pisin"
+
+msgid "Shortest"
+msgstr "Lyhyin"
+
+msgid "Northernmost"
+msgstr "Pohjoisin"
+
+msgid "Southernmost"
+msgstr "Eteläisin"
+
+msgid "Westernmost"
+msgstr "Läntisin"
+
+msgid "Easternmost"
+msgstr "Itäisin"
+
+msgid "Added."
+msgstr "Lisätty."
+
+#, php-format
+msgid "%s flights added."
+msgstr "%s lentoa lisätty."
+
+msgid "Edited."
+msgstr "Tallennettu."
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "Matka luotu."
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "Matka poistettu."
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr "Muutokset matkaan tallennettu."
+
+msgid "Language"
+msgstr "Kieli"
+
+msgid "Airline, railway, road transport and shipping search"
+msgstr "Lento-, rautatie-, maantiekuljetus- ja laivayhtiöhaku"
+
+msgid "Fill one or more fields below to search for matching airlines and other transport operators."
+msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Railway"
+msgstr "Rautatie"
+
+msgid "Road transport"
+msgstr "Maantiekuljetus"
+
+msgid "Shipping"
+msgstr "Laivayhtiö"
+
+msgid "Alternative name"
+msgstr "Vaihtoehtoinen nimi"
+
+msgid "Country"
+msgstr "Maa"
+
+msgid "Callsign"
+msgstr "Kutsutunnus"
+
+msgid "Show only major (IATA) airlines?"
+msgstr "Näytä vain isot (IATA-koodatut) lentoyhtiöt?"
+
+msgid "Record the current data as a new airline."
+msgstr "Tallenna uutena lentoyhtiönä."
+
+msgid "Add as new"
+msgstr "Tallenna uutena"
+
+msgid "Fill one or more fields below to search for matching airports."
+msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
+
+msgid "Airport name"
+msgstr "Lentokentän nimi"
+
+msgid "City name"
+msgstr "Kaupunki"
+
+msgid "Country name"
+msgstr "Maa"
+
+msgid "Latitude"
+msgstr "Leveysaste"
+
+msgid "Longitude"
+msgstr "Pituusaste"
+
+msgid "Elevation"
+msgstr "Korkeus"
+
+msgid "UTC"
+msgstr "UTC"
+
+msgid "DST"
+msgstr "Kesäaika"
+
+msgid "European"
+msgstr "Eurooppa"
+
+msgid "US/Canada"
+msgstr "US/Kanada"
+
+msgid "S. American"
+msgstr "Etelä-Amerikka"
+
+msgid "Australia"
+msgstr "Australia"
+
+msgid "New Zealand"
+msgstr "Uusi-Seelanti"
+
+msgid "Database"
+msgstr "Tietokanta"
+
+msgid "Show only major (IATA) airports?"
+msgstr "Näytä vain isot (IATA-koodatut) kentät?"
+
+msgid "Please log in to enable editing."
+msgstr "Kirjaudu sisään muokkausta varten."
+
+msgid "Record the current data as a new airport."
+msgstr "Tallenna uutena lentokenttänä."
+
+msgid "Record changes to this airport."
+msgstr "Tallenna muutokset tähän lentokenttään."
+
+msgid "Import data"
+msgstr "Lentojen tuonti"
+
+msgid "OpenFlights can import two types of data:"
+msgstr "OpenFlights voi tuoda kahdenlaista tietoa:"
+
+#, php-format
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemoryssä ei ole export-funktiota, mutta OpenFlights voi \"kaapia\" sen FlightData-sivut.  Kirjaudu sisään FlightMemory-tunnuksellasi, mene FlightData-sivulle, ja valitse selaimestasi \"Tallenna sivu\".  Lähetä tallennettu HTML-sivu.  Toista jokaiselle datasivulle.</p><p><i>Huomaa</i>: FlightMemoryn on oltava <b>englanninkielinen</b> tallentaessa sivuja.</p><p><i>Huomaa</i>: Kaksoiskappaleita ei huomata.  Jos tuot samat lennot kahdesti, ne kirjataan kantaan kahdesti.</p><p><i>Huomaa</i>: FlightMemoryn sivut muuttuvat toisinaan. <%s>Kerro</a> jos törmäät ongelmiin tai löydät bugeja, ja lähetä sekä tarkka virheilmoitus että 'Tmpfile'-arvo sivun ylälaidasta. "
+
+#, php-format
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgstr "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value eli pilkulla arvotettuja arvoja.  Luodaan OpenFlightsin 'Export' tai 'Ota varmuuskopio'-toiminnoilla, ja lopputulosta voidaan helposti muokata Excelilla tai muulla taulukkolaskentaohjelmalla.  Kts. <%s>CSV-speksi</a>."
+
+msgid "File to upload"
+msgstr "Lähetettävä tiedosto"
+
+msgid "Keep historical airline names?"
+msgstr "Säilytä historiallisten lentoyhtiöiden nimet?"
+
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgstr "OpenFlights koittaa yleensä sovittaa lentoyhtiöiden nimet ja lentojen numerot nykyisiin yhtiöihin.  Rastittamalla yllä olevan boksin kaikki lentoyhtiöiden nimet säilyvät muuttumattomina, kirjoitusvirheineen kaikkineen. "
+
+#, php-format
+msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgstr "Voit vielä tarkistaa lentojen oikeellisuuden ennen kun ne tuodaan kantaan.  Kts. %s jos haluat ottaa varmuuskopion tai poistaa nykyiset lennot ennen tuontia."
+
+msgid "Create new account"
+msgstr "Luo uusi tunnus"
+
+msgid "Account settings"
+msgstr "Asetukset"
+
+msgid "Basic information"
+msgstr "Perustiedot"
+
+msgid "This will be used as the name of your profile."
+msgstr "Tätä nimeä käytetään julkisessa profiilissasi."
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr "Valitse salasana joka on helppo muistaa mutta vaikea arvata.  Isot ja pienet kirjaimet erotellaan!"
+
+msgid "Password again"
+msgstr "Salasana taas"
+
+msgid "E-mail (optional)"
+msgstr "Sähköposti (ei pakollinen)"
+
+#, php-format
+msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "Jos unohdat salasanasi, uusi salasana voidaan lähettää tähän osoitteeseen.  Emme <i>koskaan</i> lähetä muuta postia tai jaa tietojasi muille, katso <%s>privacy policy</a>."
+
+msgid "Could not load profile data"
+msgstr "Profiilin tietoja ei voitu ladata."
+
+msgid "Profile address"
+msgstr "Profiiliosoite"
+
+#, php-format
+msgid "Viewed %s times"
+msgstr "Katsottu %s kertaa"
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr "Profiilisi julkinen osoite ja miten usein siellä on käyty."
+
+msgid "Facebook link"
+msgstr "Facebook-linkitys"
+
+msgid "Linked, automatic updates"
+msgstr "On, automaattinen päivitys"
+
+msgid "Linked, manual updates only"
+msgstr "On, päivitys käsin"
+
+msgid "Automate"
+msgstr "Automatisoi"
+
+msgid "Not active"
+msgstr "Ei linkitetty"
+
+msgid "Add link"
+msgstr "Lisää linkitys"
+
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr "Asenna <%s>OpenFlightsin Facebook-ohjelma</a>, niin voit päivittää lentosi <%s>Facebookiin</a>."
+
+msgid "Banners"
+msgstr "Bannerit"
+
+msgid "Blog banner (HTML)"
+msgstr "Blogibanneri (HTML)"
+
+msgid "Bulletin board banner (phpBB)"
+msgstr "Foorumibanneri (phpBB)"
+
+msgid "Profile settings"
+msgstr "Profiiliasetukset"
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr "Voit helposti muuttaa näitä myöhemmin valitsemalla <i>Asetukset</i>."
+
+msgid "Privacy"
+msgstr "Yksityisyys"
+
+msgid "Private"
+msgstr "Salainen"
+
+msgid "Public"
+msgstr "Julkinen"
+
+msgid "Open"
+msgstr "Avoin"
+
+#, php-format
+msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgstr "<b>Salaisia</b> profiileja kukaan muu ei voi nähdä.  <%s>Gold- ja Platinum-käyttäjät</a> voivat suojata profiilinsa vierassalasanalla."
+
+msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
+msgstr "<b>Julkiset</b> profiilit sallivat muiden ihailla lentokarttaasi ja tilastojasi, mutta lentojen yksityiskohtia kuten tarkkoja päiviä ja luokkia ei paljasteta. "
+
+msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
+msgstr "<b>Avoimet</b> profiilit antavat muiden nähdä yksityiskohtaiset lentotiedotkin."
+
+msgid "Flight editor"
+msgstr "Lentoeditori"
+
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgstr "<b>Peruseditori</b> on helppo ja nopea: mistä, mihin, milloin ja halutessasi lentoyhtiökin.  Nopein tapa kasata kartta!"
+
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgstr "<b>Extraeditori</b> antaa mahdollisuuden lisätä koneen mallin ja rekisterin, paikat, omia muistiinpanoja ja paljon muuta.  Täydellinen vaihtoehto ilmailuharrastajille ja spottereille."
+
+msgid "Distances"
+msgstr "Etäisyydet"
+
+msgid "Kilometers"
+msgstr "Kilometriä"
+
+msgid "Preferred unit for flight distances"
+msgstr "Etäisyyden laskuyksikkö"
+
+msgid "Guest password"
+msgstr "Vierassalasana"
+
+msgid "Gold Elite feature"
+msgstr "Gold Elite-ominaisuus"
+
+msgid "Password protect your Private profile, so only friends and family can see it."
+msgstr "Suojaa Salainen profiilisi salasanalla ja jaa se perheen ja kavereiden kanssa."
+
+# Choice of bottom pane for Gold/Platinum members.
+msgid "Default view"
+msgstr "Alapaneeli"
+
+msgid "Help"
+msgstr "Ohje"
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr "Näytä mainosten sijasta valitsemasi ruutu alapaneelissa."
+
+msgid "Manage flights"
+msgstr "Lentojen hallinta"
+
+msgid "Backup to CSV"
+msgstr "CSV-varmuuskopio"
+
+msgid "Delete all flights"
+msgstr "Poista kaikki lennot"
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr "<%s>CSV</a>-tiedostoja voi muokata taulukkolaskentaohjelmilla kuten Excel."
+
+msgid "Change password"
+msgstr "Muuta salasanaa"
+
+msgid "Current password"
+msgstr "Nykyinen salasana"
+
+msgid "You only need to enter this if changing your password."
+msgstr "Tämä on tarpeen vain jos haluat muuttaa salasanaasi."
+
+msgid "New password"
+msgstr "Uusi salasana"
+
+msgid "New password again"
+msgstr "Uusi salasana taas"
+
+msgid "Sign me up!"
+msgstr "Luo tunnukseni!"
+
+msgid "Edit trip"
+msgstr "Muokkaa matkaa"
+
+msgid "Add trip"
+msgstr "Lisää matka"
+
+msgid "Could not load trip data."
+msgstr "Matkan tietoja ei voitu ladata."
+
+msgid "Web address <i>(optional)</i>"
+msgstr "Verkko-osoite <i>(ei pakollinen)</i>"
+
+msgid "Trip privacy"
+msgstr "Matkan yksityisyys"
+
+msgid "Private (visible only to you)"
+msgstr "Salainen (vain itselle)"
+
+msgid "Public (map and stats shared)"
+msgstr "Julkinen (kartta ja tilastot jaetaan)"
+
+msgid "Open (all flight data shared)"
+msgstr "Avoin (kaikki lentotiedot jaetaan)"
+
+msgid "OpenFlights URL"
+msgstr "OpenFlights-osoite"
+
+msgid "Not assigned yet"
+msgstr "Ei vielä määritelty"
+
+msgid "Save"
+msgstr "Tallenna"
+
+msgid "Prem.Eco"
+msgstr "Eco.Extra"
+
+msgid "Econ"
+msgstr "Econ"
+
+msgid "P.Eco"
+msgstr "EcoX"
+
+msgid "Biz"
+msgstr "Bis"
+
+msgid "1st"
+msgstr "Eka"
+
+msgid "Leis."
+msgstr "Hupi"
+
+msgid "flight"
+msgstr "lento"
+
+msgid "train"
+msgstr "juna"
+
+msgid "road trip"
+msgstr "automatka"
+
+msgid "ship"
+msgstr "laiva"
+
+msgid "airline"
+msgstr "lentoyhtiö"
+
+msgid "railway"
+msgstr "rautatie"
+
+msgid "road transport"
+msgstr "tiekuljetus"
+
+msgid "shipping"
+msgstr "laiva"
+
+msgid "Segments"
+msgstr "Matkat"
+
+msgid "Mileage"
+msgstr "Mailit"
+
 msgid "Toggle pan and region select mode"
 msgstr "Kartan siirto vs. alueen valinta"
 
@@ -503,11 +919,17 @@ msgstr "Lentoni"
 msgid "My Airports"
 msgstr "Lentokenttäni"
 
-msgid "Flights:"
-msgstr "Lennot:"
-
 msgid "Select this airport"
 msgstr "Valitse tämä lentokenttä"
+
+msgid "List my flights"
+msgstr "Luettelo lennoistani"
+
+msgid "List routes"
+msgstr "Luettelo reiteistä"
+
+msgid "Flights:"
+msgstr "Lennot:"
 
 msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
 msgstr "Päiväyksen on oltava muodossa vuosi/kuu/päivä, esim. lokakuun 30. päivä 2008 olisi 2008/10/30.  Voit kirjata päiväyksen muodossa YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD tai YYYY MM DD. "
@@ -530,8 +952,20 @@ msgstr "Lennon keston on oltava tunteina ja minuutteina, esim. 5:37.  Kesto lask
 msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
 msgstr "Lennon pituus ilmaistaan maileina.  Pituus lasketaan uudestaan jos tyhjennät kentän."
 
+msgid "No trips"
+msgstr "Ei matkoja"
+
 msgid "No trips. Add one? "
 msgstr "Ei matkoja. Lisää uusi?"
+
+msgid "All trips"
+msgstr "Kaikki matkat"
+
+msgid "All carriers"
+msgstr "Kaikki yhtiöt"
+
+msgid "All"
+msgstr "Kaikki"
 
 msgid "Unassigned flights"
 msgstr "Matkoihin kuulumattomat lennot"
@@ -563,11 +997,14 @@ msgstr "Ei osa matkaa"
 msgid "segments"
 msgstr "lentoa"
 
-msgid "miles"
-msgstr "mi"
-
 msgid "days"
 msgstr "pv"
+
+msgid "List all routes on this airline"
+msgstr "Luettelo kaikista lentoyhtiön reiteistä"
+
+msgid "List all routes from this airport"
+msgstr "Luettelo kaikista tämän lentokentän reiteistä"
 
 msgid "No flights found at this airport."
 msgstr "Ei lentoja tältä kentältä."
@@ -581,17 +1018,14 @@ msgstr "Comma-Separated Value, Exceliin ja muuhun tiedonkäsittelyyn"
 msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Keyhole Markup Language, Google Earthia ja muita 3D-ohjelmia varten"
 
-msgid "Nr."
-msgstr "Nro"
-
-msgid "Miles"
-msgstr "Pituus"
-
-msgid "Time"
-msgstr "Kesto"
-
 msgid "Vehicle"
 msgstr "Kulkuneuvo"
+
+msgid "Action"
+msgstr "Muokkaa"
+
+msgid "Buy tickets on %1"
+msgstr "Osta %1 lentolippu"
 
 msgid "Edit this flight"
 msgstr "Muokkaa tätä lentoa"
@@ -614,8 +1048,8 @@ msgstr "Maita"
 msgid "Vehicles"
 msgstr "Kulkuneuvoja"
 
-msgid "Miles flown"
-msgstr "Maileja lennetty"
+msgid "Total flown"
+msgstr "Yhteensä"
 
 msgid "Around the world"
 msgstr "Maailman ympäri"
@@ -683,6 +1117,9 @@ msgstr "-%1 päivä"
 msgid "Flight departure and arrival times"
 msgstr "Lennon lähtö- ja saapumisajat"
 
+msgid "Show airline route map"
+msgstr "Näytä lentoyhtiön reittikartta"
+
 msgid "Logged in as <B>%1</B>"
 msgstr "Kirjautunut nimellä <B>%1</B>"
 
@@ -710,493 +1147,20 @@ msgstr "Muokkaat jo yhtä lentoa. Haluatko peruuttaa muutokset ja lisätä uuden
 msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
 msgstr "Muokkaat jo yhtä lentoa. Haluatko peruuttaa muutokset ja muokata toista lentoa?"
 
-msgid "Duration"
-msgstr "Kesto"
-
-msgid "Add new flight"
-msgstr "Lisää uusi lento"
-
-msgid "Edit flight"
-msgstr "Muokkaa lentoa"
-
-msgid "Prem.Eco"
-msgstr "Eco.Extra"
-
-msgid "Econ"
-msgstr "Econ"
-
-msgid "P.Eco"
-msgstr "EcoX"
-
-msgid "Biz"
-msgstr "Bis"
-
-msgid "Leis."
-msgstr "Hupi"
-
-msgid "flight"
-msgstr "lento"
-
-msgid "train"
-msgstr "juna"
-
-msgid "road trip"
-msgstr "automatka"
-
-msgid "ship"
-msgstr "laiva"
-
-msgid "airline"
-msgstr "lentoyhtiö"
-
-msgid "railway"
-msgstr "rautatie"
-
-msgid "road transport"
-msgstr "tiekuljetus"
-
-msgid "shipping"
-msgstr "laiva"
-
-msgid "Segments"
-msgstr "Matkat"
-
-msgid "Mileage"
-msgstr "Mailit"
-
-msgid "Action"
-msgstr "Muokkaa"
-
-msgid "1st"
-msgstr "Eka"
-
-#, php-format
-msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
-msgstr "Kirjautuminen epäonnistui.  <%s>Luo tunnus</a> tai <%s>resetoi salasana</a>?"
-
-msgid "This trip is not public."
-msgstr "Tämä matka ei ole julkinen."
-
-msgid "No such trip."
-msgstr "Matkaa ei ole."
-
-msgid "This user's flights are password-protected."
-msgstr "Tämän käyttäjän lennot on salasanalla suojattu."
-
-msgid "This user's flights are not public."
-msgstr "Tämän käyttäjän lennot eivät ole julkisia."
-
-msgid "No such user."
-msgstr "Käyttäjää ei ole."
-
-msgid "This user has no flights."
-msgstr "Tällä käyttäjällä ei ole lentoja."
-
-#, php-format
-msgid "Sorry, that name is already taken, please try another."
-msgstr "Nimi on jo käytössä, valitse toinen."
-
-#, php-format
-msgid "Account reset, %s flights deleted."
-msgstr "Resetointi onnistui, %s lentoa poistettu."
-
-#, php-format
-msgid "Sorry, current password is not correct."
-msgstr "Salasana on väärä."
-
-#, php-format
-msgid "Successfully signed up, now logging in..."
-msgstr "Kirjaudutaan sisään..."
-
-#, php-format
-msgid "Settings changed successfully, returning..."
-msgstr "Asetukset muutettu, hetkinen..."
-
-msgid "Trip not found."
-msgstr "Matkaa ei ole."
-
-msgid "User not found."
-msgstr "Käyttäjää ei ole."
-
-msgid "Longest"
-msgstr "Pisin"
-
-msgid "Shortest"
-msgstr "Lyhyin"
-
-msgid "Northernmost"
-msgstr "Pohjoisin"
-
-msgid "Southernmost"
-msgstr "Eteläisin"
-
-msgid "Westernmost"
-msgstr "Läntisin"
-
-msgid "Easternmost"
-msgstr "Itäisin"
-
-msgid "Added."
-msgstr "Lisätty."
-
-#, php-format
-msgid "%s flights added."
-msgstr "%s lentoa lisätty."
-
-msgid "Edited."
-msgstr "Tallennettu."
-
-#, php-format
-msgid "Trip successfully created"
-msgstr "Matka luotu."
-
-#, php-format
-msgid "Trip successfully deleted"
-msgstr "Matka poistettu."
-
-#, php-format
-msgid "Trip successfully edited."
-msgstr "Muutokset matkaan tallennettu."
-
-msgid "Create new account"
-msgstr "Luo uusi tunnus"
-
-msgid "Account settings"
-msgstr "Asetukset"
-
-msgid "Basic information"
-msgstr "Perustiedot"
-
-msgid "This will be used as the name of your profile."
-msgstr "Tätä nimeä käytetään julkisessa profiilissasi."
-
-msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
-msgstr "Valitse salasana joka on helppo muistaa mutta vaikea arvata.  Isot ja pienet kirjaimet erotellaan!"
-
-msgid "Password again"
-msgstr "Salasana taas"
-
-msgid "E-mail (optional)"
-msgstr "Sähköposti (ei pakollinen)"
-
-#, php-format
-msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
-msgstr "Jos unohdat salasanasi, uusi salasana voidaan lähettää tähän osoitteeseen.  Emme <i>koskaan</i> lähetä muuta postia tai jaa tietojasi muille, katso <%s>privacy policy</a>."
-
-msgid "Could not load profile data"
-msgstr "Profiilin tietoja ei voitu ladata."
-
-msgid "Profile address"
-msgstr "Profiiliosoite"
-
-#, php-format
-msgid "Viewed %s times"
-msgstr "Katsottu %s kertaa"
-
-msgid "The public address of your profile and how often it has been viewed."
-msgstr "Profiilisi julkinen osoite ja miten usein siellä on käyty."
-
-msgid "Facebook link"
-msgstr "Facebook-linkitys"
-
-msgid "Linked, automatic updates"
-msgstr "On, automaattinen päivitys"
-
-msgid "Linked, manual updates only"
-msgstr "On, päivitys käsin"
-
-msgid "Automate"
-msgstr "Automatisoi"
-
-msgid "Not active"
-msgstr "Ei linkitetty"
-
-msgid "Add link"
-msgstr "Lisää linkitys"
-
-msgid "Banners"
-msgstr "Bannerit"
-
-msgid "Blog banner (HTML)"
-msgstr "Blogibanneri (HTML)"
-
-msgid "Bulletin board banner (phpBB)"
-msgstr "Foorumibanneri (phpBB)"
-
-msgid "Profile settings"
-msgstr "Profiiliasetukset"
-
-msgid "You can easily change these later by clicking on <i>Settings</i>."
-msgstr "Voit helposti muuttaa näitä myöhemmin valitsemalla <i>Asetukset</i>."
-
-msgid "Privacy"
-msgstr "Yksityisyys"
-
-msgid "Private"
-msgstr "Salainen"
-
-msgid "Public"
-msgstr "Julkinen"
-
-msgid "Open"
-msgstr "Avoin"
-
-#, php-format
-msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
-msgstr "<b>Salaisia</b> profiileja kukaan muu ei voi nähdä.  <%s>Gold- ja Platinum-käyttäjät</a> voivat suojata profiilinsa vierassalasanalla."
-
-msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
-msgstr "<b>Julkiset</b> profiilit sallivat muiden ihailla lentokarttaasi ja tilastojasi, mutta lentojen yksityiskohtia kuten tarkkoja päiviä ja luokkia ei paljasteta. "
-
-msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
-msgstr "<b>Avoimet</b> profiilit antavat muiden nähdä yksityiskohtaiset lentotiedotkin."
-
-msgid "Flight editor"
-msgstr "Lentoeditori"
-
-msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
-msgstr "<b>Peruseditori</b> on helppo ja nopea: mistä, mihin, milloin ja halutessasi lentoyhtiökin.  Nopein tapa kasata kartta!"
-
-msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
-msgstr "<b>Extraeditori</b> antaa mahdollisuuden lisätä koneen mallin ja rekisterin, paikat, omia muistiinpanoja ja paljon muuta.  Täydellinen vaihtoehto ilmailuharrastajille ja spottereille."
-
-msgid "Guest password"
-msgstr "Vierassalasana"
-
-msgid "Gold Elite feature"
-msgstr "Gold Elite-ominaisuus"
-
-msgid "Password protect your Private profile, so only friends and family can see it."
-msgstr "Suojaa Salainen profiilisi salasanalla ja jaa se perheen ja kavereiden kanssa."
-
-# Choice of bottom pane for Gold/Platinum members.
-msgid "Default view"
-msgstr "Alapaneeli"
-
-msgid "Help"
-msgstr "Ohje"
-
-msgid "Display a screen of your choice instead of banner ads."
-msgstr "Näytä mainosten sijasta valitsemasi ruutu alapaneelissa."
-
-msgid "Manage flights"
-msgstr "Lentojen hallinta"
-
-msgid "Backup to CSV"
-msgstr "CSV-varmuuskopio"
-
-msgid "Delete all flights"
-msgstr "Poista kaikki lennot"
-
-msgid "Change password"
-msgstr "Muuta salasanaa"
-
-msgid "Current password"
-msgstr "Nykyinen salasana"
-
-msgid "You only need to enter this if changing your password."
-msgstr "Tämä on tarpeen vain jos haluat muuttaa salasanaasi."
-
-msgid "New password"
-msgstr "Uusi salasana"
-
-msgid "New password again"
-msgstr "Uusi salasana taas"
-
-msgid "Sign me up!"
-msgstr "Luo tunnukseni!"
-
-msgid "No trips"
-msgstr "Ei matkoja"
-
-msgid "Flight logging, mapping, stats and sharing"
-msgstr "Kirjaa, kartoita, tutki ja jaa lentosi"
-
-msgid "Not logged in, aborting"
-msgstr "Et ole kirjautunut sisään"
-
-msgid "was:"
-msgstr "oli:"
-
-msgid "No airline"
-msgstr "Ei lentoyhtiötä"
-
-msgid "Upload again"
-msgstr "Lähetä uudestaan"
-
-msgid "Cancel this import and return to file upload page"
-msgstr "Peruuta tämä tuonti ja palaa edelliselle sivulle"
-
-msgid "Upload successful.  Parsing..."
-msgstr "Lähetys vastaanotettu.  Analysoidaan..."
-
-msgid "Results"
-msgstr "Tulokset"
-
-msgid "Upload failed!"
-msgstr "Lähetys epäonnistui!"
-
-msgid "Importing..."
-msgstr "Tuodaan..."
-
-msgid "Sorry, this file does not appear to be FlightMemory HTML."
-msgstr "Tämä tiedosto ei näytä olevan FlightMemoryn HTML-muodossa."
-
-msgid "Sorry, this HTML file does not appear contain FlightMemory FlightData."
-msgstr "Tämä tiedosto ei näytä sisältävän FlightMemoryn tietoja."
-
-msgid "Sorry, the filename must end in '.csv'."
-msgstr "Tiedoston nimen on päätetyttyvä kirjaimiin '.csv'."
-
-msgid "Unable to open CSV file."
-msgstr "CSV-tiedostoa ei voitu avata."
-
-msgid "Reg"
-msgstr "Rek.nro."
-
-msgid "Comment"
-msgstr "Huom."
-
-msgid "Key to results"
-msgstr "Tulosten avain"
-
-msgid "Color"
-msgstr "Väri"
-
-msgid "Meaning"
-msgstr "Merkitys"
-
-msgid "Exact match"
-msgstr "Tarkka osuma"
-
-msgid "Info"
-msgstr "Huomaa"
-
-msgid "Warning"
-msgstr "Varoitus"
-
-msgid "No matches, will be added as new"
-msgstr "Ei osumia, lisätään uutena"
-
-msgid "Error"
-msgstr "Virhe"
-
-msgid "No matches, please correct and reupload"
-msgstr "Ei osumia, korjaa virhe ja lähetä uudestaan"
-
-msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
-msgstr "Huom: Tässä CSV-tiedostossa on OpenFlights ID:itä kentissä 15-18.  Nämä ID:t korvaavat mahdolliset käsin tehdyt muutokset lentokenttä, -yhtiö ja -kone kenttiin."
-
-msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
-msgstr "Lentotiedoissasi oli tuntemattomia lentokenttiä.  Lisää ne tietokantaan ensin ja yritä uudestaan."
-
-msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
-msgstr "Lentotiedoissasi oli tuntemattomia lentoyhtiöitä.   Tämä yleensä tarkoittaa, että yhtiön koodia ei tunnistettu eikä sen nimeä annettu.  Korjaa tai poista koodi ja yritä uudestaan."
-
-msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
-msgstr "Joitain päiväyksiä ei voitu tulkita.  Muuta ne muotoon YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY tai pelkkä YYYY ja yritä uudestaan.  Huomaa, että DD/MM/YYYY <b>ei</b> kelpaa."
-
-msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
-msgstr "Lentotiedoissasi oli matka-ID:itä, joita ei tunnistettu tai jotka eivät ole omia matkojasi."
-
-msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
-msgstr "<b>Analyysi onnistui.</b>  Voit nyt tuoda nämä lennot OpenFlightsiin.  (Mahdolliset pienet muutokset voi tehdä jälkeenpäin lentoeditorilla.)"
-
-msgid "Add these flights to your OpenFlights"
-msgstr "Lisää nämä lennot OpenFlightsiin"
-
-msgid "Flights successfully imported."
-msgstr "Lennot tuotu onnistuneesti."
-
-msgid "Import more flights"
-msgstr "Tuo lisää lentoja"
-
-msgid "Close"
-msgstr "Sulje"
-
-msgid "Import data"
-msgstr "Lentojen tuonti"
-
-msgid "OpenFlights can import two types of data:"
-msgstr "OpenFlights voi tuoda kahdenlaista tietoa:"
-
-#, php-format
-msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
-msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemoryssä ei ole export-funktiota, mutta OpenFlights voi \"kaapia\" sen FlightData-sivut.  Kirjaudu sisään FlightMemory-tunnuksellasi, mene FlightData-sivulle, ja valitse selaimestasi \"Tallenna sivu\".  Lähetä tallennettu HTML-sivu.  Toista jokaiselle datasivulle.</p><p><i>Huomaa</i>: FlightMemoryn on oltava <b>englanninkielinen</b> tallentaessa sivuja.</p><p><i>Huomaa</i>: Kaksoiskappaleita ei huomata.  Jos tuot samat lennot kahdesti, ne kirjataan kantaan kahdesti.</p><p><i>Huomaa</i>: FlightMemoryn sivut muuttuvat toisinaan. <%s>Kerro</a> jos törmäät ongelmiin tai löydät bugeja, ja lähetä sekä tarkka virheilmoitus että 'Tmpfile'-arvo sivun ylälaidasta. "
-
-#, php-format
-msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
-msgstr "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value eli pilkulla arvotettuja arvoja.  Luodaan OpenFlightsin 'Export' tai 'Ota varmuuskopio'-toiminnoilla, ja lopputulosta voidaan helposti muokata Excelilla tai muulla taulukkolaskentaohjelmalla.  Kts. <%s>CSV-speksi</a>."
-
-msgid "File to upload"
-msgstr "Lähetettävä tiedosto"
-
-msgid "Keep historical airline names?"
-msgstr "Säilytä historiallisten lentoyhtiöiden nimet?"
-
-msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
-msgstr "OpenFlights koittaa yleensä sovittaa lentoyhtiöiden nimet ja lentojen numerot nykyisiin yhtiöihin.  Rastittamalla yllä olevan boksin kaikki lentoyhtiöiden nimet säilyvät muuttumattomina, kirjoitusvirheineen kaikkineen. "
-
-#, php-format
-msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
-msgstr "Voit vielä tarkistaa lentojen oikeellisuuden ennen kun ne tuodaan kantaan.  Kts. %s jos haluat ottaa varmuuskopion tai poistaa nykyiset lennot ennen tuontia."
-
-msgid "Upload"
-msgstr "Lähetä"
-
-msgid "Edit trip"
-msgstr "Muokkaa matkaa"
-
-msgid "Add trip"
-msgstr "Lisää matka"
-
-msgid "Could not load trip data."
-msgstr "Matkan tietoja ei voitu ladata."
-
-msgid "Web address <i>(optional)</i>"
-msgstr "Verkko-osoite <i>(ei pakollinen)</i>"
-
-msgid "Trip privacy"
-msgstr "Matkan yksityisyys"
-
-msgid "Private (visible only to you)"
-msgstr "Salainen (vain itselle)"
-
-msgid "Public (map and stats shared)"
-msgstr "Julkinen (kartta ja tilastot jaetaan)"
-
-msgid "Open (all flight data shared)"
-msgstr "Avoin (kaikki lentotiedot jaetaan)"
-
-msgid "OpenFlights URL"
-msgstr "OpenFlights-osoite"
-
-msgid "Not assigned yet"
-msgstr "Ei vielä määritelty"
-
-msgid "Save"
-msgstr "Tallenna"
-
-msgid "Probable match, please verify"
-msgstr "Todennäköinen osuma, varmista"
-
-msgid "All trips"
-msgstr "Kaikki matkat"
-
-msgid "All carriers"
-msgstr "Kaikki yhtiöt"
-
-msgid "All"
-msgstr "Kaikki"
-
 msgid "IATA codes must be exactly two letters."
 msgstr "IATA-koodin on oltava kaksikirjaiminen."
 
 msgid "ICAO codes must be exactly three letters."
 msgstr "ICAO-koodin on oltava kolmekirjaiminen."
 
+msgid "Sorry, you have to be logged into OpenFlights to use this."
+msgstr "Tätä toimintoa varten täytyy kirjautua sisään OpenFlightsiin."
+
 msgid "Please enter a name."
 msgstr "Nimi puuttuu."
+
+msgid "Please select a country."
+msgstr "Valitse maa, jossa lentokenttä sijaitsee."
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
 msgstr "Et ole kirjannut IATA/FAA-koodia tälle yhtiölle.  Oletko varma, ettei yhtiöllä ole sitä?"
@@ -1207,8 +1171,20 @@ msgstr "Et ole kirjannut ICAO-koodia.  Oletko varma, ettei yhtiöllä ole sitä?
 msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
 msgstr "Oletko varma, että haluat lisätä uuden yhtiön %1?  Tarkistathan vielä kerran, että nimi ja koodit ovat oikein."
 
+msgid "Cancelled."
+msgstr "Peruutettu."
+
+msgid "Searching..."
+msgstr "Haetaan..."
+
+msgid "Recording..."
+msgstr "Kirjoitetaan..."
+
 msgid "No matches found."
 msgstr "Ei osumia."
+
+msgid "Results %1 to %2 of %3"
+msgstr "Osumat %1 kautta %2, yhteensä %3"
 
 msgid "Operators in pink have been added by users of OpenFlights."
 msgstr "Vaaleanpunaiset yhtiöt ovat OpenFlightsin käyttäjien lisäämiä."
@@ -1216,8 +1192,86 @@ msgstr "Vaaleanpunaiset yhtiöt ovat OpenFlightsin käyttäjien lisäämiä."
 msgid "Operators in blue have been added by you and can be edited."
 msgstr "Siniset yhtiöt ovat itse lisäämiäsi ja voit muokata niitä."
 
+msgid "Select"
+msgstr "Valitse"
+
 msgid "Sorry, you have to be logged into OpenFlights to do this."
 msgstr "Tätä toimintoa varten täytyy ensin kirjautua sisään OpenFlightsiin."
+
+msgid "IATA/FAA codes must be exactly three letters."
+msgstr "IATA/FAA-koodin pitää olla kolme kirjainta."
+
+msgid "ICAO codes must be exactly four letters."
+msgstr "ICAO-koodin pitää olla neljä kirjainta."
+
+msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgstr "Lentokenttien ja kaupunkien nimissä voi käyttää vain kirjaimia A-Z ilman aksentteja, numeroita 0-9, merkkejä -.' (viiva, piste ja heittomerkki) ja välilyöntiä."
+
+msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
+msgstr "Kaupunki '%1' poistettu hausta, sillä DAFIF-kannassa ei ole kaupunkien nimiä."
+
+msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgstr "Haku IATA/FAA-koodille '%1' rajoitettu Yhdysvaltoihin, sillä DAFIF-kannassa ei ole muiden maiden IATA-koodeja."
+
+msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgstr "IATA/FAA-koodia '%1' ei laskettu mukaan hakuun, sillä DAFIF-kannassa ei ole Yhdysvaltain ulkopuolisten lentokenttien IATA-koodeja."
+
+msgid "Please enter an airport name."
+msgstr "Lentokentän nimi puuttuu."
+
+msgid "Please enter a city name."
+msgstr "Kaupungin nimi puuttuu."
+
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgstr "Lisää leveys- ja pituusasteet sekä korkeus.  Oletko tarkistanut onko kenttä kenties jo OurAirports-kannassa?  Voit ladata tiedot sieltä valmiiksi."
+
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgstr "Leveys- ja pituusasteet täytyy antaa desimaalisessa muodossa, jossa negatiiviset luvut viittaavat etelään ja länteen, ja ainakin kolmen desimaalin tarkkuudella.  Esim. San Franciscon (SFO) sijainti on 37.6189 (pohjoinen), -122.3748 (itä)."
+
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
+msgstr "Pituusasteen täytyy olla -180 (länsi) ja 180 (itä) asteen väliltä."
+
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
+msgstr "Leveysasteen täytyy olla 90 (pohjoinen) ja -90 (etelä) asteen välillä."
+
+msgid "Please enter a positive number for elevation."
+msgstr "Korkeuden täytyy olla positiivinen luku."
+
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgstr "Aikavyöhykkeet annetaan erotuksena UTC/GMT:stä, esim. +8 Singaporelle tai -5 New Yorkille.  Tuntien murto-osat ilmaistaan desimaaleina, esim. +5.75 Nepalille."
+
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgstr "Et ole valinnut kesäaikaa tälle lentokentälle.  Jätetäänkö Tuntemattomaksi?"
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Et ole kirjannut IATA/FAA-koodia tälle kentälle.  Oletko varma, ettei kentällä ole sitä?"
+
+msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "Et ole kirjannut ICAO-koodia tälle kentälle.  Oletko varma, ettei kentällä ole sitä?"
+
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgstr "Oletko varma, että haluat lisätä uuden lentokentän %1, joka sijaitsee maailman %2-kvadrantissa?  Varmistathan vielä yhden kerran nimen, koodit ja koordinaatit. "
+
+msgid "No matches found in this database."
+msgstr "Haku ei tuottanut osumia."
+
+msgid "Try unchecking 'Show only major airports' and search again."
+msgstr "Ota 'Näytä vain isot kentät' pois päältä ja hae uudestaan."
+
+msgid "Switch to the OurAirports database and search again."
+msgstr "Vaihda OurAirports-tietokantaan ja hae uudestaan."
+
+msgid "Airports in pink have been added by users of OpenFlights."
+msgstr "Vaaleanpunaiset lentokentät ovat OpenFlightsin käyttäjien lisäämiä."
+
+msgid "Airports in blue have been added by you and can be edited."
+msgstr "Siniset kentät ovat itse lisäämiäsi, joten voit muokata niitä."
+
+msgid "Edit"
+msgstr "Muokkaa"
+
+msgid "Load"
+msgstr "Lataa"
 
 msgid "Creating account..."
 msgstr "Luodaan tunnusta..."
@@ -1252,35 +1306,8 @@ msgstr "Käsitellään..."
 msgid "Profile address:"
 msgstr "Profiiliosoite:"
 
-msgid "Hide search bar"
-msgstr "Piilota hakupalkki"
+#~ msgid "Nr"
+#~ msgstr "Nro"
+#~ msgid "Miles flown"
+#~ msgstr "Maileja lennetty"
 
-msgid "Map of routes from this airport"
-msgstr "Kartta tämän lentokentän reiteistä"
-
-#, php-format
-msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
-msgstr "IATA-koodia %s käyttävä lentokenttä on jo olemassa."
-
-msgid "List my flights"
-msgstr "Luettelo lennoistani"
-
-msgid "List routes"
-msgstr "Luettelo reiteistä"
-
-msgid "List all routes from this airport"
-msgstr "Luettelo kaikista tämän lentokentän reiteistä"
-
-msgid "Buy tickets on %1"
-msgstr "Osta lentolippu %1'sta"
-
-#, php-format
-msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
-msgstr ""
-
-#, php-format
-msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
-msgstr ""
-
-msgid "List all routes on this airline"
-msgstr ""
