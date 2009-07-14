@@ -583,7 +583,8 @@ function xmlhttpPost(strURL, id, param) {
 	  updateMap(str, strURL);
 	  if(! logged_in && ! demo_mode && initializing) {
 	    closePane();
-	    map.zoomToExtent(airportLayer.getDataExtent());
+	    var extent = airportLayer.getDataExtent();
+	    if(extent) map.zoomToExtent(extent);
 	  }
 	  if(strURL == URL_MAP) {
 	    if(param) {
@@ -597,7 +598,8 @@ function xmlhttpPost(strURL, id, param) {
 	    $('qs').style.color = '#888';
 	    $('qsid').value = 0;
 	    $('qsgo').disabled = true;
-	    map.zoomToExtent(getVisibleDataExtent(lineLayer));
+	    var extent = getVisibleDataExtent(lineLayer);
+	    if(extent) map.zoomToExtent(extent);
 	  }
 	  
 	  // Map now completely drawn for the first time
@@ -839,13 +841,6 @@ function xmlhttpPost(strURL, id, param) {
     break;
 
   case URL_FLIGHTS:
-    if(param != "EDIT" && param != "COPY") {
-      if(id) {
-	apid = id;
-      } else {
-	id = 0;
-      }
-    }
     if(param == "RELOAD") {
       query = lastQuery;
       break;
@@ -898,7 +893,7 @@ function xmlhttpPost(strURL, id, param) {
       }
     }
   }
-  alert(query);
+  //alert(strURL + ":" + query);
   self.xmlHttpReq.send(query);
 }
 
@@ -977,7 +972,7 @@ function getMapTitle(closable) {
     }
     if(alid != "0") {
       if(text != "") text += ", ";
-      text += airline;
+      text += airline + " " + getAirlineMapIcon(alid);
     }
     if(year != "0") {
       if(text != "") text += ", ";
@@ -988,7 +983,7 @@ function getMapTitle(closable) {
     // Demo mode
     if(demo_mode) {
       if(alid != "0") {
-	text = Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]);
+	text = Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]) + " " + getAirlineMapIcon(alid);
       } else {
 	text = gt.gettext("Recently added flights");
       }
@@ -1004,6 +999,7 @@ function getMapTitle(closable) {
 	  } else {
 	    text = Gettext.strargs(gt.gettext("%1's flights on %2"), [filter_user, airline]);
 	  }
+	  text += " " + getAirlineMapIcon(alid);
 	} else {
 	  if(year != "0") {
 	    text = Gettext.strargs(gt.gettext("%1's flights in %2"), [filter_user, year]);
@@ -1230,14 +1226,14 @@ function updateMap(str, url){
       title = gt.gettext("List all routes from this airport");
     }
 
-    maptitle = "<img src=\"/img/close.gif\" onclick=\"JavaScript:refresh(false);\" width=17 height=17> " + desc;
+    var maptitle = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> " + desc;
     var form = document.forms['filterform'];    
     filter_alid = form.Airlines.value.split(";")[0];
-    if(filter_alid != 0) {
-      maptitle += " <small>on <a href='#' onclick='JavaScript:showAirlineMap(" + filter_alid + ")'>" + 
-	form.Airlines.value.split(";")[1] + "</a></small>";
-    }
     maptitle += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + title + "'></a>";
+    if(filter_alid != 0 && ! apid.startsWith("L")) {
+      maptitle += " <small>on " + form.Airlines.value.split(";")[1] + "</small> " + getAirlineMapIcon(filter_alid);
+    }
+    maptitle = maptitle.replace("routes", gt.gettext("routes"));
     $("maptitle").innerHTML = maptitle;
   }
 
@@ -1315,7 +1311,6 @@ function startListFlights() {
 }
 
 function listFlights(str, desc, id) {
-  alert(str);
   openPane("result");
   fidList = new Array();
   var route = ! re_numeric.test(id); // ids starting with R are routes
@@ -1332,6 +1327,7 @@ function listFlights(str, desc, id) {
   } else {
     if(desc) {
       desc = desc.replace("Flights:", gt.gettext("Flights:"));
+      desc = desc.replace("routes", gt.gettext("routes"));
       desc = desc.replace(/\<br\>/g, " &mdash; ")
       table.push(desc);
       table.unshift("<span style='float: right'>" + gt.gettext("Export") + " <input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
@@ -1380,7 +1376,7 @@ function listFlights(str, desc, id) {
 		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
 		 "<td>");
       if(route) {
-	table.push("<a href=\"#\" onclick=\"JavaScript:selectAirline(" + col[15] + ");\">" + code + "</a>");
+	table.push("<a href=\"#\" onclick=\"JavaScript:showAirlineMap(" + col[15] + ");\">" + code + "</a>");
       } else {
 	table.push(code);
       }
@@ -1453,7 +1449,7 @@ function showStats(str) {
     table += "<tr><td>" + gt.gettext("Vehicles") + "</td><td>" + uniques["num_planes"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
 
-    var distance = uniques["distance"];
+    var distance = parseInt(uniques["distance"]);
     table += "<tr><th colspan=2>" + gt.gettext("Distance") + "</th></tr>";
     table += "<tr><td>" + gt.gettext("Total flown") + "</td><td>" + distance + "</td></tr>";
     table += "<tr><td>" + gt.gettext("Around the world") + "</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
@@ -1468,9 +1464,9 @@ function showStats(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + ", " + col[2] + "</td></tr>";
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + parseInt(col[1]) + ", " + col[2] + "</td></tr>";
     }
-    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + uniques["avg_distance"] + " mi, " + uniques["avg_duration"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + parseInt(uniques["avg_distance"]) + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
@@ -2612,7 +2608,16 @@ function selectAirline(new_alid, edit) {
   return false;
 }
 
+function getAirlineMapIcon(alid) {
+  return "<a href='#' onclick='JavaScript:showAirlineMap(" + alid + ")'><img src='/img/icon_routes.png' width=16 height=16 title='" + gt.gettext("Show airline route map") + "'></a>";
+}
+
+//
+// Load route map for this alid
+// (set filter to this airline as well)
+//
 function showAirlineMap(alid) {
+  selectAirline(alid, false);
   xmlhttpPost(URL_ROUTES, "L" + alid);
 }
 
@@ -3060,6 +3065,11 @@ function clearFilter(refresh_all) {
   form.Extra.selectedIndex = 0;
   $('filter_extra_span').innerHTML = "";
   selectAirline(0);
+  if(refresh_all && lasturl == URL_ROUTES) {
+    var extent = getVisibleDataExtent(lineLayer);
+    if(extent) map.zoomToExtent(extent);
+    lasturl = URL_MAP;
+  }
   refresh(refresh_all);
 }
 
@@ -3069,7 +3079,9 @@ function clearFilter(refresh_all) {
 // lasturl: either URL_MAP or URL_ROUTES (set in updateMap())
 function refresh(init) {
   closePopup();
-  if(lasturl == URL_MAP) apid = 0;
+  if(lasturl == URL_MAP) {
+    apid = 0;
+  }
   xmlhttpPost(lasturl, apid, init);
 }
 

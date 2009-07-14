@@ -101,54 +101,59 @@ if($user && $user != "0") {
 
 // Load up all information needed by this user
 $filter = getFilterString($HTTP_POST_VARS);
+$map = "";
 
 // Statistics
 // Number of flights, total distance (mi), total duration (minutes), public/open
 $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights AS f WHERE uid=" . $uid . " " . $filter;
-$result = mysql_query($sql, $db);
+$result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($row["count"] == "0" && $user && $user != "0") {
     die('Error;' . _("This user has no flights."));
   }
+  $distance = $row["distance"];
+  if(!$distance) $distance = "0";
   if($_SESSION["units"] == "K") {
-    $distance = round($row["distance"] * $KMPERMILE) . " " . _("km");
+    $distance = round($distance * $KMPERMILE) . " " . _("km");
   } else {
-    $distance = $row["distance"] . " " . _("miles");
+    $distance = $distance . " " . _("miles");
   }
-  printf("%s;%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $distance, $row["duration"], $public, $elite,
+  $map .= sprintf("%s;%s;%s;%s;%s;%s;%s;%s\n", $row["count"], $distance, $row["duration"], $public, $elite,
 	 $logged_in, $editor, $challenge);
-}
+ }
 
 // List of all flights (unique by airport pair)
 $sql = "SELECT DISTINCT s.apid,s.x,s.y,d.apid,d.x,d.y,count(fid),distance AS times,IF(MIN(src_date)>NOW(), 'Y', 'N') AS future,f.mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " " . $filter . " GROUP BY s.apid,d.apid";
-$result = mysql_query($sql, $db);
+$result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   if($first) {
     $first = false;
   } else {
-    printf("\t");
+    $map .= "\t";
   }  
-  printf ("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
+  $map .= sprintf ("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
 }
-printf ("\n");
+$map .= "\n";
 
 // List of all airports
 $sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,timezone,dst,count(name) AS visits,IF(MIN(src_date)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . $filter . " GROUP BY name ORDER BY visits ASC";
-$result = mysql_query($sql, $db);
+$result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
+
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($first) {
     $first = false;
   } else {
-    printf("\t");
+    $map .= "\t";
   }
-  printf ("%s;%s;%s;%s;%s;%s;%s", format_apdata($row), $row["name"], $row["city"], $row["country"], $row["visits"], format_airport($row), $row["future"]);
+  $map .= sprintf ("%s;%s;%s;%s;%s;%s;%s", format_apdata($row), $row["name"], $row["city"], $row["country"], $row["visits"], format_airport($row), $row["future"]);
 }
+
+print $map . "\n";
 
 // When running for the first time, load up possible filter settings for this user
 if($init == "true") {
-  print("\n");
   loadFilter($db, $uid, $trid);
 }
 ?>

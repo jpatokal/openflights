@@ -32,6 +32,8 @@ LINES TERMINATED BY '\n'
 IGNORE 2 LINES
 (airline, src_ap, dst_ap, codeshare, stops, equipment);
 
+UPDATE routes SET codeshare='Y' WHERE codeshare='*';
+
 \! echo Adding src IDs...
 
 UPDATE routes AS r,airports as a SET r.src_apid=a.apid WHERE a.iata=r.src_ap;
