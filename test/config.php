@@ -135,7 +135,7 @@ $loopflight = array('param' => 'ADD',
 
 $trip = array('name' => 'AutoTest Trip',
 	      'url' => 'http://autotrip.example',
-	      'privacy' => 'Y');
+	      'privacy' => 'Y'); // should default to Y/O
 
 $route = array('core_ap_iata' => 'ISG',
 	       'core_ap_filter_iata' => 'NH', // airline that flies to the airport above
