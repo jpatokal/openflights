@@ -42,9 +42,13 @@ UPDATE routes AS r,airports as a SET r.src_apid=a.apid WHERE a.iata=r.src_ap;
 
 UPDATE routes AS r,airports as a SET r.dst_apid=a.apid WHERE a.iata=r.dst_ap;
 
-\! echo Adding airline IDs...
+\! echo Adding airline IDs (round 1)...
 
 UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE l.iata=r.airline;
+
+\! echo Adding airline IDs (round 2)...
+
+UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE l.iata=r.airline AND l.active='Y';
 
 \! rm routes2.dat
 \! echo Done.
