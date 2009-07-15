@@ -109,6 +109,7 @@ CREATE TABLE `airlines` (
   `uid` int(11) default NULL,
   `alias` text,
   `mode` char(1) default 'F',
+  `active` char(1) default 'N',
   PRIMARY KEY  (`alid`),
   KEY `iata` (`iata`)
 ) DEFAULT CHARSET=utf8;
