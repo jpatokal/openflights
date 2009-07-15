@@ -1171,6 +1171,7 @@ function updateMap(str, url){
   var airports = master[2];
   var col = stats.split(";");
   var id = 0;
+  var type = "M"; // map
 
   if(url == URL_MAP) {
     // User flight map
@@ -1219,9 +1220,11 @@ function updateMap(str, url){
     flightTotal = col[1];
     desc = col[2];
     if(apid.startsWith("L")) {
+      type = "L";
       coreid = apid;
       title = gt.gettext("List all routes on this airline");
     } else {
+      type = "R";
       coreid = "R" + apid + "," + apid;
       title = gt.gettext("List all routes from this airport");
     }
@@ -1261,7 +1264,7 @@ function updateMap(str, url){
   }
 
   // Route maps draw the core airport even if there are no routes
-  if(flightTotal != "0" || url == URL_ROUTES) {
+  if(flightTotal != "0" || type == "R") {
     var rows = airports.split("\t");
     
     // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result

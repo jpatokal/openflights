@@ -10,7 +10,7 @@ require_once("./php/db.php");
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css?version=20080626" type="text/css">
-    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po?20090615" />
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js?version=20090201"></script>
     <script type="text/javascript" src="/js/greatcircle.js?version=20090626"></script>
@@ -19,7 +19,7 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090626"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090714"></script>
   </head>
 
   <body>
