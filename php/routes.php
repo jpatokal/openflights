@@ -112,7 +112,8 @@ if($type == "A") {
   $apcond = "r.src_apid=a.apid"; // prevent double-counting
 }
 
-$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,timezone,dst,count(name) AS visits,$codeshare AS future FROM routes AS r, airports AS a WHERE $condition AND $apcond GROUP BY name ORDER BY visits ASC";
+// MIN(codeshare) returns '' as long as at least one route is not 'Y'!
+$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,timezone,dst,count(name) AS visits,MIN(codeshare) AS future FROM routes AS r, airports AS a WHERE $condition AND $apcond GROUP BY name ORDER BY visits ASC";
 $result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

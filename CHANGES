@@ -1,3 +1,8 @@
+<b>2009-07-17</b>
+
+* Lithuanian updated
+* Bugfix: Airline maps gray out all airports with codeshares (2822898)
+
 <b>2009-07-14</b>
 
 * Quick search now supports airlines
@@ -11,7 +16,7 @@
 
 <b>2009-07-13</b>
 
-* Bug: Airport add from Import now works (2820603)
+* Bugfix: Airport add from Import now works (2820603)
 
 <b>2009-07-02</b>
 
@@ -34,13 +39,13 @@
 
 * Language selector available for profile, trip display
 * Switch UI language to user preference on login
-* Bug: Facebook "Sign up" link was broken
+* Bugfix: Facebook "Sign up" link was broken
 * Additional translation for Finnish (fi)
 
 <b>2009-06-16</b>
 
 * Top 10 Airports generation sped up 100x
-* Bug: __FLIGHTS__ raw string popping up in English
+* Bugfix: __FLIGHTS__ raw string popping up in English
 
 <b>2009-06-15</b>
 
@@ -64,13 +69,13 @@
 
 <b>2009-05-18</b>
 
-* Bug: Flights now sorted by time as well as date
-* Bug: Facebook app now handles case where user denies app access
+* Bugfix: Flights now sorted by time as well as date
+* Bugfix: Facebook app now handles case where user denies app access
 * Cleaner logging for FB app
 
 <b>2009-05-14</b>
 
-* Bug: URL parsing for IE broken, now fixed
+* Bugfix: URL parsing for IE broken, now fixed
 
 <b>2009-05-13</b>
 
@@ -79,12 +84,12 @@
 
 <b>2009-05-05</b>
 
-* Bug: Loop flights (same source and dest airport) now work in "Basic" mode
+* Bugfix: Loop flights (same source and dest airport) now work in "Basic" mode
 * Test cases for multi, loop flights added
 
 <b>2009-04-23</b>
 
-* Bug: Links from Facebook with "?ref=nf" added to end now work
+* Bugfix: Links from Facebook with "?ref=nf" added to end now work
 
 <b>2009-03-26</b>
 
@@ -96,13 +101,13 @@
 * Replaced clunky JS pie chart code with Google Charts API
 * Airline search test cases added
 * Autocomplete airline test cases added
-* Bug: Better handling of blanked airport, airline names
-* Bug: Adding airlines with long names now updates select
-* Bug: Duration of "0:60" now rendered correctly as "1:00"
+* Bugfix: Better handling of blanked airport, airline names
+* Bugfix: Adding airlines with long names now updates select
+* Bugfix: Duration of "0:60" now rendered correctly as "1:00"
 
 <b>2009-03-19</b>
 
-* Bug: Restore textbox class correctly after hint text restoration
+* Bugfix: Restore textbox class correctly after hint text restoration
 
 <b>2009-03-04</b>
 
@@ -121,17 +126,17 @@
 * Facebook app can now post update on flight day
 * Preferences added to Facebook app
 * Tooltips added to OpenLayers map controls
-* Bug: Flight edits no longer show up on Facebook, stats
+* Bugfix: Flight edits no longer show up on Facebook, stats
 
 <b>2009-02-23</b>
 
-* Bug: Calculate PHP GC distance correctly for flights where src==dest
+* Bugfix: Calculate PHP GC distance correctly for flights where src==dest
 
 <b>2009-02-23</b>
 
 * KML exports (Google Earth etc) added!
 * Wrote 3D path code in php/greatcircle.php
-* Bug: Filters for CSV exports fixed
+* Bugfix: Filters for CSV exports fixed
 
 <b>2009-02-22</b>
 
@@ -144,7 +149,7 @@
 <b>2009-02-09</b>
 
 * Facebook app now includes a map of flights
-* Bug: Facebook updates show airports in correct order
+* Bugfix: Facebook updates show airports in correct order
 
 <b>2009-02-06</b>
 
@@ -157,15 +162,15 @@
 
 * Cleaner appearance for statsbox, AJAX icon when loading
 * Login form only shown after loading complete
-* Bug: "Analyze" works again on IE7
-* Bug: Popups work again on IE7 (bug in Prototype?)
-* Bug: Syntax error fixed, importing works again
+* Bugfix: "Analyze" works again on IE7
+* Bugfix: Popups work again on IE7 (bug in Prototype?)
+* Bugfix: Syntax error fixed, importing works again
 
 <b>2009-02-04</b>
 
 * Airport/airline databases released
 * Airport/airline search now usable without logging in
-* Bug: Duplicated airlines when importing
+* Bugfix: Duplicated airlines when importing
 
 <b>2009-02-01</b>
 
@@ -176,13 +181,13 @@
 * FlightMemory import now supports arrival times
 * CSV format imports and exports departure times
 * CSV spec updated to 0.4 (optional departure time added)
-* Bug: Can now export the flights of a single airport
+* Bugfix: Can now export the flights of a single airport
 
 <b>2009-01-23</b>
 
 * Airline always shown (if possible) in "List flights" view
 * Airline autocompleted from flight number only if it looks like IATA/ICAO code
-* Bug: Popup toolbar manipulation no longer attempted unless logged in
+* Bugfix: Popup toolbar manipulation no longer attempted unless logged in
 
 <b>2009-01-22</b>
 
@@ -195,7 +200,7 @@
 
 * Facebook application released
 * Facebook link status visible in Settings
-* Bug: Don't blank stats on automatic relogin after page reload
+* Bugfix: Don't blank stats on automatic relogin after page reload
 
 <b>2009-01-19</b>
 
@@ -210,20 +215,20 @@
 
 * Challenge-handshake authentication now implemented (password no longer sent in clear)
 * Move to top of settings/signup screen on any error
-* Bug: Linefeed, carriage return, tab now filtered out from flight notes
-* Bug: Do not accept empty as new password
+* Bugfix: Linefeed, carriage return, tab now filtered out from flight notes
+* Bugfix: Do not accept empty as new password
 
 <b>2009-01-08</b>
 
 * "Keep historical airline names?" now preserves FlightMemory airline names as is
 * scriptaculous loading optimized (6 HTTP requests less)
 * blank.gif added for OpenLayers 
-* Bug: Multiple matches for airline names now processed correctly
+* Bugfix: Multiple matches for airline names now processed correctly
 
 <b>2009-01-07</b>
 
-* Bug: Blank class, reason no longer assigned defaults when edited
-* Bug: Autocompletion of airline in Detailed editor fixed
+* Bugfix: Blank class, reason no longer assigned defaults when edited
+* Bugfix: Autocompletion of airline in Detailed editor fixed
 
 <b>2009-01-06</b>
 
@@ -232,8 +237,8 @@
 * New, large, user-friendly settings screen, with Elite Gold options implemented
 * Password-protected private profiles implemented
 * Adjustments to button layout for Basic editor
-* Bug: Fixes to Top 10 stats formatting (2484923)
-* Bug: Trip filter works again
-* Bug: Advanced airline search for Basic editor fixed
-* Bug: Callsigns now work in advanced airline search
-* Bug: Help button no longer displayed when not available
+* Bugfix: Fixes to Top 10 stats formatting (2484923)
+* Bugfix: Trip filter works again
+* Bugfix: Advanced airline search for Basic editor fixed
+* Bugfix: Callsigns now work in advanced airline search
+* Bugfix: Help button no longer displayed when not available
