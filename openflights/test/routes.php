@@ -123,7 +123,7 @@ class RouteMapCoreAirlineTest extends WebTestCase {
 
     // First figure out the correct results
     $db = db_connect();
-    $sql = "SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline='" . $route["core_al_iata"] . "'";
+    $sql = "SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline='" . $route["core_al_iata"] . "' AND codeshare=''";
     $result = mysql_query($sql, $db);
     $rows = mysql_num_rows($result);
     $this->assertTrue($rows >= 1, "No routes found");
@@ -134,6 +134,37 @@ class RouteMapCoreAirlineTest extends WebTestCase {
 
     // Then test
     $params = array("apid" => "L" . $route["core_alid"]);
+    $map = $this->post($webroot . "php/routes.php", $params);
+    $rows = preg_split('/\n/', $map);
+
+    // N;Airline name...
+    $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
+
+    // Routes (N)
+    $rts = preg_split('/\t/', $rows[1]);
+    $this->assertTrue(sizeof($rts) == $route["routes"], "Route count");
+  }
+}
+
+// Fetch route map for core airline
+class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
+  function test() {
+    global $webroot, $route;
+
+    // First figure out the correct results
+    $db = db_connect();
+    $sql = "SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline='" . $route["core_al_iata"] . "'";
+    $result = mysql_query($sql, $db);
+    $rows = mysql_num_rows($result);
+    $this->assertTrue($rows >= 1, "No routes found");
+    $route["routes"] = $rows;
+    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      $route["core_alid"] = $row["alid"];
+    }
+
+    // Then test
+    $params = array("apid" => "L" . $route["core_alid"],
+		    "alid" => "1"); // any non-zero alid triggers codeshares
     $map = $this->post($webroot . "php/routes.php", $params);
     $rows = preg_split('/\n/', $map);
 

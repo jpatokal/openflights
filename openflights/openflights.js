@@ -598,8 +598,10 @@ function xmlhttpPost(strURL, id, param) {
 	    $('qs').style.color = '#888';
 	    $('qsid').value = 0;
 	    $('qsgo').disabled = true;
-	    var extent = getVisibleDataExtent(lineLayer);
-	    if(extent) map.zoomToExtent(extent);
+	    if(filter_alid == 0) {
+	      var extent = getVisibleDataExtent(lineLayer);
+	      if(extent) map.zoomToExtent(extent);
+	    }
 	  }
 	  
 	  // Map now completely drawn for the first time
@@ -1042,16 +1044,20 @@ function getMapTitle(closable) {
  */ 
 function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   var select = "<select class='filter' id='" + selectName + "' name='" + selectName + "'";
+  var r = 1;
   if(hook) {
     select += " onChange='JavaScript:" + hook + "'";
   }
   if(tabIndex) {
     select += " tabindex=\"" + tabIndex + "\"";
   }
-  if(selectName == "Years") {
-    select += "><option value='0'>" + allopts + "</option>";
-  } else {
-    select += "><option value='0;" + allopts + "'>" + allopts + "</option>";
+  if(! rows[0].startsWith("NOALL")) {
+    r = 0;
+    if(selectName == "Years") {
+      select += "><option value='0'>" + allopts + "</option>";
+    } else {
+      select += "><option value='0;" + allopts + "'>" + allopts + "</option>";
+    }
   }
   // No data?  Return an empty element
   if(! rows || rows == "") {
@@ -1059,7 +1065,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   }
 
   var selected = "";
-  for (r = 0; r < rows.length; r++) {
+  for (; r < rows.length; r++) {
     var col = rows[r].split(";");
     var rid = col[0];
     var name = col[1];

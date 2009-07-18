@@ -40,6 +40,9 @@ if($query) {
   } else {
     $ext = "";
   }
+  if($multi) {
+    $ext = "iata!='' AND"; // quick search only for IATA-coded airports
+  }
   $sql = sprintf("SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE %s (city LIKE '%s%%'", $ext, $query);
 
   switch(strlen($query)) {
@@ -48,8 +51,10 @@ if($query) {
     break;
 
   case 4: // ICAO
-    $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE icao='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
-    break;
+    if(! $multi) {
+      $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE icao='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
+      break;
+    } // else fallthru
 
   default:
     if(strlen($query) > 4) {
@@ -109,6 +114,9 @@ if(! $query || $multi) {
     } else {
       $ext = ""; // anything goes!
     }
+    if($multi) {
+      $ext = "iata!='' AND active='Y' AND"; // quick search only for active, IATA-coded airlines
+    }
     $sql = sprintf("SELECT 2 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE mode='%s' AND %s (name LIKE '%s%%' OR alias LIKE '%s%%')",
 		   $mode, $ext, $query, $query);
 
@@ -120,8 +128,11 @@ if(! $query || $multi) {
 	break;
 	
       case 3: // ICAO
-	$sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
-	break;
+	if(! $multi) {
+	  $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
+	  break;
+	} // else fallthru
+
       default: // sort non-IATA airlines last
 	$sql = sprintf("%s ORDER BY LENGTH(iata) DESC, name LIMIT %s", $sql, $limit);
 	break;
@@ -141,6 +152,7 @@ if(! $query || $multi) {
 	}
       }
     }
+
   } else if($_POST['plane']) {
 
     // Autocompletion for plane types
