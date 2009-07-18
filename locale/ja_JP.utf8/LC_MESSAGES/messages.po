@@ -503,7 +503,10 @@ msgstr ""
 msgid "miles"
 msgstr "マイル"
 
-msgid "routes"
+msgid "-operated"
+msgstr ""
+
+msgid " and codeshares"
 msgstr ""
 
 msgid "Sorry, that name is already taken, please try another."
@@ -1141,6 +1144,9 @@ msgstr ""
 msgid "List all routes from this airport"
 msgstr "この空港からの全てのルートを表示"
 
+msgid "routes"
+msgstr ""
+
 msgid "No flights found at this airport."
 msgstr "この空港のフライトはありません。"
 
@@ -1510,23 +1516,9 @@ msgstr "処理中"
 msgid "Profile address:"
 msgstr "プロファイルの住所："
 
-#~ msgid "Nr"
-#~ msgstr "番号"
 
-#~ msgid "Miles flown"
-#~ msgstr "移動距離"
 
-#~ msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
-#~ msgstr "経度は-180 (西経) から 180 (東経)です。"
 
-#~ msgid "Longitude must be in the range 90 (north) to -90 (south) degrees."
-#~ msgstr "緯度は90 (北緯)から -90 (南緯)です。"
 
-#~ msgid "Search for airport"
-#~ msgstr "空港検索"
 
-#~ msgid "Search for airline"
-#~ msgstr "航空会社検索"
 
-#~ msgid "Buy tickets on Kayak.com"
-#~ msgstr "Kayak.comで航空券を購入"

@@ -535,7 +535,10 @@ msgstr ""
 msgid "miles"
 msgstr "Meilen"
 
-msgid "routes"
+msgid "-operated"
+msgstr ""
+
+msgid " and codeshares"
 msgstr ""
 
 msgid "Sorry, that name is already taken, please try another."
@@ -1209,6 +1212,9 @@ msgstr ""
 msgid "List all routes from this airport"
 msgstr "All Routen von diesem Flughafen"
 
+msgid "routes"
+msgstr ""
+
 msgid "No flights found at this airport."
 msgstr "Keine Flüge von diesem Flughafen gefunden"
 
@@ -1611,14 +1617,6 @@ msgid "Profile address:"
 msgstr "Profil Adresse:"
 
 # Seat number
-#~ msgid "Nr"
-#~ msgstr "Nr"
 
-#~ msgid "Miles flown"
-#~ msgstr "Meilen geflogen"
 
-#~ msgid "Search for airport"
-#~ msgstr "Flughafen suchen"
 
-#~ msgid "Search for airline"
-#~ msgstr "Fluglinie suchen"
