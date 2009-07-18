@@ -75,7 +75,7 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
   }
 }
 
-// Airport with no routes
+// Airport with no routes -- should still display itself!
 class RouteMapNoRouteAirportTest extends WebTestCase {
   function test() {
     global $webroot, $route;
@@ -96,12 +96,13 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
     // N;Airport name...
     $this->assertPattern("/0;/", $rows[0]);
 
-    // Routes (N)
+    // No routes
     $this->assertTrue($rows[1] == "", "Route count");
 
-    // Airports (N+1)
+    // One airport, with details
     $aps = preg_split('/\t/', $rows[2]);
     $this->assertTrue(sizeof($aps) == 1, "Airport count");
+    $this->assertText(":" . $row["apid"] . ":" . $row["x"] . ":" . $row["y"]);
   }
 }
 

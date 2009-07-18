@@ -64,7 +64,7 @@ if($type == "A") {
     $filter = "";
   }
 
-  $sql = "SELECT COUNT(src_apid) AS count, apid, x, y, name, iata, icao, city, country, timezone, dst FROM airports AS a LEFT OUTER JOIN routes AS r ON r.src_apid=a.apid WHERE a.apid=$apid $filter GROUP BY src_apid";
+  $sql = "SELECT COUNT(src_apid) AS count, apid, x, y, name, iata, icao, city, country, timezone, dst FROM airports AS a LEFT OUTER JOIN routes AS r ON r.src_apid=a.apid $filter WHERE a.apid=$apid GROUP BY src_apid";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     printf ("%s;%s;%s (<b>%s</b>)<br><small>%s, %s<br>%s routes</small>\n", $apid, $row["count"], $row["name"], format_apcode($row), $row["city"], $row["country"], $row["count"]);
@@ -73,7 +73,7 @@ if($type == "A") {
   }
   if($row["count"] == 0) {
     // No routes, print this airport and abort
-    $map = sprintf("\n%s;%s;%s;%s;0;%s;N\n", format_apdata($row), $row["name"], $row["city"], $row["country"], format_airport($row));
+    printf("\n%s;%s;%s;%s;0;%s;N\n", format_apdata($row), $row["name"], $row["city"], $row["country"], format_airport($row));
     exit;
   }
 } else {
