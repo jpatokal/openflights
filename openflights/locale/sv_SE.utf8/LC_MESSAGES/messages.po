@@ -533,7 +533,10 @@ msgstr ""
 msgid "miles"
 msgstr "mil"
 
-msgid "routes"
+msgid "-operated"
+msgstr ""
+
+msgid " and codeshares"
 msgstr ""
 
 msgid "Sorry, that name is already taken, please try another."
@@ -1201,6 +1204,9 @@ msgstr ""
 msgid "List all routes from this airport"
 msgstr ""
 
+msgid "routes"
+msgstr ""
+
 msgid "No flights found at this airport."
 msgstr "Inga flyg funna på den här flygplatsen."
 
@@ -1588,8 +1594,4 @@ msgid "Profile address:"
 msgstr ""
 
 # Seat number
-#~ msgid "Nr"
-#~ msgstr "Nr"
 
-#~ msgid "Miles flown"
-#~ msgstr "Flugna mil"

@@ -536,6 +536,12 @@ msgstr ""
 msgid "miles"
 msgstr "millas"
 
+msgid "-operated"
+msgstr ""
+
+msgid " and codeshares"
+msgstr ""
+
 msgid "Sorry, that name is already taken, please try another."
 msgstr "Ese nombre no está disponible, escoja otro."
 

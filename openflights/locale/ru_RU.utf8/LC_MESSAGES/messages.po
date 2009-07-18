@@ -532,7 +532,10 @@ msgstr ""
 msgid "miles"
 msgstr "миль"
 
-msgid "routes"
+msgid "-operated"
+msgstr ""
+
+msgid " and codeshares"
 msgstr ""
 
 msgid "Sorry, that name is already taken, please try another."
@@ -1202,6 +1205,9 @@ msgstr ""
 msgid "List all routes from this airport"
 msgstr ""
 
+msgid "routes"
+msgstr ""
+
 msgid "No flights found at this airport."
 msgstr "Полеты в аэропорт не найдены."
 
@@ -1593,14 +1599,6 @@ msgid "Profile address:"
 msgstr ""
 
 # Seat number
-#~ msgid "Nr"
-#~ msgstr "№"
 
-#~ msgid "Miles flown"
-#~ msgstr "Всего миль"
 
-#~ msgid "Latitude must be in the range -180 (west) to 180 (east) degrees."
-#~ msgstr "Широта должна быть между -180 (запад) и 180 (восток) градусами."
 
-#~ msgid "Longitude must be in the range 90 (north) to -90 (south) degrees."
-#~ msgstr "Широта должна быть между 90 (север) и -90 (юг) градусами."
