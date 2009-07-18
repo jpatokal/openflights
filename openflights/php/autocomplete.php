@@ -40,9 +40,6 @@ if($query) {
   } else {
     $ext = "";
   }
-  if($multi) {
-    $ext = "iata!='' AND"; // quick search only for IATA-coded airports
-  }
   $sql = sprintf("SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE %s (city LIKE '%s%%'", $ext, $query);
 
   switch(strlen($query)) {
@@ -51,10 +48,8 @@ if($query) {
     break;
 
   case 4: // ICAO
-    if(! $multi) {
-      $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE icao='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
-      break;
-    } // else fallthru
+    $sql = sprintf("SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE icao='%s' UNION (%s)) ORDER BY sort_col,city,name LIMIT %s", $query, $sql, $limit);
+    break;
 
   default:
     if(strlen($query) > 4) {
