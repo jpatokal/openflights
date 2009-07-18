@@ -6,7 +6,7 @@
 PHP="index.php php/*php html/*php"
 JS="openflights.js js/alsearch.js js/apsearch.js js/settings.js js/trip.js"
 OPTS="--omit-header --no-location --no-wrap -j"
-for lang in de_DE fi_FI fr_FR ja_JP lt_LT pl_PL sv_SE ru_RU; do
+for lang in de_DE es_ES fi_FI fr_FR ja_JP lt_LT pl_PL sv_SE ru_RU; do
   POPATH=locale/$lang.utf8/LC_MESSAGES
   echo $lang
   touch $POPATH/new.po
