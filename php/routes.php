@@ -36,7 +36,11 @@ $apid = mysql_real_escape_string($apid);
 if(substr($apid, 0, 1) == "L") {
   $type = "L";
   $apid = substr($apid, 1);
-  $condition = "r.alid=$apid";
+  if($alid) {
+    $condition = "r.alid=$apid";
+  } else {
+    $condition  = "r.alid=$apid AND r.codeshare=''"; // exclude codeshares by default
+  }
   $codeshare = "codeshare";
 } else {
   $type = "A";
@@ -73,8 +77,14 @@ if($type == "A") {
     exit;
   }
 } else {
+  if($alid) {
+    $filter = "";
+  } else {
+    $filter = " AND r.codeshare=''"; // by default, don't display codeshares
+  }
+
   // Airline route map
-  $sql = "SELECT COUNT(r.alid) AS count, country, name, iata, icao FROM airlines AS l LEFT OUTER JOIN routes AS r ON r.alid=l.alid WHERE l.alid=$apid GROUP BY r.alid";
+  $sql = "SELECT COUNT(r.alid) AS count, country, name, iata, icao FROM airlines AS l LEFT OUTER JOIN routes AS r ON r.alid=l.alid $filter WHERE l.alid=$apid GROUP BY r.alid";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     printf ("%s;%s;%s (<b>%s</b>)<br><small>%s</small><br>%s routes\n", "L" . $apid, $row["count"], $row["name"], $row["iata"], $row["country"], $row["count"]);
@@ -86,7 +96,7 @@ if($type == "A") {
     printf("\n\n\n\n\n\n");
     exit;
   }
-  $alname = $row["name"];
+  $alname = $row["iata"];
 }
 
 // List of all flights FROM this airport
@@ -130,8 +140,9 @@ $map .= "\n\n";
 
 // List of all airlines in this route map
 if($type == "L") {
-  // Airline map obviously only has one airline...
-  $map .= sprintf("%s;%s", $apid, $alname);
+  // Special handling here: no "all" option, alid = 0 means exclude codeshares, alid != 0 means codeshares also
+  $map .= sprintf("NOALL\t%s;%s\t", 0, $alname . _("-operated"));
+  $map .= sprintf("%s;%s", $apid + "C", $alname . _(" and codeshares"));
  } else {
   // Note: Existing airline filter is purposely ignored here
   $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, routes as r WHERE r.src_apid=$apid AND a.alid=r.alid ORDER BY name;";

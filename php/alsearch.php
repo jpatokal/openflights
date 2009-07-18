@@ -63,7 +63,7 @@ if($action == "RECORD") {
     }
   }
 
-  $sql = sprintf("INSERT INTO airlines(name,alias,country,iata,icao,callsign,mode,uid) VALUES('%s', '%s', '%s', '%s', %s, '%s', '%s', %s)",
+  $sql = sprintf("INSERT INTO airlines(name,alias,country,iata,icao,callsign,mode,active,uid) VALUES('%s', '%s', '%s', '%s', %s, '%s', '%s', '%s', %s)",
 		 mysql_real_escape_string($name), 
 		 mysql_real_escape_string($alias),
 		 mysql_real_escape_string($country),
@@ -71,6 +71,7 @@ if($action == "RECORD") {
 		 $icao == "" ? "NULL" : "'" . mysql_real_escape_string($icao) . "'",
 		 mysql_real_escape_string($callsign),
 		 mysql_real_escape_string($mode),
+		 $iata == "" ? "N" : "Y", // assume that new IATA-coded airlines are active!?
 		 $uid);
 
   mysql_query($sql, $db) or die('0;Adding new ' . $modeOperators[$mode] . ' failed' . $sql);

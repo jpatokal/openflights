@@ -25,6 +25,9 @@ $settings = array('name' => 'autotest',
 		  'elite' => '', // keep blank, elite users cannot be created by normal means
 		  'sessionkey' => null);
 
+// Test airline, airport data
+$qs_string = 'AutoTest'; // unique string in both airport and airline names, but nowhere else
+
 $airline = array('name' => 'AutoTest Airways',
 		 'alias' => 'AutoTestAir',
 		 'iata' => 'ZZ',
@@ -37,7 +40,7 @@ $railway = array('name' => 'AutoTest Railways',
 		 'country' => 'Austria',
 		 'mode' => 'T');
 
-$airport = array('name' => 'Test Airport',
+$airport = array('name' => 'AutoTest Airport',
 		 'city' => 'Testville',
 		 'country' => 'Testland',
 		 'iata' => 'ZZZ',

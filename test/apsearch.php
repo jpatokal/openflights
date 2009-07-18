@@ -96,7 +96,7 @@ class EditAirportSuccessfulTest extends WebTestCase {
     login($this);
     $params = $airport;
     $params["apid"] = $new_apid;
-    $params["name"] = "Edited Airport";
+    $params["name"] = $airport["name"] . " Edited";
     $params += array("action" => "RECORD");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
     $this->assertText('1;');
@@ -112,7 +112,7 @@ class SearchAirportOFDBByIATATest extends WebTestCase {
     $params = array("iata" => $airport["iata"]);
     $msg = $this->post($webroot . "php/apsearch.php", $params);
     $this->assertText('0;1');
-    $this->assertText('"name":"Edited Airport"');
+    $this->assertText('"name":"' . $airport["name"] . ' Edited"');
     $this->assertText('"city":"' . $airport["city"] . '"');
     $this->assertText('"country":"' . $airport["country"] . '"');
     $this->assertText('"iata":"' . $airport["iata"] . '"');
