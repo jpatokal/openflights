@@ -606,7 +606,7 @@ msgstr "UTC"
 
 # Daylight Savings Time
 msgid "DST"
-msgstr "Horário de verão"
+msgstr ""
 
 msgid "European"
 msgstr "Europeu"
