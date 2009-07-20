@@ -1,3 +1,7 @@
+<b>2009-07-20</b>
+
+* Bugfix: Trip edit/delete broken (2823849)
+
 <b>2009-07-18</b>
 
 * Airline maps default to direct only, codeshares can be enabled in filter

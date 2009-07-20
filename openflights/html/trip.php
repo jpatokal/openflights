@@ -74,10 +74,14 @@ if($trid) {
 	    </tr>
 	</table><br>
 
-	<INPUT type="button" value="<?php echo _("Save") ?>" onClick="validate()">
 <?php if($trid) {
+  echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'";
+  echo "<INPUT type='hidden' name='trid' value='" . $trid . "'>\n";
   echo "<INPUT type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
-} ?>
+} else {
+  echo "<INPUT type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
+}
+?>
 	<INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
       </FORM>
 
