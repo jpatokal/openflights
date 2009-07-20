@@ -8,9 +8,13 @@ $url = $HTTP_POST_VARS["url"];
 $trid = $HTTP_POST_VARS["trid"];
 $privacy = $HTTP_POST_VARS["privacy"];
 
+if($type != "NEW" and (!$trid or $trid == 0)) {
+  die ('0;Trip ID '. $trid . ' invalid');
+}
+
 $uid = $_SESSION["uid"];
 if(!$uid or empty($uid)) {
-  printf("0;" . _("Your session has timed out, please log in again."));
+  die ('0;' . _("Your session has timed out, please log in again."));
   exit;
 }
 
@@ -45,6 +49,9 @@ switch($type) {
 		  mysql_real_escape_string($trid),
 		  mysql_real_escape_string($uid));
    break;
+
+ default:
+   die ('0;Unknown operation ' . $type);
 }
 
 mysql_query($sql, $db) or die ('0;Operation on trip ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());

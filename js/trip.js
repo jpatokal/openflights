@@ -44,15 +44,15 @@ function xmlhttpPost(strURL, type) {
       'name=' + encodeURIComponent(form.name.value) + '&' +
       'url=' + encodeURIComponent(form.url.value) + '&' +
       'privacy=' + encodeURIComponent(privacy);
-    if(type == 'EDIT' || type == 'LOAD' || type == 'DELETE') {
-      query += '&trid=' + trid;
+    if(type == 'EDIT' || type == 'DELETE') {
+      query += '&trid=' + form.trid.value;
     }
   }
   self.xmlHttpReq.send(query);
 }
 
 // Validate form
-function validate() {
+function validate(type) {
   var form = document.forms['tripform'];
   if(form.name.value == "") {
     showError("Please enter a name for this trip.");
@@ -74,6 +74,7 @@ function deleteTrip() {
 
 // Check if trip creation/editing/deletion succeeded
 function editTrip(str) {
+  alert(str);
   var code = str.split(";")[0];
   var trid = str.split(";")[1];
   var message = str.split(";")[2];
@@ -84,7 +85,7 @@ function editTrip(str) {
     parent.opener.newTrip(code, trid, form.name.value, form.url.value);
     window.close();
   } else {
-    showError(message);
+    showError(trid);
   }
 }
 
