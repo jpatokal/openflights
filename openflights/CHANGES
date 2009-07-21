@@ -1,3 +1,10 @@
+<b>2009-07-21</b>
+
+* Plane name added to registration automatically for FlightMemory imports
+* Add byte-order mark to CSV exports so Excel understands that they're UTF-8
+* Workaround: Non-ASCII characters stripped from FM imports before parsing (2824341)
+* Bugfix: Suppress PHP warnings for missing airports/airlines
+
 <b>2009-07-20</b>
 
 * Bugfix: Trip edit/delete broken (2823849)
