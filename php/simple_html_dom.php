@@ -458,6 +458,10 @@ class simple_html_dom {
 
     // load html from string
     function load($str, $lowercase=true) {
+        // Convert ISO 8859-1 to UTF-8
+        //$str = mb_convert_encoding($str, 'UTF-8', 'ISO-8859-1');
+	$str = preg_replace('/[^(\x20-\x7F)]*/','', $str);
+
         // prepare
         $this->prepare($str, $lowercase);
         // strip out comments
@@ -473,9 +477,6 @@ class simple_html_dom {
         // strip out server side scripts
         $this->remove_noise("'(<\?)(.*?)(\?>)'is", true);
         
-        //echo $this->doc;
-        //die;
-
         // parsing
         while ($this->parse());
         // end

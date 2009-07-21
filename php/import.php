@@ -90,8 +90,7 @@ function check_airport($db, $code, $name) {
     break;
   }
   $result = mysql_query($sql, $db);
-  switch(mysql_num_rows($result)) {
-
+  switch(@mysql_num_rows($result)) {
     // No match
   case "0":
     $apid = null;
@@ -143,7 +142,7 @@ function check_airline($db, $number, $airline, $uid, $history) {
     
     // validate the airline/code against the DB
     $result = mysql_query($sql, $db);
-    switch(mysql_num_rows($result)) {
+    switch(@mysql_num_rows($result)) {
       
       // No match, add as new if we have a name for it, else return error
     case "0":
@@ -212,7 +211,7 @@ function check_plane($db, $plane) {
 
   $sql = "select plid from planes where name='" . mysql_real_escape_string($plane) . "'";
   $result = mysql_query($sql, $db);
-  if(mysql_num_rows($result) == 1) {
+  if(@mysql_num_rows($result) == 1) {
     $plid = mysql_result($result, 0);
     $color = "#fff";
   } else {
@@ -231,7 +230,7 @@ function check_trip($db, $uid, $trid) {
 
   $sql = "select uid from trips where trid=" . mysql_real_escape_string($trid);
   $result = mysql_query($sql, $db);
-  if(mysql_num_rows($result) == 1) {
+  if(@mysql_num_rows($result) == 1) {
     if($uid == mysql_result($result, 0)) {
       $color = "#fff";
     } else {
@@ -368,6 +367,7 @@ foreach($rows as $row) {
     list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid, $history);
     
     // Load plane model (plid)
+    // <TD class=liste>Boeing 737-600<BR>LN-RCW<BR>Yngvar Viking</TD>
     $planedata = explode('<br>', $cols[8]);
     $plane = fm_strip_liste($planedata[0]);
     if($plane != "") {
@@ -379,6 +379,9 @@ foreach($rows as $row) {
     
     if($planedata[1]) {
       $reg = strip_tags($planedata[1]);
+      if($planedata[2]) {
+	$reg .= " " . strip_tags($planedata[2]);
+      }
     } else {
       $reg = "";
     }
@@ -400,11 +403,12 @@ foreach($rows as $row) {
     $seattype = $seatdata[2];
     $seatreason = substr($seatdata[3], 0, strpos($seatdata[3], '<'));
     
-    $span = $cols[10]->find('span', 0);
-    if($span) {
-      $comment = trim(substr($span->title, 9));
-    } else {
-      $comment = "";
+    $comment = "";
+    if($cols[10]) {
+      $span = $cols[10]->find('span', 0);
+      if($span) {
+	$comment = trim(substr($span->title, 9));
+      }
     }
     break; // case FM
 
