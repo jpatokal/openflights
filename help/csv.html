@@ -11,13 +11,14 @@
 
     <h1>Context Help: Comma-Separated Value (CSV) Format</h1>
 
-      This document defines <b>Revision 0.4</b> of the comma-separated value (CSV) format natively exported and imported by OpenFlights.<p>
+      This document defines <b>Revision 0.41</b> of the comma-separated value (CSV) format natively exported and imported by OpenFlights.<p>
 
       OpenFlights CSV follows <a href="http://tools.ietf.org/html/rfc4180#page-2">RFC 4180</a>.
 	<ul>
+        <li>The character set encoding is <b>UTF-8</b>.
 	<li>The field separator is comma (<b>,</b> 0x2C), the row separator is CRLF (<b>\r\n</b> 0x0D 0x0A) and the field delimiter is double quote (<b>"</b> 0x22).
-	<li>The first line of any OpenFlights CSV file is considered a header and ignored.
-	<li>All fields may be left empty <i>unless</i> listed as <font color="red">Mandatory</font> below.<p>
+	<li>The first line of any OpenFlights CSV file is considered a header and ignored.  This line starts with a Unicode Byte Order Mark (uFEFF).
+	<li>All fields may be left empty <i>unless</i> listed as <font color="red">Mandatory</font> below.
       </ul>
 
 	<h2>Field definition</h2>
@@ -79,6 +80,9 @@ Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason
 
 	<h2>Revision history</h2>
 	<dl>
+	  <dt>0.41 &mdash; Jul 21, 2009</dt>
+	  <dd>Clarified encoding.</dd>
+
 	  <dt>0.4 &mdash; Feb 1, 2009</dt>
 	  <dd>Date field now allows optional time element.</dd>
 

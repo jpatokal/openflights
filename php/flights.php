@@ -13,6 +13,7 @@ if($export) {
   // else export everything unfiltered
  } else {
   header("Content-type: text/html; charset=utf-8");
+
   $apid = $HTTP_POST_VARS["id"];
   if(! $apid) {
     $apid = $HTTP_GET_VARS["id"];
@@ -131,7 +132,8 @@ $result = mysql_query($sql, $db);
 $first = true;
 
 if($export) {
-  printf("Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n");
+  // Start with byte-order mark to try to clue Excel into realizing that this is UTF-8
+  print "\xFE\xFFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $note = $row["note"];
