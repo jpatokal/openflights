@@ -1,3 +1,10 @@
+<b>2009-07-23</b>
+
+* Bugfix: Correct airport dialog popped up when autocompleting preexisting airport
+* Bugfix: Default to codeshares off when first showing airline map
+* Bugfix: Tab indexes for main screen (first username block, only then quicksearch)
+* Bugfix: mi/km indicated for Longest/Shortest flight in "Analyze"
+
 <b>2009-07-21</b>
 
 * Plane name added to registration automatically for FlightMemory imports

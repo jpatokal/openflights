@@ -1473,7 +1473,7 @@ function showStats(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + parseInt(col[1]) + ", " + col[2] + "</td></tr>";
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + ", " + col[2] + "</td></tr>";
     }
     table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + parseInt(uniques["avg_distance"]) + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
@@ -1937,7 +1937,7 @@ function getQuickSearchApid(text, li) {
   if(id.indexOf(":") > 0) {
     // code:apid:x:y
     id = li.id.split(":")[1];
-    selectAirport(apid, false, true); // pop it up if we can find it
+    selectAirport(id, false, true); // pop it up if we can find it
   } else {
     id = "L" + id;
   }
@@ -2626,7 +2626,7 @@ function getAirlineMapIcon(alid) {
 // (set filter to this airline as well)
 //
 function showAirlineMap(alid) {
-  selectAirline(alid, false);
+  selectAirline(0, false);
   xmlhttpPost(URL_ROUTES, "L" + alid);
 }
 

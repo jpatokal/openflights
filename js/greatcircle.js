@@ -166,12 +166,12 @@ function isValid(point) {
 }
 
 // Compute extent for visible data (-180 to 180)
+// Known bug: incorrectly draws whole map if flight lines span the meridian...
 function getVisibleDataExtent(layer) {
   var bounds = layer.getDataExtent();
   if(! bounds) return null;
-
   if(bounds.left < -180 && bounds.left > -360 && bounds.right > 180 && bounds.right < 360) {
-    // do nothing
+    // map spans the world, do nothing
   } else {
     if(bounds.left < -180) bounds.left += 360;
     if(bounds.right > 180) bounds.right -= 360;
