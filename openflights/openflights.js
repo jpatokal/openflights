@@ -1397,7 +1397,7 @@ function listFlights(str, desc, id) {
       }
       table.push("<td>" + col[16].substring(0,15) + "</td>");
       if(route) {
-	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=zHW24zij/dU&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + Gettext.strargs(gt.gettext("Buy tickets on %1"), ["Kayak.com"]) + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
+	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=openflights&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + Gettext.strargs(gt.gettext("Buy tickets on %1"), ["Kayak.com"]) + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
       } else {
 	if(logged_in) {
 	  table.push("<td>");
