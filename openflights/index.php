@@ -19,7 +19,7 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090718"></script>
+    <script type="text/javascript" src="/openflights.js?version=20090723"></script>
   </head>
 
   <body>
@@ -43,9 +43,9 @@ require_once("./php/db.php");
 
 	    <div id="quicksearch" style="display: none">
               <img src="/img/layer-switcher-minimize.png" height=18 width=18 title="<?php echo _("Hide search bar") ?>" onClick="$('quicksearch').style.display='none'">
-  <input type="text" name="qs" id="qs" size="60" tabindex="1" onChange='airportCodeToAirport("qs")' onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/><div id="qsAC"></div>
+  <input type="text" name="qs" id="qs" size="60" tabindex="5" onChange='airportCodeToAirport("qs")' onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/><div id="qsAC"></div>
 	      <input type="hidden" name="qsid" id="qsid"/>
-	      <input type="button" id="qsgo" tabindex="2" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
+	      <input type="button" id="qsgo" tabindex="6" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
 	    </div>
 
 	    <div id="qsmini" style="display: block">
