@@ -1,5 +1,9 @@
 <b>2009-07-23</b>
 
+* Bugfix: Correct nasty bug in handling km conversions in some locales (1.6 was turning into 1,6)
+
+<b>2009-07-23</b>
+
 * Launched Spanish (es) and Portuguese (pt)
 * Bugfix: Correct airport dialog popped up when autocompleting preexisting airport
 * Bugfix: Default to codeshares off when first showing airline map

@@ -1,5 +1,5 @@
 <?php
-$KMPERMILE = 1.609344;
+$KMPERMILE = "1.609344"; // must be a string or locale may turn this into a comma!
 
 $modes = array ("F" => "Flight", "T" => "Train", "S" => "Ship", "R" => "Road trip");
 $modeOperators = array ("F" => "airline", "T" => "railway", "S" => "shipping company", "R" => "road transport company");

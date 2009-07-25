@@ -1473,7 +1473,7 @@ function showStats(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + ", " + col[2] + "</td></tr>";
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + parseInt(col[1]) + ", " + col[2] + "</td></tr>";
     }
     table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + parseInt(uniques["avg_distance"]) + " mi, " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
@@ -1572,7 +1572,7 @@ function showTop10(str) {
       // s.name, s.apid, d.name, d.apid, count
       table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[1] + ");'>" + col[0] + "</a>&harr;" +
 	"<a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + col[2] + "</a></td>" + 
-	"<td style='text-align: right; padding-left: 10px'>" + col[4] + "</td></tr>";
+	"<td style='text-align: right; padding-left: 10px'>" + parseInt(col[4]) + "</td></tr>";
     }
     table += "</table>";
 
@@ -1583,7 +1583,7 @@ function showTop10(str) {
       var col = rows[r].split(",");
       // name, iata, count, apid
       desc = col[0].substring(0,20) + " (" + col[1] + ")";
-      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + col[2] + "</td>";
+      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[2]) + "</td>";
     }
     table += "</table>";
 
@@ -1593,7 +1593,7 @@ function showTop10(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count, apid
-      table += "<tr><td><a href='#' onclick='JavaScript:selectAirline(" + col[2] + ");refresh(false);'>" + col[0] + "</a></td><td style='text-align: right; padding-left: 10px'>" + col[1] + "</td>";
+      table += "<tr><td><a href='#' onclick='JavaScript:selectAirline(" + col[2] + ");refresh(false);'>" + col[0] + "</a></td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[1]) + "</td>";
     }
     table += "</table>";
 
@@ -1603,7 +1603,7 @@ function showTop10(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // name, count
-      table += "<tr><td>" + col[0] + "</td><td style='text-align: right; padding-left: 10px'>" + col[1] + "</td>";
+      table += "<tr><td>" + col[0] + "</td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[1]) + "</td>";
     }
     table += "</table>";
     bigtable += table + "</td>";
