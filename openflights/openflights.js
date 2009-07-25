@@ -1475,7 +1475,7 @@ function showStats(str) {
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
       table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + parseInt(col[1]) + ", " + col[2] + "</td></tr>";
     }
-    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + parseInt(uniques["avg_distance"]) + " mi, " + uniques["avg_duration"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + parseInt(uniques["avg_distance"]) + ", " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
