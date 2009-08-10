@@ -284,7 +284,7 @@ function getTZ(element) {
   if(!tz || tz == "") {
     return 0;
   } else {
-    return parseInt(tz);
+    return parseFloat(tz);
   }
 }
 function getDST(element) {

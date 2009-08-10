@@ -13,7 +13,7 @@ require_once("./php/db.php");
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/OpenLayers.js?version=20090201"></script>
-    <script type="text/javascript" src="/js/greatcircle.js?version=20090626"></script>
+    <script type="text/javascript" src="/js/greatcircle.js?version=20090810"></script>
     <script type="text/javascript" src="/js/utilities.js?version=20090326"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
