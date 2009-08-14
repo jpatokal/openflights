@@ -1,3 +1,7 @@
+<b>2009-08-14</b>
+
+* Bugfix: Future flights imported correctly from FlightMemory
+
 <b>2009-08-10</b>
 
 * Bugfix: Decimal timezones accidentally truncated in duration calculations
