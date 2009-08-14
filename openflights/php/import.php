@@ -330,7 +330,7 @@ $count = 0;
 foreach($rows as $row) {
   switch($fileType) {
   case "FM":
-    $cols = $row->find('td[class=liste],td[class=liste_gross],th[class=liste_gross]');
+    $cols = $row->find('td[class=liste],td[class=liste_gross],td[class=liste_gross_rot],td[class=liste_rot],th[class=liste_gross],th[class=liste_gross_rot]');
     
     $id = $cols[0]->plaintext;
     
