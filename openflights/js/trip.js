@@ -74,7 +74,6 @@ function deleteTrip() {
 
 // Check if trip creation/editing/deletion succeeded
 function editTrip(str) {
-  alert(str);
   var code = str.split(";")[0];
   var trid = str.split(";")[1];
   var message = str.split(";")[2];
