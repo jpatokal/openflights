@@ -1,3 +1,7 @@
+<b>2009-08-19</b>
+
+* Filter out non-active airlines from IATA searches
+
 <b>2009-08-18</b>
 
 * Bugfix: Debugging alertbox removed from Trip editor

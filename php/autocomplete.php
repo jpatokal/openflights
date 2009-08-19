@@ -119,7 +119,7 @@ if(! $query || $multi) {
     if($mode == 'F') {
       switch(strlen($query)) {
       case 2: // IATA
-	$sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE iata='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
+	$sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE iata='%s' AND active='Y' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
 	break;
 	
       case 3: // ICAO
