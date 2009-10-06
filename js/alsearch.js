@@ -158,7 +158,6 @@ function xmlhttpPost(strURL, offset, action) {
       'action=' + action;
     document.getElementById("miniresultbox").innerHTML = "<I>" + (action == "SEARCH" ? gt.gettext("Searching...") : gt.gettext("Recording...")) + "</I>";
   }
-  alert(query);
   self.xmlHttpReq.send(query);
 }
 
@@ -166,8 +165,6 @@ function xmlhttpPost(strURL, offset, action) {
  * Display results of search
  */
 function searchResult(str) {
-  alert(str);
-
   var airlines = str.split("\n");
   var table = "<table width=95% cellspacing=0>";
   var offset, sql;
