@@ -2,6 +2,9 @@
 header("Content-type: text/html");
 require_once("../php/locale.php");
 require_once("../php/db.php");
+
+$uid = $_SESSION["uid"];
+$logged_in = $uid and !empty($uid);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -34,6 +37,7 @@ require_once("../php/db.php");
 	      <td>IATA</td>
 	      <td>ICAO</td>
 	      <td><?php echo _("Mode") ?></td>
+	      <td><?php echo _("Active?") ?></td>
 	    </tr><tr>
 	      <td><INPUT type="text" name="name"></td>
 	      <td><INPUT type="text" name="iata" size="3"></td>
@@ -45,6 +49,14 @@ require_once("../php/db.php");
 		  <option value="R"><?php echo _("Road transport") ?></option>
 		  <option value="S"><?php echo _("Shipping") ?></option>
 	      </td>
+              <td>
+		<select name="active">
+		  <option value="">-</option>
+		  <option value="Y"><?php echo _("Yes") ?></option>
+		  <option value="N"><?php echo _("No") ?></option>
+		</select>
+              </td>
+	      <td><INPUT type="text" name="alid" size="5" value="" style="border: 0px" READONLY></td>
 	    </tr><tr>
 	      <td><?php echo _("Alternative name") ?></td>
 	      <td colspan=3><?php echo _("Country") ?></td>
@@ -68,7 +80,7 @@ require_once("../php/db.php");
 	      <td><INPUT type="text" name="callsign"></td>
 	      </td>
 	      <td colspan=3>
-		&nbsp;<?php echo _("Show only major (IATA) airlines?") ?><input type="checkbox" name="iatafilter" value="yes" checked>
+    &nbsp;<?php echo _("Show only major (IATA) airlines?") ?><input type="checkbox" name="iatafilter" value="yes" checked>
 	      </td>
 	    </tr>
 	</table><br>
@@ -80,7 +92,9 @@ require_once("../php/db.php");
 		<INPUT type='button' value='<?php echo _("Clear") ?>' onClick='clearSearch()'>
 		<INPUT type='button' value='<?php echo _("Cancel") ?>' onClick='window.close()'>
 		</td><td style="text-align: right">
-		<INPUT type='button' title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' onClick='doRecord()'>
+		<?php if(! $logged_in) echo "<small>" . _("Please log in to enable editing.") . "</small><br>"; ?>
+ 		<INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' <?php if(! $logged_in) echo "DISABLED" ?> onClick="doRecord()">
+		<INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airline.") ?>' value='<?php echo _("Save changes") ?>'  <?php if(! $logged_in) echo "DISABLED" ?> onClick="doRecord()" style="display: none">
 		</td>
 	    </tr>
 	</table>

@@ -1,6 +1,9 @@
-<b>2009-08-19</b>
+<b>2009-10-06</b>
 
+* Existing airline editing implemented
+* Display whether or not airline is active in search
 * Filter out non-active airlines from IATA searches
+* Bugfix: Pre-entering airline, mode into "New airline" dialog fixed
 
 <b>2009-08-18</b>
 
