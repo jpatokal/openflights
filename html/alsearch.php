@@ -59,10 +59,10 @@ $logged_in = $uid and !empty($uid);
 	      <td><INPUT type="text" name="alid" size="5" value="" style="border: 0px" READONLY></td>
 	    </tr><tr>
 	      <td><?php echo _("Alternative name") ?></td>
-	      <td colspan=3><?php echo _("Country") ?></td>
+	      <td colspan=4><?php echo _("Country") ?></td>
 	    </tr><tr>
 	      <td><INPUT type="text" name="alias"></td>
-	      <td colspan=3>
+	      <td colspan=4>
                 <select name="country">
                   <option value="">ALL</option>
 <?php

@@ -18,6 +18,7 @@ window.onload = function init(){
       form = document.forms['searchform'];
       form.name.value = unescape(keys[0].split('=')[1]);
       selectInSelect(form.mode, keys[1].split('=')[1]);
+      selectInSelect(form.active, "Y");
       changeMode();
     }
   }
