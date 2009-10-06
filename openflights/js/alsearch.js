@@ -13,11 +13,11 @@ window.onload = function init(){
   // 0    1 2          3    4
   var args = window.location.href.split('?');
   if(args[1]) {
-    args = args[1].split('&');
-    if(args[0].split('=') == "name") {
+    keys = args[1].split('&');
+    if(keys[0].split('=')[0] == "name") {
       form = document.forms['searchform'];
-      form.name.value = unescape(args[0].split('=')[1]);
-      selectInSelect(form.mode, args[1].split('=')[1]);
+      form.name.value = unescape(keys[0].split('=')[1]);
+      selectInSelect(form.mode, keys[1].split('=')[1]);
       changeMode();
     }
   }
@@ -67,6 +67,8 @@ function xmlhttpPost(strURL, offset, action) {
     var alias = form.alias.value;
     var callsign = form.callsign.value;
     var mode = form.mode.value;
+    var active = form.active.value;
+    var alid = form.alid.value;
 
     if(iata != "" && iata.length != 2) {
       alert(gt.gettext("IATA codes must be exactly two letters."));
@@ -111,6 +113,11 @@ function xmlhttpPost(strURL, offset, action) {
 	form.country.focus();
 	return;
       }
+      if(active == "") {
+	alert(gt.gettext("Please select Yes for airlines that are still operating, or No for inactive airlines."));
+	form.active.focus();
+	return;
+      }
 
       if(mode == "F") {
 	if(iata == "") {
@@ -125,11 +132,14 @@ function xmlhttpPost(strURL, offset, action) {
 	}
       }
 
-      desc = name + ", " + country +
-	" (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
-      if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."), [desc]))) {
-	document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
-	return;
+      // Last check for new airlines only
+      if(alid == "") {
+	desc = name + ", " + country +
+	  " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
+	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."), [desc]))) {
+	  document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
+	  return;
+	}
       }
     }
 
@@ -140,11 +150,14 @@ function xmlhttpPost(strURL, offset, action) {
       'country=' + encodeURIComponent(country) + '&' +
       'callsign=' + encodeURIComponent(callsign) + '&' +
       'mode=' + encodeURIComponent(mode) + '&' +
+      'active=' + encodeURIComponent(active) + '&' +
       'offset=' + offset + '&' +
       'iatafilter=' + form.iatafilter.checked + '&' +
+      'alid=' + alid + '&' +
       'action=' + action;
     document.getElementById("miniresultbox").innerHTML = "<I>" + (action == "SEARCH" ? gt.gettext("Searching...") : gt.gettext("Recording...")) + "</I>";
   }
+  alert(query);
   self.xmlHttpReq.send(query);
 }
 
@@ -152,11 +165,18 @@ function xmlhttpPost(strURL, offset, action) {
  * Display results of search
  */
 function searchResult(str) {
+  alert(str);
+
   var airlines = str.split("\n");
   var table = "<table width=95% cellspacing=0>";
   var offset, sql;
   var disclaimer = "";
 
+  if(! parent.opener || ! parent.opener.addNewAirport) {
+    guest = true;
+  } else {
+    guest = false;
+  }
   if(warning) {
     table += "<tr><td colspan=2><i><font color='red'>" + warning + "</font></i></td></tr>";
     warning = null;
@@ -214,11 +234,61 @@ function searchResult(str) {
     table += "<tr><td style='background-color: " + bgcolor + "'>" + col["al_name"] + "</td>";
     // id = alid
     table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirline(\"" + col["alid"] + "\",\"" + encodeURIComponent(col["al_name"]) + "\",\"" + col["mode"] + "\")'></td>";
+    if(col["al_uid"] == "own" || guest) {
+      if(col["al_uid"] == "own") {
+	label = gt.gettext("Edit");
+      } else {
+	label = gt.gettext("Load");
+      }
+      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirline(\"" + encodeURIComponent(airlines[a]) + "\")'></td>";
+    }
+
     table += "</tr>";
   }
   table += "</table>";
   table += disclaimer;
   document.getElementById("miniresultbox").innerHTML = table;
+}
+
+// Load data from search result into form
+function loadAirline(data) {
+  var col = jsonParse(unescape(data));
+
+  var b_back = document.getElementById("b_back");
+  var b_fwd = document.getElementById("b_fwd");
+  if(b_back) b_back.disabled = true;
+  if(b_fwd) b_fwd.disabled = true;
+
+  var form = document.forms['searchform'];
+  form.name.value = col["name"];
+  form.alias.value = col["alias"];
+  form.iata.value = col["iata"];
+  form.icao.value = col["icao"];
+  form.callsign.value = col["callsign"];
+  form.mode.value = col["mode"];
+  country = col["country"];
+  var country_select = form.country;
+  for(index = 0; index < country_select.length; index++) {
+    if(country_select[index].value == country || country_select[index].text == country) {
+      country_select.selectedIndex = index;
+    }
+  }
+  var active_select = form.active;
+  for(index = 0; index < active_select.length; index++) {
+    if(active_select[index].value == col["active"]) {
+      active_select.selectedIndex = index;
+    }
+  }
+
+  if(col["alid"]) {
+    form.alid.value = col["alid"];
+    document.getElementById('b_add').style.display = "none";
+    document.getElementById('b_edit').style.display = "inline";
+  } else {
+    form.alid.value = "";
+    document.getElementById('b_add').style.display = "inline";
+    document.getElementById('b_edit').style.display = "none";
+  }
 }
 
 // Did we manage to record the airline?
@@ -259,11 +329,14 @@ function clearSearch() {
   var form = document.forms['searchform'];
   form.name.value = "";
   form.country.selectedIndex = 0;
+  form.active.selectedIndex = 0;
+  form.mode.selectedIndex = 0;
   form.iata.value = "";
   form.icao.value = "";
   form.alias.value = "";
   form.callsign.value = "";
   form.iatafilter.checked = true;
+  form.alid.value = "";
 }
 
 // Airline selected, kick it back to main window and close this

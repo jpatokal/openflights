@@ -74,8 +74,7 @@ if($action == "RECORD") {
 		   $uid);
   } else {
     // Editing an existing airport
-    // ##TODO## un-hardcode admin write access
-    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s AND (uid=%s OR %s=3)",
+    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s AND (uid=%s OR %s=%s)",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
@@ -88,7 +87,8 @@ if($action == "RECORD") {
 		   mysql_real_escape_string($dst),
 		   mysql_real_escape_string($apid),
 		   $uid,
-		   $uid);
+		   $uid,
+		   $OF_ADMIN_UID);
   }
 
   mysql_query($sql, $db) or die('0;' . _("Adding new airport failed:") . ' ' . $sql);
@@ -157,9 +157,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $row["country"] = $row["code"];
   }
  
-  // ##TODO## admin flag instead of hardcoding...
-  if($row["uid"] || $uid == "3" ) {
-    if($row["uid"] == $uid || $uid == "3") {
+  if($row["uid"] || $uid == $OF_ADMIN_UID ) {
+    if($row["uid"] == $uid || $uid == $OF_ADMIN_UID) {
       $row["ap_uid"] = "own"; // editable
     } else {
       $row["ap_uid"] = "user"; // added by another user

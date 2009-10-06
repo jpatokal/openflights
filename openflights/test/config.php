@@ -1,7 +1,7 @@
 <?php
 
 // Address of OpenFlights install
-$webroot = 'http://192.168.1.4:8888/';
+$webroot = 'http://192.168.2.3:8888/';
 
 // Database configuration
 $dbhost = "localhost";
@@ -33,7 +33,9 @@ $airline = array('name' => 'AutoTest Airways',
 		 'iata' => 'ZZ',
 		 'icao' => 'ZZZ',
 		 'country' => 'Austria',
-		 'mode' => 'F');
+		 'callsign' => 'AUTOTEST',
+		 'mode' => 'F',
+		 'active' => 'Y');
 
 $railway = array('name' => 'AutoTest Railways',
 		 'alias' => 'AutoTestRail',
