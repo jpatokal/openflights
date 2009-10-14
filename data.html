@@ -29,6 +29,10 @@
 
 	    <table>
 		<tr>
+		  <td class="head">Airport ID</td>
+		  <td class="data">Unique OpenFlights identifier for this airport.
+		</tr>
+		<tr>
 		  <td class="head">Name</td>
 		  <td class="data">Name of airport.  May or may not contain the <b>City</b> name.</td>
 		</tr>
@@ -80,9 +84,9 @@
 	    <p><i>Note</i>: Rules for daylight savings time change from year to year and from country to country.  The current data is an approximation for 2009, built on a country level.  Most airports in DST-less regions in countries that generally observe DST (eg. AL, HI in the USA, NT, QL in Australia, parts of Canada) are marked incorrectly.</p>
 
 	    <h4>Sample entries</h4>
-	    <pre>"Heathrow","London","United Kingdom","LHR","EGLL",51.4775,-0.461389,83,0,"E"
-"Kugaaruk","Pelly Bay","Canada","YBB","CYBB",68.534444,-89.808056,56,-6,"A"
-"Pokhara","Pokhara","Nepal","PKR","VNPK",28.200881,83.982056,2712,5.75,"N"</pre>
+	    <pre>507,"Heathrow","London","United Kingdom","LHR","EGLL",51.4775,-0.461389,83,0,"E"
+26,"Kugaaruk","Pelly Bay","Canada","YBB","CYBB",68.534444,-89.808056,56,-6,"A"
+3127,"Pokhara","Pokhara","Nepal","PKR","VNPK",28.200881,83.982056,2712,5.75,"N"</pre>
 
 	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Try it out: <a target="_blank" href="html/apsearch">Airport Search</a> (new window)</p>
 
@@ -124,6 +128,10 @@
 
 	    <table>
 		<tr>
+		  <td class="head">Airline ID</td>
+		  <td class="data">Unique OpenFlights identifier for this airline.
+		</tr>
+		<tr>
 		  <td class="head">Name</td>
 		  <td class="data">Name of the airline.
 		</tr>
@@ -147,15 +155,19 @@
 		  <td class="head">Country</td>
 		  <td class="data">Country or territory where airline is incorporated.</td>
 		</tr>
+		<tr>
+		  <td class="head">Active</td>
+		  <td class="data">"Y" if the airline is or has until recently been operational, "N" if it is defunct.  (This is only a rough indication and should not be taken as 100% accurate.)</td>
+		</tr>
 	    </table>
 
 	    <p>The data is ISO 8859-1 (Latin-1) encoded.  The special value <b>\N</b> is used for "NULL" to indicate that no value is available, and is understood automatically by MySQL if imported.</p>
 	    <p><i>Notes</i>: Airlines with null codes/callsigns/countries generally represent user-added airlines.  Since the data is intended primarily for current flights, defunct IATA codes are generally not included.  For example, "Sabena" is not listed with a SN IATA code, since "SN" is presently used by its successor Brussels Airlines.</p>
 
 	    <h4>Sample entries</h4>
-	    <pre>"All Nippon Airways","ANA All Nippon Airways","NH","ANA","ALL NIPPON","Japan"
-"All Star Airlines",\N,"","ASR"," Inc.","ALL STAR"
-"Almaty Aviation",\N,"","LMT","ALMATY","Kazakhstan"</pre>
+	    <pre>324,"All Nippon Airways","ANA All Nippon Airways","NH","ANA","ALL NIPPON","Japan","Y"
+412,"Aerolineas Argentinas",\N,"AR","ARG","ARGENTINA","Argentina","Y"
+413,"Arrowhead Airways",\N,"","ARH","ARROWHEAD","United States","N"</pre>
 
 	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Try it out: <a target="_blank" href="html/alsearch">Airline Search</a> (new window)</p>
 
@@ -202,7 +214,7 @@
 		</tr>
 		<tr>
 		  <td class="head">Airline ID</td>
-		  <td class="data">OpenFlights ID for airline (see <a href="#airline">Airline</a>).
+		  <td class="data">Unique OpenFlights identifier for airline (see <a href="#airline">Airline</a>).
 		</tr>
 		<tr>
 		  <td class="head">Source airport</td>
@@ -210,7 +222,7 @@
 		</tr>
 		<tr>
 		  <td class="head">Source airport ID</td>
-		  <td class="data">OpenFlights ID for source airport (see <a href="#airport">Airport</a>)
+		  <td class="data">Unique OpenFlights identifier for source airport (see <a href="#airport">Airport</a>)
 		</tr>
 		<tr>
 		  <td class="head">Destination airport</td>
@@ -218,7 +230,7 @@
 		</tr>
 		<tr>
 		  <td class="head">Destination airport ID</td>
-		  <td class="data">OpenFlights ID for destination airport (see <a href="#airport">Airport</a>)
+		  <td class="data">Unique OpenFlights identifier for destination airport (see <a href="#airport">Airport</a>)
 		</tr>
 		<tr>
 		  <td class="head">Codeshare</td>
@@ -234,9 +246,10 @@
 		</tr>
 	    </table>
 
+	    <p>The data is ISO 8859-1 (Latin-1) encoded.  The special value <b>\N</b> is used for "NULL" to indicate that no value is available, and is understood automatically by MySQL if imported.</p>
+
 	    <i>Notes</i>:
 	    <ul>
-	      <li>OpenFlights ID airport/airline fields may be "\N" (null) if not known.
 	      <li>Routes are directional: if an airline operates services from A to B and from B to A, both A-B and B-A are listed separately.
 	      <li>Routes where one carrier operates both its own and codeshare flights are listed only once.
 	    </ul>
