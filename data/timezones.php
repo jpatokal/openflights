@@ -18,7 +18,7 @@ include_once('../php/simple_html_dom.php');
 // </timezone>
 
 $db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb",$db);
+mysql_select_db("flightdb2",$db);
 $sql = "select * from airports where timezone is null";
 $result = mysql_query($sql, $db) or die ('Database error: ' . $sql . ', error ' . mysql_error());
 while($row = mysql_fetch_assoc($result)) {
