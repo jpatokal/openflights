@@ -2,11 +2,11 @@ DROP TABLE routes;
 
 CREATE TABLE routes
 (
-airline VARCHAR(2),
+airline VARCHAR(3),
 alid INT, 
-src_ap VARCHAR(3),
+src_ap VARCHAR(4),
 src_apid INT,
-dst_ap VARCHAR(3),
+dst_ap VARCHAR(4),
 dst_apid INT,
 codeshare TEXT,
 stops TEXT,
@@ -21,7 +21,7 @@ FOREIGN KEY (alid) REFERENCES airlines (alid)
 
 \! echo Filtering out duplicates...
 
-\! uniq -w 10 <routes.dat >routes2.dat
+\! uniq -w 10 <arm/routes.dat >routes2.dat
 
 \! echo Importing...
 
@@ -34,21 +34,25 @@ IGNORE 2 LINES
 
 UPDATE routes SET codeshare='Y' WHERE codeshare='*';
 
-\! echo Adding src IDs...
+\! echo Adding src airport IDs...
 
 UPDATE routes AS r,airports as a SET r.src_apid=a.apid WHERE a.iata=r.src_ap;
 
-\! echo Adding dst IDs...
+\! echo Adding dst airport IDs...
 
 UPDATE routes AS r,airports as a SET r.dst_apid=a.apid WHERE a.iata=r.dst_ap;
 
-\! echo Adding airline IDs (round 1)...
+\! echo Adding IATA airline IDs...
 
 UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE l.iata=r.airline;
 
-\! echo Adding airline IDs (round 2)...
+\! echo Adding IATA airline IDs, round 2...
 
 UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE l.iata=r.airline AND l.active='Y';
+
+\! echo Adding ICAO airline IDs...
+
+UPDATE routes AS r,airlines as l SET r.alid=l.alid WHERE r.alid IS NULL AND l.icao=r.airline;
 
 \! rm routes2.dat
 \! echo Done.
