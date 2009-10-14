@@ -25,7 +25,7 @@
 
 	    <p><center><a href="/demo/openflights-apdb-2048.png"><img src="/demo/openflights-apdb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
 
-	    <p>As of February 2009, the OpenFlights Airports Database contains <b>5391</b> airports spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
+	    <p>As of October 2009, the OpenFlights Airports Database contains <b>5497</b> airports spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
 
 	    <table>
 		<tr>
@@ -120,7 +120,7 @@
 	    <a name="airline"></a>
 	    <h2>Airline database</h2>
 
-	    <p>As of February 2009, the OpenFlights Airlines Database contains <b>5971</b> airlines.  Each entry contains the following information:</p>
+	    <p>As of October 2009, the OpenFlights Airlines Database contains <b>9468</b> airlines.  Each entry contains the following information:</p>
 
 	    <table>
 		<tr>
@@ -193,24 +193,36 @@
 
 	    <p><center><a href="/demo/openflights-routedb-2048.png"><img src="/demo/openflights-routedb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
 
-	    <p>As of June 2009, the OpenFlights/Airline Route Mapper Route Database contains <b>54317</b> routes between <b>2794</b> airports on <b>494</b> airlines spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
+	    <p>As of October 2009, the OpenFlights/Airline Route Mapper Route Database contains <b>56749</b> routes between <b>3310</b> airports on <b>669</b> airlines spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
 
 	    <table>
 		<tr>
 		  <td class="head">Airline</td>
-		  <td class="data">2-letter IATA code of the airline.
+		  <td class="data">2-letter (IATA) or 3-letter (ICAO) code of the airline.
+		</tr>
+		<tr>
+		  <td class="head">Airline ID</td>
+		  <td class="data">OpenFlights ID for airline (see <a href="#airline">Airline</a>).
 		</tr>
 		<tr>
 		  <td class="head">Source airport</td>
-		  <td class="data">3-letter IATA code of the source airport.<br>
+		  <td class="data">3-letter (IATA) or 4-letter (ICAO) code of the source airport.<br>
+		</tr>
+		<tr>
+		  <td class="head">Source airport ID</td>
+		  <td class="data">OpenFlights ID for source airport (see <a href="#airport">Airport</a>)
 		</tr>
 		<tr>
 		  <td class="head">Destination airport</td>
-		  <td class="data">3-letter IATA code of the destination airport.<br>
+		  <td class="data">3-letter (IATA) or 4-letter (ICAO) code of the destination airport.<br>
+		</tr>
+		<tr>
+		  <td class="head">Destination airport ID</td>
+		  <td class="data">OpenFlights ID for destination airport (see <a href="#airport">Airport</a>)
 		</tr>
 		<tr>
 		  <td class="head">Codeshare</td>
-		  <td class="data">"*" if this flight is a codeshare (that is, not operated by <i>Airline</i>, but another carrier)</td>
+		  <td class="data">"Y" if this flight is a codeshare (that is, not operated by <i>Airline</i>, but another carrier), empty otherwise.</td>
 		</tr>
 		<tr>
 		  <td class="head">Stops</td>
@@ -224,20 +236,21 @@
 
 	    <i>Notes</i>:
 	    <ul>
+	      <li>OpenFlights ID airport/airline fields may be "\N" (null) if not known.
 	      <li>Routes are directional: if an airline operates services from A to B and from B to A, both A-B and B-A are listed separately.
-	      <li>Routes where one carrier operates both its own and codeshare flights are listed twice.  These can be filtered out with the UNIX command <tt>uniq -w 10 &lt;routes.dat &gt;routes2.dat</tt>.
+	      <li>Routes where one carrier operates both its own and codeshare flights are listed only once.
 	    </ul>
 
 	    <h4>Sample entries</h4>
-	    <pre>BA      LHR     SFO             0       744
-BA      LHR     SIN             0       744 777
-BA      LHR     SIN     *       0       744 388</pre>
-
+	    <pre>BA,1355,SIN,3316,LHR,507,,0,744 777
+BA,1355,SIN,3316,MEL,3339,Y,0,744
+TOM,5013,ACE,1055,BFS,465,,0,320
+</pre>
 	    <h4>Download</h4>
 
 	    <p>To download the current data dump from <a href="http://sourceforge.net/projects/openflights">SourceForge</a> as a tab-delimited file, suitable for use in spreadsheets etc, simply click below:</p>
 
-	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat">routes.dat</a> (~1.1 MB)</p>
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat">routes.dat</a> (~2 MB)</p>
 
 	    <table><tr><td>
 
@@ -276,7 +289,7 @@ BA      LHR     SIN     *       0       744 388</pre>
 
 	    <p>Airline data was extracted directly from Wikipedia's gargantuan <a href="http://en.wikipedia.org/en/List_of_airlines">List of airlines</a>.  Significant revisions and additions made by the users of OpenFlights.</p>
 
-	    <p>Route data is maintained by and imported directly from <a href="http://arm.64hosts.com/">Airline Route Mapper</a>.  Duplicate entries have been removed by OpenFlights.</p>
+	    <p>Route data is maintained by and imported directly from <a href="http://arm.64hosts.com/">Airline Route Mapper</a>.  Duplicate entry removal and cross-referencing to airport/airline IDs by OpenFlights.</p>
 
 	    <p><i>See also: <a target="_blank" href="help/database.html">Help: Database</i></p>
 

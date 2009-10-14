@@ -34,7 +34,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-  <B><?php echo _("News")?> </b>: 23 Jul 2009: <a href="/blog/">OpenFlights ahora disponible en español, agora disponível em português!  See blog for details.</a>
+  <B><?php echo _("News")?> </b>: 14 Oct 2009: <a href="/blog/">Airline route maps updated.  See blog for details.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">

@@ -1,6 +1,10 @@
+<b>2009-10-14</b>
+
+* Updated route map database
+
 <b>2009-10-06</b>
 
-* Existing airline editing implemented
+* Editing of existing airlines implemented
 * Display whether or not airline is active in search
 * Filter out non-active airlines from IATA searches
 * Bugfix: Pre-entering airline, mode into "New airline" dialog fixed
