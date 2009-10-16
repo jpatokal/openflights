@@ -1,3 +1,9 @@
+<b>2009-10-16</b>
+
+* Upgraded to OpenLayers 2.8 RC5
+* Added labels and tooltips to airports (2515935)
+* Bugfix: Ghosted airports show up funny in IE (2529004)
+
 <b>2009-10-14</b>
 
 * Updated route map database

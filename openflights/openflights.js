@@ -134,7 +134,7 @@ window.onload = function init(){
 					  );
   jpl_wms.setVisibility(false);
 
-  lineLayer = new OpenLayers.Layer.Vector(gt.gettext("My Flights"),
+  lineLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
 					{styleMap: new OpenLayers.StyleMap({
 					    strokeColor: "${color}",
 						strokeOpacity: 1,
@@ -143,10 +143,39 @@ window.onload = function init(){
 						})
 					    });
   
-  
-  airportLayer = new OpenLayers.Layer.Markers(gt.gettext("My Airports"));
+  var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+  renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+  airportLayer = new OpenLayers.Layer.Vector("Airports",
+					     {styleMap: new OpenLayers.StyleMap
+						 ({'default':{
+						   externalGraphic: "${icon}",
+						   graphicWidth: "${size}",
+						   graphicHeight: "${size}",
+						   graphicXOffset: "${offset}",
+						   graphicYOffset: "${offset}",
+						   graphicOpacity: "${opacity}",
+						   graphicTitle: "${name}",
+						   pointerEvents: "visiblePainted",
+						   label : "\xA0${code}",
+						   fontColor: "#000000",
+						   fontSize: "10px",
+						   fontFamily: "Courier New, monospace",
+						   //fontWeight: "bold",
+						   labelAlign: "lt" }, 
+
+						   'select':{
+						   fillOpacity: 1.0,
+						   pointerEvents: "visiblePainted",
+						   label : ""
+						 }}),
+						 renderers: renderer});
   map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
-  
+
+  selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {onSelect: onAirportSelect,
+							              onUnselect: onAirportUnselect});
+  map.addControl(selectControl);
+  selectControl.activate();
+
   // Extract any arguments from URL
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
@@ -309,6 +338,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 
   // Select icon based on number of flights (0...airportIcons.length-1)
   var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
+
   // Two or less flights: smallest dot
   if(count <= 2 || colorIndex < 0) {
     colorIndex = 0;
@@ -327,120 +357,99 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     $("news").style.display = 'inline';
     $("news").innerHTML = "ERROR: " + name + ":" + colorIndex + " of " + airportMaxFlights + ".i<br>Please hit CTRL-F5 to force refresh, and <a href='/about.html'>report</a> this error if it does not go away.";
     colorIndex = 0;
+    return;
   }
 
-  // Check if the airport has a marker already
-  var markers = airportLayer.markers;
-  for(m = 0; m < markers.length; m++) {
-    if(markers[m].apid == apid) {
-      markers[m].desc = desc; // update description for popup
-      markers[m].state = true; // flag so that it will be made visible
-      if(colorIndex != markers[m].colorIndex) {
-	// Change icon
-	var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
-	markers[m].icon.offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
-	markers[m].icon.setSize(size);
- 	markers[m].setUrl(airportIcons[colorIndex][0]);
-      }
-      markers[m].setOpacity(opacity);
-      markers[m].coreid = coreid;
-      return false;
-    }
-  }
-
-  // Nope, we need to add it
-  var iconfile = airportIcons[colorIndex][0];
-  var size = new OpenLayers.Size(airportIcons[colorIndex][1], airportIcons[colorIndex][1]);
-  var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
-  var icon = new OpenLayers.Icon(iconfile,size,offset);
-  
-  var feature = new OpenLayers.Feature(airportLayer, new OpenLayers.LonLat(x, y));
-  feature.closeBox = false;
-  feature.data.icon = icon;
-  feature.data.overflow = "auto";
-  var marker = feature.createMarker();
-  marker.setOpacity(opacity);
-
-  // These are used to do airport lookups
-  marker.apid = apid;
-  marker.coreid = coreid;
-  marker.code = code;
-  marker.count = count;
-  marker.name = formattedName;
-  marker.apdata = apdata;
-  marker.state = true; // visible
-
-  // Stored for popup
-  marker.desc = desc;
-
-  // Run when the user clicks on an airport marker
-  // this == the feature, *not* the marker
-  var markerClick = function (evt) {
-    this.popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {'autoSize': true, 'minSize': new OpenLayers.Size(200,110) });
-    coreid = this.marker.coreid;
-
-    // Add toolbar to popup
-    desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
-    "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
-    
-    if(coreid == 0) {
-      // Detailed flights accessible only if...
-      // 1. user is logged in, or
-      // 2. system is in "demo mode", or
-      // 3. privacy is set to (O)pen
-      if( logged_in || demo_mode || privacy == "O") {
-	  // Get list of user flights
-	  desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(this.marker.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
-      }
-    } else {
-      if(code.length == 3) {
-	// Get list of airport routes
-	if(coreid.startsWith("L")) {
-	  idstring = coreid + "," + apid;
-	} else {
-	  idstring = "R" + apid + "," + coreid;
-	}
-	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
-      }
-    }
-    if(code.length == 3) {
-      // IATA airport, we know its routes
-      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
-    }
-    desc += "</span>" + this.marker.desc.replace("Flights:", gt.gettext("Flights:"));
-    desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup();\" width=17 height=17> " + desc;
-    closePopup();
-
-    if (this.popup == null) {
-      this.data.popupContentHTML = desc;
-      this.popup = this.createPopup(this.closeBox);
-      map.addPopup(this.popup);
-      this.popup.show();
-    } else {
-      this.popup.setContentHTML(desc);
-      this.popup.toggle();
-    }
-    if(this.popup.visible()) {
-      currentPopup = this.popup;
-    } else {
-      closePane();
-    }
-    // Show or hide toolbar when applicable
-    if($('popup' + apid)) {
-      if(getCurrentPane() == "input" || getCurrentPane() == "multiinput") {
-	$('popup' + apid).style.visibility = "visible";
-      } else {
-	$('popup' + apid).style.visibility = "hidden";
-      }
-    }
-    OpenLayers.Event.stop(evt);
+  var point = new OpenLayers.Geometry.Point(x, y);
+  var feature = new OpenLayers.Feature.Vector(point);
+  feature.attributes = {
+    apid: apid,
+    coreid: coreid,
+    code: code,
+    name: formattedName,
+    apdata: apdata,
+    desc: desc,
+    rdesc: rdesc,
+    opacity: opacity,
+    icon: airportIcons[colorIndex][0], 
+    size: airportIcons[colorIndex][1],
+    offset: -airportIcons[colorIndex][1]/2
   };
-  marker.events.register("mousedown", feature, markerClick);
 
-  //marker.display(zoomFilter(count));
-  airportLayer.addMarker(marker);
+  return feature;
+}
 
-  return true;
+// Run when the user clicks on an airport marker
+function onAirportSelect(airport) {
+
+  apid = airport.attributes.apid;
+  code = airport.attributes.code;
+  coreid = airport.attributes.coreid;
+  rdesc = airport.attributes.rdesc;
+
+  // Add toolbar to popup
+  desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
+    "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
+  
+  if(coreid == 0) {
+    // Detailed flights accessible only if...
+    // 1. user is logged in, or
+    // 2. system is in "demo mode", or
+    // 3. privacy is set to (O)pen
+    if( logged_in || demo_mode || privacy == "O") {
+      // Get list of user flights
+      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
+    }
+  } else {
+    if(code.length == 3) {
+      // Get list of airport routes
+      if(coreid.startsWith("L")) {
+	idstring = coreid + "," + apid;
+      } else {
+	idstring = "R" + apid + "," + coreid;
+      }
+      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+    }
+  }
+  if(code.length == 3) {
+    // IATA airport, we know its routes
+    desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
+  }
+  desc += "</span>" + airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
+  desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup(true);\" width=17 height=17> " + desc;
+  closePopup(false);
+
+  if (airport.popup == null) {
+    airport.popup = new OpenLayers.Popup.FramedCloud("airport", 
+					     airport.geometry.getBounds().getCenterLonLat(),
+					     new OpenLayers.Size(200,110),
+					     desc, null, false);
+    airport.popup.minSize = new OpenLayers.Size(200,110);
+    airport.popup.overflow = "auto";
+
+    map.addPopup(airport.popup);
+    airport.popup.show();
+  } else {
+    airport.popup.setContentHTML(desc);
+    airport.popup.toggle();
+  }
+  if(airport.popup.visible()) {
+    currentPopup = airport.popup;
+  } else {
+    closePane();
+  }
+  // Show or hide toolbar when applicable
+  if($('popup' + apid)) {
+    if(getCurrentPane() == "input" || getCurrentPane() == "multiinput") {
+      $('popup' + apid).style.visibility = "visible";
+    } else {
+      $('popup' + apid).style.visibility = "hidden";
+    }
+  }
+}
+
+function onAirportUnselect(airport) {
+  // do nothing
 }
 
 function toggleControl(element) {
@@ -593,7 +602,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $("maptitle").innerHTML = getMapTitle(true);
 	  } else {
 	    updateFilter(str);
-	    closePopup();
+	    closePopup(true);
 	    $('qs').value = $('qs').hintText;
 	    $('qs').style.color = '#888';
 	    $('qsid').value = 0;
@@ -1146,14 +1155,10 @@ function radioValue(radio) {
   return "";
 }
 
-// Clear all markers, popups and flights
+// Clear all flights, airports and popups
 function clearMap() {
   lineLayer.destroyFeatures();
-  markers = airportLayer.markers.slice(); // clone
-  airportLayer.clearMarkers();
-  for(m = 0; m < markers.length; m++) {
-    markers[m].destroy();
-  }
+  airportLayer.destroyFeatures();
   var popups = map.popups;
   for(p = 0; p < popups.length; p++) {
     popups[p].destroy();
@@ -1163,13 +1168,8 @@ function clearMap() {
 // Reinsert all flights, airports from database result
 function updateMap(str, url){
   lineLayer.destroyFeatures();
+  airportLayer.destroyFeatures();
   lasturl = url; // used for refresh
-
-  // Default all markers to be turned off
-  var markers = airportLayer.markers;
-  for(m = 0; m < markers.length; m++) {
-    markers[m].state = false;
-  }
 
   var master = str.split("\n");
   var stats = master[0];
@@ -1272,7 +1272,8 @@ function updateMap(str, url){
   // Route maps draw the core airport even if there are no routes
   if(flightTotal != "0" || type == "R") {
     var rows = airports.split("\t");
-    
+    var airports = Array();
+
     // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
     airportMaxFlights = rows[rows.length - 1].split(";")[4];
     for (r = 0; r < rows.length; r++) {
@@ -1283,14 +1284,9 @@ function updateMap(str, url){
       } else {
 	opacity = 1;
       }
-      drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid);
+      airports.push(drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid));
     }
-    //zoomEvent(); // filter in/out airports based on zoom level
-  }
-
-  // Now we turn marker display on or off
-  for(m = 0; m < markers.length; m++) {
-    markers[m].display(markers[m].state);
+    airportLayer.addFeatures(airports);
   }
 
   // Redraw selection markers if in input mode
@@ -2031,14 +2027,14 @@ function airportCodeToAirport(type) {
   // Try to match against existing airports
   // TODO: Also match against marker.name
   var code = $(type).value.toUpperCase();
-  var markers = airportLayer.markers;
   var found = false;
-  for(m = 0; m < markers.length; m++) {
-    if(markers[m].code == code) {
-      selectAirport(markers[m].apid, true);
+  for(ap in airportLayer.features) {
+    var attrs = airportLayer.features[ap].attributes;
+    if(attrs && attrs.code == code) {
+      selectAirport(attrs.apid, true);
       found = true;
       if(type == 'qs') {
-	$('qsid').value = markers[m].apid;
+	$('qsid').value = attrs.apid;
 	$('qsgo').disabled = false;
 	$('qsgo').focus();
       }
@@ -2315,12 +2311,10 @@ function calcDuration(param) {
 // Also calculates distance and duration (unless "quick" is true)
 // type: "src_ap" or "dst_ap"
 function markAirport(element, quick) {
-  var size = new OpenLayers.Size(17, 17);
-  var offset = new OpenLayers.Pixel(-(size.w/2), -(size.h/2));
   if(element.startsWith("src_ap")) {
-    var icon = new OpenLayers.Icon('/img/icon_plane-src.png',size,offset);
+    var icon = '/img/icon_plane-src.png';
   } else {
-    var icon = new OpenLayers.Icon('/img/icon_plane-dst.png',size,offset);
+    var icon = '/img/icon_plane-dst.png';
   }
   if(getCurrentPane() == "multiinput") {
     element = markingLimit(element);
@@ -2334,13 +2328,22 @@ function markAirport(element, quick) {
   var y = data[3];
 
   if(apid > 0) {
-    var lonlat = new OpenLayers.LonLat(x, y);
-    var marker = new OpenLayers.Marker(lonlat, icon);
-    airportLayer.addMarker(marker);
+    var point = new OpenLayers.Geometry.Point(x, y);
+    var marker = new OpenLayers.Feature.Vector(point);
+    marker.attributes = {
+      icon: icon,
+      size: 17,
+      offset: -17/2,
+      opacity: 1,
+      name: "",
+      code: data[0]
+    };
+    airportLayer.addFeatures([marker]);
+
   }
   if(element.startsWith("src_ap")) {
     if(input_srcmarker) {
-      airportLayer.removeMarker(input_srcmarker);
+      airportLayer.removeFeatures([input_srcmarker]);
     }
     if(apid > 0) {
       input_srcmarker = marker;
@@ -2356,7 +2359,7 @@ function markAirport(element, quick) {
     }
   } else {
     if(input_dstmarker) {
-      airportLayer.removeMarker(input_dstmarker);
+      airportLayer.removeFeatures([input_dstmarker]);
     }
     if(apid > 0) {
       input_dstmarker = marker;
@@ -2424,11 +2427,11 @@ function markAirport(element, quick) {
 // Remove input markers and flight lines 
 function unmarkAirports() {
   if(input_srcmarker) {
-    airportLayer.removeMarker(input_srcmarker);
+    airportLayer.removeFeatures([input_srcmarker]);
     input_srcmarker = null;
   }
   if(input_dstmarker) {
-    airportLayer.removeMarker(input_dstmarker);
+    airportLayer.removeFeatures([input_dstmarker]);
     input_dstmarker = null;
   }
   if(input_line) {
@@ -2493,24 +2496,22 @@ function swapAirports(manual) {
 // Given apid, find the matching airport and either pop it up (false) or mark it as selected (true)
 // "quick" is passed to markAirport
 function selectAirport(apid, select, quick) {
-  var markers = airportLayer.markers;
   var found = false;
-  for(m = 0; m < markers.length; m++) {
-    if(markers[m].apid == apid) {
-
+  for(ap in airportLayer.features) {
+    var attrs = airportLayer.features[ap].attributes;
+    if(attrs && attrs.apid == apid) {
       // If "select" is true, we select the airport into the input form instead of popping it up
       if(select && (getCurrentPane() == "input" || getCurrentPane() == "multiinput")) {
-	var marker = markers[m];
 	var element = input_toggle;
-	$(element).value = marker.name;
+	$(element).value = attrs.name;
 	$(element).style.color = "#000";
-	$(element + 'id').value = marker.apdata;
+	$(element + 'id').value = attrs.apdata;
 	replicateSelection(element);
 	markAirport(element, quick);
 	markAsChanged(true);
-	closePopup();
+	closePopup(true);
       } else {
-	markers[m].events.triggerEvent("mousedown");
+	onAirportSelect(airportLayer.features[ap]);
       }
       found = true;
       break;
@@ -3015,11 +3016,14 @@ function showHelp() {
   openPane("help");
 }
 
-function closePopup() {
+function closePopup(unselect) {
   // close any previous popups
   if(currentPopup && currentPopup != this.popup) {
     currentPopup.hide();
     currentPopup = null;
+  }
+  if(unselect) {
+    selectControl.unselectAll();
   }
 }
 
@@ -3092,24 +3096,6 @@ function refresh(init) {
     apid = 0;
   }
   xmlhttpPost(lasturl, apid, init);
-}
-
-// Filter out airports based on current map zoom level
-// Current rule: on level 0 only, filter out airports with <2 flights if user has over 200 flights
-function zoomFilter(count) {
-  if(count <= 2 && flightTotal > 200 && map.getZoom() == 0) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-// Zoom level has been changed, toggle markers on/off
-function zoomEvent(event) {
-  var markers = airportLayer.markers;
-  for(m = 0; m < markers.length; m++) {
-    markers[m].display(zoomFilter(markers[m].count));
-  }
 }
 
 /* Refresh the Google Ad iframe
