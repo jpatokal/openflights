@@ -2590,16 +2590,17 @@ function selectAirport(apid, select, quick, code) {
 	  }
 	}
 	found = true;
-	break;
+	return found;
       }
     }
   }
-  if (!found && !quick) {
+  // Search failed
+  if (!quick) {
     if(confirm("This airport is currently filtered out. Clear filter?")) {
       clearFilter(false);
     }
   }
-  return found;
+  return false;
 }
 
 // Change number of rows displayed in multiinput
