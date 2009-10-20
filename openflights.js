@@ -163,7 +163,7 @@ window.onload = function init(){
 					   idx = 0;
 					   main = 0;
 					   for(c = 0; c < feature.cluster.length; c++) {
-					     i = feature.cluster[c].attributes.index;
+					     i = parseInt(feature.cluster[c].attributes.index);
 					     if(i > idx) {
 					       idx = i;
 					       main = c;
