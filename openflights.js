@@ -474,13 +474,14 @@ function onAirportSelect(airport) {
     }
     desc += "</span>" + airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
   } else {
-    // Cluster, no single-airport details available
+    // Cluster, generate clickable list of members in reverse order (most flights first)
     desc = "<b>" + gt.gettext("Airports") + "</b><br>";
     edit = (getCurrentPane() == "input" || getCurrentPane() == "multiinput") ? "true" : "false";
-    for(c = 0; c < airport.cluster.length; c++) {
-      if(c > 0) {
+    cmax = airport.cluster.length - 1;
+    for(c = cmax; c >= 0; c--) {
+      if(c < cmax) {
 	desc += ", ";
-	if(c % 6 == 0) desc += "<br>";
+	if((cmax-c) % 6 == 0) desc += "<br>";
       }
       desc += "<a href='#' onclick='JavaScript:selectAirport(" + airport.cluster[c].attributes.apid + ","
 	+ edit + ")'>" + airport.cluster[c].attributes.code + "</a>";
