@@ -428,7 +428,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     opacity: opacity,
     icon: airportIcons[colorIndex][0], 
     size: airportIcons[colorIndex][1],
-    index: colorIndex,
+    index: count,
     offset: Math.floor(-airportIcons[colorIndex][1]/2)
   };
 
