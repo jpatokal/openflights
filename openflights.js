@@ -115,7 +115,7 @@ window.onload = function init(){
 			       maxZoomLevel: 8,
 			       controls: [
 					  new OpenLayers.Control.PanZoom(),
-					  new OpenLayers.Control.NavToolbar({'title': gt.gettext("Toggle pan and region select mode")}),
+					  new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
 					  new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
 					  new OpenLayers.Control.ScaleLine(),
 					  new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
@@ -142,33 +142,82 @@ window.onload = function init(){
 						strokeDashstyle: "${stroke}"
 						})
 					    });
-  
+
+  var style = new OpenLayers.Style({graphicTitle: "${name}",
+				       externalGraphic: "${icon}",
+				       graphicWidth: "${size}",
+				       graphicHeight: "${size}",
+				       graphicXOffset: "${offset}",
+				       graphicYOffset: "${offset}",
+				       graphicOpacity: "${opacity}",
+				       pointerEvents: "visiblePainted",
+				       label : "\xA0${code}",
+				       fontColor: "#000000",
+				       fontSize: "10px",
+				       fontFamily: "Courier New, monospace",
+				       labelAlign: "lt",
+				       fillColor: "black"
+				       }, { context: {
+				     name: function(feature) {
+					 if(feature.cluster) {
+					   idx = 0;
+					   main = 0;
+					   for(c = 0; c < feature.cluster.length; c++) {
+					     i = feature.cluster[c].attributes.index;
+					     if(i > idx) {
+					       idx = i;
+					       main = c;
+					     }
+					   }
+					   if(idx > 0) {
+					     // One airport is dominant, copy its attributes into cluster
+					     feature.attributes.apid = feature.cluster[main].attributes.apid;
+					     feature.attributes.coreid = feature.cluster[main].attributes.coreid;
+					     feature.attributes.code = feature.cluster[main].attributes.code + "+";
+					     feature.attributes.desc = feature.cluster[main].attributes.desc;
+					     feature.attributes.rdesc = feature.cluster[main].attributes.rdesc;
+					     feature.attributes.icon = feature.cluster[main].attributes.icon;
+					     feature.attributes.size = feature.cluster[main].attributes.size;
+					     feature.attributes.offset = feature.cluster[main].attributes.offset;
+					     feature.attributes.name = feature.cluster[main].attributes.name;
+					   } else {
+					     // No dominant airport, show cluster icon with aggregate info
+					     name = "";
+					     for(c = 0; c < feature.cluster.length; c++) {
+					       if(c > 0) name += ", ";
+					       name += feature.cluster[c].attributes.code;
+					     }
+					     feature.attributes.icon = "/img/icon_cluster.png";
+					     feature.attributes.code = "";
+					     feature.attributes.size = clusterRadius(feature);
+					     feature.attributes.offset = -clusterRadius(feature) / 2;
+					     feature.attributes.name = name;
+					   }
+					 }
+					 return feature.attributes.name;
+				       },
+				     icon: function(feature) { return feature.attributes.icon; },
+				     size: function(feature) { return feature.attributes.size; },
+ 				     offset: function(feature) { return feature.attributes.offset; },
+				     opacity: function(feature) {
+					 return feature.cluster ? 1 : feature.attributes.opacity;
+				       },
+				     code: function(feature) { return feature.attributes.code; }
+				     }});
+
   var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
   renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+  var strategy = new OpenLayers.Strategy.Cluster({distance: 15, threshold: 3});
   airportLayer = new OpenLayers.Layer.Vector("Airports",
 					     {styleMap: new OpenLayers.StyleMap
-						 ({'default':{
-						   externalGraphic: "${icon}",
-						   graphicWidth: "${size}",
-						   graphicHeight: "${size}",
-						   graphicXOffset: "${offset}",
-						   graphicYOffset: "${offset}",
-						   graphicOpacity: "${opacity}",
-						   graphicTitle: "${name}",
-						   pointerEvents: "visiblePainted",
-						   label : "\xA0${code}",
-						   fontColor: "#000000",
-						   fontSize: "10px",
-						   fontFamily: "Courier New, monospace",
-						   //fontWeight: "bold",
-						   labelAlign: "lt" }, 
-
+						 ({'default': style,
 						   'select':{
 						   fillOpacity: 1.0,
 						   pointerEvents: "visiblePainted",
 						   label : ""
-						 }}),
-						 renderers: renderer});
+						       }}),
+						 renderers: renderer,
+						 strategies: [strategy]});
   map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
 
   selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {onSelect: onAirportSelect,
@@ -251,6 +300,12 @@ window.onload = function init(){
   } else {
     xmlhttpPost(URL_MAP, 0, true);
   }
+}
+
+function clusterRadius(feature) {
+  var radius = feature.attributes.count * 5;
+  if(radius > 29) radius = 29;
+  return radius;
 }
 
 // Extract arguments from URL (/trip/xxx or /user/xxx)
@@ -373,7 +428,8 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     opacity: opacity,
     icon: airportIcons[colorIndex][0], 
     size: airportIcons[colorIndex][1],
-    offset: -airportIcons[colorIndex][1]/2
+    index: colorIndex,
+    offset: Math.floor(-airportIcons[colorIndex][1]/2)
   };
 
   return feature;
@@ -381,41 +437,53 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 
 // Run when the user clicks on an airport marker
 function onAirportSelect(airport) {
-
   apid = airport.attributes.apid;
   code = airport.attributes.code;
   coreid = airport.attributes.coreid;
   rdesc = airport.attributes.rdesc;
 
-  // Add toolbar to popup
-  desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
-    "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
-  
-  if(coreid == 0) {
-    // Detailed flights accessible only if...
-    // 1. user is logged in, or
-    // 2. system is in "demo mode", or
-    // 3. privacy is set to (O)pen
-    if( logged_in || demo_mode || privacy == "O") {
-      // Get list of user flights
-      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
-    }
-  } else {
-    if(code.length == 3) {
-      // Get list of airport routes
-      if(coreid.startsWith("L")) {
-	idstring = coreid + "," + apid;
-      } else {
-	idstring = "R" + apid + "," + coreid;
+  // Single airport?
+  if(!airport.cluster) {
+    // Add toolbar to popup
+    desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
+      "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
+    
+    if(coreid == 0) {
+      // Detailed flights accessible only if...
+      // 1. user is logged in, or
+      // 2. system is in "demo mode", or
+      // 3. privacy is set to (O)pen
+      if( logged_in || demo_mode || privacy == "O") {
+	// Get list of user flights
+	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
       }
-      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+    } else {
+      if(code.length == 3) {
+	// Get list of airport routes
+	if(coreid.startsWith("L")) {
+	  idstring = coreid + "," + apid;
+	} else {
+	  idstring = "R" + apid + "," + coreid;
+	}
+	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+      }
+    }
+    if(code.length == 3) {
+      // IATA airport, we know its routes
+      desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
+    }
+    desc += "</span>" + airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
+  } else {
+    // Cluster, no single-airport details available
+    desc = "<b>" + gt.gettext("Airports") + "</b><br>";
+    edit = (getCurrentPane() == "input" || getCurrentPane() == "multiinput") ? "true" : "false";
+    for(c = 0; c < airport.cluster.length; c++) {
+      if(c > 0) desc += ", ";
+      desc += "<a href='#' onclick='JavaScript:selectAirport(" + airport.cluster[c].attributes.apid + ","
+	+ edit + ")'>" + airport.cluster[c].attributes.code + "</a>";
     }
   }
-  if(code.length == 3) {
-    // IATA airport, we know its routes
-    desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
-  }
-  desc += "</span>" + airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
+
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup(true);\" width=17 height=17> " + desc;
   closePopup(false);
 
@@ -2028,22 +2096,14 @@ function airportCodeToAirport(type) {
   // TODO: Also match against marker.name
   var code = $(type).value.toUpperCase();
   var found = false;
-  for(ap in airportLayer.features) {
-    var attrs = airportLayer.features[ap].attributes;
-    if(attrs && attrs.code == code) {
-      selectAirport(attrs.apid, true);
-      found = true;
-      if(type == 'qs') {
-	$('qsid').value = attrs.apid;
-	$('qsgo').disabled = false;
-	$('qsgo').focus();
-      }
-      break;
+  if(selectAirport(null, true, true, code)) {
+    if(type == 'qs') {
+      $('qsid').value = attrs.apid;
+      $('qsgo').disabled = false;
+      $('qsgo').focus();
     }
-  }
-
-  // If not found, dig up from DB
-  if (!found) {
+  } else {
+    // If not found, dig up from DB
     xmlhttpPost(URL_GETCODE, code, type);
   }
 }
@@ -2331,15 +2391,14 @@ function markAirport(element, quick) {
     var point = new OpenLayers.Geometry.Point(x, y);
     var marker = new OpenLayers.Feature.Vector(point);
     marker.attributes = {
+      name: "",
       icon: icon,
       size: 17,
       offset: -17/2,
       opacity: 1,
-      name: "",
       code: data[0]
     };
-    airportLayer.addFeatures([marker]);
-
+    airportLayer.addFeatures(marker, {silent: true});
   }
   if(element.startsWith("src_ap")) {
     if(input_srcmarker) {
@@ -2493,28 +2552,43 @@ function swapAirports(manual) {
   }
 }
 
-// Given apid, find the matching airport and either pop it up (false) or mark it as selected (true)
+// Given apid or code, find the matching airport and either pop it up (select=false) or mark it as selected (select=true)
 // "quick" is passed to markAirport
-function selectAirport(apid, select, quick) {
+function selectAirport(apid, select, quick, code) {
   var found = false;
-  for(ap in airportLayer.features) {
-    var attrs = airportLayer.features[ap].attributes;
-    if(attrs && attrs.apid == apid) {
-      // If "select" is true, we select the airport into the input form instead of popping it up
-      if(select && (getCurrentPane() == "input" || getCurrentPane() == "multiinput")) {
-	var element = input_toggle;
-	$(element).value = attrs.name;
-	$(element).style.color = "#000";
-	$(element + 'id').value = attrs.apdata;
-	replicateSelection(element);
-	markAirport(element, quick);
-	markAsChanged(true);
-	closePopup(true);
-      } else {
-	onAirportSelect(airportLayer.features[ap]);
+  for(var ap = 0; ap < airportLayer.features.length; ap++) {
+    attrstack = new Array();
+    if(airportLayer.features[ap].cluster) {
+      for(var c = 0; c < airportLayer.features[ap].cluster.length; c++) {
+	attrstack.push(airportLayer.features[ap].cluster[c].attributes);
       }
-      found = true;
-      break;
+    } else {
+      attrstack.push(airportLayer.features[ap].attributes);
+    }
+    while(attrstack.length > 0) {
+      attrs = attrstack.pop();
+      if((apid && attrs.apid == apid) ||
+	 (code && attrs.code == code)) {
+	// If "select" is true, we select the airport into the input form instead of popping it up
+	if(select && (getCurrentPane() == "input" || getCurrentPane() == "multiinput")) {
+	  var element = input_toggle;
+	  $(element).value = attrs.name;
+	  $(element).style.color = "#000";
+	  $(element + 'id').value = attrs.apdata;
+	  replicateSelection(element);
+	  markAirport(element, quick);
+	  markAsChanged(true);
+	  closePopup(true);
+	} else {
+	  if(airportLayer.features[ap].cluster) {
+	    onAirportSelect(airportLayer.features[ap].cluster[attrstack.length]);
+	  } else {
+	    onAirportSelect(airportLayer.features[ap]);
+	  }
+	}
+	found = true;
+	break;
+      }
     }
   }
   if (!found && !quick) {
@@ -2522,6 +2596,7 @@ function selectAirport(apid, select, quick) {
       clearFilter(false);
     }
   }
+  return found;
 }
 
 // Change number of rows displayed in multiinput

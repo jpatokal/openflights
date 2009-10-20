@@ -12,14 +12,14 @@ require_once("./php/db.php");
     <link rel="stylesheet" href="/openflights.css?version=20080626" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <script type="text/javascript" src="/OpenLayers.js?version=20090201"></script>
+    <script type="text/javascript" src="/OpenLayers.js?version=20091020"></script>
     <script type="text/javascript" src="/js/greatcircle.js?version=20090810"></script>
     <script type="text/javascript" src="/js/utilities.js?version=20090326"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20090725"></script>
+    <script type="text/javascript" src="/openflights.js?version=20091020"></script>
   </head>
 
   <body>
@@ -34,7 +34,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-  <B><?php echo _("News")?> </b>: 14 Oct 2009: <a href="/blog/">Airline route maps updated.  See blog for details.</a>
+  <B><?php echo _("News")?> </b>: 20 Oct 2009: <a href="/blog/">Airport codes and clusters implemented!  See blog for details.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">
@@ -158,7 +158,7 @@ require_once("./php/db.php");
 <p><b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
 <b>Move around</b>: Use <img src="/img/north-mini.png" height=18 width=18><img src="/img/west-mini.png" height=18 width=18><img src="/img/east-mini.png" height=18 width=18><img src="/img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
 <b>Zoom in/out</b>: Use <img src="/img/zoom-plus-mini.png" height=18 width=18><img src="/img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="/img/zoom-world-mini.png" height=18 width=18>.<br>
-<b>Select region</b>: Click on <img src="/img/drag-rectangle-off.png" width=18 height=18>, then draw a rectangle.  Click on <img src="/img/panning-hand-off.png" width=18 height=18> to return to normal (panning) mode.<br>
+<b>Select region</b>: While holding down Shift key, click on the map and draw a rectangle with your mouse.<br>
 <b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.<br>
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.</p>
 	  </div> <!-- end help -->
