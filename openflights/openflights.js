@@ -2099,7 +2099,7 @@ function airportCodeToAirport(type) {
   // TODO: Also match against marker.name
   var code = $(type).value.toUpperCase();
   var found = false;
-  if(selectAirport(null, true, true, code)) {
+  if(selectAirport(null, true, false, code)) {
     if(type == 'qs') {
       $('qsid').value = attrs.apid;
       $('qsgo').disabled = false;
@@ -2595,7 +2595,7 @@ function selectAirport(apid, select, quick, code) {
     }
   }
   // Search failed
-  if (!quick) {
+  if (!quick && !code) {
     if(confirm("This airport is currently filtered out. Clear filter?")) {
       clearFilter(false);
     }
