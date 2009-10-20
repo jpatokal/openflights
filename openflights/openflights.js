@@ -478,7 +478,10 @@ function onAirportSelect(airport) {
     desc = "<b>" + gt.gettext("Airports") + "</b><br>";
     edit = (getCurrentPane() == "input" || getCurrentPane() == "multiinput") ? "true" : "false";
     for(c = 0; c < airport.cluster.length; c++) {
-      if(c > 0) desc += ", ";
+      if(c > 0) {
+	desc += ", ";
+	if(c % 6 == 0) desc += "<br>";
+      }
       desc += "<a href='#' onclick='JavaScript:selectAirport(" + airport.cluster[c].attributes.apid + ","
 	+ edit + ")'>" + airport.cluster[c].attributes.code + "</a>";
     }
