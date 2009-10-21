@@ -1,4 +1,9 @@
-<b>2009-10-16</b>
+<b>2009-10-21</b>
+
+* Optimized 'main airport in cluster' algorithm (last is always largest)
+* Add cluster mark, fix airport order in cluster tooltips
+
+<b>2009-10-20</b>
 
 * Upgraded to OpenLayers 2.8 RC5
 * Added labels and tooltips to airports (2515935)
