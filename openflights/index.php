@@ -19,7 +19,7 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20091020"></script>
+    <script type="text/javascript" src="/openflights.js?version=20091021"></script>
   </head>
 
   <body>
@@ -34,7 +34,7 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-  <B><?php echo _("News")?> </b>: 20 Oct 2009: <a href="/blog/">Airport codes and clusters implemented!  See blog for details.</a>
+  <B><?php echo _("News")?> </b>: 20 Oct 2009: <a href="/blog/2009/10/20/airport-codes-and-dynamic-clusters-oh-my/">Airport codes and clusters implemented!  See blog for details.</a>
 	    </div>
 	    
 	    <div id="ajaxloader">

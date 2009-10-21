@@ -160,31 +160,24 @@ window.onload = function init(){
 				       }, { context: {
 				     name: function(feature) {
 					 if(feature.cluster) {
-					   idx = 0;
-					   main = 0;
-					   for(c = 0; c < feature.cluster.length; c++) {
-					     i = parseInt(feature.cluster[c].attributes.index);
-					     if(i > idx) {
-					       idx = i;
-					       main = c;
-					     }
-					   }
-					   if(idx > 0) {
+					   // Last airport is always the largest
+					   last = feature.cluster.length - 1;
+					   if(feature.cluster[last].attributes.index > 2) {
 					     // One airport is dominant, copy its attributes into cluster
-					     feature.attributes.apid = feature.cluster[main].attributes.apid;
-					     feature.attributes.coreid = feature.cluster[main].attributes.coreid;
-					     feature.attributes.code = feature.cluster[main].attributes.code + "+";
-					     feature.attributes.desc = feature.cluster[main].attributes.desc;
-					     feature.attributes.rdesc = feature.cluster[main].attributes.rdesc;
-					     feature.attributes.icon = feature.cluster[main].attributes.icon;
-					     feature.attributes.size = feature.cluster[main].attributes.size;
-					     feature.attributes.offset = feature.cluster[main].attributes.offset;
-					     feature.attributes.name = feature.cluster[main].attributes.name;
+					     feature.attributes.apid = feature.cluster[last].attributes.apid;
+					     feature.attributes.coreid = feature.cluster[last].attributes.coreid;
+					     feature.attributes.code = feature.cluster[last].attributes.code + "+";
+					     feature.attributes.desc = feature.cluster[last].attributes.desc;
+					     feature.attributes.rdesc = feature.cluster[last].attributes.rdesc;
+					     feature.attributes.icon = feature.cluster[last].attributes.icon;
+					     feature.attributes.size = feature.cluster[last].attributes.size;
+					     feature.attributes.offset = feature.cluster[last].attributes.offset;
+					     feature.attributes.name = feature.cluster[last].attributes.name + " \u2295";
 					   } else {
 					     // No dominant airport, show cluster icon with aggregate info
 					     name = "";
-					     for(c = 0; c < feature.cluster.length; c++) {
-					       if(c > 0) name += ", ";
+					     for(c = last; c >= 0; c--) {
+					       if(c < last) name += ", ";
 					       name += feature.cluster[c].attributes.code;
 					     }
 					     feature.attributes.icon = "/img/icon_cluster.png";
@@ -494,9 +487,9 @@ function onAirportSelect(airport) {
   if (airport.popup == null) {
     airport.popup = new OpenLayers.Popup.FramedCloud("airport", 
 					     airport.geometry.getBounds().getCenterLonLat(),
-					     new OpenLayers.Size(200,110),
+					     new OpenLayers.Size(200,80),
 					     desc, null, false);
-    airport.popup.minSize = new OpenLayers.Size(200,110);
+    airport.popup.minSize = new OpenLayers.Size(200,80);
     airport.popup.overflow = "auto";
 
     map.addPopup(airport.popup);
