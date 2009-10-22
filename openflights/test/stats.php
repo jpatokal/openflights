@@ -26,7 +26,7 @@ class CheckAnalyseStats extends WebTestCase {
     $this->assertText('"num_airlines":"1"');
     $this->assertText('"num_planes":"1"');
     $this->assertText('"distance":"' . $flight2["distance"] . '"');
-    $this->assertText('"avg_distance":"' . $flight2["distance"] . '"');
+    $this->assertText('"avg_distance":"' . $flight2["distance"]); // ignore localized bit at end
     $this->assertText('"avg_duration":"' . $flight2["duration"] . '"');
   }
 }

@@ -71,12 +71,14 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $array += $row;
 }
 
-// unique airlines, unique planes, total distance, average distance, average duration
-$sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, ROUND(SUM(distance) $multiplier) AS distance, ROUND(AVG(distance) $multiplier) AS avg_distance, TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i') AS avg_duration FROM flights AS f WHERE " . $filter;
+// unique airlines, unique planes, total distance (mi), average distance (localized), average duration
+$sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, SUM(distance) AS distance, ROUND(AVG(distance) $multiplier) AS avg_distance, TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i') AS avg_duration FROM flights AS f WHERE " . $filter;
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $array += $row;
 }
+$array["avg_distance"] .= " " . $unit;
+$array["localedist"] = round($array["distance"] * ($units == "K" ? $KMPERMILE : 1)) . " " . $unit;
 print json_encode($array) . "\n";
 
 // longest and shortest

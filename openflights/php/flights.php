@@ -202,8 +202,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     // Filter out any carriage returns or tabs
     $note = str_replace(array("\n", "\r", "\t"), "", $note);
 
-    // Convert mi to km if units=K
-    if($units == "K") {
+    // Convert mi to km if units=K *and* we're not loading a single flight
+    if($units == "K" && (!$fid || $fid == "0")) {
       $row["distance"] = round($row["distance"] * $KMPERMILE);
     }
 
