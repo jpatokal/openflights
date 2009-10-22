@@ -1,3 +1,8 @@
+<b>2009-10-22</b>
+
+* Bugfix: Editing corrupted flight distances in km
+* Bugfix: Around the world distance computed incorrectly for km (2826981)
+
 <b>2009-10-21</b>
 
 * Optimized 'main airport in cluster' algorithm (last is always largest)

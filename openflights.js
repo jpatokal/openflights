@@ -1521,7 +1521,7 @@ function showStats(str) {
 
     var distance = parseInt(uniques["distance"]);
     table += "<tr><th colspan=2>" + gt.gettext("Distance") + "</th></tr>";
-    table += "<tr><td>" + gt.gettext("Total flown") + "</td><td>" + distance + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Total flown") + "</td><td>" + uniques["localedist"] + "</td></tr>";
     table += "<tr><td>" + gt.gettext("Around the world") + "</td><td>" + (distance / EARTH_CIRCUMFERENCE).toFixed(2) + "x</td></tr>";
     table += "<tr><td>" + gt.gettext("To the Moon") + "</td><td>" + (distance / MOON_DISTANCE).toFixed(3) + "x</td></tr>";
     table += "<tr><td>" + gt.gettext("To Mars") + "</td><td>" + (distance / MARS_DISTANCE).toFixed(4) + "x</td></tr>";
@@ -1534,9 +1534,9 @@ function showStats(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + parseInt(col[1]) + ", " + col[2] + "</td></tr>";
+      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[4] + ");\">" + col[3] + "</a>&harr;<a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[6] + ");\">" + col[5] + "</a>, " + col[1] + ", " + col[2] + "</td></tr>";
     }
-    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + parseInt(uniques["avg_distance"]) + ", " + uniques["avg_duration"] + "</td></tr>";
+    table += "<tr><td>" + gt.gettext("Average") + "</td><td>" + uniques["avg_distance"] + ", " + uniques["avg_duration"] + "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
     table += "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
