@@ -1,3 +1,7 @@
+<b>2009-11-30</b>
+
+* Bugfix: Tabs (and other whitespace) trimmed from flight number, seat, reg
+
 <b>2009-10-22</b>
 
 * Bugfix: Editing corrupted flight distances in km

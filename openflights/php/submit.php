@@ -36,6 +36,11 @@ $multi = $HTTP_POST_VARS["multi"];
 if(!$mode || $mode == "") {
   $mode = "F";
 }
+# Nuke any stray tabs or spaces
+if($number) $number = trim($number);
+if($registration) $registration = trim($registration);
+if($seat) $seat = trim($seat);
+
 
 $src_time = $HTTP_POST_VARS["src_time"];
 if(! $src_time || $src_time == "") {
