@@ -127,11 +127,14 @@ window.onload = function init(){
 					 {transitionEffect: 'resize', wrapDateLine: true}
 					 );
   
-  var jpl_wms = new OpenLayers.Layer.WMS( "Geographical (NASA)",
-					  "http://t1.hypercube.telascience.org/cgi-bin/landsat7", 
-					  {layers: "landsat7"},
-					  {transitionEffect: 'resize', wrapDateLine: true}
-					  );
+  var jpl_wms = new OpenLayers.Layer.WMS("Geographical (NASA)", 
+                ["http://t1.hypercube.telascience.org/tiles?",
+                 "http://t2.hypercube.telascience.org/tiles?",
+                 "http://t3.hypercube.telascience.org/tiles?",
+                 "http://t4.hypercube.telascience.org/tiles?"], 
+                {layers: 'landsat7'},
+	        {transitionEffect: 'resize', wrapDateLine: true}
+            );
   jpl_wms.setVisibility(false);
 
   lineLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),

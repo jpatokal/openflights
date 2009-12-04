@@ -1,3 +1,7 @@
+<b>2009-12-04</b>
+
+Bugfix: Fixed geographical (NASA) map layer
+
 <b>2009-11-30</b>
 
 * Bugfix: Tabs (and other whitespace) trimmed from flight number, seat, reg
