@@ -34,7 +34,8 @@ require_once("./php/db.php");
 
 	    <div id="news" style="display: none">
 	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-  <B><?php echo _("News")?> </b>: 20 Oct 2009: <a href="/blog/2009/10/20/airport-codes-and-dynamic-clusters-oh-my/">Airport codes and clusters implemented!  See blog for details.</a>
+  <B><?php echo _("News")?> </b>: 
+<?php include("./html/news.html") ?>
 	    </div>
 	    
 	    <div id="ajaxloader">
