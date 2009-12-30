@@ -25,14 +25,6 @@ var logged_in = false, demo_mode = true, initializing = true;
 var input_srcmarker, input_dstmarker, input_line, input_toggle, input_al_toggle;
 var changed = false, majorEdit = false;
 
-// If true, the value has been set by autocomplete
-var autocompleted = {"src_ap": false, "dst_ap": false, "airline": false,
-		     "src_ap1": false, "dst_ap1": false, "airline1": false, 
-		     "src_ap2": false, "dst_ap2": false, "airline2": false, 
-		     "src_ap3": false, "dst_ap3": false, "airline3": false, 
-		     "src_ap4": false, "dst_ap4": false, "airline4": false,
-		     "qs": false};
-
 // Some helpers for multiinput handling
 var multiinput_order = [ "src_ap1", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
 var multiinput_ids = [ "src_ap1id", "src_ap2id", "src_ap3id", "src_ap4id",
@@ -228,8 +220,8 @@ window.onload = function init(){
 
   initHintTextboxes();
   new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
-  			 {afterUpdateElement : getQuickSearchApid,
-			  indicator: ajaxstatus});
+  			 {afterUpdateElement : getQuickSearchId,
+			  indicator: ajaxstatus, minChars: 2});
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0 || query != 0) {
@@ -243,39 +235,22 @@ window.onload = function init(){
     $("quicksearch").style.display = 'inline';
 
     // Nope, set up hinting and autocompletes for editor
-    new Ajax.Autocompleter("src_ap", "src_apAC", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("dst_ap", "dst_apAC", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("airline", "airlineAC", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedAlid});
-    new Ajax.Autocompleter("plane", "planeAC", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedPlid});
-
-    new Ajax.Autocompleter("src_ap1", "src_apAC1", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("dst_ap1", "dst_apAC1", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("airline1", "airlineAC1", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedAlid});
-    new Ajax.Autocompleter("src_ap2", "src_apAC2", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("dst_ap2", "dst_apAC2", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("airline2", "airlineAC2", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedAlid});
-    new Ajax.Autocompleter("src_ap3", "src_apAC3", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("dst_ap3", "dst_apAC3", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("airline3", "airlineAC3", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedAlid});
-    new Ajax.Autocompleter("src_ap4", "src_apAC4", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("dst_ap4", "dst_apAC4", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedApid});
-    new Ajax.Autocompleter("airline4", "airlineAC4", "php/autocomplete.php",
-    			   {afterUpdateElement : getSelectedAlid});
+    ac_airport = [ "src_ap", "src_ap1", "src_ap2", "src_ap3", "src_ap4",
+		   "dst_ap", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
+    ac_airline = [ "airline", "airline1", "airline2", "airline3", "airline4" ];
+    ac_plane = [ "plane" ];
+    for(ac = 0; ac < ac_airport.length; ac++) {
+      new Ajax.Autocompleter(ac_airport[ac], ac_airport[ac] + "AC", "php/autocomplete.php",
+			     {afterUpdateElement : getSelectedApid});
+    }
+    for(ac = 0; ac < ac_airline.length; ac++) {
+      new Ajax.Autocompleter(ac_airline[ac], ac_airline[ac] + "AC", "php/autocomplete.php",
+			     {afterUpdateElement : getSelectedAlid});
+    }
+    for(ac = 0; ac < ac_plane.length; ac++) {
+      new Ajax.Autocompleter(ac_plane[ac], ac_plane[ac] + "AC", "php/autocomplete.php",
+    		     {afterUpdateElement : getSelectedPlid});
+    }
 
     // No idea why this is needed, but FF3 disables random buttons without it...
     for(i=0;i<document.forms['inputform'].elements.length;i++){
@@ -586,17 +561,21 @@ function xmlhttpPost(strURL, id, param) {
 	case 'qs':
 	  var alid = cols[0];
 	  if(alid != "" && alid != 0) {
-	    $('qsid').value = cols[0].split(":")[1];
+	    if(cols[0].indexOf(":") > 0) {
+	      $('qsid').value = cols[0].split(":")[1]; // airport
+	    } else {
+	      $('qsid').value = "L" + cols[0]; // airline
+	    }
+	    $('qs').autocompleted = true;
 	    $('qs').value = cols[1];
 	    $('qs').style.color = '#000000';
 	    $('qsgo').disabled = false;
 	    $('qsgo').focus();
-	    autocompleted['qs'] = true;
 	  } else {
+	    $('qs').autocompleted = false;
 	    $('qsid').value = 0;
 	    $('qs').style.color = '#FF0000';
 	    $('qsgo').disabled = true;
-	    autocompleted['qs'] = false;
 	  }
 	  break;
 
@@ -1799,11 +1778,10 @@ function editFlight(str, param) {
 
   $('src_ap').style.color = '#000000';
   $('dst_ap').style.color = '#000000';
+  $('src_ap').autocompleted = true;
+  $('dst_ap').autocompleted = true;
   $('airline').style.color = '#000000';
   $('plane').style.color = '#000000';
-
-  autocompleted['src_ap'] = true;
-  autocompleted['dst_ap'] = true;
 
   // Don't allow saving until something is changed
   setCommitAllowed(false);
@@ -1973,7 +1951,6 @@ function getSelectedApid(text, li) {
   replicateSelection(element);
   markAirport(element);
   markAsChanged(true); // new airport, force refresh
-  autocompleted[element] = true;
 }
 
 //
@@ -1984,7 +1961,6 @@ function getSelectedAlid(text, li) {
   $(element).style.color = '#000000';
   $(element + 'id').value=li.id;
   markAsChanged(true); // new airline, force refresh
-  autocompleted[element] = true;
 }
 
 function getSelectedPlid(text, li) {
@@ -1996,7 +1972,7 @@ function getSelectedPlid(text, li) {
 //
 
 // Autocompleted airport or airline
-function getQuickSearchApid(text, li) {
+function getQuickSearchId(text, li) {
   var id = li.id;
   if(id.indexOf(":") > 0) {
     // code:apid:x:y
@@ -2007,7 +1983,6 @@ function getQuickSearchApid(text, li) {
   }
   $('qsid').value = id; 
   $('qsgo').disabled = false;
-  autocompleted['qs'] = true;
 }
 
 // Show map!
@@ -2078,17 +2053,13 @@ function newTrip(code, newTrid, name, url) {
 // When user has manually entered an airport code, try to match it
 // "type" contains the element name
 function airportCodeToAirport(type) {
-  // Ignore autocomplete results
-  if(autocompleted[type]) {
-    return;
-  }
-  input_toggle = type;
+   input_toggle = type;
   markAsChanged(true);
 
   // Is it blank?
   if($(type).value == "") {
+    $(type).autocompleted = false;
     $(type + 'id').value = 0;
-    autocompleted[type] = false;
     return;
   }
 
@@ -2148,12 +2119,6 @@ function flightNumberToAirline(type) {
     }
   } else {
     // This is a manually entered airline name
-    // Ignore autocompleted results
-    if(autocompleted[type]) {
-      autocompleted[type] = false;
-      return;
-    }
-
     // Is it blank?
     if($(type).value == "") {
       $(type + 'id').value = 0;
@@ -2662,11 +2627,13 @@ function replicateSelection(source) {
   if($(source + 'id').value != 0 && $(target + 'id').value == 0) {
     $(target).value = $(source).value;
     $(target).style.color = "#000";
-    $(target + 'id').value = $(source + 'id').value;
+    $(target).autocompleted = $(source).autocompleted;
+    $(target + 'id').value = $(source + 'id').value;    
   }
   if($(al_source + 'id').value != 0  && $(al_target + 'id').value == 0) {
     $(al_target).value = $(al_source).value;
     $(al_target).style.color = "#000";
+    $(al_target).autocompleted = $(al_source).autocompleted;
     $(al_target + 'id').value = $(al_source + 'id').value;
   }
   if($(date_target).value == "") {
@@ -2731,7 +2698,8 @@ function settings() {
 //
 // Handle keypresses
 // 1. Let users log in by pressing ENTER (from onKeyPress) or TAB (from onChange)
-// 2. Reset autocompleted entries if user hits BACKSPACE
+// 2. Get codes if user hits TAB on autocompletable field
+// 3. Reset autocompleted entries if user hits BACKSPACE
 // 
 function keyPress(e, element) {
   var keycode;
@@ -2742,15 +2710,43 @@ function keyPress(e, element) {
     if(e == "CHANGE") {
       if(logged_in == "pending") return true;
     }
-    if (keycode == 13 || e == "CHANGE") {
+    if (keycode == Event.KEY_RETURN || e == "CHANGE") {
       logged_in = "pending";
       xmlhttpPost("/php/login.php");
     }
   } else {
-    if(keycode == 8 && autocompleted[element]) {
+    if(keycode == Event.KEY_TAB) {
+      // Ignore fields that are already autocompleted
+      if($(element).autocompleted) return;
+
+      switch(element) {
+      case "qs":
+      case "src_ap":
+      case "src_ap1":
+      case "src_ap2":
+      case "src_ap3":
+      case "src_ap4":
+      case "dst_ap":
+      case "dst_ap1":
+      case "dst_ap2":
+      case "dst_ap3":
+      case "dst_ap4":
+	airportCodeToAirport(element);
+	break;
+
+      case "airline":
+      case "airline1":
+      case "airline2":
+      case "airline3":
+      case "airline4":
+	flightNumberToAirline(element);
+	break;
+      }
+    }
+    if(keycode == Event.KEY_BACKSPACE && $(element).autocompleted) {
+      $(element).autocompleted = false;
       $(element).value = "";
       $(element + 'id').value = 0;
-      autocompleted[element] = false;
       if(element.startsWith("src_ap") || element.startsWith("dst_ap")) {
 	invalidateAirport(element);
       }
@@ -3080,10 +3076,16 @@ function clearInput() {
     form.src_ap1.focus();
     form.src_ap1.style.color = '#000000';
   }
-  unmarkAirports();
-  for(a = 0; a < autocompleted.length; a++) {
-    autocompleted[a] = false;
+  for(ac = 0; ac < ac_airport.length; ac++) {
+    $(ac_airport[ac]).autocompleted = false;
   }
+  for(ac = 0; ac < ac_airline.length; ac++) {
+    $(ac_airline[ac]).autocompleted = false;
+  }
+  for(ac = 0; ac < ac_plane.length; ac++) {
+    $(ac_plane[ac]).autocompleted = false;
+  }
+  unmarkAirports();
   setCommitAllowed(false);
 }
 
@@ -3188,3 +3190,9 @@ function refreshAd() {
   }
   return true;
 }
+
+function of_debug(str) {
+  $("maptitle").innerHTML = $("maptitle").innerHTML + "<br>" + str;
+}
+
+

@@ -1,3 +1,11 @@
+<b>2009-12-30</b>
+
+* Assume two-char tabbed quick searches are airlines
+* Added favicons for About, Donate, FAQ
+* Bugfix: Completely reworked handling of tabs before autocompletion (2921386)
+* Bugfix: Do not return airlines after a successful airport match in limit-1 quicksearch (2921386)
+* Bugfix: Fix tabbed quick searches for airlines (2920325)
+
 <b>2009-12-11</b>
 
 * December route map update

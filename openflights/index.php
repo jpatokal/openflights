@@ -18,8 +18,8 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
-    <script type="text/javascript" src="/js/scriptaculous.js?version=20090326"></script>
-    <script type="text/javascript" src="/openflights.js?version=20091022"></script>
+    <script type="text/javascript" src="/js/scriptaculous.js?version=20091230"></script>
+    <script type="text/javascript" src="/openflights.js?version=20091230"></script>
   </head>
 
   <body>
@@ -44,7 +44,7 @@ require_once("./php/db.php");
 
 	    <div id="quicksearch" style="display: none">
               <img src="/img/layer-switcher-minimize.png" height=18 width=18 title="<?php echo _("Hide search bar") ?>" onClick="$('quicksearch').style.display='none'">
-  <input type="text" name="qs" id="qs" size="60" tabindex="5" onChange='airportCodeToAirport("qs")' onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/><div id="qsAC"></div>
+  <input type="text" name="qs" id="qs" size="60" tabindex="5" onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/><div id="qsAC"></div>
 	      <input type="hidden" name="qsid" id="qsid"/>
 	      <input type="button" id="qsgo" tabindex="6" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
 	    </div>
@@ -187,7 +187,7 @@ require_once("./php/db.php");
 
 </tr><tr>
   <td><font color="blue"><?php echo _("From") ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a></td>
-  <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onChange='JavaScript:airportCodeToAirport("src_ap")' onKeyDown='keyPress(event, "src_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="src_apAC"></div>
+  <td><input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onKeyDown='keyPress(event, "src_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="src_apAC"></div>
       <input type="hidden" name="src_apid" id="src_apid"/></td>
   <td rowspan=2 valign=middle align=left>
     <img src="/img/icon_plane-src.png" title="<?php echo _("Airport search") ?>" height=17 width=17 onclick='JavaScript:popNewAirport("src_ap")'/ style="margin-left: 5px"/> <img src="/img/swap-icon.png" title="<?php echo _("Swap To and From airports") ?>" height=17 width=17 onclick='JavaScript:swapAirports(true)' style="margin-right: 10px"/><br>
@@ -201,7 +201,7 @@ require_once("./php/db.php");
 
 </tr><tr>
   <td><font color="blue"><?php echo _("To") ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a></td>
-  <td><input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onChange='JavaScript:airportCodeToAirport("dst_ap")' onKeyDown='keyPress(event, "dst_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="dst_apAC"></div>
+  <td><input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onKeyDown='keyPress(event, "dst_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="dst_apAC"></div>
       <input type="hidden" name="dst_apid" id="dst_apid"/></td>
 
   <td><?php echo _("Class") ?></td>
@@ -236,7 +236,7 @@ require_once("./php/db.php");
 
 </tr><tr>
   <td><?php echo _("Carrier") ?><a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="Help: How do I enter airlines?" height=11 width=10></a></td>
-  <td><input type="text" name="airline" id="airline" size="60" tabindex="20" onChange='JavaScript:flightNumberToAirline("airline")' onKeyDown='keyPress(event, "airline")' class="hintTextbox" value="<?php echo _("Enter airline name or code") ?>"/><div id="airlineAC"></div>
+  <td><input type="text" name="airline" id="airline" size="60" tabindex="20" onKeyDown='keyPress(event, "airline")' class="hintTextbox" value="<?php echo _("Enter airline name or code") ?>"/><div id="airlineAC"></div>
       <input type="hidden" name="airlineid" id="airlineid"/> </td>
   <td><img id="icon_airline" src="/img/icon_airline.png" title="<?php echo _("Airline search") ?>" height=17 width=17 onclick='JavaScript:popNewAirline("airline")' style="margin-left: 5px"/>
   </td>
@@ -283,13 +283,13 @@ require_once("./php/db.php");
 <?php
 for($row = 1; $row <= 4; $row++) {
   echo "<tr id='row$row' " . ($row > 1 ? "style='display: none;'" : "") . "> <!-- Row $row -->\n";
-  printf("<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onChange='JavaScript:airportCodeToAirport(\"src_ap%s\")' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_apAC$row'></span>\n", $row, $row, $row, $row, $row, _("Enter city name or airport code"));
+  printf("<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_ap{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"));
   printf("<input type='hidden' name='src_ap%sid' id='src_ap%sid'>\n", $row, $row);
   printf("<img src='/img/icon_plane-src.png' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n", _("Airport search"));
-  printf("<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onChange='JavaScript:airportCodeToAirport(\"dst_ap%s\")' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_apAC%s'></span>\n", $row, $row, $row, $row, $row, _("Enter city name or airport code"), $row);
+  printf("<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_ap%sAC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"), $row);
   printf ("<input type='hidden' name='dst_ap1%s' id='dst_ap%sid'/>\n", $row, $row);
   printf ("<img src='/img/icon_plane-dst.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n", _("Airport search"));
-  printf ("<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onChange='JavaScript:flightNumberToAirline(\"airline$row\")' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airlineAC$row'></span>\n", $row, $row, $row, $row, _("Enter airline name or code"));
+  printf ("<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airline{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter airline name or code"));
   printf ("<input type='hidden' name='airline%sid' id='airline%sid'/><img src='/img/icon_airline.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirline(\"airline1\")'/ style='margin-right: 5px'/></td>\n", $row, $row, _("Airline search"));
   printf ("<td><input type='text' name='src_date%s' id='src_date%s' size='11' class='date' tabindex='1%s4' onChange='JavaScript:markAsChanged()';/><img src='/img/scw.gif' height='15' width='16' onclick='scwShow(scwID(\"src_date%s\"),event); markAsChanged();' style='margin-left: 5px'/></td></tr>\n", $row, $row, $row, $row);
 }
