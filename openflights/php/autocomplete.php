@@ -68,6 +68,7 @@ if($query) {
 	printf ("<li class='autocomplete' origin='%s' id='%s'>%s</li>\n", $ap, format_apdata($row), format_airport($row));
       } else {
 	printf ("%s;%s", format_apdata($row), format_airport($row));
+	exit; // match found, do not fall thru to airlines
       }
     }
   }
