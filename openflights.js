@@ -589,11 +589,13 @@ function xmlhttpPost(strURL, id, param) {
 	    $(param + 'id').value = cols[0];
 	    $(param).value = cols[1];
 	    $(param).style.color = '#000000';
+	    $(param).autocompleted = true;
 	    replicateSelection(param);
 	    markAsChanged(true); // new airline, force refresh on save
 	  } else {
 	    $(param).style.color = '#FF0000';
 	    $(param + 'id').value = 0;
+	    $(param).autocompleted = false;
 	  }
 	  break;
 
@@ -613,6 +615,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $(param + 'id').value = apdata;
 	    $(param).value = cols[1];
 	    $(param).style.color = '#000000';
+	    $(param).autocompleted = true;
 	    replicateSelection(param);
 	    markAirport(param); // new airport, force refresh on save
 	    markAsChanged(true);
@@ -652,6 +655,7 @@ function xmlhttpPost(strURL, id, param) {
 	    closePopup(true);
 	    $('qs').value = $('qs').hintText;
 	    $('qs').style.color = '#888';
+	    $('qs').autocompleted = false;
 	    $('qsid').value = 0;
 	    $('qsgo').disabled = true;
 	    if(filter_alid == 0) {
@@ -2085,6 +2089,7 @@ function invalidateAirport(type) {
     $(type).style.color = '#FF0000';
   }
   $(type + 'id').value = 0;
+  $(type).autocompleted = false;
   markAirport(type);
 }
 
