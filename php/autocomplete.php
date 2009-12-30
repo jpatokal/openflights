@@ -34,7 +34,9 @@ foreach($airports as $ap) {
     break;
   }
 }
-if($query) {
+
+// In limited multi mode, two-letter strings are assumed to be airlines
+if($query && ! ($multi && $limit == 1 && strlen($query) < 3)) {
   if(strlen($query) <= 3) {
     $ext = "iata!='' AND iata != '" . $query . "' AND";
   } else {

@@ -1228,6 +1228,7 @@ Autocompleter.Base.prototype = {
       this.options.updateElement(selectedElement);
       return;
     }
+    this.element.autocompleted = true;
     var value = '';
     if (this.options.select) {
       var nodes = document.getElementsByClassName(this.options.select, selectedElement) || [];
@@ -1327,7 +1328,7 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
   getUpdatedChoices: function() {
     token = this.getToken();
     // Don't autocomplete for empty, single-char or existing entries like "Foo (FOO)"
-    if(token.length < 2 || token.indexOf("(") != -1) {
+    if(token.indexOf("(") != -1) {
       return;
     }
     entry = encodeURIComponent(this.options.paramName) + '=' +
