@@ -22,7 +22,7 @@ $fbuid = $facebook->require_login();
 
 // Clear prefs, DB if user passes in reset=true, so they can reconfig
 if($_REQUEST["reset"] == "true") {
-  $facebook->api_client->data_setUserPreference(1, 0);
+  $facebook->api_client->data_setUserPreference(1, "None");
   $sql = "DELETE FROM facebook WHERE fbuid=$fbuid";
   $result = mysql_query($sql, $db);
   fb_infobox("<b>Account reset.</b>");
@@ -30,7 +30,7 @@ if($_REQUEST["reset"] == "true") {
 
 // Has the user configured their OpenFlights name?
 $ofname = $facebook->api_client->data_getUserPreference(1);
-if(! $ofname || $ofname == "") {
+if(! $ofname || $ofname == "" || $ofname == "None") {
   // Nope, did they just submit it?
   $ofname = $_REQUEST["ofname"];
   if($ofname) {
@@ -129,14 +129,16 @@ if($_REQUEST["prefupdate"] == "Y") {
 $profile_box = get_profile($db, $uid, $fbuid, $ofname);
 echo "<br/><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div><br/>";
 $facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
+$facebook->api_client->fbml_refreshImgSrc("http://openflights.org/facebook/map.php?uid=$uid");
 
 // Wall preferences and session generation
 print "<form requirelogin='1'>";
-if(! $session) {
+$permission = $facebook->api_client->call_method('Users.hasAppPermission',array('ext_perm'=>'publish_stream', 'uid'=>$fbuid));
+if(! $permission) {
 ?>
 
   <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook Wall and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
-  <fb:prompt-permission perms="offline_access"> Grant permission for offline updates </fb:prompt-permission>
+  <fb:prompt-permission perms="publish_stream"> Grant permission to publish posts </fb:prompt-permission>
 
   <p><b>Step 2</b>: <i>After</i> granting permission, set your preferences and click Activate below to activate automatic updating.</p>
 <?php

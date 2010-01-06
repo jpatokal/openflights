@@ -30,11 +30,9 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($today == "Y") {
       // Get details of all of today's flights
       $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) ORDER BY f.upd_time"; // no limit!
-      $message = '{*actor*} is flying from {*src*} to {*dst*} today!';
     } else {
       // Get details of last flight entered
       $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
-      $message = '{*actor*} added {*count*} new flights, including a flight from {*src*} to {*dst*}, to <fb:pronoun uid="actor" useyou="false" possessive="true"/> OpenFlights!';
     }
     $detailresult = mysql_query($sql, $db);
     if(mysql_num_rows($detailresult) == 0) {
@@ -49,25 +47,30 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$src = $detail["src"];
 	$dst = $detail["dst"];
       }
+      $distance = $row["distance"];
       try{
 	// Use this user's session key
 	$facebook->api_client->session_key = $infinitesessionkey;
 
 	// Publish feed story
+        if($today == 'Y') {
+          $message = "is flying from $src to $dst today!";
+        } else {
+          $message = "added $count new flights covering $distance miles, including a flight from $src to $dst, to their OpenFlights!";
+        }
 	$attachment = array( 'name' => 'OpenFlights',
-			   'caption' => $message,
-			   'src' => $src,
-			   'dst' => $dst,
-			   'count' => $count,
-			   'distance' => $row["distance"],
+			   'caption' => "Flight logging, mapping, stats and sharing",
 			   'href' => 'http://openflights/user/' . $ofname );
 	$attachment = json_encode($attachment);
+        $action_links = array(array('text' => 'View map',
+	                            'href' => 'http://openflights/user/' . $ofname ));
 	$action_links = json_encode($action_links);
 	$facebook->api_client->stream_publish($message, $attachment, $action_links);
 
 	// Update the user's profile box
 	$profile_box = get_profile($db, $uid, $fbuid, $ofname);
 	$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
+        $facebook->api_client->fbml_refreshImgSrc("http://openflights.org/facebook/map.php?uid=$uid");
 
 	// Mark user as updated
 	$sql = "UPDATE facebook SET updated=NOW() WHERE uid=$uid";
@@ -77,7 +80,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	} else {
 	  $fbupdates++;
 	}
-      }catch(FacebookRestClientException $e){
+      }catch(Exception $e){
 	switch($e->getCode()) {
 	case FacebookAPIErrorCodes::API_EC_EDIT_FEED_TOO_MANY_USER_ACTION_CALLS:
 	  // Too many updates, try again later
