@@ -1,5 +1,5 @@
 <?php
-// Copyright 2004-2008 Facebook. All Rights Reserved.
+// Copyright 2004-2009 Facebook. All Rights Reserved.
 //
 // +---------------------------------------------------------------------------+
 // | Facebook Platform PHP5 client                                             |
@@ -60,7 +60,7 @@ class FacebookDesktop extends Facebook {
 
   public function set_session_secret($session_secret) {
     $this->secret = $session_secret;
-    $this->api_client->secret = $session_secret;
+    $this->api_client->use_session_secret($session_secret);
   }
 
   public function require_login() {
