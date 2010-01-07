@@ -259,10 +259,10 @@ function loadAirline(data) {
 
   var form = document.forms['searchform'];
   form.name.value = col["name"];
-  form.alias.value = col["alias"];
-  form.iata.value = col["iata"];
-  form.icao.value = col["icao"];
-  form.callsign.value = col["callsign"];
+  if(col["alias"] != "null") form.alias.value = col["alias"];
+  if(col["iata"] != "null") form.iata.value = col["iata"];
+  if(col["icao"] != "null") form.icao.value = col["icao"];
+  if(col["callsign"] != "null") form.callsign.value = col["callsign"];
   form.mode.value = col["mode"];
   country = col["country"];
   var country_select = form.country;
@@ -329,6 +329,7 @@ function clearSearch() {
   form.country.selectedIndex = 0;
   form.active.selectedIndex = 0;
   form.mode.selectedIndex = 0;
+  changeMode();
   form.iata.value = "";
   form.icao.value = "";
   form.alias.value = "";

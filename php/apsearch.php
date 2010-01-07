@@ -109,49 +109,56 @@ if(! $dbname) {
 }
 $sql = "SELECT * FROM " . mysql_real_escape_string($dbname) . " WHERE ";
 
-// Build filter
-if($airport) {
-  $sql .= " name LIKE '%" . mysql_real_escape_string($airport) . "%' AND";
-}
-if($iata) {
-  $sql .= " iata='" . mysql_real_escape_string($iata) . "' AND";
-}
-if($icao) {
-  $sql .= " icao='" . mysql_real_escape_string($icao) . "' AND";
-}
-if($city) {
-  $sql .= " city LIKE '" . mysql_real_escape_string($city) . "%' AND";
-}
-if($country != "ALL") {
-  if($dbname == "airports_dafif" || $dbname == "airports_oa") {
-    if($code) {
-      $sql .= " code='" . mysql_real_escape_string($code) . "' AND";
-    }
-  } else {
-    if($country) {
-      $sql .= " country='" . mysql_real_escape_string($country) . "' AND";
+// Single-airport fetch?
+if($action == "LOAD") {
+  $sql .= " apid=" . mysql_real_escape_string($apid);
+ } else {
+
+  // Build filter
+  if($airport) {
+    $sql .= " name LIKE '%" . mysql_real_escape_string($airport) . "%' AND";
+  }
+  if($iata) {
+    $sql .= " iata='" . mysql_real_escape_string($iata) . "' AND";
+  }
+  if($icao) {
+    $sql .= " icao='" . mysql_real_escape_string($icao) . "' AND";
+  }
+  if($city) {
+    $sql .= " city LIKE '" . mysql_real_escape_string($city) . "%' AND";
+  }
+  if($country != "ALL") {
+    if($dbname == "airports_dafif" || $dbname == "airports_oa") {
+      if($code) {
+	$sql .= " code='" . mysql_real_escape_string($code) . "' AND";
+      }
+    } else {
+      if($country) {
+	$sql .= " country='" . mysql_real_escape_string($country) . "' AND";
+      }
     }
   }
-}
-
-// Disable this filter for DAFIF (no IATA data)
-if($iatafilter == "false" || $dbname == "airports_dafif") {
-  $sql .= " 1=1"; // dummy
- } else {
-  $sql .= " iata != '' AND iata != 'N/A'";
+  
+  // Disable this filter for DAFIF (no IATA data)
+  if($iatafilter == "false" || $dbname == "airports_dafif") {
+    $sql .= " 1=1"; // dummy
+  } else {
+    $sql .= " iata != '' AND iata != 'N/A'";
+  }
 }
 if(! $offset) {
   $offset = 0;
 }
-$sql .= " ORDER BY name";
 
-$result = mysql_query($sql . " LIMIT 10 OFFSET " . $offset, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql);
-$result2 = mysql_query(str_replace("*", "COUNT(*)", $sql), $db);
+$sql2 = str_replace("*", "COUNT(*)", $sql);
+$result2 = mysql_query($sql2, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql2);
 if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
   $max = $row[0];
 }
 printf("%s;%s", $offset, $max);
 
+$sql .= " ORDER BY name LIMIT 10 OFFSET " . $offset;
+$result = mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($dbname == "airports_dafif" || $dbname == "airports_oa") {
     $row["country"] = $row["code"];

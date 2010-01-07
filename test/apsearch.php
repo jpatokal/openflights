@@ -103,6 +103,30 @@ class EditAirportSuccessfulTest extends WebTestCase {
   }
 }
 
+// Load a single airport
+class LoadAirportByApidTest extends WebTestCase {
+  function test() {
+    global $webroot, $airport, $new_apid;
+
+    login($this);
+    $params = array("apid" => $new_apid,
+		    "action" => "LOAD");
+    $msg = $this->post($webroot . "php/apsearch.php", $params);
+    $this->assertText('0;1');
+    $this->assertText('"name":"' . $airport["name"] . ' Edited"');
+    $this->assertText('"city":"' . $airport["city"] . '"');
+    $this->assertText('"country":"' . $airport["country"] . '"');
+    $this->assertText('"iata":"' . $airport["iata"] . '"');
+    $this->assertText('"icao":"'. $airport["icao"] . '"');
+    $this->assertText('"x":"' . $airport["x"] . '"');
+    $this->assertText('"y":"' . $airport["y"] . '"');
+    $this->assertText('"elevation":"' . $airport["elevation"] . '"');
+    $this->assertText('"timezone":"' . $airport["timezone"] . '"');
+    $this->assertText('"dst":"' . $airport["dst"] . '"');
+    $this->assertText('"ap_uid":"own"');
+  }
+}
+
 // Search OpenFlights DB by IATA (of just-added airport)
 class SearchAirportOFDBByIATATest extends WebTestCase {
   function test() {

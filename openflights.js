@@ -416,7 +416,7 @@ function onAirportSelect(airport) {
   // Single airport?
   if(!airport.cluster) {
     // Add toolbar to popup
-    desc = "<span style='position: absolute; right: 5; bottom: 3;'>" +
+    desc = "<span style='position: absolute; right: 5; bottom: 1;'>" +
       "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
     
     if(coreid == 0) {
@@ -443,11 +443,12 @@ function onAirportSelect(airport) {
       // IATA airport, we know its routes
       desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_ROUTES + "\"," + apid + ");'><img src='/img/icon_routes.png' width=17 height=17 title='" + gt.gettext("Map of routes from this airport") + "'></a>";
     }
+    desc += " <a href='#' onclick='JavaScript:popNewAirport(null, " + apid + ")'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("View airport details") + "'></a>";
     desc += "</span>" + airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
   } else {
     // Cluster, generate clickable list of members in reverse order (most flights first)
     desc = "<b>" + gt.gettext("Airports") + "</b><br>";
-    edit = (getCurrentPane() == "input" || getCurrentPane() == "multiinput") ? "true" : "false";
+    edit = isEditMode() ? "true" : "false";
     cmax = airport.cluster.length - 1;
     for(c = cmax; c >= 0; c--) {
       if(c < cmax) {
@@ -483,7 +484,7 @@ function onAirportSelect(airport) {
   }
   // Show or hide toolbar when applicable
   if($('popup' + apid)) {
-    if(getCurrentPane() == "input" || getCurrentPane() == "multiinput") {
+    if(isEditMode()) {
       $('popup' + apid).style.visibility = "visible";
     } else {
       $('popup' + apid).style.visibility = "hidden";
@@ -775,13 +776,13 @@ function xmlhttpPost(strURL, id, param) {
 	  $('src_date' + indexes[i]).focus();
 	  return;
 	}
-	var src_apid = $('src_ap' + indexes[i] + 'id').value.split(':')[1];
+	var src_apid = getApid('src_ap' + indexes[i]);
 	if(! src_apid || src_apid == "0") {
 	  alert(gt.gettext("Please enter a valid source airport."));
 	  $('src_ap' + indexes[i]).focus();
 	  return;
 	}
-	var dst_apid = $('dst_ap' + indexes[i] + 'id').value.split(':')[1];
+	var dst_apid = getApid('dst_ap' + indexes[i]);
 	if(! dst_apid || dst_apid == "0") {
 	  alert(gt.gettext("Please enter a valid destination airport."));
 	  $('dst_ap' + indexes[i]).focus();
@@ -1873,17 +1874,17 @@ function changeMode(mode) {
 }
 
 // Handle the "add new airports" buttons
-function popNewAirport(type) {
-  var apid = 0;
+function popNewAirport(type, apid) {
+  if(! apid) apid = 0;
   url = '/html/apsearch';
   if(type) {
     input_toggle = type;
-    apid = $(type + 'id').value;
+    apid = getApid(type);
   }
   if(apid != 0) {
     url += "?apid=" + apid;
   }
-  window.open(url, 'Airport', 'width=550,height=580,scrollbars=yes');
+  window.open(url, 'Airport', 'width=580,height=580,scrollbars=yes');
 }
 
 // Read in newly added airport (from Airport Search)
@@ -1907,7 +1908,7 @@ function popNewAirline(type, name, mode) {
   if(name) {
     url += "?name=" + encodeURIComponent(name) + "&mode=" + mode;
   }
-  window.open(url, 'Airline', 'width=500,height=580,scrollbars=yes');
+  window.open(url, 'Airline', 'width=580,height=580,scrollbars=yes');
 }
 
 // Read in newly added airline
@@ -2540,7 +2541,7 @@ function selectAirport(apid, select, quick, code) {
       if((apid && attrs.apid == apid) ||
 	 (code && attrs.code == code)) {
 	// If "select" is true, we select the airport into the input form instead of popping it up
-	if(select && (getCurrentPane() == "input" || getCurrentPane() == "multiinput")) {
+	if(select && isEditMode()) {
 	  var element = input_toggle;
 	  $(element).value = attrs.name;
 	  $(element).style.color = "#000";
@@ -2888,6 +2889,12 @@ function getCurrentPane() {
   return paneStack[paneStack.length-1];
 }
 
+// Return true if we are in detailed or multi edit mode
+function isEditMode() {
+  currentPane = getCurrentPane();
+  return (currentPane == "input" || currentPane == "multiinput");
+}
+
 // Open a new pane
 // If the pane is open already, do nothing
 function openPane(newPane) {
@@ -2917,7 +2924,7 @@ function closePane() {
 
   var currentPane = paneStack.pop();
   var lastPane = getCurrentPane();
-  if(currentPane == "input" || currentPane == "multiinput") {
+  if(isEditMode()) {
     unmarkAirports();
     $("newairport").style.display = 'none';
     $("qsmini").style.display = 'block';
