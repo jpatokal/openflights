@@ -87,8 +87,11 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
           echo "Exception: Feed limit exceeded for user $uid (FB $fbuid), will keep trying\n";
 	  break;
 	  
-	case FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY:
 	case FacebookAPIErrorCodes::API_EC_PERMISSION:
+          echo "Exception: User $uid (FB $fbuid) has not granted permission to stream publish\n";
+          break;
+
+	case FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY:
           // Clear out if session key expired or access is denied
 	  $sql = "UPDATE facebook SET sessionkey=NULL WHERE uid=$uid";
 	  mysql_query($sql, $db);
