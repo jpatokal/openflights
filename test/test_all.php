@@ -5,6 +5,11 @@ require_once('config.php');
 
 print '<h1>OpenFlights PHP/SQL Test Suite</h1>';
 
+// Helper functions
+$test = &new TestSuite('Helper');
+$test->addTestFile('helper.php');
+$test->run(new HtmlReporter());
+
 // Create user
 $test = &new TestSuite('Signup/Settings');
 $test->addTestFile('settings.php');
