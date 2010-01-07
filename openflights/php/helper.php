@@ -18,14 +18,7 @@ function format_apdata($row) {
 // row: associative array containing iata, icao
 //
 function format_apcode($row) {
-  $code = $row["iata"];
-  if(! $code || $code == "N/A") {
-    $code = $row["icao"];
-    if(! $code) {
-      $code = "Priv";
-    }
-  }
-  return $code;
+  return format_apcode2($row["iata"], $row["icao"]);
 }
 
 function format_apcode2($iata, $icao) {
@@ -56,7 +49,7 @@ function format_airport($row) {
 
   // Foobar-Foobar Intl into Foobar Intl
   // Foo-bar-Foo Bar Intl into Foo Bar Intl
-  if(strncasecmp($name, strtr($city, "-", " "), strlen($city)) == 0) {
+  if(strncasecmp(strtr($name, "-", " "), strtr($city, "-", " "), strlen($city)) == 0) {
     $city = "";
   } else {
     $city = $city . "-";

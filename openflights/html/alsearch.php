@@ -80,7 +80,7 @@ $logged_in = $uid and !empty($uid);
 	      <td><INPUT type="text" name="callsign"></td>
 	      </td>
 	      <td colspan=3>
-    &nbsp;<?php echo _("Show only major (IATA) airlines?") ?><input type="checkbox" name="iatafilter" value="yes" checked>
+    &nbsp;<nobr><?php echo _("Show only major (IATA) airlines?") ?></nobr><input type="checkbox" name="iatafilter" value="yes" checked>
 	      </td>
 	    </tr>
 	</table><br>

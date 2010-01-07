@@ -1,3 +1,17 @@
+<b>2010-01-07</b>
+
+* Add airport search button to airport popups
+* Selected airport loaded into search when clicking plane icon
+* Allow prev/next through airport query results until user actually initiates a new search
+* Cleaner handling of edit/non-edit mode for airport selection
+* Unit test cases for PHP helper functions
+* Bugfix: Airline editor bugs for user-entered airlines (2921315)
+
+<b>2009-01-06</b>
+
+* Facebook app migrated from template bundles to stream publishing
+* Bugfix: Facebook caching buggy (2924046)
+
 <b>2009-12-30</b>
 
 * Assume two-char tabbed quick searches are airlines

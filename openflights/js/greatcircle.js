@@ -273,6 +273,9 @@ function getLastDay(year, month, type) {
 
 // Splice and dice apdata chunks
 // code:apid:x:y:tz:dst
+function getApid(element) {
+  return $(element + 'id').value.split(":")[1];
+}
 function getX(element) {
   return $(element + 'id').value.split(":")[2];
 }
