@@ -1,3 +1,9 @@
+<b>2010-01-08</b>
+
+* Clean up GC rendering code a bit
+* Bugfix: Flights rendered by reported distance, not actual distance (2911041)
+* Feature: Keep private trips really private (2924818)
+
 <b>2010-01-07</b>
 
 * Add airport search button to airport popups

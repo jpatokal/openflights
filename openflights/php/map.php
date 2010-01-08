@@ -154,6 +154,6 @@ print $map . "\n";
 
 // When running for the first time, load up possible filter settings for this user
 if($init == "true") {
-  loadFilter($db, $uid, $trid);
+  loadFilter($db, $uid, $trid, $logged_in);
 }
 ?>

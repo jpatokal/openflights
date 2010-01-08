@@ -306,40 +306,19 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   // 1,2 flights as single pixel
   count = Math.floor(Math.sqrt(count) + 0.5);
 
-  var cList = null, wList = null, eList = null;
-  if(distance > GC_MIN) {
-    // Plot great circle curve
-    cList = gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2), distance);
-
-    // Path is in or extends into east (+) half, so we have to make a -360 copy
-    if(x1 > 0 || x2 > 0) {
-      wList = gcPath(new OpenLayers.Geometry.Point(x1-360, y1), new OpenLayers.Geometry.Point(x2-360, y2), distance);
-    }
-    // Path is in or extends into west (-) half, so we have to make a +360 copy
-    if(x1 < 0 || x2 < 0) {
-      eList = gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2), distance);
-    }
-  } else {
-    // Draw straight lines
-    cList = straightPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2));
-
-    // Path is in or extends into east (+) half, so we have to make a -360 copy
-    if(x1 > 0 || x2 > 0) {
-      wList = straightPath(new OpenLayers.Geometry.Point(x1-360, y1), new OpenLayers.Geometry.Point(x2-360, y2));
-    }
-    // Path is in or extends into west (-) half, so we have to make a +360 copy
-    if(x1 < 0 || x2 < 0) {
-      eList = straightPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2));
-    }
+  var paths = [ gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2)) ];
+  // Path is in or extends into east (+) half, so we have to make a -360 copy
+  if(x1 > 0 || x2 > 0) {
+    paths.push(gcPath(new OpenLayers.Geometry.Point(x1-360, y1), new OpenLayers.Geometry.Point(x2-360, y2)));
   }
-  var features = [ new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(cList),
-						 {count: count, color: color, stroke: stroke}) ];
-  if(wList) {
-    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(wList),
-						{count: count, color: color, stroke: stroke}));
+  // Path is in or extends into west (-) half, so we have to make a +360 copy
+  if(x1 < 0 || x2 < 0) {
+    paths.push(gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2)));
   }
-  if(eList) {
-    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(eList),
+
+  var features = [];
+  for(i = 0; i < paths.length; i++) {
+    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(paths[i]),
 						{count: count, color: color, stroke: stroke}));
   }
   return features;
