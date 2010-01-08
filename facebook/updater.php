@@ -88,7 +88,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	  break;
 	  
 	case FacebookAPIErrorCodes::API_EC_PERMISSION:
-          echo "Exception: User $uid (FB $fbuid) has not granted permission to stream publish\n";
+	case FacebookAPIErrorCodes::API_EC_SERVICE:
+          echo "Exception " . $e->getCode() . ": User $uid (FB $fbuid) has not granted permission to stream publish\n";
           break;
 
 	case FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY:
