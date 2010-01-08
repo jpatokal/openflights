@@ -109,12 +109,13 @@ if(! $dbname) {
 }
 $sql = "SELECT * FROM " . mysql_real_escape_string($dbname) . " WHERE ";
 
-// Single-airport fetch?
 if($action == "LOAD") {
+  // Single-airport fetch
   $sql .= " apid=" . mysql_real_escape_string($apid);
- } else {
+  $offset = 0;
 
-  // Build filter
+ } else {
+  // Real search, build filter
   if($airport) {
     $sql .= " name LIKE '%" . mysql_real_escape_string($airport) . "%' AND";
   }

@@ -1,6 +1,7 @@
 <b>2010-01-08</b>
 
 * Clean up GC rendering code a bit
+* Bugfix: Loading selected airport actually works now
 * Bugfix: Flights rendered by reported distance, not actual distance (2911041)
 * Feature: Keep private trips really private (2924818)
 
