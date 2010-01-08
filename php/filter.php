@@ -64,7 +64,7 @@ function getFilterString($vars) {
 }
 
 // Load up possible filter settings for this user
-function loadFilter($db, $uid, $trid) {
+function loadFilter($db, $uid, $trid, $logged_in) {
 
   // Limit selections to a single trip?
   if($trid && $trid != "0") {
@@ -78,7 +78,12 @@ function loadFilter($db, $uid, $trid) {
   }
 
   // List of all trips
-  $sql = "SELECT * FROM trips WHERE uid=" . $uid . " ORDER BY name";
+  if($logged_in == "demo") {
+    $privacy = " AND public!='N'"; // filter out private trips
+  } else {
+    $privacy = "";
+  }
+  $sql = "SELECT * FROM trips WHERE uid=" . $uid . $privacy . " ORDER BY name";
   $result = mysql_query($sql, $db);
   $first = true;
   while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

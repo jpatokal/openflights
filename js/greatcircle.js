@@ -95,9 +95,10 @@ function gcWaypoint(from, distance, bearing) {
 }
 
 /*
- * Return array of two points, flipping across dateline if needed
- */
-function straightPath(startPoint, endPoint) {
+ * Return array of GC waypoints between two points
+ * Flips across dateline if needed, and removes any invisible points
+ */  
+function gcPath(startPoint, endPoint) {
   // Do we cross the dateline?  If yes, then flip endPoint across it
   if(Math.abs(startPoint.x-endPoint.x) > 180) {
     if(startPoint.x < endPoint.x) {
@@ -106,21 +107,12 @@ function straightPath(startPoint, endPoint) {
       endPoint.x += 360;
     }
   }
-  return [startPoint, endPoint];
-}
 
-/*
- * Return array of GC waypoints between two points
- * Flips across dateline if needed, and removes any invisible points
- */  
-function gcPath(startPoint, endPoint, distance) {
-  // Do we cross the dateline?  If yes, then flip endPoint across it
-  if(Math.abs(startPoint.x-endPoint.x) > 180) {
-    if(startPoint.x < endPoint.x) {
-      endPoint.x -= 360;
-    } else {
-      endPoint.x += 360;
-    }
+  // Compute distance between points
+  var distance = gcDistance(startPoint.y, startPoint.x, endPoint.y, endPoint.x);
+  if(distance < GC_MIN) {
+    // Short enough that we don't need to show curvature
+    return [startPoint, endPoint];
   }
 
   // And... action!
@@ -159,10 +151,7 @@ function gcPath(startPoint, endPoint, distance) {
 
 // Check if point is a point
 function isValid(point) {
-    if((point.x != null) && (point.y != null) && (point.x != NaN) && (point.y != NaN))
-        return( true );
-    else
-        return( false );
+  return ((point.x != null) && (point.y != null) && (point.x != NaN) && (point.y != NaN))
 }
 
 // Compute extent for visible data (-180 to 180)
