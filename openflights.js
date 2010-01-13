@@ -2901,13 +2901,13 @@ function findPane(pane) {
 function closePane() {
   if(paneStack.length == 1) return;
 
-  var currentPane = paneStack.pop();
-  var lastPane = getCurrentPane();
   if(isEditMode()) {
     unmarkAirports();
     $("newairport").style.display = 'none';
     $("qsmini").style.display = 'block';
   }
+  var currentPane = paneStack.pop();
+  var lastPane = getCurrentPane();
   if(currentPane == "result") {
     apid = 0;
   }
