@@ -60,10 +60,10 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
         }
 	$attachment = array( 'name' => 'OpenFlights',
 			   'caption' => "Flight logging, mapping, stats and sharing",
-			   'href' => 'http://openflights/user/' . $ofname );
+			   'href' => 'http://openflights.org/user/' . $ofname );
 	$attachment = json_encode($attachment);
         $action_links = array(array('text' => 'View map',
-	                            'href' => 'http://openflights/user/' . $ofname ));
+	                            'href' => 'http://openflights.org/user/' . $ofname ));
 	$action_links = json_encode($action_links);
 	$facebook->api_client->stream_publish($message, $attachment, $action_links);
 
