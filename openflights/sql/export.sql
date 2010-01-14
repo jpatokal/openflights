@@ -23,6 +23,13 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 FROM routes;
 
+\! echo Countries
+
+SELECT name,code,oa_code,dst INTO OUTFILE '/tmp/countries.dat'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+FROM countries;
+
 \! echo Waiting for dump to complete...
 \! sleep 5
 \! ls -l /tmp/*.dat

@@ -1,0 +1,21 @@
+*** Tools for users
+
+create.sql
+  Create empty OpenFlights database schema
+export.sql
+  Export airlines.dat, airports.dat and routes.dat from OpenFlights database
+import-arm.sql
+  Import and sync a fresh copy of Airline Route Mapper (ARM) data
+load-data.sql
+  Import airlines.dat, airports.dat and routes.dat into OpenFlights database
+
+*** Site internal scripts
+
+elite-levels.sql
+  Generate table of elite users
+merge-airports.sql
+  Called by data/merge-airports.sh for manual merging for duplicate ICAO codes
+top10.sql
+  Generate nightly Top 10 lists (>data/top10.dat)
+update-demo.sql
+  Update flights for "demo" user

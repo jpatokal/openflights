@@ -5,28 +5,24 @@ GRANT ALL PRIVILEGES ON flightdb2.* TO openflights;
 
 CONNECT flightdb2;
 
-CREATE TABLE `locales` (
-  `locale` varchar(5) NOT NULL,
-  `name` mediumtext,
-  PRIMARY KEY  (`locale`)
-) DEFAULT CHARSET=utf8;
-
-CREATE TABLE `users` (
+DROP TABLE IF EXISTS `airlines`;
+CREATE TABLE `airlines` (
   `name` text,
-  `password` text,
-  `uid` int(11) NOT NULL auto_increment,
-  `public` text,
-  `email` text,
-  `count` int(11) default '0',
-  `editor` varchar(1) default 'B',
-  `elite` varchar(1) default '',
-  `validity` date default NULL,
-  `guestpw` text,
-  `startpane` varchar(1) default 'H',
-  `locale` varchar(5) default 'en_US',
-  PRIMARY KEY  (`uid`)
-) DEFAULT CHARSET=utf8;
+  `iata` varchar(2) default NULL,
+  `icao` varchar(3) default NULL,
+  `callsign` text,
+  `country` text,
+  `alid` int(11) NOT NULL auto_increment,
+  `uid` int(11) default NULL,
+  `alias` text,
+  `mode` char(1) default 'F',
+  `active` varchar(1) default 'N',
+  PRIMARY KEY  (`alid`),
+  KEY `iata` (`iata`),
+  KEY `icao` (`icao`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `airports`;
 CREATE TABLE `airports` (
   `name` text NOT NULL,
   `city` text,
@@ -39,13 +35,14 @@ CREATE TABLE `airports` (
   `apid` int(11) NOT NULL auto_increment,
   `uid` int(11) default NULL,
   `timezone` float default NULL,
-  `dst` varchar(1) default NULL,
+  `dst` char(1) default NULL,
   PRIMARY KEY  (`apid`),
-  KEY `y` (`y`),
   KEY `x` (`x`),
+  KEY `y` (`y`),
   KEY `iata` (`iata`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `airports_dafif`;
 CREATE TABLE `airports_dafif` (
   `name` text NOT NULL,
   `city` text,
@@ -56,8 +53,9 @@ CREATE TABLE `airports_dafif` (
   `y` double NOT NULL,
   `elevation` int(11) default NULL,
   PRIMARY KEY  (`icao`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `airports_gad`;
 CREATE TABLE `airports_gad` (
   `name` text NOT NULL,
   `city` text,
@@ -68,8 +66,9 @@ CREATE TABLE `airports_gad` (
   `y` double NOT NULL,
   `elevation` int(11) default NULL,
   PRIMARY KEY  (`icao`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `airports_oa`;
 CREATE TABLE `airports_oa` (
   `name` text NOT NULL,
   `city` text,
@@ -88,59 +87,38 @@ CREATE TABLE `airports_oa` (
   `keywords` text,
   `code` varchar(2) default NULL,
   KEY `iata` (`iata`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `planes` (
+DROP TABLE IF EXISTS `countries`;
+CREATE TABLE `countries` (
+  `junk` text,
+  `code` varchar(2) NOT NULL,
   `name` text,
-  `abbr` text,
-  `speed` double default NULL,
-  `plid` int(11) NOT NULL auto_increment,
-  `public` char(1) default 'N',
-  PRIMARY KEY  (`plid`)
-) DEFAULT CHARSET=utf8;
+  `oa_code` varchar(2) default NULL,
+  `dst` char(1) default NULL,
+  PRIMARY KEY  (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `airlines` (
-  `name` text,
-  `iata` varchar(2) default NULL,
-  `icao` varchar(3) default NULL,
-  `callsign` text,
+DROP TABLE IF EXISTS `countries_oa`;
+CREATE TABLE `countries_oa` (
+  `oacode` text,
   `country` text,
-  `alid` int(11) NOT NULL auto_increment,
-  `uid` int(11) default NULL,
-  `alias` text,
-  `mode` char(1) default 'F',
-  `active` char(1) default 'N',
-  PRIMARY KEY  (`alid`),
-  KEY `iata` (`iata`)
-) DEFAULT CHARSET=utf8;
+  `continent` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `routes` (
-  `airline` varchar(2) default NULL,
-  `alid` int(11) default NULL,
-  `src_ap` varchar(3) default NULL,
-  `src_apid` int(11) default NULL,
-  `dst_ap` varchar(3) default NULL,
-  `dst_apid` int(11) default NULL,
-  `codeshare` text,
-  `stops` text,
-  `equipment` text,
-  `rid` int(11) NOT NULL auto_increment,
-  PRIMARY KEY  (`rid`),
-  KEY `src_apid` (`src_apid`),
-  KEY `dst_apid` (`dst_apid`),
-  KEY `alid` (`alid`)
-) DEFAULT CHARSET=utf8;
-
-CREATE TABLE `trips` (
-  `name` text,
-  `url` text,
+DROP TABLE IF EXISTS `facebook`;
+CREATE TABLE `facebook` (
   `uid` int(11) default NULL,
-  `trid` int(11) NOT NULL auto_increment,
-  `public` text,
-  PRIMARY KEY  (`trid`),
+  `fbuid` int(11) NOT NULL,
+  `updated` datetime default NULL,
+  `sessionkey` text,
+  `pref_onfly` varchar(1) default 'Y',
+  `pref_onnew` varchar(1) default 'Y',
+  PRIMARY KEY  (`fbuid`),
   KEY `uid` (`uid`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `flights`;
 CREATE TABLE `flights` (
   `uid` int(11) default NULL,
   `src_apid` int(11) default NULL,
@@ -170,27 +148,72 @@ CREATE TABLE `flights` (
   KEY `alid` (`alid`),
   KEY `trid` (`trid`),
   KEY `uid` (`uid`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `facebook` (
+DROP TABLE IF EXISTS `locales`;
+CREATE TABLE `locales` (
+  `locale` varchar(5) NOT NULL,
+  `name` text,
+  PRIMARY KEY  (`locale`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `planes`;
+CREATE TABLE `planes` (
+  `name` text,
+  `abbr` text,
+  `speed` double default NULL,
+  `plid` int(11) NOT NULL auto_increment,
+  `public` char(1) default NULL,
+  PRIMARY KEY  (`plid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `routes`;
+CREATE TABLE `routes` (
+  `airline` varchar(3) default NULL,
+  `alid` int(11) default NULL,
+  `src_ap` varchar(4) default NULL,
+  `src_apid` int(11) default NULL,
+  `dst_ap` varchar(4) default NULL,
+  `dst_apid` int(11) default NULL,
+  `codeshare` text,
+  `stops` text,
+  `equipment` text,
+  `added` varchar(1) default NULL,
+  `rid` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`rid`),
+  UNIQUE KEY `alid` (`alid`,`src_apid`,`dst_apid`),
+  KEY `src_apid` (`src_apid`),
+  KEY `dst_apid` (`dst_apid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `trips`;
+CREATE TABLE `trips` (
+  `name` text,
+  `url` text,
   `uid` int(11) default NULL,
-  `fbuid` int(11) NOT NULL,
-  `updated` datetime default NULL,
-  `sessionkey` text,
-  `pref_onfly` varchar(1) default 'Y',
-  `pref_onnew` varchar(1) default 'Y',
-  PRIMARY KEY  (`fbuid`),
+  `trid` int(11) NOT NULL auto_increment,
+  `public` text,
+  PRIMARY KEY  (`trid`),
   KEY `uid` (`uid`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
 
-LOAD DATA LOCAL INFILE 'airlines.dat'
-INTO TABLE airlines
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(iata, icao, name, callsign, country);
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `name` text,
+  `password` text,
+  `uid` int(11) NOT NULL auto_increment,
+  `public` text,
+  `email` text,
+  `count` int(11) default '0',
+  `editor` varchar(1) default 'B',
+  `elite` varchar(1) default '',
+  `validity` date default NULL,
+  `guestpw` text,
+  `startpane` varchar(1) default 'H',
+  `locale` varchar(5) default 'en_US',
+  `units` varchar(1) default 'M',
+  PRIMARY KEY  (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-LOAD DATA LOCAL INFILE 'airports.dat'
-INTO TABLE airports
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(icao, iata, name, city, country, x, y, elevation);
+\! echo Done, next run sql/load-data.sql
+
