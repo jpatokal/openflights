@@ -16,6 +16,11 @@ function fb_die($error) {
   die("<br/><div style='background-color: #ffebe8; border: 1px solid #dd3c10; color: #333333; padding: 10px; font-size: 13px; width: 500px'>$error</div>");
 }
 
+// Format OF username and SQL as error message
+function fb_error($ofname, $sql) {
+  fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br/>[' . $ofname . "] " . $sql);
+}
+
 // appapikey,appsecret must be defined in keys.php
 $facebook = new Facebook($appapikey, $appsecret);
 $fbuid = $facebook->require_login();
@@ -54,7 +59,7 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
     $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,DATE_SUB(NOW(), INTERVAL 1 DAY))", $uid, $fbuid);
     $result = mysql_query($sql, $db);
     if(! $result || mysql_affected_rows() != 1) {
-      fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
+      fb_error($ofname, $sql);
     }
     
   } else {
@@ -89,7 +94,7 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $onnew = $row["pref_onnew"];
   $onfly = $row["pref_onfly"];
 } else {
-  fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
+  fb_error($ofname, $sql);
 }
 
 $session_key = $_POST["fb_sig_session_key"];
@@ -102,7 +107,7 @@ if(! $session && $session_expiry == "0") {
     $session = $session_key;
     fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook Wall and refresh your profile automatically when you add new flights.");
   } else {
-    fb_die('<b>Uh-oh, an error occurred</b>.  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
+    fb_error($ofname, $sql);
   }
 }
 
@@ -120,7 +125,7 @@ if($_REQUEST["prefupdate"] == "Y") {
       $onfly = $reqfly;
       $onnew = $reqnew;
     } else {
-      fb_die('<b>Uh-oh, an error occurred.</b>  Please send the following message to <i>support@openflights.org</i>:<br/>' . $sql);
+      fb_error($ofname, $sql);
     }
   }
 }
