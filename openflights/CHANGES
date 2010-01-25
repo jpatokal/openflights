@@ -1,3 +1,12 @@
+<b>2010-01-25</b>
+
+* Bugfix: Session key no longer required for Facebook updates
+
+<b>2010-01-14</b>
+
+* Update and cleanup sql directory
+* Remove GAD from distribution
+
 <b>2010-01-13</b>
 
 * Bugfix: Distance/duration display not getting cleared when exiting edit mode

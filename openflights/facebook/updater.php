@@ -13,7 +13,7 @@ $CRONHOUR = 1; // Hour of day (0-23) when to check for today's flights
 
 // Check which FB users have valid infinite session keys and new flights since last update or flying today
 // Note: Assumes that script is run hourly
-$sql = "SELECT fb.uid,fb.sessionkey,fb.fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(HOUR(NOW()) = $CRONHOUR AND f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE fb.sessionkey IS NOT NULL AND f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND HOUR(NOW()) = $CRONHOUR)) GROUP BY f.uid";
+$sql = "SELECT fb.uid,fb.sessionkey,fb.fbuid,u.name,COUNT(*) AS count,SUM(distance) AS distance,fb.updated,IF(HOUR(NOW()) = $CRONHOUR AND f.src_date = DATE(NOW()) AND fb.pref_onfly = 'Y','Y','N') AS today FROM flights AS f,facebook AS fb, users AS u WHERE f.uid=fb.uid AND u.uid=fb.uid AND ((fb.pref_onnew = 'Y' AND f.upd_time > fb.updated) OR (fb.pref_onfly = 'Y' AND f.src_date = DATE(NOW()) AND HOUR(NOW()) = $CRONHOUR)) GROUP BY f.uid";
 $result = mysql_query($sql, $db);
 while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $count = $row["count"];
@@ -25,7 +25,6 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $fbuid = $row["fbuid"];
     $ofname = $row["name"];
     $today = $row["today"];
-    $infinitesessionkey = $row["sessionkey"];
 
     if($today == "Y") {
       // Get details of all of today's flights
@@ -49,9 +48,6 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       }
       $distance = $row["distance"];
       try{
-	// Use this user's session key
-	$facebook->api_client->session_key = $infinitesessionkey;
-
 	// Publish feed story
         if($today == 'Y') {
           $message = "is flying from $src to $dst today!";
@@ -92,15 +88,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
           echo "Exception " . $e->getCode() . ": User $uid (FB $fbuid) has not granted permission to stream publish\n";
           break;
 
-	case FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY:
-          // Clear out if session key expired or access is denied
-	  $sql = "UPDATE facebook SET sessionkey=NULL WHERE uid=$uid";
-	  mysql_query($sql, $db);
-          echo "Exception " . $e->getCode() . ": Session ID cleared for user $uid (FB $fbuid)\n";
-	  break;
-
 	default:
-	  echo "Exception " . $e->getCode() . " for user $uid (FB $fbuid) and session $infinitesessionkey: $e\n";
+	  echo "Exception " . $e->getCode() . " for user $uid (FB $fbuid): $e\n";
 	  break;
         }
 	$fbfail++;
