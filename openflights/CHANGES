@@ -1,6 +1,6 @@
-<b>2010-01-25</b>
+<b>2010-01-27</b>
 
-* Bugfix: Session key no longer required for Facebook updates
+* Bugfix: Facebook app now requires offline_access, stores session correctly
 
 <b>2010-01-14</b>
 
