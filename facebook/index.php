@@ -26,7 +26,7 @@ $facebook = new Facebook($appapikey, $appsecret);
 $fbuid = $facebook->require_login();
 
 // Clear prefs, DB if user passes in reset=true, so they can reconfig
-if($_REQUEST["reset"] == "true") {
+if($_REQUEST["reset"] == "true" || $_REQUEST["reset"] == "Reset") {
   $facebook->api_client->data_setUserPreference(1, "None");
   $sql = "DELETE FROM facebook WHERE fbuid=$fbuid";
   $result = mysql_query($sql, $db);
@@ -81,6 +81,7 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
 <fb:tabs>
 	<fb:tab-item href="http://apps.facebook.com/openflights/index.php" title="Home" selected="true"/>;
 	<fb:tab-item href="http://apps.facebook.com/openflights/invite.php" title="Invite Friends"/>;
+	<fb:tab-item href="http://apps.facebook.com/openflights/reset.php" title="Reset"/>;
 </fb:tabs>
 
 <?php
@@ -101,7 +102,7 @@ $session_key = $_POST["fb_sig_session_key"];
 $offline = $facebook->api_client->users_hasAppPermission("offline_access");
 $publish = $facebook->api_client->users_hasAppPermission("publish_stream");
 
-#print "<B>DEBUG</B> Live session key [" . $session_key . "], DB session [" . $session . "], publish_stream [" . $publish . "] , offline_access [" . $offline . "]";
+//print "<B>DEBUG</B> Live session key [" . $session_key . "], DB session [" . $session . "], publish_stream [" . $publish . "] , offline_access [" . $offline . "]";
 // Do we now have a new infinite key?
 
 if(! $session && $offline) {
