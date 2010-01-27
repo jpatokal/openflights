@@ -97,12 +97,13 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   fb_error($ofname, $sql);
 }
 
-$auth_token = $facebook->api_client->auth_createToken();
-$session_key = $facebook->api_client->auth_getSession($auth_token['session_key']);
-print "<B>DEBUG</B> Auth token [ " . $auth_token . " ], live session key [" . $session_key . "], DB session [" . $session . "], offline_access [" . $facebook->api_client->users_hasAppPermission("offline_access") . "]<br>";
+$session_key = $_POST["fb_sig_session_key"];
+$offline = $facebook->api_client->users_hasAppPermission("offline_access");
+$publish = $facebook->api_client->users_hasAppPermission("publish_stream");
+print "<B>DEBUG</B> Live session key [" . $session_key . "], DB session [" . $session . "], publish_stream [" . $publish . "] , offline_access [" . $offline . "]";
 // Do we now have a new infinite key?
 
-if(! $session && $facebook->api_client->users_hasAppPermission("offline_access")) {
+if(! $session && $offline) {
   $sql = "UPDATE facebook SET sessionkey='" . $session_key . "' WHERE fbuid=" . $fbuid;
   if($result = mysql_query($sql, $db)) {
     $session = $session_key;
@@ -139,12 +140,11 @@ $facebook->api_client->fbml_refreshImgSrc("http://openflights.org/facebook/map.p
 
 // Wall preferences and session generation
 print "<form requirelogin='1'>";
-$permission = $facebook->api_client->call_method('Users.hasAppPermission',array('ext_perm'=>'publish_stream', 'uid'=>$fbuid));
-if(! $permission) {
+if(! $publish || ! $offline) {
 ?>
 
   <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook Wall and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
-  <fb:prompt-permission perms="publish_stream"> Grant permission to publish posts </fb:prompt-permission>
+  <fb:prompt-permission perms="publish_stream,offline_access"> Grant permission to publish posts </fb:prompt-permission>
 
   <p><b>Step 2</b>: <i>After</i> granting permission, set your preferences and click Activate below to activate automatic updating.</p>
 <?php
