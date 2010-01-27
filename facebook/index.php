@@ -100,7 +100,8 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 $session_key = $_POST["fb_sig_session_key"];
 $offline = $facebook->api_client->users_hasAppPermission("offline_access");
 $publish = $facebook->api_client->users_hasAppPermission("publish_stream");
-print "<B>DEBUG</B> Live session key [" . $session_key . "], DB session [" . $session . "], publish_stream [" . $publish . "] , offline_access [" . $offline . "]";
+
+#print "<B>DEBUG</B> Live session key [" . $session_key . "], DB session [" . $session . "], publish_stream [" . $publish . "] , offline_access [" . $offline . "]";
 // Do we now have a new infinite key?
 
 if(! $session && $offline) {
@@ -144,9 +145,9 @@ if(! $publish || ! $offline) {
 ?>
 
   <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook Wall and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
-  <fb:prompt-permission perms="publish_stream,offline_access"> Grant permission to publish posts </fb:prompt-permission>
+  <fb:prompt-permission perms="publish_stream,offline_access"> Grant permission to publish posts and to remember me</fb:prompt-permission>
 
-  <p><b>Step 2</b>: <i>After</i> granting permission, set your preferences and click Activate below to activate automatic updating.</p>
+  <p><b>Step 2</b>: <i>After</i> granting permissions, set your preferences and click Activate below to activate automatic updating.</p>
 <?php
 }
 
