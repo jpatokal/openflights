@@ -10,13 +10,15 @@ function get_profile($db, $uid, $fbuid, $ofname) {
       $content = sprintf("<b>Oops!</b>  Looks like <b><a href='http://openflights.org/user/%s'>%s</a></b>'s map has become private.", $ofname, $ofname);
     } else {
       if($row["units"] == "K") {
-	$distance = $distance * $KMPERMILE;
+	$distance = ($distance * $KMPERMILE) . " km";
+      } else {
+	$distance .= " miles";
       }
       $duration = sprintf("%d days, %d hours and %d minutes",
 			  floor($row["duration"] / (60*24)),
 			  floor(($row["duration"] / 60 ) % 24),
 			  $row["duration"] % 60);
-      $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s miles</b> and a total duration of <b>%s</b>!  <a href='http://openflights.org/user/%s'>Find out more.</a>", $ofname, $ofname, $row["count"], $row["distance"], $duration, $ofname);
+      $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s</b> and a total duration of <b>%s</b>!  <a href='http://openflights.org/user/%s'>Find out more.</a>", $ofname, $ofname, $row["count"], $row["distance"], $duration, $ofname);
     }
   } else {
     $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>", $ofname);
