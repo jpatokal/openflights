@@ -17,6 +17,7 @@ $fbuid = $facebook->require_login();
 
 <form action="http://apps.facebook.com/openflights/index.php" requirelogin="1">
 
+<br/>
 <h2>Reset application?</h2>
 
 <p>You can reset the OpenFlights Facebook application if you want to change to a different user's map.  Resetting will remove your application preferences and any session data stored in the database, returning you to the initial configuration page.  It will <i>not</i> remove the application from your Facebook profile; to do that, please go to "<a href="http://www.facebook.com/editapps.php">Edit applications</a>" instead.</p>
