@@ -99,9 +99,11 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 $session_key = $_POST["fb_sig_session_key"];
 $session_expiry = $_POST["fb_sig_expires"];
-// print "Live session key [" . $session_key . "], expiry [" . $session_expiry . "], DB session [" . $session . "]<br>";
+
+print "<B>DEBUG</B> Live session key [" . $session_key . "], expiry [" . $session_expiry . "], DB session [" . $session . "], offline_access [" . $facebook->api_client->users_hasAppPermission("offline_access") . "]<br>";
 // Do we now have a new infinite key?
-if(! $session && $session_expiry == "0") {
+
+if(! $session && $facebook->api_client->users_hasAppPermission("offline_access")) {
   $sql = "UPDATE facebook SET sessionkey='" . $session_key . "' WHERE fbuid=" . $fbuid;
   if($result = mysql_query($sql, $db)) {
     $session = $session_key;
