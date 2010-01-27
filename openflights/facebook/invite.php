@@ -12,6 +12,7 @@ $fbuid = $facebook->require_login();
 <fb:tabs>
 	<fb:tab-item href="http://apps.facebook.com/openflights/index.php" title="Home"/>;
 	<fb:tab-item href="http://apps.facebook.com/openflights/invite.php" title="Invite Friends" selected="true"/>;
+	<fb:tab-item href="http://apps.facebook.com/openflights/reset.php" title="Reset"/>;
 </fb:tabs>
 
 <?php

@@ -1,6 +1,8 @@
 <b>2010-01-27</b>
 
+* "Reset" tab added to Facebook app
 * Bugfix: Facebook app now requires offline_access, stores session correctly
+* Bugfix: Facebook should display distances based on user preferences (2931556)
 
 <b>2010-01-14</b>
 

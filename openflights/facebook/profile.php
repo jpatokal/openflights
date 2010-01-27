@@ -1,14 +1,17 @@
 <?php
-
+$KMPERMILE = "1.609344";
 
 // Generate content of Facebook profile box for given OF uid
 function get_profile($db, $uid, $fbuid, $ofname) {
-  $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration, u.public FROM flights AS f, users AS u WHERE u.uid = f.uid AND f.uid=" . $uid . " GROUP BY f.uid";
+  $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration, u.public, u.units FROM flights AS f, users AS u WHERE u.uid = f.uid AND f.uid=" . $uid . " GROUP BY f.uid";
   $result = mysql_query($sql, $db);
   if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     if($row["public"] == "N") {
       $content = sprintf("<b>Oops!</b>  Looks like <b><a href='http://openflights.org/user/%s'>%s</a></b>'s map has become private.", $ofname, $ofname);
     } else {
+      if($row["units"] == "K") {
+	$distance = $distance * $KMPERMILE;
+      }
       $duration = sprintf("%d days, %d hours and %d minutes",
 			  floor($row["duration"] / (60*24)),
 			  floor(($row["duration"] / 60 ) % 24),
