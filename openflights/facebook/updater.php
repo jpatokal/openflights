@@ -92,12 +92,15 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
           echo "Exception " . $e->getCode() . ": User $uid (FB $fbuid) has not granted permission to stream publish\n";
           break;
 
+	case FacebookAPIErrorCodes::API_EC_UNKNOWN:
 	case FacebookAPIErrorCodes::API_EC_PARAM_SESSION_KEY:
           // Clear out if session key expired or access is denied
-	  $sql = "UPDATE facebook SET sessionkey=NULL WHERE uid=$uid";
-	  mysql_query($sql, $db);
-          echo "Exception " . $e->getCode() . ": Session ID cleared for user $uid (FB $fbuid)\n";
-	  break;
+          if($e->getMessage() == "Session key invalid or no longer valid") {
+	    $sql = "UPDATE facebook SET sessionkey=NULL WHERE uid=$uid";
+	    mysql_query($sql, $db);
+            echo "Exception " . $e->getCode() . ": Session ID cleared for user $uid (FB $fbuid)\n";
+	    break;
+          } // else fall thru
 
 	default:
 	  echo "Exception " . $e->getCode() . " for user $uid (FB $fbuid) and session $infinitesessionkey: $e\n";
