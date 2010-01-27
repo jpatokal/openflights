@@ -97,10 +97,9 @@ if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   fb_error($ofname, $sql);
 }
 
-$session_key = $_POST["fb_sig_session_key"];
-$session_expiry = $_POST["fb_sig_expires"];
-
-print "<B>DEBUG</B> Live session key [" . $session_key . "], expiry [" . $session_expiry . "], DB session [" . $session . "], offline_access [" . $facebook->api_client->users_hasAppPermission("offline_access") . "]<br>";
+$auth_token = $facebook->api_client->auth_createToken();
+$session_key = $facebook->api_client->auth_getSession($auth_token['session_key']);
+print "<B>DEBUG</B> Auth token [ " . $auth_token . " ], live session key [" . $session_key . "], DB session [" . $session . "], offline_access [" . $facebook->api_client->users_hasAppPermission("offline_access") . "]<br>";
 // Do we now have a new infinite key?
 
 if(! $session && $facebook->api_client->users_hasAppPermission("offline_access")) {
