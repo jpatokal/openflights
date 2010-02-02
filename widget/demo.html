@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>OpenFlights Widget Demo</title>
+    <link rel="stylesheet" href="demo.css" type="text/css">
+    <script type="text/javascript" src="/OpenLayers.js"></script>
+    <script type="text/javascript" src="/js/map.js"></script>
+    <script type="text/javascript" src="/js/Gettext.js"></script>
+    <script type="text/javascript" src="/js/prototype.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+  </head>
+
+  <body>
+
+    <h1>OpenFlights Widget Demo</h1>
+
+    <div id="container">
+      <div id="map" class="smallmap"></div>
+	    
+      <div id="maptitle"><noscript><?php echo _("Sorry, OpenFlights requires JavaScript.") ?></noscript>
+      </div>
+    
+      <div id="ajaxloader">
+	<span id="ajaxstatus" style="display: none"><img src="/img/ajax-wait.gif" height=100 width=100/></span>
+      </div>
+    </div>
+  
+  </body>
+</html>
