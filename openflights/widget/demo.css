@@ -5,24 +5,33 @@
 }
 
 #maptitle { 
-  left: 3em;
-  top: 1em;
-  font-size:1.5em;
+  left: 4em;
+  top: 5em;
+  position: absolute;
+  font-size:1em;
   filter:alpha(opacity=70);
   opacity: 0.7;
   background: white;
   z-index: 1000;
   padding: 5px;
-  -moz-border-radius: 1em;
+  -moz-border-radius: 0.5em;
 } 
 
 #ajaxloader { 
-  left: 40%;
-  top: 25%;
+  left: 256px;
+  top: 128px;
   position: absolute;
   z-index: 1000;
   border: 1;
 } 
+
+#debug {
+  border: 1px solid #ccc;
+  height: 8em;
+  color:gray;
+  font-size: 0.8em;
+  overflow: auto;
+}
 
 /* OpenLayers default stuff starts here */
 
