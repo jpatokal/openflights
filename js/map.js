@@ -14,6 +14,9 @@ function OpenFlightsMap(layers) {
   
   var ol_map, selectControl;
 
+  var URL_MAP = "/php/map.php";
+  var URL_ROUTES = "/php/routes.php";
+
   var COLOR_NORMAL = "#ee9900"; //orange
   var COLOR_ROUTE = "#99ee00"; //yellow
   var COLOR_TRAIN = "#ee5555"; //dull red
@@ -30,28 +33,58 @@ function OpenFlightsMap(layers) {
 		       [ '/img/icon_plane-19x19.png', 19 ] ];
   var modecolors = { "F":COLOR_NORMAL, "T":COLOR_TRAIN, "R":COLOR_ROAD, "S":COLOR_SHIP };
 
-  // Trigger loading of map content from URL
-  function load(url) {
-    of_debug("map.load()");
+  /*
+   * Load map content from URL
+   *
+   * @param {String} mapType One of OpenFlightsMap.FLIGHTS to load a user flight map, OpenFlightsMap.AIRLINE to load an airline route map, or OpenFlightsMap.AIRPORT to load an airport route map
+   * @param {int} id Airport/airline map ID to load [AIRLINE, AIRPORT only]
+   */
+  function load(mapType, id) {
+    var url;
+
+    of_debug("map.load(" + mapType + "," + id + ")");
+    switch(mapType) {
+    case OpenFlightsMap.FLIGHTS:
+      url = URL_MAP;
+      success = updateFlights;
+      break;
+    case OpenFlightsMap.AIRLINE:
+      id = "L" + id;
+      //fallthru
+    case OpenFlightsMap.AIRPORT:
+      url = URL_ROUTES;
+      success = updateRoutes;
+      break;
+    default:
+      of_error("load() failed: Unknown map type " + mapType);
+      break;
+    }
+    $("ajaxstatus").style.display = 'inline';
     new Ajax.Request(url,
-		     { onSuccess: update,
-		       onFailure: error });
+		     { method: 'get',
+		       parameters: "apid=" + id,
+		       // parameters: { apid: id}, // no idea why this doesn't work...
+		       onSuccess: success,
+		       onFailure: function(transport) {
+			 of_error("load() from " + url + " failed: " + transport.responseText);
+		       }
+		     });
   }
 
-  function error(transport) {
-    alert(transport.responseText);
-  }
+
+  // Wrappers so we can tell flight and route map callbacks apart
+  function updateFlights(transport) { update(transport, URL_MAP); }
+  function updateRoutes(transport) { update(transport, URL_ROUTES); }
 
   // Update all flights, airports in map
-  function update(transport){
+  function update(transport, url){
     of_debug("map.update()");
     str = transport.responseText;
-    url = URL_MAP; // ##TODO## fix
+    if(str.substring(0,5) == "Error") {
+      of_error(str);
+      return;
+    }
 
-    flightLayer.destroyFeatures();
-    airportLayer.destroyFeatures();
-    lasturl = url; // used for refresh
-    
     var master = str.split("\n");
     var stats = master[0];
     var flights = master[1];
@@ -60,6 +93,7 @@ function OpenFlightsMap(layers) {
     var apid = 0;
     var type = "M"; // map
 
+    clear();
     if(url == URL_MAP) {
       // User flight map
       var distance = col[1];
@@ -103,6 +137,7 @@ function OpenFlightsMap(layers) {
 	  logout(gt.gettext("Your session has timed out, please log in again."));
 	}
       }
+      desc = "Flight map";
 
     } else {
       // Route map
@@ -111,29 +146,9 @@ function OpenFlightsMap(layers) {
       apid = col[0];
       flightTotal = col[1];
       desc = col[2];
-      if(apid.startsWith("L")) {
-	type = "L";
-	coreid = apid;
-	title = gt.gettext("List all routes on this airline");
-      } else {
-	type = "R";
-	coreid = "R" + apid + "," + apid;
-	title = gt.gettext("List all routes from this airport");
-      }
-      
-      var maptitle = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> " + desc;
-      maptitle += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + title + "'></a>";
-
-      var form = document.forms['filterform'];
-      if(form) {
-	filter_alid = form.Airlines.value.split(";")[0];
-	if(filter_alid != 0 && ! apid.startsWith("L")) {
-	  maptitle += " <small>on " + form.Airlines.value.split(";")[1] + "</small> " + getAirlineMapIcon(filter_alid);
-	}
-      }
-      maptitle = maptitle.replace("routes", gt.gettext("routes"));
-      $("maptitle").innerHTML = maptitle;
     }
+
+    $("maptitle").innerHTML = getRouteMapTitle(type, apid, flightTotal, desc);
     
     // New user (or filter setting) with no flights?  Then don't even try to draw
     if(flightTotal != "0") {
@@ -178,27 +193,21 @@ function OpenFlightsMap(layers) {
 	airports.push(drawAirport(col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid));
       }
       airportLayer.addFeatures(airports);
+      zoom();
     }
-    
-    // Redraw selection markers if in input mode
-    if(getCurrentPane() == "input") {
-      if(input_srcmarker) markAirport("src_ap", true);
-      if(input_dstmarker) markAirport("dst_ap", true);
-    }
-    
     $("ajaxstatus").style.display = 'none';
-    if(initializing) {
-      if(! logged_in && demo_mode) {
-	$("loginform").style.display = 'inline';
-      }
-      $('statsbox').style.visibility = "visible";
-      $('filter').style.visibility = "visible";
-      if(logged_in || privacy == 'O') {
-	$('filter_extra_key').style.visibility = "visible";
-      } else {
-	$('filter_extra_key').style.visibility = "hidden";
-      }
-    }
+  }
+
+  /**
+   * Generate title describing this route map, override to customize
+   *
+   * @param type Type of route map (OpenFlightsMap.AIRLINE,AIRPORT)
+   * @param id Airline/airport ID of this map
+   * @param flightTotal Count of flights in this map
+   * @param desc Default description from database
+   */
+  function getRouteMapTitle(type, id, flightTotal, desc) {
+    return desc;
   }
 
   // Add a temporary source or destination marker over currently selected airport
@@ -354,7 +363,7 @@ function OpenFlightsMap(layers) {
   function clear() {
     flightLayer.destroyFeatures();
     airportLayer.destroyFeatures();
-    var popups = map.popups;
+    var popups = ol_map.popups;
     for(p = 0; p < popups.length; p++) {
       popups[p].destroy();
     }
@@ -473,7 +482,7 @@ function OpenFlightsMap(layers) {
     }
     // This should never happen
     if(! airportIcons[colorIndex]) {
-      of_debug("ERROR: " + name + ":" + colorIndex + " of " + airportMaxFlights + ".i<br>Please hit CTRL-F5 to force refresh, and <a href='/about.html'>report</a> this error if it does not go away.");
+      of_error(name + ":" + colorIndex + " of " + airportMaxFlights);
       return;
     }
     
@@ -663,17 +672,23 @@ function OpenFlightsMap(layers) {
 
   function of_debug(str) {
     if(OF_DEBUG) {
-      $("maptitle").style.display = 'inline';
-      $("maptitle").innerHTML = $("maptitle").innerHTML + "<br>" + str;
+      $("debug").innerHTML = str + "<br>" + $("debug").innerHTML;
     }
   }
 
-  // constructor starts
+  function of_error(str) {
+    $("ajaxstatus").style.display = 'none';
+    $("maptitle").style.display = 'inline';
+    $("maptitle").innerHTML += "<br>ERROR: " + str + "<br>Please hit CTRL-F5 to force refresh, and <a href='/about.html'>report</a> this error if it does not go away.";
+  }
 
+  // public functions
   this.load = load;
-  this.update = update;
   this.addPopup = addPopup;
+  this.debug = of_debug;
+  this.error = of_error;
 
+  // constructor starts here
   ol_map = new OpenLayers.Map('map', {
     maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
     restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
@@ -772,7 +787,13 @@ function OpenFlightsMap(layers) {
   ol_map.addControl(selectControl);
   selectControl.activate();
 
-  ol_map.zoomToMaxExtent();
-
   OpenLayers.Util.alphaHack = function() { return false; };
 }
+
+/**
+ * Public constants
+ */
+OpenFlightsMap.FLIGHTS = "F";
+OpenFlightsMap.AIRLINE = "L";
+OpenFlightsMap.AIRPORT = "R";
+

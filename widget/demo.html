@@ -23,6 +23,31 @@
       <div id="ajaxloader">
 	<span id="ajaxstatus" style="display: none"><img src="/img/ajax-wait.gif" height=100 width=100/></span>
       </div>
+
+      <h3>Control</h3>
+      <div id="control">
+	<form id="controlform">
+	  <table cellpadding=5 cellspacing=0>
+	      <tr><td>
+		  <input type="radio" name="maptype" value="F" onChange="changeMap()" checked /> Flight map<br/>
+		</td></tr>
+	      <tr><td>
+		  <input type="radio" name="maptype" value="L" onChange="changeMap()"/> Airline route map<br/>
+		</td><td rowspan=2>
+		  Airport/airline ID<br>
+		  <input type="text" name="apid" size="5" value="" />
+		  <input type="button" size="5" value="Load" onClick="changeMap()"/>
+		</td></tr>
+	      <tr><td>
+		  <input type="radio" name="maptype" value="R" onChange="changeMap()"/> Airport route map
+		</td></tr>
+	  </table>
+	</form>
+      </div>
+
+      <h3>Debug</h3>
+      <div id="debug">
+      </div>
     </div>
   
   </body>
