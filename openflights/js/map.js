@@ -1,11 +1,32 @@
+/**
+ * @fileoverview Base class for the OpenFlightsMap widget.  See full documentation
+ * and sample code at {@link http://openflights.org/widget/ OpenFlights Widget}.
+ *
+ * @author Jani Patokallio jani@contentshare.sg
+ * @version 0.1
+ */
+
+/**
+ * Global reference to instantiated OpenFlights map object<br>
+ * (there should be a nicer way of passing this, but AJAX requests seem to lose the object context?)
+ */
 var __ofmap;
+
+/*
+ * A little OpenLayers configuration
+ */
+OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
+OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
 /**
  * OpenFlightsMap constructor
- *
- * @param layers Array of OpenLayers.Layer to act as base map
+ * @class Class for the OpenFlightsMap widget.
+ * @constructor
+ * @param map DOM element to render map in
+ * @param layers Array of {@link http://dev.openlayers.org/docs/files/OpenLayers/Layer-js.html OpenLayers.Layer} base layer(s).  Flights and airports will be overlaid on top of this.
+ * @return A new OpenFlightsMap object.
  */
-function OpenFlightsMap(layers) {
+function OpenFlightsMap(map, layers) {
 
   function clusterRadius(feature) {
     var radius = feature.attributes.count * 5;
@@ -14,7 +35,7 @@ function OpenFlightsMap(layers) {
   }
 
   // constructor starts here
-  var ol_map = new OpenLayers.Map('map', {
+  var ol_map = new OpenLayers.Map(map, {
     maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
     restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
     maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
@@ -122,17 +143,20 @@ function OpenFlightsMap(layers) {
 }
 
 /**
- * Flight map
+ * Map type: flight map
+ * @const
  */
 OpenFlightsMap.FLIGHTS = "F";
 
 /**
- * Airline route map
+ * Map type: airline route map
+ * @const
  */
 OpenFlightsMap.AIRLINE = "L";
 
 /**
- * Airport route map
+ * Map type: airport route map
+ * @const
  */
 OpenFlightsMap.AIRPORT = "R";
 
@@ -148,7 +172,7 @@ OpenFlightsMap.URL_ROUTES = "/php/routes.php";
 
 
 /**
- * Load map content from URL
+ * Load a type of map content
  *
  * @param {String} type Type of map: OpenFlightsMap.FLIGHTS to load a user flight map, OpenFlightsMap.AIRLINE to load an airline route map, or OpenFlightsMap.AIRPORT to load an airport route map
  * @param {int} id Airport/airline map ID to load [AIRLINE, AIRPORT only]
@@ -175,7 +199,6 @@ OpenFlightsMap.prototype.load = function(type, id) {
   new Ajax.Request(url,
 		   { method: 'get',
 		     parameters: "apid=" + id,
-		     // parameters: { apid: id}, // no idea why this doesn't work...
 		     onSuccess: function(transport) {
 		       __ofmap.draw(transport, type); },
 		     onFailure: function(transport) {
@@ -508,7 +531,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
   }
   
   // Route maps draw the core airport even if there are no routes
-  if(flightTotal != "0" || type != OpenFlightsMap.FLIGHTS) {
+  if(flightTotal != "0" || type == OpenFlightsMap.AIRPORT) {
     var rows = airports.split("\t");
     var airports = Array();
     
@@ -543,7 +566,7 @@ OpenFlightsMap.prototype.clear = function() {
 }
 
 /**
- * Compute extent for visible flight data (-180 to 180)<br>
+ * Zoom so visible flight data (-180 to 180) fills the screen<br>
  * Known bug: incorrectly draws whole map if flight lines span the meridian...
  */
 OpenFlightsMap.prototype.zoom = function() {
@@ -584,7 +607,7 @@ OpenFlightsMap.prototype.setStatistics = function(flightTotal, distance, duratio
 /**
  * Add a popup to map
  *
- * @param popup Instance of OpenLayers.Popup (must already be attached to a Feature)
+ * @param popup Instance of {@link http://dev.openlayers.org/docs/files/OpenLayers/Popup-js.html OpenLayers.Popup}.  Must already be attached to an OpenLayers.Feature, typically the airport provided in the onAirportSelect() callback.
  */
 OpenFlightsMap.prototype.addPopup = function(popup) {
     this.ol_map.addPopup(popup);
@@ -609,5 +632,5 @@ OpenFlightsMap.prototype.debug = function(str) {
 OpenFlightsMap.prototype.error = function(str) {
   $("ajaxstatus").style.display = 'none';
   $("maptitle").style.display = 'inline';
-  $("maptitle").innerHTML += "<br>ERROR: " + str + "<br>Please hit CTRL-F5 to force refresh, and <a href='/about.html'>report</a> this error if it does not go away.";
+  $("maptitle").innerHTML = "ERROR: " + str + "<br>Please hit CTRL-F5 to force refresh, and <a href='/about'>report</a> this error if it does not go away.";
 }

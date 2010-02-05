@@ -29,17 +29,17 @@
 	<form id="controlform">
 	  <table cellpadding=5 cellspacing=0>
 	      <tr><td>
-		  <input type="radio" name="maptype" value="F" onChange="changeMap()" checked /> Flight map<br/>
+		  <input type="radio" name="maptype" value="F" onChange="changeMap()" /> Flight map<br/>
 		</td></tr>
 	      <tr><td>
-		  <input type="radio" name="maptype" value="L" onChange="changeMap()"/> Airline route map<br/>
+		  <input type="radio" name="maptype" value="L" onChange="changeMap()"/ checked> Airline route map<br/>
 		</td><td rowspan=2>
 		  Airport/airline ID<br>
-		  <input type="text" name="apid" size="5" value="" />
+		  <input type="text" name="apid" size="5" value="32" />
 		  <input type="button" size="5" value="Load" onClick="changeMap()"/>
 		</td></tr>
 	      <tr><td>
-		  <input type="radio" name="maptype" value="R" onChange="changeMap()"/> Airport route map
+		  <input type="radio" name="maptype" value="R" onChange="changeMap()"/ > Airport route map
 		</td></tr>
 	  </table>
 	</form>

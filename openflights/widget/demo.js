@@ -1,14 +1,16 @@
 /**
- * OpenFlights Widget Demo -- for openflights.org
- * by Jani Patokallio <jani at contentshare dot sg>
+ * @fileoverview OpenFlightsMap Widget demo.
+ * See full documentation and sample code at {@link http://openflights.org/widget/ OpenFlights Widget}.
+ *
+ * @see OpenFlightsMap
+ * @author Jani Patokallio jani@contentshare.sg
+ * @version 0.1
  */
 
-// Set to "true" to enable debugging messages
+/**
+ * Set to "true" to enable debugging messages
+ */
 var OF_DEBUG = true;
-
-// avoid pink tiles
-OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
-OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
 /**
  * The OpenFlightsMap object
@@ -16,7 +18,7 @@ OpenLayers.Util.onImageLoadErrorColor = "transparent";
 var map;
 
 /**
- * Create an OpenFlightsMap on initialization
+ * Create and load OpenFlightsMap widget on initialization
  */
 window.onload = function init(){
   // Set up localization
@@ -39,17 +41,17 @@ window.onload = function init(){
             );
   jpl_wms.setVisibility(false);
 
-  // Create OpenFlightsMap with base layers
-  map = new OpenFlightsMap([ol_wms, jpl_wms]);
+  // Create OpenFlightsMap in DOM element "map" with above base layers
+  map = new OpenFlightsMap("map", [ol_wms, jpl_wms]);
 
-  // Load a flight map
-  map.load(OpenFlightsMap.FLIGHTS);
+  // Load an airline map
+  map.load(OpenFlightsMap.AIRLINE, 32);
 }
 
 /**
- * Create a popup when an airport is selected
+ * Called by OpenFlightsMap when an airport is selected, typically used to create a popup in response.
  *
- * @param airport An OpenLayers.Feature.Vector object.  May be either a single airport or a cluster,
+ * @param airport An {@link http://dev.openlayers.org/docs/files/OpenLayers/Feature/Vector-js.html OpenLayers.Feature.Vector} object.  May be either a single airport or a cluster,
  * check airport.cluster to check which.  Contains attribute data under airport.attributes.*
  * (single) or airport.cluster[n].attributes.* (cluster).  List of known attributes:
  * <ul>
@@ -91,9 +93,11 @@ function onAirportSelect(airport) {
 }
 
 /**
- * Hide popup when an airport is unselected
+ * Called by OpenFlightsMap when an airport or cluster is unselected, typically used to close its popup.<br>
+ * Note: If a user has previously selected airport A, and then clicks on airport B, OpenFlights will first
+ * call onAirportUnselect(A) and then onAirportSelect(B).
  *
- * @param airport An OpenLayers.Feature.Vector object. 
+ * @param airport An {@link http://dev.openlayers.org/docs/files/OpenLayers/Feature/Vector-js.html OpenLayers.Feature.Vector} object.
  */
 function onAirportUnselect(airport) {
   map.debug("onAirportUnselect()");
@@ -101,7 +105,7 @@ function onAirportUnselect(airport) {
 }
 
 /**
- * Check which map radio button is currently selected
+ * Check which map type radio button is currently selected
  */
 function getMapType() {
   var radio = document.forms['controlform'].maptype;
