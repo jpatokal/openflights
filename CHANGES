@@ -1,3 +1,13 @@
+<b>2010-02-17</b>
+
+* Fixes to SQL schema creation, data loader
+* PHP backend revised to use $_GET/POST instead of $HTTP_GET/POST_VARS
+* Updated OpenFlights widget documentation
+
+<b>2010-02-08</b>
+
+* Soft launch of OpenFlights widget
+
 <b>2010-01-27</b>
 
 * "Reset" tab added to Facebook app
