@@ -6,22 +6,22 @@ header("Content-type: text/html");
 
 include 'helper.php';
 
-$airport = $HTTP_POST_VARS["name"];
-$iata = $HTTP_POST_VARS["iata"];
-$icao = $HTTP_POST_VARS["icao"];
-$city = $HTTP_POST_VARS["city"];
-$country = $HTTP_POST_VARS["country"];
-$code = $HTTP_POST_VARS["code"];
-$myX = $HTTP_POST_VARS["x"];
-$myY = $HTTP_POST_VARS["y"];
-$elevation = $HTTP_POST_VARS["elevation"];
-$tz = $HTTP_POST_VARS["timezone"];
-$dst = $HTTP_POST_VARS["dst"];
-$dbname = $HTTP_POST_VARS["db"];
-$iatafilter = $HTTP_POST_VARS["iatafilter"];
-$offset = $HTTP_POST_VARS["offset"];
-$action = $HTTP_POST_VARS["action"];
-$apid = $HTTP_POST_VARS["apid"];
+$airport = $_POST["name"];
+$iata = $_POST["iata"];
+$icao = $_POST["icao"];
+$city = $_POST["city"];
+$country = $_POST["country"];
+$code = $_POST["code"];
+$myX = $_POST["x"];
+$myY = $_POST["y"];
+$elevation = $_POST["elevation"];
+$tz = $_POST["timezone"];
+$dst = $_POST["dst"];
+$dbname = $_POST["db"];
+$iatafilter = $_POST["iatafilter"];
+$offset = $_POST["offset"];
+$action = $_POST["action"];
+$apid = $_POST["apid"];
 
 $uid = $_SESSION["uid"];
 

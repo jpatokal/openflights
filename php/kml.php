@@ -17,7 +17,7 @@ if(!$uid or empty($uid)) {
   $uid = 1;
 }
 
-$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . getFilterString($HTTP_GET_VARS) . " GROUP BY s.apid,d.apid";
+$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . getFilterString($_GET) . " GROUP BY s.apid,d.apid";
 
 $result = mysql_query($sql, $db);
 
@@ -71,7 +71,7 @@ print "<Folder><name>Airports</name>\n";
 // Draw airports from largest to smallest
 $airportColors = array ("black", "gray", "purple", "cyan", "cyan", "green");
 
-$sql = "SELECT DISTINCT x,y,elevation,iata,icao,name,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . getFilterString($HTTP_GET_VARS) . " GROUP BY name ORDER BY visits DESC";
+$sql = "SELECT DISTINCT x,y,elevation,iata,icao,name,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . getFilterString($_GET) . " GROUP BY name ORDER BY visits DESC";
 $result = mysql_query($sql, $db);
 $first = true;
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {

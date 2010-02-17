@@ -250,7 +250,7 @@ function die_nicely($msg) {
 
 $uploaddir = '/var/www/openflights/import/';
 
-$action = $HTTP_POST_VARS["action"];
+$action = $_POST["action"];
 switch($action) {
  case _("Upload"):
   $uploadfile = $uploaddir . basename($_FILES['userfile']['tmp_name']);
@@ -265,7 +265,7 @@ switch($action) {
 
  case _("Import"):
   $remove_these = array(' ','`','"','\'','\\','/');
-  $filename = $HTTP_POST_VARS["tmpfile"];
+  $filename = $_POST["tmpfile"];
   $uploadfile = $uploaddir . str_replace($remove_these,'', $filename);
   print "<H4>" . _("Importing...") . "</H4>";
   print "Tmpfile " . $filename . "<br>"; // DEBUG
@@ -276,8 +276,8 @@ switch($action) {
    die_nicely("Unknown action $action");
 }
 
-$fileType = $HTTP_POST_VARS["fileType"];
-$history = $HTTP_POST_VARS["historyMode"];
+$fileType = $_POST["fileType"];
+$history = $_POST["historyMode"];
 $status = "";
 $id_note = false;
 

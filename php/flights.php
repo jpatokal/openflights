@@ -1,28 +1,28 @@
 <?php
 session_start();
-$export = $HTTP_GET_VARS["export"];
+$export = $_GET["export"];
 if($export) {
   header("Content-type: text/csv; charset=utf-8");
   header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d").".csv\"");
   if($export == "export") {
-    $trid = $HTTP_GET_VARS["trid"];
-    $alid = $HTTP_GET_VARS["alid"];
-    $year = $HTTP_GET_VARS["year"];
-    $apid = $HTTP_GET_VARS["id"];
+    $trid = $_GET["trid"];
+    $alid = $_GET["alid"];
+    $year = $_GET["year"];
+    $apid = $_GET["id"];
   }
   // else export everything unfiltered
  } else {
   header("Content-type: text/html; charset=utf-8");
 
-  $apid = $HTTP_POST_VARS["id"];
+  $apid = $_POST["id"];
   if(! $apid) {
-    $apid = $HTTP_GET_VARS["id"];
+    $apid = $_GET["id"];
   }
-  $trid = $HTTP_POST_VARS["trid"];
-  $alid = $HTTP_POST_VARS["alid"];
-  $fid = $HTTP_POST_VARS["fid"];
-  $user = $HTTP_POST_VARS["user"];
-  $year = $HTTP_POST_VARS["year"];
+  $trid = $_POST["trid"];
+  $alid = $_POST["alid"];
+  $fid = $_POST["fid"];
+  $user = $_POST["user"];
+  $year = $_POST["year"];
  }
 
 include 'helper.php';
@@ -98,7 +98,7 @@ if($type == "R" || $type == "L") {
 // Add filters, if any
 switch($export) {
  case "export":
-   $sql = $sql . getFilterString($HTTP_GET_VARS);
+   $sql = $sql . getFilterString($_GET);
    break;
 
  case "backup":
@@ -108,7 +108,7 @@ switch($export) {
  default:
    // Full filter only for user flight searches
    if(! $route) {
-     $sql = $sql . getFilterString($HTTP_POST_VARS);
+     $sql = $sql . getFilterString($_POST);
    }
    break;
 }

@@ -2,18 +2,18 @@
 include 'locale.php';
 include 'db.php';
 
-$type = $HTTP_POST_VARS["type"];
-$name = $HTTP_POST_VARS["name"];
-$pw = $HTTP_POST_VARS["pw"];
-$oldpw = $HTTP_POST_VARS["oldpw"];
-$oldlpw = $HTTP_POST_VARS["oldlpw"];
-$email = $HTTP_POST_VARS["email"];
-$privacy = $HTTP_POST_VARS["privacy"];
-$editor = $HTTP_POST_VARS["editor"];
-$units = $HTTP_POST_VARS["units"];
-$guestpw = $HTTP_POST_VARS["guestpw"];
-$startpane = $HTTP_POST_VARS["startpane"];
-$locale = $HTTP_POST_VARS["locale"]; // override any value in URL/session
+$type = $_POST["type"];
+$name = $_POST["name"];
+$pw = $_POST["pw"];
+$oldpw = $_POST["oldpw"];
+$oldlpw = $_POST["oldlpw"];
+$email = $_POST["email"];
+$privacy = $_POST["privacy"];
+$editor = $_POST["editor"];
+$units = $_POST["units"];
+$guestpw = $_POST["guestpw"];
+$startpane = $_POST["startpane"];
+$locale = $_POST["locale"]; // override any value in URL/session
 
 // 0 error
 // 1 new
