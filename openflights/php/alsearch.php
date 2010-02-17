@@ -4,25 +4,25 @@ require_once("../php/db.php");
 
 include 'helper.php';
 
-$name = $HTTP_POST_VARS["name"];
-$alias = $HTTP_POST_VARS["alias"];
-$mode = $HTTP_POST_VARS["mode"];
+$name = $_POST["name"];
+$alias = $_POST["alias"];
+$mode = $_POST["mode"];
 if(! $mode || $mode == 'F') {
-  $iata = $HTTP_POST_VARS["iata"];
-  $icao = $HTTP_POST_VARS["icao"];
-  $callsign = $HTTP_POST_VARS["callsign"];
+  $iata = $_POST["iata"];
+  $icao = $_POST["icao"];
+  $callsign = $_POST["callsign"];
   $mode = "F";
 } else {
   $iata = "";
   $icao = "";
   $callsign = "";
 }
-$country = $HTTP_POST_VARS["country"];
-$offset = $HTTP_POST_VARS["offset"];
-$active = $HTTP_POST_VARS["active"];
-$iatafilter = $HTTP_POST_VARS["iatafilter"];
-$action = $HTTP_POST_VARS["action"];
-$alid = $HTTP_POST_VARS["alid"];
+$country = $_POST["country"];
+$offset = $_POST["offset"];
+$active = $_POST["active"];
+$iatafilter = $_POST["iatafilter"];
+$action = $_POST["action"];
+$alid = $_POST["alid"];
 
 $uid = $_SESSION["uid"];
 if($action == "RECORD") {

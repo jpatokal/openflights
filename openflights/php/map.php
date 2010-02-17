@@ -21,20 +21,20 @@ if(!$uid or empty($uid)) {
 }
 
 // This applies only when viewing another's flights
-$user = $HTTP_POST_VARS["user"];
+$user = $_POST["user"];
 if(! $user) {
-  $user = $HTTP_GET_VARS["user"];
+  $user = $_GET["user"];
 }
 
-$init = $HTTP_POST_VARS["param"];
+$init = $_POST["param"];
 if(! $init) {
-  $init = $HTTP_GET_VARS["init"];
+  $init = $_GET["init"];
 }
-$trid = $HTTP_POST_VARS["trid"];
+$trid = $_POST["trid"];
 if(! $trid) {
-  $trid = $HTTP_GET_VARS["trid"];
+  $trid = $_GET["trid"];
 }
-$guestpw = $HTTP_POST_VARS["guestpw"];
+$guestpw = $_POST["guestpw"];
 
 // Verify that this trip and user are public
 $public = "O"; // default to full access
@@ -100,7 +100,7 @@ if($user && $user != "0") {
 
 
 // Load up all information needed by this user
-$filter = getFilterString($HTTP_POST_VARS);
+$filter = getFilterString($_POST);
 $map = "";
 
 // Statistics

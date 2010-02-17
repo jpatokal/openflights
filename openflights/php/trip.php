@@ -2,11 +2,11 @@
 include 'locale.php';
 include 'db.php';
 
-$type = $HTTP_POST_VARS["type"];
-$name = $HTTP_POST_VARS["name"];
-$url = $HTTP_POST_VARS["url"];
-$trid = $HTTP_POST_VARS["trid"];
-$privacy = $HTTP_POST_VARS["privacy"];
+$type = $_POST["type"];
+$name = $_POST["name"];
+$url = $_POST["url"];
+$trid = $_POST["trid"];
+$privacy = $_POST["privacy"];
 
 if($type != "NEW" and (!$trid or $trid == 0)) {
   die ('0;Trip ID '. $trid . ' invalid');

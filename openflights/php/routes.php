@@ -5,17 +5,17 @@ include 'helper.php';
 include 'greatcircle.php';
 include 'filter.php';
 
-$apid = $HTTP_POST_VARS["apid"];
+$apid = $_POST["apid"];
 if(! $apid) {
-  $apid = $HTTP_GET_VARS["apid"];
+  $apid = $_GET["apid"];
 }
-$alid = $HTTP_POST_VARS["alid"];
+$alid = $_POST["alid"];
 if(! $alid) {
-  $alid = $HTTP_GET_VARS["alid"];
+  $alid = $_GET["alid"];
 }
 
 if(! $apid) {
-  $param = $HTTP_POST_VARS["param"];
+  $param = $_POST["param"];
   if($param) {
     $sql = "SELECT apid FROM airports WHERE iata='" . mysql_real_escape_string($param) . "'";
     $result = mysql_query($sql, $db);

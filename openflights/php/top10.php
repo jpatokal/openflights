@@ -10,11 +10,11 @@ if(!$uid or empty($uid)) {
   $uid = 1;
 }
 // This applies only when viewing another's flights
-$user = $HTTP_POST_VARS["user"];
-$trid = $HTTP_POST_VARS["trid"];
+$user = $_POST["user"];
+$trid = $_POST["trid"];
 $units = $_SESSION["units"];
 
-$mode = $HTTP_POST_VARS["mode"];
+$mode = $_POST["mode"];
 switch($mode) {
  case "D":
    $mode = "SUM(distance)";
@@ -26,7 +26,7 @@ switch($mode) {
    $mode = "COUNT(fid)";
    break;
 }
-$limit = $HTTP_POST_VARS["limit"];
+$limit = $_POST["limit"];
 if(! $limit) {
   $limit = "10";
 }
@@ -56,7 +56,7 @@ if($user && $user != "0") {
     }
   }
 }
-$filter = getFilterString($HTTP_POST_VARS);
+$filter = getFilterString($_POST);
 
 // List top 10 routes
 $sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,$mode AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=$uid $filter GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT $limit";

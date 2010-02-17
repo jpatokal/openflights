@@ -2,10 +2,10 @@
 include 'locale.php';
 include 'db.php';
 
-$name = $HTTP_POST_VARS["name"];
+$name = $_POST["name"];
 // pw is hashed from lowercased username, legacypw is not
-$pw = $HTTP_POST_VARS["pw"];
-$legacypw = $HTTP_POST_VARS["lpw"];
+$pw = $_POST["pw"];
+$legacypw = $_POST["lpw"];
 $challenge = $_SESSION["challenge"];
 
 // Log in user

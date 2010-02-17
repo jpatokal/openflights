@@ -12,11 +12,11 @@ if(!$uid or empty($uid)) {
 }
 
 // This applies only when viewing another's flights
-$user = $HTTP_POST_VARS["user"];
+$user = $_POST["user"];
 if(! $user) {
-  $user = $HTTP_GET_VARS["user"];
+  $user = $_GET["user"];
 }
-$trid = $HTTP_POST_VARS["trid"];
+$trid = $_POST["trid"];
 
 // Verify that this trip and user are public
 $filter = "";
@@ -51,7 +51,7 @@ if($user && $user != "0") {
     die('Error;' . _("User not found."));
   }
 }
-$filter = "f.uid=" . $uid . getFilterString($HTTP_POST_VARS);
+$filter = "f.uid=" . $uid . getFilterString($_POST);
 $array = array();
 
 // Convert mi to km if units=K
