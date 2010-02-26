@@ -11,10 +11,6 @@ function getlocationcoords($lat, $lon, $width, $height)
    return array("x"=>round($x),"y"=>round($y));
 }
 
-// These are the coordinates the location we wish to plot.
-// These are being passed in the URL, but we will set them to a default if nothing is passed.
-
-// List of all this user's flights
 $db = mysql_connect("localhost", "openflights");
 mysql_select_db("flightdb2",$db);
 $uid = 3;
