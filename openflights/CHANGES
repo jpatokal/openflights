@@ -1,3 +1,8 @@
+<b>2010-04-07</b>
+
+* Bugfix: Trip edit/delete broken (2823849)
+* Bugfix: DST computed correctly for first day
+
 <b>2010-02-17</b>
 
 * Fixes to SQL schema creation, data loader
