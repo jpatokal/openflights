@@ -75,7 +75,7 @@ if($trid) {
 	</table><br>
 
 <?php if($trid) {
-  echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'";
+  echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
   echo "<INPUT type='hidden' name='trid' value='" . $trid . "'>\n";
   echo "<INPUT type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
 } else {
