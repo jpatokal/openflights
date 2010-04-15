@@ -1,3 +1,7 @@
+<b>2010-04-15</b>
+
+* Bugfix: Flight duration shown as NaN and won't allow saving the flt (2986974)
+
 <b>2010-04-07</b>
 
 * Bugfix: Trip edit/delete broken (2823849)

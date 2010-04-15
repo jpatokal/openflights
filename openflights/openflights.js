@@ -2284,7 +2284,7 @@ function calcDuration(param) {
 	if(days > 0) {
 	  $('dst_days').value = Gettext.strargs(gt.gettext("+%1 day"), [days]);
 	} else {
-	  $('dst_days').value = Gettext.strargs(gt.gettext("-%1 day"), [days]);
+	  $('dst_days').value = Gettext.strargs(gt.gettext("%1 day"), [days]);
 	}
 	$('dst_days').style.display = "inline";
       }
