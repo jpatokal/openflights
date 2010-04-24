@@ -1,6 +1,8 @@
 <b>2010-04-24</b>
 
 * Bugfix: Wrong airport listed in Analyze -> Airport Records (2982048)
+* Bugfix: Arrival time overwritten if airports entered afterwards (2986989)
+* YYYY-MM-DD format now used consistently for dates
 * Test cases updated
 
 <b>2010-04-15</b>
