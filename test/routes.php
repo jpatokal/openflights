@@ -84,7 +84,6 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
     $db = db_connect();
     $sql = "SELECT * FROM airports WHERE iata='" . $route["noroute_ap_iata"] . "'";
     $result = mysql_query($sql, $db);
-    $route["routes"] = $rows;
     $this->assertTrue($row = mysql_fetch_array($result, MYSQL_ASSOC), "No-route airport not found");
     $route["noroute_apid"] = $row["apid"];
 
@@ -187,7 +186,6 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
     $db = db_connect();
     $sql = "SELECT * FROM airlines WHERE iata='" . $route["noroute_al_iata"] . "'";
     $result = mysql_query($sql, $db);
-    $route["routes"] = $rows;
     $this->assertTrue($row = mysql_fetch_array($result, MYSQL_ASSOC), "No-route airline not found");
     $route["noroute_alid"] = $row["alid"];
 

@@ -22,7 +22,7 @@ class CheckDemoFullUserMap extends WebTestCase {
 
     // Statistics
     $stats = preg_split('/;/', $rows[0]);
-    $this->assertTrue($stats[0] > 0, "Flight count");
+    $this->assertTrue($stats[0] > 0, "No demo flights found -- did you add some flights and run sql/update-demo.sql?");
     $this->assertTrue($stats[3] == "O", "Public"); // demo flights always full access
     $this->assertTrue($stats[5] == "demo", "Username");
   }

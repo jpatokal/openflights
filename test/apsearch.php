@@ -150,43 +150,4 @@ class SearchAirportOFDBByIATATest extends WebTestCase {
   }
 }
 
-// Search DAFIF by ICAO
-class SearchAirportDAFIFByICAOTest extends WebTestCase {
-  function test() {
-    global $webroot;
-
-    $params = array("icao" => "WSSS",
-		    "db" => "airports_dafif");
-    $msg = $this->post($webroot . "php/apsearch.php", $params);
-    $this->assertText('0;1');
-    $this->assertText('"name":"Singapore Changi Intl"');
-    $this->assertText('"country":"SN"');
-    $this->assertText('"iata":""');
-    $this->assertText('"icao":"WSSS"');
-    $this->assertText('"x":"103.994433"');
-    $this->assertText('"y":"1.350189"');
-    $this->assertText('"elevation":"22"');
-  }
-}
-
-// Search GAD by name
-class SearchAirportGADByNameTest extends WebTestCase {
-  function test() {
-    global $webroot;
-
-    $params = array("name" => "Singapore Changi",
-		    "db" => "airports_gad");
-    $msg = $this->post($webroot . "php/apsearch.php", $params);
-    $this->assertText('0;1');
-    $this->assertText('"name":"Singapore Changi"');
-    $this->assertText('"city":"Singapore"');
-    $this->assertText('"country":"Singapore"');
-    $this->assertText('"iata":"SIN"');
-    $this->assertText('"icao":"WSSS"');
-    $this->assertText('"x":"103.987"');
-    $this->assertText('"y":"1.35556"');
-    $this->assertText('"elevation":"22"');
-  }
-}
-
 ?>

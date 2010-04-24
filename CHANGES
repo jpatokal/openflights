@@ -1,3 +1,8 @@
+<b>2010-04-24</b>
+
+* Bugfix: Wrong airport listed in Analyze -> Airport Records (2982048)
+* Test cases updated
+
 <b>2010-04-15</b>
 
 * Bugfix: Flight duration shown as NaN and won't allow saving the flt (2986974)
