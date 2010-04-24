@@ -2311,6 +2311,9 @@ function calcDuration(param) {
     if(mins < 10) {
       mins = "0" + mins + "";
     }
+    if(hours < 10) {
+      hours = "0" + hours + "";
+    }
     $('duration').value = hours + ":" + mins;
     $('duration').style.color = "#000";
   }
@@ -2424,8 +2427,15 @@ function markAirport(element, quick) {
 	}
       }
       lineLayer.addFeatures(input_line);
+      oldDist = $('distance').value;
       $('distance').value = distance;
-      calcDuration("AIRPORT");
+      if(oldDist == "" && $('dst_time').value != $('dst_time').hintText) {
+	// user has already manually entered arrival time
+	calcDuration("ARRIVAL");
+      } else {
+	// compute duration and arrival time
+	calcDuration("AIRPORT");
+      }
     } else {
       $('distance').value = "";
       $('duration').value = "";
@@ -3032,13 +3042,22 @@ function clearTimes() {
   $('dst_days').style.display = "none";
 }
 
+// YYYY-MM-DD
+function todayString() {
+  var today = new Date();
+  var month = (today.getMonth() + 1) + "";
+  if(month.length == 1) month = "0" + month;
+  var day = today.getDate() + "";
+  if(day.length == 1) day = "0" + day;
+  return today.getFullYear()+ "-" + month + "-" + day;
+}
+
 // Clear out (restore to defaults) the input box
 function clearInput() {
-  var today = new Date();
   resetHintTextboxes();
   if(getCurrentPane() == "input") {
     var form = document.forms["inputform"];
-    form.src_date.value = today.getFullYear()+ "-" + (today.getMonth() + 1) + "-" + today.getDate();
+    form.src_date.value = todayString();
     form.src_date.focus();
     form.src_apid.value = 0;
     form.dst_apid.value = 0;
@@ -3063,7 +3082,7 @@ function clearInput() {
     for(i = 0; i < multiinput_ids.length; i++) {
       $(multiinput_ids[i]).value = 0;
     }
-    form.src_date1.value = today.getFullYear()+ "-" + (today.getMonth() + 1) + "-" + today.getDate();
+    form.src_date1.value = todayString();
     form.src_ap1.focus();
     form.src_ap1.style.color = '#000000';
   }
