@@ -28,16 +28,19 @@ class FormatApCodeTest extends UnitTestCase {
 
 class FormatAirportTest extends UnitTestCase {
   function test() {
-    $row = array("name" => "Airport", "city" => "City", "country" => "Country", "iata" => "AAA");
+    $row = array("name" => "Airport", "city" => "City", "country" => "Country", "iata" => "AAA", "icao" => "BBBB");
     $this->assertEqual(format_airport($row), "City-Airport (AAA), Country");
 
-    $row = array("name" => "City Intl", "city" => "City", "country" => "Country", "iata" => "AAA");
+    $row = array("name" => "City Intl", "city" => "City", "country" => "Country", "iata" => "AAA", "icao" => "BBBB");
     $this->assertEqual(format_airport($row), "City Intl (AAA), Country");
 
-    $row = array("name" => "Hong-kong Intl", "city" => "Hong Kong", "country" => "Country", "iata" => "AAA");
+    $row = array("name" => "Hong-kong Intl", "city" => "Hong Kong", "country" => "Country", "iata" => "AAA", "icao" => "BBBB");
     $this->assertEqual(format_airport($row), "Hong-kong Intl (AAA), Country");
 
-    $row = array("name" => "Really Long Airport Name", "city" => "Really Long City Name", "country" => "Country", "iata" => "AAA");
+    $row = array("name" => "Obscure Regional", "city" => "Inaka", "country" => "Country", "iata" => "", "icao" => "BBBB");
+    $this->assertEqual(format_airport($row), "Inaka-Obscure Regional (BBBB), Country");
+
+    $row = array("name" => "Really Long Airport Name", "city" => "Really Long City Name", "country" => "Country", "iata" => "AAA", "icao" => "BBBB");
     $this->assertEqual(format_airport($row), "Really Long City Name-Really Lon. (AAA), Country");
 
   }
@@ -47,10 +50,10 @@ class FormatAirportTest extends UnitTestCase {
 
 class FormatAirlineTest extends UnitTestCase {
   function test() {
-    $row = array("name" => "Airline", "iata" => "AA", "mode" => "F");
+    $row = array("name" => "Airline", "iata" => "AA", "icao" => "BBB", "mode" => "F");
     $this->assertEqual(format_airline($row), "Airline (AA)");
 
-    $row = array("name" => "Airline", "icao" => "BBB", "mode" => "F");
+    $row = array("name" => "Airline", "iata" => null, "icao" => "BBB", "mode" => "F");
     $this->assertEqual(format_airline($row), "Airline (BBB)");
 
     $row = array("name" => "Non-Airline", "iata" => "XXX", "mode" => "X");

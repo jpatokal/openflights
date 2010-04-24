@@ -40,12 +40,10 @@ function format_airport($row) {
   $name = $row["name"];
   $city = $row["city"];
   $country = $row["country"];
-  $code = $row["code"];
-  if($code) {
+  if(array_key_exists("code", $row)) {
     $country = $code; // hack for DAFIF
   }
   $iata = format_apcode($row);
-  $apid = $row["apid"];
 
   // Foobar-Foobar Intl into Foobar Intl
   // Foo-bar-Foo Bar Intl into Foo Bar Intl

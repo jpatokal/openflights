@@ -3,7 +3,7 @@ This test suite validates PHP calls and MySQL database content.
 *** Instructions
 
 1. Download SimpleTest 1.0.1 and unpack it in the directory "simpletest".
-2. Configure "test_config.php"
+2. Configure "config.php"
 3. Run eg. "php login.php" to test login cases, *or*
 4. Load "/test/test_all.php" in a browser to test all.
 

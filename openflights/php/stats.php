@@ -103,10 +103,10 @@ printf ("\n");
 
 // North, South, West, East
 // 0 desc, 1 iata, 2 icao, 3 apid, 4 x, 5 y
-$sql = sprintf("(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MAX(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
-	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MIN(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
-	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MIN(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ")) UNION " .
-	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . "))",
+$sql = sprintf("(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MAX(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ") ORDER BY iata LIMIT 1) UNION " .
+	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE y=(SELECT MIN(y) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ") ORDER BY iata LIMIT 1) UNION " .
+	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MIN(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ") ORDER BY iata LIMIT 1) UNION " .
+	       "(SELECT '%s',iata,icao,apid,x,y FROM airports WHERE x=(SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter . ") ORDER BY iata LIMIT 1)",
 	       addslashes(_("Northernmost")), addslashes(_("Southernmost")),
 	       addslashes(_("Westernmost")), addslashes(_("Easternmost")));
 
