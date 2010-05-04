@@ -183,7 +183,7 @@ echo "[url=http://openflights.org/user/" . $settings["name"] . "]\n[img]http://o
 		  </tr><tr>
 		    <td class="key"><?php echo _("Current password") ?></td>
 		    <td class="value"><INPUT type="password" name="oldpw" size="20">
-		    <INPUT type="hidden" name="username"></td>
+		    <INPUT type="hidden" name="username" value="<?php echo $_SESSION['name']?>"></td>
 		    <td class="desc" colspan=2><?php echo _("You only need to enter this if changing your password.") ?></td>
 		  </tr><tr>
 		    <td class="key"><?php echo _("New password") ?></td>
