@@ -35,7 +35,7 @@ if($name) {
     printf("%s;%s;%s;%s", $rc, $myrow["name"], $myrow["editor"], $myrow["elite"]);
   } else {
     printf("0;" . _("Login failed. <%s>Create account</a> or <%s>reset password</a>?"),
-	   "a href='/html/settings?new=yes'", "a href='#' onclick='JavaScript:help(\"forgotpw\")'");
+	   "a href='/html/settings?new=yes'", "a href='#' onclick='JavaScript:help(\"resetpw\")'");
   }
 }
 ?>

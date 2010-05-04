@@ -2673,7 +2673,7 @@ function showAirlineMap(alid) {
 // Context help
 //
 function help(context) {
-  window.open('/help/' + context + '.html', 'Help', 'width=500,height=400,scrollbars=yes');
+  window.open('/help/' + context, 'Help', 'width=500,height=400,scrollbars=yes');
 }
 
 //
