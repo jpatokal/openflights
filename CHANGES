@@ -1,6 +1,7 @@
 <b>2010-05-04</b>
 
 * Feature: Automated password resets (2915137)
+* Bugfix: Unable to change password (2918400)
 
 <b>2010-04-24</b>
 
