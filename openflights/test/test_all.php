@@ -64,6 +64,11 @@ $test = &new TestSuite('Routes');
 $test->addTestFile('routes.php');
 $test->run(new HtmlReporter());
 
+// Reset password
+$test = &new TestSuite('Reset password');
+$test->addTestFile('resetpw.php');
+$test->run(new HtmlReporter());
+
 // ...and cleanup after all that
 $test = &new TestSuite('Cleanup');
 $test->addTestFile('cleanup.php');
