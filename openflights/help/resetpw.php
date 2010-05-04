@@ -39,10 +39,11 @@ if(isSet($_GET["challenge"])) {
       . mysql_real_escape_string($email) . "'";
   $result = mysql_query($sql, $db);
   if ($myrow = mysql_fetch_array($result)) {
-    $link = "http://openflights.org/help/resetpw?user=" . $myrow['name']
+    $name = $myrow['name'];
+    $link = "http://openflights.org/help/resetpw?user=" . $name
       . "&challenge=" . $myrow['challenge'];
     $subject = "OpenFlights: Reset password";
-    $body = "Somebody has requested a reset of your OpenFlights.org password.  To proceed, please click on the link below:
+    $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'.  To proceed, please click on the link below:
 
   " . $link . "
 
@@ -61,7 +62,7 @@ OpenFlights.org";
       echo("<p>Message delivery failed, please contact <a href='/about'>support</a>.</p>");
     }
   } else {
-    echo "Sorry, that e-mail address is not registered for any OpenFlights user.¥n";
+    echo "<p>Sorry, that e-mail address is not registered for any OpenFlights user.</p>";
   }
 } else {
 ?>
