@@ -137,7 +137,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 $map .= "\n";
 
 // List of all airports
-$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,timezone,dst,count(name) AS visits,IF(MIN(src_date)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . $filter . " GROUP BY name ORDER BY visits ASC";
+$sql = "SELECT DISTINCT a.apid,x,y,name,iata,icao,city,country,timezone,dst,count(name) AS visits,IF(MIN(src_date)>NOW(), 'Y', 'N') AS future FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . $filter . " GROUP BY CONCAT(name,city) ORDER BY visits ASC";
 $result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
 
 $first = true;

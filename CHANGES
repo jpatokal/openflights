@@ -1,11 +1,11 @@
+<b>2010-06-15</b>
+
+* Bugfix: BHD (Belfast City Airport) won't display (3015921)
+
 <b>2010-05-04</b>
 
 * Feature: Automated password resets (2915137)
 * Bugfix: Unable to change password (2918400)
-
-<b>2010-04-24</b>
-
-* Bugfix: Wrong airport listed in Analyze -> Airport Records (2982048)
 
 <b>2010-04-24</b>
 
