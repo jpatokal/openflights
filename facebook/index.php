@@ -27,14 +27,24 @@ $fbuid = $facebook->require_login();
 
 // Clear prefs, DB if user passes in reset=true, so they can reconfig
 if($_REQUEST["reset"] == "true" || $_REQUEST["reset"] == "Reset") {
-  $facebook->api_client->data_setUserPreference(1, "None");
   $sql = "DELETE FROM facebook WHERE fbuid=$fbuid";
   $result = mysql_query($sql, $db);
   fb_infobox("<b>Account reset.</b>");
 }
 
-// Has the user configured their OpenFlights name?
-$ofname = $facebook->api_client->data_getUserPreference(1);
+// Try to fetch their session key and other info from database
+$sql = "SELECT u.name, u.uid, fb.sessionkey, fb.pref_onnew, fb.pref_onfly FROM facebook AS fb, users AS u WHERE u.uid=fb.uid AND fb.fbuid=" . $fbuid;
+$result = mysql_query($sql, $db);
+if(! $result) fb_error($ofname, $sql);
+if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  $ofname = $row["name"];
+  $uid = $row["uid"];
+  $session = $row["sessionkey"];
+  $onnew = $row["pref_onnew"];
+  $onfly = $row["pref_onfly"];
+}
+
+// Did we find their name in the database?
 if(! $ofname || $ofname == "" || $ofname == "None") {
   // Nope, did they just submit it?
   $ofname = $_REQUEST["ofname"];
@@ -52,9 +62,7 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
 
     fb_infobox("<b>Account found!</b>  Generating profile preview...");
 
-    // Looking good, save to Facebook and our internal table
-    $facebook->api_client->data_setUserPreference(1, $ofname);
-
+    // Looking good, save to our internal table
     $uid = $row["uid"];
     $sql = sprintf("INSERT INTO facebook(uid,fbuid,updated) VALUES(%s,%s,DATE_SUB(NOW(), INTERVAL 1 DAY))", $uid, $fbuid);
     $result = mysql_query($sql, $db);
@@ -85,18 +93,6 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
 </fb:tabs>
 
 <?php
-
-// Fetch their session key and other info from database
-$sql = "SELECT uid, sessionkey, pref_onnew, pref_onfly FROM facebook WHERE fbuid=" . $fbuid;
-$result = mysql_query($sql, $db);
-if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  $uid = $row["uid"];
-  $session = $row["sessionkey"];
-  $onnew = $row["pref_onnew"];
-  $onfly = $row["pref_onfly"];
-} else {
-  fb_error($ofname, $sql);
-}
 
 $session_key = $_POST["fb_sig_session_key"];
 $offline = $facebook->api_client->users_hasAppPermission("offline_access");
