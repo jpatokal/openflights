@@ -150,7 +150,7 @@ function validate(type) {
     return;
   }
 
-  if(email != "" && ! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+  if(email != "" && ! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/.test(email)) {
     showError(gt.gettext('Invalid e-mail address, it should be "user@example.domain"'));
     form.email.focus();
     return;
