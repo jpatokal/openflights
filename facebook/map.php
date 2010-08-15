@@ -18,6 +18,10 @@ if(! $uid) {
   print "User ID unknown";
   return;
 }
+$basemap = $_GET["basemap"];
+if(! $basemap) {
+  $basemap = "fb-thumbnail.png";
+}
 
 $sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,d.x AS dx,d.y AS dy, distance FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . " GROUP BY s.apid,d.apid";
 
@@ -25,7 +29,7 @@ $sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,d.x AS dx,d.y AS dy, distance FROM f
 // This can be any format but we are using JPG in this example
 // We will also allocate the color for the marker
 
-$im = imagecreatefrompng("../img/fb-thumbnail.png");
+$im = imagecreatefrompng("../img/" . $basemap);
 $airportColors=array(imagecolorallocate ($im, 0,0,0), // black
 		     imagecolorallocate ($im, 0x66,0x66,0x99), // cyan
 		     imagecolorallocate ($im, 0x45,0xFF,0xA9)); // green
