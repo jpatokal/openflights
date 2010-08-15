@@ -60,7 +60,7 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
       fb_die("Sorry, couldn't find <b>$ofname</b> at OpenFlights.  Please check the spelling, hit 'Back' and try again.");
     }
 
-    fb_infobox("<b>Account found!</b>  Generating profile preview...");
+    fb_infobox("<b>Account found!</b>  Generating profile tab preview...");
 
     // Looking good, save to our internal table
     $uid = $row["uid"];
@@ -162,9 +162,17 @@ if(! $session) {
 ?>
 </form>
 
-<fb:if-section-not-added section="profile">
-<p><b>Step 3</b>: Click the button below to add the OpenFlights box to your Facebook profile.</p>
-<div class="section_button"><fb:add-section-button section="profile"/></div>
+<?php
+$query = "select tab_added from permissions where uid = '$fbuid'";
+$result = $facebook->api_client->fql_query($query); 
+if($result == NULL || $result[0]['tab_added'] != 1) {
+?>
+<p><b>Step 3</b>: Click the button below to add the OpenFlights application tab to your Facebook profile.</p>
+<div class="section_button"><fb:add-profile-tab /></div>
 <br/>
-</fb:if-section-not-added>
+<?php
+} else {
+  print "<p><i>You have added the OpenFlights application tab to your profile.</i></p>";
+}
+?>
 
