@@ -72,7 +72,7 @@ require_once("./php/db.php");
 	      <div id="loginstatus" style="display: none"></div>
  
 	      <div id="loginform" style="display: none">
-		<form name="login">
+		<form name="login" onSubmit='JavaScript:return false;'>
 		<table cellspacing="5" cellpadding="0" border="0">
  		  <tr>
                     <td><?php echo _("Username") ?>&nbsp;</td><td>
