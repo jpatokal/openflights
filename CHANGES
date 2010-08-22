@@ -1,3 +1,12 @@
+<b>2010-08-22</b>
+
+* Bugfix: Password sometimes exposed in URL after login (2915139)
+* SQL optimization for banner generation, user status up/downgrades
+
+<b>2010-08-14</b>
+
+* Facebook app reworked to use application tab instead of profile box
+
 <b>2010-07-10</b>
 
 * Bugfix: E-mail address validation is too strict (3026793)
