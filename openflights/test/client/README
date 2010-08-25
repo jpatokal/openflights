@@ -1,0 +1,18 @@
+This test suite validates client-side (browser) behavior.
+
+Requirements:
+
+* PHPUnit
+  Install into path from phpunit.de
+
+* Selenium RC
+  Install into directory 'selenium'
+
+* Functional OpenFlights server and its test suite
+  Set up ../server first!
+
+Testing:
+
+Run ./run-suite.sh and hope for the best!  Selenium logs go into log/selenium.log.
+
+
