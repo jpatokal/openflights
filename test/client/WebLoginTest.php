@@ -1,6 +1,8 @@
 <?php
 require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
 
+include_once(dirname(__FILE__) . '/../server/config.php');
+
 class WebLoginTest extends PHPUnit_Extensions_SeleniumTestCase
 {
   protected function setUp()
@@ -9,23 +11,22 @@ class WebLoginTest extends PHPUnit_Extensions_SeleniumTestCase
     $this->setBrowserUrl('http://openflights.local/');
   }
   
-  public function testFailedLoginAndCreateAccount()
+  public function testFailedLogin()
   {
+    global $settings;
+
     $this->open('/');
-    $this->type('name', 'autotest');
-    $this->type('pw', 'incorrect');
+    $this->type('name', $settings['name']);
+    $this->type('pw', 'invalid');
     $this->click('loginbutton');
     $this->verifyTextPresent('Login failed.');
 
     $this->click('link=Create account');
     $this->verifyLocation('*/html/settings?new=yes');
-  }
 
-  public function testFailedLoginAndResetPassword()
-  {
     $this->open('/');
-    $this->type('name', 'autotest');
-    $this->type('pw', 'incorrect');
+    $this->type('name', $settings['name']);
+    $this->type('pw', 'invalid');
     $this->click('loginbutton');
     $this->verifyTextPresent('Login failed.');
 
@@ -37,11 +38,15 @@ class WebLoginTest extends PHPUnit_Extensions_SeleniumTestCase
 
   public function testSuccessfulLogin()
   {
+    global $settings;
+
     $this->open('/');
-    $this->type('name', 'autotest');
-    $this->type('pw', 'autotest');
+    $this->type('name', $settings['name']);
+    $this->type('pw', $settings['password']);
     $this->click('loginbutton');
-    $this->verifyTextPresent('Hi, autotest !');
+    $this->verifyTextPresent("Hi, ${settings['name']} !");
+    $this->verifyTextPresent('1 segments');
+    $this->verifyTextPresent('1000 miles');
   }
 }
 ?>
