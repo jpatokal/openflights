@@ -6,13 +6,12 @@ Requirements:
   Install into path from phpunit.de
 
 * Selenium RC
-  Install into directory 'selenium'
+  Install into directory '/openflights/test/selenium'
 
-* Functional OpenFlights server and its test suite
-  Set up ../server first!
+* A functional OpenFlights server and its test suite
+  Set up /openflights/test/server first (see its README)
 
 Testing:
 
-Run ./run-suite.sh and hope for the best!  Selenium logs go into log/selenium.log.
-
+Run ./run-suite.sh and hope for the best!  Test bootstrap logs into log/bootstrap.log, Selenium logs go into log/selenium.log.
 

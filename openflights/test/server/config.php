@@ -1,7 +1,7 @@
 <?php
 
 // Address of OpenFlights install
-$webroot = 'http://192.168.2.1/';
+$webroot = 'http://openflights.local/';
 
 // Database configuration
 $dbhost = "localhost";
