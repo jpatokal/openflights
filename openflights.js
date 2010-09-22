@@ -113,8 +113,8 @@ window.onload = function init(){
 					  new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
 					  ] });
   
-  var ol_wms = new OpenLayers.Layer.WMS( "Political (Metacarta)",
-					 "http://labs.metacarta.com/wms/vmap0?",
+  var ol_wms = new OpenLayers.Layer.WMS( "Political (OSGeo)",
+					 "http://vmap0.tiles.osgeo.org/wms/vmap0?",
 					 {layers: 'basic'},
 					 {transitionEffect: 'resize', wrapDateLine: true}
 					 );
