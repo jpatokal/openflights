@@ -119,12 +119,9 @@ window.onload = function init(){
 					 {transitionEffect: 'resize', wrapDateLine: true}
 					 );
   
-  var jpl_wms = new OpenLayers.Layer.WMS("Geographical (NASA)", 
-                ["http://t1.hypercube.telascience.org/tiles?",
-                 "http://t2.hypercube.telascience.org/tiles?",
-                 "http://t3.hypercube.telascience.org/tiles?",
-                 "http://t4.hypercube.telascience.org/tiles?"], 
-                {layers: 'landsat7'},
+  var jpl_wms = new OpenLayers.Layer.WMS("Geographical (OpenGeo)", 
+                "http://maps.opengeo.org/geowebcache/service/wms?TILED=true&",
+                {layers: 'bluemarble'},
 	        {transitionEffect: 'resize', wrapDateLine: true}
             );
   jpl_wms.setVisibility(false);
