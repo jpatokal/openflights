@@ -73,10 +73,8 @@ var modeicons = { "F":'/img/icon_airline.png', "T": '/img/icon_train.png',
 var modespeeds = { "F":500, "T":100, "R":60, "S":40 };
 var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50" };
 
-// Validate 24-hr time ([0]0:00-23:59)
-var re_time = /(^0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 // Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
-var re_date = /^((19|20)\d\d)[- /.]([1-9]|0[1-9]|1[012])[- /.]([1-9]|0[1-9]|[12][0-9]|3[01])$/;
+var re_date = /^((19|20)\d\d)[- /.]?([1-9]|0[1-9]|1[012])[- /.]?([1-9]|0[1-9]|[12][0-9]|3[01])$/;
 // Validate numeric value
 var re_numeric = /^[0-9]*$/;
 
@@ -787,7 +785,7 @@ function xmlhttpPost(strURL, id, param) {
       if(getCurrentPane() == "input") {
 	src_time = $('src_time').value;
 	if(src_time != "" && src_time != "HH:MM") {
-	  if(! re_time.test(src_time)) {
+	  if(! RE_TIME.test(src_time)) {
 	    alert(gt.gettext("Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."));
 	    $('src_time').focus();
 	    return;
@@ -811,7 +809,7 @@ function xmlhttpPost(strURL, id, param) {
 	var registration = inputform.registration.value;
 	var note = inputform.note.value;
 	var duration = $('duration').value;
-	if(! re_time.test(duration)) {
+	if(! RE_TIME.test(duration)) {
 	  alert(gt.gettext("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."));
 	  $('duration').focus();
 	  return;
@@ -2168,7 +2166,7 @@ function calcDuration(param) {
     // (if no duration is available, estimate it)
     var duration = $('duration').value.trim();
     if(duration != "") {
-      if(! re_time.test(duration)) {
+      if(! RE_TIME.test(duration)) {
 	$('duration').focus();
 	$('duration').style.color = "#F00";
 	return;
@@ -2205,23 +2203,23 @@ function calcDuration(param) {
   src_time = $('src_time').value;
   if(src_time != "" && src_time != "HH:MM") {
     // We do!  Does it make sense?
-    if(! re_time.test(src_time)) {
+    if(! RE_TIME.test(src_time)) {
       $('src_time').focus();
       $('src_time').style.color = "#F00";
       return;
     }
-    src_time = parseFloat(src_time.split(":")[0]) + parseFloat(src_time.split(":")[1] / 60);
+    src_time = parseTimeString(src_time);
     
     // Do we have an arrival time?
     if(dst_time != 0) {
       // Yes, validate it
-      if(! re_time.test(dst_time)) {
+      if(! RE_TIME.test(dst_time)) {
 	$('dst_time').focus();
 	$('dst_time').style.color = "#F00";
 	return;
       }
       // Case 3: Need to determine duration
-      dst_time = parseFloat(dst_time.split(":")[0]) + parseFloat(dst_time.split(":")[1] / 60);
+      dst_time = parseTimeString(dst_time);
       days = $('dst_days').value;
       if(days != "") {
 	dst_time += parseInt($('dst_days').value) * 24;

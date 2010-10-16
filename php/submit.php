@@ -46,6 +46,10 @@ $src_time = $_POST["src_time"];
 if(! $src_time || $src_time == "") {
   $src_time = "NULL";
 } else {
+  # MySQL interprets 1000 as 00:10:00, so we force it to 100000 => 10:00:00
+  if(! strstr($src_time, ":")) {
+    $src_time .= "00";
+  }
   $src_time = "'" . mysql_real_escape_string($src_time) . "'";
 }
 

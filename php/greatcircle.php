@@ -116,6 +116,7 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
   $pointList[] = $startPoint;
   $wayPoint = $startPoint;
   $distance = gcPointDistance($startPoint, $endPoint);
+  $elevation = 0;
 
   if($threed) {
     $step = $ASCENT_STEP;
