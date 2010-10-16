@@ -48,7 +48,7 @@ class AddMultiFlightTest extends WebTestCase {
     $msg = $this->post($webroot . "php/submit.php", $multiflight);
     $this->assertText('1;');
 
-    // Check that one flight was added
+    // Check that flights were added
     $map = $this->post($webroot . "php/map.php");
     $cols = preg_split('/[;\n]/', $map);
     $this->assertTrue($cols[0] == 1 + $multiflight["multi"], "Flight count should be " . $multiflight["multi"] + 1);
@@ -117,7 +117,7 @@ class FetchAddSingleFlightTest extends WebTestCase {
     $this->assertText($flight["reason"]);
     $this->assertText($flight["registration"]);
     $this->assertText($flight["note"]);
-    $this->assertText($flight["src_time"]);
+    $this->assertText($flight["src_time_formatted"]);
   }
 }
 
