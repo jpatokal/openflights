@@ -31,7 +31,7 @@ function get_profile($db, $uid, $fbuid, $ofname, $type = "profile") {
       $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) has flown <b>%s</b> times, for a total distance of <b>%s</b> and a total duration of <b>%s</b>!  <a href='http://openflights.org/user/%s'>Find out more.</a>", $ofname, $ofname, $row["count"], $distance, $duration, $ofname);
     }
   } else {
-    $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>", $ofname);
+    $content = sprintf("<b><a href='http://openflights.org/user/%s'>%s</a></b> (<fb:name uid=\"$fbuid\" useyou=\"false\" />) doesn't seem to have flown anywhere yet.   <a href='http://openflights.org/'>Add some flights?</a>", $ofname, $ofname);
   }
   $rand = rand();
   return "<a href='http://openflights.org/user/" . $ofname . "'><img src='http://openflights.org/facebook/map.php?uid=$uid&basemap=$basemap&rand=$rand' width='$mapwidth' height='$mapheight'/></a><br/><br/>" . $content . "<br/><p style='text-align: right'><a href='http://apps.facebook.com/openflights'>Refresh</a></p>";
