@@ -1,6 +1,7 @@
 <b>2010-10-16</b>
 
 * Dates and times can now be entered without separators (3074343)
+* Bugfix: Error after connecting to facebook app (with different user) (3084823)
 
 <b>2010-08-22</b>
 
