@@ -11,7 +11,7 @@ class DeleteFlightsTest extends WebTestCase {
     $db = db_connect();
     $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
     $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() >= 1, "Flights deleted");
+    echo mysql_affected_rows() . " flights deleted\n";
   }
 }
 
@@ -23,7 +23,7 @@ class DeleteAirportTest extends WebTestCase {
     $db = db_connect();
     $sql = "DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
     $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() >= 1, "Airport(s) deleted");
+    echo mysql_affected_rows() . " airports deleted\n";
   }
 }
 
@@ -35,7 +35,7 @@ class DeleteAirlinesTest extends WebTestCase {
     $db = db_connect();
     $sql = "DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
     $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() >= 1, "Airline(s) deleted");
+    echo mysql_affected_rows() . " airline(s) deleted\n";
   }
 }
 
@@ -47,7 +47,7 @@ class DeleteUserTest extends WebTestCase {
     $db = db_connect();
     $sql = "DELETE FROM users WHERE name='" . $settings["name"] . "'";
     $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() == 1, "User deleted");
+    echo mysql_affected_rows() . " user deleted\n";
   }
 }
 
