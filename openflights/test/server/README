@@ -7,5 +7,5 @@ This test suite validates PHP calls and MySQL database content.
 3. Run eg. "php login.php" to test login cases, *or*
 4. Load "/test/test_all.php" in a browser to test all.
 
-NOTE: Many cases are dependent on each other. Generally, run signup.php first, all cases afterward, and cleanup.php last.
+NOTE: Many cases are dependent on each other. Generally, run settings.php first, all cases afterward, and cleanup.php last.
 
