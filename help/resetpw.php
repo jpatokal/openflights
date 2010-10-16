@@ -82,7 +82,7 @@ OpenFlights.org";
 }
 if(! isSet($_GET["challenge"])) {
 ?>
-      <INPUT type="button" value="Return"onClick="javascript:window.close()">
+      <INPUT type="button" id="close" value="Return" onClick="javascript:window.close()">
 <?php
 }
 ?>
