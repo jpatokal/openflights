@@ -12,6 +12,9 @@ RAD2DEG = 57.29577951308;
 GC_STEP = 500; // draw segment every GC_STEP mi
 GC_MIN = 1000; // trigger GC paths once distance is greater than this
 
+// Validate 24-hr time ([0]0:00-23:59)
+var RE_TIME = /(^0?[0-9]|1[0-9]|2[0-3]):?([0-5][0-9])$/;
+
 // Compute great circle distance between two points (spherical law of cosines)
 // http://www.movable-type.co.uk/scripts/latlong.html
 // © 2002-2008 Chris Veness
@@ -259,6 +262,12 @@ function getLastDay(year, month, type) {
   date.setDate(date.getDate() - (date.getDay() - type));
   return date;
 } 
+
+// Parse a time string into a float
+function parseTimeString(time_str) {
+  chunks = time_str.match(RE_TIME);
+  return parseFloat(chunks[1]) + parseFloat(chunks[2] / 60);
+}
 
 // Splice and dice apdata chunks
 // code:apid:x:y:tz:dst

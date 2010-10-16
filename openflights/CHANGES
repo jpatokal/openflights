@@ -1,3 +1,7 @@
+<b>2010-10-16</b>
+
+* Dates and times can now be entered without separators (3074343)
+
 <b>2010-08-22</b>
 
 * Bugfix: Password sometimes exposed in URL after login (2915139)
