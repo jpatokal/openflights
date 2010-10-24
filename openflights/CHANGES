@@ -1,5 +1,6 @@
 <b>2010-10-24</b>
 
+* New "All" option in Top X, implements More than Top 50 in "Top 10" section (3089206)
 * Bugfix: Banner in miles instead of kilometers (3091634)
 
 <b>2010-10-16</b>

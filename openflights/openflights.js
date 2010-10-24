@@ -71,7 +71,7 @@ var modecolors = { "F":COLOR_NORMAL, "T":COLOR_TRAIN, "R":COLOR_ROAD, "S":COLOR_
 var modeicons = { "F":'/img/icon_airline.png', "T": '/img/icon_train.png',
 		  "R": '/img/icon_car.png', "S": '/img/icon_ship.png' };
 var modespeeds = { "F":500, "T":100, "R":60, "S":40 };
-var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50" };
+var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50", "-1":"All" };
 
 // Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
 var re_date = /^((19|20)\d\d)[- /.]?([1-9]|0[1-9]|1[012])[- /.]?([1-9]|0[1-9]|[12][0-9]|3[01])$/;
