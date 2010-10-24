@@ -1,5 +1,6 @@
 <?php
 include '../php/db.php';
+include '../php/helper.php';
 
 function endsWith( $str, $sub ) {
   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) == $sub );
@@ -36,17 +37,22 @@ if(file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 }
 
 // New banner or cache out of date, so regenerate
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights AS f JOIN (" .
-  "SELECT uid FROM users WHERE name='" . mysql_real_escape_string($user) . "') AS this_user " .
-  "WHERE this_user.uid=f.uid";
+$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration, u.units AS units FROM flights AS f, USERS as U WHERE name='" . mysql_real_escape_string($user) . "' AND u.uid=f.uid";
 
 $result = mysql_query($sql, $db);
 if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if(!$row["distance"] || $row["distance"] == "") {
     rendererror("User $user not found");
   } else {
+    $distance = $row["distance"];
+    if($row["units"] == "K") {
+      $distance *= $KMPERMILE;
+      $units = "km";
+    } else {
+      $units = "miles";
+    }
     $flights = sprintf("%s flights", $row["count"]);
-    $miles = sprintf("%d,%03d miles", $row["distance"] / 1000, $row["distance"] % 1000);
+    $miles = sprintf("%d,%03d %s", $distance / 1000, $distance % 1000, $units);
     $duration = sprintf("%d days, %2d:%02d hours", $row["duration"] / 1440, ($row["duration"] / 60) % 24, $row["duration"] % 60);
   }
 } else {
