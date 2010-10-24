@@ -30,6 +30,9 @@ $limit = $_POST["limit"];
 if(! $limit) {
   $limit = "10";
 }
+if($limit == "-1") {
+  $limit = "9999";
+}
 
 // Verify that this trip and user are public
 if($uid == 1 && $trid && $trid != "0") {
