@@ -1,0 +1,1441 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0056)http://www.flightmemory.com/signin/ -->
+<HTML><HEAD><TITLE>FlightMemory - FlightData</TITLE>
+<META content="text/html; charset=ISO-8859-1" http-equiv=Content-Type>
+<META content=en http-equiv=content-language>
+<META name=author 
+content="Heret Informatik Service - www.heret.de - www.flugstatistik.de"><LINK 
+rel=stylesheet type=text/css 
+href="FlightMemory%20-%20FlightData4_filer/style.css" media=screen>
+<META name=GENERATOR content="MSHTML 8.00.6001.18783"></HEAD>
+<BODY>
+<DIV class="wrap clearfix">
+<DIV class=header><A href="http://www.flightmemory.com/signin/?go=menu"><IMG 
+border=0 alt="" align=left src="FlightMemory%20-%20FlightData4_filer/d.gif" 
+width=205 height=123></A> <IMG border=0 alt="" 
+src="FlightMemory%20-%20FlightData4_filer/d.gif" width=250 height=78><BR>
+<H2>Where in the world have you flown?<BR>How long have you been in the 
+air?<BR>Create your own FlightMemory and see!</H2></DIV>
+<DIV id=nav class=topnav>
+<UL>
+  <LI><A href="http://www.flightmemory.com/signin/?go=menu">HOME</A> 
+  <LI><A class=aktiv 
+  href="http://www.flightmemory.com/signin/?go=flugdaten;r=69990">FLIGHTDATA</A> 
+
+  <LI><A 
+  href="http://www.flightmemory.com/signin/?go=statistik;r=69990">STATISTICS</A> 
+
+  <LI><A href="http://www.flightmemory.com/signin/?go=poster">POSTER</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=shop"><I>SHOP</I></A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=profil">PROFILE</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=premium">PREMIUM</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=community">COMMUNITY</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=news">NEWS</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=kontakt">CONTACT</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=invite">INVITE</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=logout">LOGOUT</A> 
+</LI></UL>
+<UL>
+  <LI><IMG src="FlightMemory%20-%20FlightData4_filer/dummy.gif" width=48 
+  height=1> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=flugdaten_neu;r=69990">New 
+  flight</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=landeplatz;r=69990">Unique 
+  airports</A> 
+  <LI><A 
+  href="http://www.flightmemory.com/signin/?go=profil_twitter;r=69990">Twitter</A> 
+
+  <LI><A href="http://www.flightmemory.com/signin/?go=flugdaten_suche">Search in 
+  all flights</A> 
+  <LI><A href="http://www.flightmemory.com/signin/?go=import">Import your 
+  flights</A> </LI></UL></DIV><!-- ValueClick Media 468x60 and 728x90 Banner CODE for flightmemory.com -->
+<SCRIPT language=javascript 
+src="FlightMemory%20-%20FlightData4_filer/get.media"></SCRIPT>
+<NOSCRIPT><A 
+href="http://media.fastclick.net/w/click.here?sid=39794&amp;m=1&amp;c=1" 
+target=_blank><IMG border=1 
+src="FlightMemory%20-%20FlightData4_filer/leaderboard_border.gif" width=728 
+height=90></A></NOSCRIPT> <!-- ValueClick Media 468x60 and 728x90 Banner CODE for flightmemory.com --><IMG 
+src="FlightMemory%20-%20FlightData4_filer/d.gif" width=1 height=6><BR>
+<DIV class="container clearfix">
+<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+  <TR>
+    <TD>
+      <H3>FlightData</H3></TD>
+    <TD align=middle>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD>Sorting:&nbsp;</TD>
+          <FORM method=post action="">
+          <TD vAlign=top><INPUT value=flugdaten type=hidden name=go> <INPUT 
+            value=0 type=hidden name=dbpos> <SELECT name=order_box> <OPTION 
+              selected value=datum>last flight first</OPTION> <OPTION 
+              value=datum>Departure</OPTION> <OPTION value=ab_3letter>&nbsp; 
+              &nbsp;Airportcode</OPTION> <OPTION value=ab_ort>&nbsp; 
+              &nbsp;Location (City)</OPTION> <OPTION value=ab_land>&nbsp; 
+              &nbsp;Country</OPTION> <OPTION value=ab_name>&nbsp; 
+              &nbsp;Name</OPTION> <OPTION value=ab_zeit>&nbsp; 
+              &nbsp;Time</OPTION> <OPTION value=datum>Arrival</OPTION> <OPTION 
+              value=an_3letter>&nbsp; &nbsp;Airportcode</OPTION> <OPTION 
+              value=an_ort>&nbsp; &nbsp;Location (City)</OPTION> <OPTION 
+              value=an_land>&nbsp; &nbsp;Country</OPTION> <OPTION 
+              value=an_name>&nbsp; &nbsp;Name</OPTION> <OPTION 
+              value=an_zeit>&nbsp; &nbsp;Time</OPTION> 
+              <OPTION>Miscellaneous</OPTION> <OPTION value=distanz>&nbsp; 
+              &nbsp;Distance</OPTION> <OPTION value=dauer>&nbsp; 
+              &nbsp;Duration</OPTION> <OPTION value=airline>&nbsp; 
+              &nbsp;Airline</OPTION> <OPTION value=fnr>&nbsp; &nbsp;Flight 
+              number</OPTION> <OPTION value=flugzeug>&nbsp; &nbsp;Airplane 
+              (type)</OPTION> <OPTION value=lfkz>&nbsp; 
+              &nbsp;Registration</OPTION> <OPTION value=sitzplatz>&nbsp; 
+              &nbsp;Seat</OPTION> <OPTION value=sitztyp>&nbsp; &nbsp;Seat 
+              type</OPTION> <OPTION value=klasse>&nbsp; &nbsp;Travel 
+              classes</OPTION> <OPTION value=taufname>&nbsp; &nbsp;Airplane 
+              name</OPTION></SELECT> <INPUT value=go type=submit> <INPUT value=1 
+            type=checkbox name=absteigend>descending 
+    </TD></FORM></TR></TBODY></TABLE></TD>
+    <FORM method=post>
+    <TD vAlign=top><INPUT value=flugdaten type=hidden name=go> <INPUT 
+      type=hidden name=order> Page: <SELECT onchange=submit(); name=dbpos> 
+        <OPTION selected value=0>1</OPTION> <OPTION value=50>2</OPTION> <OPTION 
+        value=100>3</OPTION> <OPTION value=150>4</OPTION></SELECT> </TD></FORM>
+    <TD align=right><IMG border=0 
+      src="FlightMemory%20-%20FlightData4_filer/first2.gif" width=15 height=14> 
+      <IMG border=0 src="FlightMemory%20-%20FlightData4_filer/previous2.gif" 
+      width=12 height=14> &nbsp; <A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;dbpos=50"><IMG 
+      border=0 src="FlightMemory%20-%20FlightData4_filer/next.gif" width=12 
+      height=14></A> <A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;dbpos=150"><IMG 
+      border=0 src="FlightMemory%20-%20FlightData4_filer/last.gif" width=16 
+      height=14></A> </TD></TR></TBODY></TABLE>
+<TABLE border=0 cellSpacing=2 cellPadding=2 width="100%">
+  <TBODY>
+  <TR vAlign=bottom>
+    <TH>No.</TH>
+    <TH>Date<BR>Dep./Arr.</TH>
+    <TH colSpan=2><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=ab_3letter"><FONT 
+      color=#0a006b>Departure</FONT></A></TH>
+    <TH colSpan=2><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=an_3letter"><FONT 
+      color=#0a006b>Arrival</FONT></A></TH>
+    <TH><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=entfernung"><FONT 
+      color=#0a006b>Distance</FONT></A><BR><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=dauer"><FONT 
+      color=#0a006b>Duration</FONT></A> </TH>
+    <TH><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=airline"><FONT 
+      color=#0a006b>Airline</FONT></A><BR><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=fnr"><FONT 
+      color=#0a006b>Flightno.</FONT></A></TH>
+    <TH><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=flugzeug"><FONT 
+      color=#0a006b>Airplane</FONT></A></TH>
+    <TH><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=sitzplatz"><FONT 
+      color=#0a006b>Seat</FONT></A><BR><A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;order=klasse"><FONT 
+      color=#0a006b>Class</FONT></A> </TH>
+    <TH>&nbsp;</TH></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>163<BR></TD>
+    <TD class=liste><NOBR>30.06.2009</NOBR><BR>20:20<BR>21:15 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Norwegian Air Shuttle<BR>DY4539</TD>
+    <TD class=liste>Boeing 737-300<BR>LN-KKX</TD>
+    <TD 
+    class=liste>3D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4646996&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4646996&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>162<BR></TD>
+    <TD class=liste><NOBR>29.06.2009</NOBR><BR>07:05<BR>08:00 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Norwegian Air Shuttle<BR>DY552</TD>
+    <TD class=liste>Boeing 737-300<BR>LN-KKV</TD>
+    <TD 
+    class=liste>9D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4640540&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4640540&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>161<BR></TD>
+    <TD class=liste><NOBR>28.06.2009</NOBR><BR>11:00<BR>12:10 </TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Copenhagen</B><BR>Denmark<BR>Kastrup</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>518&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:10&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK1456</TD>
+    <TD class=liste>Boeing 737-600<BR>LN-RCW<BR>Yngvar Viking</TD>
+    <TD 
+    class=liste>9D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4633999&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4633999&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>160<BR></TD>
+    <TD class=liste><NOBR>26.06.2009</NOBR><BR>20:20<BR>21:30 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Copenhagen</B><BR>Denmark<BR>Kastrup</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>518&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:10&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK467</TD>
+    <TD class=liste>Airbus 321<BR>OY-KBL<BR>Gunnbjørn Viking</TD>
+    <TD 
+      class=liste>24E/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4632080&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4632080&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>159<BR></TD>
+    <TD class=liste><NOBR>24.06.2009</NOBR><BR>13:25<BR>14:15 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4022</TD>
+    <TD class=liste>Boeing 737-500<BR>LN-BRX<BR>Sigurd Munn</TD>
+    <TD 
+    class=liste>6C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4622957&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4622957&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>158<BR></TD>
+    <TD class=liste><NOBR>22.06.2009</NOBR><BR>07:05<BR>08:00 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Norwegian Air Shuttle<BR>DY552</TD>
+    <TD class=liste>Boeing 737-800<BR>LN-NNO</TD>
+    <TD 
+      class=liste>14A/Window<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4613999&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4613999&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>157<BR></TD>
+    <TD class=liste><NOBR>17.06.2009</NOBR><BR>20:40<BR>21:30 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>RYG</B><BR></TD>
+    <TD class=liste><B>Moss</B><BR>Norwegen<BR>Rygge</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>300&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Norwegian Air Shuttle<BR>DY2725</TD>
+    <TD class=liste>Boeing 737-300<BR>LN-KKA</TD>
+    <TD 
+    class=liste>6C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4590815&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4590815&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>156<BR></TD>
+    <TD class=liste><NOBR>17.06.2009</NOBR><BR>07:05<BR>08:00 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Norwegian Air Shuttle<BR>DY552</TD>
+    <TD class=liste>Boeing 737-300<BR>LN-KKE</TD>
+    <TD 
+      class=liste>3F/Window<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4590813&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4590813&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>155<BR></TD>
+    <TD class=liste><NOBR>15.06.2009</NOBR><BR>19:15<BR>20:05 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4046</TD>
+    <TD class=liste>Boeing 737-500<BR>LN-BRX<BR>Sigurd Munn</TD>
+    <TD 
+    class=liste>2D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4583411&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4583411&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>154<BR></TD>
+    <TD class=liste><NOBR>15.06.2009</NOBR><BR>07:10<BR>08:05 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4007</TD>
+    <TD class=liste>Boeing 737-800<BR>LN-RRF<BR>Frøydis Viking</TD>
+    <TD 
+    class=liste>5D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4580521&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4580521&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>153<BR></TD>
+    <TD class=liste><NOBR>06.06.2009</NOBR><BR>10:20<BR>13:30 </TD>
+    <TD class=liste_gross><B>LHR</B><BR></TD>
+    <TD class=liste><B>London</B><BR>United Kingdom<BR>Heathrow</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>1,206&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>2:10&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK804</TD>
+    <TD class=liste>Boeing 737</TD>
+    <TD 
+    class=liste>5C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4534758&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4534758&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>152<BR></TD>
+    <TD class=liste><NOBR>03.06.2009</NOBR><BR>09:20<BR>09:25 </TD>
+    <TD class=liste_gross><B>AMS</B><BR></TD>
+    <TD class=liste><B>Amsterdam</B><BR>Netherlands<BR>Schiphol</TD>
+    <TD class=liste_gross><B>NWI</B><BR></TD>
+    <TD class=liste><B>Norwich</B><BR>United Kingdom</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>240&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:05&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>KLM Royal Dutch Airlines<BR>KL1505</TD>
+    <TD class=liste>Fokker 50<BR>PH-KVG</TD>
+    <TD 
+      class=liste>11D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4518903&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4518903&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>151<BR></TD>
+    <TD class=liste><NOBR>03.06.2009</NOBR><BR>06:30<BR>08:20 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>AMS</B><BR></TD>
+    <TD class=liste><B>Amsterdam</B><BR>Netherlands<BR>Schiphol</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>960&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>KLM Royal Dutch Airlines<BR>KL1140</TD>
+    <TD class=liste>Boeing 737-400<BR>PH-BDT</TD>
+    <TD 
+    class=liste>8C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4518896&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4518896&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>150<BR></TD>
+    <TD class=liste><NOBR>31.05.2009</NOBR><BR>15:55<BR>16:45 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4035</TD>
+    <TD class=liste>Boeing 737-700<BR>LN-RRA</TD>
+    <TD 
+    class=liste>2C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4504469&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4504469&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>149<BR></TD>
+    <TD class=liste><NOBR>27.05.2009</NOBR><BR>23:05<BR>23:55 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4059</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+    class=liste>4D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4490426&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4490426&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>148<BR></TD>
+    <TD class=liste><NOBR>27.05.2009</NOBR><BR>06:15<BR>07:10 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4002</TD>
+    <TD class=liste>Boeing 737-700</TD>
+    <TD 
+      class=liste>10D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4490411&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4490411&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR>
+    <TD class=liste colSpan=11 align=middle>
+      <SCRIPT language=javascript 
+      src="FlightMemory%20-%20FlightData4_filer/get(1).media"></SCRIPT>
+      <NOSCRIPT><A 
+      href="http://media.fastclick.net/w/click.here?sid=39794&amp;m=6&amp;c=1" 
+      target=_blank><IMG border=1 
+      src="FlightMemory%20-%20FlightData4_filer/helpsave_300x250default.gif" 
+      width=300 height=250></A></NOSCRIPT></TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>147<BR></TD>
+    <TD class=liste><NOBR>17.05.2009</NOBR><BR>18:00<BR>18:50 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4045</TD>
+    <TD class=liste>Boeing 737-700<BR>LN-RPK</TD>
+    <TD 
+      class=liste>4c/&nbsp;<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4455611&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4455611&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>146<BR></TD>
+    <TD class=liste><NOBR>16.05.2009</NOBR><BR>11:00<BR>11:50 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4016</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>3e/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4450760&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4450760&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>145<BR></TD>
+    <TD class=liste><NOBR>12.05.2009</NOBR><BR>17:15<BR>18:05 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4043</TD>
+    <TD class=liste>Boeing 737-700</TD>
+    <TD 
+    class=liste>3C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4437835&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4437835&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>144<BR></TD>
+    <TD class=liste><NOBR>10.05.2009</NOBR><BR>17:15<BR>18:05 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4038</TD>
+    <TD class=liste>Boeing 737-800<BR>6C</TD>
+    <TD 
+      class=liste>&nbsp;/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4430863&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4430863&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>143<BR></TD>
+    <TD class=liste><NOBR>05.05.2009</NOBR><BR>19:50<BR>22:40 </TD>
+    <TD class=liste_gross><B>LHR</B><BR></TD>
+    <TD class=liste><B>London</B><BR>United Kingdom<BR>Heathrow</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>910&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4628</TD>
+    <TD class=liste>Boeing 737-800</TD>
+    <TD 
+    class=liste>4D/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4408991&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4408991&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>142<BR></TD>
+    <TD class=liste><NOBR>04.05.2009</NOBR><BR>19:05<BR>20:00 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>LGW</B><BR></TD>
+    <TD class=liste><B>London</B><BR>United Kingdom<BR>Gatwick</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>936&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Norwegian Air Shuttle<BR>DY1332</TD>
+    <TD class=liste>Boeing 737-300</TD>
+    <TD 
+    class=liste>7C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4408987&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4408987&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>141<BR></TD>
+    <TD class=liste><NOBR>14.04.2009</NOBR><BR>17:05<BR>18:20 </TD>
+    <TD class=liste_gross><B>TRD</B><BR></TD>
+    <TD class=liste><B>Trondheim</B><BR>Norway<BR>Værnes</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>583&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:15&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4485</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>2E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4342015&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4342015&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>140<BR></TD>
+    <TD class=liste><NOBR>08.04.2009</NOBR><BR>19:40<BR>20:40 </TD>
+    <TD class=liste_gross><B>BGO</B><BR></TD>
+    <TD class=liste><B>Bergen</B><BR>Norway<BR>Flesland</TD>
+    <TD class=liste_gross><B>TRD</B><BR></TD>
+    <TD class=liste><B>Trondheim</B><BR>Norway<BR>Værnes</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>462&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:00&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4188</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4310685&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4310685&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>139<BR></TD>
+    <TD class=liste><NOBR>08.04.2009</NOBR><BR>18:45<BR>19:20 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>BGO</B><BR></TD>
+    <TD class=liste><B>Bergen</B><BR>Norway<BR>Flesland</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>159&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:35&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4188</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4310680&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4310680&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>138<BR></TD>
+    <TD class=liste><NOBR>06.04.2009</NOBR><BR>09:45<BR>10:35 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4017</TD>
+    <TD class=liste>Boeing 737-600</TD>
+    <TD 
+      class=liste>3C/&nbsp;<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4301390&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4301390&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>137<BR></TD>
+    <TD class=liste><NOBR>04.04.2009</NOBR><BR>14:15<BR>15:25 </TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Copenhagen</B><BR>Denmark<BR>Kastrup</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>518&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:10&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK1452</TD>
+    <TD class=liste>McDonnell Douglas-82</TD>
+    <TD 
+      class=liste>&nbsp;/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4297308&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4297308&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>136<BR></TD>
+    <TD class=liste><NOBR>03.04.2009</NOBR><BR>22:05<BR>13:15 +1</TD>
+    <TD class=liste_gross><B>ORD</B><BR></TD>
+    <TD class=liste><B>Chicago</B><BR>USA<BR>O'Hare</TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Copenhagen</B><BR>Denmark<BR>Kastrup</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>6,861&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>8:10&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK944</TD>
+    <TD class=liste>Airbus 340-300</TD>
+    <TD 
+      class=liste>&nbsp;/Aisle<BR><SMALL>Business<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4297301&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4297301&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>135<BR></TD>
+    <TD class=liste><NOBR>03.04.2009</NOBR><BR>17:28<BR>20:15 </TD>
+    <TD class=liste_gross><B>IAH</B><BR></TD>
+    <TD class=liste><B>Houston</B><BR>USA<BR>George Bush Intercontinental</TD>
+    <TD class=liste_gross><B>ORD</B><BR></TD>
+    <TD class=liste><B>Chicago</B><BR>USA<BR>O'Hare</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>1,492&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>2:47&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>United Airlines<BR>UA346</TD>
+    <TD class=liste>Airbus 319</TD>
+    <TD 
+    class=liste>2B/Aisle<BR><SMALL>First<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4297179&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4297179&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>134<BR></TD>
+    <TD class=liste><NOBR>29.03.2009</NOBR><BR>17:28<BR>23:02 </TD>
+    <TD class=liste_gross><B>ORD</B><BR></TD>
+    <TD class=liste><B>Chicago</B><BR>USA<BR>O'Hare</TD>
+    <TD class=liste_gross><B>IAH</B><BR></TD>
+    <TD class=liste><B>Houston</B><BR>USA<BR>George Bush Intercontinental</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>1,492&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>5:34&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>United Airlines<BR>UA7664</TD>
+    <TD class=liste>Embraer 170</TD>
+    <TD 
+    class=liste>2A/Aisle<BR><SMALL>First<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4271585&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4271585&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>133<BR></TD>
+    <TD class=liste><NOBR>29.03.2009</NOBR><BR>15:35<BR>17:30 </TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Kopenhagen</B><BR>Dänemark<BR>Kastrup</TD>
+    <TD class=liste_gross><B>ORD</B><BR></TD>
+    <TD class=liste><B>Chicago</B><BR>USA<BR>O'Hare</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>6,861&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>7:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK943</TD>
+    <TD class=liste>Airbus 340-300</TD>
+    <TD 
+      class=liste>&nbsp;/Aisle<BR><SMALL>Business<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4271578&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4271578&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>132<BR></TD>
+    <TD class=liste><NOBR>29.03.2009</NOBR><BR>12:05<BR>13:25 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Kopenhagen</B><BR>Dänemark<BR>Kastrup</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>558&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:20&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Atlantic Airways<BR>SK1869</TD>
+    <TD class=liste>BAe 146-300</TD>
+    <TD 
+      class=liste>3D/Aisle<BR><SMALL>Business<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4271576&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4271576&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>131<BR></TD>
+    <TD class=liste><NOBR>14.03.2009</NOBR><BR>17:05<BR>18:20 </TD>
+    <TD class=liste_gross><B>TRD</B><BR></TD>
+    <TD class=liste><B>Trondheim</B><BR>Norway<BR>Værnes</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>583&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:15&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4485</TD>
+    <TD class=liste>&nbsp;</TD>
+    <TD 
+      class=liste>12E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4310691&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4310691&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>130<BR></TD>
+    <TD class=liste><NOBR>08.03.2009</NOBR><BR>12:10<BR>13:00 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4021</TD>
+    <TD class=liste>Boeing 737-600</TD>
+    <TD 
+    class=liste>4C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4188497&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4188497&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>129<BR></TD>
+    <TD class=liste><NOBR>06.03.2009</NOBR><BR>07:00<BR>07:50 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK400</TD>
+    <TD class=liste>Boeing 737-600</TD>
+    <TD 
+    class=liste>9C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4186867&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4186867&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>128<BR></TD>
+    <TD class=liste><NOBR>12.02.2009</NOBR><BR>17:15<BR>18:05 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4043</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD class=liste>8E/Middle<BR><SMALL><BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4097404&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4097404&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>127<BR></TD>
+    <TD class=liste><NOBR>07.02.2009</NOBR><BR>11:00<BR>11:50 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norway<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4016</TD>
+    <TD class=liste>Boeing 737-600</TD>
+    <TD 
+      class=liste>3E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4076754&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4076754&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>126<BR></TD>
+    <TD class=liste><NOBR>20.01.2009</NOBR><BR>19:50<BR>22:50 </TD>
+    <TD class=liste_gross><B>LHR</B><BR></TD>
+    <TD class=liste><B>London</B><BR>Großbritannien<BR>Heathrow</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>910&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>2:00&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4628</TD>
+    <TD class=liste>Boeing 737-800</TD>
+    <TD 
+      class=liste>11C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=4004239&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=4004239&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>125<BR></TD>
+    <TD class=liste><NOBR>18.01.2009</NOBR><BR>10:05<BR>11:05 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>LHR</B><BR></TD>
+    <TD class=liste><B>London</B><BR>Großbritannien<BR>Heathrow</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>910&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>2:00&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4629</TD>
+    <TD class=liste>Boeing 737-600</TD>
+    <TD class=liste>7D/Aisle<BR><SMALL>Economy<BR>Passenger<BR></SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3993574&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3993574&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>124<BR></TD>
+    <TD class=liste><NOBR>30.12.2008</NOBR><BR>16:25<BR>17:15 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4039</TD>
+    <TD class=liste>Boeing 737-800</TD>
+    <TD 
+      class=liste>2A/Window<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3904215&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3904215&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>123<BR></TD>
+    <TD class=liste><NOBR>30.12.2008</NOBR><BR>14:20<BR>15:15 </TD>
+    <TD class=liste_gross><B>TRD</B><BR></TD>
+    <TD class=liste><B>Trondheim</B><BR>Norwegen<BR>Værnes</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>363&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:55&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK361</TD>
+    <TD class=liste>Boeing 737-700</TD>
+    <TD 
+    class=liste>7C/Aisle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3904214&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3904214&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>122<BR></TD>
+    <TD class=liste><NOBR>22.12.2008</NOBR><BR>19:40<BR>20:40 </TD>
+    <TD class=liste_gross><B>BGO</B><BR></TD>
+    <TD class=liste><B>Bergen</B><BR>Norwegen<BR>Flesland</TD>
+    <TD class=liste_gross><B>TRD</B><BR></TD>
+    <TD class=liste><B>Trondheim</B><BR>Norwegen<BR>Værnes</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>462&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:00&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4188</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3901713&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3901713&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>121<BR></TD>
+    <TD class=liste><NOBR>22.12.2008</NOBR><BR>18:45<BR>19:20 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>BGO</B><BR></TD>
+    <TD class=liste><B>Bergen</B><BR>Norwegen<BR>Flesland</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>159&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:35&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4188</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3901708&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3901708&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>120<BR></TD>
+    <TD class=liste><NOBR>14.12.2008</NOBR><BR>15:00<BR>15:50 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4031</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>3E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3844954&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3844954&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>119<BR></TD>
+    <TD class=liste><NOBR>12.12.2008</NOBR><BR>11:00<BR>11:50 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4016</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD class=liste>3E/Middle<BR><SMALL><BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3844949&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3844949&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>118<BR></TD>
+    <TD class=liste><NOBR>22.11.2008</NOBR><BR>16:00<BR>16:50 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4035</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3765780&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3765780&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>117<BR></TD>
+    <TD class=liste><NOBR>20.11.2008</NOBR><BR>18:30<BR>19:20 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR>SK4020</TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>8E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3765775&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3765775&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>116<BR></TD>
+    <TD class=liste><NOBR>16.11.2008</NOBR><BR>12:10<BR>13:00 </TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR></TD>
+    <TD class=liste>Boeing 737-500</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3737080&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3737080&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>115<BR></TD>
+    <TD class=liste><NOBR>14.11.2008</NOBR><BR>09:45<BR>10:35 </TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norwegen<BR>Sola</TD>
+    <TD class=liste_gross><B>OSL</B><BR></TD>
+    <TD class=liste><B>Oslo</B><BR>Norwegen<BR>Gardermoen</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>342&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>0:50&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>SAS Scandinavian Airlines<BR></TD>
+    <TD class=liste>Boeing 737-700</TD>
+    <TD 
+      class=liste>4E/Middle<BR><SMALL>Economy<BR>Passenger<BR>Personal</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3737079&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3737079&amp;dbpos=0';">DEL</A> 
+    </TD></TR>
+  <TR vAlign=top>
+    <TD class=liste_gross align=right>114<BR></TD>
+    <TD class=liste><NOBR>05.11.2008</NOBR><BR>16:05<BR>17:25 </TD>
+    <TD class=liste_gross><B>CPH</B><BR></TD>
+    <TD class=liste><B>Copenhagen</B><BR>Denmark<BR>Kastrup</TD>
+    <TD class=liste_gross><B>SVG</B><BR></TD>
+    <TD class=liste><B>Stavanger</B><BR>Norway<BR>Sola</TD>
+    <TH class=liste_gross align=right>
+      <TABLE border=0 cellSpacing=0 cellPadding=0>
+        <TBODY>
+        <TR>
+          <TD align=right>558&nbsp;</TD>
+          <TD>km</TD></TR>
+        <TR>
+          <TD align=right>1:20&nbsp;</TD>
+          <TD>h</TD></TR></TBODY></TABLE></TH>
+    <TD class=liste>Atlantic Airways<BR>SK1874</TD>
+    <TD class=liste>BAe 146-200</TD>
+    <TD 
+      class=liste>6C/Aisle<BR><SMALL>Business<BR>Passenger<BR>Business</SMALL></TD>
+    <TD class=liste><BR><A title="Edit this flight" 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_edit&amp;id=3688695&amp;dbpos=0">EDIT</A><BR><A 
+      title="Delete this flight" 
+      href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&amp;id=3688695&amp;dbpos=0';">DEL</A> 
+    </TD></TR></TBODY></TABLE><BR>
+<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+  <TR>
+    <TD>Each flight is unique, please enter outbound and return flights as two 
+      separate flights. <A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten_neu">Add new 
+      flight</A></TD>
+    <TD align=right><IMG border=0 
+      src="FlightMemory%20-%20FlightData4_filer/first2.gif" width=15 height=14> 
+      <IMG border=0 src="FlightMemory%20-%20FlightData4_filer/previous2.gif" 
+      width=12 height=14> &nbsp; <A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;dbpos=50"><IMG 
+      border=0 src="FlightMemory%20-%20FlightData4_filer/next.gif" width=12 
+      height=14></A> <A 
+      href="http://www.flightmemory.com/signin/?go=flugdaten&amp;dbpos=150"><IMG 
+      border=0 src="FlightMemory%20-%20FlightData4_filer/last.gif" width=16 
+      height=14></A> </TD></TR></TBODY></TABLE></DIV>
+<DIV id=footer class=footer><A 
+href="http://www.flightmemory.com/signin/?go=menu">home</A>&nbsp;&nbsp;:&nbsp;&nbsp; 
+<A 
+href="http://www.flightmemory.com/signin/?go=poster">poster</A>&nbsp;&nbsp;:&nbsp;&nbsp; 
+<A 
+href="http://www.flightmemory.com/imprint.shtml">imprint</A>&nbsp;&nbsp;:&nbsp;&nbsp; 
+<A href="http://www.flightmemory.com/signin/?go=termsofservice">terms of 
+service</A>&nbsp;&nbsp;:&nbsp;&nbsp; <A 
+href="http://www.flightmemory.com/signin/?go=kontakt">contact</A>&nbsp;&nbsp;&nbsp;&nbsp; 
+<SMALL>© 2007-2009 FlightMemory All Rights Reserved</SMALL> </DIV></DIV>
+<SCRIPT type=text/javascript 
+src="FlightMemory%20-%20FlightData4_filer/urchin.js"></SCRIPT>
+
+<SCRIPT type=text/javascript>
+_uacct = "UA-122394-5";
+urchinTracker();
+</SCRIPT>
+
+<DIV class=commercial><IFRAME height=600 marginHeight=0 
+src="FlightMemory%20-%20FlightData4_filer/snap_keylinks.htm" frameBorder=0 
+width=160 marginWidth=0 
+scrolling=no>
+	<a href="http://media.fastclick.net/w/click.here?sid=39794&m=3&pageid=1" target="_blank"><img width=160
+	height=600 src="http://media.fastclick.net/w/get.media?sid=39794&m=3&tp=7&d=s&v=1.0c&pageid=1" border=0></a>
+	</IFRAME></DIV></BODY></HTML>
