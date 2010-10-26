@@ -3,6 +3,9 @@
 // Address of OpenFlights install
 $webroot = 'http://openflights.local/';
 
+// Path to OpenFlights upload directory
+$uploaddir = '../../import/';
+
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";
@@ -186,4 +189,15 @@ function db_connect() {
   return $db;
 }
 
+function cleanup() {
+  global $settings;
+
+  $db = db_connect();
+  $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
+  $result = mysql_query($sql, $db);
+  $sql = "DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
+  $result = mysql_query($sql, $db);
+  $sql = "DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
+  $result = mysql_query($sql, $db);
+}
 ?>

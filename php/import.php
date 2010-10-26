@@ -248,7 +248,7 @@ function die_nicely($msg) {
   exit;
 }
 
-$uploaddir = '/var/www/openflights/import/';
+$uploaddir = getenv("DOCUMENT_ROOT") . '/import/';
 
 $action = $_POST["action"];
 switch($action) {
@@ -267,6 +267,9 @@ switch($action) {
   $remove_these = array(' ','`','"','\'','\\','/');
   $filename = $_POST["tmpfile"];
   $uploadfile = $uploaddir . str_replace($remove_these,'', $filename);
+  if(! file_exists($uploadfile)) {
+    die_nicely("File $uploadfile not found");
+  }
   print "<H4>" . _("Importing...") . "</H4>";
   print "Tmpfile " . $filename . "<br>"; // DEBUG
   flush();
@@ -291,7 +294,7 @@ switch($fileType) {
    
    $title = $html->find('title', 0);
    if($title->plaintext != "FlightMemory - FlightData") {
-     die_nicely(_("Sorry, this HTML file does not appear contain FlightMemory FlightData."));
+     die_nicely(_("Sorry, this HTML file $uploadfile does not appear contain FlightMemory FlightData."));
    }
    
    // 3nd table has the data
@@ -318,6 +321,9 @@ switch($fileType) {
    fclose($csvfile);
 
    break;
+
+ default:
+   die_nicely(_("Unknown file type $fileType"));
  }
 
 if($action == _("Upload")) {
