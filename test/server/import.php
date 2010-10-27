@@ -6,8 +6,6 @@ include_once(dirname(__FILE__) . '/config.php');
 // Test cases for php/import.php
 // NB: Assumes the test user exists
 
-$fid = null; // global for newly-added flight
-
 class ImportUnknownFiletypeTest extends WebTestCase {
   function test() {
     cleanup();
