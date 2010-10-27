@@ -25,10 +25,10 @@
   <ul>
 	  <li><a href="?go=menu">HOME</a></li>
 	  
-	  <li><a href="?go=flugdaten;r=380141" class="aktiv">FLIGHTDATA</a></li>
-	  <li><a href="?go=statistik;r=380141">STATISTICS</a></li>
+	  <li><a href="?go=flugdaten;r=194849" class="aktiv">FLIGHTDATA</a></li>
+	  <li><a href="?go=statistik;r=194849">STATISTICS</a></li>
 		<li><a href="?go=poster">POSTER</a></li>
-		<li><a href="?go=shop"><i>SHOP</i></a></li>
+		
 	  <li><a href="?go=profil">PROFILE</a></li>
 		<li><a href="?go=suche">SEARCH</a></li>
 	  <li><a href="?go=premium">PREMIUM</a></li>
@@ -40,8 +40,8 @@
   </ul>
   <ul>
 		<li><img src="/images/dummy.gif" width=50 height=1></li>
-	  <li><a href="?go=flugdaten_neu;r=380141">New flight</a></li>
-	  <li><a href="?go=landeplatz;r=380141">Unique airports</a></li>
+	  <li><a href="?go=flugdaten_neu;r=194849">New flight</a></li>
+	  <li><a href="?go=landeplatz;r=194849">Unique airports</a></li>
 	  
 	  <li><a href="?go=import">Import your flights</a></li>
   </ul>
@@ -111,27 +111,23 @@ width=728 height=90 border=1></a></noscript>
 			<input type="hidden" name="order" value="">
 			Page: <select name="dbpos" onChange="submit();">
 			
-				<option value="0" selected>1</option>
+				<option value="0">1</option>
 				<option value="50">2</option>
 				<option value="100">3</option>
-				<option value="150">4</option>
-				<option value="200">5</option>
-				<option value="250">6</option>
-				<option value="300">7</option>
-				<option value="350">8</option>
+				<option value="150" selected>4</option>
 			</select>
 		</td>
 		</form>
 		<td align="right">
+			<a href="?go=flugdaten&dbpos=0"><img src="/images/first.gif" width="15" height="14" border="0"></a>
 			
-			<img src="/images/first2.gif" width="15" height="14" border="0">
+			<a href="?go=flugdaten&dbpos=100"><img src="/images/previous.gif" width="12" height="14" border="0"></a>
 			
-			<img src="/images/previous2.gif" width="12" height="14" border="0">
       &nbsp;
-			<a href="?go=flugdaten&dbpos=50"><img src="/images/next.gif" width="12" height="14" border="0"></a>
 			
-			<a href="?go=flugdaten&dbpos=350"><img src="/images/last.gif" width="16" height="14" border="0"></a>
+			<img src="/images/next2.gif" width="12" height="14" border="0">
 			
+			<img src="/images/last2.gif" width="16" height="14" border="0">
 		</td>
 	</tr>
 </table>
@@ -159,1250 +155,925 @@ width=728 height=90 border=1></a></noscript>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">354<br></td>
-		<td class="liste"><nobr>23.12.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>JFK</b><br></td>
-		<td class="liste"><b>New York</b><br>USA<br>John F. Kennedy</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
+		<td class="liste_gross" align="right">37<br></td>
+		<td class="liste"><nobr>27.08.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada</td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">6,195&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">7:23&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">1,289&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:56&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH 401</td>
-		<td class="liste">A330-300</td>
-		<td class="liste">3H/Aisle<br><small>Business<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2859711&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2859711&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">353<br></td>
-		<td class="liste"><nobr>19.12.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>JFK</b><br></td>
-		<td class="liste"><b>New York</b><br>USA<br>John F. Kennedy</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">6,195&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">7:23&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH 404</td>
-		<td class="liste">B747-400</td>
-		<td class="liste">4H/Aisle<br><small>Business<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2859709&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2859709&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">352<br></td>
-		<td class="liste"><nobr>12.12.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>GRU</b><br></td>
-		<td class="liste"><b>Sao Paulo</b><br>Brasilien<br>Guarulhos</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,810&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:24&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">TAM Brazilian Airlines<br>JJ8070</td>
-		<td class="liste">B777-300ER</td>
-		<td class="liste">7C/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3691747&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3691747&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">351<br></td>
-		<td class="liste"><nobr>02.12.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>GRU</b><br></td>
-		<td class="liste"><b>Sao Paulo</b><br>Brasilien<br>Guarulhos</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,810&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:24&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH506</td>
-		<td class="liste">B747-400</td>
-		<td class="liste">10G/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3691743&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3691743&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">350<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>23.10.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>GRU</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating departure airport: bad"></td>
-		<td class="liste"><b>Sao Paulo</b><br>Brasilien<br>Guarulhos</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,810&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:55&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">TAM Brazilian Airlines<br>JJ 8070<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">B777-300ER<br><img src="/images/star_5.gif" width="18" height="18" title="Rating Airplane: excellent"></td>
-		<td class="liste">7A/Window<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3473766&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3473766&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">349<br><img src="/images/star_3.gif" width="18" height="18" title="Overall impression: normal"></td>
-		<td class="liste"><nobr>06.10.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating departure airport: bad"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>GRU</b><br><img src="/images/star_1.gif" width="18" height="18" title="Rating arrival airport: real bad"></td>
-		<td class="liste"><b>Sao Paulo</b><br>Brasilien<br>Guarulhos</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,810&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">12:40&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">TAM Brazilian Airlines<br>JJ 8071<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">B777-300ER<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">12D/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3473763&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3473763&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">348<br><img src="/images/star_5.gif" width="18" height="18" title="Overall impression: excellent"></td>
-		<td class="liste"><nobr>29.08.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>SIN</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating arrival airport: excellent"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">1,419&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">2:05&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Singapore Airlines<br>SQ978<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">B777-200<br><img src="/images/star_4.gif" width="18" height="18" title="Rating Airplane: good"></td>
-		<td class="liste">49D/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3091558&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3091558&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">347<br><img src="/images/star_5.gif" width="18" height="18" title="Overall impression: excellent"></td>
-		<td class="liste"><nobr>29.08.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating arrival airport: normal"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,008&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:15&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Thai Airways<br>TG 920<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">B747-400<br><img src="/images/star_4.gif" width="18" height="18" title="Rating Airplane: good"></td>
-		<td class="liste">2F/Aisle<br><small>First<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3082443&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3082443&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">346<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>28.08.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<td class="liste_gross"><b>SIN</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating arrival airport: excellent"></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">1,419&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">2:05&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Thai AirAsia<br>FD3501<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">B737-800<br><img src="/images/star_2.gif" width="18" height="18" title="Rating Airplane: bad"></td>
-		<td class="liste">1C/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3091554&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3091554&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">345<br><img src="/images/star_3.gif" width="18" height="18" title="Overall impression: normal"></td>
-		<td class="liste"><nobr>27.08.2008</nobr><br>00:00<br>00:00 </td>
-		<td class="liste_gross"><b>PVG</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating departure airport: good"></td>
-		<td class="liste"><b>Shanghai</b><br>China<br>Pudong</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">2,899&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">3:43&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Thai Airways<br>TG 663<br><img src="/images/star_3.gif" width="18" height="18" title="Rating airline: normal"></td>
-		<td class="liste">B747-400<br><img src="/images/star_4.gif" width="18" height="18" title="Rating Airplane: good"></td>
-		<td class="liste">11D/Window<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3082439&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3082439&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">344<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>25.08.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<td class="liste_gross"><b>PVG</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Shanghai</b><br>China<br>Pudong</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">2,899&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">3:43&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Thai Airways<br>TG 664<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">A340-600<br><img src="/images/star_5.gif" width="18" height="18" title="Rating Airplane: excellent"></td>
-		<td class="liste">11B/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3082436&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3082436&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">343<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>24.08.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating arrival airport: excellent"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,008&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">10:40&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Thai Airways<br>TG 921<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">B747-400<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">14B/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3082433&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3082433&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">342<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>04.08.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating arrival airport: bad"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,008&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:15&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH783<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">B747-400<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">24D/Aisle<br><small>Business<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2349414&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2349414&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">341<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>02.08.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>USM</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Ko Samui</b><br>Thailand<br>Surat Thani Samui</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">467&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Bangkok Airways<br>PG0136<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">A319<br><img src="/images/star_5.gif" width="18" height="18" title="Rating Airplane: excellent"></td>
-		<td class="liste">12C/Aisle<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3207601&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3207601&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">340<br><img src="/images/star_5.gif" width="18" height="18" title="Overall impression: excellent"></td>
-		<td class="liste"><nobr>25.07.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>THS</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Sukho Thai</b><br>Thailand</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">407&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:57&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Bangkok Airways<br>PG212<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">ATR72<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste"> /Window<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=3322655&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3322655&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">339<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>25.07.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<td class="liste_gross"><b>USM</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating arrival airport: excellent"></td>
-		<td class="liste"><b>Ko Samui</b><br>Thailand<br>Surat Thani Samui</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">467&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Bangkok Airways<br>PG153<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">A319<br><img src="/images/star_5.gif" width="18" height="18" title="Rating Airplane: excellent"></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
 		<td class="liste"> /Aisle<br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=3207599&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3207599&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=1833250&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1833250&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">36<br></td>
+		<td class="liste"><nobr>01.08.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">1,289&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:56&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> /Aisle<br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=1833261&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1833261&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">35<br></td>
+		<td class="liste"><nobr>30.07.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada</td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">1,289&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:56&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> /Aisle<br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=1833259&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1833259&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">34<br></td>
+		<td class="liste"><nobr>30.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">364&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">0:54&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048680&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048680&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">33<br></td>
+		<td class="liste"><nobr>30.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>MUC</b><br></td>
+		<td class="liste"><b>Munich</b><br>Germany<br>Franz Josef Strauss</td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">6,648&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">7:53&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048677&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048677&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">32<br></td>
+		<td class="liste"><nobr>30.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>ZRH</b><br></td>
+		<td class="liste"><b>Zurich</b><br>Switzerland<br>Kloten</td>
+		<td class="liste_gross"><b>MUC</b><br></td>
+		<td class="liste"><b>Munich</b><br>Germany<br>Franz Josef Strauss</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">260&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">0:47&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Lufthansa<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048664&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048664&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">31<br></td>
+		<td class="liste"><nobr>27.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>FCO</b><br></td>
+		<td class="liste"><b>Roma</b><br>Italy<br>Leonardo da Vinci/Fiumicino</td>
+		<td class="liste_gross"><b>ZRH</b><br></td>
+		<td class="liste"><b>Zurich</b><br>Switzerland<br>Kloten</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">692&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:16&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Helvetic<br></td>
+		<td class="liste">Fokker 100</td>
+		<td class="liste"> /Window<br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048657&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048657&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">30<br></td>
+		<td class="liste"><nobr>25.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>MUC</b><br></td>
+		<td class="liste"><b>Munich</b><br>Germany<br>Franz Josef Strauss</td>
+		<td class="liste_gross"><b>FCO</b><br></td>
+		<td class="liste"><b>Roma</b><br>Italy<br>Leonardo da Vinci/Fiumicino</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">729&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:19&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Lufthansa<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048654&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048654&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">29<br></td>
+		<td class="liste"><nobr>24.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>BOS</b><br></td>
+		<td class="liste"><b>Boston</b><br>USA<br>Logan</td>
+		<td class="liste_gross"><b>MUC</b><br></td>
+		<td class="liste"><b>Munich</b><br>Germany<br>Franz Josef Strauss</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">6,188&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">7:23&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Lufthansa<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048526&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048526&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">28<br></td>
+		<td class="liste"><nobr>24.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<td class="liste_gross"><b>BOS</b><br></td>
+		<td class="liste"><b>Boston</b><br>USA<br>Logan</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">498&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:03&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">United Airlines<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3048522&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048522&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">27<br></td>
+		<td class="liste"><nobr>21.05.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3659087&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659087&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">26<br></td>
+		<td class="liste"><nobr>18.04.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3659089&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659089&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">25<br></td>
+		<td class="liste"><nobr>16.04.2004</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3659090&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659090&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">24<br></td>
+		<td class="liste"><nobr>14.11.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>LGA</b><br></td>
+		<td class="liste"><b>New York</b><br>USA<br>LaGuardia</td>
+		<td class="liste_gross"><b>YUL</b><br></td>
+		<td class="liste"><b>Montreal</b><br>Canada<br>Pierre Elliott Trudeau/Dorval</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">522&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:05&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3659098&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659098&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">23<br></td>
+		<td class="liste"><nobr>14.11.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YUL</b><br></td>
+		<td class="liste"><b>Montreal</b><br>Canada<br>Pierre Elliott Trudeau/Dorval</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">805&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:24&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3659094&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659094&dbpos=150';" title="Delete this flight">DEL</a>
+			
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td class="liste_gross" align="right">22<br></td>
+		<td class="liste"><nobr>09.11.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YUL</b><br></td>
+		<td class="liste"><b>Montreal</b><br>Canada<br>Pierre Elliott Trudeau/Dorval</td>
+		<th class="liste_gross" align="right">
+			<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td align="right">805&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:24&nbsp;</td><td>h</td></tr>
+			</table>
+		</th>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">
+			<br>
+			<a href="?go=flugdaten_edit&id=3659103&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659103&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	<tr><td class="liste" colspan="11" align="center"><script language="javascript" src="http://media.fastclick.net/w/get.media?sid=39794&m=6&tp=8&d=j&t=n"></script><noscript><a href="http://media.fastclick.net/w/click.here?sid=39794&m=6&c=1" target="_blank"><img src="http://media.fastclick.net/w/get.media?sid=39794&m=6&tp=8&d=s&c=1" width=300 height=250 border=1></a></noscript></td></tr>
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">338<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>15.07.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>BKK</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Bangkok</b><br>Thailand<br>Suvarnabhumi</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">9,008&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">10:40&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH782<br><img src="/images/star_3.gif" width="18" height="18" title="Rating airline: normal"></td>
-		<td class="liste">B747-400<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">24D/Aisle<br><small>Business<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2349405&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2349405&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">337<br><img src="/images/star_3.gif" width="18" height="18" title="Overall impression: normal"></td>
-		<td class="liste"><nobr>06.07.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>MUC</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>München</b><br>Deutschland<br>Franz Josef Strauss</td>
-		<td class="liste_gross"><b>CGN</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">438&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:59&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH1272<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">A319<br><img src="/images/star_4.gif" width="18" height="18" title="Rating Airplane: good"></td>
-		<td class="liste">9A/Window<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2854813&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2854813&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">336<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>05.07.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>CGN</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating departure airport: good"></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<td class="liste_gross"><b>MUC</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>München</b><br>Deutschland<br>Franz Josef Strauss</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">438&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:59&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH1269<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">A320-100<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">10A/Window<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2854810&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2854810&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">335<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>19.06.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>GVA</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating departure airport: bad"></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<td class="liste_gross"><b>CGN</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating arrival airport: normal"></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
+		<td class="liste_gross" align="right">21<br></td>
+		<td class="liste"><nobr>09.11.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YUL</b><br></td>
+		<td class="liste"><b>Montreal</b><br>Canada<br>Pierre Elliott Trudeau/Dorval</td>
+		<td class="liste_gross"><b>LGA</b><br></td>
+		<td class="liste"><b>New York</b><br>USA<br>LaGuardia</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr><td align="right">522&nbsp;</td><td>km</td></tr>
 				<tr><td align="right">1:05&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Cirrus Airlines<br>C9 1697<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">Dornier 328<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">9A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<span title="Comment: Air A!ps wetlease">Com</span><br>
-			<a href="?go=flugdaten_edit&id=3058255&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3058255&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">334<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>19.06.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>CGN</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<td class="liste_gross"><b>GVA</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating arrival airport: normal"></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">522&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:05&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Cirrus Airlines<br>C9 1690<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">Dornier 328<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">10A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<span title="Comment: Air A!ps wetlease">Com</span><br>
-			<a href="?go=flugdaten_edit&id=3058251&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3058251&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">333<br></td>
-		<td class="liste"><nobr>16.05.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>MAN</b><br></td>
-		<td class="liste"><b>Manchester</b><br>Großbritannien<br>Ringway International</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">833&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:26&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH 4857</td>
-		<td class="liste">A320-200</td>
-		<td class="liste">10A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2708953&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2708953&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659102&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659102&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">332<br></td>
-		<td class="liste"><nobr>11.05.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>MAN</b><br></td>
-		<td class="liste"><b>Manchester</b><br>Großbritannien<br>Ringway International</td>
+		<td class="liste_gross" align="right">20<br></td>
+		<td class="liste"><nobr>31.10.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">833&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:26&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH 4856</td>
-		<td class="liste">A320-200</td>
-		<td class="liste">11A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2708952&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2708952&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659106&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659106&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">331<br></td>
-		<td class="liste"><nobr>23.04.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
+		<td class="liste_gross" align="right">19<br></td>
+		<td class="liste"><nobr>29.10.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH 3669</td>
-		<td class="liste">B737-300</td>
-		<td class="liste">10C/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2660930&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2660930&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659109&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659109&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">330<br></td>
-		<td class="liste"><nobr>22.04.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
+		<td class="liste_gross" align="right">18<br></td>
+		<td class="liste"><nobr>24.02.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>SEA</b><br></td>
+		<td class="liste"><b>Seattle</b><br>USA<br>Seattle-Tacoma International</td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">3,311&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">4:11&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH 3670</td>
-		<td class="liste">B737-500</td>
-		<td class="liste">20B/Middle<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2660929&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2660929&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659112&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659112&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">329<br></td>
-		<td class="liste"><nobr>26.03.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
+		<td class="liste_gross" align="right">17<br></td>
+		<td class="liste"><nobr>24.02.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">1,289&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:56&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH3669</td>
-		<td class="liste">B737-300</td>
-		<td class="liste">12D/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2708886&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2708886&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659110&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659110&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">328<br><img src="/images/star_3.gif" width="18" height="18" title="Overall impression: normal"></td>
-		<td class="liste"><nobr>25.03.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>BCN</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating departure airport: bad"></td>
-		<td class="liste"><b>Barcelona</b><br>Spanien<br>El Prat International</td>
-		<td class="liste_gross"><b>GVA</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating arrival airport: good"></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
+		<td class="liste_gross" align="right">16<br></td>
+		<td class="liste"><nobr>17.02.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">638&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:13&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">1,289&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:56&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">EasyJet Airline<br>U2 1402<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">A319-100<br><img src="/images/star_4.gif" width="18" height="18" title="Rating Airplane: good"></td>
-		<td class="liste">3B/Middle<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2708883&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2708883&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659122&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659122&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">327<br><img src="/images/star_5.gif" width="18" height="18" title="Overall impression: excellent"></td>
-		<td class="liste"><nobr>25.03.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>PMI</b><br><img src="/images/star_4.gif" width="18" height="18" title="Rating departure airport: good"></td>
-		<td class="liste"><b>Palma de Mallorca</b><br>Spanien<br>Son San Juan</td>
-		<td class="liste_gross"><b>BCN</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating arrival airport: bad"></td>
-		<td class="liste"><b>Barcelona</b><br>Spanien<br>El Prat International</td>
+		<td class="liste_gross" align="right">15<br></td>
+		<td class="liste"><nobr>17.02.2003</nobr><br><br> </td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<td class="liste_gross"><b>SEA</b><br></td>
+		<td class="liste"><b>Seattle</b><br>USA<br>Seattle-Tacoma International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">202&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:43&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">3,311&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">4:11&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Spanair<br>JK5713<br><img src="/images/star_4.gif" width="18" height="18" title="Rating airline: good"></td>
-		<td class="liste">B717<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">4F/Window<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<span title="Comment: 'AVANT' Class">Com</span><br>
-			<a href="?go=flugdaten_edit&id=2708873&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2708873&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">326<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>19.03.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>CGN</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<td class="liste_gross"><b>PMI</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating arrival airport: normal"></td>
-		<td class="liste"><b>Palma de Mallorca</b><br>Spanien<br>Son San Juan</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">1,306&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:57&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Condor<br>DE3736<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">A320</td>
-		<td class="liste">1E/Middle<br><small>Economy<br>Passenger<br>Personal</small></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2682532&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2682532&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659117&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659117&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">325<br></td>
-		<td class="liste"><nobr>07.03.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>SIN</b><br></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
+		<td class="liste_gross" align="right">14<br></td>
+		<td class="liste"><nobr>06.09.2002</nobr><br><br> </td>
+		<td class="liste_gross"><b>YEG</b><br></td>
+		<td class="liste"><b>Edmonton</b><br>Canada</td>
+		<td class="liste_gross"><b>YWG</b><br></td>
+		<td class="liste"><b>Winnipeg</b><br>Canada</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">10,290&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:56&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">1,190&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:49&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH779</td>
-		<td class="liste">B747-400</td>
-		<td class="liste">4H/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste">WestJet<br></td>
+		<td class="liste">Boeing 737</td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2615254&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2615254&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659127&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659127&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">324<br></td>
-		<td class="liste"><nobr>05.03.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>KUL</b><br></td>
-		<td class="liste"><b>Kuala Lumpur</b><br>Malaysia<br>Sepang International</td>
-		<td class="liste_gross"><b>SIN</b><br></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
+		<td class="liste_gross" align="right">13<br></td>
+		<td class="liste"><nobr>06.09.2002</nobr><br><br> </td>
+		<td class="liste_gross"><b>YWG</b><br></td>
+		<td class="liste"><b>Winnipeg</b><br>Canada</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">298&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:50&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">2,579&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">3:22&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Singapore Airlines<br>SQ113</td>
-		<td class="liste">B777-200</td>
-		<td class="liste">41J/Middle<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">WestJet<br></td>
+		<td class="liste">Boeing 737</td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2682502&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2682502&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659126&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659126&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">323<br></td>
-		<td class="liste"><nobr>03.03.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>SIN</b><br></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
-		<td class="liste_gross"><b>KUL</b><br></td>
-		<td class="liste"><b>Kuala Lumpur</b><br>Malaysia<br>Sepang International</td>
+		<td class="liste_gross" align="right">12<br></td>
+		<td class="liste"><nobr>23.08.2002</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">298&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:50&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">1,289&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:56&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Singapore Airlines<br>SQ118</td>
-		<td class="liste">B777-200</td>
-		<td class="liste">45C/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">WestJet<br></td>
+		<td class="liste">Boeing 737</td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2615237&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2615237&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659132&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659132&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">322<br></td>
-		<td class="liste"><nobr>02.03.2008</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>SIN</b><br></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
+		<td class="liste_gross" align="right">11<br></td>
+		<td class="liste"><nobr>23.08.2002</nobr><br><br> </td>
+		<td class="liste_gross"><b>YYZ</b><br></td>
+		<td class="liste"><b>Toronto</b><br>Canada<br>Lester B Pearson Intl.</td>
+		<td class="liste_gross"><b>YEG</b><br></td>
+		<td class="liste"><b>Edmonton</b><br>Canada</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">10,290&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:56&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">2,693&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">3:30&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH778</td>
-		<td class="liste">B747-400</td>
-		<td class="liste">24H/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste">WestJet<br></td>
+		<td class="liste">Boeing 737</td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2615223&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2615223&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659129&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659129&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">321<br></td>
-		<td class="liste"><nobr>01.02.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
+		<td class="liste_gross" align="right">10<br></td>
+		<td class="liste"><nobr>22.02.2002</nobr><br><br> </td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH3669</td>
-		<td class="liste">B737-300</td>
-		<td class="liste">8A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2474379&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2474379&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659146&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659146&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">320<br></td>
-		<td class="liste"><nobr>01.02.2008</nobr><br><br> </td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
+		<td class="liste_gross" align="right">9<br></td>
+		<td class="liste"><nobr>20.02.2002</nobr><br><br> </td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">955&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">1:34&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH3660</td>
-		<td class="liste">A320-100</td>
-		<td class="liste">18A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2474377&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2474377&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659149&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659149&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">319<br><img src="/images/star_2.gif" width="18" height="18" title="Overall impression: bad"></td>
-		<td class="liste"><nobr>14.12.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>LHR</b><br><img src="/images/star_2.gif" width="18" height="18" title="Rating departure airport: bad"></td>
-		<td class="liste"><b>London</b><br>Großbritannien<br>Heathrow</td>
-		<td class="liste_gross"><b>CGN</b><br></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
+		<td class="liste_gross" align="right">8<br></td>
+		<td class="liste"><nobr>18.03.2001</nobr><br>10:05<br>13:50 </td>
+		<td class="liste_gross"><b>LHR</b><br></td>
+		<td class="liste"><b>London</b><br>United Kingdom<br>Heathrow</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">533&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:06&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">4,589&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">7:45&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH4789<br><img src="/images/star_3.gif" width="18" height="18" title="Rating airline: normal"></td>
-		<td class="liste">B737-500</td>
-		<td class="liste">4A/Window<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste">Air Canada<br></td>
+		<td class="liste">Boeing 767-300-ER</td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2175733&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2175733&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=2926574&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2926574&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">318<br><img src="/images/star_5.gif" width="18" height="18" title="Overall impression: excellent"></td>
-		<td class="liste"><nobr>14.12.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>KUL</b><br><img src="/images/star_5.gif" width="18" height="18" title="Rating departure airport: excellent"></td>
-		<td class="liste"><b>Kuala Lumpur</b><br>Malaysia<br>Sepang International</td>
-		<td class="liste_gross"><b>LHR</b><br><img src="/images/star_1.gif" width="18" height="18" title="Rating arrival airport: real bad"></td>
-		<td class="liste"><b>London</b><br>Großbritannien<br>Heathrow</td>
+		<td class="liste_gross" align="right">7<br></td>
+		<td class="liste"><nobr>17.03.2001</nobr><br>00:00<br>03:30 </td>
+		<td class="liste_gross"><b>ATH</b><br></td>
+		<td class="liste"><b>Athens</b><br>Greece<br>Eleftherios Venizelos</td>
+		<td class="liste_gross"><b>LHR</b><br></td>
+		<td class="liste"><b>London</b><br>United Kingdom<br>Heathrow</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">10,616&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">12:18&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">2,430&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">5:30&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Malaysia Airlines<br>MH004<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">B747-400<br><img src="/images/star_3.gif" width="18" height="18" title="Rating Airplane: normal"></td>
-		<td class="liste">9A/Window<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste">Olympic Airlines<br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2175718&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2175718&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=2926566&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2926566&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">317<br><img src="/images/star_4.gif" width="18" height="18" title="Overall impression: good"></td>
-		<td class="liste"><nobr>10.12.2007</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br><img src="/images/star_3.gif" width="18" height="18" title="Rating departure airport: normal"></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>KUL</b><br></td>
-		<td class="liste"><b>Kuala Lumpur</b><br>Malaysia<br>Sepang International</td>
+		<td class="liste_gross" align="right">6<br></td>
+		<td class="liste"><nobr>17.03.2001</nobr><br>00:00<br>08:30 </td>
+		<td class="liste_gross"><b>JNB</b><br></td>
+		<td class="liste"><b>Johannesburg</b><br>South Africa<br>Oliver Reginald Tambo</td>
+		<td class="liste_gross"><b>ATH</b><br></td>
+		<td class="liste"><b>Athens</b><br>Greece<br>Eleftherios Venizelos</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">10,008&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:37&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">7,147&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">8:30&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Malaysia Airlines<br>MH005<br><img src="/images/star_5.gif" width="18" height="18" title="Rating airline: excellent"></td>
-		<td class="liste">B777-200<br><img src="/images/star_5.gif" width="18" height="18" title="Rating Airplane: excellent"></td>
-		<td class="liste">1J/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste">Olympic Airlines<br></td>
+		<td class="liste">Airbus 340</td>
+		<td class="liste"> /Middle<br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2175707&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2175707&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=2926562&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2926562&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">316<br></td>
-		<td class="liste"><nobr>27.11.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>CDG</b><br></td>
-		<td class="liste"><b>Paris</b><br>Frankreich<br>Charles de Gaulle</td>
-		<td class="liste_gross"><b>CGN</b><br></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
+		<td class="liste_gross" align="right">5<br></td>
+		<td class="liste"><nobr>13.03.2001</nobr><br>01:05<br>09:10 </td>
+		<td class="liste_gross"><b>ATH</b><br></td>
+		<td class="liste"><b>Athens</b><br>Greece<br>Eleftherios Venizelos</td>
+		<td class="liste_gross"><b>JNB</b><br></td>
+		<td class="liste"><b>Johannesburg</b><br>South Africa<br>Oliver Reginald Tambo</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">388&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:56&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">7,147&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">8:05&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH4289</td>
-		<td class="liste">CRJ-200</td>
-		<td class="liste">5A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">Olympic Airlines<br>OA105</td>
+		<td class="liste">Airbus 340</td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2083234&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2083234&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=2926552&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2926552&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">315<br></td>
-		<td class="liste"><nobr>26.11.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>CGN</b><br></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<td class="liste_gross"><b>CDG</b><br></td>
-		<td class="liste"><b>Paris</b><br>Frankreich<br>Charles de Gaulle</td>
+		<td class="liste_gross" align="right">4<br></td>
+		<td class="liste"><nobr>12.03.2001</nobr><br>16:35<br>22:10 </td>
+		<td class="liste_gross"><b>LHR</b><br></td>
+		<td class="liste"><b>London</b><br>United Kingdom<br>Heathrow</td>
+		<td class="liste_gross"><b>ATH</b><br></td>
+		<td class="liste"><b>Athens</b><br>Greece<br>Eleftherios Venizelos</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">388&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:56&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">2,430&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">3:35&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH4286</td>
-		<td class="liste">CRJ-200</td>
-		<td class="liste">11D/Window<br><small>Economy<br>Passenger<br>Business</small></td>
+		<td class="liste">Olympic Airlines<br>OA270</td>
+		<td class="liste">Airbus 340</td>
+		<td class="liste"> /Middle<br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2083230&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2083230&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=2926549&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2926549&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">314<br></td>
-		<td class="liste"><nobr>29.10.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>PVG</b><br></td>
-		<td class="liste"><b>Shanghai</b><br>China<br>Pudong</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
+		<td class="liste_gross" align="right">3<br></td>
+		<td class="liste"><nobr>11.03.2001</nobr><br>23:45<br>09:35 +1</td>
+		<td class="liste_gross"><b>YHZ</b><br></td>
+		<td class="liste"><b>Halifax</b><br>Canada<br>Robert L. Stanfield International</td>
+		<td class="liste_gross"><b>LHR</b><br></td>
+		<td class="liste"><b>London</b><br>United Kingdom<br>Heathrow</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">8,866&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">10:21&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">4,589&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">5:50&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH733</td>
-		<td class="liste">A340-300</td>
-		<td class="liste">4C/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste">Air Canada<br>AC860</td>
+		<td class="liste">Boeing 767-300-ER</td>
+		<td class="liste"> /Aisle<br><small>Economy<br>Passenger<br>Personal</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2023518&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2023518&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=2926541&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2926541&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">313<br></td>
-		<td class="liste"><nobr>28.10.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>SIN</b><br></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
-		<td class="liste_gross"><b>PVG</b><br></td>
-		<td class="liste"><b>Shanghai</b><br>China<br>Pudong</td>
+		<td class="liste_gross" align="right">2<br></td>
+		<td class="liste"><nobr>1999</nobr><br><br> </td>
+		<td class="liste_gross"><b>SJC</b><br></td>
+		<td class="liste"><b>San Jose</b><br>USA<br>Norman Y. Mineta</td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">3,810&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">4:44&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">3,910&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">4:51&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Singapore Airlines<br>SQ816</td>
-		<td class="liste">B777-300</td>
-		<td class="liste">11C/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2023515&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2023515&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3659156&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3659156&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
 	
 	
 	<tr valign="top">
-		<td class="liste_gross" align="right">312<br></td>
-		<td class="liste"><nobr>20.10.2007</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>SIN</b><br></td>
-		<td class="liste"><b>Singapur</b><br>Singapur<br>Changi Airport</td>
+		<td class="liste_gross" align="right">1<br></td>
+		<td class="liste"><nobr>1999</nobr><br><br> </td>
+		<td class="liste_gross"><b>YOW</b><br></td>
+		<td class="liste"><b>Ottawa</b><br>Canada<br>MacDonald-Cartier International</td>
+		<td class="liste_gross"><b>SJC</b><br></td>
+		<td class="liste"><b>San Jose</b><br>USA<br>Norman Y. Mineta</td>
 		<th class="liste_gross" align="right">
 			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">10,290&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">11:45&nbsp;</td><td>h</td></tr>
+				<tr><td align="right">3,910&nbsp;</td><td>km</td></tr>
+				<tr><td align="right">4:51&nbsp;</td><td>h</td></tr>
 			</table>
 		</th>
-		<td class="liste">Lufthansa<br>LH778</td>
-		<td class="liste">B747-400</td>
-		<td class="liste">27D/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
+		<td class="liste"><br></td>
+		<td class="liste"> </td>
+		<td class="liste"> / <br><small>Economy<br>Passenger<br>Business</small></td>
 		<td class="liste">
 			<br>
-			<a href="?go=flugdaten_edit&id=2023511&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2023511&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">311<br></td>
-		<td class="liste"><nobr>02.10.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH3669</td>
-		<td class="liste">A321-100</td>
-		<td class="liste">11D/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2023445&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2023445&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">310<br></td>
-		<td class="liste"><nobr>02.10.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>GVA</b><br></td>
-		<td class="liste"><b>Genf</b><br>Schweiz<br>Geneve-Cointrin</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">462&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:01&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH3660</td>
-		<td class="liste">A321-100</td>
-		<td class="liste">26C/Aisle<br><small>Economy<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=2023442&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=2023442&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">309<br></td>
-		<td class="liste"><nobr>22.09.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>PMI</b><br></td>
-		<td class="liste"><b>Palma de Mallorca</b><br>Spanien<br>Son San Juan</td>
-		<td class="liste_gross"><b>CGN</b><br></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">1,306&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:57&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Air Berlin<br>AB 2577</td>
-		<td class="liste">B737-800</td>
-		<td class="liste">1A/Window<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=1645110&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1645110&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">308<br></td>
-		<td class="liste"><nobr>09.09.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>MUC</b><br></td>
-		<td class="liste"><b>München</b><br>Deutschland<br>Franz Josef Strauss</td>
-		<td class="liste_gross"><b>PMI</b><br></td>
-		<td class="liste"><b>Palma de Mallorca</b><br>Spanien<br>Son San Juan</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">1,217&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">1:51&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Air Berlin<br>AB 9720 </td>
-		<td class="liste">B737-500</td>
-		<td class="liste">1A/Window<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=1645106&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1645106&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">307<br></td>
-		<td class="liste"><nobr>06.09.2007</nobr><br><br> </td>
-		<td class="liste_gross"><b>CGN</b><br></td>
-		<td class="liste"><b>Köln/Bonn</b><br>Deutschland<br>Konrad Adenauer/Wahn</td>
-		<td class="liste_gross"><b>MUC</b><br></td>
-		<td class="liste"><b>München</b><br>Deutschland<br>Franz Josef Strauss</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">438&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">0:59&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Air Berlin<br>AB6115</td>
-		<td class="liste">Fokker 100</td>
-		<td class="liste">2F/Aisle<br><small>Economy<br>Passenger<br>Personal</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=1489437&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1489437&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">306<br></td>
-		<td class="liste"><nobr>20.07.2007</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>PVG</b><br></td>
-		<td class="liste"><b>Shanghai</b><br>China<br>Pudong</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">8,866&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">10:21&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH 733</td>
-		<td class="liste">A340-300</td>
-		<td class="liste">03D/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=1575591&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1575591&dbpos=0';" title="Delete this flight">DEL</a>
-			
-		</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td class="liste_gross" align="right">305<br></td>
-		<td class="liste"><nobr>15.07.2007</nobr><br><br> +1</td>
-		<td class="liste_gross"><b>FRA</b><br></td>
-		<td class="liste"><b>Frankfurt</b><br>Deutschland<br>Rhein-Main</td>
-		<td class="liste_gross"><b>PVG</b><br></td>
-		<td class="liste"><b>Shanghai</b><br>China<br>Pudong</td>
-		<th class="liste_gross" align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr><td align="right">8,866&nbsp;</td><td>km</td></tr>
-				<tr><td align="right">10:21&nbsp;</td><td>h</td></tr>
-			</table>
-		</th>
-		<td class="liste">Lufthansa<br>LH 728</td>
-		<td class="liste">B747-400</td>
-		<td class="liste">01H/Aisle<br><small>Business<br>Passenger<br>Business</small></td>
-		<td class="liste">
-			<br>
-			<a href="?go=flugdaten_edit&id=1575585&dbpos=0" title="Edit this flight">EDIT</a><br>
-			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=1575585&dbpos=0';" title="Delete this flight">DEL</a>
+			<a href="?go=flugdaten_edit&id=3048687&dbpos=150" title="Edit this flight">EDIT</a><br>
+			<a href="javascript: if (confirm('Do you really want to delete this flight?')) location.href='?go=flugdaten_loeschen&id=3048687&dbpos=150';" title="Delete this flight">DEL</a>
 			
 		</td>
 	</tr>
@@ -1416,15 +1087,15 @@ width=728 height=90 border=1></a></noscript>
 	<tr>
 		<td>Each flight is unique, please enter outbound and return flights as two separate flights. <a href="?go=flugdaten_neu">Add new flight</a></td>
 		<td align="right">
+			<a href="?go=flugdaten&dbpos=0"><img src="/images/first.gif" width="15" height="14" border="0"></a>
 			
-			<img src="/images/first2.gif" width="15" height="14" border="0">
+			<a href="?go=flugdaten&dbpos=100"><img src="/images/previous.gif" width="12" height="14" border="0"></a>
 			
-			<img src="/images/previous2.gif" width="12" height="14" border="0">
       &nbsp;
-			<a href="?go=flugdaten&dbpos=50"><img src="/images/next.gif" width="12" height="14" border="0"></a>
 			
-			<a href="?go=flugdaten&dbpos=350"><img src="/images/last.gif" width="16" height="14" border="0"></a>
+			<img src="/images/next2.gif" width="12" height="14" border="0">
 			
+			<img src="/images/last2.gif" width="16" height="14" border="0">
 		</td>
 	</tr>
 </table>
