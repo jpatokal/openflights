@@ -189,7 +189,7 @@ function db_connect() {
   return $db;
 }
 
-// Get a connection to the database
+// Get test user's UID
 function db_uid($db) {
   global $settings;
 
