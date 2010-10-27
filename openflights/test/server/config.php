@@ -189,6 +189,14 @@ function db_connect() {
   return $db;
 }
 
+// Get a connection to the database
+function db_uid($db) {
+  global $settings;
+
+  $result = mysql_query("SELECT uid FROM users WHERE name='" . $settings["name"] . "'", $db);
+  return mysql_result($result, 0);
+}
+
 function cleanup() {
   global $settings;
 
