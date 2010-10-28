@@ -18,7 +18,22 @@ class ImportUnknownFiletypeTest extends WebTestCase {
   }
 }
 
-// Import a normal set of flights
+class ImportCSVTest extends WebTestCase {
+  function test() {
+    global $settings;
+    cleanup();
+
+    login($this);
+    $this->assertText("1;");
+
+    upload_fixture($this, "fm-standard.csv", "CSV");
+    $this->assertText("Flights successfully imported");
+
+    export_to_csv_and_validate($this, "fm-standard.csv");
+  }
+}
+
+// Import a normal set of FM flights
 class ImportFlightMemoryStandardTest extends WebTestCase {
   function test() {
     global $settings;
@@ -45,12 +60,16 @@ function upload_fixture($context, $fixture, $filetype) {
 function export_to_csv_and_validate($context, $fixture) {
   global $webroot, $uploaddir;
 
-  $expected_csv = file_get_contents("./fixtures/" . $fixture);
+  $expected_csv = sort_string(file_get_contents("./fixtures/" . $fixture));
   $params = array("export" => "export");
   $csv = $context->get($webroot . "php/flights.php", $params);
-
-  #Only for generating initial test fixtures...
-  #file_put_contents("./fixtures/" . $fixture, $csv);
+  $csv = sort_string($csv);
 
   $context->assertEqual($csv, $expected_csv);  
+}
+
+function sort_string($string) {
+  $array = preg_split("/\r\n|\n/", $string);
+  sort($array);
+  return implode("\n", $array);
 }
