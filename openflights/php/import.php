@@ -25,7 +25,7 @@ if(!$uid or empty($uid)) {
 include_once('simple_html_dom.php');
 include_once('helper.php');
 
-$posMap = array("Window"=>"W", "Middle"=>"Y", "Aisle"=>"A");
+$posMap = array("Window"=>"W", "Middle"=>"M", "Aisle"=>"A");
 $classMap = array("Economy"=>"Y", "Prem.Eco"=>"P", "Business"=>"C", "First"=>"F");
 $reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C", "Other"=>"O");
 
