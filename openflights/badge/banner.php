@@ -37,26 +37,30 @@ if(file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 }
 
 // New banner or cache out of date, so regenerate
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration, u.units AS units FROM flights AS f, USERS as U WHERE name='" . mysql_real_escape_string($user) . "' AND u.uid=f.uid";
-
+$sql = "SELECT uid,public,units FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
 $result = mysql_query($sql, $db);
-if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-  if(!$row["distance"] || $row["distance"] == "") {
-    rendererror("User $user not found");
+if(! $result) rendererror("Database error 1");
+if(mysql_num_rows($result) == 0) rendererror("User $user not found");
+$row = mysql_fetch_array($result, MYSQL_ASSOC);
+if($row["public"] == "N") rendererror("User is not public");
+$uid = $row["uid"];
+$units = $row["units"];
+
+$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights WHERE uid=$uid";
+$result = mysql_query($sql, $db);
+if($result && $row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  $distance = $row["distance"];
+  if($units == "K") {
+    $distance *= $KMPERMILE;
+    $units = "km";
   } else {
-    $distance = $row["distance"];
-    if($row["units"] == "K") {
-      $distance *= $KMPERMILE;
-      $units = "km";
-    } else {
-      $units = "miles";
-    }
-    $flights = sprintf("%s flights", $row["count"]);
-    $miles = sprintf("%d,%03d %s", $distance / 1000, $distance % 1000, $units);
-    $duration = sprintf("%d days, %2d:%02d hours", $row["duration"] / 1440, ($row["duration"] / 60) % 24, $row["duration"] % 60);
+    $units = "miles";
   }
+  $flights = sprintf("%s flights", $row["count"]);
+  $miles = sprintf("%d,%03d %s", $distance / 1000, $distance % 1000, $units);
+  $duration = sprintf("%d days, %2d:%02d hours", $row["duration"] / 1440, ($row["duration"] / 60) % 24, $row["duration"] % 60);
 } else {
-  rendererror("Database error");
+  rendererror("Database error 2");
 }
 
 $im = imagecreatefrompng("banner.png");
