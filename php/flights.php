@@ -133,7 +133,7 @@ $first = true;
 
 if($export) {
   // Start with byte-order mark to try to clue Excel into realizing that this is UTF-8
-  print "\xFE\xFFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
+  print "\xEF\xBB\xBFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $note = $row["note"];
