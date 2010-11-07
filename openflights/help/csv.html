@@ -17,7 +17,10 @@
 	<ul>
         <li>The character set encoding is <b>UTF-8</b>.
 	<li>The field separator is comma (<b>,</b> 0x2C), the row separator is CRLF (<b>\r\n</b> 0x0D 0x0A) and the field delimiter is double quote (<b>"</b> 0x22).
-	<li>The first line of any OpenFlights CSV file is considered a header and ignored.  This line starts with a Unicode Byte Order Mark (uFEFF).
+	<li>The first line of any OpenFlights CSV file is considered a
+	header and ignored.  This line starts with a Unicode Byte
+	Order Mark (U+FEFF), represented in UTF-8 as 0xEF 0xBB 0xBF.
+	(Old OpenFlights exports incorrectly used the UTF-16 BOM 0xFE OxFF.)
 	<li>All fields may be left empty <i>unless</i> listed as <font color="red">Mandatory</font> below.
       </ul>
 
@@ -80,6 +83,9 @@ Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason
 
 	<h2>Revision history</h2>
 	<dl>
+	  <dt>0.42 &mdash; Nov 7, 2010</dt>
+	  <dd>Fix representation of byte-order mark in UTF-8.</dd>
+
 	  <dt>0.41 &mdash; Jul 21, 2009</dt>
 	  <dd>Clarified encoding.</dd>
 

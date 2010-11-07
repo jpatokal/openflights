@@ -1,0 +1,7 @@
+﻿Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
+2009-06-30 20:20:00,SVG,OSL,DY4539,Norwegian Air Shuttlé,213,00:55,3D,A,Y,B,Boeing 737-300,LN-KKX,,,666,644,3737
+2009-06-29 07:05:00,OSL,SVG,DY552,Norwegian Air Shuttle,213,00:55,9D,A,Y,B,Boeing 737-300,LN-KKV,,,644,666,3737
+2009-06-28 11:00:00,CPH,OSL,SK1456,Scandinavian Airlines System,322,01:10,9D,A,Y,L,Boeing 737-600,LN-RCW Yngvar Viking,,,609,644,4319
+2009-06-26 20:20:00,OSL,CPH,SK467,Scandinavian Airlines System,322,01:10,24E,A,Y,L,Airbus 321,OY-KBL Gunnbjørn Viking,,,644,609,4319
+2009-06-24 13:25:00,SVG,OSL,SK4022,Scandinavian Airlines System,213,00:50,6C,A,Y,B,Boeing 737-500,LN-BRX Sigurd Munn,,,666,644,4319
+2009-06-22 07:05:00,OSL,SVG,DY552,Norwegian Air Shuttle,213,00:55,14A,W,Y,B,Boeing 737-800,LN-NNO,,,644,666,3737

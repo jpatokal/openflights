@@ -1,3 +1,7 @@
+<b>2010-11-07</b>
+
+* Bugfix: Use correct UTF-8 byte order mark in CSV exports
+
 <b>2010-10-28</b>
 
 * Bugfix: CSV imports handled middle seats incorrectly sometimes

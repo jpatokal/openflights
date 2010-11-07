@@ -65,6 +65,22 @@ class ImportFlightMemoryKilometerTest extends WebTestCase {
   }
 }
 
+// Import a set of FM flights with Latin1 data
+class ImportFlightMemoryLatin1Test extends WebTestCase {
+  function test() {
+    global $settings;
+    cleanup();
+
+    login($this);
+    $this->assertText("1;");
+
+    upload_fixture($this, "fm-latin1.html", "FM");
+    $this->assertText("Flights successfully imported");
+
+    export_to_csv_and_validate($this, "fm-latin1.csv");
+  }
+}
+
 function upload_fixture($context, $fixture, $filetype) {
   global $webroot, $uploaddir;
 
@@ -79,7 +95,7 @@ function export_to_csv_and_validate($context, $fixture) {
   $expected_csv = sort_string(file_get_contents("./fixtures/" . $fixture));
   $params = array("export" => "export");
   $csv = $context->get($webroot . "php/flights.php", $params);
-  file_put_contents("foo", $csv);
+  #file_put_contents("gen" . $fixture, $csv);
   $csv = sort_string($csv);
 
   $context->assertEqual($csv, $expected_csv);  

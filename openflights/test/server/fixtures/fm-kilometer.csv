@@ -1,4 +1,4 @@
-þÿDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
+ï»¿Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
 2004-08-27,YHZ,YYZ,,Air Canada,801,01:56,,A,Y,L,,,,,73,193,330
 2004-08-01,YYZ,YHZ,,Air Canada,801,01:56,,A,Y,L,,,,,193,73,330
 2004-07-30,YHZ,YYZ,,Air Canada,801,01:56,,A,Y,L,,,,,73,193,330
