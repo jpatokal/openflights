@@ -22,26 +22,25 @@ if(!$uid or empty($uid)) {
   die_nicely(_("Not logged in, aborting"));
 }
 
-include_once('simple_html_dom.php');
+include_once('phpQuery-onefile.php');
 include_once('helper.php');
 
 $posMap = array("Window"=>"W", "Middle"=>"M", "Aisle"=>"A");
 $classMap = array("Economy"=>"Y", "Prem.Eco"=>"P", "Business"=>"C", "First"=>"F");
 $reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C", "Other"=>"O");
 
-//
-// Strip out surrounding FlightMemory "liste" <td> from value
-//
-// <td class="liste">value[</td> --> value
-function fm_strip_liste($value) {
-  $value = strip_tags($value);
-  $value = str_replace('&nbsp;', '', $value);
+function nth_text($element, $n) {
+  $xpath = new DOMXPath($element->ownerDocument);
+  return $xpath->query('.//text()', $element)->item($n)->textContent;
+}
 
-  if(strlen($value) == 1) {
-    return "";
-  } else {
-    return $value;
-  }
+function text_count($element) {
+  $xpath = new DOMXPath($element->ownerDocument);
+  return $xpath->query('.//text()', $element)->length;
+}
+
+function nbsp_trim($string) {
+    return trim($string, "\xC2\xA0"); // UTF-8 NBSP
 }
 
 // Validate date field
@@ -287,19 +286,14 @@ $id_note = false;
 switch($fileType) {
  case "FM":
    // Parse it
-   $html = file_get_html($uploadfile);
-   if(! $html) {
-     die_nicely(_("Sorry, this file does not appear to be FlightMemory HTML."));
-   }
+   $html = phpQuery::newDocumentFileHTML($uploadfile, 'ISO-8859-1');
    
-   $title = $html->find('title', 0);
-   if($title->plaintext != "FlightMemory - FlightData") {
-     die_nicely(_("Sorry, this HTML file $uploadfile does not appear contain FlightMemory FlightData."));
+   if($html['title']->text() != "FlightMemory - FlightData") {
+     die_nicely(_("Sorry, the file $uploadfile does not appear contain FlightMemory FlightData."));
    }
    
    // 3nd table has the data
-   $table = $html->find('table', 2);
-   $rows = $table->find('tr[valign=top]');
+   $rows = pq('table:nth-of-type(3) tr[valign=top]')->elements;
    break;
 
  case "CSV":
@@ -336,85 +330,78 @@ $count = 0;
 foreach($rows as $row) {
   switch($fileType) {
   case "FM":
-    $cols = $row->find('td[class=liste],td[class=liste_gross],td[class=liste_gross_rot],td[class=liste_rot],th[class=liste_gross],th[class=liste_gross_rot]');
-    
-    $id = $cols[0]->plaintext;
-    
+    $row = pq($row);
+    $cols = $row['> td, th']->elements;
+    $id = pq($cols[0])->text();
+
     // Read and validate date field
-    $dates = explode('<br>', $cols[1]);
-    $src_date = strip_tags($dates[0]); // <td class="liste"><nobr>xx...xx</nobr>
-    $src_time = trim(strip_tags($dates[1]));
+    // 	<td class="liste_rot"><nobr>10-05-2009</nobr><br>06:10<br>17:35 -1</td>
+    $src_date = nth_text($cols[1], 0);
+    $src_time = nth_text($cols[1], 1);
     list($src_date, $date_bgcolor) = check_date($db, $fileType, $src_date);
     
-    $src_iata = $cols[2]->plaintext;
-    $dst_iata = $cols[4]->plaintext;
-    
+    $src_iata = $cols[2]->textContent;
+    $dst_iata = $cols[4]->textContent;
+
     // <td class="liste"><b>Country</b><br>Town<br>Airport Blah Blah</td>
     //                                             ^^^^^^^ target
-    $src_names = end(explode('<br>', $cols[3]));
-    $src_name = reset(preg_split('/[ \/<]/', $src_names));
-    $dst_names = end(explode('<br>', $cols[5]));
-    $dst_name = reset(preg_split('/[ \/<]/', $dst_names));
+    $src_name = reset(preg_split('/[ \/<]/', nth_text($cols[3], 2)));
+    $dst_name = reset(preg_split('/[ \/<]/', nth_text($cols[5], 2)));
     
     list($src_apid, $src_iata, $src_bgcolor) = check_airport($db, $src_iata, $src_name);
     list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($db, $dst_iata, $dst_name);
     
-    $distance = substr($cols[6]->find('td[align=right]', 0)->plaintext, 0, -6); // peel off trailing &nbsp;
-    $distance = str_replace(',', '', $distance);
-    $dist_unit = $cols[6]->find('tr', 0)->find('td', 1)->plaintext;
+    // <th class="liste_gross" align="right">
+    //   <table border="0" cellspacing="0" cellpadding="0">
+    //	   <tr><td align="right">429&nbsp;</td><td>mi</td></tr>
+    //	   <tr><td align="right">1:27&nbsp;</td><td>h</td></tr></table></th>
+    $cells = $row['table td']->elements;
+    $distance = $cells[0]->textContent;
+    $distance = str_replace(',', '', nbsp_trim($distance));
+    $dist_unit = $cells[1]->textContent;
     if($dist_unit == "km") {
       $distance = round($distance/1.609344); // km to mi
     }
-    $duration = substr($cols[6]->find('td[align=right]', 1)->plaintext, 0, -6);
-    
-    $flight = explode('<br>', $cols[7]);
-    $airline = fm_strip_liste($flight[0]);
-    $number = str_replace('</td>', '', $flight[1]);
+    $duration = nbsp_trim($cells[2]->textContent);
+
+    // <td>Airline<br>number</td>
+    $airline = nth_text($cols[6], 0);
+    $number = nth_text($cols[6], 1);
     list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid, $history);
     
     // Load plane model (plid)
     // <TD class=liste>Boeing 737-600<BR>LN-RCW<BR>Yngvar Viking</TD>
-    $planedata = explode('<br>', $cols[8]);
-    $plane = fm_strip_liste($planedata[0]);
+    $plane = nth_text($cols[7], 0);
+    $reg = nth_text($cols[7], 1);
+    if(text_count($cols[7]) > 2) {
+      $reg .= " " . nth_text($cols[7], 2);
+    }
     if($plane != "") {
       list($plid, $plane_bgcolor) = check_plane($db, $plane);
     } else {
       $plid = null;
       $plane_bgcolor = "#fff";
     }
-    
-    if($planedata[1]) {
-      $reg = strip_tags($planedata[1]);
-      if($planedata[2]) {
-	$reg .= " " . strip_tags($planedata[2]);
-      }
-    } else {
-      $reg = "";
-    }
-
 
     // <td class="liste">12A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
-    $seatdata = explode('<br>', $cols[9]);
-    $seatdata2 = explode('/', $seatdata[0]);
-    
-    $seatnumber = fm_strip_liste($seatdata2[0]);
-    $seatpos = trim(str_replace('&nbsp;', '', $seatdata2[1]));
-    if(strlen($seatpos) < 2) {
-      $seatpos = "";
-    }
-    $seatclass = substr($seatdata[1], 7);
-    if($seatclass == "") {
+    // 2nd field may be blank, so we count fields and offset 1 if it's there
+    $seat = nth_text($cols[8], 0);
+    list($seatnumber, $seatpos) = explode('/', $seat);
+    $seatnumber = nbsp_trim($seatnumber);
+    if(text_count($cols[8]) == 5) {
+      $seatclass = nth_text($cols[8], 1);
+      $offset = 1;
+    } else {
       $seatclass = "Economy";
+      $offset = 0;
     }
-    $seattype = $seatdata[2];
-    $seatreason = substr($seatdata[3], 0, strpos($seatdata[3], '<'));
+    $seattype = nth_text($cols[8], 1 + $offset);
+    $seatreason = nth_text($cols[8], 2 + $offset);
     
-    $comment = "";
-    if($cols[10]) {
-      $span = $cols[10]->find('span', 0);
-      if($span) {
-	$comment = trim(substr($span->title, 9));
-      }
+    // <td class="liste_rot"><span title="Comment: 2.5-hr delay due to tire puncture">Com</span><br> ...
+    $comment = pq($cols[9])->find('span')->attr('title');
+    if($comment) {
+      $comment = trim(substr($comment, 9));
     }
     break; // case FM
 
@@ -514,6 +501,7 @@ foreach($rows as $row) {
 
   switch($action) {
   case _("Upload"):
+#    break;
     printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $src_time, $airline_bgcolor, $airline, $number,
 	    $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $dist_bgcolor, $distance, $dist_bgcolor, $duration, $plane_bgcolor, $plane, $reg,
 	    $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $trip_bgcolor, $trid, $comment);
