@@ -1,5 +1,5 @@
 ﻿Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
-2009-10-05 08:44:00,IAH,AUS,1583,Continental Airlines,140,00:52,,,Y,L,Boeing 737-800,,,,3550,3673,1881
+2009-10-05 08:44:00,IAH,AUS,1583,Continental Airlines,140,00:52,12A,W,Y,L,Boeing 737-800,AB-CDE Plane Name,,2.5-hr delay due to tire puncture,3550,3673,1881
 2009-10-05 06:10:00,GUM,HNL,2,Continental Airlines,3800,07:30,,,Y,L,Boeing 767-400,,,,2246,3728,1881
 2009-10-05 00:10:00,CNS,GUM,903,Continental Airlines,2101,04:25,,,Y,L,Boeing 737-800,,,,3322,2246,1881
 2009-10-04 18:50:00,HNL,IAH,2,Continental Airlines,3902,07:40,,,Y,L,Boeing 767-400,,,,3728,3550,1881
