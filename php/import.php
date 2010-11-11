@@ -31,7 +31,7 @@ $reasonMap = array("Business"=>"B", "Personal"=>"L", "Crew"=>"C", "Other"=>"O");
 
 function nth_text($element, $n) {
   $xpath = new DOMXPath($element->ownerDocument);
-  return $xpath->query('.//text()', $element)->item($n)->textContent;
+  return nbsp_trim($xpath->query('.//text()', $element)->item($n)->textContent);
 }
 
 function text_count($element) {
@@ -387,8 +387,7 @@ foreach($rows as $row) {
     // 2nd field may be blank, so we count fields and offset 1 if it's there
     $seat = nth_text($cols[8], 0);
     list($seatnumber, $seatpos) = explode('/', $seat);
-    $seatnumber = nbsp_trim($seatnumber);
-    if(text_count($cols[8]) == 5) {
+    if(text_count($cols[8]) == 4) {
       $seatclass = nth_text($cols[8], 1);
       $offset = 1;
     } else {
