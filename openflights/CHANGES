@@ -1,9 +1,8 @@
-<b>2010-11-07</b>
+<b>2010-11-11</b>
 
+* Migrated FlightMemory import code to phpQuery
+* Bugfix: FlightMemory imports with non-ASCII characters fail (2824341) 
 * Bugfix: Use correct UTF-8 byte order mark in CSV exports
-
-<b>2010-10-28</b>
-
 * Bugfix: CSV imports handled middle seats incorrectly sometimes
 
 <b>2010-10-24</b>

@@ -95,7 +95,7 @@ function export_to_csv_and_validate($context, $fixture) {
   $expected_csv = sort_string(file_get_contents("./fixtures/" . $fixture));
   $params = array("export" => "export");
   $csv = $context->get($webroot . "php/flights.php", $params);
-  #file_put_contents("gen" . $fixture, $csv);
+  # file_put_contents("gen" . $fixture, $csv); # DEBUG
   $csv = sort_string($csv);
 
   $context->assertEqual($csv, $expected_csv);  
