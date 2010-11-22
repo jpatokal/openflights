@@ -338,6 +338,7 @@ foreach($rows as $row) {
     // 	<td class="liste_rot"><nobr>10-05-2009</nobr><br>06:10<br>17:35 -1</td>
     $src_date = nth_text($cols[1], 0);
     $src_time = nth_text($cols[1], 1);
+    if(strlen($src_time) < 4) $src_time = NULL; # a stray -1 or +1 is not a time
     list($src_date, $date_bgcolor) = check_date($db, $fileType, $src_date);
     
     $src_iata = $cols[2]->textContent;
@@ -518,7 +519,8 @@ foreach($rows as $row) {
     // Do we need a new airline?
     if($alid == -2) {
       // Last-ditch effort to check through non-IATA airlines
-      $sql = sprintf("SELECT alid FROM airlines WHERE name='%s' OR alias='%s'");
+      $sql = sprintf("SELECT alid FROM airlines WHERE name='%s' OR alias='%s'",
+		     mysql_real_escape_string($airline), mysql_real_escape_string($airline));
       $result = mysql_query($sql, $db);
       if($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	// Found it
