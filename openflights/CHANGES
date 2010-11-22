@@ -1,3 +1,8 @@
+<b>2010-11-22</b>
+
+* Bugfix: FlightMemory import check for non-IATA airlines broken
+* Bugfix: Some FlightMemory dates incorrectly parsed to include 00:00:00 timestamps
+
 <b>2010-11-11</b>
 
 * Migrated FlightMemory import code to phpQuery
