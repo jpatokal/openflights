@@ -3,6 +3,7 @@ echo Launching Selenium RC...
 java -jar ../selenium/selenium-server-1.0.3/selenium-server.jar >log/selenium.log &
 
 echo Bootstrapping...
+php ../server/cleanup.php >>log/bootstrap.log
 php ../server/settings.php >log/bootstrap.log
 php ../server/submit.php >>log/bootstrap.log
 
