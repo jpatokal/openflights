@@ -29,10 +29,10 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
     if($today == "Y") {
       // Get details of all of today's flights
-      $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) ORDER BY f.upd_time"; // no limit!
+      $sql = "SELECT s.country AS src_country, d.country AS dst_country, s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.src_date = DATE(NOW()) ORDER BY f.upd_time"; // no limit!
     } else {
       // Get details of last flight entered
-      $sql = "SELECT s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
+      $sql = "SELECT s.country AS src_country, d.country AS dst_country, s.city AS src, d.city AS dst, opp FROM flights AS f,airports AS s,airports AS d WHERE f.uid=$uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.upd_time > '$updated' ORDER BY f.upd_time LIMIT 1";
     }
     $detailresult = mysql_query($sql, $db);
     if(mysql_num_rows($detailresult) == 0) {
@@ -43,9 +43,13 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       if($detail["opp"] == "Y") {
 	$src = $detail["dst"];
 	$dst = $detail["src"];
+	$src_country = $detail["dst_country"];
+	$dst_country = $detail["src_country"];
       } else {
 	$src = $detail["src"];
 	$dst = $detail["dst"];
+	$src_country = $detail["src_country"];
+	$dst_country = $detail["dst_country"];
       }
       $distance = $row["distance"];
       try{
@@ -54,7 +58,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 	// Publish feed story
         if($today == 'Y') {
-          $message = "is flying from $src to $dst today!";
+          $message = "is flying from $src, $src_country to $dst, $dst_country today!";
         } else {
           $message = "added $count new flights covering $distance miles, including a flight from $src to $dst, to their OpenFlights!";
         }
@@ -68,9 +72,9 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	$facebook->api_client->stream_publish($message, $attachment, $action_links);
 
 	// Update the user's profile box
-	$profile_box = get_profile($db, $uid, $fbuid, $ofname);
-	$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
-        $facebook->api_client->fbml_refreshImgSrc("http://openflights.org/facebook/map.php?uid=$uid");
+#	$profile_box = get_profile($db, $uid, $fbuid, $ofname);
+#	$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
+#        $facebook->api_client->fbml_refreshImgSrc("http://openflights.org/facebook/map.php?uid=$uid");
 
 	// Mark user as updated
 	$sql = "UPDATE facebook SET updated=NOW() WHERE uid=$uid";
