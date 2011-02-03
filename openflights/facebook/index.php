@@ -60,7 +60,7 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
       fb_die("Sorry, couldn't find <b>$ofname</b> at OpenFlights.  Please check the spelling, hit 'Back' and try again.");
     }
 
-    fb_infobox("<b>Account found!</b>  Generating profile tab preview...");
+    fb_infobox("<b>Account found!</b>");
 
     // Looking good, save to our internal table
     $uid = $row["uid"];
@@ -74,7 +74,7 @@ if(! $ofname || $ofname == "" || $ofname == "None") {
     // No, ask for it
     echo "<form requirelogin=\"1\">";
     echo "<h2>Configuration</h2>";
-    echo "<p>Thanks for trying out the OpenFlights Facebook application!  Hooking it up to your OpenFlights account is an easy three-step process.</p>";
+    echo "<p>Thanks for trying out the OpenFlights Facebook application!  Hooking it up to your OpenFlights account is an easy two-step process.</p>";
     echo "<p>To start, please enter your username on OpenFlights: <input type='text' name='ofname' value='$ofname' /></p>";
     echo "<input type='submit' value='Submit' />";
 
@@ -105,7 +105,7 @@ if(! $session && $offline) {
   $sql = "UPDATE facebook SET sessionkey='" . $session_key . "' WHERE fbuid=" . $fbuid;
   if($result = mysql_query($sql, $db)) {
     $session = $session_key;
-    fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook Wall and refresh your profile automatically when you add new flights.");
+    fb_infobox("<b>Thank you!</b> OpenFlights will now send notifications to your Facebook Wall when you add new flights.");
   } else {
     fb_error($ofname, $sql);
   }
@@ -130,18 +130,12 @@ if($_REQUEST["prefupdate"] == "Y") {
   }
 }
 
-// Update the user's profile box
-$profile_box = get_profile($db, $uid, $fbuid, $ofname);
-echo "<br/><div style='background-color: #f7f7f7;border: 1px solid #cccccc;color: #333333;padding: 10px; width: 184px;'>$profile_box</div><br/>";
-$facebook->api_client->profile_setFBML(null, $fbuid, null, null, null, $profile_box);
-$facebook->api_client->fbml_refreshImgSrc("http://openflights.org/facebook/map.php?uid=$uid");
-
 // Wall preferences and session generation
 print "<form requirelogin='1'>";
 if(! $publish || ! $offline) {
 ?>
 
-  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook Wall and refresh your stats automatically when you add new flights.  This is <i>optional but recommended</i>; otherwise, you will have to manually refresh your stats.</p> 
+  <p><b>Step 1</b>: Click the link below to allow OpenFlights to send notifications to your Facebook Wall.</p>
   <fb:prompt-permission perms="publish_stream,offline_access"> Grant permission to publish posts and to remember me</fb:prompt-permission>
 
   <p><b>Step 2</b>: <i>After</i> granting permissions, set your preferences and click Activate below to activate automatic updating.</p>
@@ -161,18 +155,4 @@ if(! $session) {
 }
 ?>
 </form>
-
-<?php
-$query = "select tab_added from permissions where uid = '$fbuid'";
-$result = $facebook->api_client->fql_query($query); 
-if($result == NULL || $result[0]['tab_added'] != 1) {
-?>
-<p><b>Step 3</b>: Click the button below to add the OpenFlights application tab to your Facebook profile.</p>
-<div class="section_button"><fb:add-profile-tab /></div>
-<br/>
-<?php
-} else {
-  print "<p><i>You have added the OpenFlights application tab to your profile.</i></p>";
-}
-?>
 
