@@ -1,7 +1,11 @@
 <?php
 session_start();
+$uid = $_SESSION["uid"];
 $export = $_GET["export"];
 if($export) {
+  if(!$uid or empty($uid)) {
+    exit("You must be logged in to export.");
+  }
   header("Content-type: text/csv; charset=utf-8");
   header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d").".csv\"");
   if($export == "export") {
@@ -30,7 +34,6 @@ include 'filter.php';
 include 'db.php';
 include 'greatcircle.php';
 
-$uid = $_SESSION["uid"];
 $units = $_SESSION["units"];
 
 // Logged in?
