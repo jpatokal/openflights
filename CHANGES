@@ -1,3 +1,7 @@
+<b>2011-02-07</b>
+
+* Bugfix: Block export of demo data when not logged in
+
 <b>2011-02-03</b>
 
 * Bugfix: Facebook updates should work again (thanks Niko!)
