@@ -1,3 +1,7 @@
+<b>2011-02-15</b>
+
+* Allow users to submit corrections to airports they do not own (3178838,3107183)
+
 <b>2011-02-07</b>
 
 * Bugfix: Block export of demo data when not logged in
