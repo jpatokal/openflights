@@ -31,31 +31,26 @@ if($action == "RECORD") {
     exit;
   }
 
-  // Check for duplicates (by IATA)
-  if($iata != "") {
-    $sql = "SELECT * FROM airports WHERE iata='" . mysql_real_escape_string($iata) . "'";
-    // Editing an existing entry, so make sure we're not overwriting something else
+  // Check for potential duplicates (unless admin)
+  $duplicates = array();
+  if($uid != $OF_ADMIN_UID) {
+    $filters = array();
     if($apid && $apid != "") {
-      $sql .= " AND apid != " . mysql_real_escape_string($apid);
+      $filters[] = "apid=$apid";
+    } 
+    if($iata != "") {
+      $filters[] = " iata='$iata'";
     }
-    $result = mysql_query($sql, $db);
-    if(mysql_num_rows($result) != 0) {
-      printf("0;" . _("Sorry, an airport using the IATA code %s exists already.  Please double-check."), $iata);
-      exit;
+    if($icao != "") {
+      $filters[] = " icao='$icao'";
     }
-  }
 
-  // Check for duplicates (by ICAO)
-  if($icao != "") {
-    $sql = "SELECT * FROM airports WHERE icao='" . mysql_real_escape_string($icao) . "'";
-    // Editing an existing entry, so make sure we're not overwriting something else
-    if($apid && $apid != "") {
-      $sql .= " AND apid != " . mysql_real_escape_string($apid);
-    }
+    $sql = "SELECT * FROM airports WHERE " . implode(" OR ", $filters);
     $result = mysql_query($sql, $db);
-    if(mysql_num_rows($result) != 0) {
-      printf("0;" . _("Sorry, an airport using the ICAO code %s exists already.  Please double-check."), $icao);
-      exit;
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      if($row['uid'] != $uid || $row['apid'] != $apid) {
+        $duplicates[] = print_r($row, true);
+      }
     }
   }
 
@@ -74,7 +69,7 @@ if($action == "RECORD") {
 		   $uid);
   } else {
     // Editing an existing airport
-    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s AND (uid=%s OR %s=%s)",
+    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
@@ -85,20 +80,31 @@ if($action == "RECORD") {
 		   mysql_real_escape_string($elevation),
 		   mysql_real_escape_string($tz),
 		   mysql_real_escape_string($dst),
-		   mysql_real_escape_string($apid),
-		   $uid,
-		   $uid,
-		   $OF_ADMIN_UID);
+		   mysql_real_escape_string($apid));
   }
-
-  mysql_query($sql, $db) or die('0;' . _("Adding new airport failed:") . ' ' . $sql);
-  if(! $apid || $apid == "") {
-    printf('1;' . mysql_insert_id() . ";" . _("New airport successfully added."));
-  } else {
-    if(mysql_affected_rows() == 1) {
-      printf('1;' . $apid . ';' . _("Airport successfully edited."));
+  if(empty($duplicates)) {
+    mysql_query($sql, $db) or die('0;' . _("Adding new airport failed:") . ' ' . $sql);
+    if(! $apid || $apid == "") {
+      printf('1;' . mysql_insert_id() . ";" . _("New airport successfully added."));
     } else {
-      printf('0;' . _("Editing airport failed:") . ' ' . $sql);
+      if(mysql_affected_rows() == 1) {
+        printf('1;' . $apid . ';' . _("Airport successfully edited."));
+      } else {
+        printf('0;' . _("Editing airport failed:") . ' ' . $sql);
+      }
+    }
+  } else {
+    $subject = "OpenFlights: Airport edit";
+    $body = "New edit submitted by " . $_SESSION['name'] . ":\n$sql\n\nExisting airport information:\n" . implode("\n", $duplicates);
+    $headers = "From: support@openflights.org\r\nReply-To: " . $_SESSION['email'];
+    if(isSet($_POST["unittest"])) {
+      echo $headers . "\n\n" . $body;
+      exit;
+    }
+    if (mail($email, $subject, $body, $headers)) {
+      printf('1;' . _("Edit submitted for review.  If you have registered an e-mail address, you will be notified when the edit is reviewed."));
+    } else {
+      printf('0;' . _("Could not submit edit for review, please contact <a href='/about'>support</a>."));
     }
   }
   exit;
