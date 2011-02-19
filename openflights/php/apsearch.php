@@ -96,7 +96,7 @@ if($action == "RECORD") {
   } else {
     $subject = "OpenFlights: Airport edit";
     $body = "New edit submitted by " . $_SESSION['name'] . ":\n$sql\n\nExisting airport information:\n" . implode("\n", $duplicates);
-    $headers = "From: support@openflights.org\r\nTo: support@openflights.org\r\nReply-To: " . $_SESSION['email'];
+    $headers = "From: info@openflights.org\r\nTo: info@openflights.org\r\nReply-To: " . $_SESSION['email'];
     if(isSet($_POST["unittest"])) {
       echo $headers . "\n\n" . $body;
       exit;
