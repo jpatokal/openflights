@@ -102,7 +102,7 @@ if($action == "RECORD") {
       exit;
     }
     if (mail($email, $subject, $body, $headers)) {
-      printf('1;' . _("Edit submitted for review.  If you have registered an e-mail address, you will be notified when the edit is reviewed."));
+      printf('1;' . $apid . ";" . _("Edit submitted for review.  If you have registered an e-mail address, you will be notified when the edit is reviewed."));
     } else {
       printf('0;' . _("Could not submit edit for review, please contact <a href='/about'>support</a>."));
     }
