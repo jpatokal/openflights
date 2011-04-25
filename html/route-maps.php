@@ -33,7 +33,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $iata = $row['iata'];
   if(ctype_alnum($iata)) {
     $label = format_airline($row);
-    print "<a href='/query/$iata'>$label</a>, ";
+    print "<a href='/airline/$iata'>$label</a>, ";
   }
 }
 
@@ -46,7 +46,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $iata = $row['iata'];
   if(ctype_alnum($iata)) {
     $label = format_airport($row);
-    print "<a href='/query/$iata'>$label</a>, ";
+    print "<a href='/airport/$iata'>$label</a>, ";
   }
 }
 
@@ -59,7 +59,7 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $icao = $row['icao'];
   if(ctype_alnum($icao)) {
     $label = format_airport($row);
-    print "<a href='/query/$icao'>$label</a>, ";
+    print "<a href='/airport/$icao'>$label</a>, ";
   }
 }
 
