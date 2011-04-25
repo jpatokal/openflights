@@ -17,12 +17,24 @@ if(! $alid) {
 if(! $apid) {
   $param = $_POST["param"];
   if($param) {
-    $sql = "SELECT apid FROM airports WHERE iata='" . mysql_real_escape_string($param) . "'";
+    switch(strlen($param)) {
+    case 2:
+      $sql = "SELECT CONCAT('L', alid) AS apid FROM airlines WHERE iata='" . mysql_real_escape_string($param) . "'";
+      break;
+    case 3:
+      $sql = "SELECT apid FROM airports WHERE iata='" . mysql_real_escape_string($param) . "'";
+      break;
+    case 4:
+      $sql = "SELECT apid FROM airports WHERE icao='" . mysql_real_escape_string($param) . "'";
+      break;
+    default:
+      die('Error;Query ' . $param . ' not understood.  For airlines, please enter a 2-letter IATA code.  For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
+    }
     $result = mysql_query($sql, $db);
     if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       $apid = $row["apid"];
     } else {
-      die('Error;Airport code ' . $param . ' not found');
+      die('Error;No match found for query ' . $param);
     }
   } else {
     die('Error;Airport or airline ID is mandatory');
