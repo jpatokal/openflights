@@ -209,9 +209,21 @@ window.onload = function init(){
   selectControl.activate();
 
   // Extract any arguments from URL
-  filter_trid = parseArgument("trip");
-  filter_user = parseArgument("user");
-  query = parseArgument("query");
+  var query;
+  arguments = parseUrl();
+  switch(arguments[0]) {
+  case "trip":
+    filter_trid = arguments[1];
+    break;
+  case "user":
+    filter_user = arguments[1];
+    break;
+  case "query":
+  case "airport":
+  case "airline":
+    query = arguments[1];
+  }
+
   initHintTextboxes();
   new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
   			 {afterUpdateElement : getQuickSearchId,
@@ -260,7 +272,7 @@ window.onload = function init(){
 
   OpenLayers.Util.alphaHack = function() { return false; };
 
-  if(query != 0) {
+  if(query) {
     xmlhttpPost(URL_ROUTES, 0, query);
   } else {
     xmlhttpPost(URL_MAP, 0, true);
@@ -273,18 +285,15 @@ function clusterRadius(feature) {
   return radius;
 }
 
-// Extract arguments from URL (/trip/xxx or /user/xxx)
-// Returns null if not found
-function parseArgument(name)
+// Extract arguments from URL (/command/value, eg. /trip/123 or /user/foo)
+function parseUrl()
 {
   // http://foobar.com/name/xxx#blah *or* xxx?blah=blah
   // 0      1          2    3   4         3   4
   var urlbits = window.location.href.split(/[\/#?]+/);
-  if(urlbits[2] == name) {
-    return unescape(urlbits[3]);
-  } else {
-    return 0;
-  }
+  if(urlbits.length > 3) {
+    return [urlbits[2], unescape(urlbits[3])];
+  } else return [null,null];
 }
 
 // Draw a flight connecting (x1,y1)-(x2,y2)
@@ -3153,7 +3162,7 @@ function clearFilter(refresh_all) {
   var form = document.forms['filterform'];
 
   // Do not allow trip filter to be cleared if it's set in URL
-  if(form.Trips && parseArgument("trip") == 0) {
+  if(form.Trips && parseUrl()[0] == "trip") {
     form.Trips.selectedIndex = 0;
   }
   form.Years.selectedIndex = 0;
