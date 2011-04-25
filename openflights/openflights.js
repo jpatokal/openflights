@@ -212,14 +212,13 @@ window.onload = function init(){
   filter_trid = parseArgument("trip");
   filter_user = parseArgument("user");
   query = parseArgument("query");
-
   initHintTextboxes();
   new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
   			 {afterUpdateElement : getQuickSearchId,
 			  indicator: ajaxstatus, minChars: 2});
 
   // Are we viewing another user's flights or trip?
-  if(filter_user != "0" || filter_trid != 0 || query != 0) {
+  if(filter_user != "0" || filter_trid != 0) {
     demo_mode = false;
     $("loginstatus").style.display = 'inline';
     if(filter_trid != 0) {
