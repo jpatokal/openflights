@@ -20,11 +20,14 @@ NameVirtualHost *
                 XBitHack Full
 
                 RewriteEngine on
+                RewriteRule   ^(.+)/img/(.+)$  /img/$1                 [PT,L,QSA]
+                # Map /query/xxx URLs into ?query=xxx format
+                RewriteRule   ^query/(.+)$      /index.php?query=$1 [PT,L,QSA]
+                RewriteRule   ^airline/(.+)$    /index.php?query=$1 [PT,L,QSA]
+                RewriteRule   ^airport/(.+)$    /index.php?query=$1 [PT,L,QSA]
                 # Map /trip/xxx URLs into ?trid=xxx format
-                RewriteRule   ^trip/img/(.+)$  /img/$1                 [PT,L,QSA]
                 RewriteRule   ^trip/(.+)$      /index.php?trid=$1     [PT,L,QSA]
                 # Map /user/xxx URLs into ?user=xxx format
-                RewriteRule   ^user/img/(.+)$  /img/$1                 [PT,L,QSA]
                 RewriteRule   ^user/(.+)$      /index.php?user=$1     [PT,L,QSA]
 	        # Map /html/xxx URLs into /html/xxx.php format
         	RewriteRule   ^/html/(.+)$     /html/$1.php             [PT,L,QSA]
