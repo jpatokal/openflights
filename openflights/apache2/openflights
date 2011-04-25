@@ -4,6 +4,8 @@ NameVirtualHost *
 	DocumentRoot /var/www/openflights
         ServerName openflights.org
         ServerAlias www.openflights.org
+        ServerAlias openflights.net
+        ServerAlias openflights.info
 
 	<Directory />
 		Options FollowSymLinks
