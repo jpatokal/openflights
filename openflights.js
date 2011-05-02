@@ -1245,7 +1245,7 @@ function updateMap(str, url){
 	} else {
 	  op = "REFRESH";
 	}
-	login("1;" + col[5] + ";" + col[6] + ";" + elite, op);
+	login('{"status": 1, "name": "' + col[5] + '","editor": "' + col[6] + ',"elite": "' + elite + '"}', op);
       }
     }
     // Our PHP session has timed out, kick out the user
@@ -2763,17 +2763,15 @@ function keyPress(e, element) {
 // NEWUSER: User using OF for the first time (or has zero flights)
 //
 function login(str, param) {
-  var cols = str.split(";");
-  var status = cols[0];
-  var name = cols[1];
+  var result = jsonParse(str);
+  var name = result['name'];
   $("loginstatus").style.display = 'inline';
 
   // Login successful
-  switch(status) {
-  case "1":
-    prefs_editor = cols[2].trim();
-    elite = cols[3];
-    if(elite) elite = elite.trim();
+  switch(result['status']) {
+  case 1:
+    prefs_editor = result['editor'];
+    elite = result['elite'];
     logged_in = true;
     $("loginform").style.display = 'none';
     $("langselect").style.display = 'none';
@@ -2830,7 +2828,7 @@ function login(str, param) {
     }
     break;
 
-  case "2":
+  case 2:
     // Successful but need to switch UI language, so reload, stripping out any "?lang" in the URL
     $("loginstatus").innerHTML = "<B>" + gt.gettext("Loading") + "</B>";
     location.href = "http://" + location.host + location.pathname;
@@ -2839,7 +2837,7 @@ function login(str, param) {
   default:
     // Login failed
     logged_in = false;
-    $("loginstatus").innerHTML = "<B>" + name + "</B>";
+    $("loginstatus").innerHTML = "<B>" + result['message'] + "</B>";
     $("ajaxstatus").style.display = 'none';
   }
 }

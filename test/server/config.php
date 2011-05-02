@@ -177,7 +177,7 @@ function login($case, $name = NULL, $password = NULL) {
   $params = array("name" => $name,
 		  "pw" => $hash,
 		  "lpw" => $legacyhash);
-  return $case->post($webroot . "php/login.php", $params);
+  return json_decode($case->post($webroot . "php/login.php", $params));
 }
 
 // Get a connection to the database
