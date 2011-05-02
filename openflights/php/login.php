@@ -12,13 +12,13 @@ $challenge = $_SESSION["challenge"];
 if($name) {
   // CHAP: Use random challenge key in addition to password
   // user_pw == MD5(challenge, db_pw)
-  $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .
+  $sql = "SELECT uid,name,email,editor,elite,units,locale FROM users WHERE name='" . mysql_real_escape_string($name) .
     "' AND ('" . mysql_real_escape_string($pw) . "' = MD5(CONCAT('" .
     mysql_real_escape_string($challenge) . "',password)) OR " .
     " '" . mysql_real_escape_string($legacypw) . "' = MD5(CONCAT('" .
     mysql_real_escape_string($challenge) . "',password)))";
   $result = mysql_query($sql, $db);
-  if ($myrow = mysql_fetch_array($result)) {
+  if ($myrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $uid = $myrow["uid"];
     $_SESSION['uid'] = $uid;
     $_SESSION['name'] = $myrow["name"];
@@ -27,16 +27,16 @@ if($name) {
     $_SESSION['elite'] = $myrow["elite"];
     $_SESSION['units'] = $myrow["units"];
     if($myrow["locale"] != "en_US" && $_SESSION['locale'] != $myrow["locale"]) {
-      $rc = 2; // force reload, so UI is changed into user's language
+      $myrow['status'] = 2; // force reload, so UI is changed into user's language
     } else {
-      $rc = 1;
+      $myrow['status'] = 1;
     }
     $_SESSION['locale'] = $myrow["locale"];
-    printf("%s;%s;%s;%s", $rc, $myrow["name"], $myrow["editor"], $myrow["elite"]);
   } else {
-    printf("0;" . _("Login failed. <%s>Create account</a> or <%s>reset password</a>?"),
-	   "a href='/html/settings?new=yes'", "a href='#' onclick='JavaScript:help(\"resetpw\")'");
+    $message = sprintf(_("Login failed. <%s>Create account</a> or <%s>reset password</a>?"), "a href='/html/settings?new=yes'", "a href='#' onclick='JavaScript:help(\"resetpw\")'");
+    $myrow = array("status" => 0, "message" => $message);
   }
+  print json_encode($myrow);
 }
 ?>
 

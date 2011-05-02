@@ -11,8 +11,9 @@ include_once(dirname(__FILE__) . '/config.php');
 class SuccessfulLoginTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
-    login($this);
-    $this->assertText('1;');
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
+    $this->assertEqual($result->name, $settings['name']);
   }
 }
 
@@ -30,8 +31,8 @@ class LegacyLoginTest extends WebTestCase {
     $result = mysql_query($sql, $db);
     $this->assertTrue(mysql_affected_rows() == 1, "Legacy user added");
 
-    login($this, $name, $password);
-    $this->assertText('1;');
+    $result = login($this, $name, $password);
+    $this->assertEqual($result->status, "1");
 
     $sql = "DELETE FROM users WHERE name='$name'";
     $result = mysql_query($sql, $db);
@@ -45,8 +46,8 @@ class LegacyLoginTest extends WebTestCase {
 class WrongPasswordLoginTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
-    login($this, $settings["name"], "incorrect");
-    $this->assertText('0;');
+    $result = login($this, $settings["name"], "incorrect");
+    $this->assertEqual($result->status, "0");
   }
 }
 ?>
