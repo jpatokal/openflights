@@ -1253,7 +1253,7 @@ function updateMap(str, url){
       logout(gt.gettext("Your session has timed out, please log in again."));
     }
   } else {
-    // Route map
+   // Route map
     $('statsbox').style.visibility = "hidden";
 
     apid = col[0];
@@ -1569,6 +1569,7 @@ function showStats(str) {
 
 // Generate a pie chart image via Google Charts API
 function googleChart(data, labeldata) {
+  if(!data) { return ""; }
   var rows = data.split(":");
   var cols = "", labels = "";
   for (r = 0; r < rows.length; r++) {
