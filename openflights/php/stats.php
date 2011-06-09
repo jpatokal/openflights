@@ -129,19 +129,20 @@ if($public != "O") {
   exit;
  }
 
-// Classes
-$sql = "SELECT DISTINCT class,COUNT(*) FROM flights AS f WHERE " . $filter . " AND class != '' GROUP BY class ORDER BY class";
+// Classes (by number of flights and distance)
+$sql = "SELECT DISTINCT class,COUNT(*) num_flights,SUM(distance) distance FROM flights AS f WHERE " . $filter . " AND class != '' GROUP BY class ORDER BY class";
 $result = mysql_query($sql, $db);
-$first = true;
+$class_by_flight_str = '';
+$class_by_distance_str = '';
 while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
-  if($first) {
-    $first = false;
-  } else {
-    printf(":");
+  if(!empty($class_by_flight_str)) {
+    $class_by_flight_str .= ':';
+    $class_by_distance_str .= ':';
   }
-  printf ("%s,%s", $row[0], $row[1]);
+  $class_by_flight_str .= "$row[0],$row[1]";
+  $class_by_distance_str .= "$row[0],$row[2]";
 }
-printf ("\n");
+printf ("$class_by_flight_str\n");
 
 // Reason
 $sql = "SELECT DISTINCT reason,COUNT(*) FROM flights AS f WHERE " . $filter . " AND reason != '' GROUP BY reason ORDER BY reason";
@@ -157,7 +158,7 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 }
 printf ("\n");
 
-// Reason
+// Seat Type
 $sql = "SELECT DISTINCT seat_type,COUNT(*) FROM flights AS f WHERE " . $filter . " AND seat_type != '' GROUP BY seat_type ORDER BY seat_type";
 $result = mysql_query($sql, $db);
 $first = true;
@@ -184,5 +185,8 @@ while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
   printf ("%s,%s", $row[0], $row[1]);
 }
 printf ("\n");
+
+// Class (by distance); added at the end so as to not break other potential API users.
+printf ("$class_by_distance_str\n");
 
 ?>

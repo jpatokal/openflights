@@ -1487,6 +1487,7 @@ function showStats(str) {
     var reasonData = master[4];
     var seatData = master[5];
     var modeData = master[6];
+    var classDataByDistance = master[7];
 
     bigtable = "<table><td style=\"vertical-align: top\"><img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17></td><td style=\"vertical-align: top\">";
 
@@ -1541,18 +1542,25 @@ function showStats(str) {
     bigtable += table + "</td><td style=\"vertical-align: top\">";
   
     table = "<table style=\"border-spacing: 10px 0px\">";
-    table += "<tr><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th></tr>";
+    table += "<tr><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Seats") + "</th></tr>";
     table += "<tr><td>";
     table += googleChart(classData, classes_short);
     table += "</td><td>";
     table += googleChart(reasonData, reasons_short);
+    table += "</td><td>";
+    table += googleChart(seatData, seattypes);
     table += "</td></tr>";
 
-    table += "<tr><th>" + gt.gettext("Seats") + "</th><th>" + gt.gettext("Mode") + "</th></tr><tr><td>";
-    table += googleChart(seatData, seattypes);
+    table += "<tr><th>" + gt.gettext("Class by distance") + "</th><th>" + gt.gettext("Mode") + "</th><th><!-- Empty Cell --></th></tr>";
+    table += "<tr><td>";
+    table += googleChart(classDataByDistance, classes_short);
     table += "</td><td>";
     table += googleChart(modeData, modenames);
-    table += "</td></tr></table>";
+    table += "</td><td>";
+    // Empty Cell
+    table += "</td></tr>";
+    
+    table += "</table>";
     bigtable += table + "</td></tr></table>";
   }
 
@@ -1568,7 +1576,8 @@ function googleChart(data, labeldata) {
     cols += (r == 0 ? "" : ",") + col[1];
     labels += (r == 0 ? "" : "|") + labeldata[col[0]];
   }
-  return "<img width=200 height=80 src='http://chart.apis.google.com/chart?cht=p&chd=t:" + cols + "&chs=200x80&chl=" + labels + "&chco=2A416A,39588E,688BC3,B2C3DF'>";
+  // "chds=a" enables autoscaling and allows for data values greater than 100
+  return "<img width=200 height=80 src='http://chart.apis.google.com/chart?cht=p&chd=t:" + cols + "&chs=200x80&chl=" + labels + "&chco=2A416A,39588E,688BC3,B2C3DF&chds=a'>";
 }
 
 function showTop10(str) {
