@@ -6,15 +6,17 @@ if($export) {
   if(!$uid or empty($uid)) {
     exit("You must be logged in to export.");
   }
-  header("Content-type: text/csv; charset=utf-8");
-  header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d").".csv\"");
-  if($export == "export") {
+  if($export == "export" || $export == "backup") {
+    header("Content-type: text/csv; charset=utf-8");
+    header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d").".csv\"");
+  }
+  if($export == "export" || $export == "gcmap") {
     $trid = $_GET["trid"];
     $alid = $_GET["alid"];
     $year = $_GET["year"];
     $apid = $_GET["id"];
   }
-  // else export everything unfiltered
+	// else export everything unfiltered
  } else {
   header("Content-type: text/html; charset=utf-8");
 
@@ -101,6 +103,7 @@ if($type == "R" || $type == "L") {
 // Add filters, if any
 switch($export) {
  case "export":
+ case "gcmap":
    $sql = $sql . getFilterString($_GET);
    break;
 
@@ -134,10 +137,11 @@ if($route) {
 $result = mysql_query($sql, $db);
 $first = true;
 
-if($export) {
+if($export == "export" || $export == "backup") {
   // Start with byte-order mark to try to clue Excel into realizing that this is UTF-8
   print "\xEF\xBB\xBFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
+$gcmap_city_pairs = '';	// list of city pairs when doing gcmap export.
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   $note = $row["note"];
 
@@ -160,8 +164,9 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   if($first) {
     $first = false;
   } else {
-    if($export) {
+    if($export == "export" || $export == "backup") {
       printf("\r\n");
+    } else if ($export == "gcmap") {
     } else {
       printf("\n");
     }
@@ -184,7 +189,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
     $dst_code = $tmp;
   }
 
-  if($export) {
+  if($export == "export" || $export == "backup") {
     // Escape strings with commas
     if(strpos($note, ",") !== false) {
       $note = "\"" . $note . "\"";
@@ -201,6 +206,10 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	   $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"],
 	   $row["name"], $row["registration"], $row["trid"], $note,
 	   $src_apid, $dst_apid, $row["alid"], $row["plid"]);
+  } else if($export == "gcmap") {
+    if(!empty($gcmap_city_pairs))
+      $gcmap_city_pairs .= ',';
+    $gcmap_city_pairs .= urlencode($src_code . '-' . $dst_code);
   } else {
     // Filter out any carriage returns or tabs
     $note = str_replace(array("\n", "\r", "\t"), "", $note);
@@ -212,5 +221,10 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
     printf ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"], $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code, $row["src_time"], $row["mode"]);
   }
+}
+
+if($export == "gcmap") {
+  // Output the redirect URL.
+  header("Location: http://www.gcmap.com/mapui?P=" . $gcmap_city_pairs . "&MS=bm");
 }
 ?>
