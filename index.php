@@ -19,7 +19,7 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20091230"></script>
-    <script type="text/javascript" src="/openflights.js?version=20110502"></script>
+    <script type="text/javascript" src="/openflights.js?version=20110608"></script>
   </head>
 
   <body>
