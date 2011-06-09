@@ -1369,7 +1369,11 @@ function listFlights(str, desc, id) {
       desc = desc.replace("routes", gt.gettext("routes"));
       desc = desc.replace(/\<br\>/g, " &mdash; ")
       table.push(desc);
-      table.unshift("<span style='float: right'>" + gt.gettext("Export") + " <input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\")'><input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'></span>"); // place at front of array
+      table.unshift("<span style='float: right'>" + gt.gettext("Export") + " " +
+		      "<input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\", false)'>" +
+		      "<input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\", false)'>" +
+		      "<input type='button' value='GCMap' title='" + gt.gettext("Great Circle Mapper, for image export") + "' align='middle' onclick='JavaScript:exportFlights(\"gcmap\", true)'>" +
+		    "</span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
     table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Distance") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th>");
@@ -1448,12 +1452,18 @@ function listFlights(str, desc, id) {
 }
 
 // Dump flights to CSV
-// type: "backup" to export everything, "export" to export only current filter selection
-function exportFlights(type) {
+// type: "backup" to export everything, "export" to export only current filter selection, "gcmap" to redirect to gcmap site
+// newWindow: true if we want target URL to open in a new window.
+function exportFlights(type, newWindow) {
   if(type == "KML") {
-    location.href="http://" + location.host + "/php/kml.php?" + lastQuery;
+    url = "http://" + location.host + "/php/kml.php?" + lastQuery;
   } else {
-    location.href="http://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
+    url = "http://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
+  }
+  if(newWindow) {
+    window.open(url, "openflights_export");
+  } else {
+    location.href = url;
   }
 }
 
