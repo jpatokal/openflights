@@ -1,18 +1,8 @@
 <?php
-require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+include_once(dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php');
 
-include_once(dirname(__FILE__) . '/../server/config.php');
-
-class WebMapPublicTest extends PHPUnit_Extensions_SeleniumTestCase
+class WebMapPublicTest extends OpenFlightsSeleniumTestCase
 {
-  protected function setUp()
-  {
-    global $webroot;
-
-    $this->setBrowser('*firefox /Applications/Firefox.app/Contents/MacOS/firefox-bin');
-    $this->setBrowserUrl($webroot);
-  }
-  
   public function testPublicUserMapAsAnonymous()
   {
     global $settings;

@@ -1,16 +1,8 @@
 <?php
-require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+include_once(dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php');
 
-include_once(dirname(__FILE__) . '/../server/config.php');
-
-class WebLoginTest extends PHPUnit_Extensions_SeleniumTestCase
+class WebLoginTest extends OpenFlightsSeleniumTestCase
 {
-  protected function setUp()
-  {
-    $this->setBrowser('*firefox /Applications/Firefox.app/Contents/MacOS/firefox-bin');
-    $this->setBrowserUrl('http://openflights.local/');
-  }
-  
   public function testFailedLogin()
   {
     global $settings;
@@ -44,6 +36,7 @@ class WebLoginTest extends PHPUnit_Extensions_SeleniumTestCase
     $this->type('name', $settings['name']);
     $this->type('pw', $settings['password']);
     $this->click('loginbutton');
+    sleep(1);
     $this->verifyTextPresent("Hi, ${settings['name']} !");
     $this->verifyTextPresent('1 segments');
     $this->verifyTextPresent('1000 miles');
