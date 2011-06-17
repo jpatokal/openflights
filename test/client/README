@@ -5,7 +5,7 @@ Requirements:
 * PHPUnit
   Install into path from phpunit.de
 
-* Selenium RC
+* Selenium Server (2.0+ required for Firefox 4)
   Install into directory '/openflights/test/selenium'
 
 * A functional OpenFlights server and its test suite
