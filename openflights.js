@@ -1245,7 +1245,7 @@ function updateMap(str, url){
 	} else {
 	  op = "REFRESH";
 	}
-	login('{"status": 1, "name": "' + col[5] + '","editor": "' + col[6] + ',"elite": "' + elite + '"}', op);
+	login('{"status": 1, "name": "' + col[5] + '","editor": "' + col[6] + '","elite": "' + elite + '"}', op);
       }
     }
     // Our PHP session has timed out, kick out the user
@@ -1802,7 +1802,7 @@ function newFlight() {
     openDetailedInput("ADD");
     break;
 
-  case "B":
+  default:
     openBasicInput("ADD");
     break;
   }
