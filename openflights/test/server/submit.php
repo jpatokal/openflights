@@ -24,8 +24,7 @@ class AddLoopFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $loopflight;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $msg = $this->post($webroot . "php/submit.php", $loopflight);
     $this->assertText('1;');
@@ -42,8 +41,7 @@ class AddMultiFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $multiflight;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $msg = $this->post($webroot . "php/submit.php", $multiflight);
     $this->assertText('1;');
@@ -72,8 +70,7 @@ class AddSingleFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight, $fid;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $msg = $this->post($webroot . "php/submit.php", $flight);
     $this->assertText('1;');
@@ -98,8 +95,7 @@ class FetchAddSingleFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight, $fid;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $params = array("fid" => $fid);
     $msg = $this->post($webroot . "php/flights.php", $params);
@@ -126,8 +122,7 @@ class EditFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2, $fid;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $params = $flight2;
     $params["fid"] = $fid;
@@ -141,8 +136,7 @@ class FetchEditedFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2, $fid;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $params = array("fid" => $fid);
     $msg = $this->post($webroot . "php/flights.php", $params);
@@ -169,8 +163,7 @@ class CSVExportFlightTest extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2, $fid;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $params = array("export" => "export");
     $msg = $this->get($webroot . "php/flights.php", $params);

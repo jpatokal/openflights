@@ -180,6 +180,11 @@ function login($case, $name = NULL, $password = NULL) {
   return json_decode($case->post($webroot . "php/login.php", $params));
 }
 
+function assert_login($case) {
+  $json = login($case);
+  $case->assertEqual($json->status, "1");
+}
+
 // Get a connection to the database
 function db_connect() {
   global $dbhost, $dbuser, $dbname;

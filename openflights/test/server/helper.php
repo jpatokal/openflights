@@ -9,7 +9,7 @@ include_once(dirname(__FILE__) . '/config.php');
 // HELPER
 //
 
-require_once(dirname(__FILE__) . '/../php/helper.php');
+require_once(dirname(__FILE__) . '/../../php/helper.php');
 
 // Airport helpers
 

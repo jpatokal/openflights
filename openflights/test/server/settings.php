@@ -62,8 +62,8 @@ class ChangePasswordWithWrongOldPasswordTest extends WebTestCase {
     $this->assertText('0;');
 
     // This should fail
-    login($this, $settings["name"], "newpw");
-    $this->assertText('0;');
+    $result = login($this, $settings["name"], "newpw");
+    $this->assertEqual($result->status, "0");
   }
 }
 
@@ -84,8 +84,8 @@ class ChangePasswordTest extends WebTestCase {
     
     // Log out and validate new password
     $msg = $this->post($webroot . "php/logout.php");
-    login($this, $settings["name"], "newpw");
-    $this->assertText('1;');
+    $result = login($this, $settings["name"], "newpw");
+    $this->assertEqual($result->status, "1");
 
     // Change it back
     $params = array("type" => "EDIT",

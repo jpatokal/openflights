@@ -15,8 +15,7 @@ class CheckTop10FlightCountStats extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $top10 = $this->post($webroot . "php/top10.php");
     $rows = preg_split('/\n/', $top10);
@@ -47,8 +46,7 @@ class CheckTop10AirlineFilteredFlightCountStats extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $filter = array("alid" => $flight2["alid"]);
     $top10 = $this->post($webroot . "php/top10.php", $filter);
@@ -80,8 +78,7 @@ class CheckTop10DistanceStats extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $params = array("mode" => "D");
     $top10 = $this->post($webroot . "php/top10.php", $params);
