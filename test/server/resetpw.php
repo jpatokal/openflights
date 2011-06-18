@@ -55,8 +55,8 @@ class ResetPwValidChallengeTest extends WebTestCase {
     $chunks = preg_split("<b>", $msg);
     $pw = substr($chunks[1], 0, 8);
 
-    login($this, $settings["name"], $pw);
-    $this->assertText('0;');
+    $result = login($this, $settings["name"], $pw);
+    $this->assertEqual($result->status, "0");
   }
 }
 ?>

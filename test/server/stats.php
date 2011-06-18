@@ -15,8 +15,7 @@ class CheckAnalyseStats extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2, $fid;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $stats = $this->post($webroot . "php/stats.php");
 

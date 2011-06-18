@@ -55,9 +55,9 @@ class RecordAirportDuplicateTest extends WebTestCase {
     $params += array("action" => "RECORD", "unittest" => "true");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
 
-    $this->assertText('From: support@openflights.org');
+    $this->assertText('From: info+apsearch@openflights.org');
     $this->assertText('Reply-To: test@openflights.example');
-    $this->assertText('New edit submitted by autotest:');
+    $this->assertText('New edit submitted by autotest (test@openflights.example):');
     $this->assertText("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('AutoTest Airpor");
   }
 }
@@ -74,9 +74,9 @@ class EditWrongAirportTest extends WebTestCase {
     $params += array("action" => "RECORD", "unittest" => "true");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
 
-    $this->assertText('From: support@openflights.org');
+    $this->assertText('From: info+apsearch@openflights.org');
     $this->assertText('Reply-To: test@openflights.example');
-    $this->assertText('New edit submitted by autotest:');
+    $this->assertText('New edit submitted by autotest (test@openflights.example):');
     $this->assertText("UPDATE airports SET ");
     $this->assertText("icao='ZZZY'");
     $this->assertText("[icao] => " . $airports["icao"]);
@@ -94,9 +94,9 @@ class EditAirportDuplicateICAOTest extends WebTestCase {
     $params["apid"] = $new_apid;
     $params += array("action" => "RECORD", "unittest" => "true");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
-    $this->assertText('From: support@openflights.org');
+    $this->assertText('From: info+apsearch@openflights.org');
     $this->assertText('Reply-To: test@openflights.example');
-    $this->assertText('New edit submitted by autotest:');
+    $this->assertText('New edit submitted by autotest (test@openflights.example):');
     $this->assertText("UPDATE airports SET name='AutoTest Airport', city='Testville', country='Testland', iata='ZZZ', icao='WSSS'");
     $this->assertText("[name] => Changi Intl");
   }

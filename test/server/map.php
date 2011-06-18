@@ -95,8 +95,7 @@ class CheckLoggedInFullUserMap extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2;
 
-    login($this);
-    $this->assertText("1;");
+    assert_login($this);
 
     $params = array("param" => "true");
     $map = $this->post($webroot . "php/map.php", $params);
