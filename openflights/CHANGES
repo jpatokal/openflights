@@ -1,3 +1,8 @@
+<b>2011-06-18</b>
+
+* Bugfix: Adding new flights after screen reload fixed
+* Tech: Login migrated to JSON
+
 <b>2011-06-09</b>
 
 * Add exports to GCMap (courtesy of Andrew Chen)
