@@ -213,7 +213,7 @@ function checkDST(type, date, year) {
     }
     break;
 
-  case "A":
+  case "S":
     // South America: Until 3rd Sunday in Mar or after 3nd Sunday in Oct
     if (date < getNthDay(year, 3, 3, 0) ||
 	date >= getNthDay(year, 10, 3, 0)) {
