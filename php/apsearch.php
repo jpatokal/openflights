@@ -1,10 +1,9 @@
 <?php
 require_once("../php/locale.php");
 require_once("../php/db.php");
+require_once("../php/helper.php");
 
 header("Content-type: text/html");
-
-include 'helper.php';
 
 $airport = $_POST["name"];
 $iata = $_POST["iata"];
@@ -27,8 +26,7 @@ $uid = $_SESSION["uid"];
 
 if($action == "RECORD") {
   if(!$uid or empty($uid)) {
-    printf("0;" . _("Your session has timed out, please log in again."));
-    exit;
+    json_error("Your session has timed out, please log in again.");
   }
 
   // Check for potential duplicates (unless admin)
@@ -83,14 +81,14 @@ if($action == "RECORD") {
 		   mysql_real_escape_string($apid));
   }
   if(empty($duplicates)) {
-    mysql_query($sql, $db) or die('0;' . _("Adding new airport failed:") . ' ' . $sql);
+    mysql_query($sql, $db) or json_error("Adding new airport failed:", $sql);
     if(! $apid || $apid == "") {
-      printf('1;' . mysql_insert_id() . ";" . _("New airport successfully added."));
+      json_success(array("apid" => mysql_insert_id(), "message" => "New airport successfully added."));
     } else {
       if(mysql_affected_rows() == 1) {
-        printf('1;' . $apid . ';' . _("Airport successfully edited."));
+	json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
       } else {
-        printf('0;' . _("Editing airport failed:") . ' ' . $sql);
+	json_error("Editing airport failed:", $sql);
       }
     }
   } else {
@@ -102,9 +100,9 @@ if($action == "RECORD") {
       exit;
     }
     if (mail($email, $subject, $body, $headers)) {
-      printf('1;' . $apid . ";" . _("Edit submitted for review.  If you have registered an e-mail address, you will be notified when the edit is reviewed."));
+      json_success(array("apid" => $apid, "message" => "Edit submitted for review.  If you have registered an e-mail address, you will be notified when the edit is reviewed."));
     } else {
-      printf('0;' . _("Could not submit edit for review, please contact <a href='/about'>support</a>."));
+      json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
     }
   }
   exit;
@@ -157,20 +155,23 @@ if(! $offset) {
   $offset = 0;
 }
 
+// Check result count
 $sql2 = str_replace("*", "COUNT(*)", $sql);
-$result2 = mysql_query($sql2, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql2);
+$result2 = mysql_query($sql2, $db) or json_error('Operation ' . $param . ' failed: ' . $sql2);
 if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
   $max = $row[0];
 }
-printf("%s;%s", $offset, $max);
+$response = array("status" => 1, "offset" => $offset, "max" => $max);
 
+// Fetch airport data
 $sql .= " ORDER BY name LIMIT 10 OFFSET " . $offset;
-$result = mysql_query($sql, $db) or die ('0;Operation ' . $param . ' failed: ' . $sql);
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+$result = mysql_query($sql, $db) or die (json_encode(array("status" => 0, "message" => 'Operation ' . $param . ' failed: ' . $sql)));
+while ($rows[] = mysql_fetch_assoc($result, MYSQL_ASSOC));
+array_pop($rows);
+foreach($rows as &$row) {
   if($dbname == "airports_dafif" || $dbname == "airports_oa") {
     $row["country"] = $row["code"];
-  }
- 
+  } 
   if($row["uid"] || $uid == $OF_ADMIN_UID ) {
     if($row["uid"] == $uid || $uid == $OF_ADMIN_UID) {
       $row["ap_uid"] = "own"; // editable
@@ -182,7 +183,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }
   $row["ap_name"] = format_airport($row);
   unset($row["uid"]);
-  print "\n" . json_encode($row);
 }
-
+$response['airports'] = $rows;
+print json_encode($response);
 ?>

@@ -1893,12 +1893,14 @@ function popNewAirport(type, apid) {
 // (new for this map, that is, not necessarily DB)
 function addNewAirport(data, name) {
   var element = input_toggle;
-  $(element).value = name;
-  $(element).style.color = '#000000';
-  $(element + 'id').value = data;
-  replicateSelection(element);
-  markAirport(element);
-  markAsChanged(true);
+  if(input_toggle) {
+    $(element).value = name;
+    $(element).style.color = '#000000';
+    $(element + 'id').value = data;
+    replicateSelection(element);
+    markAirport(element);
+    markAsChanged(true);
+  }
 }
 
 // Handle the "add new airlines" buttons

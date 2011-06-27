@@ -1,10 +1,15 @@
 #!/bin/bash
 SELENIUM_SERVER=../selenium/selenium-server-standalone-2.0rc2.jar
 
+echo Setting up screenshot directory...
+mkdir -p /tmp/screenshots
+rm /tmp/screenshots/*
+
 echo Bootstrapping...
-php ../server/cleanup.php >>log/bootstrap.log
+php ../server/cleanup.php >log/bootstrap.log
 php ../server/settings.php >log/bootstrap.log
 php ../server/submit.php >>log/bootstrap.log
+php ../server/apsearch.php >>log/bootstrap.log
 
 if (ps -ef | grep -q "selenium-server.*jar$"); then
   echo Selenium Server already running:

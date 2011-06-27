@@ -5,6 +5,22 @@ $modes = array ("F" => "Flight", "T" => "Train", "S" => "Ship", "R" => "Road tri
 $modeOperators = array ("F" => "airline", "T" => "railway", "S" => "shipping company", "R" => "road transport company");
 
 //
+// End with JSON-formatted data, localized message and a successful status
+//
+function json_success($data) {
+  $data["status"] = 1;
+  $data["message"] = _($message);
+  die(json_encode($data));
+}
+
+//
+// Abort with a JSON-formatted localized error message
+//
+function json_error($msg, $detail='') {
+  die (json_encode(array("status" => 0, "message" => _($msg) . ' ' . $detail)));
+}
+
+//
 // Standard formatting of airport data
 // Input: row: associative array containing iata, icao
 // Output: " code : apid : x : y : timezone : dstrule "

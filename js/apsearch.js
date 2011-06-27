@@ -31,6 +31,10 @@ function doRecord(offset) {
   xmlhttpPost(URL_APSEARCH, offset, "RECORD");
 }
 
+function doLoad(apid) {
+  xmlhttpPost(URL_APSEARCH, apid, "LOAD");
+}
+
 function xmlhttpPost(strURL, offset, action) {
   var xmlHttpReq = false;
   var self = this;
@@ -55,8 +59,7 @@ function xmlhttpPost(strURL, offset, action) {
 	  recordResult(self.xmlHttpReq.responseText);
 	}
 	if(action == "LOAD") {
-	  loadAirport(self.xmlHttpReq.responseText.split("\n")[1]);
-	  document.getElementById("miniresultbox").innerHTML = "";
+	  loadAirport(self.xmlHttpReq.responseText);
 	}
       }
     }
@@ -214,7 +217,7 @@ function xmlhttpPost(strURL, offset, action) {
 	  " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
 	quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
 	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."), [desc, quad]))) {
-	  document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
+	  getElement("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
 	  return;
 	}
       }
@@ -240,7 +243,7 @@ function xmlhttpPost(strURL, offset, action) {
 	'action=' + action;
     }
   }
-  document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext(describe(action)) + "</I>";
+  getElement("miniresultbox").innerHTML = "<I>" + gt.gettext(describe(action)) + "</I>";
   self.xmlHttpReq.send(query + '&offset=' + offset);
 }
 
@@ -259,7 +262,8 @@ function describe(action) {
  * Display results of search
  */
 function searchResult(str) {
-  var airports = str.split("\n");
+  var json = jsonParse(str);
+  var airports = json["airports"];
   var table = "<table width=95% cellspacing=0>";
   var offset, sql;
   var db = document.forms['searchform'].db.value;
@@ -269,87 +273,87 @@ function searchResult(str) {
     table += "<tr><td colspan=2><i><font color='red'>" + warning + "</font></i></td></tr>";
     warning = null;
   }
-  for(a in airports) {
-    // First line contains header info
-    if(a == 0) {
-      var col = airports[a].split(";");
-      offset = parseInt(col[0]);
-      max = col[1];
-      if(max == 0) {
-	table += "<tr><td><i>" + gt.gettext("No matches found in this database.") + "<br><ul>";
-	if(document.forms['searchform'].iatafilter.checked) {
-	  table += "<li>" + gt.gettext("Try unchecking 'Show only major airports' and search again.");
-	}
-	if(document.forms['searchform'].db.value != DB_OURAIRPORTS) {
-	  table += "<li>" + gt.gettext("Switch to the OurAirports database and search again.");
-	}
-	table += "</ul></td></tr>";
-	break;
-      }
-      table += "<tr><td><b>" + Gettext.strargs(gt.gettext("Results %1 to %2 of %3"), [offset+1, Math.min(offset+10, max), max]) + "</b><br></td>";
 
-      if(max > 10) {
-	table += "<td style=\"text-align: right\"><nobr>";
-	if(offset - 10 >= 0) {
-	  table += "<INPUT id=\"b_back\" type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
-	} else {
-	  table += "<INPUT type=\"button\" value=\"<\" disabled>";
-	}
-	if(offset + 10 < max) {
-	  table += "<INPUT id=\"b_fwd\" type=\"button\" value=\">\" onClick=\"doSearch(" + (offset+10) + ")\">";
-	} else {
-	  table += "<INPUT type=\"button\" value=\">\" disabled>";
-	}
-	table += "</nobr></td>";
-      }
-      table += "</tr>";
-      continue;
+  offset = json["offset"];
+  max = json["max"];
+  if(max == 0) {
+    table += "<tr><td><i>" + gt.gettext("No matches found in this database.") + "<br><ul>";
+    if(document.forms['searchform'].iatafilter.checked) {
+      table += "<li>" + gt.gettext("Try unchecking 'Show only major airports' and search again.");
     }
-
-
-    // Meat of the table
-    var col = jsonParse(airports[a]);
-    if(a % 2 == 1) {
-      bgcolor = "#fff";
-    } else {
-      bgcolor = "#ddd";
+    if(document.forms['searchform'].db.value != DB_OURAIRPORTS) {
+      table += "<li>" + gt.gettext("Switch to the OurAirports database and search again.");
     }
-    switch(col["ap_uid"]) {
-    case "user":
-      bgcolor = "#fdd";
-      disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Airports in pink have been added by users of OpenFlights.") + "</span>";
-      break;
-
-    case "own":
-      bgcolor = "#ddf";
-      disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Airports in blue have been added by you and can be edited.") + "<span>";
-      break;
-    }
-    table += "<tr><td style='background-color: " + bgcolor + "'>" + col["ap_name"] + "</td>";
-    if(db == DB_OPENFLIGHTS && isEditMode()) {
-      // code:apid:x:y:tz:dst
-      id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
-	":" + col["timezone"] + ":" + col["dst"];
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + encodeURIComponent(col["ap_name"]) + "\")'></td>";
-    }
-    if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || ! isEditMode()) {
-      if(col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
-	label = gt.gettext("Edit");
+    table += "</ul></td></tr>";
+  } else {
+    table += "<tr><td><b>" + Gettext.strargs(gt.gettext("Results %1 to %2 of %3"), [offset+1, Math.min(offset+10, max), max]) + "</b><br></td>";
+    if(max > 10) {
+      table += "<td style=\"text-align: right\"><nobr>";
+      if(offset - 10 >= 0) {
+        table += "<INPUT id=\"b_back\" type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset-10) + ")\">";
       } else {
-	label = gt.gettext("Load");
+        table += "<INPUT type=\"button\" value=\"<\" disabled>";
       }
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirport(\"" + encodeURIComponent(airports[a]) + "\")'></td>";
+      if(offset + 10 < max) {
+        table += "<INPUT id=\"b_fwd\" type=\"button\" value=\">\" onClick=\"doSearch(" + (offset+10) + ")\">";
+      } else {
+        table += "<INPUT type=\"button\" value=\">\" disabled>";
+      }
+      table += "</nobr></td>";
     }
     table += "</tr>";
+
+    for(a in airports) {
+      // Meat of the table
+      
+      var col = airports[a];
+      if(a % 2 == 1) {
+        bgcolor = "#fff";
+      } else {
+        bgcolor = "#ddd";
+      }
+      switch(col["ap_uid"]) {
+      case "user":
+        bgcolor = "#fdd";
+        disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Airports in pink have been added by users of OpenFlights.") + "</span>";
+        break;
+
+      case "own":
+        bgcolor = "#ddf";
+        disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Airports in blue have been added by you and can be edited.") + "<span>";
+        break;
+      }
+      table += "<tr><td style='background-color: " + bgcolor + "'>" + col["ap_name"] + "</td>";
+      if(db == DB_OPENFLIGHTS && isEditMode()) {
+        // code:apid:x:y:tz:dst
+        id = (col["iata"] != "" ? col["iata"] : col["icao"]) + ":" + col["apid"] + ":" + col["x"] + ":" + col["y"] +
+	  ":" + col["timezone"] + ":" + col["dst"];
+        table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirport(\"" + id + "\",\"" + encodeURIComponent(col["ap_name"]) + "\")'></td>";
+      }
+      if(db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || ! isEditMode()) {
+        if(col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
+	  label = gt.gettext("Edit");
+        } else {
+	  label = gt.gettext("Load");
+        }
+        table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='doLoad(\"" + col["apid"] + "\")'></td>";
+      }
+      table += "</tr>";
+    }
   }
   table += "</table>";
   table += disclaimer;
-  document.getElementById("miniresultbox").innerHTML = table;
+  getElement("miniresultbox").innerHTML = table;
 }
 
 // Load data from search result into form
 function loadAirport(data) {
-  var col = jsonParse(unescape(data));
+  var json = jsonParse(data);
+  if(json["status"] != 1 || json["max"] == 0) {
+    getElement("miniresultbox").innerHTML = gt.gettext("No matches found in this database.");
+    return;
+  }
+  var col = json["airports"][0];
 
   var form = document.forms['searchform'];
   form.airport.value = col["name"];
@@ -377,26 +381,18 @@ function loadAirport(data) {
     }
   }
 
-  if(col["apid"]) {
-    form.apid.value = col["apid"];
-    document.getElementById('b_add').style.display = "none";
-    document.getElementById('b_edit').style.display = "inline";
-  } else {
-    form.apid.value = "";
-    document.getElementById('b_add').style.display = "inline";
-    document.getElementById('b_edit').style.display = "none";
-  }
+  form.apid.value = col["apid"];
+  getElement('b_add').style.display = "none";
+  getElement('b_edit').style.display = "inline";
+  getElement("b_edit").disabled = true;
+  getElement("miniresultbox").innerHTML = "";
 }
 
 // Did we manage to record the airport?
 function recordResult(str) {
-  var col = str.split(";");
-  // Error?
-  if(col[0] != "1") {
-    document.getElementById("miniresultbox").innerHTML = col[1];
+  var json = jsonParse(str);
+  if(json["status"] != "1") {
   } else {
-    document.getElementById("miniresultbox").innerHTML = col[2];
-
     // Select newly minted airport and return to main
     var form = document.forms['searchform'];
     var iata = form.iata.value;
@@ -405,12 +401,24 @@ function recordResult(str) {
     // code:apid:x:y
     code = (iata != "" ? iata : form.icao.value);
     // city-airport (code), country
-    data = code + ":" + col[1] + ":" + form.x.value + ":" + form.y.value;
+    data = code + ":" + json["apid"] + ":" + form.x.value + ":" + form.y.value;
     name = form.city.value + "-" + form.airport.value + " (" + code + "), " + country;
     selectAirport(data, name);
   }
+  getElement("miniresultbox").innerHTML = json["message"];
+  getElement("b_edit").disabled = true;
 }
 
+function setEdited() {
+  if(isLoggedIn()) {
+    if(getElement("b_edit").style.display == "inline") {
+      getElement("b_edit").disabled = false;
+    } else {
+      getElement("b_add").disabled = false;
+    }
+  }
+}
+    
 // Clear form -- everything *except* database
 function clearSearch() {
   var form = document.forms['searchform'];
@@ -426,25 +434,33 @@ function clearSearch() {
   form.dst.selectedIndex = 0;
   form.apid.value = "";
   form.iatafilter.checked = true;
-  document.getElementById('b_add').style.display = "inline";
-  document.getElementById('b_edit').style.display = "none";
-  document.getElementById("miniresultbox").innerHTML = "";
+  getElement('b_add').style.display = "inline";
+  getElement('b_add').disabled = true;
+  getElement('b_edit').style.display = "none";
+  getElement("miniresultbox").innerHTML = "";
 }
 
-function isEditMode() {
+function isLoggedIn() {
   if(! parent.opener || ! parent.opener.addNewAirport) {
     // If airport search was loaded without OpenFlights, we're not in edit mode
     return false;
   } else {
-    // Else we check with mommy
-    return parent.opener.isEditMode();
+    return parent.opener.logged_in;
   }
+}
+
+function isEditMode() {
+  return isLoggedIn() && parent.opener.isEditMode();
 }
 
 // Airport selected, kick it back to main window and close this
 function selectAirport(data, name) {
   parent.opener.addNewAirport(data, unescape(name));
   window.close();
+}
+
+function getElement(id) {
+  return document.getElementById(id);
 }
 
 // A dupe from openflights.js...
