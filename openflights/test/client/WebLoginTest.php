@@ -40,6 +40,27 @@ class WebLoginTest extends OpenFlightsSeleniumTestCase
     $this->verifyTextPresent("Hi, ${settings['name']} !");
     $this->verifyTextPresent('1 segments');
     $this->verifyTextPresent('1000 miles');
+
+    $this->click("//input[@value='New flight']");
+    $this->verifyTextPresent("Add new flights");
+  }
+
+  public function testReload()
+  {
+    global $settings;
+
+    $this->open('/');
+    $this->type('name', $settings['name']);
+    $this->type('pw', $settings['password']);
+    $this->click('loginbutton');
+    sleep(1);
+    $this->verifyTextPresent("Hi, ${settings['name']} !");
+
+    $this->open('/');
+    $this->verifyTextPresent("Logged in as ${settings['name']}");
+
+    $this->click("//input[@value='New flight']");
+    $this->verifyTextPresent("Add new flights");
   }
 }
 ?>

@@ -47,11 +47,11 @@ $railway = array('name' => 'AutoTest Railways',
 
 $airport = array('name' => 'AutoTest Airport',
 		 'city' => 'Testville',
-		 'country' => 'Testland',
+		 'country' => 'Afghanistan',
 		 'iata' => 'ZZZ',
 		 'icao' => 'ZZZZ',
-		 'x' => '42.42',
-		 'y' => '69.69',
+		 'x' => '42.424',
+		 'y' => '69.696',
 		 'elevation' => '123',
 		 'timezone' => '-5.5',
 		 'dst' => 'Z');
@@ -199,6 +199,14 @@ function db_uid($db) {
   global $settings;
 
   $result = mysql_query("SELECT uid FROM users WHERE name='" . $settings["name"] . "'", $db);
+  return mysql_result($result, 0);
+}
+
+// Get apid of test airport
+function db_apid($db) {
+  global $airport;
+
+  $result = mysql_query("SELECT apid FROM airports WHERE iata='" . $airport["iata"] . "'", $db);
   return mysql_result($result, 0);
 }
 

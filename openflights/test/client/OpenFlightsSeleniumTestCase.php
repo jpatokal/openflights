@@ -7,7 +7,7 @@ class OpenFlightsSeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase
 {
   protected $captureScreenshotOnFailure = TRUE;
   protected $screenshotPath = '/tmp/screenshots';
-  protected $screenshotUrl = 'http://localhost/screenshots';
+  protected $screenshotUrl = '/tmp/screenshots';
 
   protected function setUp()
   {
