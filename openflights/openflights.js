@@ -874,7 +874,7 @@ function xmlhttpPost(strURL, id, param) {
     var challenge = document.forms['login'].challenge.value;
     hash = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
     legacy_hash = hex_md5(challenge + hex_md5(pw + name));
-    query = 'name=' + encodeURIComponent(name) + '&pw=' + encodeURIComponent(hash) + '&lpw=' + encodeURIComponent(legacy_hash);
+    query = 'name=' + encodeURIComponent(name) + '&pw=' + encodeURIComponent(hash) + '&lpw=' + encodeURIComponent(legacy_hash) + "&challenge=" + encodeURIComponent(challenge);
     break;
 
   case URL_GETCODE:

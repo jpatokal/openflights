@@ -6,7 +6,14 @@ $name = $_POST["name"];
 // pw is hashed from lowercased username, legacypw is not
 $pw = $_POST["pw"];
 $legacypw = $_POST["lpw"];
-$challenge = $_SESSION["challenge"];
+$challenge = $_POST["challenge"];
+
+if($challenge && $challenge != $_SESSION["challenge"]) {
+  $myrow = array("status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again.");
+  die(json_encode($myrow));
+} else {
+  $challenge = $_SESSION["challenge"];
+}
 
 // Log in user
 if($name) {
