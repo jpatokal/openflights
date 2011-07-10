@@ -40,14 +40,22 @@ class LegacyLoginTest extends WebTestCase {
   }
 }
 
-    $db = db_connect();
-
 // Wrong password
 class WrongPasswordLoginTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
     $result = login($this, $settings["name"], "incorrect");
     $this->assertEqual($result->status, "0");
+  }
+}
+
+// Login attempt with expired session
+class ExpiredSessionTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings;
+    $result = login($this, $settings["name"], $settings["password"], "DEADBEEF");
+    $this->assertEqual($result->status, "0");
+    $this->assertText("Session expired");
   }
 }
 ?>
