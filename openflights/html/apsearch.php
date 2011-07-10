@@ -37,15 +37,15 @@ $logged_in = $uid and !empty($uid);
 	      <td>IATA/FAA</td>
 	      <td>ICAO</td>
 	    </tr><tr>
-	      <td><INPUT type="text" name="airport"></td>
-	      <td><INPUT type="text" name="iata" size="3"></td>
-	      <td><INPUT type="text" name="icao" size="4"></td>
+	      <td><INPUT type="text" name="airport" onFocus="setEdited()"></td>
+	      <td><INPUT type="text" name="iata" size="3" onFocus="setEdited()"></td>
+	      <td><INPUT type="text" name="icao" size="4" onFocus="setEdited()"></td>
 	      <td><INPUT type="text" name="apid" size="5" value="" style="border: 0px" READONLY></td>
 	    </tr><tr>
               <td><?php echo _("City name") ?></td>
               <td colspan=3><?php echo _("Country name") ?></td>
 	    </tr><tr>
-	      <td><INPUT type="text" name="city"></td>
+	      <td><INPUT type="text" name="city" onFocus="setEdited()"></td>
 	      <td colspan=3>
                 <select name="country">
                   <option value="">ALL</option>
@@ -65,11 +65,11 @@ $logged_in = $uid and !empty($uid);
 	      <td><?php echo _("UTC") ?><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
 	      <td><?php echo _("DST") ?><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
 	    </tr><tr>
-	      <td><INPUT type="text" name="y" size="12"></td>
-	      <td><INPUT type="text" name="x" size="12"></td>
-	      <td><INPUT type="text" name="elevation" size="6"></td>
-	      <td><INPUT type="text" name="tz" size="3"></td>
-	      <td><select name="dst">
+	      <td><INPUT type="text" name="y" size="12" onFocus="setEdited()"></td>
+	      <td><INPUT type="text" name="x" size="12" onFocus="setEdited()"></td>
+	      <td><INPUT type="text" name="elevation" size="6" onFocus="setEdited()"></td>
+	      <td><INPUT type="text" name="tz" size="3" onFocus="setEdited()"></td>
+	      <td><select name="dst" onChange="setEdited()">
 		  <option value="U" selected><?php echo _("Unknown") ?></option>
 		  <option value="E"><?php echo _("European") ?></option>
 		  <option value="A"><?php echo _("US/Canada") ?></option>
@@ -104,8 +104,8 @@ $logged_in = $uid and !empty($uid);
 		<INPUT type="button" value='<?php echo _("Cancel") ?>' onClick="window.close()">
 		</td><td style="text-align: right">
 		<?php if(! $logged_in) echo "<small>" . _("Please log in to enable editing.") . "</small><br>"; ?>
- 		<INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airport.") ?>' value='<?php echo _("Add as new") ?>' <?php if(! $logged_in) echo "DISABLED" ?> onClick="doRecord()">
-		<INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airport.") ?>' value='<?php echo _("Save changes") ?>'  <?php if(! $logged_in) echo "DISABLED" ?> onClick="doRecord()" style="display: none">
+ 		<INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airport.") ?>' value='<?php echo _("Add as new") ?>' DISABLED onClick="doRecord()">
+		<INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airport.") ?>' value='<?php echo _("Save changes") ?>' DISABLED onClick="doRecord()" style="display: none">
 		</td>
 	    </tr>
 	</table>
