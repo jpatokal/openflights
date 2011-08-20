@@ -13,7 +13,8 @@ msgid "Flight logging, mapping, stats and sharing"
 msgstr "航空记录日志, 地图, 统计与分享"
 
 msgid "Sorry, OpenFlights requires JavaScript."
-msgstr "抱歉, OpenFlights需要JavaScript. /* Usually in China we do not translate some words such as \"JavaScript\" but to directly use them (and also in the other items). But if you would like to have a Chinese name for \"OpenFlights\", i suggest \"四海纵横\" - you can ask some other Chinese people to see if they also think it is a good name :) */"
+msgstr "抱歉, OpenFlights需要JavaScript."
+# Usually in China we do not translate some words such as \"JavaScript\" but to directly use them (and also in the other items). But if you would like to have a Chinese name for \"OpenFlights\", i suggest \"四海纵横\" - you can ask some other Chinese people to see if they also think it is a good name :)
 
 msgid "News"
 msgstr "新闻"
@@ -67,7 +68,8 @@ msgid "Year"
 msgstr "年份"
 
 msgid "Trip"
-msgstr "旅程 /*There are some different Chinese words for \"trip\", \"旅程\" is the best one i think after i reading the mean of \"trip\" in OpenFlights */"
+msgstr "旅程"
+#There are some different Chinese words for \"trip\", \"旅程\" is the best one i think after i reading the mean of \"trip\" in OpenFlights
 
 msgid "More..."
 msgstr "更多..."
@@ -130,7 +132,8 @@ msgid "Edit this trip"
 msgstr "编辑该旅程"
 
 msgid "From"
-msgstr "/* \"起点\" when as noun or \"自\" when as prep */"
+msgstr "起点"
+# when as noun or \"自\" when as prep */"
 
 msgid "Enter city name or airport code"
 msgstr "请输入城市名称或机场代码"
@@ -148,10 +151,12 @@ msgid "Enter plane model"
 msgstr "请输入机型"
 
 msgid "Reg."
-msgstr "注册号码 /* If any translation of abbr is too long for you, you can use the abbr still */"
+msgstr "注册号码"
+# If any translation of abbr is too long for you, you can use the abbr still */"
 
 msgid "To"
-msgstr "/* \"终点\" when as noun or \"至\" when as prep */"
+msgstr "终点"
+# when as noun or \"至\" when as prep */"
 
 msgid "Economy"
 msgstr "经济舱"
@@ -319,7 +324,8 @@ msgid "Unknown"
 msgstr "未知"
 
 msgid "was:"
-msgstr "/* Usually it can be translated to \"为:\" but it will be the best that if you can show me the whole sentence where \"was:\" is in so that i can give more precise translation. */"
+msgstr "为:"
+# Usually it can be translated to \"为:\" but it will be the best that if you can show me the whole sentence where \"was:\" is in so that i can give more precise translation. */"
 
 msgid "No airline"
 msgstr "无航空公司"
@@ -464,10 +470,12 @@ msgid "miles"
 msgstr "英里"
 
 msgid "-operated"
-msgstr "承运 /* No need \"-\" in the beginning in Chinese translation */"
+msgstr "承运"
+# No need \"-\" in the beginning in Chinese translation */"
 
 msgid " and codeshares"
-msgstr "以及代码共享 /* No need space in the beginning in Chinese translation */"
+msgstr "以及代码共享"
+# No need space in the beginning in Chinese translation */"
 
 msgid "Sorry, that name is already taken, please try another."
 msgstr "抱歉, 该名称已使用, 请尝试其他名称."
@@ -644,7 +652,7 @@ msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory不支持导出功能, �
 
 #, php-format
 msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
-msgstr "<b>OpenFlights (.csv)</b> &mdash; 由逗号分隔数值, 由OpenFlights导出('导出'或'备份')后易于由Excel或其他表格工具编辑或新建. 详见<%s'>格式规范</a>. /* It looks there are some small bugs in the original English statement...? Please correct it and then i can correct my translation accordingly (I have translated it based on my current understanding) */"
+msgstr "<b>OpenFlights (.csv)</b> &mdash; 由逗号分隔数值, 由OpenFlights导出('导出'或'备份')后易于由Excel或其他表格工具编辑或新建. 详见<%s'>格式规范</a>. # It looks there are some small bugs in the original English statement...? Please correct it and then i can correct my translation accordingly (I have translated it based on my current understanding) */"
 
 msgid "File to upload"
 msgstr "待上传的文件"
@@ -848,7 +856,8 @@ msgid "Open (all flight data shared)"
 msgstr "完全公开(全部航空记录数据公开)"
 
 msgid "OpenFlights URL"
-msgstr "OpenFlights URL /* This has no need to translate... */"
+msgstr "OpenFlights URL"
+# This has no need to translate... */"
 
 msgid "Not assigned yet"
 msgstr "未分配"
@@ -863,7 +872,8 @@ msgid "Econ"
 msgstr "经济舱"
 
 msgid "P.Eco"
-msgstr "超级经济舱 /* The same as \"Prem. Eco\"? */"
+msgstr "超级经济舱"
+# The same as \"Prem. Eco\"? */"
 
 msgid "Biz"
 msgstr "公务舱"
@@ -1034,7 +1044,8 @@ msgid "Copy to new flight"
 msgstr "复制为新航空记录"
 
 msgid "Unique"
-msgstr "总计 /* This is not a dictionary translation on \"Unique\" but based on the content of this item in the Analysis Result Page */"
+msgstr "总计"
+# This is not a dictionary translation on \"Unique\" but based on the content of this item in the Analysis Result Page */"
 
 msgid "Airports"
 msgstr "机场"
@@ -1130,7 +1141,8 @@ msgid "Loading"
 msgstr "载入中"
 
 msgid "Hi, <B>%1</B> !"
-msgstr "Hi, <B>%1</B> ! /* No need to translate... */"
+msgstr "你好, <B>%1</B> !"
+# No need to translate... */"
 
 msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
 msgstr "<b>欢迎回来!</b>  我们非常高兴看到您如此支持OpenFlights.<br>如果您可以为我们更好的发展在<a href='/donate.html' target='_blank'>提供一些捐助那就太好了</a>!"
@@ -1235,7 +1247,8 @@ msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
 msgstr "纬度必须在90度(北)和-90度(南)范围内."
 
 msgid "Please enter a positive number for elevation."
-msgstr "请为海拔输入一个正数. /* I suggest accepting negative number for if some a day there is an airport nearby the Dead Sea in Middle East... */"
+msgstr "请为海拔输入一个正数."
+# I suggest accepting negative number for if some a day there is an airport nearby the Dead Sea in Middle East... */"
 
 msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
 msgstr "请参照UTC/GMT输入一个时区, 例如新加坡是+8而纽约是-5. 对于某些非整数时区请使用小数, 例如尼泊尔是+5.75."
@@ -1305,4 +1318,3 @@ msgstr "处理中..."
 
 msgid "Profile address:"
 msgstr "个人记录地址:"
-
