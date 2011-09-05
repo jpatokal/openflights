@@ -166,7 +166,7 @@ $response = array("status" => 1, "offset" => $offset, "max" => $max);
 // Fetch airport data
 $sql .= " ORDER BY name LIMIT 10 OFFSET " . $offset;
 $result = mysql_query($sql, $db) or die (json_encode(array("status" => 0, "message" => 'Operation ' . $param . ' failed: ' . $sql)));
-while ($rows[] = mysql_fetch_assoc($result, MYSQL_ASSOC));
+while ($rows[] = mysql_fetch_assoc($result));
 array_pop($rows);
 foreach($rows as &$row) {
   if($dbname == "airports_dafif" || $dbname == "airports_oa") {
