@@ -9,7 +9,7 @@ $modeOperators = array ("F" => "airline", "T" => "railway", "S" => "shipping com
 //
 function json_success($data) {
   $data["status"] = 1;
-  $data["message"] = _($message);
+  $data["message"] = _($data["message"]);
   die(json_encode($data));
 }
 

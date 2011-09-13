@@ -391,8 +391,8 @@ function loadAirport(data) {
 // Did we manage to record the airport?
 function recordResult(str) {
   var json = jsonParse(str);
-  if(json["status"] != "1") {
-  } else {
+  if(json["status"] == "1") {
+    alert(json["message"]);
     // Select newly minted airport and return to main
     var form = document.forms['searchform'];
     var iata = form.iata.value;
