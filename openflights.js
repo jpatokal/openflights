@@ -82,7 +82,12 @@ var re_numeric = /^[0-9]*$/;
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
-window.onload = function init(){
+// Init Google Charts
+google.load('visualization', '1', {packages: ['corechart']});
+// Call init after google is done initing.
+google.setOnLoadCallback(init);
+
+function init(){
   $("helplink").style.display = 'inline';
   gt = new Gettext({ 'domain' : 'messages' });
 
@@ -277,6 +282,7 @@ window.onload = function init(){
   } else {
     xmlhttpPost(URL_MAP, 0, true);
   }
+
 }
 
 function clusterRadius(feature) {
@@ -1543,19 +1549,20 @@ function showStats(str) {
   
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Seats") + "</th></tr>";
-    table += "<tr><td>";
-    table += googleChart(classData, classes_short);
-    table += "</td><td>";
-    table += googleChart(reasonData, reasons_short);
-    table += "</td><td>";
-    table += googleChart(seatData, seattypes);
-    table += "</td></tr>";
+    table += "<tr>";
+      table += "<td><div id=\"chart_class\"></div></td>";
+      table += "<td><div id=\"chart_reason\"></div></td>";
+      table += "<td><div id=\"chart_seat\"></div></td>";
+    table += "</tr>";
 
     table += "<tr><th>" + gt.gettext("Class by distance") + "</th><th>" + gt.gettext("Mode") + "</th><th><!-- Empty Cell --></th></tr>";
+    table += "<tr>";
+      table += "<td><div id=\"chart_class_distance\"></div></td>";
+      table += "<td><div id=\"chart_mode\"></div></td>";
+      table += "<td><!-- Empty --></td>";
+    table += "</tr>";
     table += "<tr><td>";
-    table += googleChart(classDataByDistance, classes_short);
     table += "</td><td>";
-    table += googleChart(modeData, modenames);
     table += "</td><td>";
     // Empty Cell
     table += "</td></tr>";
@@ -1565,20 +1572,68 @@ function showStats(str) {
   }
 
   $("result").innerHTML = bigtable;
+
+  if(str != "") {
+    // First row of charts
+    googleChart("chart_class", classData, classes_short);
+    googleChart("chart_reason", reasonData, reasons_short);
+    googleChart("chart_seat", seatData, seattypes);
+
+    // Second row of charts
+    googleChart("chart_class_distance", classDataByDistance, classes_short);
+    googleChart("chart_mode", modeData, modenames);
+  }
 }
 
+// Chart configuration.
+var GOOGLE_CHART_OPTIONS = {
+  fontSize: 10,
+  chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+  width: 200,
+  height: 100,
+  legend: 'none',
+  pieSliceText: 'label'
+};
+
+var GOOGLE_CHART_TWO_COLORS = ['2A416A','B2C3DF'];
+var GOOGLE_CHART_THREE_COLORS = ['2A416A','688BC3','B2C3DF'];
+var GOOGLE_CHART_FOUR_COLORS = ['2A416A','39588E','688BC3','B2C3DF'];
+
 // Generate a pie chart image via Google Charts API
-function googleChart(data, labeldata) {
-  if(!data) { return ""; }
-  var rows = data.split(":");
-  var cols = "", labels = "";
+// targetdiv is the DIV where we should write out the chart
+// inputdata is a colon-separated string of label short-names to values, which are separated by commas
+// labeldata is a hash of short-names (Y, C, F) to localized names (Econ, Biz, 1st).
+// e.g. inputdata = F,1:C,2:F,3
+//      labeldata = {F: 'First', C: 'Biz', Y: 'Econ'}
+function googleChart(targetdiv, inputdata, labeldata) {
+  if(!inputdata) { return; }
+
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Key');
+  data.addColumn('number', 'Value');
+
+  var rows = inputdata.split(":");
   for (r = 0; r < rows.length; r++) {
+    // col is key-value pair separated by a comma
     var col = rows[r].split(",");
-    cols += (r == 0 ? "" : ",") + col[1];
-    labels += (r == 0 ? "" : "|") + labeldata[col[0]];
+    data.addRow([labeldata[col[0]], parseInt(col[1], 10)]);
   }
-  // "chds=a" enables autoscaling and allows for data values greater than 100
-  return "<img width=200 height=80 src='http://chart.apis.google.com/chart?cht=p&chd=t:" + cols + "&chs=200x80&chl=" + labels + "&chco=2A416A,39588E,688BC3,B2C3DF&chds=a'>";
+
+  // Apply formatter to the "Value" column.
+  var formatter = new google.visualization.NumberFormat({
+    fractionDigits: 0
+  });
+  formatter.format(data, 1);
+
+  var chart = new google.visualization.PieChart(document.getElementById(targetdiv));
+  if(rows.length <= 2) {
+    GOOGLE_CHART_OPTIONS.colors = GOOGLE_CHART_TWO_COLORS;
+  } else if(rows.length <= 3) {
+    GOOGLE_CHART_OPTIONS.colors = GOOGLE_CHART_THREE_COLORS;
+  } else {
+    GOOGLE_CHART_OPTIONS.colors = GOOGLE_CHART_FOUR_COLORS;
+  }
+  chart.draw(data, GOOGLE_CHART_OPTIONS);
 }
 
 function showTop10(str) {
