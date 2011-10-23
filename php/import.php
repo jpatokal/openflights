@@ -1,4 +1,6 @@
 <?php
+ini_set('auto_detect_line_endings', true);
+
 require_once("locale.php");
 require_once("db.php");
 ?>

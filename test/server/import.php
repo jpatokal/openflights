@@ -10,8 +10,8 @@ class ImportUnknownFiletypeTest extends WebTestCase {
   function test() {
     cleanup();
 
-    login($this);
-    $this->assertText("1;");
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
 
     upload_fixture($this, "fm-standard.html", "XYZ");
     $this->assertText("Unknown file type XYZ");
@@ -23,13 +23,26 @@ class ImportCSVStandardTest extends WebTestCase {
     global $settings;
     cleanup();
 
-    login($this);
-    $this->assertText("1;");
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
 
     upload_fixture($this, "fm-standard.csv", "CSV");
     $this->assertText("Flights successfully imported");
 
     export_to_csv_and_validate($this, "fm-standard.csv");
+  }
+}
+
+class ImportCSVWithCROnlyTerminators extends WebTestCase {
+  function test() {
+    global $settings;
+    cleanup();
+
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
+
+    upload_fixture($this, "cr-only.csv", "CSV");
+    $this->assertText("Flights successfully imported");
   }
 }
 
@@ -39,8 +52,8 @@ class ImportFlightMemoryStandardTest extends WebTestCase {
     global $settings;
     cleanup();
 
-    login($this);
-    $this->assertText("1;");
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
 
     upload_fixture($this, "fm-standard.html", "FM");
     $this->assertText("Flights successfully imported");
@@ -55,8 +68,8 @@ class ImportFlightMemoryKilometerTest extends WebTestCase {
     global $settings;
     cleanup();
 
-    login($this);
-    $this->assertText("1;");
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
 
     upload_fixture($this, "fm-kilometer.html", "FM");
     $this->assertText("Flights successfully imported");
@@ -71,8 +84,8 @@ class ImportFlightMemoryLatin1Test extends WebTestCase {
     global $settings;
     cleanup();
 
-    login($this);
-    $this->assertText("1;");
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
 
     upload_fixture($this, "fm-latin1.html", "FM");
     $this->assertText("Flights successfully imported");
@@ -87,8 +100,8 @@ class ImportFlightMemoryNewAirlinesTest extends WebTestCase {
     global $settings;
     cleanup();
 
-    login($this);
-    $this->assertText("1;");
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
 
     upload_fixture($this, "fm-newairlines.html", "FM");
     $this->assertText("Flights successfully imported");
