@@ -1,3 +1,7 @@
+<b>2011-11-17</b>
+
+* Bugfix: Can't export airline maps to CSV 
+
 <b>2011-07-10</b>
 
 * Bugfix: Unable to login after session expiry (2915135)
