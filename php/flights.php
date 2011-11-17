@@ -134,7 +134,7 @@ if($route) {
 }
 
 // Execute!
-$result = mysql_query($sql, $db);
+$result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
 $first = true;
 
 if($export == "export" || $export == "backup") {
