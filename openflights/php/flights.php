@@ -16,7 +16,7 @@ if($export) {
     $year = $_GET["year"];
     $apid = $_GET["id"];
   }
-	// else export everything unfiltered
+  // else export everything unfiltered
  } else {
   header("Content-type: text/html; charset=utf-8");
 
@@ -104,7 +104,10 @@ if($type == "R" || $type == "L") {
 switch($export) {
  case "export":
  case "gcmap":
-   $sql = $sql . getFilterString($_GET);
+   // Full filter only for user flight searches
+   if(! $route) {
+     $sql = $sql . getFilterString($_GET);
+   }
    break;
 
  case "backup":
@@ -134,7 +137,7 @@ if($route) {
 }
 
 // Execute!
-$result = mysql_query($sql, $db) or die ('Error;Database error ' . $sql . ', ' . mysql_error());
+$result = mysql_query($sql, $db) or die ('Error;Query ' . print_r($_GET, true) . ' caused database error ' . $sql . ', ' . mysql_error());
 $first = true;
 
 if($export == "export" || $export == "backup") {
