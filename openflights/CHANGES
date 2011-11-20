@@ -1,3 +1,7 @@
+<b>2011-11-20</b>
+
+* Update OpenLayers to 2.11.  Fixes Android compatibility.
+
 <b>2011-11-17</b>
 
 * Bugfix: Can't export airline maps to CSV 
