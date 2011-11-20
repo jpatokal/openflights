@@ -2,6 +2,11 @@
 
 * Bugfix: Can't export airline maps to CSV 
 
+<b>2010-10-04</b>
+
+* Change charts on analysis page to JavaScript-based charts.
+* Show counts for each pie chart entry.
+
 <b>2011-07-10</b>
 
 * Bugfix: Unable to login after session expiry (2915135)
