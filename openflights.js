@@ -1588,9 +1588,12 @@ function showStats(str) {
 // Chart configuration.
 var GOOGLE_CHART_OPTIONS = {
   fontSize: 10,
-  chartArea: { left: 0, top: 0, width: '100%', height: '100%' },
+  // Google seems to be adding a 10px highlights above/beloww the chart when moused over.
+  // The actual chart height should be in chartArea[height] and the div height will be
+  // chartHeight+20.  A margin of 10 at the top will ensure the top highlight will show up.
+  chartArea: { left: 0, top: 10, width: '100%', height: '100' },
+  height: 120,
   width: 200,
-  height: 100,
   legend: 'none',
   pieSliceText: 'label'
 };
