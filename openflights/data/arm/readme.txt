@@ -1,8 +1,8 @@
 Airline Route Mapper
-Version 1.2.0.6  (2009-09-21)
-Copyright 2007-2010 by the author
+Version 1.2.0.7  (2011-09-05)
+Copyright 2007-2011 by the author
 
-Data set: 2010-03-05
+Data set: 2011-09-05
 
 USE AT YOUR OWN RISK. NO WARRANTY OF FITNESS FOR ANY PURPOSE IS MADE OR
 IMPLIED. NOT VALID FOR NAVIGATION OR FLIGHT PLANNING. THE AUTHOR OF
