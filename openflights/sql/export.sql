@@ -14,7 +14,7 @@ SELECT alid,name,alias,iata,icao,callsign,country,active INTO OUTFILE '/tmp/airl
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airlines
-WHERE mode='F';
+WHERE mode='F' AND ((iata!="" AND iata IS NOT NULL) OR (icao!="" AND icao IS NOT NULL));
 
 \! echo Routes...
 
