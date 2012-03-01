@@ -1435,7 +1435,12 @@ function listFlights(str, desc, id) {
 		   "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
 		   "</td><td>" + trip + "</td>");
       }
-      table.push("<td>" + col[16].substring(0,15) + "</td>");
+      // Add an ellipsis to the note if we truncate it.
+      var note = col[16];
+      if(note.length > 15) {
+        note = note.substring(0, 15) + "&hellip;";
+      }
+      table.push("<td>" + note + "</td>");
       if(route) {
 	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=openflights&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + Gettext.strargs(gt.gettext("Buy tickets on %1"), ["Kayak.com"]) + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
       } else {
