@@ -206,10 +206,10 @@ require_once("./php/db.php");
       <input type="hidden" name="dst_apid" id="dst_apid"/></td>
 
   <td><?php echo _("Class") ?></td>
-  <td><input type="radio" name="myClass" value="Y" onChange="JavaScript:markAsChanged();" CHECKED><?php echo _("Economy") ?>
-      <input type="radio" name="myClass" value="P" onChange="JavaScript:markAsChanged();"><?php echo _("Premium Eco.") ?>
-      <input type="radio" name="myClass" value="C" onChange="JavaScript:markAsChanged();"><?php echo _("Business") ?>
-      <input type="radio" name="myClass" value="F" onChange="JavaScript:markAsChanged();"><?php echo _("First") ?>
+  <td><input type="radio" id="myClass_Y" name="myClass" value="Y" onChange="JavaScript:markAsChanged();" CHECKED><label for="myClass_Y"><?php echo _("Economy") ?></label>
+      <input type="radio" id="myClass_P" name="myClass" value="P" onChange="JavaScript:markAsChanged();"><label for="myClass_P"><?php echo _("Premium Eco.") ?></label>
+      <input type="radio" id="myClass_C" name="myClass" value="C" onChange="JavaScript:markAsChanged();"><label for="myClass_C"><?php echo _("Business") ?></label>
+      <input type="radio" id="myClass_F" name="myClass" value="F" onChange="JavaScript:markAsChanged();"><label for="myClass_F"><?php echo _("First") ?></label>
   </td>
 
 </tr><tr>
@@ -229,10 +229,10 @@ require_once("./php/db.php");
   </td>
 
   <td><?php echo _("Reason") ?>&nbsp;</td>
-  <td><input type="radio" name="reason" value="B" onChange="JavaScript:markAsChanged();" CHECKED><?php echo _("Work") ?>
-      <input type="radio" name="reason" value="L" onChange="JavaScript:markAsChanged();"><?php echo _("Leisure") ?>
-      <input type="radio" name="reason" value="C" onChange="JavaScript:markAsChanged();"><?php echo _("Crew") ?>
-      <input type="radio" name="reason" value="O" onChange="JavaScript:markAsChanged();"><?php echo _("Other") ?>
+  <td><input type="radio" id="reason_B" name="reason" value="B" onChange="JavaScript:markAsChanged();" CHECKED><label for="reason_B"><?php echo _("Work") ?></label>
+      <input type="radio" id="reason_L" name="reason" value="L" onChange="JavaScript:markAsChanged();"><label for="reason_L"><?php echo _("Leisure") ?></label>
+      <input type="radio" id="reason_C" name="reason" value="C" onChange="JavaScript:markAsChanged();"><label for="reason_C"><?php echo _("Crew") ?></label>
+      <input type="radio" id="reason_O" name="reason" value="O" onChange="JavaScript:markAsChanged();"><label for="reason_O"><?php echo _("Other") ?></label>
   </td>
 
 </tr><tr>
