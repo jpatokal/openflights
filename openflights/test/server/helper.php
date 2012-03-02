@@ -89,3 +89,19 @@ class GcDistanceTest extends UnitTestCase {
   }
 }
 
+class FileUrlWithDateTest extends UnitTestCase {
+  function test() {
+    $docroot = getenv("DOCUMENT_ROOT");
+    $this->assertNotNull($docroot);
+    $this->assertNotEqual($docroot, "/");
+
+    $desired_time = 1230657905;
+    $expected_date = "20081230";
+
+    $test_filename = "/import/date-test-" . time() . '-' . rand(100000, 999999);
+    touch($docroot . $test_filename, $desired_time);
+
+    $this->assertEqual("$test_filename?version=$expected_date", fileUrlWithDate($test_filename));
+  }
+}
+
