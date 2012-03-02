@@ -1,3 +1,7 @@
+<b>2012-03-01</b>
+
+* Tech: Dynamically generate URLs that contain file mtimes.
+
 <b>2012-02-29</b>
 
 * Add ellipsis to truncated notes in flight list.

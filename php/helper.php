@@ -138,4 +138,30 @@ function gcDuration($dist) {
   return sprintf("%02d:%02d",  floor($rawtime/60), $rawtime % 60);
 }
 
+/**
+ * Convert a filename (relative to the document root) to a relative URL with a date-based version string appended.
+ * @param $filename string Relative filename (e.g. "/js/foo.js")
+ * @return string Relative filename with version (e.g. "/js/foo.js?version=20120102")
+ * @throws Exception Invalid input
+ */
+function fileUrlWithDate($filename) {
+  if($filename === null || empty($filename) || strlen($filename) < 1) {
+    throw new Exception("fileUrlWithDate requires a valid filename.");
+  }
+  # Make sure there is a leading slash.
+  if(substr($filename, 0, 1) != '/') {
+    $filename = '/' . $filename;
+  }
+
+  $docroot = getenv("DOCUMENT_ROOT");
+  $full_path = $docroot . $filename;
+
+  if(!file_exists($full_path)) {
+    throw new Exception("$full_path does not exist; can't get URL with date.");
+  }
+  $mtime = filemtime($full_path);
+  $datestamp = gmdate("Ymd", $mtime);
+  return $filename . '?version=' . $datestamp;
+}
+
 ?>

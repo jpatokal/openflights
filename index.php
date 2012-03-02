@@ -1,6 +1,7 @@
 <?php
 require_once("./php/locale.php");
 require_once("./php/db.php");
+require_once("./php/helper.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,7 +21,7 @@ require_once("./php/db.php");
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
     <script type="text/javascript" src="/js/scriptaculous.js?version=20091230"></script>
-    <script type="text/javascript" src="/openflights.js?version=20110618"></script>
+    <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js") ?>"></script>
   </head>
 
   <body>
