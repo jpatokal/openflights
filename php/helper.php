@@ -110,15 +110,29 @@ function gcDistance($db, $src_apid, $dst_apid) {
     $dist = 0;
   } else {
     $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid=$dst_apid";
-    $rs = mysql_query($sql, $db);
-    if(mysql_num_rows($rs) != 2) return array(null, null);
-    $row = mysql_fetch_assoc($rs);
-    $lon1 = $row["x"];
-    $lat1 = $row["y"];
-    $row = mysql_fetch_assoc($rs);
-    $lon2 = $row["x"];
-    $lat2 = $row["y"];
-    
+
+    // Handle both OO and procedural-style database handles, depending on what type we've got.
+    if(get_class($db) == "PDO") {
+      $sth = $db->prepare($sql);
+      $sth->execute();
+      if($sth->rowCount() != 2) return array(null, null);
+      $coord1 = $sth->fetch();
+      $lon1 = $coord1["x"];
+      $lat1 = $coord1["y"];
+      $coord2 = $sth->fetch();
+      $lon2 = $coord2["x"];
+      $lat2 = $coord2["y"];
+    } else {
+      $rs = mysql_query($sql, $db);
+      if(mysql_num_rows($rs) != 2) return array(null, null);
+      $row = mysql_fetch_assoc($rs);
+      $lon1 = $row["x"];
+      $lat1 = $row["y"];
+      $row = mysql_fetch_assoc($rs);
+      $lon2 = $row["x"];
+      $lat2 = $row["y"];
+    }
+
     $pi = 3.1415926;
     $rad = doubleval($pi/180.0);
     $lon1 = doubleval($lon1)*$rad; $lat1 = doubleval($lat1)*$rad;
