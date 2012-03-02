@@ -7,7 +7,7 @@ if(!$uid or empty($uid)) {
 }
 
 include 'helper.php';
-include 'db.php';
+include 'db_pdo.php';
 
 // Hack to record X-Y and Y-X flights as same in DB
 function orderAirports($src_apid, $dst_apid) {
@@ -41,112 +41,173 @@ if($number) $number = trim($number);
 if($registration) $registration = trim($registration);
 if($seat) $seat = trim($seat);
 
-
-$src_time = $_POST["src_time"];
-if(! $src_time || $src_time == "") {
-  $src_time = "NULL";
+if(!isset($_POST["src_time"]) || empty($_POST["src_time"])) {
+  $src_time = null;
 } else {
+  $src_time = $_POST["src_time"];
   # MySQL interprets 1000 as 00:10:00, so we force it to 100000 => 10:00:00
   if(! strstr($src_time, ":")) {
     $src_time .= "00";
   }
-  $src_time = "'" . mysql_real_escape_string($src_time) . "'";
+}
+
+// Compatibility with the existing openflights.js, which sets trid to the string NULL.
+if($trid == "NULL") {
+  $trid = null;
 }
 
 // Validate user-entered information
+$plid = null;
 if($param == "ADD" || $param == "EDIT") {
   $plane = $_POST["plane"];
 
   // New planes can be created on the fly
-  if($plane != "") {
-    $sql = "SELECT plid FROM planes WHERE name='" . mysql_real_escape_string($plane) . "' limit 1";
-    $result = mysql_query($sql, $db);
-    if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  if(!empty($plane)) {
+    $sql = "SELECT plid FROM planes WHERE name=? limit 1";
+    $sth = $dbh->prepare($sql);
+    $sth->execute(array($plane));
+    if ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
       // Match found, take its plid
       $plid = $row["plid"];
     } else {
       // No match, create new entry
-      $sql = "INSERT INTO planes(name, public) VALUES('" . mysql_real_escape_string($plane) . "', 'N')";
-      mysql_query($sql, $db) or die('0;Adding new plane failed');
-      $plid = mysql_insert_id();
+      $sql = "INSERT INTO planes(name, public) VALUES(?, 'N')";
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array($plane)) or die('0;Adding new plane failed');
+      $plid = $dbh->lastInsertId();
     }
-  } else {
-    $plid = "NULL";
   }
 }
 
-switch($param) {
- case "ADD":
-   // Can add multiple flights or just one
-   if($multi) {
-     for($idx = 0; $idx < $multi; $idx++) {
-       $rows[$idx] = $idx + 1;
-     }
-   } else {
-     $rows = array("");
-   }
-   $sql = "INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp, mode) VALUES";
-   foreach($rows as $idx) {
-     $src_date = $_POST["src_date" . $idx];
-     $src_apid = $_POST["src_apid" . $idx];
-     $dst_apid = $_POST["dst_apid" . $idx];
-     $alid = trim($_POST["alid" . $idx]);
-     if($alid == 0) $alid = -1; // this should not be necessary, but just in case...
-     if(! $_POST["duration"]) {
-       list($distance, $duration) = gcDistance($db, $src_apid, $dst_apid);
-     }
-     list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid, $opp);
+$num_added = 0;
+switch ($param) {
+  case "ADD":
+    // Can add multiple flights or just one
+    if ($multi) {
+      for ($idx = 0; $idx < $multi; $idx++) {
+        $rows[$idx] = $idx + 1;
+      }
+    } else {
+      $rows = array("");
+    }
+    # 8 columns per "row" in this string; non-bound variables in the last line.
+    $sql = <<<QUERY
+INSERT INTO flights(
+  uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration,
+  code, seat, seat_type, class, reason, note, plid, alid,
+  trid, opp, mode,
+  upd_time)
+VALUES(
+  ?, ?, ?, ?, ?, ?, ?, ?,
+  ?, ?, ?, ?, ?, ?, ?, ?,
+  ?, ?, ?,
+  NOW())
+QUERY;
+    $sth = $dbh->prepare($sql);
+    foreach ($rows as $idx) {
+      $src_date = $_POST["src_date" . $idx];
+      $src_apid = $_POST["src_apid" . $idx];
+      $dst_apid = $_POST["dst_apid" . $idx];
+      $alid = trim($_POST["alid" . $idx]);
+      if ($alid == 0)
+        $alid = -1; // this should not be necessary, but just in case...
 
-     if($idx != "" && $idx != "1") {
-       $sql .= ",";
-     }
-     $sql = $sql . sprintf("(%s, %s, '%s', %s, %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s', '%s')",
-			   $uid, mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp, mysql_real_escape_string($mode));
-   }
-   break;
+      // If either the distance or duration is missing, try to calculate it by airports.
+      if (!$_POST["duration"] || !$_POST["distance"]) {
+        list($calc_distance, $calc_duration) = gcDistance($dbh, $src_apid, $dst_apid);
+        if(!$_POST["duration"]) {
+          $duration = $calc_duration;
+        }
+        if(!$_POST["distance"]) {
+          $distance = $calc_distance;
+        }
+      }
 
- case "EDIT":
-   $src_date = $_POST["src_date"];
-   $src_apid = $_POST["src_apid"];
-   $dst_apid = $_POST["dst_apid"];
-   $alid = trim($_POST["alid"]); // IE adds some whitespace crud to this!?
-   if($alid == 0) $alid = -1; // this should not be necessary, but just in case...
-   list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid, $opp);
-   $sql = sprintf("UPDATE flights SET src_apid=%s, src_date='%s', src_time=%s, dst_apid=%s, duration='%s', distance=%s, registration='%s', code='%s', seat='%s', seat_type='%s', class='%s', reason='%s', note='%s', plid=%s, alid=%s, trid=%s, opp='%s', mode='%s' WHERE fid=%s",
-		  mysql_real_escape_string($src_apid), mysql_real_escape_string($src_date), $src_time, mysql_real_escape_string($dst_apid), mysql_real_escape_string($duration), mysql_real_escape_string($distance), mysql_real_escape_string($registration), mysql_real_escape_string($number), mysql_real_escape_string($seat), mysql_real_escape_string($seat_type), mysql_real_escape_string($class), mysql_real_escape_string($reason), mysql_real_escape_string($note), mysql_real_escape_string($plid), mysql_real_escape_string($alid), mysql_real_escape_string($trid), $opp, mysql_real_escape_string($mode), mysql_real_escape_string($fid));
-   break;
+      list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid);
 
- case "DELETE":
-   // Check uid to prevent an evil logged-in hacker from deleting somebody else's flight
-   $sql = sprintf("DELETE FROM flights WHERE uid=%s AND fid=%s", $uid, mysql_real_escape_string($fid));
-   break;
+      if ($idx != "" && $idx != "1") {
+        $sql .= ",";
+      }
+      $success = $sth->execute(array(
+        $uid, $src_apid, $src_date, $src_time, $dst_apid, $duration, $distance, $registration,
+        $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid,
+        $trid, $opp, $mode));
+      if(!$success) {
+        # PDO will print a warning with the error.
+        error_log("Could not insert flight for user $uid.");
+        die('0;Database error when executing query.');
+      }
+      $num_added++;
+    }
+    break;
 
- default:
-   die('0;Unknown operation ' . $param);
- }
+  case "EDIT":
+    $src_date = $_POST["src_date"];
+    $src_apid = $_POST["src_apid"];
+    $dst_apid = $_POST["dst_apid"];
+    $alid = trim($_POST["alid"]); // IE adds some whitespace crud to this!?
+    if ($alid == 0)
+      $alid = -1; // this should not be necessary, but just in case...
+    list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid);
+    # 6 parameters per row
+    $sql = <<<QUERY
+UPDATE flights
+SET src_apid=?, src_date=?, src_time=?, dst_apid=?, duration=?, distance=?,
+    registration=?, code=?, seat=?, seat_type=?, class=?, reason=?,
+    note=?, plid=?, alid=?, trid=?, opp=?, mode=?,
+    upd_time=NOW()
+WHERE fid=? AND uid=?
+QUERY;
+    $sth = $dbh->prepare($sql);
+    $success = $sth->execute(array(
+      $src_apid, $src_date, $src_time, $dst_apid, $duration, $distance,
+      $registration, $number, $seat, $seat_type, $class, $reason, $note,
+      $plid, $alid, $trid, $opp, $mode,
 
-mysql_query($sql, $db) or die('0;Database error when executing query ' . $sql);
+      $fid, $uid
+    ));
+    if(!$success) {
+      # PDO will print a warning with the error.
+      error_log("Could not insert flight for user $uid.");
+      die('0;Database error when executing query.');
+    }
+    break;
 
-switch($param) {
- case "DELETE":
-   $code = 100;
-   $msg = $modes[$mode] . " deleted.";
-   break;
+  case "DELETE":
+    // Check uid to prevent an evil logged-in hacker from deleting somebody else's flight
+    $sql = "DELETE FROM flights WHERE uid=? AND fid=?";
+    $sth = $dbh->prepare($sql);
+    $success = $sth->execute(array($uid, $fid));
+    if(!$success) {
+      # PDO will print a warning with the error.
+      error_log("Could not insert flight for user $uid.");
+      die('0;Database error when executing query.');
+    }
+    break;
 
- case "ADD":
-   $code = 1;
-   $count = mysql_affected_rows();
-   if($count == 1) {
-     $msg = _("Added.");
-   } else {
-     $msg = sprintf(_("%s flights added."), $count);
-   }
-   break;
+  default:
+    die('0;Unknown operation ' . $param);
+}
 
- case "EDIT":
-   $code = 2;
-   $msg = _("Edited.");
-   break;
+switch ($param) {
+  case "DELETE":
+    $code = 100;
+    $msg = $modes[$mode] . " deleted.";
+    break;
+
+  case "ADD":
+    $code = 1;
+    if ($num_added == 1) {
+      $msg = _("Added.");
+    } else {
+      $msg = sprintf(_("%s flights added."), $num_added);
+    }
+    break;
+
+  case "EDIT":
+    $code = 2;
+    $msg = _("Edited.");
+    break;
 }
 
 print $code . ";" . $msg;

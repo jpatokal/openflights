@@ -1,3 +1,9 @@
+<b>2012-03-02</b>
+
+* Tech: Add PDO-based database handle.  Update submit.php and helper.php#gcDistance() to
+  use PDO-based dbh.
+* Bugfix: Check userid when editing a flight.
+
 <b>2012-03-01</b>
 
 * Tech: Dynamically generate URLs that contain file mtimes.
