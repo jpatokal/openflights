@@ -2,15 +2,18 @@
 include '../php/db.php';
 include '../php/helper.php';
 
+putenv('GDFONTPATH=' . realpath('.'));
+
 function endsWith( $str, $sub ) {
   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) == $sub );
 }
 
 function rendererror($string) {
+  $font = "OpenSans-Regular";
   $im = imagecreatefrompng("banner.png");
   $white = imagecolorallocate ($im, 0xFF, 0xFF, 0xFF);
-  imagestring($im, 4, 220, 25, "Error:", $white);
-  imagestring($im, 4, 220, 38, $string, $white);
+  imagettftext($im, 10.5, 0, 220, 37, $white, $font, "Error:");
+  imagettftext($im, 10.5, 0, 220, 52, $white, $font, $string);
   imagepng($im);
   imagedestroy($im);
   exit(0);
@@ -58,16 +61,17 @@ if($result && $row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }
   $flights = sprintf("%s flights", $row["count"]);
   $miles = sprintf("%d,%03d %s", $distance / 1000, $distance % 1000, $units);
-  $duration = sprintf("%d days, %2d:%02d hours", $row["duration"] / 1440, ($row["duration"] / 60) % 24, $row["duration"] % 60);
+  $duration = sprintf("%d days, %d:%02d hours", $row["duration"] / 1440, ($row["duration"] / 60) % 24, $row["duration"] % 60);
 } else {
   rendererror("Database error 2");
 }
 
+$font = "OpenSans-Regular";
 $im = imagecreatefrompng("banner.png");
 $white = imagecolorallocate ($im, 0xFF, 0xFF, 0xFF);
-imagestring($im, 4, 220, 25, $flights, $white);
-imagestring($im, 4, 220, 38, $miles, $white);
-imagestring($im, 4, 220, 51, $duration, $white);
+imagettftext($im, 10.5, 0, 220, 37, $white, $font, $flights);
+imagettftext($im, 10.5, 0, 220, 52, $white, $font, $miles);
+imagettftext($im, 10.5, 0, 220, 65, $white, $font, $duration);
 
 // Write a copy to the cache
 imagepng($im, 'cache/' . $user);
