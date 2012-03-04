@@ -2768,7 +2768,7 @@ function help(context) {
 // Import flights
 //
 function openImport() {
-  window.open('/html/import', 'Import', 'width=800,height=600,scrollbars=yes');
+  window.open('/html/import', 'Import', 'width=900,height=600,scrollbars=yes');
 }
 
 //
