@@ -9,15 +9,6 @@ if(!$uid or empty($uid)) {
 include 'helper.php';
 include 'db_pdo.php';
 
-// Hack to record X-Y and Y-X flights as same in DB
-function orderAirports($src_apid, $dst_apid) {
-  if($src_apid > $dst_apid) {
-    return array($dst_apid, $src_apid, "Y");
-  } else {
-    return array($src_apid, $dst_apid, "N");
-  }
-}
-
 $duration = $_POST["duration"];
 $distance = $_POST["distance"];
 $number = $_POST["number"];

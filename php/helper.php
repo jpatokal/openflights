@@ -178,4 +178,13 @@ function fileUrlWithDate($filename) {
   return $filename . '?version=' . $datestamp;
 }
 
+// Hack to record X-Y and Y-X flights as same in DB
+function orderAirports($src_apid, $dst_apid) {
+  if($src_apid > $dst_apid) {
+    return array($dst_apid, $src_apid, "Y");
+  } else {
+    return array($src_apid, $dst_apid, "N");
+  }
+}
+
 ?>
