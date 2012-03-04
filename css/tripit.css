@@ -1,0 +1,21 @@
+div.segment {
+  width: 850px;
+  overflow: auto;
+}
+
+div.segment-left-cell {
+  width: 450px;
+  float: left;
+}
+
+div.segment-right-cell {
+  width: 400px;
+  float: left;
+}
+
+hr.segment-separator {
+  height: 1px;
+  background-color: #a1a1a1;
+  border: 1px;
+  clear: both;
+}

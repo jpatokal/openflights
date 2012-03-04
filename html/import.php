@@ -44,6 +44,8 @@ printf( "<p>" . _("You will be given a chance to review the flights before they 
       </form>
 
       <div id="miniresultbox"></div><br>
+
+      <a href="/php/tripit_list_trips.php"><?php echo _("Import from TripIt") ?></a>
 	
     </div>
 

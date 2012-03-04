@@ -1,6 +1,7 @@
 <b>2012-03-03</b>
 
 * Render badge with anti-aliased font.  Remove extra space between days and hours if <10 hours.
+* First pass at TripIt integration.
 
 <b>2012-03-02</b>
 

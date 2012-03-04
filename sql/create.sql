@@ -215,5 +215,14 @@ CREATE TABLE `users` (
   PRIMARY KEY  (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `tripit_tokens`;
+CREATE TABLE `tripit_tokens` (
+  `uid` int(11) NOT NULL,
+  `auth_token` char(40) NOT NULL,
+  `auth_token_secret` char(40) NOT NULL,
+  `active` enum('N','Y') NOT NULL DEFAULT 'Y',
+  KEY `uid_idx` (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 \! echo Done, next run sql/load-data.sql
 
