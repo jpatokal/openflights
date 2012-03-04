@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="417.20389"
+   height="361.62466"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45"
+   inkscape:export-filename="C:\Documents and Settings\Staff\Desktop\checkmark.png"
+   inkscape:export-xdpi="72.839996"
+   inkscape:export-ydpi="72.839996"
+   sodipodi:docname="checkmark.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   sodipodi:docbase="C:\Documents and Settings\Staff\Desktop\photos\SVG"
+   version="1.0"
+   sodipodi:modified="true">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="427.74596"
+     inkscape:cy="114.40134"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="1024"
+     inkscape:window-height="712"
+     inkscape:window-x="0"
+     inkscape:window-y="22" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-101.54091,-163.59563)">
+    <path
+       style="fill:#5fd35f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 508.74477,226.99015 C 459.42189,193.17234 436.08559,163.59563 436.08559,163.59563 C 344.99984,217.26626 248.26757,407.83719 248.26757,407.83719 C 202.93454,344.01939 157.35384,326.21932 157.35384,326.21932 C 136.86236,353.60112 101.54091,390.09316 101.54091,390.09316 C 183.924,412.28062 253.07323,493.70015 253.07323,493.70015 C 402.5571,259.01322 508.74477,226.99015 508.74477,226.99015 z "
+       id="path5075"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="C:\Documents and Settings\Staff\Desktop\photos\SVG\path2161.png"
+       inkscape:export-xdpi="72.839996"
+       inkscape:export-ydpi="72.839996" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.2;fill:#999999;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0"
+       id="path3131"
+       sodipodi:cx="238.57143"
+       sodipodi:cy="529.50507"
+       sodipodi:rx="64.285713"
+       sodipodi:ry="7.1428571"
+       d="M 302.03011,528.36301 A 64.285713,7.1428571 0 1 1 301.97855,528.32818"
+       sodipodi:start="6.1226078"
+       sodipodi:end="12.400852"
+       sodipodi:open="true"
+       transform="translate(8.5714285,-11.428571)"
+       inkscape:export-filename="C:\Documents and Settings\Staff\Desktop\photos\SVG\path2161.png"
+       inkscape:export-xdpi="72.839996"
+       inkscape:export-ydpi="72.839996" />
+    <path
+       style="opacity:0.27777782;fill:#5fd35f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 518.74479,227.27587 C 469.42191,193.45806 446.08561,163.88135 446.08561,163.88135 C 354.99986,217.55198 258.26759,408.12291 258.26759,408.12291 C 212.93456,344.30511 167.35386,326.50504 167.35386,326.50504 C 146.86238,353.88684 111.54093,390.37888 111.54093,390.37888 C 193.92402,412.56634 263.07325,493.98587 263.07325,493.98587 C 412.55712,259.29894 518.74479,227.27587 518.74479,227.27587 z "
+       id="path2161"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-xdpi="72.839996"
+       inkscape:export-ydpi="72.839996" />
+  </g>
+</svg>

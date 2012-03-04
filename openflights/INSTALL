@@ -7,5 +7,10 @@ APACHE MODULES
 mod_include
 mod_rewrite
 
+CONFIG FILES
+
+Configure php/secrets.php.  This file isn't checked in and is required for some OpenFlights functionality.
+
+TripIt: $tripit_app_id and $tripit_app_secret
 
 
