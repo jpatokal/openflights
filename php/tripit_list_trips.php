@@ -44,7 +44,7 @@ if (!isset($trips) or !isset($trips->Trip)) {
   die(_("Could not connect to TripIt.  Please try again later."));
 }
 
-# Get the list of trips according to start date.
+# Get the list of trips, sorted by start date, oldest to newest.
 $trip_index_by_date = array();
 for ($i = 0; $i < count($trips->Trip); $i++) {
   array_push($trip_index_by_date, $i);
@@ -59,6 +59,11 @@ usort($trip_index_by_date, function($a, $b) {
     return 1;
   return 0;
 });
+
+# If it's a past trip, sort from newest to oldest.
+if(!$wants_future_trips) {
+  $trip_index_by_date = array_reverse($trip_index_by_date);
+}
 
 # Build Trip ID to segment/ticket mapping
 $all_trip_segments = array();
