@@ -14,13 +14,17 @@ require_once("../php/db.php");
     <div id="contexthelp">
       <h1>OpenFlights: <?php echo _("Import data") ?></h1>
 
-      <p><?php echo _("OpenFlights can import two types of data:") ?></p>
+      <p><?php echo _("OpenFlights can import flights from three sources:") ?></p>
 
       <form name="importform" action="/php/import.php" enctype="multipart/form-data" method="post"><p>
 	  <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 
 	<table style='border-spacing: 5'>
 	    <tr>
+	      <td style='vertical-align: top'></td>
+  <td><p><?php printf (_("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually.  Duplicates are detected. "))?> 
+	<INPUT type="button" value="<?php echo _("Import from Tripit") ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
+            </tr>
 	      <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
 <td><p><?php printf (_("<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."), "a href='/contact.html'"); ?></p>
 	      </td>
@@ -45,8 +49,6 @@ printf( "<p>" . _("You will be given a chance to review the flights before they 
 
       <div id="miniresultbox"></div><br>
 
-      <a href="/php/tripit_list_trips.php"><?php echo _("Import from TripIt") ?></a>
-	
     </div>
 
   </body>

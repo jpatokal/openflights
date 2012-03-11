@@ -51,6 +51,7 @@ for ($i = 0; $i < count($trips->Trip); $i++) {
 }
 usort($trip_index_by_date, function($a, $b) {
   global $trips;
+  date_default_timezone_set('America/Los_Angeles');
   $a_date = new DateTime($trips->Trip[$a]->start_date . " 00:00:00");
   $b_date = new DateTime($trips->Trip[$b]->start_date . " 00:00:00");
   if ($a_date < $b_date)
