@@ -445,6 +445,7 @@ function display_segment($segment) {
   <body>
     <div id="contexthelp">
       <h1>OpenFlights: <?php echo _("TripIt Trips") ?></h1>
+      <span style="float: right"><INPUT type='button' value='<?php echo _("Close") ?>' onClick='javascript:parent.opener.refresh(true); window.close();'></span>
 
 <?php
       # Show past/future selector
