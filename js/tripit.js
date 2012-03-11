@@ -7,6 +7,8 @@
 var CONST = {
   DEBUG: false,
   IMPORT_URL: "/php/submit.php",
+  // HARD_FAIL means "don't retry", whereas SOFT_FAIL means "try again later".
+  CODE_HARD_FAIL: -1,
   CODE_ADDOK: 1
 };
 
@@ -43,10 +45,22 @@ var importFlightComplete = function (segmentId) {
     text = result[1];
     setStatus(segmentId, '<B>' + text + '</B>');
 
-    if(code == CONST.CODE_ADDOK) {
+    var showOverlay = false;
+    var overlayImage;
+    if (code == CONST.CODE_ADDOK) {
+      // Successful add; show checkmark.
+      showOverlay = true;
+      overlayImage = 'Checkmark_green.80px.png';
+    } else if (code == CONST.CODE_HARD_FAIL) {
+      // Fatal error, don't try again.
+      showOverlay = true;
+      overlayImage = 'Red_X.64px.png';
+    }
+
+    if (showOverlay) {
       $('#import' + segmentId + ' :input').attr("disabled", true);
       $('#import' + segmentId).block({
-        message:'<img width="80" height="64" src="/img/Checkmark_green.80px.png">',
+        message:'<img style="height:64px; width: auto" src="/img/' + overlayImage + '">',
         css:{
           cursor:'default',
           border:'none',
@@ -73,7 +87,15 @@ var importFlightComplete = function (segmentId) {
  * @param segmentId
  */
 function markSegmentImported(segmentId) {
-  importFlightComplete(segmentId)("1;Segment already imported.", null, null);
+  importFlightComplete(segmentId)(CONST.CODE_ADDOK + ";Segment already imported.", null, null);
+}
+
+/**
+ * Shortcut for marking a segment as invalid for import.  This shouldn't normally happen.
+ * @param segmentId
+ */
+function markSegmentInvalid(segmentId) {
+  importFlightComplete(segmentId)(CONST.CODE_HARD_FAIL + ";Insufficient data to import this segment.", null, null);
 }
 
 /**
