@@ -430,6 +430,8 @@ function display_segment($segment) {
   if(!$is_valid) {
     // If we don't have the bare minimum amount of data, prevent import.
     echo '<script type="text/javascript">markSegmentInvalid(' . $segment->id . ')</script>';
+    // Log an error.  I suspect this will happen if we're having trouble parsing TripIt data.
+    error_log("display_segment: segment " . $segment->id . " for user " . $_SESSION['uid'] . " was missing minimum import data");
   } elseif ($is_duplicate) {
     // If we've already imported this segment, grey it out at load time.
     echo '<script type="text/javascript">markSegmentImported(' . $segment->id . ')</script>';
