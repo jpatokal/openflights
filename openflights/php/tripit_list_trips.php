@@ -350,7 +350,11 @@ function display_segment($segment) {
   # Try to do some smart class detection.
   $classes = detect_class($segment->service_class);
 
-  # TODO make an $is_valid to check that we have all necessary information.
+  # Make sure we have the bare minimum amount of data to do an import.
+  $is_valid = false;
+  if($src_ap != null && $dst_ap != null && isset($start_date)) {
+    $is_valid = true;
+  }
   ?>
 <div class="segment" id="segment<?php echo $segment->id ?>">
   <form id="import<?php echo $segment->id ?>">
@@ -422,8 +426,12 @@ function display_segment($segment) {
   <hr class="segment-separator"/>
 </div>
 <?php
-  // If we've already imported this segment, grey it out at load time.
-  if ($is_duplicate) {
+  // Do error and duplicate checking.
+  if(!$is_valid) {
+    // If we don't have the bare minimum amount of data, prevent import.
+    echo '<script type="text/javascript">markSegmentInvalid(' . $segment->id . ')</script>';
+  } elseif ($is_duplicate) {
+    // If we've already imported this segment, grey it out at load time.
     echo '<script type="text/javascript">markSegmentImported(' . $segment->id . ')</script>';
   }
 }
