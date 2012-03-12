@@ -116,18 +116,18 @@ function init(){
 					  new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
 					  ] });
   
-  var ol_wms = new OpenLayers.Layer.WMS( "Political (OSGeo)",
+  var olWms = new OpenLayers.Layer.WMS( "Political (OSGeo)",
 					 "http://vmap0.tiles.osgeo.org/wms/vmap0?",
 					 {layers: 'basic'},
 					 {transitionEffect: 'resize', wrapDateLine: true}
 					 );
   
-  var jpl_wms = new OpenLayers.Layer.WMS("Geographical (OpenGeo)", 
+  var jplWms = new OpenLayers.Layer.WMS("Geographical (OpenGeo)",
                 "http://maps.opengeo.org/geowebcache/service/wms?TILED=true&",
                 {layers: 'bluemarble'},
 	        {transitionEffect: 'resize', wrapDateLine: true}
             );
-  jpl_wms.setVisibility(false);
+  jplWms.setVisibility(false);
 
   lineLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
 					{styleMap: new OpenLayers.StyleMap({
@@ -206,12 +206,23 @@ function init(){
 						       }}),
 						 renderers: renderer,
 						 strategies: [strategy]});
-  map.addLayers([ol_wms, jpl_wms, lineLayer, airportLayer]);
+  map.addLayers([olWms, jplWms, lineLayer, airportLayer]);
 
   selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {onSelect: onAirportSelect,
 							              onUnselect: onAirportUnselect});
   map.addControl(selectControl);
   selectControl.activate();
+
+  // When using the JPL map layer, change the font color from black to white, since the map is mostly dark colors.
+  map.events.on({
+    "changelayer":function () {
+      if(jplWms.visibility) {
+        style.defaultStyle.fontColor = "#fff";
+      } else {
+        style.defaultStyle.fontColor = "#000";
+      }
+    }
+  });
 
   // Extract any arguments from URL
   var query;
