@@ -19,3 +19,13 @@ hr.segment-separator {
   border: 1px;
   clear: both;
 }
+
+div.trip_header {
+  width: 850px;
+  overflow: auto;
+}
+
+div.import_all {
+  float: right;
+  margin-top: 3px;
+}

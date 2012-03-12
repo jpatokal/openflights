@@ -301,20 +301,34 @@ function is_duplicate_segment($date, $from, $to, $flight_number) {
 function display_trip($trip) {
   global $all_trip_segments;
   ?>
-
-<h2><a style="text-decoration: none" target="_blank"
+<div class="trip_header">
+  <div class="import_all" id="import_all_<?php echo htmlentities($trip->id) ?>"></div>
+  <h2>
+    <a style="text-decoration: none" target="_blank"
        href="http://www.tripit.com<?php echo htmlentities($trip->relative_url) ?>"><?php echo htmlentities($trip->display_name) ?></a>
-</h2>
+  </h2>
+</div>
 <?php
+  $valid_segments = array();
   foreach ($all_trip_segments["$trip->id"] as $segment) {
-    display_segment($segment);
+    $valid_segment = display_segment($segment);
+    // Save valid segments to be used with "Import All"
+    if($valid_segment) {
+      array_push($valid_segments, $segment->id);
+    }
+  }
+
+  // If we had some valid segments, add button to display all.
+  if (sizeof($valid_segments) > 0) {
+    $segment_string = "'" . implode("','", $valid_segments) . "'";
+    echo '<script type="text/javascript">addImportAllButton("' . _("Import All") . '", ' . $trip->id . ', "' . $segment_string . '")</script>';
   }
 }
 
 /**
  * Display a single flight segment, along with buttons to save it.
  * @param $segment SimpleXMLElement Single segment object from TripIt
- * @return void
+ * @return boolean true if segment is importable, false otherwise.
  */
 function display_segment($segment) {
   // FIXME - Calculating this here seems wrong; we already implement most of this in JavaScript already, but
@@ -426,15 +440,20 @@ function display_segment($segment) {
   <hr class="segment-separator"/>
 </div>
 <?php
+
   // Do error and duplicate checking.
   if(!$is_valid) {
     // If we don't have the bare minimum amount of data, prevent import.
     echo '<script type="text/javascript">markSegmentInvalid(' . $segment->id . ')</script>';
     // Log an error.  I suspect this will happen if we're having trouble parsing TripIt data.
     error_log("display_segment: segment " . $segment->id . " for user " . $_SESSION['uid'] . " was missing minimum import data");
+    return false;
   } elseif ($is_duplicate) {
     // If we've already imported this segment, grey it out at load time.
     echo '<script type="text/javascript">markSegmentImported(' . $segment->id . ')</script>';
+    return false;
+  } else {
+    return true;
   }
 }
 
