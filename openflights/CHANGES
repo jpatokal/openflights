@@ -1,3 +1,7 @@
+<b>2012-03-11</b>
+
+* Bugfix: Add a proper background behind the layer selector and expand based on text contents.
+
 <b>2012-03-03</b>
 
 * Render badge with anti-aliased font.  Remove extra space between days and hours if <10 hours.
