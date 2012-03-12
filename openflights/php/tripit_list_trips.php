@@ -354,10 +354,7 @@ function display_segment($segment) {
     $airline = resolve_airline($segment->marketing_airline_code);
   }
 
-  $is_duplicate = false;
-  if (is_duplicate_segment($start_time, $src_ap["id"], $dst_ap["id"], $flight_num)) {
-    $is_duplicate = true;
-  }
+  $is_duplicate = is_duplicate_segment($start_time, $src_ap["id"], $dst_ap["id"], $flight_num);
 
   $aircraft = htmlentities($segment->aircraft_display_name);
 
