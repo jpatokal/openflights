@@ -109,3 +109,30 @@ function setStatus(segmentId, message) {
     statusSpan.innerHTML = message;
   }
 }
+
+/**
+ * Import multiple segments at once.  Under the covers, this still calls {@link #importFlight},
+ * so each segment will result in a call to the service to import.
+ * @param flights Array of flights to import.
+ */
+function importFlights(flights) {
+  for (var i = 0; i < flights.length; i++) {
+    importFlight(flights[i]);
+  }
+}
+
+/**
+ * Add a button to the DOM to import all segments for a given trip id.
+ * @param importAllButtonValue Text for the Import All button.  This should be localized.
+ * @param tripId ID of the trip.
+ * @param segments Array of segments to be imported when this button is clicked.
+ */
+function addImportAllButton(importAllButtonValue, tripId, segments) {
+  var importAllDiv = document.getElementById("import_all_" + tripId);
+  if (importAllDiv == null) {
+    console.log("Couldn't find div to insert Import All button for trip " + tripId);
+    return;
+  }
+
+  importAllDiv.innerHTML = '<input type="button" onclick="importFlights(new Array(' + segments + '))" value="' + importAllButtonValue + '">';
+}
