@@ -81,7 +81,19 @@
   -moz-border-radius: 1em;
 } 
 
-#newairport { 
+div.layersDiv {
+  left: 17px;
+  top: 45%;
+  position: absolute;
+  font-size: 1em;
+  background: white;
+  z-index: 1000;
+  padding: 10px;
+  -moz-border-radius: 1em;
+  white-space: nowrap;
+}
+
+#newairport {
   right: 260px;
   top: 55%;
   position: absolute;
