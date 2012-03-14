@@ -34,4 +34,14 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 (name, code, oa_code, dst);
 
+\! echo Importing locales...
+
+LOAD DATA LOCAL INFILE 'locale/locales.dat'
+INTO TABLE locales
+CHARACTER SET utf8
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(locale, name);
+
 \! echo Done.
