@@ -284,8 +284,8 @@ function is_duplicate_segment($date, $from, $to, $flight_number) {
   global $dbh, $DEBUG;
   list($src_apid, $dst_apid, $opp) = orderAirports($from, $to);
   $mysql_date = $date->format('Y-m-d');
-  $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid=? AND src_date=? AND src_apid=? AND dst_apid=? AND opp=? AND code=?");
-  $sth->execute(array($_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp, $flight_number));
+  $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid=? AND src_date=? AND src_apid=? AND dst_apid=? AND opp=?");
+  $sth->execute(array($_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp));
   $result = $sth->fetch();
   if ($DEBUG) {
     error_log("is_duplicate_segment: $mysql_date $from-$to on $flight_number for user $_SESSION[uid] has duplicate status: " . $result[0]);
