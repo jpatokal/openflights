@@ -148,8 +148,8 @@ function init(){
 				       pointerEvents: "visiblePainted",
 				       label : "\xA0${code}",
 				       fontColor: "#000000",
-				       fontSize: "10px",
-				       fontFamily: "Courier New, monospace",
+				       fontSize: "9px",
+				       fontFamily: "Calibri, Verdana, Arial, sans-serif",
 				       labelAlign: "lt",
 				       fillColor: "black"
 				       }, { context: {
