@@ -49,7 +49,8 @@ $trip_index_by_date = array();
 for ($i = 0; $i < count($trips->Trip); $i++) {
   array_push($trip_index_by_date, $i);
 }
-usort($trip_index_by_date, function($a, $b) {
+
+function mySort($a, $b) {
   global $trips;
   date_default_timezone_set('America/Los_Angeles');
   $a_date = new DateTime($trips->Trip[$a]->start_date . " 00:00:00");
@@ -59,7 +60,8 @@ usort($trip_index_by_date, function($a, $b) {
   if ($a_date > $b_date)
     return 1;
   return 0;
-});
+}
+usort($trip_index_by_date, "mySort");
 
 # If it's a past trip, sort from newest to oldest.
 if(!$wants_future_trips) {
@@ -78,16 +80,17 @@ foreach ($trips->AirObject as $ticket) {
     array_push($all_trip_segments["$ticket->trip_id"], $segment);
   }
 }
+function mySort2($a, $b) {
+  $a_date = tripit_date_to_datetime($a->StartDateTime);
+  $b_date = tripit_date_to_datetime($b->StartDateTime);
+  if ($a_date < $b_date)
+    return -1;
+  if ($a_date > $b_date)
+    return 1;
+  return 0;
+}
 foreach (array_keys($all_trip_segments) as $trip) {
-  usort($all_trip_segments["$trip"], function($a, $b) {
-    $a_date = tripit_date_to_datetime($a->StartDateTime);
-    $b_date = tripit_date_to_datetime($b->StartDateTime);
-    if ($a_date < $b_date)
-      return -1;
-    if ($a_date > $b_date)
-      return 1;
-    return 0;
-  });
+  usort($all_trip_segments["$trip"], "mySort2");
 }
 
 /**
@@ -335,7 +338,7 @@ function display_segment($segment) {
   // it's all specific to our input form.
   $start_time = tripit_date_to_datetime($segment->StartDateTime);
   $end_time = tripit_date_to_datetime($segment->EndDateTime);
-  $delta_minutes = ($end_time->getTimestamp() - $start_time->getTimestamp()) / 60;
+  $delta_minutes = (intval($end_time->format('U')) - intval($start_time->format('U'))) / 60;
   $duration = sprintf("%02d:%02d", floor($delta_minutes / 60), $delta_minutes % 60);
 
   $start_date = $start_time->format('Y-m-d');
