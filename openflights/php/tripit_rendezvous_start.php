@@ -29,7 +29,5 @@ $_SESSION["tripit_rendezvous"] = array(
   "secret" => $tokens["oauth_token_secret"]
 );
 
-$oauth_permission_url = "https://www.tripit.com/oauth/authorize?oauth_token=" . $tokens["oauth_token"] . "&oauth_token_secret=" . $tokens["oauth_token_secret"] . "&oauth_callback=" . urlencode("http://" . $_SERVER["SERVER_NAME"] . "/php/tripit_link.php");
-
-header("Location: https://www.tripit.com/account/login?redirect_url=" . urlencode($oauth_permission_url));
+header("Location: https://www.tripit.com/oauth/authorize?oauth_token=" . $tokens["oauth_token"] . "&oauth_token_secret=" . $tokens["oauth_token_secret"] . "&oauth_callback=" . urlencode("http://" . $_SERVER["SERVER_NAME"] . "/php/tripit_link.php"));
 ?>

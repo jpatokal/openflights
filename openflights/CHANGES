@@ -1,6 +1,5 @@
 <b>2012-03-18</b>
 
-* TripIt: Force TripIt login when linking accounts to allow user to pick an OpenID provider.
 * Bugfix: TripIt: Do not attempt to resolve IATA airport and airline codes if not passed in
   (input validation)
 
