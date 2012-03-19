@@ -163,6 +163,9 @@ function generate_pax_string($travelers) {
 
 function resolve_airport($iata_code) {
   global $dbh;
+  if(empty($iata_code)) {
+    return null;
+  }
   try {
     $sth = $dbh->prepare("SELECT * FROM airports WHERE iata=?");
     $sth->execute(array($iata_code));
@@ -179,6 +182,9 @@ function resolve_airport($iata_code) {
 
 function resolve_airline($iata_code) {
   global $dbh;
+  if(empty($iata_code)) {
+    return null;
+  }
   try {
     $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata=?");
     $sth->execute(array($iata_code));
