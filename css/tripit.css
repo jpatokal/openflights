@@ -1,3 +1,4 @@
+/* TripIt Trip List */
 div.segment {
   width: 850px;
   overflow: auto;
@@ -29,3 +30,44 @@ div.import_all {
   float: right;
   margin-top: 3px;
 }
+
+/* TripIt Rendezvous */
+.loginSelector {
+  width: 200px;
+  height: 200px;
+  vertical-align: middle;
+}
+
+.tripit_sprites_soc {
+  background: url("/img/tripit-sprites-social.png");
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+
+.tripit_sprites_soc_fb {
+  background-position: 0 -2px;
+}
+
+.tripit_sprites_soc_google {
+  background-position: 0 -80px;
+}
+
+.tripit_sprites_soc_yahoo {
+  background-position: 0 -113px;
+}
+
+.partnerLoginList {
+  text-align: left;
+  display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.ui-button-text {
+  font-size: 12px;
+}
+
+#loginPathPartnerHelp {
+  display: none;
+}
+

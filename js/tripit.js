@@ -136,3 +136,25 @@ function addImportAllButton(importAllButtonValue, tripId, segments) {
 
   importAllDiv.innerHTML = '<input type="button" onclick="importFlights(new Array(' + segments + '))" value="' + importAllButtonValue + '">';
 }
+
+/**
+ * Init method for the rendezvous instruction page.
+ */
+function rendezvousPageInit() {
+  $("#loginPathPartner").click(function () {
+        $("#loginPathSelection").hide();
+        $("#loginPathPartnerHelp").show();
+      }
+  );
+
+  $("#loginPathNative").click(function () {
+    window.location.href = "/php/tripit_rendezvous_start.php";
+  });
+}
+
+/**
+ * Popup a window with TripIt's login page.  This is used for rendezvous with partner logins.
+ */
+function openTripItLogin() {
+  window.open('https://www.tripit.com/account/login', 'TripItLogin', 'width=1000,height=550,scrollbars=yes');
+}
