@@ -55,6 +55,7 @@ if (!$uid or empty($uid)) {
       <ol>
         <li>
           <a href="javascript:openTripItLogin()"><?php echo _("Click here to login to your TripIt account.")?></a>
+          <?php echo _("You can skip this step if you're already logged in.")?>
           <?php echo _("After you've logged in, close the popup window to come back here.")?>
         </li>
         <li>
