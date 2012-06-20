@@ -343,10 +343,22 @@ function display_trip($trip) {
  * @return boolean true if segment is importable, false otherwise.
  */
 function display_segment($segment) {
-  // FIXME - Calculating this here seems wrong; we already implement most of this in JavaScript already, but
-  // it's all specific to our input form.
   $start_time = tripit_date_to_datetime($segment->StartDateTime);
   $end_time = tripit_date_to_datetime($segment->EndDateTime);
+
+  // See if we have an updated departure/arrival time based upon TripIt status.
+  if (isset($segment->Status)) {
+    $status = $segment->Status;
+    if (isset($status->EstimatedDepartureDateTime)) {
+      $start_time = tripit_date_to_datetime($status->EstimatedDepartureDateTime);
+    }
+    if (isset($status->EstimatedArrivalDateTime)) {
+      $end_time = tripit_date_to_datetime($status->EstimatedArrivalDateTime);
+    }
+  }
+
+  // FIXME - Calculating this here seems wrong; we already implement most of this in JavaScript already, but
+  // it's all specific to our input form.
   $delta_minutes = ($end_time->getTimestamp() - $start_time->getTimestamp()) / 60;
   $duration = sprintf("%02d:%02d", floor($delta_minutes / 60), $delta_minutes % 60);
 
