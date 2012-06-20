@@ -443,22 +443,21 @@ function display_segment($segment) {
       <br>
 
       <?php echo _("Class") ?>&nbsp;
-      <input type="radio" id="class_Y" name="class" value="Y"<?php echo $classes["Y"] ?>><label
-        for="class_Y"><?php echo _("Economy") ?></label>
-      <input type="radio" id="class_P" name="class" value="P"<?php echo $classes["P"] ?>><label
-        for="class_P"><?php echo _("Premium Eco.") ?></label>
-      <input type="radio" id="class_C" name="class" value="C"<?php echo $classes["C"] ?>><label
-        for="class_C"><?php echo _("Business") ?></label>
-      <input type="radio" id="class_F" name="class" value="F"<?php echo $classes["F"] ?>><label
-        for="class_F"><?php echo _("First") ?></label>
+      <input type="radio" id="class_Y_<?php echo $segment->id ?>" name="class" value="Y"<?php echo $classes["Y"] ?>><label
+        for="class_Y_<?php echo $segment->id ?>"><?php echo _("Economy") ?></label>
+      <input type="radio" id="class_P_<?php echo $segment->id ?>" name="class" value="P"<?php echo $classes["P"] ?>><label
+        for="class_P_<?php echo $segment->id ?>"><?php echo _("Premium Eco.") ?></label>
+      <input type="radio" id="class_C_<?php echo $segment->id ?>" name="class" value="C"<?php echo $classes["C"] ?>><label
+        for="class_C_<?php echo $segment->id ?>"><?php echo _("Business") ?></label>
+      <input type="radio" id="class_F_<?php echo $segment->id ?>" name="class" value="F"<?php echo $classes["F"] ?>><label
+        for="class_F_<?php echo $segment->id ?>"><?php echo _("First") ?></label>
       <br>
 
       <?php echo _("Reason") ?>&nbsp;
-      <input type="radio" id="reason_B" name="reason" value="B" CHECKED><label
-        for="reason_B"><?php echo _("Work") ?></label>
-      <input type="radio" id="reason_L" name="reason" value="L"><label for="reason_L"><?php echo _("Leisure") ?></label>
-      <input type="radio" id="reason_C" name="reason" value="C"><label for="reason_C"><?php echo _("Crew") ?></label>
-      <input type="radio" id="reason_O" name="reason" value="O"><label for="reason_O"><?php echo _("Other") ?></label>
+      <input type="radio" id="reason_B_<?php echo $segment->id ?>" name="reason" value="B" CHECKED><label for="reason_B_<?php echo $segment->id ?>"><?php echo _("Work") ?></label>
+      <input type="radio" id="reason_L_<?php echo $segment->id ?>" name="reason" value="L"><label for="reason_L_<?php echo $segment->id ?>"><?php echo _("Leisure") ?></label>
+      <input type="radio" id="reason_C_<?php echo $segment->id ?>" name="reason" value="C"><label for="reason_C_<?php echo $segment->id ?>"><?php echo _("Crew") ?></label>
+      <input type="radio" id="reason_O_<?php echo $segment->id ?>" name="reason" value="O"><label for="reason_O_<?php echo $segment->id ?>"><?php echo _("Other") ?></label>
     </div>
   </form>
   <hr class="segment-separator"/>
