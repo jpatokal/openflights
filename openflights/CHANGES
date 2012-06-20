@@ -1,3 +1,9 @@
+<b>2012-06-20</b>
+
+* TripIt: Better handle trips with no flight segments
+* TripIt: Fix the duration calculation; indicate when picking up/losing a day (or two)
+* TripIt: Fix per-segment radio buttons when clicking on text instead of button.
+
 <b>2012-03-21</b>
 
 * TripIt: Improve messaging for logging in with a partner account.
