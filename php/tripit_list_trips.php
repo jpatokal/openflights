@@ -148,7 +148,6 @@ function tripit_date_to_datetime($tripit_date) {
     $dt->setTimezone($timezone);
   } catch (Exception $e) {
     error_log("Couldn't parse TripIt timezone of " . $tripit_date->timezone . "; going with default.");
-    ;
   }
   return new DateTime($date_str);
 }
@@ -348,12 +347,16 @@ function display_segment($segment) {
   // it's all specific to our input form.
   $start_time = tripit_date_to_datetime($segment->StartDateTime);
   $end_time = tripit_date_to_datetime($segment->EndDateTime);
-  $delta_minutes = (intval($end_time->format('U')) - intval($start_time->format('U'))) / 60;
+  $delta_minutes = ($end_time->getTimestamp() - $start_time->getTimestamp()) / 60;
   $duration = sprintf("%02d:%02d", floor($delta_minutes / 60), $delta_minutes % 60);
 
   $start_date = $start_time->format('Y-m-d');
   $start_hm = $start_time->format('G:i');
   $end_hm = $end_time->format('G:i');
+
+  // Calculate number of days in between
+  $start_date_no_time = new DateTime($start_date);
+  $delta_days = $start_date_no_time->diff(new DateTime($end_time->format('Y-m-d')))->format('%R%a');
 
   $src_ap = resolve_airport($segment->start_airport_code);
   $dst_ap = resolve_airport($segment->end_airport_code);
@@ -394,6 +397,17 @@ function display_segment($segment) {
       <?php echo $start_date ?> &rarr;
       <?php echo $start_hm ?> &rarr;
       <?php echo $end_hm ?>
+      <?php
+      if ($delta_days != 0) {
+        echo "($delta_days ";
+        if (abs($delta_days) > 1) {
+          echo _("days");
+        } else {
+          echo _("day");
+        }
+        echo ")";
+      }
+      ?>
       <input type="hidden" name="src_date" value="<?php echo $start_date ?>">
       <input type="hidden" name="src_time" value="<?php echo $start_hm ?>">
       <input type="hidden" name="duration" value="<?php echo $duration ?>">
