@@ -2,7 +2,7 @@
 require_once 'php/facebook.php';
 require_once 'keys.php';
 require_once 'profile.php';
-require_once 'db.php';
+require_once '../php/db.php';
 
 $facebook = new Facebook($appapikey, $appsecret);
 $fbtoday = 0;
