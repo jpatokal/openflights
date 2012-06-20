@@ -318,19 +318,23 @@ function display_trip($trip) {
   </h2>
 </div>
 <?php
-  $valid_segments = array();
-  foreach ($all_trip_segments["$trip->id"] as $segment) {
-    $valid_segment = display_segment($segment);
-    // Save valid segments to be used with "Import All"
-    if($valid_segment) {
-      array_push($valid_segments, $segment->id);
+  if (array_key_exists("$trip->id", $all_trip_segments)) {
+    $valid_segments = array();
+    foreach ($all_trip_segments["$trip->id"] as $segment) {
+      $valid_segment = display_segment($segment);
+      // Save valid segments to be used with "Import All"
+      if ($valid_segment) {
+        array_push($valid_segments, $segment->id);
+      }
     }
-  }
 
-  // If we had some valid segments, add button to display all.
-  if (sizeof($valid_segments) > 0) {
-    $segment_string = "'" . implode("','", $valid_segments) . "'";
-    echo '<script type="text/javascript">addImportAllButton("' . _("Import All") . '", ' . $trip->id . ', "' . $segment_string . '")</script>';
+    // If we had some valid segments, add button to display all.
+    if (sizeof($valid_segments) > 0) {
+      $segment_string = "'" . implode("','", $valid_segments) . "'";
+      echo '<script type="text/javascript">addImportAllButton("' . _("Import All") . '", ' . $trip->id . ', "' . $segment_string . '")</script>';
+    }
+  } else {
+    display_no_segments_message();
   }
 }
 
@@ -461,6 +465,20 @@ function display_segment($segment) {
   } else {
     return true;
   }
+}
+
+/**
+ * Display a message indicating that there are no flight segments in a given trip.
+ */
+function display_no_segments_message() {
+  ?>
+<div class="segment">
+  <div class="segment-none">
+    <?php echo _("No flight segments in this trip.") ?>
+  </div>
+  <hr class="segment-separator"/>
+</div>
+  <?php
 }
 
 #### Start display ####
