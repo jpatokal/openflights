@@ -14,6 +14,14 @@ div.segment-right-cell {
   float: left;
 }
 
+div.segment-none {
+  font-family: Calibri, Verdana, Arial, sans-serif;
+  font-size: 12pt;
+  color: #a1a1a1;
+  text-align: center;
+  margin: 15px 0;
+}
+
 hr.segment-separator {
   height: 1px;
   background-color: #a1a1a1;
