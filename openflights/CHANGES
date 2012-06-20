@@ -3,6 +3,7 @@
 * TripIt: Better handle trips with no flight segments
 * TripIt: Fix the duration calculation; indicate when picking up/losing a day (or two)
 * TripIt: Fix per-segment radio buttons when clicking on text instead of button.
+* TripIt: Use actual flight arrival/departure times, if available.
 
 <b>2012-03-21</b>
 
