@@ -1,16 +1,39 @@
-PACKAGES
+Installing OpenFlights on Ubuntu 12.04 LTS
+==========================================
 
-apt-get install mysql-server apache2 php5 libapache2-mod-php5 php5-mysql svn
+The following assumes you have a fresh install of Ubuntu 12.04 and you're logged in as 'ubuntu' with sudo rights.  This is intended as a recipe to be followed by hand, not a fire-and-forget script that can do the job automatically.
 
-APACHE MODULES
+---
 
-mod_include
-mod_rewrite
+# Set up LAMP & SVN
+sudo apt-get install php5 php5-mysql mysql-server apache2 subversion
 
-CONFIG FILES
+# Enable Apache modules
+sudo a2enmod rewrite
+sudo a2enmod include
 
-Configure php/secrets.php.  This file isn't checked in and is required for some OpenFlights functionality.
+# Checkout a copy of OpenFlights into /var/www
+cd /var/www
+sudo svn co https://openflights.svn.sourceforge.net/svnroot/openflights .
 
-TripIt: $tripit_app_id and $tripit_app_secret
+# Generates locales for language support
+cd openflights
+find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
 
+# Set up database
+mysql -u root -p <sql/create.sql
+mysql -u openflights flightdb2 --local-infile <sql/load-data.sql
 
+# Set up TripIt (if you need it)
+sudo vi php/secrets.php
+<<<
+$tripit_app_id = "[YOUR-ID]";
+$tripit_app_secret = "[YOUR-APP-SECRET]"
+>>>
+
+# Tell Apache where to find OpenFlights
+cd openflights
+sudo cp apache2/openflights /etc/apache2/sites-available/
+cd /etc/apache2/sites-enabled
+sudo ln -s ../sites-available/openflights openflights
+sudo service apache2 restart
