@@ -16,8 +16,11 @@ sudo a2enmod include
 cd /var/www
 sudo svn co https://openflights.svn.sourceforge.net/svnroot/openflights .
 
-# Generates locales for language support
+# Enable uploads
 cd openflights
+sudo chown www-data:www-data import
+
+# Generates locales for language support
 find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
 
 # Set up database
