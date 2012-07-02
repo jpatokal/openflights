@@ -30,6 +30,13 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 FROM countries;
 
+\! echo Locales 
+
+SELECT * INTO OUTFILE '/tmp/locales.dat'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+FROM locales;
+
 \! echo Waiting for dump to complete...
 \! sleep 5
 \! ls -l /tmp/*.dat
