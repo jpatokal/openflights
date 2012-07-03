@@ -1,23 +1,4 @@
-DROP TABLE routes;
-
-CREATE TABLE routes
-(
-airline VARCHAR(3),
-alid INT, 
-src_ap VARCHAR(4),
-src_apid INT,
-dst_ap VARCHAR(4),
-dst_apid INT,
-codeshare TEXT,
-stops TEXT,
-equipment TEXT,
-added VARCHAR(1),
-rid INT AUTO_INCREMENT PRIMARY KEY,
-UNIQUE INDEX (alid, src_apid, dst_apid),
-FOREIGN KEY (src_apid) REFERENCES airports (apid),
-FOREIGN KEY (dst_apid) REFERENCES airports (apid),
-FOREIGN KEY (alid) REFERENCES airlines (alid)
-);
+TRUNCATE TABLE routes;
 
 \! echo Filtering out duplicates...
 
