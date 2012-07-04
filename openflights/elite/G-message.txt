@@ -1,0 +1,9 @@
+From: OpenFlights Support <info@openflights.org>
+Subject: Donation to OpenFlights
+To: %EMAIL%
+
+Thank you for your generous donation to OpenFlights!  Your Gold status has been activated.
+
+Cheers,
+The OpenFlights.org Team
+
