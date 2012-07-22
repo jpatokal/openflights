@@ -79,7 +79,7 @@ msgid "Class by distance"
 msgstr "Classe secondo la distanza"
 
 msgid "Mode"
-msgstr "Modalità"
+msgstr "Modalita'"
 
 msgid "Note"
 msgstr "Nota"
@@ -1034,7 +1034,7 @@ msgid "Copy to new flight"
 msgstr "Copiare in un nuovo volo"
 
 msgid "Unique"
-msgstr "Unicità"
+msgstr "Unicita'"
 
 msgid "Airports"
 msgstr "Aeroporti"
