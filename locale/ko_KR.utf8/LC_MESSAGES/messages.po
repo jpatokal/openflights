@@ -1,0 +1,1308 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: YoontakRoh <onlymarch@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Flight logging, mapping, stats and sharing"
+msgstr "비행기록, 항로, 통계 및 공유"
+
+msgid "Sorry, OpenFlights requires JavaScript."
+msgstr "죄송합니다. OpenFlights는 JavaScript를 사용합니다."
+
+msgid "News"
+msgstr "뉴스"
+
+msgid "Hide search bar"
+msgstr "검색바 숨기기"
+
+msgid "Enter city, airport, airline name or code"
+msgstr "도시, 공항, 항공사 이름 또는 코드를 입력하세요."
+
+msgid "Search"
+msgstr "검색"
+
+msgid "Map of routes from this airport"
+msgstr "이 공항의 항로지도"
+
+msgid "Duration"
+msgstr "기간"
+
+msgid "Distance"
+msgstr "거리"
+
+msgid "Add new airport"
+msgstr "새 공항 추가하기"
+
+msgid "Username"
+msgstr "사용자이름"
+
+msgid "Password"
+msgstr "암호"
+
+msgid "Log in"
+msgstr "로그인"
+
+msgid "Sign up"
+msgstr "사용자등록"
+
+msgid "Analyze"
+msgstr "분석"
+
+msgid "Top 10"
+msgstr "Top 10"
+
+msgid "Filter"
+msgstr "필터"
+
+msgid "Carrier"
+msgstr "항공사"
+
+msgid "Year"
+msgstr "년도"
+
+msgid "Trip"
+msgstr "여행"
+
+msgid "More..."
+msgstr "더보기"
+
+msgid "Class"
+msgstr "등급"
+
+msgid "Class by distance"
+msgstr "거리에 따른 등급"
+
+msgid "Mode"
+msgstr "모드"
+
+msgid "Note"
+msgstr "노트"
+
+msgid "Reason"
+msgstr "이유"
+
+msgid "Registration"
+msgstr "등록"
+
+msgid "Control panel"
+msgstr "제어판"
+
+msgid "New flight"
+msgstr "새 비행"
+
+msgid "List flights"
+msgstr "비행 기록"
+
+msgid "Import"
+msgstr "가져오기"
+
+msgid "Settings"
+msgstr "설정"
+
+msgid "Logout"
+msgstr "로그아웃"
+
+msgid "Add new flight"
+msgstr "새 비행 추가"
+
+msgid "Edit flight"
+msgstr "비행기록 편집"
+
+msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgstr "<font color='blue'>파란색</font>필드는 필수정보 입니다. 지도에서 공항을 클릭하여 선택하거나, 도시이름 또는 공항코드로 검색하세요."
+
+msgid "Date"
+msgstr "일자"
+
+msgid "Departure and arrival time"
+msgstr "출발 및 도착 시각"
+
+msgid "Add new trip"
+msgstr "새 여행 추가"
+
+msgid "Edit this trip"
+msgstr "여행 편집"
+
+msgid "From"
+msgstr "출발"
+
+msgid "Enter city name or airport code"
+msgstr "도시이름 또는 공항코드를 입력하세요."
+
+msgid "Airport search"
+msgstr "공항 검색"
+
+msgid "Swap To and From airports"
+msgstr "출발지와 도착지를 뒤바꾸기"
+
+msgid "Plane"
+msgstr "항공기"
+
+msgid "Enter plane model"
+msgstr "항공기 종류를 입력하세요."
+
+msgid "Reg."
+msgstr "등록번호"
+
+msgid "To"
+msgstr "도착"
+
+msgid "Economy"
+msgstr "이코노미"
+
+msgid "Premium Eco."
+msgstr "프리미엄 이코노미"
+
+msgid "Business"
+msgstr "비즈니스"
+
+msgid "First"
+msgstr "퍼스트"
+
+msgid "Flight"
+msgstr "항공"
+
+msgid "Road"
+msgstr "육로"
+
+msgid "Ship"
+msgstr "선박"
+
+msgid "Train"
+msgstr "열차"
+
+msgid "Nr."
+msgstr "편명"
+
+msgid "Seat"
+msgstr "좌석"
+
+msgid "Type"
+msgstr "종류"
+
+msgid "Window"
+msgstr "창측"
+
+msgid "Aisle"
+msgstr "복도측"
+
+msgid "Middle"
+msgstr "중간측"
+
+msgid "Work"
+msgstr "업무"
+
+msgid "Leisure"
+msgstr "레저"
+
+msgid "Crew"
+msgstr "승무"
+
+msgid "Other"
+msgstr "기타"
+
+msgid "Enter airline name or code"
+msgstr "항공사 이름 또는 코드를 입력하세요."
+
+msgid "Airline search"
+msgstr "항공사 검색"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Save this flight"
+msgstr "비행 저장"
+
+msgid "Clear"
+msgstr "초기화"
+
+msgid "Reset this entry form"
+msgstr "입력폼 초기화"
+
+msgid "Exit"
+msgstr "나가기"
+
+msgid "Exit flight editor"
+msgstr "비행 편집 그만하기"
+
+msgid "Save changes"
+msgstr "변경내용 저장"
+
+msgid "Save changes made to this flight"
+msgstr "비행기록 변경내용 저장"
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid "Delete this flight"
+msgstr "비행기록 삭제"
+
+msgid "Previous flight"
+msgstr "이전 비행기록"
+
+msgid "Next flight"
+msgstr "다음 비행기록"
+
+msgid "Switch to basic editor"
+msgstr "간편 편집기로 전환"
+
+msgid "Basic"
+msgstr "간편편집"
+
+msgid "Add new flights"
+msgstr "새 비행기록 추가"
+
+msgid "Airline"
+msgstr "항공사"
+
+msgid "Save these flights"
+msgstr "비행기록 저장"
+
+msgid "Exit without saving"
+msgstr "저장하지 않고 나가기"
+
+msgid "Add new row for faster entry of multiple flights"
+msgstr "여러편 입력폼 추가하기"
+
+msgid "More"
+msgstr "더하기"
+
+msgid "Remove a row"
+msgstr "한줄 삭제"
+
+msgid "Less"
+msgstr "줄이기"
+
+msgid "Switch to detailed editor"
+msgstr "자세한 에디터로 전환"
+
+msgid "Detailed"
+msgstr "상세편집"
+
+#, php-format
+msgid "Your session has timed out, please log in again."
+msgstr "세션이 만료되었습니다. 다시 로그인 해 주세요."
+
+#, php-format
+msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgstr "죄송합니다. 입력하신 IATA code %s 는 이미 존재합니다. 다시한번 확인하세요."
+
+#, php-format
+msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgstr "죄송합니다. 입력하신 ICAO code %s 는 이미 존재합니다. 다시한번 확인하세요."
+
+msgid "Adding new airport failed:"
+msgstr "새 공항을 추가할 수 없습니다 :"
+
+#, php-format
+msgid "New airport successfully added."
+msgstr "새 공항이 추가되었습니다."
+
+#, php-format
+msgid "Airport successfully edited."
+msgstr "공항정보가 수정되었습니다."
+
+#, php-format
+msgid "Editing airport failed:"
+msgstr "공항정보를 수정할 수 없습니다 :"
+
+msgid "Not logged in, aborting"
+msgstr "로그인 하지 않았습니다."
+
+msgid "Unknown"
+msgstr "알수 없음"
+
+msgid "was:"
+msgstr ""
+
+msgid "No airline"
+msgstr "항공사 없음"
+
+msgid "Upload again"
+msgstr "다시 업로드"
+
+msgid "Cancel this import and return to file upload page"
+msgstr "가져온 정보 취소 및 파일 재 업로드"
+
+msgid "Upload"
+msgstr "업로드"
+
+msgid "Upload successful.  Parsing..."
+msgstr "업로드 성공 및 가공중..."
+
+msgid "Results"
+msgstr "결과"
+
+msgid "Upload failed!"
+msgstr "업로드 실패!"
+
+msgid "Importing..."
+msgstr "가져오는 중..."
+
+msgid "Sorry, this file does not appear to be FlightMemory HTML."
+msgstr "죄송합니다. FlightMemory HTML파일을 인식할 수 없습니다."
+
+msgid "Sorry, this HTML file does not appear contain FlightMemory FlightData."
+msgstr "죄송합니다. HTML파일이 FlightMemory FlightData를 포함하지 않고 있습니다."
+
+msgid "Sorry, the filename must end in '.csv'."
+msgstr "죄송합니다. 파일명이 '.csv'로 종료되어야 합니다."
+
+msgid "Unable to open CSV file."
+msgstr "SCV파일을 열 수 없습니다."
+
+msgid "Miles"
+msgstr "마일"
+
+msgid "Time"
+msgstr "시각"
+
+msgid "Reg"
+msgstr "등록번호"
+
+msgid "Comment"
+msgstr "코멘트"
+
+msgid "Key to results"
+msgstr "결과 키"
+
+msgid "Color"
+msgstr "색상"
+
+msgid "Meaning"
+msgstr "의미"
+
+msgid "None"
+msgstr "없음"
+
+msgid "Exact match"
+msgstr "정확히 매치"
+
+msgid "Info"
+msgstr "정보"
+
+msgid "Probable match, please verify"
+msgstr "정보가 상당히 매치됩니다. 확인해 보세요."
+
+msgid "Warning"
+msgstr "경고"
+
+msgid "No matches, will be added as new"
+msgstr "일치되는 정보가 없어 새로 추가됩니다."
+
+msgid "Error"
+msgstr "오류"
+
+msgid "No matches, please correct and reupload"
+msgstr "일치하지 않습니다. 확인후 다시 업로드하세요."
+
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgstr "노트 : CSV파일이 15-18자의 OpenFlights IDs를 포함하고 있습니다. 이 IDs가 직접 수정한 공항, 항공사, 비행기 컬럼을 덮어쓸 수 있습니다."
+
+msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgstr "비행정보에 알 수 없는 공항이 포함되어 있습니다. 공항을 먼저 데이터베이스에 추가하고 다시 시도하세요."
+
+msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgstr "비행정보에 알 수 없는 항공사가 포함되어 있습니다. 이는 일반적으로 입력된 항공사코드가 잘못되었거나 혹은 항공사이름이 잘못된 경우입니다. 확인후 다시 시도하세요."
+
+msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
+msgstr "일부 데이터를 처리할 수 없습니다. 다음의 형식을 사용하세요: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, YYYY 형식만 가능합니다.  DD/MM/YYYY 형식은 <b>사용할 수 없습니다</b>."
+
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgstr "입력된 비행정보가 존재하지 않거나 다른사람의 여행 IDs를 포함하고 있습니다. 여행 IDs를 확인하세요."
+
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgstr "<b>처리가 완료되었습니다.</b> 이제 정보를 가져올 수 있습니다. (소소한 오류는 정보 에디터에서 수정할 수 있습니다)"
+
+msgid "Add these flights to your OpenFlights"
+msgstr "비행정보를 OpenFlights에 추가하기"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Flights successfully imported."
+msgstr "비행정보가 성공적으로 입력되었습니다."
+
+msgid "Import more flights"
+msgstr "비행정보 더 가져오기"
+
+msgid "Close"
+msgstr "닫기"
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr "로그인 실패. <%s>계정 만들기</a> 또는 <%s>암호 초기화</a> 하시겠습니까?"
+
+msgid "This trip is not public."
+msgstr "이 여행은 비공개입니다."
+
+msgid "No such trip."
+msgstr "그런 여행이 없습니다."
+
+msgid "This user's flights are password-protected."
+msgstr "이 사용자의 비행정보는 암호로 보호됩니다."
+
+msgid "This user's flights are not public."
+msgstr "이 사용자의 비행정보는 비공개 입니다."
+
+msgid "No such user."
+msgstr "그런 사용자가 없습니다."
+
+msgid "This user has no flights."
+msgstr "이 사용자는 비행정보를 가지지 않습니다."
+
+msgid "km"
+msgstr "킬로미터"
+
+msgid "miles"
+msgstr "마일"
+
+msgid "-operated"
+msgstr "-운항사"
+
+msgid " and codeshares"
+msgstr "코드쉐어"
+
+msgid "Sorry, that name is already taken, please try another."
+msgstr "죄송합니다. 입력하신 사용자이름은 이미 사용중입니다. 다른 이름으로 시도하세요."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "계정이 초기화되었습니다. %s 비행정보가 삭제되었습니다."
+
+msgid "Sorry, current password is not correct."
+msgstr "죄송합니다. 암호가 올바르지 않습니다."
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "성공적으로 등록되었습니다. 이제 로그인 합니다."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "설정이 성공적으로 변경되었습니다. 돌아가는 중..."
+
+msgid "Trip not found."
+msgstr "여행을 찾을 수 없습니다."
+
+msgid "User not found."
+msgstr "사용자를 찾을 수 없습니다."
+
+msgid "mi"
+msgstr "마일"
+
+msgid "Longest"
+msgstr "최장거리"
+
+msgid "Shortest"
+msgstr "최단거리"
+
+msgid "Northernmost"
+msgstr "가장 북측"
+
+msgid "Southernmost"
+msgstr "가장 남측"
+
+msgid "Westernmost"
+msgstr "가장 서측"
+
+msgid "Easternmost"
+msgstr "가장 동측"
+
+msgid "Added."
+msgstr "추가됨."
+
+#, php-format
+msgid "%s flights added."
+msgstr "%s 비행정보 추가됨."
+
+msgid "Edited."
+msgstr "수정됨."
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "여행을 성공적으로 생성하였습니다."
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "여행을 성공적으로 삭제하였습니다."
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr "여행을 성공적으로 수정하였습니다."
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Airline, railway, road transport and shipping search"
+msgstr "항공사, 철도회사, 운수회사 또는 선박회사 검색"
+
+msgid "Fill one or more fields below to search for matching airlines and other transport operators."
+msgstr "항공사 또는 기타 운송회사를 찾기 위해 하나 혹은 그이상의 필드를 채우세요."
+
+msgid "Name"
+msgstr "이름"
+
+msgid "Railway"
+msgstr "철도"
+
+msgid "Road transport"
+msgstr "육상운송"
+
+msgid "Shipping"
+msgstr "선박"
+
+msgid "Alternative name"
+msgstr "보조이름"
+
+msgid "Country"
+msgstr "국가"
+
+msgid "Callsign"
+msgstr "콜사인"
+
+msgid "Show only major (IATA) airlines?"
+msgstr "주요 항공사(IATA)만 보임?"
+
+msgid "Record the current data as a new airline."
+msgstr "현재 데이터를 새 항공사로 기록."
+
+msgid "Add as new"
+msgstr "새로 저장"
+
+msgid "Fill one or more fields below to search for matching airports."
+msgstr "공항을 찾기위해 하나 또는 그이상의 필드를 채우세요."
+
+msgid "Airport name"
+msgstr "공항 이름"
+
+msgid "City name"
+msgstr "도시 이름"
+
+msgid "Country name"
+msgstr "나라 이름"
+
+msgid "Latitude"
+msgstr "위도"
+
+msgid "Longitude"
+msgstr "경도"
+
+msgid "Elevation"
+msgstr "고도"
+
+msgid "UTC"
+msgstr "협정세계시"
+
+msgid "DST"
+msgstr "일광절약시간제"
+
+msgid "European"
+msgstr "유럽"
+
+msgid "US/Canada"
+msgstr "북미"
+
+msgid "S. American"
+msgstr "남미"
+
+msgid "Australia"
+msgstr "호주"
+
+msgid "New Zealand"
+msgstr "뉴질랜드"
+
+msgid "Database"
+msgstr "데이터베이스"
+
+msgid "Show only major (IATA) airports?"
+msgstr "주요 항공사(IATA)만 보임?"
+
+msgid "Please log in to enable editing."
+msgstr "수정하려면 로그인 하세요."
+
+msgid "Record the current data as a new airport."
+msgstr "현재 데이터를 새 공항으로 입력."
+
+msgid "Record changes to this airport."
+msgstr "이 공항의 변경내용 저장."
+
+msgid "Import data"
+msgstr "데이터 가져오기"
+
+msgid "OpenFlights can import two types of data:"
+msgstr "OpenFlights는 두가지 형식의 데이터를 가져올 수 있습니다:"
+
+#, php-format
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgstr "<b>FlightMemory (.html)</b> &mdash; 플라이트 메모리는 데이터를 내보내는 기능이 없습니다. 하지만, 우리는 '스크린 긁어오기'를 이용하여 정보를 가져옵니다. 플라이트 메모리 사이트에 로그인하고, FlightData 페이지로 이동하십시오. 브라우저의 '웹 페이지 저장하기' 메뉴를 통해 HTML파일을 다운로드 하고 OpenFlights 에 업로드 하십시오.</p><p><i>경고</i> : 저장하기 전에 반드시 플라이트 메모리의 언어설정을 <b>영어</b>로 해야 합니다.</p><p><i>노트</i> : 중복확인 기능이 없습니다. 따라서, 두번 업로드하게 되면 데이터가 두번 입력됩니다.</p><p><i>노트</i> : 플라이트 메모리의 HTML 데이터 형식이 변경되어 입력되지 않을 수 있습니다. 이 경우 파일과 함께 <%s>오류보고</a>기능을 통해 알려주시면 즉시 작업하여 적용하도록 하겠습니다.</p>"
+
+#, php-format
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgstr "<b>OpenFlights (.csv)</b> &mdash; OpenFlights의 내보내기 또는 백업 기능을 통해 생성된 CSV파일은 엑셀과 같은 스프레드시트 프로그램에서 손쉽게 편집할 수 있습니다. <%s>파일형식</a>을 참고하십시오."
+
+msgid "File to upload"
+msgstr "업로드할 파일"
+
+msgid "Keep historical airline names?"
+msgstr "항공사의 예전 이름을 유지함."
+
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgstr "OpenFlights는 알려지거나 존재하는 항공사의 이름과 비교하여 항목을 맞춰 줍니다. 아래의 항목을 체크하면 입력한 이름 그대로 기록에 입력됩니다."
+
+#, php-format
+msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgstr "데이터의 입력 전에 다시한번 확인할 수 있습니다. 입력전에 %의 백업 또는 정리를 확인하세요."
+
+msgid "Create new account"
+msgstr "새 계정 생성"
+
+msgid "Account settings"
+msgstr "계정 설정"
+
+msgid "Basic information"
+msgstr "기본 정보"
+
+msgid "This will be used as the name of your profile."
+msgstr "프로파일의 이름으로 사용됩니다."
+
+msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgstr "추측하기 어려우면서 기억하기 쉬운것을 선택하세요. 대소문자를 구분합니다."
+
+msgid "Password again"
+msgstr "암호 재입력"
+
+msgid "E-mail (optional)"
+msgstr "전자우편(선택사항)"
+
+#, php-format
+msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "암호를 분실한 경우, 전자우편을 통해 새 암호를 발송할 수 있습니다. 그외에 어떠한 개인정보를 사용하거나 다른 내용을 <i>절대로</i> 발송하지 않습니다. <%s>개인정보보호규정</a>을 참고하세요."
+
+msgid "Could not load profile data"
+msgstr "프로파일을 가져올 수 없습니다."
+
+msgid "Profile address"
+msgstr "프로파일 주소"
+
+#, php-format
+msgid "Viewed %s times"
+msgstr "%s 회 보여짐."
+
+msgid "The public address of your profile and how often it has been viewed."
+msgstr "외부에서 접속 가능한 주소와 보여진 횟수."
+
+msgid "Facebook link"
+msgstr "페이스북 링크"
+
+msgid "Linked, automatic updates"
+msgstr "연결됨(자동 업데이트)"
+
+msgid "Linked, manual updates only"
+msgstr "연결됨(수동 업데이트)"
+
+msgid "Automate"
+msgstr "자동"
+
+msgid "Not active"
+msgstr "비활성"
+
+msgid "Add link"
+msgstr "링크 추가"
+
+#, php-format
+msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
+msgstr "<%s>OpenFlights 페이스북 앱</a>을 <%s>페이스북</a> 계정에 설치할 수 있습니다."
+
+msgid "Banners"
+msgstr "배너"
+
+msgid "Blog banner (HTML)"
+msgstr "블로그 배너(HTML)"
+
+msgid "Bulletin board banner (phpBB)"
+msgstr "게시판형 배너(phpBB)"
+
+msgid "Profile settings"
+msgstr "프로파일 설정"
+
+msgid "You can easily change these later by clicking on <i>Settings</i>."
+msgstr "언제라도 <i>설정</i>을 클릭하여 수정할 수 있습니다."
+
+msgid "Privacy"
+msgstr "개인정보보호"
+
+msgid "Private"
+msgstr "숨김"
+
+msgid "Public"
+msgstr "일부공개"
+
+msgid "Open"
+msgstr "공개"
+
+#, php-format
+msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgstr "<b>숨김</b> 모드는 본인만 접속 가능합니다. <%s>골드 및 플래티넘</a>등급의 사용자는 암호로 개인 프로파일을 보호할 수 있습니다. 이 경우, 암호를 아는 사람만 프로파일을 볼 수 있습니다."
+
+msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
+msgstr "<b>일부공개</b> 모드는 다른사람들이 비행기록지도와 기본적인 통계를 볼 수 있습니다. 하지만, 비행편 및 좌석등급과 같은 세부정보는 보여지지 않습니다."
+
+msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
+msgstr "<b>공개</b> 모드는 모든사람이 비행기록의 세부내용을 볼 수 있습니다. 단, 편집은 되지 않습니다."
+
+msgid "Flight editor"
+msgstr "비행정보 편집기"
+
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgstr "<b>기본</b> 에디터는 쉽고 간단합니다. 출발지, 도착지, 일자를 필수정보로 입력하고, 항공사와 비행시간을 옵션으로 입력합니다. 비행기록지도를 쉽게 만들 수 있습니다."
+
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgstr "<b>상세</b> 에디터는 좌석등급, 좌석번호, 비행기종 및 항공기 등록번호와 같은 세부내용을 직접 입력할 수 있습니다. 추가적인 메모도 가능합니다."
+
+msgid "Distances"
+msgstr "거리"
+
+msgid "Kilometers"
+msgstr "킬로미터"
+
+msgid "Preferred unit for flight distances"
+msgstr "비행거리 입력단위를 정의합니다."
+
+msgid "Guest password"
+msgstr "손님용 암호"
+
+msgid "Gold Elite feature"
+msgstr "골드 엘리트 등급"
+
+msgid "Password protect your Private profile, so only friends and family can see it."
+msgstr "암호는 허락받은 손님들만 개인 프로파일을 볼 수 있도록 합니다."
+
+msgid "Default view"
+msgstr "기본 페이지"
+
+msgid "Help"
+msgstr "도움말"
+
+msgid "Display a screen of your choice instead of banner ads."
+msgstr "배너광고대신 보여지는 페이지를 선택합니다."
+
+msgid "Manage flights"
+msgstr "비행기록 관리"
+
+msgid "Backup to CSV"
+msgstr "CSV 백업"
+
+msgid "Delete all flights"
+msgstr "모든 비행기록 삭제"
+
+#, php-format
+msgid "<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."
+msgstr "<%s>CSV</a> 파일은 엑셀과 같은 스프레드시트 프로그램으로 열 수 있습니다."
+
+msgid "Change password"
+msgstr "암호 변경"
+
+msgid "Current password"
+msgstr "현재 암호"
+
+msgid "You only need to enter this if changing your password."
+msgstr "암호를 변경할 경우에만 입력하세요."
+
+msgid "New password"
+msgstr "새 암호"
+
+msgid "New password again"
+msgstr "새 암호 확인"
+
+msgid "Sign me up!"
+msgstr "가입"
+
+msgid "Edit trip"
+msgstr "여행 편집"
+
+msgid "Add trip"
+msgstr "여행 추가"
+
+msgid "Could not load trip data."
+msgstr "여행 데이터를 가져올 수 없습니다."
+
+msgid "Web address <i>(optional)</i>"
+msgstr "웹 주소 <i>선택사항</i>"
+
+msgid "Trip privacy"
+msgstr "여행 개인정보보호"
+
+msgid "Private (visible only to you)"
+msgstr "숨김 (본인만 볼 수 있음)"
+
+msgid "Public (map and stats shared)"
+msgstr "일부공개 (지도와 통계만 공개)"
+
+msgid "Open (all flight data shared)"
+msgstr "공개 (모든 비행정보 공개)"
+
+msgid "OpenFlights URL"
+msgstr "OpenFlights URL"
+
+msgid "Not assigned yet"
+msgstr "아직 할당되지 않음."
+
+msgid "Save"
+msgstr "저장"
+
+msgid "Prem.Eco"
+msgstr "프리미엄 이코노미"
+
+msgid "Econ"
+msgstr "이코노미"
+
+msgid "P.Eco"
+msgstr "2.5등급"
+
+msgid "Biz"
+msgstr "비즈"
+
+msgid "1st"
+msgstr "일등"
+
+msgid "Leis."
+msgstr "레저"
+
+msgid "flight"
+msgstr "비행편"
+
+msgid "train"
+msgstr "열차"
+
+msgid "road trip"
+msgstr "자동차"
+
+msgid "ship"
+msgstr "선백"
+
+msgid "airline"
+msgstr "항공사"
+
+msgid "railway"
+msgstr "철도회사"
+
+msgid "road transport"
+msgstr "운수회사"
+
+msgid "shipping"
+msgstr "선박회사"
+
+msgid "Segments"
+msgstr "횟수"
+
+msgid "Mileage"
+msgstr "마일리지"
+
+msgid "Toggle pan and region select mode"
+msgstr "지도이동 및 선택모드"
+
+msgid "Toggle overview map"
+msgstr "지도를 보여줌"
+
+msgid "My Flights"
+msgstr "내 비행기록"
+
+msgid "My Airports"
+msgstr "내 공항"
+
+msgid "Select this airport"
+msgstr "이 공항 선택"
+
+msgid "List my flights"
+msgstr "내 비행 목록"
+
+msgid "List routes"
+msgstr "구간 목록"
+
+msgid "Flights:"
+msgstr "비행편:"
+
+msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
+msgstr "정확한 날짜를 년/월/일 순서대로 입력하세요. 2012년 9월 23일은 2012/09/23 입니다. YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD 및 YYYY MM DD 형식도 가능합니다."
+
+msgid "Please enter a valid source airport."
+msgstr "올바른 출발지 공항을 입력하세요."
+
+msgid "Please enter a valid destination airport."
+msgstr "올바른 도착지 공항을 입력하세요."
+
+msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
+msgstr ""
+
+msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
+msgstr "시각은 콜론(:)을 이용하여 입력하세요. 예를들어 오후 6시 30분은 18:30 입니다."
+
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgstr "비행시간은 콜론(:)을 이용하여 입력하세요. 예를들어 8시간 25분은 08:25 입니다. 입력하지 않을 경우 자동으로 계산합니다."
+
+msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgstr "비행거리를 자연수로 입력하세요. 입력하지 않을 경우 자동으로 계산합니다."
+
+msgid "No trips"
+msgstr "여행 없음."
+
+msgid "No trips. Add one? "
+msgstr "여행 없음. 추가합니까?"
+
+msgid "All trips"
+msgstr "모든 여행"
+
+msgid "All carriers"
+msgstr "모든 항공사"
+
+msgid "All"
+msgstr "모두"
+
+msgid "Unassigned flights"
+msgstr "배정되지 않은 비행기록"
+
+msgid "Recent flights on %1"
+msgstr "최근 %1의 비행기록"
+
+msgid "Recently added flights"
+msgstr "최근에 추가된 비행기록"
+
+msgid "%1's flights on %2 in %3"
+msgstr "%1의 %2에 의한 %3년도의 비행기록"
+
+msgid "%1's flights on %2"
+msgstr "%1의 %2에 의한 비행기록"
+
+msgid "%1's flights in %2"
+msgstr "%1의 %2년도 비행기록"
+
+msgid "%1's flights"
+msgstr "%1의 비행기록"
+
+msgid "Home"
+msgstr "초기화면"
+
+msgid "Not in a trip"
+msgstr "여행에 없음"
+
+msgid "segments"
+msgstr "비행편"
+
+msgid "days"
+msgstr "일"
+
+msgid "List all routes on this airline"
+msgstr "이 항공사의 비행편"
+
+msgid "List all routes from this airport"
+msgstr "이 공항을 출발하는 비행편"
+
+msgid "routes"
+msgstr "항로"
+
+msgid "No flights found at this airport."
+msgstr "이 공항에서 비행기록을 찾을 수 없음."
+
+msgid "Export"
+msgstr "내보내기"
+
+msgid "Comma-Separated Value, for Excel and data processing"
+msgstr "엑셀 및 데이터 처리를 위한 컴마(,)로 분리된 값."
+
+msgid "Keyhole Markup Language, for Google Earth and visualization"
+msgstr "구글어스 및 가시화를 위한 Keyhole Markup Language."
+
+msgid "Vehicle"
+msgstr "운송편"
+
+msgid "Action"
+msgstr "기능"
+
+msgid "Buy tickets on %1"
+msgstr "%1 에서 항공권 구매"
+
+msgid "Edit this flight"
+msgstr "비행기록 편집"
+
+msgid "Copy to new flight"
+msgstr "새 비행기록으로 복사"
+
+msgid "Unique"
+msgstr "고유횟수(중복제외)"
+
+msgid "Airports"
+msgstr "공항"
+
+msgid "Carriers"
+msgstr "항공사"
+
+msgid "Countries"
+msgstr "국가"
+
+msgid "Vehicles"
+msgstr "운송편"
+
+msgid "Total flown"
+msgstr "누적 거리"
+
+msgid "Around the world"
+msgstr "지구 둘레"
+
+msgid "To the Moon"
+msgstr "달까지 거리"
+
+msgid "To Mars"
+msgstr "화성까지 거리"
+
+msgid "Journey records"
+msgstr "여행 최고기록"
+
+msgid "Average"
+msgstr "평균"
+
+msgid "Airport records"
+msgstr "공항"
+
+msgid "Seats"
+msgstr "좌석"
+
+msgid "Show..."
+msgstr "더보기..."
+
+msgid "Sort by..."
+msgstr "정렬"
+
+msgid "Routes"
+msgstr "노선"
+
+msgid "Airlines"
+msgstr "항공사"
+
+msgid "Planes"
+msgstr "비행기"
+
+msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgstr "변경내용이 저장되지 않았습니다. 수락하면 무시합니다."
+
+msgid "Loading..."
+msgstr "로딩중..."
+
+msgid "Edit segment %1 of %2"
+msgstr "%2 중의 %1 을 수정"
+
+msgid "Are you sure you want to delete this flight?"
+msgstr "정말 선택한 비행기록을 삭제합니까?"
+
+msgid "Deleting flight cancelled."
+msgstr "비행기록 삭제가 취소되었습니다."
+
+msgid "Search for %1"
+msgstr "%1 을 찾는중..."
+
+msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
+msgstr "UTC %1%2%3 출발, UTC %4%5%6 도착, %7 시간 시차"
+
+msgid "+%1 day"
+msgstr "+%1 일"
+
+msgid "-%1 day"
+msgstr "-%1 일"
+
+msgid "Flight departure and arrival times"
+msgstr "출발 및 도착 횟수"
+
+msgid "Show airline route map"
+msgstr "항공사의 노선도 보기."
+
+msgid "Logged in as <B>%1</B>"
+msgstr "<b>%1</b> 으로 로그인 하였습니다."
+
+msgid "Welcome, <B>%1</B> !"
+msgstr "<b>%1</b>님 환영합니다!"
+
+msgid "Loading"
+msgstr "로딩중..."
+
+msgid "Hi, <B>%1</B> !"
+msgstr "<b>%1</b>님 반갑습니다!"
+
+msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgstr "<b>환영합니다!</b> OpenFlights가 <a href='/donate.html' target='_blank'>유지될 수 있도록 기부</a>하여 주십시오."
+
+msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr "<b>OpenFlights에 오신것을 환영합니다!</b> %1을 클릭하여 새 비행기록을 추가하거나, %2을 클릭하여 FlightMemory와 같은 다른 사이트의 정보를 가져옵니다."
+
+msgid "You have been logged out."
+msgstr "로그아웃 되었습니다."
+
+msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
+msgstr "비행정보를 변경하였습니다. 확인하면 변경내용을 무시하고 새 비행정보를 입력합니다."
+
+msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
+msgstr "비행정보를 변경하였습니다. 확인하면 변경내용을 무시하고 비행정보를 다시 수정합니다."
+
+msgid "IATA codes must be exactly two letters."
+msgstr "IATA 코드는 두 글자로 구성됩니다."
+
+msgid "ICAO codes must be exactly three letters."
+msgstr "ICAO 코드는 세 글자로 구성됩니다."
+
+msgid "Sorry, you have to be logged into OpenFlights to use this."
+msgstr "죄송합니다. 이 기능을 사용하기 위해서는 로그인이 필요합니다."
+
+msgid "Please enter a name."
+msgstr "이름을 입력하세요."
+
+msgid "Please select a country."
+msgstr "국가를 선택하세요."
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
+msgstr "IATA/FAA 코드를 입력하지 않았습니다. 코드 없이 항공사를 추가하시겠습니까?"
+
+msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
+msgstr "ICAO 코드를 입력하지 않았습니다. 코드 없이 항공사를 추가하시겠습니까?"
+
+msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
+msgstr "%1 으로 새 오퍼레이터를 추가하시겠습니까? 이름과 항공사 코드를 다시한번 확인하십시오."
+
+msgid "Cancelled."
+msgstr "취소됨."
+
+msgid "Searching..."
+msgstr "찾는중..."
+
+msgid "Recording..."
+msgstr "기록중..."
+
+msgid "No matches found."
+msgstr "일치하는 것을 찾지 못함."
+
+msgid "Results %1 to %2 of %3"
+msgstr "%3 중 %1 부터 %2 까지의 결과"
+
+msgid "Operators in pink have been added by users of OpenFlights."
+msgstr "분홍색 항공사는 OpenFlights 사용자가 추가하였습니다."
+
+msgid "Operators in blue have been added by you and can be edited."
+msgstr "파란색 항공사는 당신이 추가하였으며, 편집할 수 있습니다."
+
+msgid "Select"
+msgstr "선택"
+
+msgid "Sorry, you have to be logged into OpenFlights to do this."
+msgstr "죄송합니다. 이 작업을 하기 위해서는 OpenFlights에 로그인해야 합니다."
+
+msgid "IATA/FAA codes must be exactly three letters."
+msgstr "IATA/FAA 코드는 세 글자로 구성됩니다."
+
+msgid "ICAO codes must be exactly four letters."
+msgstr "ICAO 코드는 네 글자로 구성됩니다."
+
+msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
+msgstr "공항 및 도시의 이름에는 표준 영문자(A-Z), 숫자(0-9), 구두점(줄표,마침표,작은따옴표)과 공백만 사용할 수 있습니다."
+
+msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
+msgstr "DAFIF 데이터베이스에 수록되지 않은 도시정보 입니다."
+
+msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
+msgstr "IATA/FAA정보는 미국내 공항으로 제한됩니다. DAFIF는 미국 이외의 도시에 대한 정보를 포함하지 않습니다."
+
+msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
+msgstr "IATA정보는 미국내 공항으로 제한됩니다. DAFIF는 미국 이외의 도시에 대한 정보를 포함하지 않습니다."
+
+msgid "Please enter an airport name."
+msgstr "공항 이름을 입력하세요."
+
+msgid "Please enter a city name."
+msgstr "도시 이름을 입력하세요."
+
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgstr "위도, 경도 및 고도를 입력하세요. OurAirports.com의 데이터베이스를 확인해서 로드할 수 있습니다."
+
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgstr "위도와 경도좌표는 십진법으로 입력합니다. 음수는 남쪽과 서쪽을 표현합니다. 소숫점 이하 최소 세자리 이상 입력되어야 합니다. 예를들어, San Francisco 국제공항(SFO)은 위도 37.6189(N), 경도 -122.3748(W) 입니다."
+
+msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
+msgstr "경도는 반드시 -180(서)에서 180(동) 사이의 값을 가져야 합니다."
+
+msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
+msgstr "위도는 반드시 90(북)에서 -90(남) 사이의 값을 가져야 합니다."
+
+msgid "Please enter a positive number for elevation."
+msgstr "고도를 양수로 입력하세요."
+
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgstr "UCT/GMT와 차이나는 타임존을 정수로 입력하세요. 예를들어, 싱가포르는 +8, 뉴욕은 -5 입니다. 소숫점은 없습니다."
+
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgstr "이 공항의 서머타임(DST) 정보를 입력하지 않았습니다. 알수없는 상태로 두시겠습니까?"
+
+msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "IATA/FAA 코드를 입력하지 않았습니다. 코드를 입력하지 않은 채로 진행하시겠습니까?"
+
+msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
+msgstr "ICAO 코드를 입력하지 않았습니다. 코드를 입력하지 않은 채로 진행하시겠습니까?"
+
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgstr "%2 의 %1 으로 새 공항을 입력하시겠습니까? 이름과 공항코드 및 정확한 좌표를 입력전에 다시한번 확인하십시오."
+
+msgid "No matches found in this database."
+msgstr "데이터베이스에서 일치하는 정보를 찾을 수 없습니다."
+
+msgid "Try unchecking 'Show only major airports' and search again."
+msgstr "'주요 공항만 보여줌'의 체크를 해제하고 다시한번 검색하십시오."
+
+msgid "Switch to the OurAirports database and search again."
+msgstr "OurAirports.com 데이터베이스로 다시한번 검색."
+
+msgid "Airports in pink have been added by users of OpenFlights."
+msgstr "분홍색 공항은 OpenFlights 사용자에 의하여 추가되었습니다."
+
+msgid "Airports in blue have been added by you and can be edited."
+msgstr "파란색 공항은 당신이 추가하였으며, 편집할 수 있습니다."
+
+msgid "Edit"
+msgstr "편집"
+
+msgid "Load"
+msgstr "로드"
+
+msgid "Creating account..."
+msgstr "계정을 만드는 중..."
+
+msgid "Saving changes..."
+msgstr "변경내용을 저장하는 중..."
+
+msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
+msgstr "이 작업은 당신의 모든 비행기록을 영구히 삭제합니다. 백업본을 준비해 두었나요? 정말 삭제합니까?"
+
+msgid "Deletion cancelled."
+msgstr "삭제가 취소됨."
+
+msgid "Please enter a username."
+msgstr "사용자이름을 입력하세요."
+
+msgid "Please enter a password."
+msgstr "암호를 입력하세요."
+
+msgid "Please enter your current password if you wish to change to a new password."
+msgstr "암호를 변경하고 싶은 경우 현재 암호를 입력하세요."
+
+msgid "Please enter a new password, or clear current password if you do not wish to change it."
+msgstr "변경할 새 암호를 입력하세요. 변경할 계획이 없다면, 현재 암호를 입력하지 마세요."
+
+msgid "Your passwords don't match, please try again."
+msgstr "암호가 일치하지 않습니다. 다시 시도해 보세요."
+
+msgid "Processing..."
+msgstr "처리중..."
+
+msgid "Profile address:"
+msgstr "프로파일 주소:"
+
