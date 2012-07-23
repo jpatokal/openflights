@@ -872,7 +872,7 @@ msgid "1st"
 msgstr "1st"
 
 msgid "Leis."
-msgstr "Leis."
+msgstr "Svago"
 
 msgid "flight"
 msgstr "Volo"
@@ -968,22 +968,22 @@ msgid "Unassigned flights"
 msgstr "Voli non assegnati"
 
 msgid "Recent flights on %1"
-msgstr "Voli recenti su %1"
+msgstr "Voli recenti con %1"
 
 msgid "Recently added flights"
 msgstr "Voli aggiunti recentemente"
 
 msgid "%1's flights on %2 in %3"
-msgstr "%1 voli su %2 in %3"
+msgstr "voli di %1 con %2 nel %3"
 
 msgid "%1's flights on %2"
-msgstr "%1 voli su %2"
+msgstr "voli di %1 con %2"
 
 msgid "%1's flights in %2"
-msgstr "%1 voli in %2"
+msgstr "voli di %1 nel %2"
 
 msgid "%1's flights"
-msgstr "%1 voli"
+msgstr "voli di %1"
 
 msgid "Home"
 msgstr "Pagina iniziale"
@@ -1025,7 +1025,7 @@ msgid "Action"
 msgstr "Azione"
 
 msgid "Buy tickets on %1"
-msgstr "Comprare i biglietti di %1"
+msgstr "Comprare i biglietti su %1"
 
 msgid "Edit this flight"
 msgstr "Modificare questo volo"
