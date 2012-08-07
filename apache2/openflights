@@ -1,5 +1,4 @@
-NameVirtualHost *
-<VirtualHost *>
+<VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/openflights
         ServerName openflights.org
@@ -12,7 +11,7 @@ NameVirtualHost *
 		AllowOverride None
 	</Directory>
 	<Directory /var/www/openflights>
-		Options Indexes FollowSymLinks MultiViews +Includes
+		Options -Indexes FollowSymLinks MultiViews +Includes
 		AllowOverride None
 		Order allow,deny
 		allow from all
