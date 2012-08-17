@@ -175,7 +175,7 @@ function ts_resortTable(lnk, clid) {
 	// Work out a type for the column
 	if (t.rows.length <= 1) return;
 	var itm = "";
-	var i = 0;
+	var i = 1;
 	while (itm == "" && i < t.tBodies[0].rows.length) {
 		var itm = ts_getInnerText(t.tBodies[0].rows[i].cells[column]);
 		itm = trim(itm);
