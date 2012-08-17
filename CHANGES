@@ -1,3 +1,11 @@
+<b>2012-08-17</b>
+
+* Bugfix: Miles in table sort incorrectly (2053276)
+
+<b>2012-07-30</b>
+
+* Support for Italian, Korean added
+
 <b>2012-06-20</b>
 
 * TripIt: Better handle trips with no flight segments
