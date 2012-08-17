@@ -16,7 +16,7 @@ require_once("./php/helper.php");
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript" src="/OpenLayers.js?version=20091204"></script>
     <script type="text/javascript" src="/js/greatcircle.js?version=20101016"></script>
-    <script type="text/javascript" src="/js/utilities.js?version=20090326"></script>
+    <script type="text/javascript" src="/js/utilities.js?version=20120817"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
     <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
