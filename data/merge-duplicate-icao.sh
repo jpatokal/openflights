@@ -7,7 +7,7 @@ mysql -u root -p -e "select icao into outfile '/tmp/duplicate-airports' from air
 wc -l /tmp/duplicate-airports
 for icao in `cat /tmp/duplicate-airports`; do
   echo $icao
-  mysql -u openflights -e "set @icao = \"$icao\"; source ../sql/merge-airports.sql;" flightdb2
+  mysql -u openflights -e "set @icao = \"$icao\"; source ../sql/merge-duplicate-icao.sql;" flightdb2
   read -p "Press ENTER to continue or 'q' to abort: " input
   if [ $input = "q" ]; then
     sudo rm /tmp/duplicate-airports
