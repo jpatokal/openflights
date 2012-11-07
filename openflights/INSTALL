@@ -16,16 +16,20 @@ sudo a2enmod include
 cd /var/www
 sudo svn co https://openflights.svn.sourceforge.net/svnroot/openflights .
 
+# Generates locales for language support
+cd openflights
+find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
+
 # Enable uploads
 cd openflights
 sudo chown www-data:www-data import
 
-# Generates locales for language support
-find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
-
 # Set up database
 mysql -u root -p <sql/create.sql
 mysql -u openflights flightdb2 --local-infile <sql/load-data.sql
+
+# Generates locales for language support
+find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
 
 # Set up TripIt (if you need it)
 sudo vi php/secrets.php
@@ -40,3 +44,4 @@ sudo cp apache2/openflights /etc/apache2/sites-available/
 cd /etc/apache2/sites-enabled
 sudo ln -s ../sites-available/openflights openflights
 sudo service apache2 restart
+
