@@ -103,7 +103,16 @@
 		</tr>
 	    </table>
 	    
-	    <p>You are logged in <b><?php echo $_SESSION["name"]; ?></b>.  Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted.  Please allow one business day for your elite status to be activated.</p>
+<?php
+$uid = $_SESSION["uid"];
+$logged_in = $uid and !empty($uid);
+if($logged_in) {
+?>	
+	    <p>You are logged in <b><?php echo $_SESSION["name"]; ?></b>.
+<?php } else { ?>
+		<p><b>Please <a href="/">log in</a> before donating!</b>
+<?php } ?>
+		Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted.  Please allow one business day for your elite status to be activated.</p>
 
 	    <h4>Limited time offer</h4>
 
