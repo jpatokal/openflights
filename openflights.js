@@ -2893,7 +2893,7 @@ function login(str, param) {
       $("news").style.display = 'inline';
       $("news").innerHTML = getEliteIcon("X") +
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
-	gt.gettext("<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!");
+	gt.gettext("<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!");
       break;
 
     case "G":

@@ -312,7 +312,7 @@ function getEliteIcon(e, validity) {
 	if(validity) {
 	  return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small></center>";
 	} else {
-	  return "<span style='float: right'><a href='/donate.html' target='_blank'><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a></span>";
+	  return "<span style='float: right'><a href='/donate' target='_blank'><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a></span>";
 	}
       }
     }
