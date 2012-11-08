@@ -138,7 +138,7 @@ echo "[url=http://openflights.org/user/" . $settings["name"] . "]\n[img]http://o
 		    <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php if($settings["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open") ?></td>
 		    <td class="desc">
 		    <span id="privacyN" style="display: none">
-		    <?php printf (_("<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."), 'a href="/donate.html" target="_blank"') ?>
+		    <?php printf (_("<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."), 'a href="/donate" target="_blank"') ?>
 		      </span>
 		    <span id="privacyY" style="display: inline"><?php echo _("<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed.") ?></span>
 		    <span id="privacyO" style="display: none"><?php echo _("<b>Open</b> profiles let others see, but not edit, your detailed flight data as well.") ?></span></td>
@@ -162,12 +162,12 @@ echo "[url=http://openflights.org/user/" . $settings["name"] . "]\n[img]http://o
 		  <tr class="gold">
 		    <td class="key"><?php echo _("Guest password") ?></td>
 		    <td class="value"><INPUT type="password" name="guestpw" size="20" DISABLED></td>
-				<td class="desc" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Password protect your Private profile, so only friends and family can see it.") ?></tr><tr class="gold">
+				<td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Password protect your Private profile, so only friends and family can see it.") ?></tr><tr class="gold">
  		    <td class="key"><?php echo _("Default view") ?></td>
 		    <td class="value"><input type="radio" name="startpane" value="H" DISABLED <?php if($settings["startpane"] == "H") { echo "CHECKED"; } echo ">" . _("Help") ?><br>
 		    <input type="radio" name="startpane" value="A" DISABLED <?php if($settings["startpane"] == "A") { echo "CHECKED"; } echo ">" . _("Analyze") ?><br>
 		    <input type="radio" name="startpane" value="T" DISABLED <?php if($settings["startpane"] == "T") { echo "CHECKED"; } echo ">" . _("Top 10") ?></td>
-				<td class="desc" colspan=2><a href="/donate.html" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Display a screen of your choice instead of banner ads.") ?>
+				<td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Display a screen of your choice instead of banner ads.") ?>
 		  </tr><tr>
  		    <td colspan="4"><h2><?php echo _("Manage flights") ?></h2></td>
 		  </tr><tr>
