@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -15,7 +16,7 @@
 	  <div id="nonmap">
 	    
 	    <h1>Donations and Elite Levels</h1>
-	    
+	
 	    <p>True to our name, we at OpenFlights believe in open access &mdash; the functionality on our website, and the source code behind it, is free to all.  However, hosting the site costs real money, and the ads alone aren't enough to pay our bills.  Donations to help support the site are thus <b>very</b> much appreciated, and in addition to an Elite-level star on your profile and bragging rights, donors receive a few extra goodies.</p>
 
 	    <h4>OpenFlights Elite levels</h4>
@@ -42,12 +43,14 @@
 		  </td><td class="donate">
 		    <b>US$10/year</b>
 		  </td><td class="donate">
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="1879981">
-<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="">
-<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-</form>
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="3X88LMPUUXD26">
+			<input type="hidden" name="on0" value="Username">
+			<input type="hidden" name="os0" value="<?php echo $_SESSION["name"]; ?>">
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+			<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+			</form>
 		  </td>
 		</tr>
 		<tr>
@@ -65,12 +68,14 @@
 		    <b>US$20/year</b>
 		  </td>
 		  <td class="donate">
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="1880116">
-<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="">
-<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-</form>
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="CF6B9GXAHY4ML">
+			<input type="hidden" name="on0" value="Username">
+			<input type="hidden" name="os0" value="<?php echo $_SESSION["name"]; ?>">
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+			<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+			</form>
 		  </td>
 		</tr>
 		<tr>
@@ -86,17 +91,19 @@
 		  </td><td class="donate">
 		    <b>US$50/year</b>
 		  </td><td class="donate">
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="1880127">
-<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="">
-<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-</form>
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="TST2ERUAQDU4G">
+			<input type="hidden" name="on0" value="Username">
+			<input type="hidden" name="os0" value="<?php echo $_SESSION["name"]; ?>">
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+			<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+			</form>
 	    </td>
 		</tr>
 	    </table>
 	    
-	    <p>Do not forget to <b>tell us your OpenFlights username</b> in your donation!  Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted.  Please allow one business day for your elite status to be activated.</p>
+	    <p>You are logged in <b><?php echo $_SESSION["name"]; ?></b>.  Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted.  Please allow one business day for your elite status to be activated.</p>
 
 	    <h4>Limited time offer</h4>
 
