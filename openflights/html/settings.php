@@ -78,7 +78,7 @@ if(isSet($_GET["new"])) {
   if(!$uid or empty($uid)) {
     die(_("Your session has timed out, please log in again."));
   }
-  $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, fbuid, sessionkey, locale FROM users AS u LEFT JOIN facebook AS fb ON fb.uid=u.uid WHERE u.uid=" . $uid;
+  $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=" . $uid;
   $result = mysql_query($sql, $db);
   if(! $settings = mysql_fetch_array($result, MYSQL_ASSOC)) {
     die(_("Could not load profile data"));
@@ -92,22 +92,6 @@ if(isSet($_GET["new"])) {
 		    <td class="value" rowspan=3><span id="eliteicon"></span>
                     <input type="hidden" name="elite" value="<?php echo $settings["elite"] ?>">
                     <input type="hidden" name="validity" value="<?php echo $settings["validity"] ?>">
-		  </tr><tr>
-                    <td class="key"><?php echo _("Facebook link") ?></td>
-                    <td class="value"><span id="facebook"><i><?php
-if($settings["fbuid"]) {
-  if($settings["sessionkey"]) {
-    echo _("Linked, automatic updates");
-  } else {
-    echo _("Linked, manual updates only") . "<br><small><a target='_blank' href='http://apps.facebook.com/openflights'>" . _("Automate") . "</a></small>";
-  }
-} else {
-  echo _("Not active") . "<br><small><a target='_blank' href='http://apps.facebook.com/openflights?ofname=" .
-	$settings["name"] . "'>" . _("Add link") . "</a></small>";
-}
-?></i></span></td>
-		    <td class="desc">
-      <?php printf(_("Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."), "a href='http://apps.facebook.com/openflights'", "a href='http://facebook.com'"); ?></td>
 		  </tr><tr>
 	       <td class="key"><?php echo _("Banners") ?></td>
 	       <td class="value" colspan=2><?php echo _("Blog banner (HTML)") ?><br>
