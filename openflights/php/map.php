@@ -4,6 +4,35 @@ include 'db.php';
 include 'helper.php';
 include 'filter.php';
 
+// This applies only when viewing another's flights
+$user = $_POST["user"];
+if(! $user) {
+  $user = $_GET["user"];
+}
+$trid = $_POST["trid"];
+if(! $trid) {
+  $trid = $_GET["trid"];
+}
+
+// Login via vBulletin cookies
+$bb_uid = $_COOKIE["bb_userid"];
+if($OF_VBULLETIN_LOGIN && ! empty($bb_uid)) {
+  $sql = "SELECT uid,name,email,editor,elite,units,locale FROM users WHERE bb_uid=" . $bb_uid;
+  $result = mysql_query($sql, $db);
+  if ($myrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    $uid = $_SESSION['uid'] = $myrow["uid"];
+    $_SESSION['name'] = $myrow["name"];
+    $_SESSION['email'] = $myrow["email"];
+    $_SESSION['editor'] = $myrow["editor"];
+    $_SESSION['elite'] = $myrow["elite"];
+    $_SESSION['units'] = $myrow["units"];
+  } else {
+    if(! $trid && ! $user) {
+      die("Signup;No username found for ID " . $bb_uid);
+    }
+  }
+}
+
 $uid = $_SESSION["uid"];
 $challenge = $_SESSION["challenge"];
 if(!$uid or empty($uid)) {
@@ -20,19 +49,9 @@ if(!$uid or empty($uid)) {
   $editor = $_SESSION["editor"];
 }
 
-// This applies only when viewing another's flights
-$user = $_POST["user"];
-if(! $user) {
-  $user = $_GET["user"];
-}
-
 $init = $_POST["param"];
 if(! $init) {
   $init = $_GET["init"];
-}
-$trid = $_POST["trid"];
-if(! $trid) {
-  $trid = $_GET["trid"];
 }
 $guestpw = $_POST["guestpw"];
 
