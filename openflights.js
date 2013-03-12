@@ -633,6 +633,9 @@ function xmlhttpPost(strURL, id, param) {
       }
       if(strURL == URL_MAP || strURL == URL_ROUTES) {
 	var str = self.xmlHttpReq.responseText;
+  if(str.substring(0,6) == "Signup") {
+    window.location = "/html/settings?new=yes&vbulletin=true"
+  }
 	if(str.substring(0,5) == "Error") {
 	  $("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
 	  $("ajaxstatus").style.display = 'none';
