@@ -1,11 +1,5 @@
 <?php
-$host = "localhost";
-$dbname = "flightdb2";
-$user = "openflights";
-$password = "";
-
-// OpenFlights UID for admin user, used only for special access to airport/airline DBs
-$OF_ADMIN_UID = 3;
+include 'config.php';
 
 // Make the PDO and the legacy database drivers mutually exclusive.
 if (isset($dbh)) {
