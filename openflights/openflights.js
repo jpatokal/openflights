@@ -3280,6 +3280,9 @@ function clearFilter(refresh_all) {
 // lasturl: either URL_MAP or URL_ROUTES (set in updateMap())
 function refresh(init) {
   closePopup();
+  if(typeof lasturl == "undefined") {
+    lasturl = URL_MAP;
+  }
   if(lasturl == URL_MAP) {
     apid = 0;
   }
