@@ -249,7 +249,7 @@ class TripIt {
 
     function _do_request($verb, $entity=null, $url_args=null, $post_args=null) {
         if (in_array($verb, array('/oauth/request_token', '/oauth/access_token') )) {
-            $base_url = implode('/', array($this->_api_url, $verb));
+            $base_url = $this->_api_url . $verb;
         } else {
             if ($entity) {
                 $base_url = implode('/', array($this->_api_url, $this->_api_version, $verb, $entity));
