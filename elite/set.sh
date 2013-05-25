@@ -14,7 +14,7 @@ if [ -z "$VERIFY" ]; then
   exit
 fi
 
-echo "update users set elite='$STATUS', validity=date_add(now(), interval 1 year) where name='$USER';" | mysql -u openflights --skip-column-names flightdb2
+echo "set sql_safe_updates=0; update users set elite='$STATUS', validity=date_add(now(), interval 1 year) where name='$USER';" | mysql -u openflights --skip-column-names flightdb2
 
 if [ -z "$EMAIL" ]; then
   EMAIL=`echo "select email from users where name='$USER';" | mysql -u openflights --skip-column-names flightdb2`
