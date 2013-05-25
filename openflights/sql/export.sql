@@ -6,7 +6,8 @@
 SELECT apid,name,city,country,iata,icao,y,x,elevation,timezone,dst INTO OUTFILE '/tmp/airports.dat'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-FROM airports;
+FROM airports
+LIMIT 10000;
 
 \! echo Airlines...
 
@@ -14,14 +15,16 @@ SELECT alid,name,alias,iata,icao,callsign,country,active INTO OUTFILE '/tmp/airl
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airlines
-WHERE mode='F' AND ((iata!="" AND iata IS NOT NULL) OR (icao!="" AND icao IS NOT NULL));
+WHERE mode='F' AND ((iata!="" AND iata IS NOT NULL) OR (icao!="" AND icao IS NOT NULL))
+LIMIT 10000;
 
 \! echo Routes...
 
 SELECT airline,alid,src_ap,src_apid,dst_ap,dst_apid,codeshare,stops,equipment INTO OUTFILE '/tmp/routes.dat'
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
-FROM routes;
+FROM routes
+LIMIT 100000;
 
 \! echo Countries
 
