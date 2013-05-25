@@ -1,6 +1,6 @@
 <?php
-include 'config.php';
 session_start();
+include 'config.php';
 
 if($OF_USE_LOCALES) {
   if (isSet($_GET["lang"])) {
@@ -38,6 +38,7 @@ if($OF_USE_LOCALES) {
 // $locale -- currently selected locale
 //
 function locale_pulldown($db, $locale) {
+  global $OF_USE_LOCALES;
   echo "<select id='locale' onChange='JavaScript:changeLocale()'>\n";
   if($OF_USE_LOCALES) {
     $sql = "SELECT * FROM locales ORDER BY name ASC";
@@ -47,7 +48,7 @@ function locale_pulldown($db, $locale) {
       printf("<option value='%s' %s>%s (%s)</option>\n", $row["locale"], $selected, $row["name"], substr($row["locale"], 0, 2));
     }
   } else {
-    echo "<option value='en_US.utf8' SELECTED>English</option>\n";
+    echo "<option value='en_US' SELECTED>English</option>\n";
   }
   echo "</select>";
 }
