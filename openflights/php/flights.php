@@ -193,10 +193,7 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
   }
 
   if($export == "export" || $export == "backup") {
-    // Escape strings with commas
-    if(strpos($note, ",") !== false) {
-      $note = "\"" . $note . "\"";
-    }
+    $note = "\"" . $note . "\"";
     $src_time = $row["src_time"];
     // Pad time with space if it's known
     if($src_time) {
