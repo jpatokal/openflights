@@ -3,7 +3,7 @@
 
 \! echo Airports...
 
-SELECT apid,name,city,country,iata,icao,y,x,elevation,timezone,dst INTO OUTFILE '/tmp/airports.dat'
+SELECT apid,name,city,country,iata,icao,y,x,elevation,timezone,dst,tz_id INTO OUTFILE '/tmp/airports.dat'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airports
