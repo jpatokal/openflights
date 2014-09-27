@@ -73,8 +73,12 @@
 		</tr>
 		<tr>
 		  <td class="head">DST</td>
-		  <td class="data">Daylight savings time.  One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a target="_blank" href="help/time.html">Help: Time</i></p>
+		  <td class="data">Daylight savings time.  One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a target="_blank" href="help/time.html">Help: Time</i>
 
+		</tr>
+		<tr>
+		  <td class="head">Tz database time zone</td>
+		  <td class="data">Timezone in <a href="http://en.wikipedia.org/wiki/Tz_database">"tz" (Olson) format</a>, eg. "America/Los_Angeles".
 		</tr>
 	      </tr>
 	    </table>
@@ -84,9 +88,9 @@
 	    <p><i>Note</i>: Rules for daylight savings time change from year to year and from country to country.  The current data is an approximation for 2009, built on a country level.  Most airports in DST-less regions in countries that generally observe DST (eg. AL, HI in the USA, NT, QL in Australia, parts of Canada) are marked incorrectly.</p>
 
 	    <h4>Sample entries</h4>
-	    <pre>507,"Heathrow","London","United Kingdom","LHR","EGLL",51.4775,-0.461389,83,0,"E"
-26,"Kugaaruk","Pelly Bay","Canada","YBB","CYBB",68.534444,-89.808056,56,-6,"A"
-3127,"Pokhara","Pokhara","Nepal","PKR","VNPK",28.200881,83.982056,2712,5.75,"N"</pre>
+	    <pre>507,"Heathrow","London","United Kingdom","LHR","EGLL",51.4775,-0.461389,83,0,"E","Europe/London"
+26,"Kugaaruk","Pelly Bay","Canada","YBB","CYBB",68.534444,-89.808056,56,-7,"A","America/Edmonton"
+3127,"Pokhara","Pokhara","Nepal","PKR","VNPK",28.200881,83.982056,2712,5.75,"N","Asia/Katmandu"</pre>
 
 	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Try it out: <a target="_blank" href="html/apsearch">Airport Search</a> (new window)</p>
 
