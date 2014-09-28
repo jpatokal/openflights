@@ -1,8 +1,3 @@
-CREATE DATABASE flightdb2;
-
-CREATE USER openflights@localhost;
-GRANT ALL PRIVILEGES ON flightdb2.* TO openflights@localhost;
-
 CONNECT flightdb2;
 
 DROP TABLE IF EXISTS `airlines`;
@@ -36,6 +31,7 @@ CREATE TABLE `airports` (
   `uid` int(11) default NULL,
   `timezone` float default NULL,
   `dst` char(1) default NULL,
+  `tz_id` text,
   PRIMARY KEY  (`apid`),
   KEY `x` (`x`),
   KEY `y` (`y`),
