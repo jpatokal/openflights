@@ -1,7 +1,7 @@
 \! echo Importing airlines...
 
 LOAD DATA LOCAL INFILE 'data/airlines.dat'
-INTO TABLE airlines
+REPLACE INTO TABLE airlines
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -10,16 +10,16 @@ LINES TERMINATED BY '\n'
 \! echo Importing airports...
 
 LOAD DATA LOCAL INFILE 'data/airports.dat'
-INTO TABLE airports
+REPLACE INTO TABLE airports
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-(apid, name, city, country, iata, icao, y, x, elevation, timezone, dst);
+(apid, name, city, country, iata, icao, y, x, elevation, timezone, dst, tz_id);
 
 \! echo Importing routes...
 
 LOAD DATA LOCAL INFILE 'data/routes.dat'
-INTO TABLE routes
+REPLACE INTO TABLE routes
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -28,7 +28,7 @@ LINES TERMINATED BY '\n'
 \! echo Importing countries...
 
 LOAD DATA LOCAL INFILE 'data/countries.dat'
-INTO TABLE countries
+REPLACE INTO TABLE countries
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -37,7 +37,7 @@ LINES TERMINATED BY '\n'
 \! echo Importing locales...
 
 LOAD DATA LOCAL INFILE 'locale/locales.dat'
-INTO TABLE locales
+REPLACE INTO TABLE locales
 CHARACTER SET utf8
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
