@@ -2373,7 +2373,7 @@ function calcDuration(param) {
       dst_time = dst_time % 24;
       while(dst_time < 0) dst_time += 24;
       hours = Math.floor(dst_time);
-      mins = Math.floor(dst_time-hours) * 60);
+      mins = Math.floor((dst_time-hours) * 60);
       if(mins < 10) {
 	mins = "0" + mins + "";
       }
