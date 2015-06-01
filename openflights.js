@@ -4,7 +4,7 @@
  */
 
 // Core map features
-var map, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
+var map, proj, drawControls, selectControl, selectedFeature, lineLayer, currentPopup;
 var paneStack = [ "ad" ];
 
 // User settings (defaults)
@@ -102,11 +102,11 @@ function init(){
   topmodes = { "F":gt.gettext("Segments"), "D":gt.gettext("Mileage") };
 
   var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
+  var projectionName = "EPSG:4326";  // spherical Mercator
   map = new OpenLayers.Map('map', {
-      //eventListeners: { "zoomend": zoomEvent },
-                               maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
-			       restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
-			       maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
+            //maxResolution: 1,
+            maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
+			      maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
 			       maxZoomLevel: 8,
 			       controls: [
 					  new OpenLayers.Control.PanZoom(),
@@ -115,22 +115,52 @@ function init(){
 					  new OpenLayers.Control.ScaleLine(),
 					  new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
 					  ] });
-  
-  var olWms = new OpenLayers.Layer.WMS( "Political (OSGeo)",
-					 "http://vmap0.tiles.osgeo.org/wms/vmap0?",
-					 {layers: 'basic'},
-					 {transitionEffect: 'resize', wrapDateLine: true}
-					 );
-  
-  var jplWms = new OpenLayers.Layer.WMS("Geographical (OpenGeo)",
-                "http://maps.opengeo.org/geowebcache/service/wms?TILED=true&",
-                {layers: 'bluemarble'},
-	        {transitionEffect: 'resize', wrapDateLine: true}
-            );
-  jplWms.setVisibility(false);
+proj = new OpenLayers.Projection(projectionName);
+
+var poliLayer = new OpenLayers.Layer.XYZ(
+    "Political",
+    [
+"http://a.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
+"http://b.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
+"http://c.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
+"http://d.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png"
+    ], {
+        attribution: "Map tiles by <a href='http://cartodb.com'>CartoDB</a> (CC BY 3.0), data by <a href='/http://openstreetmap.com'>OSM</a> (ODbL)",
+        sphericalMercator: true,
+        transitionEffect: 'resize',
+        wrapDateLine: true
+    });
+
+var artLayer = new OpenLayers.Layer.XYZ(
+    "Artistic",
+    [
+"http://c.tile.stamen.com/watercolor/${z}/${x}/${y}.png"
+    ], {
+        attribution: "Tiles &copy; <a href='http://maps.stamen.com/'>Stamen</a>",
+        sphericalMercator: true,
+        transitionEffect: 'resize',
+        wrapDateLine: true
+    });
+  artLayer.setVisibility(false);
+
+var earthLayer = new OpenLayers.Layer.XYZ(
+    "Satellite",
+    [
+"http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
+"http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
+"http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
+"http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png"
+    ], {
+        attribution: "Tiles by <a href='http://open.mapquest.co.uk/' target='_blank'>MapQuest</a>",
+        sphericalMercator: true,
+        transitionEffect: 'resize',
+        wrapDateLine: true
+    });
+  earthLayer.setVisibility(false);
 
   lineLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
-					{styleMap: new OpenLayers.StyleMap({
+					{ projection: projectionName,
+            styleMap: new OpenLayers.StyleMap({
 					    strokeColor: "${color}",
 						strokeOpacity: 1,
 						strokeWidth: "${count}",
@@ -197,7 +227,8 @@ function init(){
   renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
   var strategy = new OpenLayers.Strategy.Cluster({distance: 15, threshold: 3});
   airportLayer = new OpenLayers.Layer.Vector("Airports",
-					     {styleMap: new OpenLayers.StyleMap
+					     { projection: projectionName,
+                 styleMap: new OpenLayers.StyleMap
 						 ({'default': style,
 						   'select':{
 						   fillOpacity: 1.0,
@@ -206,17 +237,17 @@ function init(){
 						       }}),
 						 renderers: renderer,
 						 strategies: [strategy]});
-  map.addLayers([olWms, jplWms, lineLayer, airportLayer]);
+  map.addLayers([poliLayer, artLayer, earthLayer, lineLayer, airportLayer]);
 
   selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {onSelect: onAirportSelect,
 							              onUnselect: onAirportUnselect});
   map.addControl(selectControl);
   selectControl.activate();
 
-  // When using the JPL map layer, change the font color from black to white, since the map is mostly dark colors.
+  // When using the earth map layer, change the font color from black to white, since the map is mostly dark colors.
   map.events.on({
     "changelayer":function () {
-      if(jplWms.visibility) {
+      if(earthLayer.visibility) {
         style.defaultStyle.fontColor = "#fff";
       } else {
         style.defaultStyle.fontColor = "#000";
@@ -313,6 +344,19 @@ function parseUrl()
   } else return [null,null];
 }
 
+function projectedPoint(x, y) {
+  var point = new OpenLayers.Geometry.Point(x, y);
+  point.transform(proj, map.getProjectionObject());
+  return point;
+}
+
+function projectedLine(points) {
+  var line = new OpenLayers.Geometry.LineString(points);
+  line.transform(proj, map.getProjectionObject());
+  console.log(line, points, proj, map.getProjectionObject());
+  return line;
+}
+
 // Draw a flight connecting (x1,y1)-(x2,y2)
 // Note: Values passed in *must already be parsed as floats* or very strange things happen
 function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
@@ -335,10 +379,10 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   if(x1 < 0 || x2 < 0) {
     paths.push(gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2)));
   }
-
+  console.log("PATHS", paths)
   var features = [];
   for(i = 0; i < paths.length; i++) {
-    features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(paths[i]),
+    features.push(new OpenLayers.Feature.Vector(projectedLine(paths[i]),
 						{count: count, color: color, stroke: stroke}));
   }
   return features;
@@ -385,8 +429,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     return;
   }
 
-  var point = new OpenLayers.Geometry.Point(x, y);
-  var feature = new OpenLayers.Feature.Vector(point);
+  var feature = new OpenLayers.Feature.Vector(projectedPoint(x,y));
   feature.attributes = {
     apid: apid,
     coreid: coreid,
@@ -2443,7 +2486,7 @@ function markAirport(element, quick) {
   var y = data[3];
 
   if(apid > 0) {
-    var point = new OpenLayers.Geometry.Point(x, y);
+    var point = projectedPoint(x, y);
     var marker = new OpenLayers.Feature.Vector(point);
     marker.attributes = {
       name: "",
