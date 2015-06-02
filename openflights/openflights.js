@@ -101,21 +101,23 @@ function init(){
   modeoperators = { "F":gt.gettext("airline"), "T":gt.gettext("railway"), "R":gt.gettext("road transport"), "S":gt.gettext("shipping") };
   topmodes = { "F":gt.gettext("Segments"), "D":gt.gettext("Mileage") };
 
-  var bounds = new OpenLayers.Bounds(-180, -90, 180, 90);
   var projectionName = "EPSG:4326";  // spherical Mercator
+  proj = new OpenLayers.Projection(projectionName);
+
   map = new OpenLayers.Map('map', {
-            //maxResolution: 1,
-            maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
-			      maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
-			       maxZoomLevel: 8,
-			       controls: [
-					  new OpenLayers.Control.PanZoom(),
-					  new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
-					  new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
-					  new OpenLayers.Control.ScaleLine(),
-					  new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
-					  ] });
-proj = new OpenLayers.Projection(projectionName);
+    center: new OpenLayers.LonLat(0, 1682837.6144925),
+    controls: [
+      new OpenLayers.Control.PanZoom(),
+      new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
+      new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
+      new OpenLayers.Control.ScaleLine(),
+      new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
+    ] });
+
+  // Horrible hack to stop OpenLayers 2 from showing ZL < 2
+  map.events.register('zoomend', this, function (event) {
+    if(map.getZoom() < 2) { map.zoomTo(2); }
+  });
 
 var poliLayer = new OpenLayers.Layer.XYZ(
     "Political",
@@ -314,7 +316,7 @@ var earthLayer = new OpenLayers.Layer.XYZ(
     }
     $('b_less').disabled = true;
 
-    map.zoomToMaxExtent();
+    map.zoomTo(2);
   }
 
   OpenLayers.Util.alphaHack = function() { return false; };
@@ -353,7 +355,6 @@ function projectedPoint(x, y) {
 function projectedLine(points) {
   var line = new OpenLayers.Geometry.LineString(points);
   line.transform(proj, map.getProjectionObject());
-  console.log(line, points, proj, map.getProjectionObject());
   return line;
 }
 
@@ -379,7 +380,6 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   if(x1 < 0 || x2 < 0) {
     paths.push(gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2)));
   }
-  console.log("PATHS", paths)
   var features = [];
   for(i = 0; i < paths.length; i++) {
     features.push(new OpenLayers.Feature.Vector(projectedLine(paths[i]),
@@ -705,7 +705,7 @@ function xmlhttpPost(strURL, id, param) {
 	    $('qsid').value = 0;
 	    $('qsgo').disabled = true;
 	    if(filter_alid == 0) {
-	      var extent = getVisibleDataExtent(lineLayer);
+        var extent = airportLayer.getDataExtent();
 	      if(extent) map.zoomToExtent(extent);
 	    }
 	  }
@@ -3310,7 +3310,7 @@ function clearFilter(refresh_all) {
   $('filter_extra_span').innerHTML = "";
   selectAirline(0);
   if(refresh_all && lasturl == URL_ROUTES) {
-    var extent = getVisibleDataExtent(lineLayer);
+    var extent = airportLayer.getDataExtent();
     if(extent) map.zoomToExtent(extent);
     lasturl = URL_MAP;
   }
