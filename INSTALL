@@ -14,7 +14,7 @@ sudo a2enmod include
 
 # Checkout a copy of OpenFlights into /var/www
 cd /var/www
-git clone git@github.com:jpatokal/openflights.git
+git clone https://github.com/jpatokal/openflights.git
 
 # Generates locales for language support
 cd openflights
