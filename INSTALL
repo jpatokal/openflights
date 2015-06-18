@@ -5,8 +5,8 @@ The following assumes you have a fresh install of Ubuntu 12.04 and you're logged
 
 ---
 
-# Set up LAMP & SVN
-sudo apt-get install php5 php5-mysql mysql-server apache2 subversion
+# Set up LAMP & Git
+sudo apt-get install php5 php5-mysql mysql-server apache2 git
 
 # Enable Apache modules
 sudo a2enmod rewrite
