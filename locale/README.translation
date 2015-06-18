@@ -8,15 +8,15 @@ OpenFlights currently contains about 400 strings, mostly short but some long.  Y
 
 2a) To create a new language, download a copy of the blank template:
 
-  http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/locale/template.po
+  https://github.com/jpatokal/openflights/blob/master/locale/template.po
 
 2b) To edit an existing language, browse to:
 
-  http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/locale/
+  https://github.com/jpatokal/openflights/blob/master/locale/
 
 ...and find the existing messages.po file.  For example, the Japanese (ja) file is here under the "ja_JP.utf8" directory:
 
-  http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/locale/ja_JP.utf8/LC_MESSAGES/messages.po
+  https://github.com/jpatokal/openflights/blob/master/locale/ja_JP.utf8/LC_MESSAGES/messages.po
 
 3) Load the .po file in POEdit.
 

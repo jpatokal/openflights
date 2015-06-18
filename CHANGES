@@ -1,3 +1,14 @@
+<b>2015-06-18</b>
+
+* Bugfix: Fix CSS for layer switcher
+
+<b>2015-06-02</b>
+
+* Switch map projection to from plate carree to Web Mercator
+* Migrate to new tile servers using MapBox, MapQuest, Stamen
+
+--discontinuity --
+
 <b>2012-08-17</b>
 
 * Bugfix: Miles in table sort incorrectly (2053276)
