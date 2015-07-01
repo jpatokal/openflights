@@ -27,8 +27,8 @@ that wraps around a MySQL database.
 ## Tests
 
 Test coverage is woefully incomplete, but comes in three flavors:
-- [`server`](test/server/): Server-side (PHP) integration tests, require a live database.
-- [`server`](test/client/): Client-side full-stack integration tests
+- [`client`](test/client/): Client-side full-stack integration tests, require live DB & server
+- [`server`](test/server/): Server-side (PHP) integration tests, require a live database
 - [`unit`](test/unit/): Client-side JavaScript unit tests
 
 ## Installation
