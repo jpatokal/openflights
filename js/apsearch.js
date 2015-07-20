@@ -50,7 +50,10 @@ function xmlhttpPost(strURL, offset, action) {
   self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   self.xmlHttpReq.onreadystatechange = function() {
     if (self.xmlHttpReq.readyState == 4) {
-
+    if(self.xmlHttpReq.status != 200) {
+      document.getElementById("miniresultbox").innerHTML = self.xmlHttpReq.statusText;
+      return;
+    }
       if(strURL == URL_APSEARCH) {
 	if(action == "SEARCH") {
 	  searchResult(self.xmlHttpReq.responseText);

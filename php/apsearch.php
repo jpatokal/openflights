@@ -1,7 +1,8 @@
 <?php
-require_once("../php/locale.php");
-require_once("../php/db.php");
-require_once("../php/helper.php");
+require_once '../vendor/autoload.php';
+require_once '../php/locale.php';
+require_once '../php/db.php';
+require_once '../php/helper.php';
 
 header("Content-type: text/html");
 
@@ -86,21 +87,55 @@ if($action == "RECORD") {
       json_success(array("apid" => mysql_insert_id(), "message" => "New airport successfully added."));
     } else {
       if(mysql_affected_rows() == 1) {
-	json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
+        json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
       } else {
-	json_error("Editing airport failed:", $sql);
+        json_error("Editing airport failed:", $sql);
       }
     }
   } else {
-    $subject = "OpenFlights: Airport edit";
-    $body = "New edit submitted by " . $_SESSION['name'] . " (" . $_SESSION['email'] . "):\n$sql\n\nExisting airport information:\n" . implode("\n", $duplicates);
-    $headers = "From: info+apsearch@openflights.org\r\nTo: info@openflights.org\r\nReply-To: " . $_SESSION['email'];
+    $icao = mysql_real_escape_string($icao);
+    $name = $_SESSION['name'];
+    $data = print_r(implode("\n", $duplicates), TRUE);
+    $subject = sprintf("Update airport %s (%s/%s)",
+      mysql_real_escape_string($airport),
+      mysql_real_escape_string($iata),
+      $icao);
+    $body = <<<TXT
+New airport edit suggestion submitted by $name:
+
+$sql;
+
+Existing, potentially conflicting airport information:
+
+```
+$data
+```
+
+Cross-check this edit on other sites with compatible licensing:
+- OurAirports: http://ourairports.com/airports/$icao/pilot-info.html
+- Wikipedia: http://www.google.com/search?q=wikipedia%20$icao%20airport&btnI
+TXT;
     if(isSet($_POST["unittest"])) {
-      echo $headers . "\n\n" . $body;
+      echo $subject . "\n\n" . $body;
       exit;
     }
-    if (mail($email, $subject, $body, $headers)) {
-      json_success(array("apid" => $apid, "message" => "Edit submitted for review.  If you have registered an e-mail address, you will be notified when the edit is reviewed."));
+    $github = new \Github\Client();
+    $github->authenticate($GITHUB_ACCESS_TOKEN, NULL, Github\Client::AUTH_HTTP_TOKEN);
+
+    $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO in:title $icao");
+    if(count($issues['items']) > 0) {
+      // Existing issue, add comment
+      $issue_number = $issues['items'][0]['number'];
+      $result = $github->api('issue')->comments()->create($GITHUB_USER, $GITHUB_REPO,
+        $issue_number, array('body' => $body));
+    } else {
+      // New issue
+      $result = $github->api('issue')->create($GITHUB_USER, $GITHUB_REPO,
+        array('title' => $subject, 'body' => $body, 'labels' => array('airport')));
+    }
+    if (TRUE) {
+      $message = "Edit submitted for review on Github: Issue {$result['number']}, {$result['html_url']}";
+      json_success(array("apid" => $apid, "message" => $message));
     } else {
       json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
     }

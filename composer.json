@@ -1,0 +1,5 @@
+{
+    "require": {
+        "knplabs/github-api": "^1.4"
+    }
+}
