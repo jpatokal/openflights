@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . '/simpletest/autorun.php');
-require_once(dirname(__FILE__) . '/simpletest/web_tester.php');
 include_once(dirname(__FILE__) . '/config.php');
 
 // Test cases for php/import.php

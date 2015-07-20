@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e12e1e093606e5be6f37df9e86488a83",
+    "hash": "ac1eef373905ba039bb27d286a321bd4",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -161,6 +161,39 @@
                 "github"
             ],
             "time": "2015-06-17 08:02:22"
+        },
+        {
+            "name": "lastcraft/simpletest",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lox/simpletest.git",
+                "reference": "1c9db340b758919f16c46d496476432d94400955"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lox/simpletest/zipball/1c9db340b758919f16c46d496476432d94400955",
+                "reference": "1c9db340b758919f16c46d496476432d94400955",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.5"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Marcus Baker",
+                    "email": "marcus@lastcraft.com",
+                    "role": "Original project lead"
+                }
+            ],
+            "description": "Unit testing, mock objects and web testing framework for PHP built around test cases.",
+            "homepage": "http://simpletest.org/",
+            "time": "2012-06-12 05:22:54"
         },
         {
             "name": "symfony/event-dispatcher",

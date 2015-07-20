@@ -1,5 +1,6 @@
 {
     "require": {
-        "knplabs/github-api": "^1.4"
+        "knplabs/github-api": "^1.4",
+        "lastcraft/simpletest": "^1.1"
     }
 }

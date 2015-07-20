@@ -1,4 +1,6 @@
 <?php
+require_once(dirname(__FILE__) . '/../../vendor/lastcraft/simpletest/autorun.php');
+require_once(dirname(__FILE__) . '/../../vendor/lastcraft/simpletest/web_tester.php');
 
 // Address of OpenFlights install
 $webroot = 'http://openflights.local/';

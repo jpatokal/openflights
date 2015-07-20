@@ -1,77 +1,77 @@
 <?php
-require_once('simpletest/unit_tester.php');
-require_once('simpletest/reporter.php');
+require_once('../../vendor/lastcraft/simpletest/unit_tester.php');
+require_once('../../vendor/lastcraft/simpletest/reporter.php');
 require_once('config.php');
 
 print '<h1>OpenFlights PHP/SQL Test Suite</h1>';
 
 // Helper functions
 $test = &new TestSuite('Helper');
-$test->addTestFile('helper.php');
+$test->addFile('helper.php');
 $test->run(new HtmlReporter());
 
 // Create user
 $test = &new TestSuite('Signup/Settings');
-$test->addTestFile('settings.php');
+$test->addFile('settings.php');
 $test->run(new HtmlReporter());
 
 $test = &new TestSuite('Login');
-$test->addTestFile('login.php');
+$test->addFile('login.php');
 $test->run(new HtmlReporter());
 
 // Add flights
 $test = &new TestSuite('Submit/Flights');
-$test->addTestFile('submit.php');
+$test->addFile('submit.php');
 $test->run(new HtmlReporter());
 
 // Trips
 $test = &new TestSuite('Trips');
-$test->addTestFile('trip.php');
+$test->addFile('trip.php');
 $test->run(new HtmlReporter());
 
 // Map
 $test = &new TestSuite('Map');
-$test->addTestFile('map.php');
+$test->addFile('map.php');
 $test->run(new HtmlReporter());
 
 // "Analyze" stats
 $test = &new TestSuite('Analyse (Stats)');
-$test->addTestFile('stats.php');
+$test->addFile('stats.php');
 $test->run(new HtmlReporter());
 
 // Top 10 stats
 $test = &new TestSuite('Top 10');
-$test->addTestFile('top10.php');
+$test->addFile('top10.php');
 $test->run(new HtmlReporter());
 
 // Add airport
 $test = &new TestSuite('Airport Search');
-$test->addTestFile('apsearch.php');
+$test->addFile('apsearch.php');
 $test->run(new HtmlReporter());
 
 // Add airline
 $test = &new TestSuite('Airline Search');
-$test->addTestFile('alsearch.php');
+$test->addFile('alsearch.php');
 $test->run(new HtmlReporter());
 
 // Autocompletion results
 $test = &new TestSuite('Autocomplete');
-$test->addTestFile('autocomplete.php');
+$test->addFile('autocomplete.php');
 $test->run(new HtmlReporter());
 
 // Route maps
 $test = &new TestSuite('Routes');
-$test->addTestFile('routes.php');
+$test->addFile('routes.php');
 $test->run(new HtmlReporter());
 
 // Reset password
 $test = &new TestSuite('Reset password');
-$test->addTestFile('resetpw.php');
+$test->addFile('resetpw.php');
 $test->run(new HtmlReporter());
 
 // ...and cleanup after all that
 $test = &new TestSuite('Cleanup');
-$test->addTestFile('cleanup.php');
+$test->addFile('cleanup.php');
 $test->run(new HtmlReporter());
 
 ?>
