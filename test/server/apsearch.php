@@ -21,7 +21,7 @@ class RecordAirportNotLoggedInTest extends WebTestCase {
   function test() {
     global $webroot, $settings;
 
-    $params = array("action" => "RECORD");
+    $params = array("action" => "RECORD", "unittest" => "true");
     $json = json_decode($this->post($webroot . "php/apsearch.php", $params), true);
     $this->assertEqual($json['status'], '0');
   }
@@ -51,9 +51,8 @@ class RecordAirportDuplicateTest extends WebTestCase {
     $params += array("action" => "RECORD", "unittest" => "true");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
 
-    $this->assertText('From: info+apsearch@openflights.org');
-    $this->assertText('Reply-To: test@openflights.example');
-    $this->assertText('New edit submitted by autotest (test@openflights.example):');
+    $this->assertText('Update airport AutoTest Airport (ZZZ/ZZZZ)');
+    $this->assertText('New airport edit suggestion submitted by autotest:');
     $this->assertText("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('AutoTest Airpor");
   }
 }
@@ -70,12 +69,11 @@ class EditWrongAirportTest extends WebTestCase {
     $params += array("action" => "RECORD", "unittest" => "true");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
 
-    $this->assertText('From: info+apsearch@openflights.org');
-    $this->assertText('Reply-To: test@openflights.example');
-    $this->assertText('New edit submitted by autotest (test@openflights.example):');
+    $this->assertText('Update airport AutoTest Airport (ZZZ/ZZZY)');
+    $this->assertText('New airport edit suggestion submitted by autotest:');
     $this->assertText("UPDATE airports SET ");
     $this->assertText("icao='ZZZY'");
-    $this->assertText("[icao] => " . $airports["icao"]);
+    $this->assertText("[icao] => " . $airport["icao"]);
   }
 }
 
@@ -90,9 +88,8 @@ class EditAirportDuplicateICAOTest extends WebTestCase {
     $params["apid"] = $new_apid;
     $params += array("action" => "RECORD", "unittest" => "true");
     $msg = $this->post($webroot . "php/apsearch.php", $params);
-    $this->assertText('From: info+apsearch@openflights.org');
-    $this->assertText('Reply-To: test@openflights.example');
-    $this->assertText('New edit submitted by autotest (test@openflights.example):');
+    $this->assertText('Update airport AutoTest Airport (ZZZ/WSSS)');
+    $this->assertText('New airport edit suggestion submitted by autotest:');
     $this->assertText("UPDATE airports SET name='AutoTest Airport', city='Testville', country='{$airport['country']}', iata='ZZZ', icao='WSSS'");
     $this->assertText("[name] => Changi Intl");
   }
@@ -107,7 +104,7 @@ class EditAirportSuccessfulTest extends WebTestCase {
     $params = $airport;
     $params["apid"] = $new_apid;
     $params["name"] = $airport["name"] . " Edited";
-    $params += array("action" => "RECORD");
+    $params += array("action" => "RECORD", "unittest" => "true");
 
     $json = json_decode($this->post($webroot . "php/apsearch.php", $params), true);
     $this->assertEqual($json['status'], '1');
