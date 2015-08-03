@@ -1,0 +1,51 @@
+2006-01-01,CGK,MDC,,Lion Mentari Airlines,1369,02:57,,,Y,L,,,,"",3275,3250,3290
+2006-01-01,CGK,SIN,,Singapore Airlines,549,01:29,,,Y,B,,,,"",3275,3316,4435
+2006-01-01,CGK,SIN,,Singapore Airlines,549,01:29,,,Y,B,,,,"",3275,3316,4435
+2006-01-01,CGK,SIN,,Valuair,549,01:29,,,Y,B,,,,"",3275,3316,5297
+2006-01-01,KUL,CGK,,KLM Royal Dutch Airlines,703,01:45,,,Y,B,,,,"",3304,3275,3090
+2006-01-01,KUL,SIN,,Singapore Airlines,185,00:50,,,Y,B,,,,"",3304,3316,4435
+2006-01-01,KUL,SIN,,Singapore Airlines,185,00:50,,,Y,B,,,,"",3304,3316,4435
+2006-01-01,MDC,SIN,,SilkAir,1448,03:05,,,Y,L,,,,"",3250,3316,4750
+2006-01-01,SIN,CGK,,Singapore Airlines,549,01:29,,,Y,B,,,,"",3316,3275,4435
+2006-01-01,SIN,CGK,,Singapore Airlines,549,01:29,,,Y,B,,,,"",3316,3275,4435
+2006-01-01,SIN,KUL,,Singapore Airlines,185,00:50,,,Y,B,,,,"",3316,3304,4435
+2006-01-01,SIN,KUL,,Singapore Airlines,185,00:50,,,Y,B,,,,"",3316,3304,4435
+2006-01-01,SIN,KUL,,Singapore Airlines,185,00:50,,,Y,B,,,,"",3316,3304,4435
+2007-01-01,ARN,HEL,,Scandinavian Airlines System,248,00:57,,,Y,L,,,,"",737,421,4319
+2007-01-01,ATQ,DEL,,Jet Airways,258,00:58,,,Y,L,,,,"",3081,3093,3001
+2007-01-01,BCN,MUC,,Lufthansa,680,01:43,,,Y,L,,,,"",1218,346,3320
+2007-01-01,BKK,FUK,,Thai Air Cargo,2317,04:39,,,Y,L,,,,"",3885,2305,4889
+2007-01-01,BKK,SIN,,Jetstar Airways,882,02:05,,,Y,L,,,,"",3885,3316,3052
+2007-01-01,CDG,ARN,,Scandinavian Airlines System,958,02:13,,,Y,L,,,,"",1382,737,4319
+2007-01-01,CLT,NAS,,US Airways,734,01:49,,,Y,L,,,,"",3876,1953,5265
+2007-01-01,DEL,SIN,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3093,3316,4435
+2007-01-01,DEL,SIN,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3093,3316,4435
+2007-01-01,DEL,SIN,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3093,3316,4435
+2007-01-01,DEL,SIN,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3093,3316,4435
+2007-01-01,FUK,KMQ,,All Nippon Airways,390,01:12,,,Y,L,,,,"",2305,2322,324
+2007-01-01,HEL,BCN,,Blue1,1635,03:25,,,Y,L,,,,"",421,1218,1427
+2007-01-01,IAD,SJU,,United Airlines,1576,03:19,,,Y,L,,,,"",3714,2890,5209
+2007-01-01,JDH,DEL,,Indian Airlines,296,01:02,,,Y,L,,,,"",3097,3093,2853
+2007-01-01,LAS,IAD,,United Airlines,2064,04:11,,,Y,L,,,,"",3877,3714,5209
+2007-01-01,MUC,BKK,,Thai Air Cargo,5474,10:17,,,Y,L,,,,"",346,3885,4889
+2007-01-01,NAS,YYZ,,Air Canada,1295,02:49,,,Y,L,,,,"",1953,193,330
+2007-01-01,NRT,SFO,,All Nippon Airways,5118,09:39,,,Y,L,,,,"",2279,3469,324
+2007-01-01,NTQ,HND,,All Nippon Airways,198,00:51,,,Y,L,,,,"",3409,2359,324
+2007-01-01,SFO,PHX,,United Airlines,651,01:40,,,Y,L,,,,"",3469,3462,5209
+2007-01-01,SIN,BKK,,Jetstar Airways,882,02:05,,,Y,L,,,,"",3316,3885,3052
+2007-01-01,SIN,DEL,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3316,3093,4435
+2007-01-01,SIN,DEL,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3316,3093,4435
+2007-01-01,SIN,DEL,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3316,3093,4435
+2007-01-01,SIN,DEL,,Singapore Airlines,2586,05:07,,,Y,B,,,,"",3316,3093,4435
+2007-01-01,SJU,CLT,,US Airways,1478,03:09,,,Y,L,,,,"",2890,3876,5265
+2007-01-01,YUL,CDG,,Air Canada,3436,06:39,,,Y,L,,,,"",146,1382,330
+2007-01-01,YYZ,YOW,,Air Canada,226,00:54,,,Y,L,,,,"",193,100,330
+2007-07-28,SIN,TPE,,Jetstar Airways,2005,04:05,,W,Y,B,Airbus 320,,,"",3316,2276,3052
+2007-08-05,TPE,SIN,,Jetstar Airways,2005,04:05,,W,Y,B,Airbus 320,,,"",2276,3316,3052
+2007-08-06,SIN,DEL,,Singapore Airlines,2586,05:07,,A,Y,B,Boeing 777,,,"",3316,3093,4435
+2007-08-14,DEL,SIN,SQ407,Singapore Airlines,2586,05:07,,A,Y,B,Boeing 777,,,"",3093,3316,4435
+2007-08-29,SIN,MLE,SQ452,Singapore Airlines,2113,04:17,,W,Y,L,Boeing 777,,,"",3316,3156,4435
+2007-09-02,MLE,SIN,SQ451,Singapore Airlines,2113,04:17,,W,Y,L,Boeing 777,,,"",3156,3316,4435
+2007-09-24,SIN,ATH,SQ348,Singapore Airlines,5625,10:34,,W,Y,B,Boeing 777,,,"",3316,3941,4435
+2007-10-03,ATH,DXB,EK106,Emirates,2035,04:08,,,Y,B,Boeing 777,,,"",3941,2188,2183
+﻿Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID

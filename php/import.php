@@ -294,8 +294,8 @@ switch($fileType) {
      die_nicely(_("Sorry, the file $uploadfile does not appear contain FlightMemory FlightData."));
    }
    
-   // 3nd table has the data
-   $rows = pq('table:nth-of-type(3) tr[valign=top]')->elements;
+   // Table with padded cells has the data
+   $rows = pq('table[cellspacing=2] tr[valign=top]')->elements;
    break;
 
  case "CSV":
