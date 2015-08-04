@@ -93,12 +93,13 @@ if($action == "RECORD") {
       }
     }
   } else {
+    $iata = mysql_real_escape_string($iata);
     $icao = mysql_real_escape_string($icao);
     $name = $_SESSION['name'];
     $data = print_r(implode("\n", $duplicates), TRUE);
     $subject = sprintf("Update airport %s (%s/%s)",
       mysql_real_escape_string($airport),
-      mysql_real_escape_string($iata),
+      $iata,
       $icao);
     $body = <<<TXT
 New airport edit suggestion submitted by $name:
@@ -119,10 +120,11 @@ TXT;
       echo $subject . "\n\n" . $body;
       exit;
     }
+    $identifier = ($icao == "") ? $iata : $icao;
     $github = new \Github\Client();
     $github->authenticate($GITHUB_ACCESS_TOKEN, NULL, Github\Client::AUTH_HTTP_TOKEN);
 
-    $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO in:title $icao");
+    $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO in:title $identifier");
     if(count($issues['items']) > 0) {
       // Existing issue, add comment
       $issue_number = $issues['items'][0]['number'];
