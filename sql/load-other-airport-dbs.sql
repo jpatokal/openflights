@@ -8,11 +8,10 @@ LINES TERMINATED BY '\n'
 
 \! echo OpenAirports...
 
-LOAD DATA LOCAL INFILE 'airports.csv'
+LOAD DATA LOCAL INFILE 'data/airports-oa.csv'
 INTO TABLE airports_oa
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-(ident, type, name, y, x, elevation, continent, country, region, city, service, gps, i
-ata, icao, keywords);
+(oaid, ident, type, name, y, x, elevation, continent, country, region, city, service, icao, iata, local, home_link, wp_link, keywords);
 
 UPDATE airports_oa SET icao=ident WHERE LENGTH(ident)=4;

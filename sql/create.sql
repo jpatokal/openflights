@@ -71,23 +71,25 @@ CREATE TABLE `airports_gad` (
 
 DROP TABLE IF EXISTS `airports_oa`;
 CREATE TABLE `airports_oa` (
+  `oaid` int(11) NOT NULL,
+  `ident` text,
+  `type` text,
   `name` text NOT NULL,
-  `city` text,
-  `country` text,
-  `continent` text,
-  `iata` varchar(3) default NULL,
-  `icao` varchar(4) default NULL,
   `x` double NOT NULL,
   `y` double NOT NULL,
   `elevation` int(11) default NULL,
-  `ident` text,
-  `type` text,
+  `continent` text,
+  `country` text,
   `region` text,
+  `city` text,
   `service` text,
-  `gps` text,
+  `icao` varchar(4) default NULL,
+  `iata` varchar(3) default NULL,
+  `local` varchar(3) default NULL,
+  `home_link` text,
+  `wp_link` text,
   `keywords` text,
-  `code` varchar(2) default NULL,
-  KEY `iata` (`iata`)
+  PRIMARY KEY  (`oaid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `countries`;

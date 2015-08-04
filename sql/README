@@ -8,6 +8,8 @@ import-arm.sql
   Import and sync a fresh copy of Airline Route Mapper (ARM) data
 load-data.sql
   Import airlines.dat, airports.dat and routes.dat into OpenFlights database
+load-other-airport-dbs.sql
+  Import DAFIF and OurAirports, useful but not needed by site
 
 *** Site internal scripts
 
