@@ -134,9 +134,10 @@ TXT;
       // New issue
       $result = $github->api('issue')->create($GITHUB_USER, $GITHUB_REPO,
         array('title' => $subject, 'body' => $body, 'labels' => array('airport')));
+      $issue_number = $result['number'];
     }
     if (TRUE) {
-      $message = "Edit submitted for review on Github: Issue {$result['number']}, {$result['html_url']}";
+      $message = "Edit submitted for review on Github: Issue {$issue_number}, {$result['html_url']}";
       json_success(array("apid" => $apid, "message" => $message));
     } else {
       json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
