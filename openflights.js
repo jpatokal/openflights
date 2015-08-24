@@ -1444,7 +1444,7 @@ function listFlights(str, desc, id) {
       table.push("<th>" + gt.gettext("Seat") + "</th><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Trip") + "</th>");
     }
     table.push("<th>" + gt.gettext("Note") + "</th>");
-    if(logged_in || route) {
+    if(logged_in) {
       table.push("<th class=\"unsortable\">" + gt.gettext("Action") + "</th>");
     }
     table.push("</tr>");
@@ -1498,16 +1498,12 @@ function listFlights(str, desc, id) {
         note = note.substring(0, 15) + "&hellip;";
       }
       table.push("<td>" + note + "</td>");
-      if(route) {
-	table.push("<td align='center'><a href='http://www.kayak.com/s/search/air?ai=openflights&do=n&l1=" + col[0] + "&l2=" + col[2] + "&b=" + col[19] + "' title='" + Gettext.strargs(gt.gettext("Buy tickets on %1"), ["Kayak.com"]) + "' target='_blank'><img src='/img/kayak-logo.png' width=42 height=16'></a></td>");
-      } else {
-	if(logged_in) {
-	  table.push("<td>");
-	  table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
-	  table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
-	  table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
-	  table.push("</td>");
-	}
+      if(logged_in && !route) {
+	      table.push("<td>");
+	      table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
+	      table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
+	      table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
+	      table.push("</td>");
       }
       table.push("</tr>");
       fidList.push(fid);
