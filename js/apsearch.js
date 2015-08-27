@@ -91,6 +91,11 @@ function xmlhttpPost(strURL, offset, action) {
       iata = iata.toUpperCase();
       form.iata.value = iata;
     }
+    if(["XXX", "YYY", "ZZZ"].indexOf(iata) > -1) {
+      alert(gt.gettext("Invalid IATA code."));
+      form.iata.focus();
+      return;
+    }
     if(icao != "" && icao.length != 4) {
       alert(gt.gettext("ICAO codes must be exactly four letters."));
       form.icao.focus();

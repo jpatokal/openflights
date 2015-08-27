@@ -87,13 +87,11 @@ function xmlhttpPost(strURL, offset, action) {
       icao = icao.toUpperCase();
       form.icao.value = icao;
     }
-    /*
-    var re_alphanum = /^[-.\'a-zA-Z0-9 ]*$/;
-    if(! re_alphanum.test(name) || ! re_alphanum.test(alias)) {
-      alert("Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airline names.");
+    if(["XXX", "YYY", "ZZZ"].indexOf(icao) > -1) {
+      alert(gt.gettext("Invalid ICAO code."));
+      form.iata.focus();
       return;
     }
-    */
 
     if(action == "RECORD") {
       if(! parent.opener || ! parent.opener.addNewAirline) {
