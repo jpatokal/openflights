@@ -9,8 +9,10 @@ The following assumes you have a fresh install of Ubuntu 12.04 and you're logged
 sudo apt-get install php5 php5-mysql mysql-server apache2 git
 
 # Enable Apache modules
-sudo a2enmod rewrite
+sudo a2enmod deflate
 sudo a2enmod include
+sudo a2enmod php5
+sudo a2enmod rewrite
 
 # Checkout a copy of OpenFlights into /var/www
 cd /var/www

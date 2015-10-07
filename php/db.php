@@ -8,10 +8,10 @@ if (isset($dbh)) {
 
 $db = mysql_connect($host,$user,$password);
 if (!$db) {
-  die('Error;Unable to connect to database: ' . mysql_error());
+  die("Error;Unable to connect to MySQL at $host as $user: " . mysql_error());
 }
 if(!mysql_select_db($dbname, $db)) {
-  die('Error;Unable to select database: ' . mysql_error());
+  die("Error;Unable to select database $dbname: " . mysql_error());
 }
 mysql_query("SET NAMES 'utf8'");
 ?>

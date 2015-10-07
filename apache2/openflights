@@ -11,13 +11,9 @@
 		AllowOverride None
 	</Directory>
 	<Directory /var/www/openflights>
-		Options -Indexes FollowSymLinks MultiViews +Includes
+		Options -Indexes +FollowSymLinks +MultiViews +Includes
 		AllowOverride None
-		Order allow,deny
-		allow from all
-		# This directive allows us to have apache2's default start page
-                # in /apache2-default/, but still have / go to the right place
-                #RedirectMatch ^/$ /apache2-default/
+		Require all granted
                 XBitHack Full
 
                 RewriteEngine on
