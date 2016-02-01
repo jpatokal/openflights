@@ -42,8 +42,8 @@ $tripit_app_secret = "[YOUR-APP-SECRET]"
 >>>
 
 # Tell Apache where to find OpenFlights
-sudo cp apache2/openflights /etc/apache2/sites-available/
+sudo cp apache2/openflights.conf /etc/apache2/sites-available/
 cd /etc/apache2/sites-enabled
-sudo ln -s ../sites-available/openflights openflights
+sudo ln -s ../sites-available/openflights.conf openflights.conf
 sudo service apache2 restart
 
