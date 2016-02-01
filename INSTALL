@@ -7,7 +7,7 @@ This is intended as a recipe to be followed by hand, not a fire-and-forget scrip
 ---
 
 # Set up LAMP & Git
-sudo apt-get install php5 php5-mysql mysql-server apache2 git
+sudo apt-get install apache2 git php5 php5-curl php5-gd php5-mysql mysql-server
 
 # Enable Apache modules (we'll restart later)
 sudo a2enmod include
@@ -21,9 +21,10 @@ sudo git clone https://github.com/jpatokal/openflights.git
 cd openflights
 find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
 
-# Enable uploads
+# Enable uploads and badge caching
 sudo mkdir import
-sudo chown www-data:www-data import
+sudo mkdir badge/cache
+sudo chown www-data:www-data import badge/cache
 
 # Set up database (alternatively, if restoring from backup, just run the first line in create.sql to
 # create DB and user, then import the dump)
