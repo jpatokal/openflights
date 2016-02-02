@@ -6,8 +6,8 @@ This is intended as a recipe to be followed by hand, not a fire-and-forget scrip
 
 ---
 
-# Set up LAMP & Git
-sudo apt-get install apache2 git php5 php5-curl php5-gd php5-mysql mysql-server
+# Set up LAMP, Git and Sendmail (password resets & donations)
+sudo apt-get install apache2 git php5 php5-curl php5-gd php5-mysql mysql-server sendmail
 
 # Enable Apache modules (we'll restart later)
 sudo a2enmod include
@@ -17,7 +17,7 @@ sudo a2enmod rewrite
 cd /var/www
 sudo git clone https://github.com/jpatokal/openflights.git
 
-# Set up Composer
+# Set up Composer and install packages
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 sudo php /usr/local/bin/composer install
 
