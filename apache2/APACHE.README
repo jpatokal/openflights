@@ -1,4 +1,0 @@
-Copy this into /etc/apache2/sites-available/openflights.  Also supports running a WordPress blog off the same server under /blog.
-
-Modules required: mod_rewrite, mod_deflate
-
