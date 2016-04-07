@@ -54,12 +54,12 @@ if($action == "RECORD") {
   }
 
   if(! $apid || $apid == "") {    
-    $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s)",
+    $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('%s', '%s', '%s', %s, %s, %s, %s, %s, %s, '%s', %s)",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
-		   mysql_real_escape_string($iata),
-		   $icao == "" ? "NULL" : "'" . mysql_real_escape_string($icao) . "'",
+		   null_if_empty($iata),
+       null_if_empty($icao),
 		   mysql_real_escape_string($myX),
 		   mysql_real_escape_string($myY),
 		   mysql_real_escape_string($elevation),
@@ -68,12 +68,12 @@ if($action == "RECORD") {
 		   $uid);
   } else {
     // Editing an existing airport
-    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata='%s', icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s",
+    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata=%s, icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s",
 		   mysql_real_escape_string($airport), 
 		   mysql_real_escape_string($city),
 		   mysql_real_escape_string($country),
-		   mysql_real_escape_string($iata),
-		   $icao == "" ? "NULL" : "'" . mysql_real_escape_string($icao) . "'",
+       null_if_empty($iata),
+       null_if_empty($icao),
 		   mysql_real_escape_string($myX),
 		   mysql_real_escape_string($myY),
 		   mysql_real_escape_string($elevation),
