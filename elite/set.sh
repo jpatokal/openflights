@@ -3,7 +3,7 @@ STATUS=$1
 USER=$2
 EMAIL=$3
 HOST=104.197.15.255
-PW=`cat db.pw`
+PW=`cat ../sql/db.pw`
 
 if [ "$STATUS" != "S" -a "$STATUS" != "G" -a "$STATUS" != "P" ]; then
   echo Status $STATUS must be one of S, G or P
