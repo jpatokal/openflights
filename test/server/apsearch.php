@@ -111,6 +111,37 @@ class EditAirportSuccessfulTest extends WebTestCase {
   }
 }
 
+// Add new location with null codes
+class RecordNewNullCodePlaceTest extends WebTestCase {
+  function test() {
+    global $webroot, $settings, $airport, $new_apid;
+
+    login($this);
+    $params =  array('name' => 'AutoTest Nullport',
+         'city' => 'Testville',
+         'country' => 'Nullistan',
+         'iata' => '',
+         'icao' => '',
+         'x' => '42.424',
+         'y' => '69.696',
+         'elevation' => '123',
+         'timezone' => '-5.5',
+         'dst' => 'Z');
+    $params["action"] = "RECORD";
+    $json = json_decode($this->post($webroot . "php/apsearch.php", $params), true);
+    $this->assertEqual($json['status'], '1');
+    $null_apid = $json["apid"];
+
+    $params = array("apid" => $null_apid,
+            "action" => "LOAD");
+    $json = json_decode($this->post($webroot . "php/apsearch.php", $params), true);
+    $this->assertEqual($json['status'], '1');
+    $this->assertEqual($json['max'], 1);
+    $this->assertText('"iata":null');
+    $this->assertText('"icao":null');
+  }
+}
+
 // Load a single airport
 class LoadAirportByApidTest extends WebTestCase {
   function test() {

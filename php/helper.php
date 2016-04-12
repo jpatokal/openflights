@@ -21,6 +21,13 @@ function json_error($msg, $detail='') {
 }
 
 //
+// Return a quoted string or NULL if empty
+//
+function null_if_empty($str) {
+  return($str == "" ? "NULL" : "'" . mysql_real_escape_string($str) . "'");
+}
+
+//
 // Standard formatting of airport data
 // Input: row: associative array containing iata, icao
 // Output: " code : apid : x : y : timezone : dstrule "
