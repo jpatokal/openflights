@@ -42,6 +42,7 @@ CREATE TABLE `airports` (
   KEY `y` (`y`),
   KEY `iata` (`iata`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE UNIQUE INDEX `iata_idx` ON airports(iata);
 CREATE UNIQUE INDEX `icao_idx` ON airports(icao);
 
 DROP TABLE IF EXISTS `airports_dafif`;
