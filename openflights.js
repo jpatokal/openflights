@@ -148,12 +148,9 @@ var artLayer = new OpenLayers.Layer.XYZ(
 var earthLayer = new OpenLayers.Layer.XYZ(
     "Satellite",
     [
-"http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
-"http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
-"http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png",
-"http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.png"
+"https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg"
     ], {
-        attribution: "Tiles by <a href='http://open.mapquest.co.uk/' target='_blank'>MapQuest</a>",
+        attribution: "Tiles by <a href='https://www.mapbox.com/satellite/' target='_blank'>Mapbox</a>",
         sphericalMercator: true,
         transitionEffect: 'resize',
         wrapDateLine: true
