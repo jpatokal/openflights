@@ -26,6 +26,7 @@ class DatabaseConnector(object):
     self.cursor = self.read_cnx.cursor(dictionary=True)
     self.of_iata = {}
     self.of_icao = {}
+    self.countries = {}
 
     self.write_cnx = mysql.connector.connect(user='openflights', database=db, unix_socket='/tmp/mysql.sock')
     self.write_cnx.raise_on_warnings = True
@@ -36,6 +37,11 @@ class DatabaseConnector(object):
     for row in dbc.cursor:
       self.of_iata[row['iata']] = row
       self.of_icao[row['icao']] = row
+
+  def load_all_countries(self):
+    self.cursor.execute('SELECT * FROM countries')
+    for row in dbc.cursor:
+      self.countries[row['oa_code']] = row['name']
 
   def find_by_iata(self, code):
     if code in self.of_iata:
@@ -57,14 +63,25 @@ class DatabaseConnector(object):
     else:
       print sql % params
 
+  def update_all_from_oa(self, of_apid, oa, live_run):
+    self.safe_execute(
+      'UPDATE airports SET icao=%s, name=%s, x=%s, y=%s, elevation=%s, type=%s, source=%s WHERE apid=%s',
+      (oa['ident'], oa['name'], oa['longitude_deg'], oa['latitude_deg'], (oa['elevation_ft'] or 0),
+        'airport', 'OurAirports', of_apid),
+      live_run)
+
+  def create_new_from_oa(self, oa, live_run):
+    self.safe_execute(
+      'INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,type,source) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+      (oa['name'], oa['municipality'], self.countries[oa['iso_country']], oa['iata_code'], oa['ident'],
+        oa['longitude_deg'], oa['latitude_deg'], (oa['elevation_ft'] or 0), 'airport', 'OurAirports'),
+      live_run)
+
   def move_iata_to_new_airport(self, iata, old_id, new_id, live_run):
     self.safe_execute('UPDATE flights SET src_apid=%s WHERE src_apid=%s;', (new_id, old_id, ), live_run)
     self.safe_execute('UPDATE flights SET dst_apid=%s WHERE dst_apid=%s;', (new_id, old_id, ), live_run)
     self.safe_execute('UPDATE airports SET iata=NULL WHERE apid=%s;', (old_id, ), live_run)
     self.safe_execute('UPDATE airports SET iata=%s WHERE apid=%s;', (iata, new_id, ), live_run)
-
-  def add_icao_to_old_airport(self, icao, old_id, live_run):
-    self.safe_execute('UPDATE airports SET icao=%s WHERE apid=%s;', (icao, old_id, ), live_run)
 
 # Needed to allow piping UTF-8 (srsly Python wtf)
 sys.stdout = codecs.getwriter('utf8')(sys.stdout)
@@ -75,6 +92,7 @@ args = parser.parse_args()
 
 dbc = DatabaseConnector()
 dbc.load_all_airports()
+dbc.load_all_countries()
 with open('ourairports.csv', 'rb') as csvfile:
   reader = unicodecsv.DictReader(csvfile, encoding='utf-8')
   for oa in reader:
@@ -87,15 +105,16 @@ with open('ourairports.csv', 'rb') as csvfile:
           if dupe:
             print '. DUPE %s (%s)' % (dupe['iata'], dupe['name'])
             dbc.move_iata_to_new_airport(oa['iata_code'], dupe['apid'], of['apid'], args.live_run)
+      dbc.update_all_from_oa(of['apid'], oa, args.live_run)
 
     else:
       # We only care about larger airports with ICAO identifiers
       if oa['type'] in ['medium_airport', 'large_airport'] and re.match(r'[A-Z]{4}', oa['ident']):
           print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
-          # TODO create here
-          of = {'apid': 0}
           if oa['iata_code'] != '':
             dupe = dbc.find_by_iata(oa['iata_code'])
             if dupe:
               print '. DUPE %s (%s)' % (dupe['iata'], dupe['name'])
-              dbc.add_icao_to_old_airport(oa['ident'], dupe['apid'], args.live_run)
+              dbc.update_all_from_oa(dupe['apid'], oa, args.live_run)
+            else:
+              dbc.create_new_from_oa(oa, args.live_run)
