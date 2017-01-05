@@ -25,7 +25,7 @@
 
 	    <p><center><a href="/demo/openflights-apdb-2048.png"><img src="/demo/openflights-apdb.png" width="512" height="256"></a><br>(click to enlarge)</center></p>
 
-	    <p>As of January 2012, the OpenFlights Airports Database contains <b>6977</b> airports spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
+	    <p>As of January 2017, the OpenFlights Airports Database contains <b>over 10,000</b> airports, train stations and ferry terminals spanning the globe, as shown in the map above.  Each entry contains the following information:</p>
 
 	    <table>
 		<tr>
@@ -42,18 +42,17 @@
 		</tr>
 		<tr>
 		  <td class="head">Country</td>
-		  <td class="data">Country or territory where airport is located.</td>
+		  <td class="data">Country or territory where airport is located.  See <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/countries.dat">countries.dat</a> to cross-reference to ISO 3166-1 codes.
+		  </td>
 		</tr>
 		<tr>
-		  <td class="head">IATA/FAA</td>
-		  <td class="data">3-letter FAA code, for airports located in <b>Country</b> "United States of America".<br>
-		    3-letter IATA code, for all other airports.<br>
-		    Blank if not assigned.</td>
+		  <td class="head">IATA</td>
+		  <td class="data">3-letter IATA code.  Null if not assigned/unknown.</td>
 		</tr>
 		<tr>
 		  <td class="head">ICAO</td>
 		  <td class="data">4-letter ICAO code.<br>
-		    Blank if not assigned.</td>
+		    Null if not assigned.</td>
 		</tr>
 		<tr>
 		  <td class="head">Latitude</td>
@@ -74,23 +73,33 @@
 		<tr>
 		  <td class="head">DST</td>
 		  <td class="data">Daylight savings time.  One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a target="_blank" href="help/time.html">Help: Time</i>
-
 		</tr>
 		<tr>
 		  <td class="head">Tz database time zone</td>
 		  <td class="data">Timezone in <a href="http://en.wikipedia.org/wiki/Tz_database">"tz" (Olson) format</a>, eg. "America/Los_Angeles".
 		</tr>
+		<tr>
+		  <td class="head">Type</td>
+		  <td class="data">Type of the airport.  Value "airport" for air terminals, "station" for train stations, "port" for
+		  ferry terminals and "unknown" if not known.  <i>In airports.csv, only type=airport is included.</i>
+		</tr>
+		<tr>
+		  <td class="head">Source</td>
+		  <td class="data">Source of this data.  "OurAirports" for data sourced from <a href="http://ourairports.com/data/">OurAirports</a>, "Legacy" for old data not matched to OurAirports (mostly DAFIF), "User" for unverified user contributions.  <i>In airports.csv, only source=OurAirports is included.</i>
+		</tr>
 	      </tr>
 	    </table>
 
-	    <p>The data is ISO 8859-1 (Latin-1) encoded, with no special characters.</p>
+	    <p>The data is UTF-8 (Unicode) encoded.</p>
 
 	    <p><i>Note</i>: Rules for daylight savings time change from year to year and from country to country.  The current data is an approximation for 2009, built on a country level.  Most airports in DST-less regions in countries that generally observe DST (eg. AL, HI in the USA, NT, QL in Australia, parts of Canada) are marked incorrectly.</p>
 
 	    <h4>Sample entries</h4>
-	    <pre>507,"Heathrow","London","United Kingdom","LHR","EGLL",51.4775,-0.461389,83,0,"E","Europe/London"
-26,"Kugaaruk","Pelly Bay","Canada","YBB","CYBB",68.534444,-89.808056,56,-7,"A","America/Edmonton"
-3127,"Pokhara","Pokhara","Nepal","PKR","VNPK",28.200881,83.982056,2712,5.75,"N","Asia/Katmandu"</pre>
+	    <pre>507,"London Heathrow Airport","London","United Kingdom","LHR","EGLL",51.4706,-0.461941,83,0,"E","Europe/London","airport","OurAirports"
+26,"Kugaaruk Airport","Pelly Bay","Canada","YBB","CYBB",68.534401,-89.808098,56,-7,"A","America/Edmonton","airport","OurAirports"
+3127,"Pokhara Airport","Pokhara","Nepal","PKR","VNPK",28.200899124145508,83.98210144042969,2712,5.75,"N","Asia/Katmandu","airport","OurAirports"
+8810,"Hamburg Hbf","Hamburg","Germany","ZMB",\N,53.552776,10.006683,30,1,"E","Europe/Berlin","station","User"
+</pre>
 
 	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Try it out: <a target="_blank" href="html/apsearch">Airport Search</a> (new window)</p>
 
@@ -100,7 +109,9 @@
 
 	    <p>To download the current data dump from <a href="https://github.com/jpatokal/openflights">GitHub</a> as a very straightforward CSV (comma-separated value) file, suitable for use in spreadsheets etc, simply click below:</p>
 
-	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat">airports.dat</a> (~650 KB)</p>
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat">airports.dat</a> (Airports only, high quality)</p>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports-extended.dat">airports-extended.dat</a> (Airports, train stations and ferry terminals, including user contributions)</p>
 
 	    <table><tr><td>
 

@@ -3,11 +3,16 @@
 
 \! echo Airports...
 
-SELECT apid,name,city,country,iata,icao,y,x,elevation,timezone,dst,tz_id INTO OUTFILE '/tmp/airports.dat'
+SELECT apid,name,city,country,iata,icao,y,x,elevation,timezone,dst,tz_id,type,source INTO OUTFILE '/tmp/airports.dat'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airports
-LIMIT 10000;
+WHERE source='OurAirports' AND type='airport';
+
+SELECT apid,name,city,country,iata,icao,y,x,elevation,timezone,dst,tz_id,type,source INTO OUTFILE '/tmp/airports-extended.dat'
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM airports;
 
 \! echo Airlines...
 
@@ -15,16 +20,14 @@ SELECT alid,name,alias,iata,icao,callsign,country,active INTO OUTFILE '/tmp/airl
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM airlines
-WHERE mode='F' AND ((iata!="" AND iata IS NOT NULL) OR (icao!="" AND icao IS NOT NULL))
-LIMIT 10000;
+WHERE mode='F' AND ((iata!="" AND iata IS NOT NULL) OR (icao!="" AND icao IS NOT NULL));
 
 \! echo Routes...
 
 SELECT airline,alid,src_ap,src_apid,dst_ap,dst_apid,codeshare,stops,equipment INTO OUTFILE '/tmp/routes.dat'
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
-FROM routes
-LIMIT 100000;
+FROM routes;
 
 \! echo Countries
 
