@@ -16,21 +16,24 @@ import sys
 import unicodecsv
 
 class DatabaseConnector(object):
-  DEFAULT_DB = 'flightdb2'
+  DB = 'flightdb2'
+  HOST = '104.197.15.255'
 
-  def __init__(self, db=None):
-    if not db:
-      db = self.DEFAULT_DB
-    self.read_cnx = mysql.connector.connect(user='openflights', database=db, unix_socket='/tmp/mysql.sock')
-    self.read_cnx.raise_on_warnings = True
+  def __init__(self):
+    with open('../sql/db.pw','r') as f:
+      pw = f.read().strip()
+    self.read_cnx = self.connect(pw)
     self.cursor = self.read_cnx.cursor(dictionary=True)
+    self.write_cnx = self.connect(pw)
+    self.write_cursor = self.write_cnx.cursor(dictionary=True)
     self.of_iata = {}
     self.of_icao = {}
     self.countries = {}
 
-    self.write_cnx = mysql.connector.connect(user='openflights', database=db, unix_socket='/tmp/mysql.sock')
-    self.write_cnx.raise_on_warnings = True
-    self.write_cursor = self.write_cnx.cursor(dictionary=True)
+  def connect(self, pw):
+    cnx = mysql.connector.connect(user='openflights', database=self.DB, host=self.HOST, password=pw)
+    cnx.raise_on_warnings = True
+    return cnx
 
   def load_all_airports(self):
     self.cursor.execute('SELECT * FROM airports')
@@ -73,7 +76,7 @@ class DatabaseConnector(object):
   def create_new_from_oa(self, oa, live_run):
     self.safe_execute(
       'INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,type,source) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-      (oa['name'], oa['municipality'], self.countries[oa['iso_country']], oa['iata_code'], oa['ident'],
+      (oa['name'], oa['municipality'], self.countries[oa['iso_country']], (oa['iata_code'] or None), oa['ident'],
         oa['longitude_deg'], oa['latitude_deg'], (oa['elevation_ft'] or 0), 'airport', 'OurAirports'),
       live_run)
 
@@ -110,11 +113,18 @@ with open('ourairports.csv', 'rb') as csvfile:
     else:
       # We only care about larger airports with ICAO identifiers
       if oa['type'] in ['medium_airport', 'large_airport'] and re.match(r'[A-Z]{4}', oa['ident']):
+          # Horrible hack for matching FAA LIDs
+          if not oa['iata_code'] and len(oa['local_code']) == 3:
+            oa['iata_code'] = oa['local_code']
           print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
-          if oa['iata_code'] != '':
-            dupe = dbc.find_by_iata(oa['iata_code'])
-            if dupe:
-              print '. DUPE %s (%s)' % (dupe['iata'], dupe['name'])
-              dbc.update_all_from_oa(dupe['apid'], oa, args.live_run)
-            else:
-              dbc.create_new_from_oa(oa, args.live_run)
+          if oa['iata_code'] == '':
+            dbc.create_new_from_oa(oa, args.live_run)
+          else:
+            if oa['iata_code'] != '':
+              dupe = dbc.find_by_iata(oa['iata_code'])
+              if dupe:
+                print '. DUPE %s (%s)' % (dupe['iata'], dupe['name'])
+                dbc.update_all_from_oa(dupe['apid'], oa, args.live_run)
+              else:
+                dbc.create_new_from_oa(oa, args.live_run)
+
