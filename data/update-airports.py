@@ -17,21 +17,18 @@ import unicodecsv
 
 class DatabaseConnector(object):
   DB = 'flightdb2'
-  HOST = '104.197.15.255'
 
   def __init__(self):
-    with open('../sql/db.pw','r') as f:
-      pw = f.read().strip()
-    self.read_cnx = self.connect(pw)
+    self.read_cnx = self.connect(host, pw)
     self.cursor = self.read_cnx.cursor(dictionary=True)
-    self.write_cnx = self.connect(pw)
+    self.write_cnx = self.connect(host, pw)
     self.write_cursor = self.write_cnx.cursor(dictionary=True)
     self.of_iata = {}
     self.of_icao = {}
     self.countries = {}
 
-  def connect(self, pw):
-    cnx = mysql.connector.connect(user='openflights', database=self.DB, host=self.HOST, password=pw)
+  def connect(self, host, pw):
+    cnx = mysql.connector.connect(user='openflights', database=self.DB, host=host, password=pw)
     cnx.raise_on_warnings = True
     return cnx
 
@@ -91,7 +88,16 @@ sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--live_run', default=False, action='store_true')
+parser.add_argument('--local', default=False, action='store_true')
 args = parser.parse_args()
+
+if args.local:
+  host = 'localhost'
+  pw = None
+else:
+  host = '104.197.15.255'
+  with open('../sql/db.pw','r') as f:
+    pw = f.read().strip()
 
 dbc = DatabaseConnector()
 dbc.load_all_airports()
