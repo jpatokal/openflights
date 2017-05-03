@@ -1744,9 +1744,18 @@ function showTop10(str) {
     var rows = airports.split(":");
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
+      var noOfColumns = col.length;
       // name, iata, count, apid
-      desc = col[0].substring(0,20) + " (" + col[1] + ")";
-      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[2]) + "</td>";
+      if(noOfColumns > 4) {
+        var tooManyColumns = noOfColumns - 4;
+        // join name back together
+        var airportName = col.slice(0, tooManyColumns + 1).join(',');
+        desc = airportName.substring(0,20) + " (" + col[noOfColumns - 3] + ")";
+      }
+      else {
+        desc = col[0].substring(0,20) + " (" + col[1] + ")";
+      }
+      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[noOfColumns-1] + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[noOfColumns-2]) + "</td>";
     }
     table += "</table>";
 
