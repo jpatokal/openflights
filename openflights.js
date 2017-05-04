@@ -122,10 +122,10 @@ function init(){
 var poliLayer = new OpenLayers.Layer.XYZ(
     "Political",
     [
-"http://a.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
-"http://b.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
-"http://c.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
-"http://d.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png"
+"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png"
     ], {
         attribution: "Map tiles by <a href='http://cartodb.com'>CartoDB</a> (CC BY 3.0), data by <a href='/http://openstreetmap.com'>OSM</a> (ODbL)",
         sphericalMercator: true,
@@ -136,7 +136,7 @@ var poliLayer = new OpenLayers.Layer.XYZ(
 var artLayer = new OpenLayers.Layer.XYZ(
     "Artistic",
     [
-"http://c.tile.stamen.com/watercolor/${z}/${x}/${y}.png"
+"https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.png"
     ], {
         attribution: "Tiles &copy; <a href='http://maps.stamen.com/'>Stamen</a>",
         sphericalMercator: true,
