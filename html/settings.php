@@ -86,7 +86,7 @@ if(isSet($_GET["new"])) {
 ?>
 		  <tr>
 		    <td class="key"><nobr><?php echo _("Profile address") ?></nobr></td>
-		    <td class="value"><INPUT type="text" name="myurl" value="<?php echo "http://openflights.org/user/" . $settings["name"] ?>" style="border:none" size="40" READONLY>
+		    <td class="value"><INPUT type="text" name="myurl" value="<?php echo "https://openflights.org/user/" . $settings["name"] ?>" style="border:none" size="40" READONLY>
 		     <input type="text" name="count" value="<?php printf(_("Viewed %s times"), $settings["count"]) ?>" style="border: none" READONLY></td>
                       <td class="desc"><?php echo _("The public address of your profile and how often it has been viewed.") ?></td>
 		    <td class="value" rowspan=3><span id="eliteicon"></span>
@@ -96,10 +96,10 @@ if(isSet($_GET["new"])) {
 	       <td class="key"><?php echo _("Banners") ?></td>
 	       <td class="value" colspan=2><?php echo _("Blog banner (HTML)") ?><br>
 		      <textarea name="banner_html" cols="60" rows="4" readonly><?php
-echo "<a href='http://openflights.org/user/" . $settings["name"] . "' target='_blank'><img src='http://openflights.org/banner/" . $settings["name"] . ".png' width=400 height=70></a>"; ?></textarea><br>
+echo "<a href='https://openflights.org/user/" . $settings["name"] . "' target='_blank'><img src='https://openflights.org/banner/" . $settings["name"] . ".png' width=400 height=70></a>"; ?></textarea><br>
 	       <?php echo _("Bulletin board banner (phpBB)") ?><br>
 		      <textarea name="banner_phpbb" cols="60" rows="3" readonly><?php
-echo "[url=http://openflights.org/user/" . $settings["name"] . "]\n[img]http://openflights.org/banner/" . $settings["name"] . ".png[/img][/url]"; ?></textarea><br>
+echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https://openflights.org/banner/" . $settings["name"] . ".png[/img][/url]"; ?></textarea><br>
 		      <span id="banner_img"><?php echo "<img src='/banner/" . $settings["name"] . ".png' width=400 height=70>" ?></span></td>
 		  </tr><tr>
 	       <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>

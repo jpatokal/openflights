@@ -4,5 +4,5 @@
         ServerAlias openflights.net
         ServerAlias openflights.info
         ServerAlias 104.154.46.42
-        Redirect permanent / https://openflights.org
+        Redirect permanent / https://openflights.org/
 </VirtualHost>
