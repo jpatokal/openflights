@@ -5,7 +5,7 @@
         ServerAlias www.openflights.org
         ServerAlias openflights.net
         ServerAlias openflights.info
-        ServerAlias 23.251.156.83
+        ServerAlias 104.154.46.42
 
 	<Directory />
 		Options FollowSymLinks
@@ -33,15 +33,15 @@
         	RewriteRule   ^/html/(.+)$     /html/$1.php             [PT,L,QSA]
                 # Map /banner/xxx URLs into ?user=xxx format
                 RewriteRule   ^banner/(.+)$     /badge/banner.php?user=$1     [PT,L,QSA]
-                # Map legacy /blog/xxx URLs into blog.openflights.org
+                # Map legacy /blog/xxx URLs into ?user=xxx format
                 RewriteRule   ^blog/(.+)$     http://blog.openflights.org/$1     [L,QSA]
 
                 RewriteCond %{REQUEST_FILENAME} !-d 
                 RewriteCond %{REQUEST_FILENAME}\.php -f 
                 RewriteRule ^(.*)$ $1.php
 
-                RewriteCond %{REQUEST_FILENAME} !-d
-                RewriteCond %{REQUEST_FILENAME}\.html -f
+                RewriteCond %{REQUEST_FILENAME} !-d 
+                RewriteCond %{REQUEST_FILENAME}\.html -f 
                 RewriteRule ^(.*)$ $1.html
 
                 # Compress output (enable mod_deflate)
@@ -65,4 +65,10 @@
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 
+RewriteCond %{SERVER_NAME} =www.openflights.org [OR]
+RewriteCond %{SERVER_NAME} =openflights.org [OR]
+RewriteCond %{SERVER_NAME} =104.154.46.42 [OR]
+RewriteCond %{SERVER_NAME} =openflights.net [OR]
+RewriteCond %{SERVER_NAME} =openflights.info
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,QSA,R=permanent]
 </VirtualHost>
