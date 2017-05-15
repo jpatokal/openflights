@@ -515,7 +515,7 @@ function display_no_segments_message() {
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css") ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/css/tripit.css") ?>" type="text/css">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.blockUI.js") ?>"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/tripit.js") ?>"></script>
   </head>
