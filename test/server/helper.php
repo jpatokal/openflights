@@ -89,7 +89,7 @@ class GcDistanceTest extends UnitTestCase {
 
 class FileUrlWithDateTest extends UnitTestCase {
   function test() {
-    $docroot = getenv("DOCUMENT_ROOT");
+    $docroot = $_SERVER["DOCUMENT_ROOT"];
     $this->assertNotNull($docroot);
     $this->assertNotEqual($docroot, "/");
 

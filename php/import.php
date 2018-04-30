@@ -249,7 +249,7 @@ function die_nicely($msg) {
   exit;
 }
 
-$uploaddir = getenv("DOCUMENT_ROOT") . '/import/';
+$uploaddir = $_SERVER["DOCUMENT_ROOT"] . '/import/';
 
 $action = $_POST["action"];
 switch($action) {
