@@ -2,6 +2,7 @@ This test suite validates PHP calls and MySQL database content.
 
 *** Instructions
 
+0. Install Composer from https://getcomposer.org/download/
 1. `php composer.phar install`
 2. Configure `config.php`
 3. Run `php settings.php` to populate test user

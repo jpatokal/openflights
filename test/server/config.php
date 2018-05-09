@@ -1,9 +1,9 @@
 <?php
-require_once(dirname(__FILE__) . '/../../vendor/lastcraft/simpletest/autorun.php');
-require_once(dirname(__FILE__) . '/../../vendor/lastcraft/simpletest/web_tester.php');
+require_once(dirname(__FILE__) . '/../../vendor/simpletest/simpletest/autorun.php');
+require_once(dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester.php');
 
 // Address of OpenFlights install
-$webroot = 'http://openflights.local/';
+$webroot = 'http://localhost:8080/';
 
 // Path to OpenFlights upload directory
 $uploaddir = '../../import/';
