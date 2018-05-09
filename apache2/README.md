@@ -1,4 +1,6 @@
-Copy this into /etc/apache2/sites-available.
+Copy these into /etc/apache2/sites-available.
 
-Modules required: mod_include, mod_rewrite, mod_deflate
+-local is for local testing, -le-ssl is Let's Encrypt SSL.
+
+Modules required: mod_include, mod_rewrite, mod_deflate, mod_php5
 

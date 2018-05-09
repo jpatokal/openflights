@@ -1,8 +1,0 @@
-<VirtualHost *:80>
-        ServerName openflights.org
-        ServerAlias www.openflights.org
-        ServerAlias openflights.net
-        ServerAlias openflights.info
-        ServerAlias 104.154.46.42
-        Redirect permanent / https://openflights.org/
-</VirtualHost>
