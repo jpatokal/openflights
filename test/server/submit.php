@@ -3,7 +3,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 //
 // Test cases for php/submit.php and php/flights.php
-// NB: Assumes the test user exists and there are no flights entered yet (run signup.php first!)
+// NB: Assumes the test user exists and there are no flights entered yet (run settings.php first!)
 
 $fid = null; // global for newly-added flight
 

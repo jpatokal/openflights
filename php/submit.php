@@ -50,7 +50,7 @@ if($trid == "NULL") {
 // Validate user-entered information
 $plid = null;
 if($param == "ADD" || $param == "EDIT") {
-  $plane = $_POST["plane"];
+  $plane = trim($_POST["plane"]);
 
   // New planes can be created on the fly
   if(!empty($plane)) {
