@@ -171,4 +171,41 @@ class SingleAirlineICAOCompleteTest extends WebTestCase {
   }
 }
 
+//
+// PLANES
+//
+
+class SinglePlaneMajorNameCompleteTest extends WebTestCase {
+  function test() {
+    global $webroot, $airline;
+
+    $params = array("quick" => "true",
+        "plane" => "737");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("Boeing 737");
+  }
+}
+
+class SinglePlaneMinorNameCompleteTest extends WebTestCase {
+  function test() {
+    global $webroot, $airline;
+
+    $params = array("quick" => "true",
+        "plane" => "Xian");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("Xian MA60");
+  }
+}
+
+class SinglePlaneIATACompleteTest extends WebTestCase {
+  function test() {
+    global $webroot, $airline;
+
+    $params = array("quick" => "true",
+        "plane" => "734");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("Boeing 737-400");
+  }
+}
+
 ?>

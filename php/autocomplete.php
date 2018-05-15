@@ -82,7 +82,7 @@ if(! $query || $multi) {
 // 2 chars: match on IATA or name (major airlines only)
 // 3 chars: match on ICAO or name (major airlines only)
 // >3 chars: match on name (any airline)
-  
+
   $airlines = array("qs", "airline", "airline1", "airline2", "airline3", "airline4");
   foreach($airlines as $al) {
     if($_POST[$al]) {
@@ -124,7 +124,6 @@ if(! $query || $multi) {
       case 2: // IATA
       $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE iata='%s' AND active='Y' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
       break;
-      
       case 3: // ICAO
       if(! $multi) {
        $sql = sprintf("SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao='%s' UNION (%s) ORDER BY sort_col, name LIMIT %s", $query, $sql, $limit);
@@ -138,7 +137,6 @@ if(! $query || $multi) {
   } else {
     $sql = sprintf("%s ORDER BY name LIMIT %s", $sql, $limit);
   }
-  
   if($limit > 1 && ! $multi) print ("<ul class='autocomplete'>");
   $rs = mysql_query($sql) or die($sql);
   if(mysql_num_rows($rs) > 0) {
@@ -153,35 +151,23 @@ if(! $query || $multi) {
 
 } else if($_POST['plane']) {
 
-    // Autocompletion for plane types
+  // Autocompletion for plane types
+  // First match against major types with IATA codes, then pad to max 6 by matching against frequency of use
   $query = mysql_real_escape_string($_POST['plane']);
-  if(strstr($query, '-')) {
-    $dashes = " ";
-  } else {
-    $dashes = "AND name NOT LIKE 'Boeing %-%' AND name NOT LIKE 'Airbus %-%'";
-  }
-  
-  $sql = "SELECT name,plid FROM planes WHERE public='Y' AND name LIKE '%" . $query . "%' ". $dashes . "ORDER BY name LIMIT 6";
+  $query = "(name LIKE '%" . $query . "%' OR iata LIKE '%" . $query . "%') ";
+  $sql = "(SELECT name,plid FROM planes WHERE " . $query . " AND iata IS NOT NULL ORDER BY name LIMIT 6) UNION " .
+         "(SELECT name,plid FROM planes WHERE " . $query . " AND iata IS NULL ORDER BY frequency DESC LIMIT 6) LIMIT 6";
   $rs = mysql_query($sql);
-  
-    // If no or only one result found, then try again
-  if(mysql_num_rows($rs) == 1 && $dashes != " ") {
-    $sql = "SELECT name,plid FROM planes WHERE public='Y' AND name LIKE '%" . $query . "%' ORDER BY name LIMIT 6";
-    $rs = mysql_query($sql);
-  } else {
-    if(mysql_num_rows($rs) == 0) {
-     $sql = "SELECT name,plid FROM planes WHERE name LIKE '%" . $query . "%' ORDER BY name LIMIT 6";
-     $rs = mysql_query($sql);
+
+  print ("<ul class='autocomplete2'>");
+  while($data = mysql_fetch_assoc($rs)) {
+    $item = stripslashes($data['name']);
+    $MAX_LEN = 35;
+    if(strlen($item) > $MAX_LEN) {
+     $item = substr($item, 0, $MAX_LEN-13) . "..." . substr($item, -10, 10);
    }
+   echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
  }
- print ("<ul class='autocomplete2'>");
- while($data = mysql_fetch_assoc($rs)) {
-  $item = stripslashes($data['name']);
-  if(strlen($item) > 23) {
-   $item = substr($item, 0, 10) . "..." . substr($item, -10, 10);
- }
- echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
-}
 }
 }
 

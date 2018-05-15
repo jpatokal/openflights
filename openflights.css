@@ -210,7 +210,7 @@ td.donate2 { padding: 10px; vertical-align: top; text-align: left; }
 /* Autocomplete styles */
 
 ul.autocomplete { padding: 3px; width: 350px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }
-ul.autocomplete2 { padding: 3px; width: 180px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }
+ul.autocomplete2 { padding: 3px; width: 250px; border: 1px solid #999; list-style-type: none; margin: 1px 0 0 0; background: #FFF; cursor: default; color: black; }
 li.autocomplete:hover { background: #C6DEFF; }
 li.selected { background: #C6DEFF; }
 
