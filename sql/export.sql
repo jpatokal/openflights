@@ -29,6 +29,15 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 FROM routes;
 
+\! echo Planes
+
+SELECT name,iata,icao INTO OUTFILE '/tmp/planes.dat'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+FROM planes
+WHERE iata IS NOT NULL OR icao IS NOT NULL
+ORDER BY name;
+
 \! echo Countries
 
 SELECT name,code,oa_code,dst INTO OUTFILE '/tmp/countries.dat'
