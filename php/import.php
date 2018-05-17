@@ -402,7 +402,7 @@ foreach($rows as $row) {
     
     // <td class="liste_rot"><span title="Comment: 2.5-hr delay due to tire puncture">Com</span><br> ...
     $comment = pq($cols[9])->find('span')->attr('title');
-    if($comment) {
+    if($comment && substr($comment, 0, 9) === "Comment: ") {
       $comment = trim(substr($comment, 9));
     }
     break; // case FM
