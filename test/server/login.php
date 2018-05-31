@@ -24,17 +24,17 @@ class LegacyLoginTest extends WebTestCase {
     $password = "foobar";
     $hash = md5($password . $name);
 
-    $db = db_connect();
-    $sql = "INSERT INTO users(name,password) VALUES('$name','$hash')";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() == 1, "Legacy user added");
+    $dbh = db_connect();
+    $sth = $dbh->prepare("INSERT INTO users(name,password) VALUES(?,?)");
+    $sth->execute([$name, $hash]);
+    $this->assertTrue($sth->rowCount() == 1, "Legacy user added");
 
     $result = login($this, $name, $password);
     $this->assertEqual($result->status, "1");
 
-    $sql = "DELETE FROM users WHERE name='$name'";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() == 1, "Legacy user deleted");
+    $sth = $dbh->prepare("DELETE FROM users WHERE name=?");
+    $sth->execute([$name]);
+    $this->assertTrue($sth->rowCount() == 1, "Legacy user deleted");
   }
 }
 
