@@ -82,14 +82,14 @@ class GcDurationTest extends UnitTestCase {
 // ##TODO## Extend
 class GcDistanceTest extends UnitTestCase {
   function test() {
-    $db = db_connect();
-    $this->assertEqual(gcDistance($db, 1, 1), array(0, gcDuration(0)));
+    $dbh = db_connect();
+    $this->assertEqual(gcDistance($dbh, 1, 1), array(0, gcDuration(0)));
   }
 }
 
 class FileUrlWithDateTest extends UnitTestCase {
   function test() {
-    $docroot = getenv("DOCUMENT_ROOT");
+    $docroot = $_SERVER["DOCUMENT_ROOT"];
     $this->assertNotNull($docroot);
     $this->assertNotEqual($docroot, "/");
 

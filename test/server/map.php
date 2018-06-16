@@ -52,10 +52,10 @@ class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
   function test() {
     global $webroot, $settings, $flight2;
 
-    $db = db_connect();
-    $sql = "UPDATE users SET public='N', guestpw='" .  $settings["guestpw"] . "' WHERE name='" . $settings["name"] . "'";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() == 1, "Set profile to private");
+    $dbh = db_connect();
+    $sth = $dbh->prepare("UPDATE users SET public='N', guestpw=? WHERE name=?");
+    $sth->execute([$settings["guestpw"], $settings["name"]]);
+    $this->assertTrue($sth->rowCount() == 1, "Set profile to private");
 
     $params = array("param" => "true",
 		    "guestpw" => "incorrect",

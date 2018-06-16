@@ -6,10 +6,10 @@ class DeleteFlightsTest extends WebTestCase {
   function test() {
     global $settings;
 
-    $db = db_connect();
-    $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-    $result = mysql_query($sql, $db);
-    echo mysql_affected_rows() . " flights deleted\n";
+    $dbh = db_connect();
+    $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth->execute([$settings["name"]]);
+    echo $sth->rowCount() . " flights deleted\n";
   }
 }
 
@@ -18,10 +18,10 @@ class DeleteAirportTest extends WebTestCase {
   function test() {
     global $settings;
 
-    $db = db_connect();
-    $sql = "DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-    $result = mysql_query($sql, $db);
-    echo mysql_affected_rows() . " airports deleted\n";
+    $dbh = db_connect();
+    $sth = $dbh->prepare("DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth->execute([$settings["name"]]);
+    echo $sth->rowCount() . " airports deleted\n";
   }
 }
 
@@ -30,10 +30,10 @@ class DeleteAirlinesTest extends WebTestCase {
   function test() {
     global $settings;
 
-    $db = db_connect();
-    $sql = "DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-    $result = mysql_query($sql, $db);
-    echo mysql_affected_rows() . " airline(s) deleted\n";
+    $dbh = db_connect();
+    $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth->execute([$settings["name"]]);
+    echo $sth->rowCount() . " airline(s) deleted\n";
   }
 }
 
@@ -42,10 +42,10 @@ class DeleteUserTest extends WebTestCase {
   function test() {
     global $settings;
 
-    $db = db_connect();
-    $sql = "DELETE FROM users WHERE name='" . $settings["name"] . "'";
-    $result = mysql_query($sql, $db);
-    echo mysql_affected_rows() . " user deleted\n";
+    $dbh = db_connect();
+    $sth = $dbh->prepare("DELETE FROM users WHERE name=?");
+    $sth->execute([$settings["name"]]);
+    echo $sth->rowCount() . " user deleted\n";
   }
 }
 

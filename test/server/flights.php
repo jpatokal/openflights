@@ -20,16 +20,16 @@ class ExportAirlineToCSVCase extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct results
-    $db = db_connect();
-    $sql = "SELECT alid FROM airlines WHERE iata='" . $route["core_al_iata"] . "'";
-    $result = mysql_query($sql, $db) or die($sql . ":" . mysql_error());
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT alid FROM airlines WHERE iata=?");
+    $sth->execute([$route["core_al_iata"]]) or die($sth->errorInfo());
+    if($row = $sth->fetch()) {
       $alid = $row["alid"];
     }
 
-    $sql = "SELECT COUNT(*) AS count FROM routes WHERE alid=" . $alid;
-    $result = mysql_query($sql, $db) or die($sql . ":" . mysql_error());
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    $sth = $dbh->prepare("SELECT COUNT(*) AS count FROM routes WHERE alid=?");
+    $sth->execute([$alid]) or die($sth->errorInfo());
+    if($row = $sth->fetch()) {
       $route_count = intval($row["count"]);
     }
 

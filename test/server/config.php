@@ -11,6 +11,7 @@ $uploaddir = '../../import/';
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";
+$dbpass = "";
 $dbname = "flightdb2";
 
 //
@@ -190,40 +191,59 @@ function assert_login($case) {
   $case->assertEqual($json->status, "1");
 }
 
-// Get a connection to the database
+/**
+ * Get a connection to the database
+ *
+ * @return PDO OpenFlights test suite DB handler
+ */
 function db_connect() {
-  global $dbhost, $dbuser, $dbname;
+  global $dbhost, $dbuser, $dbpass, $dbname;
 
-  $db = mysql_connect($dbhost, $dbuser);
-  mysql_select_db($dbname,$db);
-  return $db;
+  $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, array(
+    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"
+  ));
+  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
+  return $dbh;
 }
 
-// Get test user's UID
-function db_uid($db) {
+/**
+ * Get test user's UID
+ *
+ * @param $dbh PDO OpenFlights test suite DB handler
+ * @return string UID of test user
+ */
+function db_uid($dbh) {
   global $settings;
 
-  $result = mysql_query("SELECT uid FROM users WHERE name='" . $settings["name"] . "'", $db);
-  return mysql_result($result, 0);
+  $sth = $dbh->prepare("SELECT uid FROM users WHERE name=?");
+  $sth->execute([$settings["name"]]);
+  return $sth->fetchColumn(0);
 }
 
-// Get apid of test airport
-function db_apid($db) {
+/**
+ * Get apid of test airport
+ *
+ * @param $dbh PDO OpenFlights test suite DB handler
+ * @return string APID of test airport
+ */
+function db_apid($dbh) {
   global $airport;
 
-  $result = mysql_query("SELECT apid FROM airports WHERE iata='" . $airport["iata"] . "'", $db);
-  return mysql_result($result, 0);
+  $sth = $dbh->prepare("SELECT apid FROM airports WHERE iata=?");
+  $sth->execute([$airport["iata"]]);
+  return $sth->fetchColumn(0);
 }
 
 function cleanup() {
   global $settings;
 
-  $db = db_connect();
-  $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-  $result = mysql_query($sql, $db);
-  $sql = "DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-  $result = mysql_query($sql, $db);
-  $sql = "DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-  $result = mysql_query($sql, $db);
+  $dbh = db_connect();
+  $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+  $sth->execute([$settings["name"]]);
+  $sth = $dbh->prepare("DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+  $sth->execute([$settings["name"]]);
+  $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+  $sth->execute([$settings["name"]]);
 }
 ?>
