@@ -93,10 +93,10 @@ class SuccessfulEditTripTest extends WebTestCase {
     $this->assertText('2;');
 
     // Validate changes
-    $db = db_connect();
-    $sql = "SELECT * FROM trips WHERE trid=" . $trid;
-    $result = mysql_query($sql, $db);
-    $row = mysql_fetch_array($result);
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
+    $sth->execute([$trid]);
+    $row = $sth->fetch();
     $this->assertTrue($row["name"] == "New AutoTest Trip", "Name");
     $this->assertTrue($row["public"] == "N", "Public");
     $this->assertTrue($row["url"] == "http://new.autotest.example", "URL");
@@ -142,10 +142,10 @@ class DeleteTripTest extends WebTestCase {
     $this->assertText('100;');
 
     // Verify
-    $db = db_connect();
-    $sql = "SELECT * FROM trips WHERE trid=" . $trid;
-    $result = mysql_query($sql, $db);
-    $this->assertFalse(mysql_fetch_array($result), "Deleting failed");
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
+    $sth->execute([$trid]);
+    $this->assertFalse($sth->fetch(), "Deleting failed");
   }
 }
 

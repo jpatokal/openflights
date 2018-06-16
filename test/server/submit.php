@@ -56,10 +56,10 @@ class DeleteExtraFlightsTest extends WebTestCase {
   function test() {
     global $settings;
 
-    $db = db_connect();
-    $sql = "DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name='" . $settings["name"] . "')";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() >= 1, "Flights deleted");
+    $dbh = db_connect();
+    $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth->execute([$settings["name"]]);
+    $this->assertTrue($sth->rowCount() >= 1, "Flights deleted");
   }
 }
 
@@ -79,10 +79,10 @@ class AddSingleFlightTest extends WebTestCase {
     $this->assertTrue($cols[0] == "1", "One flight recorded");
 
     // Get the ID of the newly-added flight
-    $db = db_connect();
-    $sql = "SELECT fid FROM flights WHERE note='" . addslashes($flight["note"]) . "'";
-    $result = mysql_query($sql, $db);
-    $row = mysql_fetch_assoc($result);
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT fid FROM flights WHERE note=?");
+    $sth->execute([$flight["note"]]);
+    $row = $sth->fetch();
     $fid = $row["fid"];
     $this->assertTrue($fid != null && $fid != "");
   }

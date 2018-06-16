@@ -17,13 +17,13 @@ class RouteMapCoreAirportTest extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct results
-    $db = db_connect();
-    $sql = "SELECT DISTINCT src_apid,dst_apid FROM routes WHERE src_ap='" . $route["core_ap_iata"] . "'";
-    $result = mysql_query($sql, $db);
-    $rows = mysql_num_rows($result);
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid FROM routes WHERE src_ap=?");
+    $sth->execute([$route["core_ap_iata"]]);
+    $rows = $sth->rowCount();
     $this->assertTrue($rows >= 1, "No routes found");
     $route["routes"] = $rows;
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row = $sth->fetch()) {
       $route["core_apid"] = $row["src_apid"];
     }
 
@@ -47,13 +47,13 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct results
-    $db = db_connect();
-    $sql = "SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE src_ap='" . $route["core_ap_iata"] . "' AND airline='" . $route["core_ap_filter_iata"] . "'";
-    $result = mysql_query($sql, $db);
-    $rows = mysql_num_rows($result);
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE src_ap=? AND airline=?");
+    $sth->execute([$route["core_ap_iata"], $route["core_ap_filter_iata"]]);
+    $rows = $sth->rowCount();
     $this->assertTrue($rows >= 1, "No routes found");
     $route["routes"] = $rows;
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row = $sth->fetch()) {
       $route["core_apid"] = $row["src_apid"];
       $route["filter_alid"] = $row["alid"];
     }
@@ -79,10 +79,10 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct apid
-    $db = db_connect();
-    $sql = "SELECT * FROM airports WHERE iata='" . $route["noroute_ap_iata"] . "'";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue($row = mysql_fetch_array($result, MYSQL_ASSOC), "No-route airport not found");
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT * FROM airports WHERE iata=?");
+    $sth->execute([$route["noroute_ap_iata"]]);
+    $this->assertTrue($row = $sth->fetch(), "No-route airport not found");
     $route["noroute_apid"] = $row["apid"];
 
     // Then test
@@ -120,13 +120,13 @@ class RouteMapCoreAirlineTest extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct results
-    $db = db_connect();
-    $sql = "SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline='" . $route["core_al_iata"] . "' AND codeshare=''";
-    $result = mysql_query($sql, $db);
-    $rows = mysql_num_rows($result);
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline=? AND codeshare=''");
+    $sth->execute([$route["core_al_iata"]]);
+    $rows = $sth->rowCount();
     $this->assertTrue($rows >= 1, "No routes found");
     $route["routes"] = $rows;
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row = $sth->fetch()) {
       $route["core_alid"] = $row["alid"];
     }
 
@@ -150,13 +150,13 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct results
-    $db = db_connect();
-    $sql = "SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline='" . $route["core_al_iata"] . "'";
-    $result = mysql_query($sql, $db);
-    $rows = mysql_num_rows($result);
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline=?");
+    $sth->execute([$route["core_al_iata"]]);
+    $rows = $sth->rowCount();
     $this->assertTrue($rows >= 1, "No routes found");
     $route["routes"] = $rows;
-    if($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    if($row = $sth->fetch()) {
       $route["core_alid"] = $row["alid"];
     }
 
@@ -181,10 +181,10 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
     global $webroot, $route;
 
     // First figure out the correct apid
-    $db = db_connect();
-    $sql = "SELECT * FROM airlines WHERE iata='" . $route["noroute_al_iata"] . "'";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue($row = mysql_fetch_array($result, MYSQL_ASSOC), "No-route airline not found");
+    $dbh = db_connect();
+    $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata=?");
+    $sth->execute([$route["noroute_al_iata"]]);
+    $this->assertTrue($row = $sth->fetch(), "No-route airline not found");
     $route["noroute_alid"] = $row["alid"];
 
     // Then test

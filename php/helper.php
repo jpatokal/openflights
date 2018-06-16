@@ -174,7 +174,7 @@ function fileUrlWithDate($filename) {
     $filename = '/' . $filename;
   }
 
-  $docroot = getenv("DOCUMENT_ROOT");
+  $docroot = $_SERVER["DOCUMENT_ROOT"];
   $full_path = $docroot . $filename;
 
   if(!file_exists($full_path)) {
