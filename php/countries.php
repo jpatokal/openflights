@@ -1,12 +1,11 @@
 <?php
 session_start();
-include 'db.php';
+include 'db_pdo.php';
 
 // List of all countries
 $sql = "SELECT code, name FROM countries ORDER BY name";
-$result = mysql_query($sql, $db);
 $first = true;
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+foreach ($dbh->query($sql) as $row) {
   if($first) {
     $first = false;
   } else {

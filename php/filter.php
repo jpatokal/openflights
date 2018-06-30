@@ -4,7 +4,7 @@
 //
 
 // Build a flight filter string for SQL SELECT
-function getFilterString($vars) {
+function getFilterString($dbh, $vars) {
   $filter = "";
   $trid = $vars["trid"];
   $alid = $vars["alid"];
@@ -16,14 +16,14 @@ function getFilterString($vars) {
     if($trid == "null") {
       $filter = $filter . " AND f.trid IS NULL";
     } else {
-      $filter = $filter . " AND f.trid= " . mysql_real_escape_string($trid);
+      $filter = $filter . " AND f.trid= " . $dbh->quote($trid);
     }
   }
   if($alid && $alid != "0") {
-    $filter = $filter . " AND f.alid=" . mysql_real_escape_string($alid);
+    $filter = $filter . " AND f.alid=" . $dbh->quote($alid);
   }
   if($year && $year != "0") {
-    $filter = $filter . " AND YEAR(f.src_date)='" . mysql_real_escape_string($year) . "'";
+    $filter = $filter . " AND YEAR(f.src_date)=" . $dbh->quote($year);
   }
   if($xvalue && $xvalue != "") {
     switch($xkey) {
@@ -63,15 +63,24 @@ function getFilterString($vars) {
   return $filter;
 }
 
-// Load up possible filter settings for this user
-function loadFilter($db, $uid, $trid, $logged_in) {
+/**
+ * Load up possible filter settings for this user
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $uid string User ID
+ * @param $trid string Trip ID
+ * @param $logged_in string Username if signed in
+ */
+function loadFilter($dbh, $uid, $trid, $logged_in) {
 
   // Limit selections to a single trip?
+  $params = [$uid];
   if($trid && $trid != "0") {
     if($trid == "null") {
       $filter = " AND trid IS NULL";
     } else {
-      $filter = " AND trid=" . mysql_real_escape_string($trid);
+      $filter = " AND trid=?";
+      $params[] = $trid;
     }
   } else {
     $filter = "";
@@ -83,10 +92,10 @@ function loadFilter($db, $uid, $trid, $logged_in) {
   } else {
     $privacy = "";
   }
-  $sql = "SELECT * FROM trips WHERE uid=" . $uid . $privacy . " ORDER BY name";
-  $result = mysql_query($sql, $db);
+  $sth = $dbh->prepare("SELECT * FROM trips WHERE uid=?" . $privacy . " ORDER BY name");
+  $sth->execute([$uid]);
   $first = true;
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  while ($row = $sth->fetch()) {
     if($first) {
       $first = false;
     } else {
@@ -97,10 +106,10 @@ function loadFilter($db, $uid, $trid, $logged_in) {
   printf ("\n");
   
   // List of all airlines
-  $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, flights as f WHERE f.uid=" . $uid . $filter . " AND a.alid=f.alid ORDER BY name";
-  $result = mysql_query($sql, $db);
+  $sth = $dbh->prepare("SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, flights as f WHERE f.uid=?" . $filter . " AND a.alid=f.alid ORDER BY name");
+  $sth->execute($params);
   $first = true;
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  while ($row = $sth->fetch()) {
     if($first) {
       $first = false;
     } else {
@@ -111,10 +120,10 @@ function loadFilter($db, $uid, $trid, $logged_in) {
   printf ("\n");
   
   // List of all years
-  $sql = "SELECT DISTINCT YEAR(src_date) AS year FROM flights WHERE uid=" . $uid . $filter . " AND YEAR(src_date) != '0' ORDER BY YEAR DESC";
-  $result = mysql_query($sql, $db);
+  $sth = $dbh->prepare("SELECT DISTINCT YEAR(src_date) AS year FROM flights WHERE uid=?" . $filter . " AND YEAR(src_date) != '0' ORDER BY YEAR DESC");
+  $sth->execute($params);
   $first = true;
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  while ($row = $sth->fetch()) {
     if($first) {
       $first = false;
     } else {

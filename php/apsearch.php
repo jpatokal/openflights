@@ -1,7 +1,7 @@
 <?php
 require_once '../vendor/autoload.php';
 require_once '../php/locale.php';
-require_once '../php/db.php';
+require_once '../php/db_pdo.php';
 require_once '../php/helper.php';
 
 header("Content-type: text/html");
@@ -34,19 +34,24 @@ if($action == "RECORD") {
   $duplicates = array();
   if($uid != $OF_ADMIN_UID) {
     $filters = array();
+    $filterParams = array();
     if($apid && $apid != "") {
-      $filters[] = "apid=$apid";
+      $filters[] = "apid=?";
+      $filterParams[] = $apid;
     } 
     if($iata != "") {
-      $filters[] = " iata='$iata'";
+      $filters[] = " iata=?";
+      $filterParams[] = $iata;
     }
     if($icao != "") {
-      $filters[] = " icao='$icao'";
+      $filters[] = " icao=?";
+      $filterParams[] = $icao;
     }
 
     $sql = "SELECT * FROM airports WHERE " . implode(" OR ", $filters);
-    $result = mysql_query($sql, $db);
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    $sth = $dbh->prepare($sql);
+    $sth->execute($filterParams);
+    while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
       if($row['uid'] != $uid || $row['apid'] != $apid) {
         $duplicates[] = print_r($row, true);
       }
@@ -54,62 +59,55 @@ if($action == "RECORD") {
   }
 
   if(! $apid || $apid == "") {    
-    $sql = sprintf("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('%s', '%s', '%s', %s, %s, %s, %s, %s, %s, '%s', %s)",
-		   mysql_real_escape_string($airport), 
-		   mysql_real_escape_string($city),
-		   mysql_real_escape_string($country),
-		   null_if_empty($iata),
-       null_if_empty($icao),
-		   mysql_real_escape_string($myX),
-		   mysql_real_escape_string($myY),
-		   mysql_real_escape_string($elevation),
-		   mysql_real_escape_string($tz),
-		   mysql_real_escape_string($dst),
-		   $uid);
+    $sql = "INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $params = [
+      $airport, $city, $country,
+      $iata == "" ? null : $iata,
+      $icao == "" ? null : $icao,
+      $myX, $myY, $elevation, $tz, $dst, $uid
+    ];
   } else {
     // Editing an existing airport
-    $sql = sprintf("UPDATE airports SET name='%s', city='%s', country='%s', iata=%s, icao=%s, x=%s, y=%s, elevation=%s, timezone=%s, dst='%s' WHERE apid=%s",
-		   mysql_real_escape_string($airport), 
-		   mysql_real_escape_string($city),
-		   mysql_real_escape_string($country),
-       null_if_empty($iata),
-       null_if_empty($icao),
-		   mysql_real_escape_string($myX),
-		   mysql_real_escape_string($myY),
-		   mysql_real_escape_string($elevation),
-		   mysql_real_escape_string($tz),
-		   mysql_real_escape_string($dst),
-		   mysql_real_escape_string($apid));
+    $sql = "UPDATE airports SET name=?, city=?, country=?, iata=?, icao=?, x=?, y=?, elevation=?, timezone=?, dst=? WHERE apid=?";
+    $params = [
+      $airport, $city, $country,
+      $iata == "" ? null : $iata,
+      $icao == "" ? null : $icao,
+      $myX, $myY, $elevation, $tz, $dst, $apid
+    ];
   }
   if(empty($duplicates)) {
-    mysql_query($sql, $db) or json_error("Adding new airport failed:", $sql);
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params) or json_error("Adding new airport failed.");
     if(! $apid || $apid == "") {
-      json_success(array("apid" => mysql_insert_id(), "message" => "New airport successfully added."));
+      json_success(array("apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."));
     } else {
-      if(mysql_affected_rows() == 1) {
+      if($sth->rowCount() == 1) {
         json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
       } else {
-        json_error("Editing airport failed:", $sql);
+        json_error("Editing airport failed.");
       }
     }
   } else {
-    $iata = mysql_real_escape_string($iata);
-    $icao = mysql_real_escape_string($icao);
     $name = $_SESSION['name'];
-    $data = print_r(implode("\n", $duplicates), TRUE);
-    $subject = sprintf("Update airport %s (%s/%s)",
-      mysql_real_escape_string($airport),
-      $iata,
-      $icao);
+    $newEdit = print_r([
+        'apid' => $apid,
+        'name' => $airport, 'city' => $city, 'country' => $country,
+        'iata' => $iata, 'icao' => $icao,
+        'x' => $myX, 'y' => $myY, 'elevation' => $elevation,
+        'timezone' => $tz, 'dst' => $dst
+    ], true);
+    $existingData = print_r(implode("\n", $duplicates), TRUE);
+    $subject = sprintf("Update airport %s (%s/%s)", $airport, $iata, $icao);
     $body = <<<TXT
 New airport edit suggestion submitted by $name:
 
-$sql;
+$newEdit;
 
 Existing, potentially conflicting airport information:
 
 ```
-$data
+$existingData
 ```
 
 Cross-check this edit on other sites with compatible licensing:
@@ -146,38 +144,46 @@ TXT;
   exit;
 }
 
-if(! $dbname) {
+if($dbname != "airports" || $dbname != "airports_dafif" || $dbname != "airports_oa") {
   $dbname = "airports";
 }
-$sql = "SELECT * FROM " . mysql_real_escape_string($dbname) . " WHERE ";
+$sql = "SELECT * FROM $dbname WHERE ";
+$params = [];
 
 if($action == "LOAD") {
   // Single-airport fetch
-  $sql .= " apid=" . mysql_real_escape_string($apid);
+  $sql .= " apid=?";
+  $params[] = $apid;
   $offset = 0;
 
  } else {
   // Real search, build filter
   if($airport) {
-    $sql .= " name LIKE '%" . mysql_real_escape_string($airport) . "%' AND";
+    $sql .= " name LIKE ? AND";
+    $params[] = "%$airport%";
   }
   if($iata) {
-    $sql .= " iata='" . mysql_real_escape_string($iata) . "' AND";
+    $sql .= " iata=? AND";
+    $params[] = $iata;
   }
   if($icao) {
-    $sql .= " icao='" . mysql_real_escape_string($icao) . "' AND";
+    $sql .= " icao=? AND";
+    $params[] = $icao;
   }
   if($city) {
-    $sql .= " city LIKE '" . mysql_real_escape_string($city) . "%' AND";
+    $sql .= " city LIKE ? AND";
+    $params[] = $city . '%';
   }
   if($country != "ALL") {
     if($dbname == "airports_dafif" || $dbname == "airports_oa") {
       if($code) {
-	$sql .= " code='" . mysql_real_escape_string($code) . "' AND";
+	$sql .= " code=? AND";
+	$params[] = $code;
       }
     } else {
       if($country) {
-	$sql .= " country='" . mysql_real_escape_string($country) . "' AND";
+	$sql .= " country=? AND";
+	$params[] = $country;
       }
     }
   }
@@ -189,22 +195,25 @@ if($action == "LOAD") {
     $sql .= " iata != '' AND iata != 'N/A'";
   }
 }
-if(! $offset) {
+if(! $offset || !is_int($offset)) {
   $offset = 0;
 }
 
 // Check result count
 $sql2 = str_replace("*", "COUNT(*)", $sql);
-$result2 = mysql_query($sql2, $db) or json_error('Operation ' . $param . ' failed: ' . $sql2);
-if($row = mysql_fetch_array($result2, MYSQL_NUM)) {
+$sth = $dbh->prepare($sql2);
+$sth->execute($params) or json_error('Operation ' . $param . ' failed.');
+if($row = $sth->fetch()) {
   $max = $row[0];
 }
+if ($max == 0) json_error('No airports matching your query exist.');
 $response = array("status" => 1, "offset" => $offset, "max" => $max);
 
 // Fetch airport data
-$sql .= " ORDER BY name LIMIT 10 OFFSET " . $offset;
-$result = mysql_query($sql, $db) or die (json_encode(array("status" => 0, "message" => 'Operation ' . $param . ' failed: ' . $sql)));
-while ($rows[] = mysql_fetch_assoc($result));
+$sql .= " ORDER BY name LIMIT 10 OFFSET $offset";
+$sth = $dbh->prepare($sql);
+$sth->execute($params) or die (json_encode(array("status" => 0, "message" => 'Operation ' . $param . ' failed.')));
+while ($rows[] = $sth->fetch(PDO::FETCH_ASSOC));
 array_pop($rows);
 foreach($rows as &$row) {
   if($dbname == "airports_dafif" || $dbname == "airports_oa") {
