@@ -1,5 +1,6 @@
 <?php
 
+include("../php/db_pdo.php");
 include("../php/greatcircle.php");
 
 $stderr = fopen("php://stderr", "w");
@@ -11,9 +12,6 @@ function getlocationcoords($lat, $lon, $width, $height)
    return array("x"=>round($x),"y"=>round($y));
 }
 
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb2",$db);
-$uid = 3;
 $sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,d.x AS dx,d.y AS dy FROM routes AS r, airports AS s, airports AS d WHERE r.src_apid=s.apid AND r.dst_apid=d.apid GROUP BY s.apid,d.apid";
 
 // First we load the background/base map. We assume it's located in same dir as the script.
@@ -41,9 +39,8 @@ $scale_y = imagesy($im);
 
 // Now we convert the long/lat coordinates into screen coordinates
 
-$result = mysql_query($sql, $db);
 $count = 0;
-while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+foreach ($dbh->query($sql) as $row) {
   $count++;
   if($count % 100 == 0) fwrite($stderr, "$count ");
 

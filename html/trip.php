@@ -1,6 +1,6 @@
 <?php
 require_once("../php/locale.php");
-require_once("../php/db.php");
+require_once("../php/db_pdo.php");
 
 if(isSet($_GET["trid"])) {
   $trid = $_GET["trid"];
@@ -39,9 +39,9 @@ if(!$uid or empty($uid)) {
 }
 
 if($trid) {
-  $sql = "SELECT * FROM trips WHERE trid=" . mysql_real_escape_string($trid) . " AND uid=" . mysql_real_escape_string($uid);
-  $result = mysql_query($sql, $db);
-  if(! $trip = mysql_fetch_array($result)) {
+  $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=? AND uid=?");
+  $sth->execute([$trid, $uid]);
+  if(! $trip = $sth->fetch()) {
     die(_("Could not load trip data.") . $sql);
   }
 } else {
