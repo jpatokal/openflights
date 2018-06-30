@@ -1,6 +1,6 @@
 <?php
 require_once("../php/locale.php");
-require_once("../php/db.php");
+require_once("../php/db_pdo.php");
 
 if(isSet($_GET["new"])) {
   $type = "signup";
@@ -78,9 +78,9 @@ if(isSet($_GET["new"])) {
   if(!$uid or empty($uid)) {
     die(_("Your session has timed out, please log in again."));
   }
-  $sql = "SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=" . $uid;
-  $result = mysql_query($sql, $db);
-  if(! $settings = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  $sth = $dbh->prepare("SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=?");
+  $sth->execute([$uid]);
+  if(! $settings = $sth->fetch()) {
     die(_("Could not load profile data"));
   }
 ?>
@@ -114,7 +114,7 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
 <?php if($type == "signup") echo _("You can easily change these later by clicking on <i>Settings</i>.") ?></td>
 		</tr><tr>
 	            <td class="key"><?php echo _("Language") ?></td>
-		    <td class="value"><?php echo locale_pulldown($db, $locale) ?></td>
+		    <td class="value"><?php echo locale_pulldown($dbh, $locale) ?></td>
 		</tr><tr>
 		    <td class="key"><?php echo _("Privacy") ?></td>
   <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php if($settings["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private") ?><br>

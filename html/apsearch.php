@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/html");
 require_once("../php/locale.php");
-require_once("../php/db.php");
+require_once("../php/db_pdo.php");
 
 $uid = $_SESSION["uid"];
 $logged_in = $uid and !empty($uid);
@@ -24,7 +24,7 @@ $logged_in = $uid and !empty($uid);
   <body>
     <div id="contexthelp">
     <span style="float: right"><?php echo _("Language") ?><br>
-<?php echo locale_pulldown($db, $locale); ?>
+<?php echo locale_pulldown($dbh, $locale); ?>
   </span>
 
       <FORM name="searchform">
@@ -51,8 +51,7 @@ $logged_in = $uid and !empty($uid);
                   <option value="">ALL</option>
 <?php
   $sql = "SELECT code, name FROM countries ORDER BY name";
-  $result = mysql_query($sql, $db);
-  while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  foreach ($dbh->query($sql) as $row) {
     printf("<option value='%s'>%s</option>\n", $row["code"], $row["name"]);
   }
 ?>

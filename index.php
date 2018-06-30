@@ -1,6 +1,6 @@
 <?php
 require_once("./php/locale.php");
-require_once("./php/db.php");
+require_once("./php/db_pdo.php");
 require_once("./php/helper.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -68,7 +68,7 @@ require_once("./php/helper.php");
 	    <?php include("./sidebar.html") ?>
 	    <div id="login">
 	      <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
-                <?php echo locale_pulldown($db, $locale) ?>
+                <?php echo locale_pulldown($dbh, $locale) ?>
 	      </div>
 
 	      <div id="loginstatus" style="display: none"></div>
