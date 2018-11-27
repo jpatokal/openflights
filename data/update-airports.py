@@ -65,8 +65,8 @@ class DatabaseConnector(object):
 
   def update_all_from_oa(self, of_apid, oa, live_run):
     self.safe_execute(
-      'UPDATE airports SET icao=%s, name=%s, x=%s, y=%s, elevation=%s, type=%s, source=%s WHERE apid=%s',
-      (oa['ident'], oa['name'], oa['longitude_deg'], oa['latitude_deg'], (oa['elevation_ft'] or 0),
+      'UPDATE airports SET iata=%s, icao=%s, name=%s, x=%s, y=%s, elevation=%s, type=%s, source=%s WHERE apid=%s',
+      ((oa['iata_code'] or None), oa['ident'], oa['name'], oa['longitude_deg'], oa['latitude_deg'], (oa['elevation_ft'] or 0),
         'airport', 'OurAirports', of_apid),
       live_run)
 
@@ -77,11 +77,14 @@ class DatabaseConnector(object):
         oa['longitude_deg'], oa['latitude_deg'], (oa['elevation_ft'] or 0), 'airport', 'OurAirports'),
       live_run)
 
+  def dealloc_iata(self, old_id, live_run):
+    self.safe_execute('UPDATE airports SET iata=NULL WHERE apid=%s;', (old_id, ), live_run)
+
   def move_iata_to_new_airport(self, iata, old_id, new_id, live_run):
+    self.dealloc_iata(old_id, live_run)
+    self.safe_execute('UPDATE airports SET iata=%s WHERE apid=%s;', (iata, new_id, ), live_run)
     self.safe_execute('UPDATE flights SET src_apid=%s WHERE src_apid=%s;', (new_id, old_id, ), live_run)
     self.safe_execute('UPDATE flights SET dst_apid=%s WHERE dst_apid=%s;', (new_id, old_id, ), live_run)
-    self.safe_execute('UPDATE airports SET iata=NULL WHERE apid=%s;', (old_id, ), live_run)
-    self.safe_execute('UPDATE airports SET iata=%s WHERE apid=%s;', (iata, new_id, ), live_run)
 
 # Needed to allow piping UTF-8 (srsly Python wtf)
 sys.stdout = codecs.getwriter('utf8')(sys.stdout)
@@ -105,32 +108,56 @@ dbc.load_all_countries()
 with open('ourairports.csv', 'rb') as csvfile:
   reader = unicodecsv.DictReader(csvfile, encoding='utf-8')
   for oa in reader:
+    if oa['type'] == 'closed':
+      continue
+
+    # Does an airport with this ICAO entry already exist yet?
     of = dbc.find_by_icao(oa['ident'])
     if of:
+      # Clean up random junk in IATA field (many '0' entries for some reason)
+      if not re.match(r'[A-Z]{3}', oa['iata_code']):
+        oa['iata_code'] = ''
+
+      # Yes, but IATA code does not match
       if oa['iata_code'] != '' and of['iata'] != oa['iata_code']:
         print 'OLD %s (%s): IATA mismatch OF %s, OA %s' % (oa['ident'], oa['name'], of['iata'], oa['iata_code'])
         if of['iata'] != '':
           dupe = dbc.find_by_iata(oa['iata_code'])
           if dupe:
-            print '. DUPE %s (%s)' % (dupe['iata'], dupe['name'])
+            # Existing entry has the same IATA, merge it with the new OA entry
+            print '. MERGE IATA %s (%s) to new entry %s' % (dupe['iata'], dupe['name'], oa['ident'])
             dbc.move_iata_to_new_airport(oa['iata_code'], dupe['apid'], of['apid'], args.live_run)
       dbc.update_all_from_oa(of['apid'], oa, args.live_run)
 
     else:
-      # We only care about larger airports with ICAO identifiers
+      # New airport, but we only care about larger airports with ICAO identifiers
       if oa['type'] in ['medium_airport', 'large_airport'] and re.match(r'[A-Z]{4}', oa['ident']):
           # Horrible hack for matching FAA LIDs
           if not oa['iata_code'] and len(oa['local_code']) == 3:
             oa['iata_code'] = oa['local_code']
           print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
-          if oa['iata_code'] == '':
+          if oa['iata_code'] == '' and oa['local_code']:
+            # No IATA or FAA LID, just create as new
             dbc.create_new_from_oa(oa, args.live_run)
           else:
             if oa['iata_code'] != '':
               dupe = dbc.find_by_iata(oa['iata_code'])
               if dupe:
-                print '. DUPE %s (%s)' % (dupe['iata'], dupe['name'])
-                dbc.update_all_from_oa(dupe['apid'], oa, args.live_run)
+                print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
+                # If they're in the same country (first two letters of ICAO), we assume ICAO code has changed 
+                # and update existing entry with IATA using OA data (this preserves flights to it)
+                if dupe['icao'][:1] == oa['ident'][:1]:
+                  print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
+                  dbc.update_all_from_oa(dupe['apid'], oa, args.live_run)
+                else:
+                  if oa['local_code'] == '':
+                    print '.. ICAO country mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
+                      dupe['iata'], dupe['icao'], oa['iata_code'], oa['ident'])
+                    dbc.dealloc_iata(dupe['apid'], args.live_run)
+                  else:
+                    print '.. IATA trumps FAA LID, ignore false duplicate'
+                    oa['iata_code'] = ''
+                  dbc.create_new_from_oa(oa, args.live_run)
               else:
+                # No entry for this IATA, create as new
                 dbc.create_new_from_oa(oa, args.live_run)
-
