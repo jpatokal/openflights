@@ -136,7 +136,7 @@ with open('ourairports.csv', 'rb') as csvfile:
           if not oa['iata_code'] and len(oa['local_code']) == 3:
             oa['iata_code'] = oa['local_code']
           print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
-          if oa['iata_code'] == '' and oa['local_code']:
+          if oa['iata_code'] == '' and oa['local_code'] == '':
             # No IATA or FAA LID, just create as new
             dbc.create_new_from_oa(oa, args.live_run)
           else:
@@ -144,9 +144,9 @@ with open('ourairports.csv', 'rb') as csvfile:
               dupe = dbc.find_by_iata(oa['iata_code'])
               if dupe:
                 print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
-                # If they're in the same country (first two letters of ICAO), we assume ICAO code has changed 
+                # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
                 # and update existing entry with IATA using OA data (this preserves flights to it)
-                if dupe['icao'][:1] == oa['ident'][:1]:
+                if not dupe['icao'] or dupe['icao'][:1] == oa['ident'][:1]:
                   print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
                   dbc.update_all_from_oa(dupe['apid'], oa, args.live_run)
                 else:

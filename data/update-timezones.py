@@ -43,7 +43,7 @@ else:
 cnx = mysql.connector.connect(user='openflights', database=DB, host=host, password=pw)
 cnx.raise_on_warnings = True
 cur = cnx.cursor(dictionary=True, buffered=True)
-cur.execute("SELECT icao,apid,x,y,timezone,tz_id FROM airports WHERE apid > %s ORDER BY apid ASC" % args.start)
+cur.execute("SELECT icao,apid,x,y,timezone,tz_id FROM airports WHERE apid > %s AND timezone IS NULL ORDER BY apid ASC" % args.start)
 count = 0
 updated = 0
 # Fetch all so we can write without resetting cursor
