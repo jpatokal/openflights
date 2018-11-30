@@ -5,4 +5,5 @@ import/
 php/config.php
 php/secrets.php
 vendor/*
+*.pyc
 
