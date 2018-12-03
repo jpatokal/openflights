@@ -46,7 +46,7 @@ class OpenFlightsData(object):
   # Given a new OurAirports airport (oa), try to match it to existing data
   def match(self, dbc, oa):
     if oa['type'] == 'closed':
-      return None
+      return False
 
     # Does an airport with this ICAO entry already exist yet?
     of = self.find_by_icao(oa['ident'])
@@ -65,40 +65,42 @@ class OpenFlightsData(object):
             print '. MERGE IATA %s (%s) to new entry %s' % (dupe['iata'], dupe['name'], oa['ident'])
             dbc.move_iata_to_new_airport(oa['iata_code'], dupe['apid'], of['apid'])
       dbc.update_all_from_oa(of['apid'], oa)
+      return True
 
-    else:
-      # New airport, but we only care about larger airports with ICAO identifiers
-      if oa['type'] in ['medium_airport', 'large_airport'] and re.match(r'[A-Z]{4}', oa['ident']):
-          oa['country_name'] = self.countries[oa['iso_country']]
-          # Horrible hack for matching FAA LIDs
-          if not oa['iata_code'] and len(oa['local_code']) == 3:
-            oa['iata_code'] = oa['local_code']
-          print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
-          if oa['iata_code'] == '' and oa['local_code'] == '':
-            # No IATA or FAA LID, just create as new
-            dbc.create_new_from_oa(oa)
-          else:
-            if oa['iata_code'] != '':
-              dupe = self.find_by_iata(oa['iata_code'])
-              if dupe:
-                print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
-                # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
-                # and update existing entry with IATA using OA data (this preserves flights to it)
-                if not dupe['icao'] or dupe['icao'][:1] == oa['ident'][:1]:
-                  print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
-                  dbc.update_all_from_oa(dupe['apid'], oa)
-                else:
-                  if oa['local_code'] == '':
-                    print '.. ICAO country mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
-                      dupe['iata'], dupe['icao'], oa['iata_code'], oa['ident'])
-                    dbc.dealloc_iata(dupe['apid'])
-                  else:
-                    print '.. IATA trumps FAA LID, ignore false duplicate'
-                    oa['iata_code'] = ''
-                  dbc.create_new_from_oa(oa)
+    # New airport, but we only care about larger airports with ICAO identifiers
+    if oa['type'] in ['medium_airport', 'large_airport'] and re.match(r'[A-Z]{4}', oa['ident']):
+      oa['country_name'] = self.countries[oa['iso_country']]
+      # Horrible hack for matching FAA LIDs
+      if not oa['iata_code'] and len(oa['local_code']) == 3:
+        oa['iata_code'] = oa['local_code']
+      print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
+      if oa['iata_code'] == '' and oa['local_code'] == '':
+        # No IATA or FAA LID, just create as new
+        dbc.create_new_from_oa(oa)
+      else:
+        if oa['iata_code'] != '':
+          dupe = self.find_by_iata(oa['iata_code'])
+          if dupe:
+            print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
+            # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
+            # and update existing entry with IATA using OA data (this preserves flights to it)
+            if not dupe['icao'] or dupe['icao'][:1] == oa['ident'][:1]:
+              print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
+              dbc.update_all_from_oa(dupe['apid'], oa)
+            else:
+              if oa['local_code'] == '':
+                print '.. ICAO country mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
+                  dupe['iata'], dupe['icao'], oa['iata_code'], oa['ident'])
+                dbc.dealloc_iata(dupe['apid'])
               else:
-                # No entry for this IATA, create as new
-                dbc.create_new_from_oa(oa)
+                print '.. IATA trumps FAA LID, ignore false duplicate'
+                oa['iata_code'] = ''
+              dbc.create_new_from_oa(oa)
+          else:
+            # No entry for this IATA, create as new
+            dbc.create_new_from_oa(oa)
+      return True
+    return False
 
 class DatabaseConnector(object):
   DB = 'flightdb2'
