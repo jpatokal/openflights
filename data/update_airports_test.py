@@ -43,6 +43,35 @@ class UpdateAirportsTest(unittest.TestCase):
     self.fake_dbc.update_all_from_oa.assert_called()
     self.fake_dbc.move_iata_to_new_airport.assert_not_called()
 
+  def testNewSmallAirport(self):
+    oa = {'type': 'small_airport', 'ident': 'NEWA'}
+    self.assertEquals(self.ofd.match(None, oa), False)
+
+  def testNewIcaoOnly(self):
+    oa = {'type': 'medium_airport', 'ident': 'NEWA', 'iata_code': '', 'local_code': '', 'iso_country': 'AX', 'name': 'Ayebeesee Intl Airport'}
+    self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
+    self.fake_dbc.create_new_from_oa.assert_called_with(oa)
+
+  def testNewMatchingDupeIata(self):
+    oa = {'type': 'medium_airport', 'ident': 'NEWA', 'iata_code': 'DUP', 'local_code': '', 'iso_country': 'AX', 'name': 'Ayebeesee Intl Airport'}
+    self.ofd.iata['DUP'] = {'apid': 69, 'iata': 'DUP', 'icao': 'NEWB', 'name': 'Ayebeesee Intl Airport'}
+    self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
+    self.fake_dbc.dealloc_iata.assert_not_called()
+    self.fake_dbc.update_all_from_oa.assert_called_with(69, oa)
+
+  def testNewNonMatchingDupeIata(self):
+    oa = {'type': 'medium_airport', 'ident': 'NEWA', 'iata_code': 'DUP', 'local_code': '', 'iso_country': 'AX', 'name': 'Ayebeesee Intl Airport'}
+    self.ofd.iata['DUP'] = {'apid': 69, 'iata': 'DUP', 'icao': 'OLDA', 'name': 'Ayebeesee Intl Airport'}
+    self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
+    self.fake_dbc.dealloc_iata.assert_called_with(69)
+    self.fake_dbc.create_new_from_oa.assert_called_with(oa)
+
+  def testNewNonMatchingDupeFAA(self):
+    oa = {'type': 'medium_airport', 'ident': 'NEWA', 'iata_code': 'DUP', 'local_code': 'DUP', 'iso_country': 'AX', 'name': 'Ayebeesee Intl Airport'}
+    self.ofd.iata['DUP'] = {'apid': 69, 'iata': 'DUP', 'icao': 'OLDA', 'name': 'Ayebeesee Intl Airport'}
+    self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
+    self.fake_dbc.dealloc_iata.assert_not_called()
+    self.fake_dbc.create_new_from_oa.assert_called_with(oa)
 
 if __name__ == '__main__':
     unittest.main()

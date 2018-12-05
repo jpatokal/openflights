@@ -74,31 +74,31 @@ class OpenFlightsData(object):
       if not oa['iata_code'] and len(oa['local_code']) == 3:
         oa['iata_code'] = oa['local_code']
       print 'NEW %s (%s): %s' % (oa['ident'], oa['name'], oa['iata_code'])
-      if oa['iata_code'] == '' and oa['local_code'] == '':
+      if oa['iata_code'] == '':
         # No IATA or FAA LID, just create as new
         dbc.create_new_from_oa(oa)
       else:
-        if oa['iata_code'] != '':
-          dupe = self.find_by_iata(oa['iata_code'])
-          if dupe:
-            print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
-            # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
-            # and update existing entry with IATA using OA data (this preserves flights to it)
-            if not dupe['icao'] or dupe['icao'][:1] == oa['ident'][:1]:
-              print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
-              dbc.update_all_from_oa(dupe['apid'], oa)
-            else:
-              if oa['local_code'] == '':
-                print '.. ICAO country mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
-                  dupe['iata'], dupe['icao'], oa['iata_code'], oa['ident'])
-                dbc.dealloc_iata(dupe['apid'])
-              else:
-                print '.. IATA trumps FAA LID, ignore false duplicate'
-                oa['iata_code'] = ''
-              dbc.create_new_from_oa(oa)
+        # Can we match by IATA/FAA?
+        dupe = self.find_by_iata(oa['iata_code'])
+        if dupe:
+          print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
+          # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
+          # and update existing entry with IATA using OA data (this preserves flights to it)
+          if not dupe['icao'] or dupe['icao'][:1] == oa['ident'][:1]:
+            print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
+            dbc.update_all_from_oa(dupe['apid'], oa)
           else:
-            # No entry for this IATA, create as new
+            if oa['local_code'] == '':
+              print '.. ICAO country mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
+                dupe['iata'], dupe['icao'], oa['iata_code'], oa['ident'])
+              dbc.dealloc_iata(dupe['apid'])
+            else:
+              print '.. IATA trumps FAA LID, ignore false duplicate'
+              oa['iata_code'] = ''
             dbc.create_new_from_oa(oa)
+        else:
+          # No entry for this IATA, create as new
+          dbc.create_new_from_oa(oa)
       return True
     return False
 
