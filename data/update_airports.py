@@ -4,7 +4,7 @@
 # Install
 # virtualenv env
 # source env/bin/activate
-# pip install unicodecsv mysql-connector
+# pip install unicodecsv mysql-connector mock
 
 # To fetch data:
 # $ curl -o ourairports.csv http://ourairports.com/data/airports.csv
@@ -85,11 +85,11 @@ class OpenFlightsData(object):
           # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
           # and update existing entry with IATA using OA data (this preserves flights to it)
           if not dupe['icao'] or dupe['icao'][:1] == oa['ident'][:1]:
-            print '.. ICAO country match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
+            print '.. ICAO match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['ident'])
             dbc.update_all_from_oa(dupe['apid'], oa)
           else:
             if oa['local_code'] == '':
-              print '.. ICAO country mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
+              print '.. ICAO mismatch, deallocate IATA %s from %s and create %s/%s as new' % (
                 dupe['iata'], dupe['icao'], oa['iata_code'], oa['ident'])
               dbc.dealloc_iata(dupe['apid'])
             else:
