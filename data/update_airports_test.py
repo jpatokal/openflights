@@ -7,7 +7,7 @@ import unittest
 class UpdateAirportsTest(unittest.TestCase):
 
   def setUp(self):
-    self.fake_dbc = mock.Mock(spec=update_airports.DatabaseConnector)
+    self.fake_dbc = mock.Mock(spec=update_airports.AirportDB)
     self.ofd = update_airports.OpenFlightsData(countries={'AX': 'Aland'})
     self.ofd.icao['ABCD'] = {'iata': 'ABC', 'apid': 42}
 

@@ -15,6 +15,8 @@ import re
 import sys
 import unicodecsv
 
+import database_connector
+
 class OpenFlightsData(object):
   def __init__(self, iata=None, icao=None, countries=None):
     self.iata = iata or {}
@@ -102,29 +104,7 @@ class OpenFlightsData(object):
       return True
     return False
 
-class DatabaseConnector(object):
-  DB = 'flightdb2'
-
-  def __init__(self, args=None):
-    self.read_cnx = self.connect(host, pw)
-    self.cursor = self.read_cnx.cursor(dictionary=True)
-    self.write_cnx = self.connect(host, pw)
-    self.write_cursor = self.write_cnx.cursor(dictionary=True)
-    self.args = args
-
-  def connect(self, host, pw):
-    cnx = mysql.connector.connect(user='openflights', database=self.DB, host=host, password=pw)
-    cnx.raise_on_warnings = True
-    return cnx
-
-  def safe_execute(self, sql, params):
-    if args.live_run:
-      self.write_cursor.execute(sql, params, )
-      print ".. %s : %d rows updated" % (sql % params, self.write_cursor.rowcount)
-      self.write_cnx.commit()
-    else:
-      print sql % params
-
+class AirportDB(database_connector.DatabaseConnector):
   def update_all_from_oa(self, of_apid, oa):
     self.safe_execute(
       'UPDATE airports SET iata=%s, icao=%s, name=%s, x=%s, y=%s, elevation=%s, type=%s, source=%s WHERE apid=%s',
@@ -155,15 +135,7 @@ if __name__ == "__main__":
   parser.add_argument('--local', default=False, action='store_true')
   args = parser.parse_args()
 
-  if args.local:
-    host = 'localhost'
-    pw = None
-  else:
-    host = '104.197.15.255'
-    with open('../sql/db.pw','r') as f:
-      pw = f.read().strip()
-
-  dbc = DatabaseConnector(args)
+  dbc = AirportDB(args)
   ofd = OpenFlightsData()
   ofd.load_all_airports(dbc)
   with open('ourairports.csv', 'rb') as csvfile:
