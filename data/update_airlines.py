@@ -17,13 +17,14 @@ from collections import defaultdict
 import database_connector
 
 class OpenFlightsAirlines(object):
-  def __init__(self):
+  def __init__(self, aldb):
+    self.aldb = aldb
     self.of_iata = defaultdict(list)
     self.of_icao = defaultdict(list)
 
-  def load_all_airlines(self, dbc):
-    dbc.cursor.execute('SELECT * FROM airlines')
-    for row in dbc.cursor:
+  def load_all_airlines(self):
+    aldb.cursor.execute('SELECT * FROM airlines')
+    for row in aldb.cursor:
       if row['iata'] == "":
         row['iata'] = None
       self.of_iata[row['iata']].append(row)
@@ -42,12 +43,28 @@ class OpenFlightsAirlines(object):
           return airline
     return None
 
+  def diff(self, of, wp):
+    fields = {}
+    for field in ['name', 'callsign', 'icao', 'iata']:
+      if wp[field] and wp[field] != of[field]:
+        fields[field] = wp[field]
+    return fields
+
+  def update_from_wp(self, of, wp):
+    fields = self.diff(of, wp)
+    if fields:
+      self.aldb.update_from_wp(of['apid'], fields)
+
 class AirlineDB(database_connector.DatabaseConnector):
-  pass
+  def update_from_wp(self, of_apid, fields):
+    field_string = ', '.join(map(lambda k: '%s=%s' % k, fields.items()))
+    self.safe_execute(
+      'UPDATE airports SET %s WHERE apid=%s',
+      (', '.join(map(lambda k: '%s=%s' % k, fields.items())), of_apid))
 
 class WikipediaArticle(object):
   def __init__(self):
-    airlines = []
+    self.airlines = []
 
   def load(self, letter):
     airline_url = 'https://en.wikipedia.org/w/api.php?action=query&titles=List_of_airline_codes_(%s)&prop=revisions&rvprop=content&format=php'
@@ -59,7 +76,7 @@ class WikipediaArticle(object):
         if header > 0:
           header -= 1
         else:
-          parse_airline(block)
+          self.airlines.append(self.parse_airline(block))
         block = []
       else:
         block.append(line)
@@ -72,8 +89,8 @@ class WikipediaArticle(object):
   # ! Country
   # ! Comments
   def parse_airline(self, block):
-    iata, icao, name, callsign, country = [clean(x) for x in block[0:5]]
-    airlines.append({'icao': icao, 'iata': iata, 'name': name, 'callsign': callsign, 'country': country})
+    iata, icao, name, callsign, country = [self.clean(x) for x in block[0:5]]
+    return {'icao': icao, 'iata': iata, 'name': name, 'callsign': callsign, 'country': country}
 
   def clean(self, x):
     # | ''[[Foo|Bar]]'' -> Bar
@@ -92,8 +109,8 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   aldb = AirlineDB(args)
-  ofa = OpenFlightsAirlines()
-  ofa.load_all_airlines(aldb)
+  ofa = OpenFlightsAirlines(aldb)
+  ofa.load_all_airlines()
   wpa = WikipediaArticle()
   wpa.load('A')
 
@@ -101,14 +118,9 @@ if __name__ == "__main__":
   updated = 0
   added = 0
   for airline in wpa.airlines:
-    of_airline = ofa.match_airline(airline)
+    of_airline = ofa.match(airline)
     if of_airline:
-      if of_airline['name'] != airline['name']:
-        print 'MATCH %s/%s: update name %s to %s' % (of_airline['iata'], of_airline['icao'], of_airline['name'], airline['name'])
-        updated += 1
-      if airline['callsign'] != None and of_airline['callsign'] != airline['callsign']:
-        print 'MATCH %s/%s: update callsign %s to %s' % (of_airline['iata'], of_airline['icao'], of_airline['callsign'], airline['callsign'])
-        updated += 1
+      ofa.update_from_wp(of_airline, airline)
     else:
       print 'NEW', airline
       added += 1
