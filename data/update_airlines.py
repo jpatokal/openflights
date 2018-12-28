@@ -13,8 +13,30 @@ import mysql.connector
 import sys
 import urllib2
 from collections import defaultdict
+from HTMLParser import HTMLParser
 
 import database_connector
+
+class HTMLCleaner(HTMLParser):
+  def __init__(self):
+    self.reset()
+    self.fed = []
+    self.nuke = False
+
+  # Special case: we remove contents of <ref>...</ref> tags
+  def handle_starttag(self, tag, attrs):
+    self.nuke = (tag == 'ref')
+
+  def handle_endtag(self, tag):
+    self.nuke = (tag == 'ref')
+
+  def handle_data(self, d):
+    if not self.nuke:
+      self.fed.append(d)
+
+  def get_data(self):
+    return ''.join(self.fed)
+
 
 class OpenFlightsAirlines(object):
   def __init__(self, aldb):
@@ -39,7 +61,6 @@ class OpenFlightsAirlines(object):
     if iata and iata in self.of_iata:
       for airline in self.of_iata[iata]:
         if airline['callsign'] == callsign or airline['country'] == country:
-          print "IATA MATCH %s, %s" % (airline, wp)
           return airline
     return None
 
@@ -53,20 +74,24 @@ class OpenFlightsAirlines(object):
   def update_from_wp(self, of, wp):
     fields = self.diff(of, wp)
     if fields:
-      self.aldb.update_from_wp(of['apid'], fields)
+      self.aldb.update_from_wp(of['alid'], fields)
 
 class AirlineDB(database_connector.DatabaseConnector):
-  def update_from_wp(self, of_apid, fields):
-    field_string = ', '.join(map(lambda k: '%s=%s' % k, fields.items()))
+  def add_new(self, wp):
     self.safe_execute(
-      'UPDATE airports SET %s WHERE apid=%s',
-      (', '.join(map(lambda k: '%s=%s' % k, fields.items())), of_apid))
+      'INSERT INTO airlines(name,iata,icao,callsign,country) VALUES(%s,%s,%s,%s,%s)',
+      (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country']))
+
+  def update_from_wp(self, alid, fields):
+    field_string = ', '.join(map(lambda k: "%s='%s'" % (k, fields[k].replace("'", "''")), fields.keys()))
+    self.safe_execute('UPDATE airlines SET ' + field_string + ' WHERE alid=%s', (alid, ))
 
 class WikipediaArticle(object):
   def __init__(self):
-    self.airlines = []
+    self.cleaner = HTMLCleaner()
 
   def load(self, letter):
+    self.airlines = []
     airline_url = 'https://en.wikipedia.org/w/api.php?action=query&titles=List_of_airline_codes_(%s)&prop=revisions&rvprop=content&format=php'
     response = urllib2.urlopen(airline_url % letter).read()
     block = []
@@ -76,7 +101,9 @@ class WikipediaArticle(object):
         if header > 0:
           header -= 1
         else:
-          self.airlines.append(self.parse_airline(block))
+          airline = self.parse_airline(block)
+          if airline:
+            self.airlines.append(airline)
         block = []
       else:
         block.append(line)
@@ -89,12 +116,19 @@ class WikipediaArticle(object):
   # ! Country
   # ! Comments
   def parse_airline(self, block):
+    if len(block) < 5:
+      return None
     iata, icao, name, callsign, country = [self.clean(x) for x in block[0:5]]
     return {'icao': icao, 'iata': iata, 'name': name, 'callsign': callsign, 'country': country}
 
   def clean(self, x):
+    # Remove HTML tags and entities
+    self.cleaner = HTMLCleaner()
+    self.cleaner.feed(x)
+    x = self.cleaner.get_data()
+
     # | ''[[Foo|Bar]]'' -> Bar
-    x = unicode(x.split('|')[-1].translate(None, "[|]").replace("''", ""), 'utf-8')
+    x = unicode(x.split('|')[-1].translate(None, "[|]*?").replace("''", ""), 'utf-8').strip()
     if x == '':
       return None
     return x
@@ -111,19 +145,24 @@ if __name__ == "__main__":
   aldb = AirlineDB(args)
   ofa = OpenFlightsAirlines(aldb)
   ofa.load_all_airlines()
-  wpa = WikipediaArticle()
-  wpa.load('A')
 
   count = 0
   updated = 0
   added = 0
-  for airline in wpa.airlines:
-    of_airline = ofa.match(airline)
-    if of_airline:
-      ofa.update_from_wp(of_airline, airline)
-    else:
-      print 'NEW', airline
-      added += 1
-    count += 1
+  wpa = WikipediaArticle()
+  for c in xrange(ord('A'), ord('Z')+1):
+    wpa.load(chr(c))
+    print "### %s" % chr(c)
+    for airline in wpa.airlines:
+      of_airline = ofa.match(airline)
+      if of_airline:
+        print "> MATCH %s %s" % (airline, of_airline)
+        ofa.update_from_wp(of_airline, airline)
+        updated += 1
+      else:
+        print "= NEW %s" % airline
+        aldb.add_new(airline)
+        added += 1
+      count += 1
 
   print "%s new, %s updated, %s total" % (added, updated, count)

@@ -17,7 +17,14 @@ class UpdateAirlinesTest(unittest.TestCase):
   def testClean(self):
     for input, output in [
       [""                 , None],
+      [" "                , None],
+      ["&mdash;"          , None],
       ["Foo"              , "Foo"],
+      ["Foo*"             , "Foo"],
+      ["Foo?"             , "Foo"],
+      [" Foo "            , "Foo"],
+      ["<i>Foo</i>"       , "Foo"],
+      ["Foo<ref>1</ref>"  , "Foo"],
       ["[[Foo|Bar]]"      , "Bar"],
       ["| ''[[Foo|Bar]]''", "Bar"]      
     ]:
@@ -28,13 +35,11 @@ class UpdateAirlinesTest(unittest.TestCase):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Aland Airlines', 'callsign': 'ALAXA', 'country': 'AX'}
     self.assertEquals(self.ofa.match(wp), self.of)
     self.assertEquals(self.ofa.diff(self.of, wp), {})
-    self.fake_aldb.update_from_wp.assert_not_called()
 
   def testNameChange(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Ahvenanmaa Airlines', 'callsign': 'ALAXA', 'country': 'AX'}
     self.assertEquals(self.ofa.match(wp), self.of)
     self.assertEquals(self.ofa.diff(self.of, wp), {'name': 'Ahvenanmaa Airlines'})
-    self.fake_aldb.update_from_wp.assert_called()
 
   def testIcaoIataMatch(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Aland Airlines', 'callsign': 'ZZZZZ', 'country': 'ZZ'}
@@ -67,4 +72,3 @@ class UpdateAirlinesTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
