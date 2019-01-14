@@ -5,7 +5,7 @@
 # virtualenv env
 # source env/bin/activate
 # curl https://bootstrap.pypa.io/get-pip.py | python
-# pip install mysql-connector unittest
+# pip install mysql-connector unittest bs4
 
 import argparse
 import codecs
@@ -13,13 +13,15 @@ import difflib
 import mysql.connector
 import sys
 import urllib2
+from bs4 import BeautifulSoup
 from collections import defaultdict
 from HTMLParser import HTMLParser
 from pprint import pprint
 
 import database_connector
 
-# TODO: Scrape IATA members at https://www.iata.org/about/members/Pages/airline-list.aspx?All=true
+# TODO:
+# Fix creation (countries...)
 
 class HTMLCleaner(HTMLParser):
   def __init__(self):
@@ -40,7 +42,6 @@ class HTMLCleaner(HTMLParser):
 
   def get_data(self):
     return ''.join(self.fed)
-
 
 class OpenFlightsAirlines(object):
   def __init__(self, aldb):
@@ -67,6 +68,11 @@ class OpenFlightsAirlines(object):
         if (iata and airline['iata'] == iata) or airline['callsign'] == callsign or airline['country'] == country:
           match = airline
           break
+        # Special case: IATA data, accept on basis of ICAO match
+        if not callsign and not country:
+          match = airline
+          break
+
     if not match and iata and iata in self.of_iata:
       for airline in self.of_iata[iata]:
         if airline['callsign'] == callsign or airline['country'] == country:
@@ -105,7 +111,9 @@ class OpenFlightsAirlines(object):
     fields = {}
     for field in ['name', 'callsign', 'icao', 'iata']:
       if wp[field] and wp[field] != of[field]:
-        fields[field] = wp[field]
+        if not of[field] or wp[field].upper() != of[field].upper():
+          if field != 'name' or len(wp[field]) > 3:
+            fields[field] = wp[field]
     return fields
 
   def update_from_wp(self, of, wp, dupe):
@@ -132,6 +140,37 @@ class AirlineDB(database_connector.DatabaseConnector):
   def deduplicate(self, main_id, dupe_id):
     self.safe_execute('UPDATE flights SET alid=%s WHERE alid=%s;', (main_id, dupe_id, ))
     self.safe_execute('DELETE airlines WHERE alid=%s;', (dupe_id, ))
+
+
+class IATAAirlines(object):
+  def __init__(self):
+    self.translate_table = dict((ord(char), None) for char in "'[|]*?")
+
+  def load(self):
+    self.airlines = []
+    iata_url = 'https://www.iata.org/about/members/Pages/airline-list.aspx?All=true'
+    req = urllib2.Request(iata_url)
+    req.add_header('Referer', 'https://www.iata.org')
+    req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36')
+    response = urllib2.urlopen(req).read()
+    soup = BeautifulSoup(response, 'html.parser')
+
+    # There are multiple tables, find the 'main' one
+    table = soup.find('table', attrs={'style': 'margin-top:0px;'})
+
+    # Ignore headers, which are "table thead tr"
+    for row in table.find_all('tr', recursive=False):
+      cells = row.find_all('td')
+      if len(cells) > 1:
+        # Last field is country, but the contents are unusable (Independent State of Papua New Guinea etc)
+        name, iata, _, icao = [self.clean(c.get_text()) for c in cells[0:4]]
+        self.airlines.append({'icao': icao, 'iata': iata, 'name': name, 'callsign': None, 'country': None, 'active': 'Y', 'source': 'IATA'})
+
+  def clean(self, x):
+    if x:
+      return x.translate(self.translate_table).strip()
+    else:
+      return None
 
 class WikipediaArticle(object):
   def __init__(self):
@@ -184,6 +223,22 @@ def pp(airline):
   alid = airline['alid'] if 'alid' in airline else 'N/A'
   return ('%s (%s/%s, %s)' % (airline['name'], airline['iata'], airline['icao'], alid))
 
+def process(airlines, ofa, aldb, stats):
+  for airline in airlines:
+    (of_airline, dupe) = ofa.match(airline)
+    if of_airline:
+      print "> MATCH %s == %s" % (pp(airline), pp(of_airline))
+      stats['matched'] += 1
+      stats['updated'] += ofa.update_from_wp(of_airline, airline, dupe)
+      if dupe:
+        print ">> DUPE %s -> %s" % (pp(dupe), pp(of_airline))
+        stats['deduped'] += 1
+    else:
+      print "= NEW %s" % pp(airline)
+      aldb.add_new(airline)
+      stats['added'] += 1
+    stats['total'] += 1
+
 if __name__ == "__main__":
   # Needed to allow piping UTF-8 (srsly Python wtf)
   sys.stdout = codecs.getwriter('utf8')(sys.stdout)
@@ -191,35 +246,25 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument('--live_run', default=False, action='store_true')
   parser.add_argument('--local', default=False, action='store_true')
+  parser.add_argument('--source', default='wiki')
   args = parser.parse_args()
 
   aldb = AirlineDB(args)
   ofa = OpenFlightsAirlines(aldb)
   ofa.load_all_airlines()
 
-  count = 0
-  matched = 0
-  updated = 0
-  deduped = 0
-  added = 0
-  wpa = WikipediaArticle()
-  for c in xrange(ord('A'), ord('Z')+1):
-    wpa.load(chr(c))
-    print "### %s" % chr(c)
-    for airline in wpa.airlines:
-      (of_airline, dupe) = ofa.match(airline)
-      if of_airline:
-        print "> MATCH %s == %s" % (pp(airline), pp(of_airline))
-        matched += 1
-        updated += ofa.update_from_wp(of_airline, airline, dupe)
-        if dupe:
-          print ">> DUPE %s -> %s" % (pp(dupe), pp(of_airline))
-          deduped += 1
-      else:
-        print "= NEW %s" % pp(airline)
-        aldb.add_new(airline)
-        added += 1
+  stats = defaultdict(int)
+  if args.source == 'wikipedia':
+    wpa = WikipediaArticle()
+    for c in xrange(ord('A'), ord('Z')+1):
+      wpa.load(chr(c))
+      print "### %s" % chr(c)
+      process(wpa.airlines, ofa, aldb, stats)
+  else:
+    iatadb = IATAAirlines()
+    iatadb.load()
+    process(iatadb.airlines, ofa, aldb, stats)
 
-      count += 1
+  print "%s matched with %s updated and %s deduped, %s added, %s total" % (
+    stats['matched'], stats['updated'], stats['deduped'], stats['added'], stats['total'])
 
-  print "%s matched with %s updated and %s deduped, %s added, %s total" % (matched, updated, deduped, added, count)

@@ -45,6 +45,16 @@ class UpdateAirlinesTest(unittest.TestCase):
     self.assertEquals(self.ofa.match(wp), (self.of, None))
     self.assertEquals(self.ofa.diff(self.of, wp), {'name': 'Ahvenanmaa Airlines'})
 
+  def testIgnoreCaseChange(self):
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'ALAND AIRLINES', 'callsign': 'ALAXA', 'country': 'AX'}
+    self.assertEquals(self.ofa.match(wp), (self.of, None))
+    self.assertEquals(self.ofa.diff(self.of, wp), {})
+
+  def testIgnoreNameAbbreviation(self):
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'ALA', 'callsign': 'ALAXA', 'country': 'AX'}
+    self.assertEquals(self.ofa.match(wp), (self.of, None))
+    self.assertEquals(self.ofa.diff(self.of, wp), {})
+
   def testIcaoIataMatch(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Aland Airlines', 'callsign': 'ZZZZZ', 'country': 'ZZ'}
     self.assertEquals(self.ofa.match(wp), (self.of, None))
@@ -59,6 +69,20 @@ class UpdateAirlinesTest(unittest.TestCase):
     wp = {'icao': 'ABC', 'iata': 'ZZ', 'name': 'Aland Airlines', 'callsign': 'ZZZZZ', 'country': 'AX'}
     self.assertEquals(self.ofa.match(wp), (self.of, None))
     self.assertEquals(self.ofa.diff(self.of, wp), {'callsign': 'ZZZZZ', 'iata': 'ZZ'})
+
+  def testIcaoMatchBothCallsignsEmpty(self):
+    match = {'icao': 'FZA', 'iata': '', 'name': 'Fuzhou Airlines', 'callsign': '', 'country': 'China'}
+    self.indexAirline(match)
+    iata = {'icao': 'FZA', 'iata': 'FU', 'name': 'Fuzhou Airlines', 'callsign': '', 'country': ''}
+    self.assertEquals(self.ofa.match(iata), (match, None))
+    self.assertEquals(self.ofa.diff(match, iata), {'iata': 'FU'})
+
+  def testIcaoMatchNewCallsignEmpty(self):
+    match = {'icao': 'OKA', 'iata': '', 'name': 'Okay Airways', 'callsign': 'OKAYJET', 'country': 'China'}
+    self.indexAirline(match)
+    iata = {'icao': 'OKA', 'iata': 'BK', 'name': 'Okay Airways', 'callsign': '', 'country': ''}
+    self.assertEquals(self.ofa.match(iata), (match, None))
+    self.assertEquals(self.ofa.diff(match, iata), {'iata': 'BK'})
 
   def testIcaoNotMatch(self):
     wp = {'icao': 'ABC', 'iata': 'ZZ', 'name': 'Aland Airlines', 'callsign': 'ZZZZZ', 'country': 'ZZ'}
