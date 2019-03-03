@@ -16,14 +16,14 @@ function getFilterString($dbh, $vars) {
     if($trid == "null") {
       $filter = $filter . " AND f.trid IS NULL";
     } else {
-      $filter = $filter . " AND f.trid= " . $dbh->quote($trid);
+      $filter = $filter . " AND f.trid= " . $dbh->quote($trid, PDO::PARAM_INT);
     }
   }
   if($alid && $alid != "0") {
-    $filter = $filter . " AND f.alid=" . $dbh->quote($alid);
+    $filter = $filter . " AND f.alid=" . $dbh->quote($alid, PDO::PARAM_INT);
   }
   if($year && $year != "0") {
-    $filter = $filter . " AND YEAR(f.src_date)=" . $dbh->quote($year);
+    $filter = $filter . " AND YEAR(f.src_date)=" . $dbh->quote($year, PDO::PARAM_INT);
   }
   if($xvalue && $xvalue != "") {
     switch($xkey) {
@@ -32,31 +32,31 @@ function getFilterString($dbh, $vars) {
       break;
       
     case "class":
-      $filter = $filter . " AND f.class='" . $xvalue . "'";
+      $filter = $filter . " AND f.class=" . $dbh->quote($xvalue);
       break;
       
     case "distgt":
-      $filter = $filter . " AND f.distance > " . $xvalue;
+      $filter = $filter . " AND f.distance > " . $dbh->quote($xvalue, PDO::PARAM_INT);
       break;
       
     case "distlt":
-      $filter = $filter . " AND f.distance < " . $xvalue;
+      $filter = $filter . " AND f.distance < " . $dbh->quote($xvalue, PDO::PARAM_INT);
       break;
 
     case "mode":
-      $filter = $filter . " AND f.mode='" . $xvalue . "'";
+      $filter = $filter . " AND f.mode=" . $dbh->quote($xvalue);
       break;
       
     case "note":
-      $filter = $filter . " AND f.note LIKE '%" . $xvalue . "%'";
+      $filter = $filter . " AND f.note LIKE " . $dbh->quote("%$xvalue%");
       break;
       
     case "reason":
-      $filter = $filter . " AND f.reason='" . $xvalue . "'";
+      $filter = $filter . " AND f.reason=" . $dbh->quote($xvalue);
       break;
       
     case "reg":
-      $filter = $filter . " AND f.registration LIKE '" . $xvalue . "%'";
+      $filter = $filter . " AND f.registration LIKE " . $dbh->quote("$xvalue%");
       break;
     }
   }
