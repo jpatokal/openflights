@@ -2852,7 +2852,7 @@ function keyPress(e, element) {
     if(e == "CHANGE") {
       if(logged_in == "pending") return true;
     }
-    if (keycode == Event.KEY_RETURN) {
+    if (keycode == Event.KEY_RETURN || e == "CHANGE") {
       logged_in = "pending";
       xmlhttpPost("/php/login.php");
     }
