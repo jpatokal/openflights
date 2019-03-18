@@ -2,6 +2,12 @@
 include 'helper.php';
 include 'db.php';
 
+// Trim anything after a period or space and left paren
+function trim_query($query) {
+  $chunks = preg_split("/(\.| \()/", $query);
+  return $chunks[0];
+}
+
 // If quick, then return only one row, with no UL tags
 if($_POST['quick']) {
   $limit = 1;
@@ -19,7 +25,7 @@ $multi = $_POST["qs"];
 $airports = array("qs", "src_ap", "dst_ap", "src_ap1", "dst_ap1", "src_ap2", "dst_ap2", "src_ap3", "dst_ap3", "src_ap4", "dst_ap4");
 foreach($airports as $ap) {
   if($_POST[$ap]) {
-    $query = mysql_real_escape_string($_POST[$ap]);
+    $query = trim_query(mysql_real_escape_string($_POST[$ap]));
     // Limit the number of rows returned in multiinput, where space is at a premium
     if($limit > 1) {
       $idx = substr($ap, -1);
@@ -86,7 +92,7 @@ if(! $query || $multi) {
   $airlines = array("qs", "airline", "airline1", "airline2", "airline3", "airline4");
   foreach($airlines as $al) {
     if($_POST[$al]) {
-      $query = mysql_real_escape_string($_POST[$al]);
+      $query = trim_query(mysql_real_escape_string($_POST[$al]));
       // Limit(/expand) the number of rows returned in multiinput, where space is at a premium
       if($limit != 1) {
        $idx = substr($al, -1);
@@ -153,7 +159,7 @@ if(! $query || $multi) {
 
   // Autocompletion for plane types
   // First match against major types with IATA codes, then pad to max 6 by matching against frequency of use
-  $query = mysql_real_escape_string($_POST['plane']);
+  $query = trim_query(mysql_real_escape_string($_POST['plane']));
   $query = "(name LIKE '%" . $query . "%' OR iata LIKE '%" . $query . "%') ";
   $sql = "(SELECT name,plid FROM planes WHERE " . $query . " AND iata IS NOT NULL ORDER BY name LIMIT 6) UNION " .
          "(SELECT name,plid FROM planes WHERE " . $query . " AND iata IS NULL ORDER BY frequency DESC LIMIT 6) LIMIT 6";
@@ -171,6 +177,9 @@ if(! $query || $multi) {
 }
 }
 
+if(mysql_num_rows($rs) == 0) {
+  http_response_code(204); // No Data
+}
+
 if($limit > 1) printf("</ul>");
 ?>
-

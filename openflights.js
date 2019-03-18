@@ -272,8 +272,8 @@ var earthLayer = new OpenLayers.Layer.XYZ(
 
   initHintTextboxes();
   new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
-  			 {afterUpdateElement : getQuickSearchId,
-			  indicator: ajaxstatus, minChars: 2});
+                        {afterUpdateElement : getQuickSearchId,
+                         indicator: ajaxstatus, minChars: 2});
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0) {
@@ -292,16 +292,25 @@ var earthLayer = new OpenLayers.Layer.XYZ(
     ac_airline = [ "airline", "airline1", "airline2", "airline3", "airline4" ];
     ac_plane = [ "plane" ];
     for(ac = 0; ac < ac_airport.length; ac++) {
-      new Ajax.Autocompleter(ac_airport[ac], ac_airport[ac] + "AC", "php/autocomplete.php",
-			     {afterUpdateElement : getSelectedApid});
+      !function(i){
+        new Ajax.Autocompleter(ac_airport[ac], ac_airport[ac] + "AC", "php/autocomplete.php",
+	        {afterUpdateElement : getSelectedApid,
+           on204 : function(req) { invalidateField(ac_airport[i], true); }});
+      }(ac);
     }
     for(ac = 0; ac < ac_airline.length; ac++) {
-      new Ajax.Autocompleter(ac_airline[ac], ac_airline[ac] + "AC", "php/autocomplete.php",
-			     {afterUpdateElement : getSelectedAlid});
+      !function(i){
+        new Ajax.Autocompleter(ac_airline[ac], ac_airline[ac] + "AC", "php/autocomplete.php",
+			    {afterUpdateElement : getSelectedAlid,
+           on204 : function(req) { invalidateField(ac_airline[i]); }});
+      }(ac);
     }
     for(ac = 0; ac < ac_plane.length; ac++) {
-      new Ajax.Autocompleter(ac_plane[ac], ac_plane[ac] + "AC", "php/autocomplete.php",
-    		     {afterUpdateElement : getSelectedPlid});
+      !function(i){
+        new Ajax.Autocompleter(ac_plane[ac], ac_plane[ac] + "AC", "php/autocomplete.php",
+          {afterUpdateElement : getSelectedPlid,
+           on204 : function(req) { invalidateField(ac_plane[i]); }});
+      }(ac);
     }
 
     // No idea why this is needed, but FF3 disables random buttons without it...
@@ -606,13 +615,11 @@ function xmlhttpPost(strURL, id, param) {
 	    } else {
 	      $('qsid').value = "L" + cols[0]; // airline
 	    }
-	    $('qs').autocompleted = true;
 	    $('qs').value = cols[1];
 	    $('qs').style.color = '#000000';
 	    $('qsgo').disabled = false;
 	    $('qsgo').focus();
 	  } else {
-	    $('qs').autocompleted = false;
 	    $('qsid').value = 0;
 	    $('qs').style.color = '#FF0000';
 	    $('qsgo').disabled = true;
@@ -629,13 +636,11 @@ function xmlhttpPost(strURL, id, param) {
 	    $(param + 'id').value = cols[0];
 	    $(param).value = cols[1];
 	    $(param).style.color = '#000000';
-	    $(param).autocompleted = true;
 	    replicateSelection(param);
 	    markAsChanged(true); // new airline, force refresh on save
 	  } else {
 	    $(param).style.color = '#FF0000';
 	    $(param + 'id').value = 0;
-	    $(param).autocompleted = false;
 	  }
 	  break;
 
@@ -655,12 +660,11 @@ function xmlhttpPost(strURL, id, param) {
 	    $(param + 'id').value = apdata;
 	    $(param).value = cols[1];
 	    $(param).style.color = '#000000';
-	    $(param).autocompleted = true;
 	    replicateSelection(param);
 	    markAirport(param); // new airport, force refresh on save
 	    markAsChanged(true);
 	  } else {
-	    invalidateAirport(param);
+	    invalidateField(param);
 	  }
 	  break;
 	}
@@ -698,7 +702,6 @@ function xmlhttpPost(strURL, id, param) {
 	    closePopup(true);
 	    $('qs').value = $('qs').hintText;
 	    $('qs').style.color = '#888';
-	    $('qs').autocompleted = false;
 	    $('qsid').value = 0;
 	    $('qsgo').disabled = true;
 	    if(filter_alid == 0) {
@@ -1907,8 +1910,6 @@ function editFlight(str, param) {
 
   $('src_ap').style.color = '#000000';
   $('dst_ap').style.color = '#000000';
-  $('src_ap').autocompleted = true;
-  $('dst_ap').autocompleted = true;
   $('airline').style.color = '#000000';
   $('plane').style.color = '#000000';
 
@@ -2189,7 +2190,6 @@ function airportCodeToAirport(type) {
 
   // Is it blank?
   if($(type).value == "") {
-    $(type).autocompleted = false;
     $(type + 'id').value = 0;
     return;
   }
@@ -2211,13 +2211,12 @@ function airportCodeToAirport(type) {
 }
 
 // User has entered invalid input: clear apid, turn field red (unless empty) and remove marker
-function invalidateAirport(type) {
+function invalidateField(type, airport=false) {
   if($(type).value != "" && $(type).value != $(type).hintText) {
     $(type).style.color = '#FF0000';
   }
   $(type + 'id').value = 0;
-  $(type).autocompleted = false;
-  markAirport(type);
+  if(airport) unmarkAirports();
 }
 
 // When user has entered flight number, try to match it to airline
@@ -2769,13 +2768,11 @@ function replicateSelection(source) {
   if($(source + 'id').value != 0 && $(target + 'id').value == 0) {
     $(target).value = $(source).value;
     $(target).style.color = "#000";
-    $(target).autocompleted = $(source).autocompleted;
     $(target + 'id').value = $(source + 'id').value;    
   }
   if($(al_source + 'id').value != 0  && $(al_target + 'id').value == 0) {
     $(al_target).value = $(al_source).value;
     $(al_target).style.color = "#000";
-    $(al_target).autocompleted = $(al_source).autocompleted;
     $(al_target + 'id').value = $(al_source + 'id').value;
   }
   if($(date_target).value == "") {
@@ -2839,9 +2836,8 @@ function settings() {
 
 //
 // Handle keypresses
-// 1. Let users log in by pressing ENTER (from onKeyPress) or TAB (from onChange)
+// 1. Let users log in by pressing ENTER
 // 2. Get codes if user hits TAB on autocompletable field
-// 3. Reset autocompleted entries if user hits BACKSPACE
 // 
 function keyPress(e, element) {
   var keycode;
@@ -2852,48 +2848,38 @@ function keyPress(e, element) {
     if(e == "CHANGE") {
       if(logged_in == "pending") return true;
     }
-    if (keycode == Event.KEY_RETURN || e == "CHANGE") {
+    if (keycode == Event.KEY_RETURN) {
       logged_in = "pending";
       xmlhttpPost("/php/login.php");
     }
   } else {
     if(keycode == Event.KEY_TAB) {
       // Ignore fields that are already autocompleted
-      if($(element).autocompleted) return;
+      if($(element).value.length > 4) return;
 
       switch(element) {
-      case "qs":
-      case "src_ap":
-      case "src_ap1":
-      case "src_ap2":
-      case "src_ap3":
-      case "src_ap4":
-      case "dst_ap":
-      case "dst_ap1":
-      case "dst_ap2":
-      case "dst_ap3":
-      case "dst_ap4":
-	airportCodeToAirport(element);
-	break;
+        case "qs":
+        case "src_ap":
+        case "src_ap1":
+        case "src_ap2":
+        case "src_ap3":
+        case "src_ap4":
+        case "dst_ap":
+        case "dst_ap1":
+        case "dst_ap2":
+        case "dst_ap3":
+        case "dst_ap4":
+          airportCodeToAirport(element);
+          break;
 
-      case "airline":
-      case "airline1":
-      case "airline2":
-      case "airline3":
-      case "airline4":
-	flightNumberToAirline(element);
-	break;
+        case "airline":
+        case "airline1":
+        case "airline2":
+        case "airline3":
+        case "airline4":
+          flightNumberToAirline(element);
+          break;
       }
-    }
-    if(keycode == Event.KEY_BACKSPACE && $(element).autocompleted) {
-      $(element).autocompleted = false;
-      $(element).value = "";
-      $(element + 'id').value = 0;
-      if(element.startsWith("src_ap") || element.startsWith("dst_ap")) {
-	invalidateAirport(element);
-      }
-      if(element == 'qs') $('qsgo').disabled = true;
-      return false; // swallow backspace
     }
   }
   return true;
@@ -3230,15 +3216,6 @@ function clearInput() {
     form.src_date1.value = todayString();
     form.src_ap1.focus();
     form.src_ap1.style.color = '#000000';
-  }
-  for(ac = 0; ac < ac_airport.length; ac++) {
-    $(ac_airport[ac]).autocompleted = false;
-  }
-  for(ac = 0; ac < ac_airline.length; ac++) {
-    $(ac_airline[ac]).autocompleted = false;
-  }
-  for(ac = 0; ac < ac_plane.length; ac++) {
-    $(ac_plane[ac]).autocompleted = false;
   }
   unmarkAirports();
   setCommitAllowed(false);

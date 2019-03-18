@@ -19,8 +19,9 @@ require_once("./php/helper.php");
     <script type="text/javascript" src="/js/utilities.js?version=20120817"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>
-    <script type="text/javascript" src="/js/prototype.js?version=20090326"></script>
-    <script type="text/javascript" src="/js/scriptaculous.js?version=20091230"></script>
+    <script type="text/javascript" src="/js/prototype.js"></script>
+    <script type="text/javascript" src="/js/scriptaculous.js"></script>
+    <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js") ?>"></script>
   </head>
 
@@ -78,11 +79,11 @@ require_once("./php/helper.php");
 		<table cellspacing="5" cellpadding="0" border="0">
  		  <tr>
                     <td><?php echo _("Username") ?>&nbsp;</td><td>
-		      <input type="Text" name="name" align="top" size="10" tabindex="1">
+		      <input type="Text" name="name" align="top" size="10" tabindex="1" onKeyPress='keyPress("CHANGE", "login")'>
 		    </td>
 		  </tr><tr>
 		  <td align=right><?php echo _("Password") ?>&nbsp;</td><td>
-		      <input type="password" name="pw" align="top" size="10" tabindex="2" onKeyPress='JavaScript:keyPress(event, "login")' onChange='keyPress("CHANGE", "login")'>	    
+		      <input type="password" name="pw" align="top" size="10" tabindex="2" onKeyPress='keyPress("CHANGE", "login")'>
  		      <input type="hidden" name="challenge">    
 		    </td>
 		  </tr><tr>
