@@ -2,10 +2,10 @@
 include 'helper.php';
 include 'db.php';
 
-// Trim anything after a period or space and left paren
+// Trim anything after a hyphen, period or left paren
 function trim_query($query) {
-  $chunks = preg_split("/(\.| \()/", $query);
-  return $chunks[0];
+  $chunks = preg_split("/[-.(]/", $query);
+  return trim($chunks[0]);
 }
 
 // If quick, then return only one row, with no UL tags
@@ -16,6 +16,7 @@ if($_POST['quick']) {
 }
 // If multi, then search airports and airlines
 $multi = $_POST["qs"];
+$results = false;
 
 // Autocompletion for airports
 // 3 chars: match on IATA or name (major airports only)
@@ -71,17 +72,17 @@ if($query && ! ($multi && $limit == 1 && strlen($query) < 3)) {
 if($limit > 1) print ("<ul class='autocomplete'>");
 $rs = mysql_query($sql);
 if(mysql_num_rows($rs) > 0) {
+  $results = true;
   while($row = mysql_fetch_assoc($rs)) {
     if($limit > 1) {
-     printf ("<li class='autocomplete' origin='%s' id='%s'>%s</li>\n", $ap, format_apdata($row), format_airport($row));
-   } else {
-     printf ("%s;%s", format_apdata($row), format_airport($row));
-	exit; // match found, do not fall thru to airlines
+      printf ("<li class='autocomplete' origin='%s' id='%s'>%s</li>\n", $ap, format_apdata($row), format_airport($row));
+    } else {
+      printf ("%s;%s", format_apdata($row), format_airport($row));
+	    exit; // match found, do not fall thru to airlines
+    }
+  }
 }
 }
-}
-}
-
 if(! $query || $multi) {
 
 // Autocompletion for airlines
@@ -146,6 +147,7 @@ if(! $query || $multi) {
   if($limit > 1 && ! $multi) print ("<ul class='autocomplete'>");
   $rs = mysql_query($sql) or die($sql);
   if(mysql_num_rows($rs) > 0) {
+    $results = true;
     while($row = mysql_fetch_assoc($rs)) {
      if($limit > 1) {
        printf ("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
@@ -167,6 +169,7 @@ if(! $query || $multi) {
 
   print ("<ul class='autocomplete2'>");
   while($data = mysql_fetch_assoc($rs)) {
+    $results = true;
     $item = stripslashes($data['name']);
     $MAX_LEN = 35;
     if(strlen($item) > $MAX_LEN) {
@@ -177,7 +180,7 @@ if(! $query || $multi) {
 }
 }
 
-if(mysql_num_rows($rs) == 0) {
+if(!$results) {
   http_response_code(204); // No Data
 }
 

@@ -1,7 +1,7 @@
 <?php
 include_once(dirname(__FILE__) . '/config.php');
 
-// Requires: settings, apsearch, alsearch, to insert test airport, airline data
+// Testing the tests: curl -v http://localhost:8080/php/autocomplete.php -d qs=STRING
 
 //
 // MULTISEARCH
@@ -10,38 +10,38 @@ include_once(dirname(__FILE__) . '/config.php');
 // Search for string found in both airport and airline name
 class MultiSearchSharedLongStringTest extends WebTestCase {
   function test() {
-    global $webroot, $airport, $airline, $qs_string;
+    global $webroot, $qs_string;
 
-    $params = array("qs" => $qs_string);
+    $params = array("qs" => "Singapore");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText($airport["city"] . "-");
-    $this->assertText("(" . $airport["iata"] . ")");
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText($airline["name"]);
+    $this->assertText("Singapore Changi");
+    $this->assertText("(SIN)");
+    $this->assertText("Singapore Airlines");
+    $this->assertText("(SQ)");
   }
 }
 
 // Search for string found only in airport name
 class MultiSearchAirportOnlyLongStringTest extends WebTestCase {
   function test() {
-    global $webroot, $airport;
+    global $webroot;
 
-    $params = array("qs" => $airport["name"]);
+    $params = array("qs" => "Ayers");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText($airport["city"] . "-");
-    $this->assertText("(" . $airport["iata"] . ")");
+    $this->assertText("Uluru");
+    $this->assertText("(AYQ)");
   }
 }
 
 // Search for string found in only airline name
 class MultiSearchAirlineOnlyLongStringTest extends WebTestCase {
   function test() {
-    global $webroot, $airline;
+    global $webroot;
 
-    $params = array("qs" => $airline["name"]);
+    $params = array("qs" => "Qantas");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText($airline["name"]);
+    $this->assertText("(QF)");
+    $this->assertText("Qantas");
   }
 }
 
@@ -50,10 +50,10 @@ class MultiSearchAirportIATATest extends WebTestCase {
   function test() {
     global $webroot, $airport;
 
-    $params = array("qs" => $airport["iata"]);
+    $params = array("qs" => "SIN");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText($airport["city"] . "-");
-    $this->assertText("(" . $airport["iata"] . ")");
+    $this->assertText("Singapore Changi");
+    $this->assertText("(SIN)");
   }
 }
 
@@ -62,10 +62,10 @@ class MultiSearchAirlineIATATest extends WebTestCase {
   function test() {
     global $webroot, $airline;
 
-    $params = array("qs" => $airline["iata"]);
+    $params = array("qs" => "SQ");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText($airline["name"]);
+    $this->assertText("Singapore Airlines");
+    $this->assertText("(SQ)");
   }
 }
 
@@ -79,11 +79,9 @@ class SingleAirportCityCompleteTest extends WebTestCase {
     global $webroot, $airport;
 
     $params = array("quick" => "true",
-		    "src_ap" => $airport["city"]);
+		    "src_ap" => "Hong");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText($airport["iata"] . ":");
-    $this->assertText(":" . $airport["x"] . ":");
-    $this->assertText(":" . $airport["y"]);
+    $this->assertText("HKG:");
   }
 }
 
@@ -93,25 +91,40 @@ class SingleAirportIATACompleteTest extends WebTestCase {
     global $webroot, $airport;
 
     $params = array("quick" => "true",
-		    "src_ap" => $airport["iata"]);
+		    "src_ap" => "SIN");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText($airport["iata"] . ":");
-    $this->assertText(":" . $airport["x"] . ":");
-    $this->assertText(":" . $airport["y"]);
+    $this->assertText("SIN:");
   }
 }
 
 // Single airport search by ICAO code
 class SingleAirportICAOCompleteTest extends WebTestCase {
   function test() {
-    global $webroot, $airport;
+    global $webroot;
 
     $params = array("quick" => "true",
-		    "src_ap" => $airport["icao"]);
+		    "src_ap" => "WSSS");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText($airport["iata"] . ":");
-    $this->assertText(":" . $airport["x"] . ":");
-    $this->assertText(":" . $airport["y"]);
+    $this->assertText("SIN:");
+  }
+}
+
+// Ensure that autocompleted entries still match after minor edits
+class SingleAirportQueryTrimTest extends WebTestCase {
+  function test() {
+    global $webroot;
+
+    $params = array("quick" => "true", "src_ap" => "Singapore Changi (SIN) Blah Blah");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("SIN:");
+
+    $params = array("quick" => "true", "src_ap" => "Singapore C. (SIN) Blah Blah");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("SIN:");
+
+    $params = array("quick" => "true", "src_ap" => "Hong Kong-Chek Lap Kok Interna. (HKG), Hong Kong");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("HKG:");
   }
 }
 
@@ -122,26 +135,26 @@ class SingleAirportICAOCompleteTest extends WebTestCase {
 // Single airline search by name
 class SingleAirlineNameCompleteTest extends WebTestCase {
   function test() {
-    global $webroot, $airline;
+    global $webroot;
 
     $params = array("quick" => "true",
-		    "airline" => $airline["name"]);
+		    "airline" => "Qantas");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText(";" . $airline["name"]);
+    $this->assertText("(QF)");
+    $this->assertText(";Qantas");
   }
 }
 
 // Single airline search by alias
 class SingleAirlineAliasCompleteTest extends WebTestCase {
   function test() {
-    global $webroot, $airline;
+    global $webroot;
 
     $params = array("quick" => "true",
-		    "airline" => $airline["alias"]);
+		    "airline" => "JAL Japan");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText(";" . $airline["name"]);
+    $this->assertText("(JL)");
+    $this->assertText(";Japan");
   }
 }
 
@@ -151,10 +164,10 @@ class SingleAirlineIATACompleteTest extends WebTestCase {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
-		    "airline" => $airline["iata"]);
+		    "airline" => "SQ");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText(";" . $airline["name"]);
+    $this->assertText("(SQ");
+    $this->assertText(";Singapore");
   }
 }
 
@@ -164,10 +177,10 @@ class SingleAirlineICAOCompleteTest extends WebTestCase {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
-		    "airline" => $airline["icao"]);
+		    "airline" => "SIA");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
-    $this->assertText("(" . $airline["iata"] . ")");
-    $this->assertText(";" . $airline["name"]);
+    $this->assertText("(SQ)");
+    $this->assertText(";Singapore");
   }
 }
 
