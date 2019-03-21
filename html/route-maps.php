@@ -19,17 +19,13 @@
    data downloads and more information.
 
 <?php
+include '../php/db_pdo.php';
 include '../php/helper.php';
-
-$db = mysql_connect("localhost", "openflights");
-mysql_select_db("flightdb2",$db);
 
 print "<h2>Airline route maps (by IATA code)</h2>";
 
-$sql = "SELECT * FROM airlines WHERE alid IN (SELECT DISTINCT alid
-	    FROM routes) ORDER BY iata";
-$result = mysql_query($sql, $db);
-while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+$sql = "SELECT * FROM airlines WHERE alid IN (SELECT DISTINCT alid FROM routes) ORDER BY iata";
+foreach ($dbh->query($sql) as $row) {
   $iata = $row['iata'];
   if(ctype_alnum($iata)) {
     $label = format_airline($row);
@@ -39,10 +35,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 print "<h2>Airport route maps (by IATA code)</h2>";
 
-$sql = "SELECT * FROM airports WHERE apid IN (SELECT DISTINCT src_apid
-	    FROM routes) ORDER BY iata";
-$result = mysql_query($sql, $db);
-while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+$sql = "SELECT * FROM airports WHERE apid IN (SELECT DISTINCT src_apid FROM routes) ORDER BY iata";
+foreach ($dbh->query($sql) as $row) {
   $iata = $row['iata'];
   if(ctype_alnum($iata)) {
     $label = format_airport($row);
@@ -52,10 +46,8 @@ while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 print "<h2>Airport route maps (by ICAO code)</h2>";
 
-$sql = "SELECT * FROM airports WHERE apid IN (SELECT DISTINCT src_apid
-	    FROM routes) ORDER BY iata";
-$result = mysql_query($sql, $db);
-while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+$sql = "SELECT * FROM airports WHERE apid IN (SELECT DISTINCT src_apid FROM routes) ORDER BY iata";
+foreach ($dbh->query($sql) as $row) {
   $icao = $row['icao'];
   if(ctype_alnum($icao)) {
     $label = format_airport($row);

@@ -7,7 +7,7 @@ header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d"
 include 'greatcircle.php';
 include 'helper.php';
 include 'filter.php';
-include 'db.php';
+include 'db_pdo.php';
 
 $METERSPERFOOT = 0.3048;
 
@@ -17,16 +17,17 @@ if(!$uid or empty($uid)) {
   $uid = 1;
 }
 
-$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=" . $uid . getFilterString($_GET) . " GROUP BY s.apid,d.apid";
+$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=:uid" . getFilterString($dbh, $_GET) . " GROUP BY f.fid,s.apid,d.apid";
 
-$result = mysql_query($sql, $db);
+$sth = $dbh->prepare($sql);
+$sth->execute(compact('uid'));
 
 readfile("../kml/header.kml");
 
 print "<Folder>\n<name>Flights</name>\n";
 
 // Plot flights on map
-while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+while($row = $sth->fetch()) {
   $x1 = $row["sx"];
   $y1 = $row["sy"];
   $z1 = $row["sz"] * $METERSPERFOOT;
@@ -71,10 +72,11 @@ print "<Folder><name>Airports</name>\n";
 // Draw airports from largest to smallest
 $airportColors = array ("black", "gray", "purple", "cyan", "cyan", "green");
 
-$sql = "SELECT DISTINCT x,y,elevation,iata,icao,name,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=" . $uid . getFilterString($_GET) . " GROUP BY name ORDER BY visits DESC";
-$result = mysql_query($sql, $db);
+$sql = "SELECT DISTINCT x,y,elevation,iata,icao,name,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=:uid" . getFilterString($dbh, $_GET) . " GROUP BY a.apid,name ORDER BY visits DESC";
+$sth = $dbh->prepare($sql);
+$sth->execute(compact('uid'));
 $first = true;
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+while ($row = $sth->fetch()) {
   $count = $row["visits"];
   if($first) {
     $maxFlights = $count;

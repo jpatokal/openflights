@@ -1,6 +1,6 @@
 <?php
 include 'locale.php';
-include 'db.php';
+include 'db_pdo.php';
 
 $type = $_POST["type"];
 $name = $_POST["name"];
@@ -23,9 +23,9 @@ $locale = $_POST["locale"]; // override any value in URL/session
 // Create new user
 switch($type) {
  case "NEW":
-   $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) . "'";
-   $result = mysql_query($sql, $db);
-   if (mysql_fetch_array($result)) {
+   $sth = $dbh->prepare("SELECT * FROM users WHERE name = ?");
+   $sth->execute([$name]);
+   if ($sth->fetch()) {
      die("0;" . _("Sorry, that name is already taken, please try another."));
    }
    break;
@@ -39,19 +39,17 @@ switch($type) {
   }
 
   if($type == "RESET") {
-    $sql = "DELETE FROM flights WHERE uid=" . $uid;
-    $result = mysql_query($sql, $db);
-    printf("10;" . _("Account reset, %s flights deleted."), mysql_affected_rows());
+    $sth = $dbh->prepare("DELETE FROM flights WHERE uid = ?");
+    $sth->execute([$uid]);
+    printf("10;" . _("Account reset, %s flights deleted."), $sth->rowCount());
     exit;
   }
 
   // EDIT
   if($oldpw && $oldpw != "") {
-    $sql = "SELECT * FROM users WHERE name='" . mysql_real_escape_string($name) .
-      "' AND (password='" . mysql_real_escape_string($oldpw) . "' OR " .
-      "password='" . mysql_real_escape_string($oldlpw) . "')";
-    $result = mysql_query($sql, $db);
-    if(! mysql_fetch_array($result)) {
+    $sth = $dbh->prepare("SELECT * FROM users WHERE name = ? AND (password = ? OR password = ?)");
+    $sth->execute([$name, $oldpw, $oldlpw]);
+    if(!$sth->fetch()) {
       die("0;" . _("Sorry, current password is not correct."));
     }
   }
@@ -63,34 +61,30 @@ switch($type) {
 
 // Note: Password is actually an MD5 hash of pw and username
 if($type == "NEW") {
-  $sql = sprintf("INSERT INTO users(name,password,email,public,editor,locale,units) VALUES('%s','%s','%s','%s','%s','%s','%s')",
-		 mysql_real_escape_string($name),
-		 mysql_real_escape_string($pw),
-		 mysql_real_escape_string($email),
-		 mysql_real_escape_string($privacy),
-		 mysql_real_escape_string($editor),
-		 mysql_real_escape_string($locale),
-		 mysql_real_escape_string($units));
+  $sth = $dbh->prepare("INSERT INTO users (name, password, email, public, editor, locale, units) VALUES (?, ?, ?, ?, ?, ?, ?)");
+  $success = $sth->execute([$name, $pw, $email, $privacy, $editor, $locale, $units]);
 } else {
+  if(! $guestpw) $guestpw = null;
+  $params = compact('email', 'privacy', 'editor', 'guestpw', 'startpane', 'locale', 'units', 'uid');
   // Only change password if old password matched and a new one was given
   if($oldpw && $oldpw != "" && $pw && $pw != "") {
-    $pwsql = sprintf("password='%s', ", mysql_real_escape_string($pw));
+    $pwsql = "password = :pw, ";
+    $params['pw'] = $pw;
   } else {
     $pwsql = "";
   }
-  if(! $guestpw) $guestpw = "";
-  $sql = sprintf("UPDATE users SET %s email='%s', public='%s', editor='%s', guestpw=%s, startpane='%s', locale='%s', units='%s' WHERE uid=%s",
-		 $pwsql,
-		 mysql_real_escape_string($email),
-		 mysql_real_escape_string($privacy),
-		 mysql_real_escape_string($editor),
-		 $guestpw == "" ? "NULL" : "'" . mysql_real_escape_string($guestpw) . "'",
-		 mysql_real_escape_string($startpane),
-		 mysql_real_escape_string($locale),
-		 mysql_real_escape_string($units),
-		 $uid);
+  $sth = $dbh->prepare("
+    UPDATE users
+    SET $pwsql
+        email = :email, public = :privacy, editor = :editor, guestpw = :guestpw,
+        startpane = :startpane, locale = :locale, units = :units
+    WHERE uid = :uid
+  ");
+  $success = $sth->execute($params);
 }
-mysql_query($sql, $db) or die ('0;Operation on user ' . $name . ' failed: ' . $sql . ', error ' . mysql_error());
+if (!$success) {
+    die("0;Operation on user $name failed.");
+}
 
 // In all cases change locale and units to user selection
 $_SESSION['locale'] = $locale;
@@ -100,7 +94,7 @@ if($type == "NEW") {
   printf("1;" . _("Successfully signed up, now logging in..."));
 
   // Log in the user
-  $uid = mysql_insert_id();
+  $uid = $dbh->lastInsertId();
   $_SESSION['uid'] = $uid;
   $_SESSION['name'] = $name;
   $_SESSION['editor'] = $editor;

@@ -14,6 +14,8 @@ class AddNewPlaneTest extends WebTestCase {
 
     assert_login($this);
 
+    $dbh = db_connect();
+
     $flight2 = $flight; // this creates a new array copy because PHP is cray-cray
     $flight2["plane"] = "Boeingbus XYZ";
     $flight2["note"] = "Firstplane";
@@ -21,10 +23,9 @@ class AddNewPlaneTest extends WebTestCase {
     $this->assertText('1;');
 
     // Check the PLID of the newly-added flight
-    $db = db_connect();
-    $sql = "SELECT plid FROM flights WHERE note='" . addslashes($flight2["note"]) . "'";
-    $result = mysql_query($sql, $db);
-    $row = mysql_fetch_assoc($result);
+    $sth = $dbh->prepare("SELECT plid FROM flights WHERE note=?");
+    $sth->execute([$flight2["note"]]);
+    $row = $sth->fetch();
     $plid = $row["plid"];
     $this->assertTrue($plid != null && $plid != "");
 
@@ -36,10 +37,9 @@ class AddNewPlaneTest extends WebTestCase {
     $this->assertText('1;');
 
     // Check that new plid was reused
-    $db = db_connect();
-    $sql = "SELECT plid FROM flights WHERE note='" . addslashes($flight3["note"]) . "'";
-    $result = mysql_query($sql, $db);
-    $row = mysql_fetch_assoc($result);
+    $sth = $dbh->prepare("SELECT plid FROM flights WHERE note=?");
+    $sth->execute([$flight3["note"]]);
+    $row = $sth->fetch();
     $plid2 = $row["plid"];
     $this->assertEqual($plid, $plid2);
   }
@@ -50,15 +50,15 @@ class DeleteExtraPlanesTest extends WebTestCase {
   function test() {
     global $settings, $plid;
 
-    $db = db_connect();
-    $sql = "DELETE FROM flights WHERE plid = " . $plid;
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() >= 1, "Flight deleted");
+    $dbh = db_connect();
 
-    $db = db_connect();
-    $sql = "DELETE FROM planes WHERE name = 'Boeingbus XYZ'";
-    $result = mysql_query($sql, $db);
-    $this->assertTrue(mysql_affected_rows() >= 1, "Plane deleted");
+    $sth = $dbh->prepare("DELETE FROM flights WHERE plid = ?");
+    $sth->execute([$plid]);
+    $this->assertTrue($sth->rowCount() >= 1, "Flight deleted");
+
+    $sth = $dbh->prepare("DELETE FROM planes WHERE name = 'Boeingbus XYZ'");
+    $sth->execute();
+    $this->assertTrue($sth->rowCount() >= 1, "Plane deleted");
   }
 }
 

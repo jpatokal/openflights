@@ -1,5 +1,5 @@
 <?php
-include '../php/db.php';
+include '../php/db_pdo.php';
 include '../php/helper.php';
 
 putenv('GDFONTPATH=' . realpath('.'));
@@ -40,18 +40,18 @@ if(file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 }
 
 // New banner or cache out of date, so regenerate
-$sql = "SELECT uid,public,units FROM users WHERE name='" . mysql_real_escape_string($user) . "'";
-$result = mysql_query($sql, $db);
+$sth = $dbh->prepare("SELECT uid, public, units FROM users WHERE name=?");
+$result = $sth->execute([$user]);
 if(! $result) rendererror("Database error 1");
-if(mysql_num_rows($result) == 0) rendererror("User $user not found");
-$row = mysql_fetch_array($result, MYSQL_ASSOC);
+if($sth->rowCount() == 0) rendererror("User $user not found");
+$row = $sth->fetch();
 if($row["public"] == "N") rendererror("User is not public");
 $uid = $row["uid"];
 $units = $row["units"];
 
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights WHERE uid=$uid";
-$result = mysql_query($sql, $db);
-if($result && $row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+$sth = $dbh->prepare("SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights WHERE uid=?");
+$result = $sth->execute([$uid]);
+if($result && $row = $sth->fetch()) {
   $distance = $row["distance"];
   if($units == "K") {
     $distance *= $KMPERMILE;

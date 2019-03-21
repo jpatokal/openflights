@@ -1,6 +1,6 @@
 <?php
 include 'locale.php';
-include 'db.php';
+include 'db_pdo.php';
 
 $name = $_POST["name"];
 // pw is hashed from lowercased username, legacypw is not
@@ -19,13 +19,18 @@ if($challenge && $challenge != $_SESSION["challenge"]) {
 if($name) {
   // CHAP: Use random challenge key in addition to password
   // user_pw == MD5(challenge, db_pw)
-  $sql = "SELECT uid,name,email,editor,elite,units,locale FROM users WHERE name='" . mysql_real_escape_string($name) .
-    "' AND ('" . mysql_real_escape_string($pw) . "' = MD5(CONCAT('" .
-    mysql_real_escape_string($challenge) . "',password)) OR " .
-    " '" . mysql_real_escape_string($legacypw) . "' = MD5(CONCAT('" .
-    mysql_real_escape_string($challenge) . "',password)))";
-  $result = mysql_query($sql, $db);
-  if ($myrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+  $sth = $dbh->prepare("
+    SELECT uid, name, email, editor, elite, units, locale
+    FROM users
+    WHERE
+      name = :name
+      AND (
+        :pw = MD5(CONCAT(:challenge, password))
+        OR :legacypw = MD5(CONCAT(:challenge, password))
+      )
+  ");
+  $sth->execute(compact('name', 'challenge', 'pw', 'legacypw'));
+  if ($myrow = $sth->fetch()) {
     $uid = $myrow["uid"];
     $_SESSION['uid'] = $uid;
     $_SESSION['name'] = $myrow["name"];

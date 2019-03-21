@@ -2,7 +2,7 @@
 ini_set('auto_detect_line_endings', true);
 
 require_once("locale.php");
-require_once("db.php");
+require_once("db_pdo.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -45,9 +45,15 @@ function nbsp_trim($string) {
     return trim($string, "\xC2\xA0"); // UTF-8 NBSP
 }
 
-// Validate date field
-// Must be one of YYYY, MM-DD-YYYY (FM only), YYYY-MM-DD (CSV only), MM/DD/YYYY or DD.MM.YYYY
-function check_date($db, $type, $date) {
+/**
+ * Validate date field
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $type string FM for FlightMemory date format
+ * @param $date string Must be one of YYYY, MM-DD-YYYY (FM only), YYYY-MM-DD (CSV only), MM/DD/YYYY or DD.MM.YYYY
+ * @return array Date and color
+ */
+function check_date($dbh, $type, $date) {
   if(strlen($date) == 4) {
     $date = "01.01." . $date;
   }
@@ -62,9 +68,9 @@ function check_date($db, $type, $date) {
   } else {
     $dateFormat = "%d.%m.%Y";
   }
-  $sql = sprintf("SELECT STR_TO_DATE('%s', '%s')", $date, $dateFormat);
-  $result = mysql_query($sql, $db);
-  $db_date = mysql_result($result, 0); 
+  $sth = $dbh->prepare("SELECT STR_TO_DATE(?, ?)");
+  $sth->execute([$date, $dateFormat]);
+  $db_date = $sth->fetchColumn(0);
   if($db_date == "") {
     $date = null;
     $color = "#faa";
@@ -75,38 +81,50 @@ function check_date($db, $type, $date) {
   return array($date, $color);
 }
 
-// Validate that this code/name match an airport 
-function check_airport($db, $code, $name) {
+/**
+ * Validate that this code/name match an airport
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $code string IATA or ICAO code
+ * @param $name string Airport name
+ * @return array Airport ID, Code or location, and color
+ */
+function check_airport($dbh, $code, $name) {
   switch(strlen($code)) {
   case 3:
-    $sql = "select apid,city,country from airports where iata='" . mysql_real_escape_string($code) . "'";
+    $params = [$code];
+    $sql = "select apid,city,country from airports where iata=?";
     break;
 
   case 4:
-    $sql = "select apid,city,country from airports where icao='" . mysql_real_escape_string($code) . "'";
+    $params = [$code];
+    $sql = "select apid,city,country from airports where icao=?";
     break;
 
   default:
-    $sql = "select apid,city,country from airports where name like '" . mysql_real_escape_string($name) . "%'";
+    $params = [$name . '%'];
+    $sql = "select apid,city,country from airports where name like ?";
     break;
   }
-  $result = mysql_query($sql, $db);
-  switch(@mysql_num_rows($result)) {
+
+  $sth = $dbh->prepare($sql);
+  $sth->execute($params);
+  switch($sth->rowCount()) {
     // No match
-  case "0":
+  case 0:
     $apid = null;
     $color = "#faa";
     break;
 
     // Solitary match
-  case "1":
-    $apid = mysql_result($result, 0);
+  case 1:
+    $apid = $sth->fetchColumn(0);
     $color="#fff";
     break;
     
     // Multiple matches
   default:
-    $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
+    $dbrow = $sth->fetch();
     $apid = $dbrow["apid"];
     $code = $code . "<br><small>" . $dbrow["city"] . "," . $dbrow["country"] . "</small>";
     $color="#ddf";
@@ -114,11 +132,19 @@ function check_airport($db, $code, $name) {
   return array($apid, $code, $color);
 }
 
-// Validate that this flight number/airline name are found in DB
-// If flight number starts with an IATA code, match that (and double-check it against name)
-// Else match first word of airline name
-// If $history == "yes", ignore codes and ignore errors
-function check_airline($db, $number, $airline, $uid, $history) {
+/**
+ * Validate that this flight number/airline name are found in DB
+ * If flight number starts with an IATA code, match that (and double-check it against name)
+ * Else match first word of airline name
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $number string Flight number
+ * @param $airline string Airline name
+ * @param $uid string User ID
+ * @param $history string If "yes", ignore codes and ignore errors
+ * @return array Airline ID, airline name, color
+ */
+function check_airline($dbh, $number, $airline, $uid, $history) {
   $code = substr($number, 0, 2);
   $isAlpha = ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code);
   if($airline == "" && ! $isAlpha) {
@@ -128,8 +154,8 @@ function check_airline($db, $number, $airline, $uid, $history) {
   } else {
     // is alphanumeric, but not all numeric? then it's probably an airline code
     if($isAlpha && $history != "yes") {
-      $sql = sprintf("select name,alias,alid from airlines where iata='%s' order by name",
-		     $code, $uid);
+      $params = [$code];
+      $sql = "select name,alias,alid from airlines where iata=? order by name";
     } else {
       $airlinepart = explode(' ', $airline);
       if($airlinepart[0] == 'Air') {
@@ -137,13 +163,14 @@ function check_airline($db, $number, $airline, $uid, $history) {
       } else {
 	$part = $airlinepart[0];
       }
-      $sql = sprintf("select name,alias,alid from airlines where (name like '%s%%' or alias like '%s%%') and (iata != '' or uid = %s) order by name",
-		     mysql_real_escape_string($part), mysql_real_escape_string($part), $uid);
+      $params = ['part' => $part . '%', 'uid' => $uid];
+      $sql = "select name,alias,alid from airlines where (name like ? or alias like ?) and (iata != '' or uid = ?) order by name";
+      $sth = $dbh->prepare($sql);
+      $sth->execute($params);
     }
     
     // validate the airline/code against the DB
-    $result = mysql_query($sql, $db);
-    switch(@mysql_num_rows($result)) {
+    switch($sth->rowCount()) {
       
       // No match, add as new if we have a name for it, else return error
     case "0":
@@ -158,7 +185,7 @@ function check_airline($db, $number, $airline, $uid, $history) {
       
       // Solitary match
     case "1":
-      $dbrow = mysql_fetch_array($result, MYSQL_ASSOC);
+      $dbrow = $sth->fetch();
       if($airline != "" && (strcasecmp($dbrow['name'], $airline) == 0 || strcasecmp($dbrow['alias'], $airline) == 0)) {
 	// Exact match
 	$color = "#fff";
@@ -181,7 +208,7 @@ function check_airline($db, $number, $airline, $uid, $history) {
     default:
       $color = "#ddf";
       $first = true;
-      while($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      while($dbrow = $sth->fetch()) {
 	$isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
 				      (strcasecmp($dbrow['alias'], $airline) == 0));
 	if($first || $isMatch) {
@@ -203,17 +230,24 @@ function check_airline($db, $number, $airline, $uid, $history) {
   return array($alid, $airline, $color);
 }
 
-// Validate that this plane is in DB
-function check_plane($db, $plane) {
+/**
+ * Validate that this plane is in DB
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $plane string Plane ID
+ * @return array Plaie ID, color
+ */
+function check_plane($dbh, $plane) {
   // If no plane set, return OK
   if(!$plane || $plane == "") {
     return array(null, "#fff");
   }
 
-  $sql = "select plid from planes where name='" . mysql_real_escape_string($plane) . "'";
-  $result = mysql_query($sql, $db);
-  if(@mysql_num_rows($result) == 1) {
-    $plid = mysql_result($result, 0);
+  $sql = "select plid from planes where name=?";
+  $sth = $dbh->prepare($sql);
+  $sth->execute([$plane]);
+  if($sth->rowCount() == 1) {
+    $plid = $sth->fetchColumn(0);
     $color = "#fff";
   } else {
     $plid = "-1"; // new plane
@@ -222,17 +256,25 @@ function check_plane($db, $plane) {
   return array($plid, $color);
 }
 
-// Validate that the importing user owns this trip
-function check_trip($db, $uid, $trid) {
+/**
+ * Validate that the importing user owns this trip
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $uid string User ID
+ * @param $trid string Trip ID
+ * @return array Trip ID, color
+ */
+function check_trip($dbh, $uid, $trid) {
   // If no trip set, return OK
   if(!$trid || $trid == "") {
     return array(null, "#fff");
   }
 
-  $sql = "select uid from trips where trid=" . mysql_real_escape_string($trid);
-  $result = mysql_query($sql, $db);
-  if(@mysql_num_rows($result) == 1) {
-    if($uid == mysql_result($result, 0)) {
+  $sql = "select uid from trips where trid=?";
+  $sth = $dbh->prepare($sql);
+  $sth->execute([$trid]);
+  if($sth->rowCount() == 1) {
+    if($uid == $sth->fetchColumn(0)) {
       $color = "#fff";
     } else {
       $color = "#faa";
@@ -341,7 +383,7 @@ foreach($rows as $row) {
     $src_date = nth_text($cols[1], 0);
     $src_time = nth_text($cols[1], 1);
     if(strlen($src_time) < 4) $src_time = NULL; # a stray -1 or +1 is not a time
-    list($src_date, $date_bgcolor) = check_date($db, $fileType, $src_date);
+    list($src_date, $date_bgcolor) = check_date($dbh, $fileType, $src_date);
     
     $src_iata = $cols[2]->textContent;
     $dst_iata = $cols[4]->textContent;
@@ -351,8 +393,8 @@ foreach($rows as $row) {
     $src_name = reset(preg_split('/[ \/<]/', nth_text($cols[3], 2)));
     $dst_name = reset(preg_split('/[ \/<]/', nth_text($cols[5], 2)));
     
-    list($src_apid, $src_iata, $src_bgcolor) = check_airport($db, $src_iata, $src_name);
-    list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($db, $dst_iata, $dst_name);
+    list($src_apid, $src_iata, $src_bgcolor) = check_airport($dbh, $src_iata, $src_name);
+    list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($dbh, $dst_iata, $dst_name);
     
     // <th class="liste_gross" align="right">
     //   <table border="0" cellspacing="0" cellpadding="0">
@@ -370,7 +412,7 @@ foreach($rows as $row) {
     // <td>Airline<br>number</td>
     $airline = nth_text($cols[6], 0);
     $number = nth_text($cols[6], 1);
-    list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid, $history);
+    list($alid, $airline, $airline_bgcolor) = check_airline($dbh, $number, $airline, $uid, $history);
     
     // Load plane model (plid)
     // <TD class=liste>Boeing 737-600<BR>LN-RCW<BR>Yngvar Viking</TD>
@@ -380,7 +422,7 @@ foreach($rows as $row) {
       $reg .= " " . nth_text($cols[7], 2);
     }
     if($plane != "") {
-      list($plid, $plane_bgcolor) = check_plane($db, $plane);
+      list($plid, $plane_bgcolor) = check_plane($dbh, $plane);
     } else {
       $plid = null;
       $plane_bgcolor = "#fff";
@@ -418,7 +460,7 @@ foreach($rows as $row) {
     // 10 Reason, 11 Plane, 12 Registration, 13 Trip, 14 Note, 15 From_Code, 16 To_Code, 17 Airline_Code, 18 Plane_Code
 
     $datetime = explode(' ', $row[0]);
-    list($src_date, $date_bgcolor) = check_date($db, $fileType, $datetime[0]);
+    list($src_date, $date_bgcolor) = check_date($dbh, $fileType, $datetime[0]);
     $src_time = $datetime[1];
     if(! $src_time) $src_time = "";
 
@@ -429,7 +471,7 @@ foreach($rows as $row) {
       $src_bgcolor="#fff";
       $id_note = true;
     } else {
-      list($src_apid, $src_iata, $src_bgcolor) = check_airport($db, $src_iata, $src_iata);
+      list($src_apid, $src_iata, $src_bgcolor) = check_airport($dbh, $src_iata, $src_iata);
     }
     $dst_iata = $row[2];
     $dst_apid = $row[16];
@@ -438,7 +480,7 @@ foreach($rows as $row) {
       $dst_bgcolor="#fff";
       $id_note = true;
     } else {
-      list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($db, $dst_iata, $dst_iata);
+      list($dst_apid, $dst_iata, $dst_bgcolor) = check_airport($dbh, $dst_iata, $dst_iata);
     }
     $number = $row[3];
     $airline = $row[4];
@@ -448,7 +490,7 @@ foreach($rows as $row) {
       $airline_bgcolor="#fff";
       $id_note = true;
     } else {
-      list($alid, $airline, $airline_bgcolor) = check_airline($db, $number, $airline, $uid, $history);
+      list($alid, $airline, $airline_bgcolor) = check_airline($dbh, $number, $airline, $uid, $history);
     }
     $plane = $row[11];
     $plid = $row[18];
@@ -457,7 +499,7 @@ foreach($rows as $row) {
       $plane_bgcolor="#fff";
       $id_note = true;
     } else {
-      list($plid, $plane_bgcolor) = check_plane($db, $plane);
+      list($plid, $plane_bgcolor) = check_plane($dbh, $plane);
     }
 
     $distance = $row[5];
@@ -468,7 +510,7 @@ foreach($rows as $row) {
     if($row[9] == "B") $seatclass = "Business"; // fix for typo in pre-0.3 versions of spec
     $seatreason = array_search($row[10], $reasonMap);
     $reg = $row[12];
-    list($trid, $trip_bgcolor) = check_trip($db, $uid, $row[13]);
+    list($trid, $trip_bgcolor) = check_trip($dbh, $uid, $row[13]);
     $comment = $row[14];
     break;
   }
@@ -486,7 +528,7 @@ foreach($rows as $row) {
     $fatal = "airport";
   } else {
     if($duration == "" || $distance == "") {
-      list($distance, $duration) = gcDistance($db, $src_apid, $dst_apid);
+      list($distance, $duration) = gcDistance($dbh, $src_apid, $dst_apid);
       $dist_bgcolor = "#ddf";
     } else {
       $dist_bgcolor = "#fff";
@@ -512,26 +554,27 @@ foreach($rows as $row) {
   case _("Import"):
     // Do we need a new plane?
     if($plid == -1) {
-      $sql = "INSERT INTO planes(name) VALUES('" . mysql_real_escape_string($plane) . "')";
-      mysql_query($sql, $db) or die ('0;Adding new plane failed: ' . $sql . ', error ' . mysql_error());
-      $plid = mysql_insert_id();
+      $sql = "INSERT INTO planes(name) VALUES(?)";
+      $sth = $dbh->prepare($sql);
+      $sth->execute([$plane]) or die ('0;Adding new plane failed.');
+      $plid = $dbh->lastInsertId();
       print "Plane:" . $plane . " ";
     }
 
     // Do we need a new airline?
     if($alid == -2) {
       // Last-ditch effort to check through non-IATA airlines
-      $sql = sprintf("SELECT alid FROM airlines WHERE name='%s' OR alias='%s'",
-		     mysql_real_escape_string($airline), mysql_real_escape_string($airline));
-      $result = mysql_query($sql, $db);
-      if($dbrow = mysql_fetch_array($result, MYSQL_ASSOC)) {
+      $sql = "SELECT alid FROM airlines WHERE name=? OR alias=?";
+      $sth = $dbh->prepare($sql);
+      $sth->execute([$airline, $airline]);
+      if($dbrow = $sth->fetch()) {
 	// Found it
 	$alid = $dbrow["alid"];
       } else {
-	$sql = sprintf("INSERT INTO airlines(name, uid) VALUES('%s', %s)",
-		       mysql_real_escape_string($airline), $uid);
-	mysql_query($sql, $db) or mysql_query($sql, $db) or die ('0;Adding new airline failed: ' . $sql . ', error ' . mysql_error());
-	$alid = mysql_insert_id();
+	$sql = "INSERT INTO airlines(name, uid) VALUES(?, ?)";
+	$sth = $dbh->prepare($sql);
+	$sth->execute([$airline, $uid]) or die ('0;Adding new airline failed.');
+	$alid = $dbh->lastInsertId();
 	print "Airline:" . $airline . " ";
       }
     }
@@ -547,15 +590,18 @@ foreach($rows as $row) {
     }
 
     // And now the flight 
-    $sql = sprintf("INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (%s, %s, '%s', %s, %s, '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, NOW(), '%s')",
-		   $uid, $src_apid, mysql_real_escape_string($src_date),
-		   ($src_time != "" ? "'" . $src_time . "'" : "NULL"), 
-		   $dst_apid, mysql_real_escape_string($duration),
-		   mysql_real_escape_string($distance), mysql_real_escape_string($reg), mysql_real_escape_string($number),
-		   mysql_real_escape_string($seatnumber), substr($seatpos, 0, 1), $classMap[$seatclass],
-		   $reasonMap[$seatreason], mysql_real_escape_string($comment),
-		   ($plid ? $plid : "NULL"), $alid, ($trid ? $trid : "NULL"), $opp);
-    mysql_query($sql, $db) or die('0;Importing flight failed ' . $sql . ', error ' . mysql_error());
+    $sql = "INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
+    $params = [
+        $uid, $src_apid, $src_date,
+        $src_time != "" ? $src_time : null,
+        $dst_apid, $duration,
+        $distance, $reg, $number,
+        $seatnumber, substr($seatpos, 0, 1), $classMap[$seatclass],
+        $reasonMap[$seatreason], $comment,
+        $plid ? $plid : null, $alid, $trid ? $trid : null, $opp
+    ];
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params) or die('0;Importing flight failed.');
     print $id . " ";
     break;
   }

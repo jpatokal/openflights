@@ -31,19 +31,19 @@ if($OF_USE_LOCALES) {
   }
 }
 
-//
-// Generate select box (pulldown) with all known locales
-// Box ID is "locale" and it triggers JS changeLocale() when selection is changed
-// $db -- OpenFlights DB
-// $locale -- currently selected locale
-//
-function locale_pulldown($db, $locale) {
+/**
+ * Generate select box (pulldown) with all known locales
+ * Box ID is "locale" and it triggers JS changeLocale() when selection is changed
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $locale string Currently selected locale
+ */
+function locale_pulldown($dbh, $locale) {
   global $OF_USE_LOCALES;
   echo "<select id='locale' onChange='JavaScript:changeLocale()'>\n";
   if($OF_USE_LOCALES) {
     $sql = "SELECT * FROM locales ORDER BY name ASC";
-    $result = mysql_query($sql, $db);
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+    foreach ($dbh->query($sql) as $row) {
       $selected = ($row["locale"] . ".utf8" == $locale ? "SELECTED" : "");
       printf("<option value='%s' %s>%s (%s)</option>\n", $row["locale"], $selected, $row["name"], substr($row["locale"], 0, 2));
     }
