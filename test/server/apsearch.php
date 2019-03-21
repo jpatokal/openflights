@@ -53,7 +53,7 @@ class RecordAirportDuplicateTest extends WebTestCase {
 
     $this->assertText('Update airport AutoTest Airport (ZZZ/ZZZZ)');
     $this->assertText('New airport edit suggestion submitted by autotest:');
-    $this->assertText("INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES('AutoTest Airpor");
+    $this->assertText("[name] => " . $airport["name"]);
   }
 }
 
@@ -71,8 +71,7 @@ class EditWrongAirportTest extends WebTestCase {
 
     $this->assertText('Update airport AutoTest Airport (ZZZ/ZZZY)');
     $this->assertText('New airport edit suggestion submitted by autotest:');
-    $this->assertText("UPDATE airports SET ");
-    $this->assertText("icao='ZZZY'");
+    $this->assertText("[icao] => " . $params["icao"]);
     $this->assertText("[icao] => " . $airport["icao"]);
   }
 }
@@ -90,7 +89,7 @@ class EditAirportDuplicateICAOTest extends WebTestCase {
     $msg = $this->post($webroot . "php/apsearch.php", $params);
     $this->assertText('Update airport AutoTest Airport (ZZZ/WSSS)');
     $this->assertText('New airport edit suggestion submitted by autotest:');
-    $this->assertText("UPDATE airports SET name='AutoTest Airport', city='Testville', country='{$airport['country']}', iata='ZZZ', icao='WSSS'");
+    $this->assertText("[name] => " . $airport["name"]);
     $this->assertText("[name] => Changi Intl");
   }
 }

@@ -33,7 +33,7 @@ if($export) {
 
 include 'helper.php';
 include 'filter.php';
-include 'db.php';
+include 'db_pdo.php';
 include 'greatcircle.php';
 
 $units = $_SESSION["units"];
@@ -63,6 +63,8 @@ if(!$uid or empty($uid)) {
   }
 }
 
+$params = [];
+
 // Special handling of "route" apids in form R<apid>,<coreid>
 // <apid> is user selection, <coreid> is ID of airport map is centered around
 $type = substr($apid, 0, 1);
@@ -71,32 +73,38 @@ if($type == "R" || $type == "L") {
   $ids = explode(',', substr($apid, 1));
   $apid = $ids[0];
   $coreid = $ids[1];
+  $params['apid'] = $apid;
   if($type == "L") {
     if($coreid == "") {
-      $match = "r.alid=$apid"; // all routes on $alid
+      $match = "r.alid=:apid"; // all routes on $alid
     } else {
-      $match = "r.src_apid=$coreid AND r.alid=$apid"; // flight from $coreid on $alid only
+      $params['coreid'] = $coreid;
+      $match = "r.src_apid=:coreid AND r.alid=:apid"; // flight from $coreid on $alid only
     }
   } else {
     if($apid == $coreid) {
-      $match = "r.src_apid=$apid"; // all flights from $apid
+      $match = "r.src_apid=:apid"; // all flights from $apid
     } else {
-      $match = "r.src_apid=$coreid AND r.dst_apid=$apid"; // flight from $coreid to $apid only
+      $params['coreid'] = $coreid;
+      $match = "r.src_apid=:coreid AND r.dst_apid=:apid"; // flight from $coreid to $apid only
     }
     // Airline filter on top of airport
     if($alid) {
-      $match .= " AND r.alid=$alid";
+      $params['alid'] = $alid;
+      $match .= " AND r.alid=:alid";
     }
   }
   $sql = "SELECT s.x AS sx,s.y AS sy,s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.x AS dx,d.y AS dy,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,l.iata as code, '-' as src_date, '-' as src_time, '-' as distance, '-:-' AS duration, '' as seat, '' as seat_type, '' as class, '' as reason, r.equipment AS name, '' as registration,rid AS fid,l.alid,'' AS note,NULL as trid,'N' AS opp,NULL as plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,'F' AS mode,codeshare,stops FROM airports AS s,airports AS d, airlines AS l,routes AS r WHERE $match AND r.src_apid=s.apid AND r.dst_apid=d.apid AND r.alid=l.alid";
 
 } else {
   // List of all this user's flights
-  $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=" . $uid . " AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
+  $params['uid'] = $uid;
+  $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=:uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
   
   // ...filtered by airport (optional)
   if($apid && $apid != 0) {
-    $sql = $sql . " AND (s.apid=" . mysql_real_escape_string($apid) . " OR d.apid=" . mysql_real_escape_string($apid) . ")";
+    $params['apid'] = $apid;
+    $sql = $sql . " AND (s.apid=:apid OR d.apid=:apid)";
   }
 }
 
@@ -106,7 +114,7 @@ switch($export) {
  case "gcmap":
    // Full filter only for user flight searches
    if(! $route) {
-     $sql = $sql . getFilterString($_GET);
+     $sql = $sql . getFilterString($dbh, $_GET);
    }
    break;
 
@@ -117,12 +125,13 @@ switch($export) {
  default:
    // Full filter only for user flight searches
    if(! $route) {
-     $sql = $sql . getFilterString($_POST);
+     $sql = $sql . getFilterString($dbh, $_POST);
    }
    break;
 }
 if($fid && $fid != "0") {
-  $sql = $sql . " AND fid= " . mysql_real_escape_string($fid);
+  $params['fid'] = $fid;
+  $sql = $sql . " AND fid= :fid";
 }
 
 // And sort order
@@ -137,7 +146,8 @@ if($route) {
 }
 
 // Execute!
-$result = mysql_query($sql, $db) or die ('Error;Query ' . print_r($_GET, true) . ' caused database error ' . $sql . ', ' . mysql_error());
+$sth = $dbh->prepare($sql);
+$sth->execute($params) or die ('Error;Query ' . print_r($_GET, true) . ' caused database error ' . $sql . ', ' . $sth->errorInfo()[0]);
 $first = true;
 
 if($export == "export" || $export == "backup") {
@@ -145,7 +155,7 @@ if($export == "export" || $export == "backup") {
   print "\xEF\xBB\xBFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
 $gcmap_city_pairs = '';	// list of city pairs when doing gcmap export.
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+while ($row = $sth->fetch()) {
   $note = $row["note"];
 
   if($route) {

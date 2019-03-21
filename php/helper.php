@@ -21,13 +21,6 @@ function json_error($msg, $detail='') {
 }
 
 //
-// Return a quoted string or NULL if empty
-//
-function null_if_empty($str) {
-  return($str == "" ? "NULL" : "'" . mysql_real_escape_string($str) . "'");
-}
-
-//
 // Standard formatting of airport data
 // Input: row: associative array containing iata, icao
 // Output: " code : apid : x : y : timezone : dstrule "
@@ -110,8 +103,15 @@ function format_alcode($iata, $icao, $mode) {
   }
 }  
 
-// Calculate (distance, duration) between two airport IDs
-function gcDistance($db, $src_apid, $dst_apid) {
+/**
+ * Calculate (distance, duration) between two airport IDs
+ *
+ * @param $dbh PDO OpenFlights DB handler
+ * @param $src_apid string Source APID
+ * @param $dst_apid string Destination APID
+ * @return array Distance, duration
+ */
+function gcDistance($dbh, $src_apid, $dst_apid) {
   // Special case: loop flight to/from same airport
   if($src_apid == $dst_apid) {
     $dist = 0;
@@ -119,26 +119,15 @@ function gcDistance($db, $src_apid, $dst_apid) {
     $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid=$dst_apid";
 
     // Handle both OO and procedural-style database handles, depending on what type we've got.
-    if(get_class($db) == "PDO") {
-      $sth = $db->prepare($sql);
-      $sth->execute();
-      if($sth->rowCount() != 2) return array(null, null);
-      $coord1 = $sth->fetch();
-      $lon1 = $coord1["x"];
-      $lat1 = $coord1["y"];
-      $coord2 = $sth->fetch();
-      $lon2 = $coord2["x"];
-      $lat2 = $coord2["y"];
-    } else {
-      $rs = mysql_query($sql, $db);
-      if(mysql_num_rows($rs) != 2) return array(null, null);
-      $row = mysql_fetch_assoc($rs);
-      $lon1 = $row["x"];
-      $lat1 = $row["y"];
-      $row = mysql_fetch_assoc($rs);
-      $lon2 = $row["x"];
-      $lat2 = $row["y"];
-    }
+    $sth = $dbh->prepare($sql);
+    $sth->execute();
+    if($sth->rowCount() != 2) return array(null, null);
+    $coord1 = $sth->fetch();
+    $lon1 = $coord1["x"];
+    $lat1 = $coord1["y"];
+    $coord2 = $sth->fetch();
+    $lon2 = $coord2["x"];
+    $lat2 = $coord2["y"];
 
     $pi = 3.1415926;
     $rad = doubleval($pi/180.0);
