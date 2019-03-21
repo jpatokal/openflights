@@ -15,7 +15,7 @@ require_once("./php/helper.php");
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="/OpenLayers.js?version=20091204"></script>
-    <script type="text/javascript" src="/js/greatcircle.js?version=20121108"></script>
+    <script type="text/javascript" src="/js/greatcircle.js?version=20190320"></script>
     <script type="text/javascript" src="/js/utilities.js?version=20120817"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/scw.js"></script>

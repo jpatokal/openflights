@@ -9,8 +9,8 @@ MOON_DISTANCE = 238857;    // in miles
 MARS_DISTANCE = 34649589;    // in miles
 DEG2RAD =  0.01745329252;  // factor to convert degrees to radians (PI/180)
 RAD2DEG = 57.29577951308;
-GC_STEP = 500; // draw segment every GC_STEP mi
-GC_MIN = 1000; // trigger GC paths once distance is greater than this
+GC_STEP = 100; // draw segment every GC_STEP mi
+GC_MIN = 300; // trigger GC paths once distance is greater than this
 
 // Validate 24-hr time ([0]0:00-23:59)
 var RE_TIME = /(^0?[0-9]|1[0-9]|2[0-3]):?([0-5][0-9])$/;
