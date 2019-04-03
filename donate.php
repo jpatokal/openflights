@@ -41,7 +41,7 @@
 		      <li>No warning icon on your profile.</li>
 		    </ul>
 		  </td><td class="donate">
-		    <b>US$10/year</b>
+		    <b>US$12/year</b>
 		  </td><td class="donate">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 			<input type="hidden" name="cmd" value="_s-xclick">
@@ -65,7 +65,7 @@
 		      <li>Dedicated mail address for support.</li>
 		    </ul>
 		  </td><td class="donate">
-		    <b>US$20/year</b>
+		    <b>US$24/year</b>
 		  </td>
 		  <td class="donate">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -89,7 +89,7 @@
 		      <li>Access to future versions before public release.</li>
 		    </ul>
 		  </td><td class="donate">
-		    <b>US$50/year</b>
+		    <b>US$48/year</b>
 		  </td><td class="donate">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 			<input type="hidden" name="cmd" value="_s-xclick">
