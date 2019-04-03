@@ -111,18 +111,6 @@ CREATE TABLE `countries_oa` (
   `continent` text
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `facebook`;
-CREATE TABLE `facebook` (
-  `uid` int(11) default NULL,
-  `fbuid` int(11) NOT NULL,
-  `updated` datetime default NULL,
-  `sessionkey` text,
-  `pref_onfly` varchar(1) default 'Y',
-  `pref_onnew` varchar(1) default 'Y',
-  PRIMARY KEY  (`fbuid`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `flights`;
 CREATE TABLE `flights` (
   `uid` int(11) default NULL,
