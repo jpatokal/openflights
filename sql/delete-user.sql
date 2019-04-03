@@ -9,11 +9,11 @@ select row_count();
 set sql_safe_updates=1;
 
 \! echo Flights
-delete flights where uid=@uid;
+delete from flights where uid=@uid;
 select row_count();
 
 \! echo Trips
-delete trips where uid=@uid;
+delete from trips where uid=@uid;
 select row_count();
 
 \! echo User
