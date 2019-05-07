@@ -6,7 +6,7 @@
 "Aerospatiale/Alenia ATR 42-600","ATR","AT46"
 "Aerospatiale/Alenia ATR 72","AT7","AT72"
 "Airbus A300","AB3","A30B"
-"Airbus A300-600","ABY","A306"
+"Airbus A300-600","AB6","A306"
 "Airbus A300-600ST Super Transporter / Beluga","ABB","A3ST"
 "Airbus A310","310","A310"
 "Airbus A318","318","A318"
@@ -164,7 +164,7 @@
 "Douglas DC-9-40","D94","DC94"
 "Douglas DC-9-50","D95","DC95"
 "Embraer 170","E70","E170"
-"Embraer 175","E75","E75S/L"
+"Embraer 175","E75",\N
 "Embraer 175 (long wing)","E7W","E75L"
 "Embraer 175 (short wing)","E7W","E75S"
 "Embraer 190","E90","E190"
