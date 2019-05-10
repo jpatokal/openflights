@@ -11,6 +11,7 @@ require_once("db_pdo.php");
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
+    <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/apsearch.js"></script>
   </head>
 
