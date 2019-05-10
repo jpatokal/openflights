@@ -33,6 +33,11 @@ class UpdateAirportsTest(unittest.TestCase):
     self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
     self.fake_dbc.update_all_from_oa.assert_called()
 
+  def testIcaoMatchIgnoreIdent(self):
+    oa = {'type': 'medium_airport', 'iata_code': '', 'gps_code': 'ABCD', 'ident': 'AA-0001', 'iso_country': 'AX', 'name': 'Ayebeesee Intl Airport'}
+    self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
+    self.fake_dbc.update_all_from_oa.assert_called()
+
   def testIcaoMatchJunkIata(self):
     oa = {'type': 'medium_airport', 'iata_code': '123', 'ident': 'ABCD', 'iso_country': 'AX', 'name': 'Ayebeesee Intl Airport'}
     self.assertEquals(self.ofd.match(self.fake_dbc, oa), True)
