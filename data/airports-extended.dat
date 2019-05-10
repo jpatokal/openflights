@@ -2344,7 +2344,7 @@
 2458,"Capitan V A Almonacid Airport","La Rioja","Argentina","IRJ","SANL",-29.3815994263,-66.7957992554,1437,-3,"N","America/Argentina/La_Rioja","airport","OurAirports"
 2459,"Chilecito Airport","Chilecito","Argentina",\N,"SANO",-29.2238998413,-67.4389038086,3099,-3,"N","America/Argentina/La_Rioja","airport","OurAirports"
 2460,"Teniente Benjamin Matienzo Airport","Tucuman","Argentina","TUC","SANT",-26.8409,-65.104897,1493,-3,"N","America/Argentina/Tucuman","airport","OurAirports"
-2461,"Domingo Faustino Sarmiento Airport","San Julian","Argentina","UAQ","SANU",-31.571501,-68.418198,1958,-3,"N","America/Argentina/San_Juan","airport","OurAirports"
+2461,"Domingo Faustino Sarmiento Airport","San Juan","Argentina","UAQ","SANU",-31.571501,-68.418198,1958,-3,"N","America/Argentina/San_Juan","airport","OurAirports"
 2462,"Area De Material Airport","Rio Cuarto","Argentina","RCU","SAOC",-33.0850982666,-64.2612991333,1380,-3,"N","America/Cordoba","airport","OurAirports"
 2463,"Villa Dolores Airport","Villa Dolores","Argentina","VDR","SAOD",-31.9451999664,-65.1463012695,1847,-3,"N","America/Cordoba","airport","OurAirports"
 2464,"La Quiaca Airport","Laboulaye","Argentina",\N,"SAOL",-22.1506004333,-65.57749938959999,11414,-3,"N","America/Jujuy","airport","OurAirports"
@@ -12302,3 +12302,4 @@
 13744,"Lijiang Railway Station","Lijiang","China",\N,\N,26.81429,100.251499,7874,8,"N",\N,\N,\N
 13745,"Azura Helipad","Benguerra Island","Mozambique",\N,\N,-21.8555556,35.425,10,2,"U",\N,\N,\N
 13746,"Anantara - Indigo Bay","Bazaruto","Mozambique",\N,\N,-21.70583333,35.4508333,5,2,"U",\N,\N,\N
+13747,"Balsas Airport","Balsas","Brazil","BSS","SNBS",-7.526030064,-46.05329895,930,-3,"S","America/Sao_Paulo","airport","User"
