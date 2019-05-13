@@ -49,6 +49,8 @@ class OpenFlightsData(object):
   def match(self, dbc, oa):
     if oa['type'] == 'closed':
       return False
+    if 'latitude_deg' in oa and oa['latitude_deg'] == '0':
+      return False
 
     # ICAO can be found either in ident or local_code :/
     if len(oa['ident']) == 4:

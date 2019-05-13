@@ -13,12 +13,16 @@ class UpdateAirportsTest(unittest.TestCase):
 
   # Test cases that do nothing
 
-  def testClosed(self):
+  def testIgnoreClosed(self):
     oa = {'type': 'closed'}
     self.assertEquals(self.ofd.match(None, oa), False)
 
-  def testNewSmallAirport(self):
+  def testIgnoreNewSmallAirport(self):
     oa = {'type': 'small_airport', 'ident': 'NEWA'}
+    self.assertEquals(self.ofd.match(None, oa), False)
+
+  def testIgnoreJunkData(self):
+    oa = {'type': 'medium_airport', 'ident': 'ABCD', 'latitude_deg': '0'}
     self.assertEquals(self.ofd.match(None, oa), False)
 
   # Test cases that update OpenFlights from OurAirports
