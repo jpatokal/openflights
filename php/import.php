@@ -160,15 +160,15 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
     } else {
       $airlinepart = explode(' ', $airline);
       if($airlinepart[0] == 'Air') {
-	$part = 'Air ' . $airlinepart[1];
+	      $part = 'Air ' . $airlinepart[1];
       } else {
-	$part = $airlinepart[0];
+	      $part = $airlinepart[0];
       }
       $params = ['part' => $part . '%', 'uid' => $uid];
       $sql = "select name,alias,alid from airlines where (name like ? or alias like ?) and (iata != '' or uid = ?) order by name";
-      $sth = $dbh->prepare($sql);
-      $sth->execute($params);
     }
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params);
     
     // validate the airline/code against the DB
     switch($sth->rowCount()) {
