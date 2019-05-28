@@ -10,7 +10,7 @@ class UpdateAirlinesTest(unittest.TestCase):
   def setUp(self):
     self.fake_aldb = mock.Mock(spec=update_airlines.AirlineDB)
     self.ofa = update_airlines.OpenFlightsAirlines(self.fake_aldb)
-    self.of = {'icao': 'ABC', 'iata': 'AB', 'name': 'Aland Airlines', 'callsign': 'ALAXA', 'country': 'AX'}
+    self.of = {'icao': 'ABC', 'iata': 'AB', 'name': 'Aland Airlines', 'callsign': 'ALAXA', 'country': 'AX', 'active': 'N'}
     self.indexAirline(self.of)
     self.wpa = update_airlines.WikipediaArticle()
 
@@ -30,7 +30,8 @@ class UpdateAirlinesTest(unittest.TestCase):
       ["<i>Foo</i>"       , "Foo"],
       ["Foo<ref>1</ref>"  , "Foo"],
       ["[[Foo|Bar]]"      , "Bar"],
-      ["| ''[[Foo|Bar]]''", "Bar"]      
+      ["| ''[[Foo|Bar]]''", "Bar"],
+      ["Foo, S.A. de C.V.", "Foo"]
     ]:
       self.assertEquals(self.wpa.clean(input), output)
 
@@ -104,6 +105,13 @@ class UpdateAirlinesTest(unittest.TestCase):
     dupe = {'icao': 'ABC', 'iata': 'AB', 'name': 'Zork Airlines', 'callsign': 'ZORK', 'country': 'AX'}
     self.indexAirline(dupe)
     self.assertEquals(self.ofa.match(wp), (self.of, dupe))
+    self.assertEquals(self.ofa.diff(self.of, wp), {})
+
+  def testExactMatchWithIcaoMatchDefunctDupe(self):
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Aland Airlines', 'callsign': 'ALAXA', 'country': 'AX'}
+    dupe = {'icao': 'ABC', 'iata': 'AB', 'name': 'Zork Airlines', 'callsign': 'ZORK', 'country': 'AX', 'active': 'Y'}
+    self.indexAirline(dupe)
+    self.assertEquals(self.ofa.match(wp), (dupe, self.of))
     self.assertEquals(self.ofa.diff(self.of, wp), {})
 
   def testExactMatchWithCallsignDupe(self):

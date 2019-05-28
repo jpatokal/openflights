@@ -11,6 +11,7 @@ import argparse
 import codecs
 import difflib
 import mysql.connector
+import re
 import sys
 import urllib2
 from bs4 import BeautifulSoup
@@ -105,6 +106,11 @@ class OpenFlightsAirlines(object):
         if difflib.SequenceMatcher(None, airline['name'], match['name']).ratio() > 0.8:
           dupe = airline
 
+    # If dupe is active and match is not, flip order!
+    if dupe and 'active' in dupe and dupe['active'] == 'Y' and 'active' in match and match['active'] == 'N':
+      dupe = match
+      match = airline
+
     return match, dupe
 
   def diff(self, of, wp):
@@ -114,6 +120,10 @@ class OpenFlightsAirlines(object):
         if not of[field] or wp[field].upper() != of[field].upper():
           if field != 'name' or len(wp[field]) > 3:
             fields[field] = wp[field]
+
+    # Special case: Only override activeness if WP says airline is defunct
+    if of['active'] == 'Y' and wp['active'] == 'N':
+      fields['active'] = 'N'
     return fields
 
   def update_from_wp(self, of, wp, dupe):
@@ -204,8 +214,16 @@ class WikipediaArticle(object):
   def parse_airline(self, block):
     if len(block) < 5:
       return None
-    iata, icao, name, callsign, country = [self.clean(x) for x in block[0:5]]
-    return {'icao': icao, 'iata': iata, 'name': name, 'callsign': callsign, 'country': country}
+
+    # Italicized name or 'defunct' in comments means airline is not active
+    if 'defunct' in block[5].lower() or re.search("^''.*''$", block[2]):
+      active = 'N'
+    else:
+      active = 'Y'
+
+    iata, icao, name, callsign, country, comments = [self.clean(x) for x in block[0:6]]
+
+    return {'icao': icao, 'iata': iata, 'name': name, 'callsign': callsign, 'country': country, 'active': active}
 
   def clean(self, x):
     # Remove HTML tags and entities
@@ -214,7 +232,7 @@ class WikipediaArticle(object):
     x = self.cleaner.get_data()
 
     # | ''[[Foo|Bar]]'' -> Bar
-    x = unicode(x.split('|')[-1].translate(None, "[|]*?").replace("''", ""), 'utf-8').strip()
+    x = unicode(x.split('|')[-1].translate(None, "[|]*?").replace("''", ""), 'utf-8').split(',')[0].strip()
     if x == '':
       return None
     return x
@@ -229,14 +247,17 @@ def process(airlines, ofa, aldb, stats):
     if of_airline:
       print "> MATCH %s == %s" % (pp(airline), pp(of_airline))
       stats['matched'] += 1
-      stats['updated'] += ofa.update_from_wp(of_airline, airline, dupe)
       if dupe:
         print ">> DUPE %s -> %s" % (pp(dupe), pp(of_airline))
         stats['deduped'] += 1
+      stats['updated'] += ofa.update_from_wp(of_airline, airline, dupe)
     else:
-      print "= NEW %s" % pp(airline)
-      aldb.add_new(airline)
-      stats['added'] += 1
+      if airline['active'] == 'Y':
+        print "= NEW %s" % pp(airline)
+        aldb.add_new(airline)
+        stats['added'] += 1
+      else:
+        print ". DEFUNCT %s" % pp(airline)
     stats['total'] += 1
 
 if __name__ == "__main__":
@@ -254,7 +275,8 @@ if __name__ == "__main__":
   ofa.load_all_airlines()
 
   stats = defaultdict(int)
-  if args.source == 'wikipedia':
+  print "Source %s" % args.source
+  if args.source == 'wiki':
     wpa = WikipediaArticle()
     for c in xrange(ord('A'), ord('Z')+1):
       wpa.load(chr(c))
