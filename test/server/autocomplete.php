@@ -18,6 +18,7 @@ class MultiSearchSharedLongStringTest extends WebTestCase {
     $this->assertText("(SIN)");
     $this->assertText("Singapore Airlines");
     $this->assertText("(SQ)");
+    $this->assertNoText("(Priv)");
   }
 }
 
@@ -30,6 +31,7 @@ class MultiSearchAirportOnlyLongStringTest extends WebTestCase {
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
     $this->assertText("Uluru");
     $this->assertText("(AYQ)");
+    $this->assertNoText("(Priv)");
   }
 }
 
@@ -42,6 +44,7 @@ class MultiSearchAirlineOnlyLongStringTest extends WebTestCase {
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
     $this->assertText("(QF)");
     $this->assertText("Qantas");
+    $this->assertNoText("(Priv)");
   }
 }
 
@@ -54,6 +57,7 @@ class MultiSearchAirportIATATest extends WebTestCase {
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
     $this->assertText("Singapore Changi");
     $this->assertText("(SIN)");
+    $this->assertNoText("(Priv)");
   }
 }
 
@@ -66,6 +70,7 @@ class MultiSearchAirlineIATATest extends WebTestCase {
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
     $this->assertText("Singapore Airlines");
     $this->assertText("(SQ)");
+    $this->assertNoText("(Priv)");
   }
 }
 
@@ -73,8 +78,8 @@ class MultiSearchAirlineIATATest extends WebTestCase {
 // AIRPORTS
 //
 
-// Single airport search by city name
-class SingleAirportCityCompleteTest extends WebTestCase {
+// Single airport search by short city name
+class SingleAirportShortCityCompleteTest extends WebTestCase {
   function test() {
     global $webroot, $airport;
 
@@ -82,6 +87,18 @@ class SingleAirportCityCompleteTest extends WebTestCase {
 		    "src_ap" => "Hong");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
     $this->assertText("HKG:");
+  }
+}
+
+// Single airport search by long city name
+class SingleAirportCityLongCompleteTest extends WebTestCase {
+  function test() {
+    global $webroot, $airport;
+
+    $params = array("quick" => "true",
+        "src_ap" => "Hamad");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("DOH:");
   }
 }
 
@@ -196,6 +213,17 @@ class SinglePlaneMajorNameCompleteTest extends WebTestCase {
         "plane" => "737");
     $msg = $this->post($webroot . "php/autocomplete.php", $params);
     $this->assertText("Boeing 737");
+  }
+}
+
+class SinglePlaneMajorNameMinorVariantCompleteTest extends WebTestCase {
+  function test() {
+    global $webroot, $airline;
+
+    $params = array("quick" => "true",
+        "plane" => "737-9");
+    $msg = $this->post($webroot . "php/autocomplete.php", $params);
+    $this->assertText("Boeing 737-900");
   }
 }
 
