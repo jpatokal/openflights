@@ -19,7 +19,7 @@ $tz = $_POST["timezone"];
 $dst = $_POST["dst"];
 $dbname = $_POST["db"];
 $iatafilter = $_POST["iatafilter"];
-$offset = $_POST["offset"];
+$offset = intval($_POST["offset"]);
 $action = $_POST["action"];
 $apid = $_POST["apid"];
 
