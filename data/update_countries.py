@@ -16,7 +16,8 @@ import mysql.connector
 import database_connector
 
 class FlightDB(database_connector.DatabaseConnector):
-  pass
+  def update_country(self, table, old_name, new_name, code):
+    self.safe_execute('UPDATE ' + table + ' SET country=%s, country_code=%s WHERE country=%s', (new_name, code, old_name, ))
 
 def clean(raw_name):
   name = cc.convert(names=[raw_name], to='name_short')
@@ -41,22 +42,27 @@ if __name__ == "__main__":
   fdb = FlightDB(args)
   cc = coco.CountryConverter()
 
+  if not (args.countries or args.airports or args.airlines):
+    parser.error('At least one argument required')
+
   if args.countries:
     fdb.cursor.execute('SELECT * FROM countries')
     for row in fdb.cursor:
       country, code = clean(row['name'])
       if not country:
         continue
-      if row['name'] != country:
-        print('NAME', row['name'], '->', country)
-      if row['iso_code'] != code:
-        print('CODE', row['name'], row['iso_code'], '->', code)
+      fdb.safe_execute('UPDATE countries SET name=%s, iso_code=%s WHERE name=%s', (country, code, row['name'], ))
 
+  table = None
   if args.airlines:
-    fdb.cursor.execute('SELECT country FROM airlines GROUP BY country')
+    table = 'airlines'
+  if args.airports:
+    table = 'airports'
+  if table:
+    fdb.cursor.execute('SELECT country FROM %s GROUP BY country' % table)
     for row in fdb.cursor:
       country, code = clean(row['country'])
       if country:
-        print(row['country'], country, code)
+        fdb.update_country(table, row['country'], country, code)
       else:
         print('Dubious entry', row)
