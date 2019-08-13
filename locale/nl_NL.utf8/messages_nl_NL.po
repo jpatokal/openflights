@@ -8,9 +8,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"X-Generator: Poedit 2.2.3\n"
 
 msgid "Flight logging, mapping, stats and sharing"
-msgstr ""
+msgstr "Vluchtdetails, geografie, statistieken en delen"
 
 msgid "Sorry, OpenFlights requires JavaScript."
 msgstr "Sorry, voor OpenFlights is JavaScript vereist."
@@ -22,13 +24,13 @@ msgid "Hide search bar"
 msgstr "Zoekbalk verbergen"
 
 msgid "Enter city, airport, airline name or code"
-msgstr ""
+msgstr "Voer in: plaats, luchthaven, luchtvaartmaatschappij of. code"
 
 msgid "Search"
 msgstr "Zoeken"
 
 msgid "Map of routes from this airport"
-msgstr "Kaart met routes vanaf dit vliegveld"
+msgstr "Kaart met routes vanaf deze luchthaven"
 
 msgid "Duration"
 msgstr "Duur"
@@ -37,7 +39,7 @@ msgid "Distance"
 msgstr "Afstand"
 
 msgid "Add new airport"
-msgstr "Nieuw vliegveld toevoegen"
+msgstr "Nieuwe luchthaven toevoegen"
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -61,40 +63,40 @@ msgid "Filter"
 msgstr "Filter"
 
 msgid "Carrier"
-msgstr ""
+msgstr "Maatschappij"
 
 msgid "Year"
-msgstr ""
+msgstr "Jaar"
 
 msgid "Trip"
-msgstr ""
+msgstr "Reis"
 
 msgid "More..."
 msgstr "Meer..."
 
 msgid "Class"
-msgstr ""
+msgstr "Klasse"
 
 msgid "Mode"
-msgstr ""
+msgstr "Modus"
 
 msgid "Note"
-msgstr ""
+msgstr "Opmerking"
 
 msgid "Reason"
-msgstr ""
+msgstr "Reden"
 
 msgid "Registration"
-msgstr ""
+msgstr "Registratie"
 
 msgid "Control panel"
-msgstr ""
+msgstr "Configuratiescherm"
 
 msgid "New flight"
-msgstr ""
+msgstr "Nieuwe vlucht"
 
 msgid "List flights"
-msgstr ""
+msgstr "Toon vluchten"
 
 msgid "Import"
 msgstr "Importeren"
@@ -112,7 +114,7 @@ msgid "Edit flight"
 msgstr "Vlucht bewerken"
 
 msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
-msgstr ""
+msgstr "Velden in <font color='blue'>blauw</font> zijn verplicht. Selecteer luchthavens op de kaart door te klikken of zoek op plaatsnaam of luchthavencode."
 
 msgid "Date"
 msgstr "Datum"
@@ -121,67 +123,67 @@ msgid "Departure and arrival time"
 msgstr "Vertrek- en aankomsttijd"
 
 msgid "Add new trip"
-msgstr ""
+msgstr "Voeg nieuwe reis toe"
 
 msgid "Edit this trip"
-msgstr ""
+msgstr "Pas deze reis aan"
 
 msgid "From"
 msgstr "Van"
 
 msgid "Enter city name or airport code"
-msgstr ""
+msgstr "Voer plaatsnaam of luchthavencode in"
 
 msgid "Airport search"
-msgstr ""
+msgstr "Zoek luchthaven"
 
 msgid "Swap To and From airports"
-msgstr "Van en Naar vliegvelden omwisselen"
+msgstr "Van en Naar luchthavens omwisselen"
 
 msgid "Plane"
-msgstr ""
+msgstr "Vliegtuig"
 
 msgid "Enter plane model"
-msgstr ""
+msgstr "Voer vliegtuigmodel in"
 
 msgid "Reg."
-msgstr ""
+msgstr "Reg."
 
 msgid "To"
 msgstr "Naar"
 
 msgid "Economy"
-msgstr ""
+msgstr "Economy"
 
 msgid "Premium Eco."
-msgstr ""
+msgstr "Premium Eco."
 
 msgid "Business"
-msgstr ""
+msgstr "Business"
 
 msgid "First"
-msgstr ""
+msgstr "Eerste klas"
 
 msgid "Flight"
 msgstr "Vlucht"
 
 msgid "Road"
-msgstr ""
+msgstr "Weg"
 
 msgid "Ship"
-msgstr ""
+msgstr "Boot"
 
 msgid "Train"
-msgstr ""
+msgstr "Trein"
 
 msgid "Nr."
-msgstr ""
+msgstr "Nr."
 
 msgid "Seat"
-msgstr ""
+msgstr "Zitplaats"
 
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 msgid "Window"
 msgstr "Raam"
@@ -205,10 +207,10 @@ msgid "Other"
 msgstr "Overige"
 
 msgid "Enter airline name or code"
-msgstr ""
+msgstr "Voer luchtvaartmaatschappij naam of code in"
 
 msgid "Airline search"
-msgstr ""
+msgstr "Zoek luchtvaartmaatschappij"
 
 msgid "Add"
 msgstr "Toevoegen"
@@ -217,16 +219,16 @@ msgid "Save this flight"
 msgstr "Deze vlucht opslaan"
 
 msgid "Clear"
-msgstr ""
+msgstr "Maak leeg"
 
 msgid "Reset this entry form"
-msgstr ""
+msgstr "Herstel dit invoerformulier"
 
 msgid "Exit"
-msgstr ""
+msgstr "Verlaat"
 
 msgid "Exit flight editor"
-msgstr ""
+msgstr "Verlaat vluchtaanpassingsscherm"
 
 msgid "Save changes"
 msgstr "Wijzigingen opslaan"
@@ -247,10 +249,10 @@ msgid "Next flight"
 msgstr "Volgende vluchten"
 
 msgid "Switch to basic editor"
-msgstr ""
+msgstr "Ga naar eenvoudig invoerscherm"
 
 msgid "Basic"
-msgstr ""
+msgstr "Eenvoudig"
 
 msgid "Add new flights"
 msgstr "Nieuwe vluchten toevoegen"
@@ -262,7 +264,7 @@ msgid "Save these flights"
 msgstr "Deze vluchten opslaan"
 
 msgid "Exit without saving"
-msgstr ""
+msgstr "Verlaat zonder op te slaan"
 
 msgid "Add new row for faster entry of multiple flights"
 msgstr "Voeg nieuwe rij toe voor snellere invoer van meerdere vluchten"
@@ -277,7 +279,7 @@ msgid "Less"
 msgstr "Minder"
 
 msgid "Switch to detailed editor"
-msgstr ""
+msgstr "Ga naar gedetailleerd invoerscherm"
 
 msgid "Detailed"
 msgstr "Gedetailleerd"
@@ -288,18 +290,18 @@ msgstr "Je sessie is verstreken, meld je opnieuw aan."
 
 #, php-format
 msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
-msgstr "Sorry, een vliegveld met IATA code %s bestaat al. Controleer de code."
+msgstr "Sorry, een luchthaven met IATA code %s bestaat al. Controleer de code."
 
 #, php-format
 msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
-msgstr "Sorry, een vliegveld met ICAO code %s bestaat al. Controleer de code."
+msgstr "Sorry, een luchthaven met ICAO code %s bestaat al. Controleer de code."
 
 msgid "Adding new airport failed:"
-msgstr "Toevoegen van nieuw vliegveld mislukt:"
+msgstr "Toevoegen van nieuwe luchthaven mislukt:"
 
 #, php-format
 msgid "New airport successfully added."
-msgstr "Nieuw vliegveld met succes toegevoegd."
+msgstr "Nieuwe luchthaven met succes toegevoegd."
 
 #, php-format
 msgid "Airport successfully edited."
@@ -307,7 +309,7 @@ msgstr "Vliegveld met succes gewijzigd."
 
 #, php-format
 msgid "Editing airport failed:"
-msgstr "Wijzigen vliegveld mislukt:"
+msgstr "Wijzigen luchthaven mislukt:"
 
 msgid "Not logged in, aborting"
 msgstr "Niet aangemeld, afbreken"
@@ -361,13 +363,13 @@ msgid "Time"
 msgstr "Tijd"
 
 msgid "Reg"
-msgstr ""
+msgstr "Reg"
 
 msgid "Comment"
-msgstr ""
+msgstr "Opmerking"
 
 msgid "Key to results"
-msgstr ""
+msgstr "Sleutel voor resultaten"
 
 msgid "Color"
 msgstr "Kleur"
@@ -400,25 +402,25 @@ msgid "No matches, please correct and reupload"
 msgstr "Geen overeenkomsten, graag corrigeren en opnieuw uploaden"
 
 msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
-msgstr ""
+msgstr "Opmerking: Dit CSV bestand bevat OpenFlights IDs in kolommen 15-18. Deze IDs overschrijven de waarden van handmatige wijzigen van luchthaven, luchtvaartmaatschappij en/of vliegtuig kolommen."
 
 msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
-msgstr ""
+msgstr "Uw vluchtgegevens bevatten niet herkende luchthavens. Voeg ze toe aan de database en probeer opnieuw. "
 
 msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
-msgstr ""
+msgstr "Uw vluchtgegevens bevatten niet herkende luchtvaartmaatschappijen. Meestal betekent dit dat de maatschappijcode in het vluchtnummer niet gevonden is, en de luchtvaartmaatschappijnaam niet ingevoerd. Herstel dit a.u.b. of verwijder de maatschappijcode en probeer opnieuw. "
 
 msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
 msgstr "Enkele datumvelden konden niet worden verwerkt. Verander ze zodat ze een van de volgende formaten gebruiken: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, of alleen YYYY.  Merk op dat DD/MM/YYYY <b>niet</b> geaccepteerd wordt."
 
 msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
-msgstr ""
+msgstr "Uw vluchtgegevens bevatten reis IDS die niet gedefinieerd zijn of niet bij u horen. Verifieer deze reis IDs a.u.b."
 
 msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
-msgstr ""
+msgstr "<b>Inlezen succesvol voltooid.</b> U kunt nu deze vluchten importeren in uw OpenFlichts. (Kleine wijzingen kunnen nadien gedan worden in het aanpassingsscherm.)"
 
 msgid "Add these flights to your OpenFlights"
-msgstr ""
+msgstr "Voeg deze vluchten to aan uw OpenFlights"
 
 msgid "Cancel"
 msgstr "Annuleren"
@@ -437,10 +439,10 @@ msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
 msgstr "Aanmelden mislukt. <%s>Maak een account aan</a> of <%s>reset wachtwoord</a>?"
 
 msgid "This trip is not public."
-msgstr ""
+msgstr "Deze reis is niet publiek."
 
 msgid "No such trip."
-msgstr ""
+msgstr "Deze reis bestaat niet."
 
 msgid "This user's flights are password-protected."
 msgstr "De vluchten van deze gebruiker zijn met een wachtwoord beveiligd."
@@ -461,10 +463,10 @@ msgid "miles"
 msgstr "mijl"
 
 msgid "-operated"
-msgstr ""
+msgstr "-uitgevoerd"
 
 msgid " and codeshares"
-msgstr ""
+msgstr " en gedeelde codes"
 
 msgid "Sorry, that name is already taken, please try another."
 msgstr "Sorry, die naam is al bezet. Kies een andere."
@@ -485,7 +487,7 @@ msgid "Settings changed successfully, returning..."
 msgstr "Instellingen met succes gewijzigd, aan het terugkeren..."
 
 msgid "Trip not found."
-msgstr ""
+msgstr "Reis niet gevonden."
 
 msgid "User not found."
 msgstr "Gebruiker niet gevonden."
@@ -523,60 +525,60 @@ msgstr "Bijgewerkt."
 
 #, php-format
 msgid "Trip successfully created"
-msgstr ""
+msgstr "Reis succesvol aangemaakt"
 
 #, php-format
 msgid "Trip successfully deleted"
-msgstr ""
+msgstr "Reis succesvol verwijderd"
 
 #, php-format
 msgid "Trip successfully edited."
-msgstr ""
+msgstr "Reis succesvol aangepast."
 
 msgid "Language"
 msgstr "Taal"
 
 msgid "Airline, railway, road transport and shipping search"
-msgstr ""
+msgstr "Zoeken naar vlucht-, spoorweg-, wegtransport of scheepvaart"
 
 msgid "Fill one or more fields below to search for matching airlines and other transport operators."
-msgstr ""
+msgstr "Vul een of meer van de onderstaande velden in om te zoeken naar overeenkomstige vlucht- of andere transport-uitvoerders."
 
 msgid "Name"
 msgstr "Naam"
 
 msgid "Railway"
-msgstr ""
+msgstr "Spoorweg"
 
 msgid "Road transport"
-msgstr ""
+msgstr "Wegtransport"
 
 msgid "Shipping"
-msgstr ""
+msgstr "Scheepvaart"
 
 msgid "Alternative name"
-msgstr ""
+msgstr "Alternatieve naam"
 
 msgid "Country"
 msgstr "Land"
 
 msgid "Callsign"
-msgstr ""
+msgstr "Registratie"
 
 msgid "Show only major (IATA) airlines?"
-msgstr ""
+msgstr "Toon alleen grote (IATA) maatschappijen?"
 
 msgid "Record the current data as a new airline."
-msgstr ""
+msgstr "Sla de huidige gegevens op als nieuwe maatschappij."
 
 msgid "Add as new"
-msgstr ""
+msgstr "Voeg toe als nieuw"
 
 msgid "Fill one or more fields below to search for matching airports."
-msgstr ""
+msgstr "Vul een of meer onderstaande velden in om te zoeken naar overeenkomstige luchthavens."
 
 msgid "Airport name"
-msgstr ""
+msgstr "Luchthavennaam"
 
 msgid "City name"
 msgstr "Plaats"
@@ -585,49 +587,49 @@ msgid "Country name"
 msgstr "Land"
 
 msgid "Latitude"
-msgstr ""
+msgstr "Breedtegraad"
 
 msgid "Longitude"
-msgstr ""
+msgstr "Lengtegraad"
 
 msgid "Elevation"
-msgstr ""
+msgstr "Hoogte"
 
 msgid "UTC"
-msgstr ""
+msgstr "UTC"
 
 msgid "DST"
-msgstr ""
+msgstr "DST"
 
 msgid "European"
-msgstr ""
+msgstr "Europees"
 
 msgid "US/Canada"
-msgstr ""
+msgstr "VS/Canada"
 
 msgid "S. American"
-msgstr ""
+msgstr "Zuid-Amerikaans"
 
 msgid "Australia"
-msgstr ""
+msgstr "Australië"
 
 msgid "New Zealand"
-msgstr ""
+msgstr "Nieuw Zeeland"
 
 msgid "Database"
-msgstr ""
+msgstr "Database"
 
 msgid "Show only major (IATA) airports?"
-msgstr "Alleen grote (IATA) vliegvelden tonen?"
+msgstr "Alleen grote (IATA) luchthavens tonen?"
 
 msgid "Please log in to enable editing."
-msgstr ""
+msgstr "Log in om wijzigingen te kunnen maken."
 
 msgid "Record the current data as a new airport."
-msgstr ""
+msgstr "Sla de huidige data op als nieuwe luchthaven."
 
 msgid "Record changes to this airport."
-msgstr "Wijzigingen aan dit vliegveld opslaan."
+msgstr "Wijzigingen aan deze luchthaven opslaan."
 
 msgid "Import data"
 msgstr "Gegevens importeren"
@@ -637,11 +639,11 @@ msgstr "OpenFlights kan twee typen gegevens importeren:"
 
 #, php-format
 msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
-msgstr ""
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory heeft geen uitvoermogelijkheid, maar OpenFlights kan diens FlightData pagina's uitlezen.  Log in op uw FlightMemory profiel, ga naar de FlightData pagina, en selecteer 'Pagina opslaan als' in uw browser. Upload het opgeslagen HTML bestand.  Herhaal voor iedre pagina met data.</p><p><i>Let op</I>: Zorg ervoor dat us FlightMemory taal op <b>English</b> ingesteld is voordat u de pagina's opslaat.</p><p><i>Opmerking</i>: Er is op dit moment <b>geen herkenning van duplicaten</b>.  Als u twee maal een FlightMemory bestand importeert, zullen alle vluchten tweemaal worden toegevoegd.</p><p><i>Opmerking</i>: De <b>FlightMemory opmaak</b> veranderd geregeld.  <%s>Rapporteer</a> a.u.b. fouten, en vergeet daarbij niet de exacte foutmelding en de 'Tmpfile' waarde (bovenaan de import pagina) te vermelden."
 
 #, php-format
 msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
-msgstr ""
+msgstr "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, geëxporteerd vanuit OpenFlights 'Export' of 'Backup') en te wijzigen of aan te maken in Excel of een andere spreadsheet.  Zie <%s'>opmaakspecificatie</a>."
 
 msgid "File to upload"
 msgstr "Bestand voor upload"
@@ -650,11 +652,11 @@ msgid "Keep historical airline names?"
 msgstr "Historische namen van luchtvaartmaatschappijen behouden?"
 
 msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
-msgstr ""
+msgstr "OpenFlights probeert gewoonlijk de maatschappijen en vluchtnummers te vinden in bekende luchtvaartmaatschappijen.  Wanneer u bovenstaand vak aanvinkt, zullen alle luchtvaartmaatschappijnamen <i>exact</i> worden overgenomen, inclusief eventuele typefouten."
 
 #, php-format
 msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
-msgstr ""
+msgstr "U krijgt de mogelijkheid om de vluchtdetails na te kijken voordat ze daadwerkelijk geïmporteerd worden.  Zie %s om een backup te maken of uw lijst met vluchten te legen voordat u importeert."
 
 msgid "Create new account"
 msgstr "Nieuwe account aanmaken"
@@ -663,10 +665,10 @@ msgid "Account settings"
 msgstr "Account instellingen"
 
 msgid "Basic information"
-msgstr ""
+msgstr "Basisinformatie"
 
 msgid "This will be used as the name of your profile."
-msgstr ""
+msgstr "Dit zal worden gebruikt als naam voor uw profiel."
 
 msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
 msgstr "Kies iets dat lastig te raden is, maar makkelijk te onthouden. Hoofdlettergevoelig!"
@@ -679,10 +681,10 @@ msgstr "E-mail (optioneel)"
 
 #, php-format
 msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
-msgstr ""
+msgstr "Indien u uw wachtwoord vergeet, kunnen wij een nieuw wachtwoord naar dit adres sturen.  We zullen <i>nooit</i> andere email sturen of uw persoonlijke data delen, zie <%s>privacy policy</a> voor verdere informatie."
 
 msgid "Could not load profile data"
-msgstr "Profiel gegevens konden niet geladen worden."
+msgstr "Profiel gegevens konden niet geladen worden"
 
 msgid "Profile address"
 msgstr "Profieladres"
@@ -703,7 +705,6 @@ msgstr "Gelinkt, automatische updates"
 msgid "Linked, manual updates only"
 msgstr "Gelinkt, alleen handmatige updates"
 
-#, fuzzy
 msgid "Automate"
 msgstr "Automatisch"
 
@@ -715,7 +716,7 @@ msgstr "Link toevoegen"
 
 #, php-format
 msgid "Install the <%s>OpenFlights Facebook app</a> to update your flights to your <%s>Facebook</a> profile."
-msgstr ""
+msgstr "Installeer de <%s>OpenFlights Facebook app</a> om uw vluchten in uw <%s>Facebook</a> profile bij te werken."
 
 msgid "Banners"
 msgstr "Banners"
@@ -730,7 +731,7 @@ msgid "Profile settings"
 msgstr "Profielinstellingen"
 
 msgid "You can easily change these later by clicking on <i>Settings</i>."
-msgstr ""
+msgstr "U kunt deze instellingen later eenvoudig wijzgen door te klikken op <i>Instellingen</i>."
 
 msgid "Privacy"
 msgstr "Privacy"
@@ -746,22 +747,22 @@ msgstr "Open"
 
 #, php-format
 msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
-msgstr ""
+msgstr "<b>Privé</b> profielen zijn alleen zichtbaar voor u.  <%s>Goud en Platinum</a> gebruikers kunnen hun privé profielen beveiligen met een wachtwoord, zodat ze alleen zichtbaar zijn voor diegenen die het wachtwoord kennen."
 
 msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
-msgstr ""
+msgstr "<b>Publieke</b> profielen tonen uw vluchtkaart en algemene statistieken, maar vluchtdetails zoals exacte data of serviceniveau zijn niet zichtbaar."
 
 msgid "<b>Open</b> profiles let others see, but not edit, your detailed flight data as well."
-msgstr ""
+msgstr "<b>Open</b> profielen tonen ook uw vluchtdetails aan anders. Zij kunnen echter geen wijzingen doen."
 
 msgid "Flight editor"
-msgstr ""
+msgstr "Vlucht-aanpassingsscherm"
 
 msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
-msgstr ""
+msgstr "Het <B>Eenvoudige</b> invoerscherm laat u invoeren: waarvandaan, waarheen, datum en optioneel de luchtvaartmaatschappij; maximaal vier vluchten tegelijk.  De snelste manier om uw vluchtkaart te maken!"
 
 msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
-msgstr ""
+msgstr "Het <B>Gedetailleerde</b> invoerscherm biedt ook de mogelijkheid om serviceniveau, stoelnummer, vliegtuigmodel en registratie, notities enz. in te voeren.  Ideaal voor luchtvaartfanatici en vliegtuigspotters."
 
 msgid "Distances"
 msgstr "Afstanden"
@@ -822,28 +823,28 @@ msgid "Sign me up!"
 msgstr "Maak een account!"
 
 msgid "Edit trip"
-msgstr ""
+msgstr "Pas reis aan"
 
 msgid "Add trip"
-msgstr ""
+msgstr "Voeg reis toe"
 
 msgid "Could not load trip data."
-msgstr ""
+msgstr "Kon de reisgegevens niet laden."
 
 msgid "Web address <i>(optional)</i>"
-msgstr ""
+msgstr "Web adres <i>(optioneel)</i>"
 
 msgid "Trip privacy"
-msgstr ""
+msgstr "Reis privacy"
 
 msgid "Private (visible only to you)"
-msgstr ""
+msgstr "Privé (alleen zichtbaar voor u)"
 
 msgid "Public (map and stats shared)"
-msgstr ""
+msgstr "Publiek (kaart en statistieken gedeeld)"
 
 msgid "Open (all flight data shared)"
-msgstr ""
+msgstr "Open (alle vluchtgegevens gedeeld)"
 
 msgid "OpenFlights URL"
 msgstr "OpenFlights URL"
@@ -855,58 +856,58 @@ msgid "Save"
 msgstr "Opslaan"
 
 msgid "Prem.Eco"
-msgstr ""
+msgstr "Prem.Eco"
 
 msgid "Econ"
-msgstr ""
+msgstr "Econ"
 
 msgid "P.Eco"
-msgstr ""
+msgstr "P.Eco"
 
 msgid "Biz"
-msgstr ""
+msgstr "Zak"
 
 msgid "1st"
-msgstr ""
+msgstr "1ste"
 
 msgid "Leis."
-msgstr ""
+msgstr "Privé"
 
 msgid "flight"
-msgstr ""
+msgstr "vlucht"
 
 msgid "train"
-msgstr ""
+msgstr "trein"
 
 msgid "road trip"
-msgstr ""
+msgstr "wegreis"
 
 msgid "ship"
-msgstr ""
+msgstr "schip"
 
 msgid "airline"
-msgstr ""
+msgstr "luchtvaarmaatschappij"
 
 msgid "railway"
-msgstr ""
+msgstr "spoorweg"
 
 msgid "road transport"
-msgstr ""
+msgstr "wegtransport"
 
 msgid "shipping"
-msgstr ""
+msgstr "scheepvaart"
 
 msgid "Segments"
 msgstr "Segmenten"
 
 msgid "Mileage"
-msgstr ""
+msgstr "Afstand"
 
 msgid "Toggle pan and region select mode"
-msgstr ""
+msgstr "Wissel tussen modus voor verplaatsen en regioselectie"
 
 msgid "Toggle overview map"
-msgstr ""
+msgstr "Wissel naar overzichtskaart"
 
 msgid "My Flights"
 msgstr "Mijn Vluchten"
@@ -915,79 +916,79 @@ msgid "My Airports"
 msgstr "Mijn Vliegvelden"
 
 msgid "Select this airport"
-msgstr "Selecteer dit vliegveld"
+msgstr "Selecteer deze luchthaven"
 
 msgid "List my flights"
-msgstr ""
+msgstr "Toon mijn vluchten"
 
 msgid "List routes"
-msgstr ""
+msgstr "Toon routes"
 
 msgid "Flights:"
 msgstr "Vluchten:"
 
 msgid "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
-msgstr ""
+msgstr "Voer a.u.b. een volledige datum in (jaar/maand/datum), bijv. 2008/10/30 voor 30 oktober 2008. Ook geldig is de volgende opmaak: YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD en YYYY MM DD."
 
 msgid "Please enter a valid source airport."
-msgstr ""
+msgstr "Voer a.u.b. een geldige vertrekluchthaven in."
 
 msgid "Please enter a valid destination airport."
-msgstr ""
+msgstr "Voer a.u.b. een geldige aankomstluchthaven in."
 
 msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
-msgstr ""
+msgstr "'%1' werd niet gevonden in %2 database.  Wilt u dit toevoegen als nieuwe %2 organisatie?"
 
 msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
-msgstr ""
+msgstr "Voer a.u.b. tijden in 24-uurs formaat in met een dubbele punt tussen uren en minuten, bijv. 21:37 voor 9:37 PM."
 
 msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
-msgstr ""
+msgstr "Voer a.u.b de vluchtduur in als uren en minuten met een dubbele punt als scheidingsteken, bijv. 5:37 voor 5 uren en 37 minuten. Wanneer u de duur leeg laat, wordt het automatisch berekend."
 
 msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
-msgstr ""
+msgstr "Voer a.u.b. de vluchtafstand in gehele mijlen in.  Wanneer u de afstand leeg laat, wordt het herberekend."
 
 msgid "No trips"
-msgstr ""
+msgstr "Geen reizen"
 
 msgid "No trips. Add one? "
-msgstr ""
+msgstr "Geen reizen. Toevoegen? "
 
 msgid "All trips"
-msgstr ""
+msgstr "Alle reizen"
 
 msgid "All carriers"
-msgstr ""
+msgstr "Alle maatschappijen"
 
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 msgid "Unassigned flights"
-msgstr ""
+msgstr "Niet toegevoegde vluchten"
 
 msgid "Recent flights on %1"
-msgstr ""
+msgstr "Recente vlucht op %1"
 
 msgid "Recently added flights"
-msgstr ""
+msgstr "Recentelijk toegevoegde vluchten"
 
 msgid "%1's flights on %2 in %3"
-msgstr ""
+msgstr "%1's vluchten op %2 in %3"
 
 msgid "%1's flights on %2"
-msgstr ""
+msgstr "%1's vluchten op %2"
 
 msgid "%1's flights in %2"
-msgstr ""
+msgstr "%1's vluchten in %2"
 
 msgid "%1's flights"
-msgstr ""
+msgstr "%1's vluchten"
 
 msgid "Home"
-msgstr ""
+msgstr "Thuis"
 
 msgid "Not in a trip"
-msgstr ""
+msgstr "Geen deel van een reis"
 
 msgid "segments"
 msgstr "segmenten"
@@ -996,19 +997,19 @@ msgid "days"
 msgstr "dagen"
 
 msgid "List all routes on this airline"
-msgstr ""
+msgstr "Toon alle routes bij deze maatschappij"
 
 msgid "List all routes from this airport"
-msgstr ""
+msgstr "Toon alle routes van deze luchthaven"
 
 msgid "routes"
 msgstr "routes"
 
 msgid "No flights found at this airport."
-msgstr ""
+msgstr "Geen vluchten gevonden van/naar deze luchthaven."
 
 msgid "Export"
-msgstr ""
+msgstr "Exporteren"
 
 msgid "Comma-Separated Value, for Excel and data processing"
 msgstr "Comma-Separated Value, voor Excel en gegevensverwerking"
@@ -1017,34 +1018,34 @@ msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Keyhole Markup Language, voor Google Earth en visualisatie"
 
 msgid "Vehicle"
-msgstr ""
+msgstr "Voertuig"
 
 msgid "Action"
-msgstr ""
+msgstr "Actie"
 
 msgid "Buy tickets on %1"
-msgstr ""
+msgstr "Koop tickets op %1"
 
 msgid "Edit this flight"
-msgstr ""
+msgstr "Pas deze vlucht aan"
 
 msgid "Copy to new flight"
-msgstr ""
+msgstr "Kopiëer naar nieuwe vlucht"
 
 msgid "Unique"
-msgstr ""
+msgstr "Uniek"
 
 msgid "Airports"
-msgstr ""
+msgstr "Luchthavens"
 
 msgid "Carriers"
-msgstr ""
+msgstr "Maatschappijen"
 
 msgid "Countries"
-msgstr ""
+msgstr "Landen"
 
 msgid "Vehicles"
-msgstr ""
+msgstr "Voertuigen"
 
 msgid "Total flown"
 msgstr "Totaal gevlogen"
@@ -1059,52 +1060,52 @@ msgid "To Mars"
 msgstr "Naar Mars"
 
 msgid "Journey records"
-msgstr ""
+msgstr "Reisgegevens"
 
 msgid "Average"
 msgstr "Gemiddelde"
 
 msgid "Airport records"
-msgstr ""
+msgstr "Vliegveldgegevens"
 
 msgid "Seats"
-msgstr ""
+msgstr "Zitplaatsen"
 
 msgid "Show..."
-msgstr ""
+msgstr "Toon..."
 
 msgid "Sort by..."
-msgstr ""
+msgstr "Sorteer op..."
 
 msgid "Routes"
-msgstr ""
+msgstr "Routes"
 
 msgid "Airlines"
-msgstr ""
+msgstr "Luchtvaartmaatschappijen"
 
 msgid "Planes"
-msgstr ""
+msgstr "Vliegtuigen"
 
 msgid "Changes made to this flight have not been saved.  OK to discard them?"
-msgstr ""
+msgstr "Gemaakte wijzigingen van deze vlucht zijn niet opgeslagen.  OK om ze te vergeten?"
 
 msgid "Loading..."
-msgstr ""
+msgstr "Laden..."
 
 msgid "Edit segment %1 of %2"
 msgstr "Bewerk segment %1 van %2"
 
 msgid "Are you sure you want to delete this flight?"
-msgstr ""
+msgstr "Weet u zeker dat u deze vlucht wilt verwijderen?"
 
 msgid "Deleting flight cancelled."
-msgstr ""
+msgstr "Verwijderen van vlucht geannuleerd."
 
 msgid "Search for %1"
-msgstr ""
+msgstr "Zoek naar %1"
 
 msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
-msgstr ""
+msgstr "Vertrek UTC %1%2%3, Aankomst UTC %4%5%6, Tijdsverschil %7 uren"
 
 msgid "+%1 day"
 msgstr "+%1 dag"
@@ -1116,7 +1117,7 @@ msgid "Flight departure and arrival times"
 msgstr "Vlucht vertrek- en aankomsttijden"
 
 msgid "Show airline route map"
-msgstr ""
+msgstr "Toon vlucht routekaart"
 
 msgid "Logged in as <B>%1</B>"
 msgstr "Aangemeld als <B>%1</B>"
@@ -1134,16 +1135,16 @@ msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<b
 msgstr "<b>Welkom terug!</b>  We zijn blij om te zien dat OpenFlights je bevalt.<br><a href='/donate.html' target='_blank'>Doneer</a> alstjeblieft en help de site in de lucht te houden!"
 
 msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
-msgstr ""
+msgstr "<B>Welkom bij OpenFlights!</b>  Klik op %1 om te beginnen met het toevoegen van vluchten, of op %2 om bestaande vluchten te importeren van websites zoals FlightMemory."
 
 msgid "You have been logged out."
 msgstr "Je bent afgemeld."
 
 msgid "You are already editing a flight. OK to discard your changes and add a new flight instead?"
-msgstr ""
+msgstr "U bent al een vlucht aan het wijzigen. OK om uw wijzigingen te vergeten en een nieuwe vlucht toe te voegen?"
 
 msgid "You are already editing a flight. OK to discard your changes and edit this flight instead?"
-msgstr ""
+msgstr "U bent al een vlucht aan het wijzigen. OK om uw wijzigingen te vergeten en deze vlucht opnieuw te wijzigen?"
 
 msgid "IATA codes must be exactly two letters."
 msgstr "IATA codes moeten exact twee letters zijn."
@@ -1152,22 +1153,22 @@ msgid "ICAO codes must be exactly three letters."
 msgstr "ICAO codes moeten exact drie letters zijn."
 
 msgid "Sorry, you have to be logged into OpenFlights to use this."
-msgstr ""
+msgstr "Sorry, u moet eerst inloggen op OpenFlights om dit te gebruiken."
 
 msgid "Please enter a name."
-msgstr ""
+msgstr "Voer a.u.b. een naam in."
 
 msgid "Please select a country."
-msgstr ""
+msgstr "Selecteer a.u.b. een land."
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
-msgstr ""
+msgstr "U heeft geen IATA/FAA code ingevoerd. Weet u zeker dat de luchtvaartmaatschappij geen code heeft, en wilt u verder gaan?"
 
 msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
-msgstr ""
+msgstr "U heeft geen ICAO code ingevoerd. Weet u zeker dat de luchtvaartmaatschappij geen code heeft en wilt u verder gaan?"
 
 msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
-msgstr ""
+msgstr "Weet u zeker dat u %1 wilt toevoegen als nieuwe maatschappij?  Verifieer de naam en luchtvaartmaatschappij codes alvorens te bevestigen."
 
 msgid "Cancelled."
 msgstr "Geannuleerd."
@@ -1176,19 +1177,19 @@ msgid "Searching..."
 msgstr "Aan het zoeken..."
 
 msgid "Recording..."
-msgstr ""
+msgstr "Opslaan..."
 
 msgid "No matches found."
 msgstr "Geen overeenkomsten gevonden."
 
 msgid "Results %1 to %2 of %3"
-msgstr "Resultaten %1 t/m %2 van totaal %3."
+msgstr "Resultaten %1 t/m %2 van totaal %3"
 
 msgid "Operators in pink have been added by users of OpenFlights."
-msgstr ""
+msgstr "Maatschappijen in roze zijn toegevoegd door gebruikers van OpenFlights."
 
 msgid "Operators in blue have been added by you and can be edited."
-msgstr ""
+msgstr "Maatschappijen in blauw zijn toegevoegd door u en kunnen worden aangepast."
 
 msgid "Select"
 msgstr "Selecteer"
@@ -1203,67 +1204,67 @@ msgid "ICAO codes must be exactly four letters."
 msgstr "ICAO codes moeten exact vier letters zijn."
 
 msgid "Only the unaccented letters A-Z, the numbers 0-9, the punctuation marks -.' (dash, period, apostrophe) and spaces can be used in airport and city names."
-msgstr ""
+msgstr "Alleen de letters A-Z, nummers 0-9, tekens -,' (streepje, punt, apostrof) en spaties kunnen worden gebruikt in luchthaven- en plaatsnamen."
 
 msgid "Ignoring city '%1', since the DAFIF database does not contain city information."
-msgstr ""
+msgstr "Plaats '%1' wordt genegeerd aangezien de DAFIF database geen gegevens voor deze plaats bevat."
 
 msgid "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
-msgstr ""
+msgstr "Zoeken naar IATA/FAA code '%1' is beperkt tot de luchthavens van de Verenigde Staten, aangezien DAFIF geen IATA codes bevat voor plaatsen buiten de VS."
 
 msgid "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
-msgstr ""
+msgstr "ATA code '%1' wordt genegeerd aangezien DAFIF geen IATA codes bevat voor plaatsen buiten de Verenigde Staten."
 
 msgid "Please enter an airport name."
-msgstr ""
+msgstr "Voer a.u.b. een luchthavennaam in."
 
 msgid "Please enter a city name."
-msgstr ""
+msgstr "Voer a.u.b. een plaatsnaam in."
 
 msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
-msgstr ""
+msgstr "Voer a.u.b. een breedtegraad, lengtegraad en hoogte in.  Tip: Ga na of de OurAirport database uw luchthaven al bevat en \"Laad\" de data daar uit."
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
-msgstr ""
+msgstr "Breedtegraad en lengtegraad moeten worden ingegeven als decimale graden, waar negatieve getallen respectievelijk 'zuid' en 'west' aangeven, en met ten minste drie decimalen (na de punt). Bijvoorbeeld: San Francisco (SFO) bevindt zich op breedtegraad 37.6189(N), lengtegraad 0122.3748(W)."
 
 msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
-msgstr ""
+msgstr "Lengtegraad moet zich bevinden tussen -180 (west) en 180 (oost) graden."
 
 msgid "Latitude must be in the range 90 (north) to -90 (south) degrees."
-msgstr ""
+msgstr "Breedtegraad moet zich bevinden tussen 90 (noord) en -90 (zuid) graden."
 
 msgid "Please enter a positive number for elevation."
-msgstr ""
+msgstr "Voer a.u.b. een positief getal in voor de hoogte."
 
 msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
-msgstr ""
+msgstr "Voer a.u.b. een tijdzone in als verschil t.o.v. UTC/GMT, bijv. +8 voor Singapore of -5 voor New York. Gebruik decimalen voor fractionele tijdzones, bijv. +5.75 voor Nepal."
 
 msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
-msgstr ""
+msgstr "U heeft niet ingegeven of deze luchthaven zomertijd volgt (DST). Dit als onbekend laten?"
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr ""
+msgstr "U heeft geen IATA/FAA code ingevoerd. Weet u zeker dat de luchtvaartmaatschappij geen code heeft, en wilt u verder gaan?"
 
 msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
-msgstr ""
+msgstr "U heeft geen ICAO code ingevoerd. Weet u zeker dat de luchtvaartmaatschappij geen code heeft en wilt u verder gaan?"
 
 msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
-msgstr ""
+msgstr "Weet u zeker dat u %1 als nieuwe luchthaven, zich bevindend in het %2 kwadrant van de wereld, wilt toevoegen? Verifieer a.u.b. de naam, luchthavencodes en exacte coördinaten voordat u bevestigd."
 
 msgid "No matches found in this database."
-msgstr ""
+msgstr "Geen overeenkomsten gevonden in deze database."
 
 msgid "Try unchecking 'Show only major airports' and search again."
-msgstr ""
+msgstr "Probeer 'Toon alleen grote luchthavens' uit te schakelen en zoek opnieuw."
 
 msgid "Switch to the OurAirports database and search again."
-msgstr ""
+msgstr "Wissel naar de OurAirports database en zoek opnieuw."
 
 msgid "Airports in pink have been added by users of OpenFlights."
-msgstr "Roze vliegvelden zijn toegevoegd door gebruikers van OpenFlights."
+msgstr "Roze luchthavens zijn toegevoegd door gebruikers van OpenFlights."
 
 msgid "Airports in blue have been added by you and can be edited."
-msgstr "Blauwe vliegvelden zijn door jou toegevoegd en kunnen worden gewijzigd."
+msgstr "Blauwe luchthavens zijn door jou toegevoegd en kunnen worden gewijzigd."
 
 msgid "Edit"
 msgstr "Bewerken"
@@ -1303,4 +1304,3 @@ msgstr "Aan het verwerken..."
 
 msgid "Profile address:"
 msgstr "Profiel adres:"
-
