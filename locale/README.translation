@@ -34,6 +34,6 @@ OpenFlights currently contains about 400 strings, mostly short but some long.  Y
 
   "<font>Blue</font> is a delicious cheese" --> "Une fromage delicieux, c'est <font>Bleu</font>"
 
-6) Finished?  Save and send the new messages.po file to info@openflights.org.
+6) Finished?  Save and send the new messages.po and messages.mo files to info@openflights.org.
 
 Thank you for your help!
