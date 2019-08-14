@@ -14,16 +14,17 @@ import difflib
 import mysql.connector
 import re
 import sys
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 from pprint import pprint
 
 import database_connector
 
 class HTMLCleaner(HTMLParser):
   def __init__(self):
+    HTMLParser.__init__(self, convert_charrefs=False)
     self.reset()
     self.fed = []
     self.nuke = False
@@ -49,7 +50,7 @@ class OpenFlightsAirlines(object):
     self.of_icao = defaultdict(list)
 
   def load_all_airlines(self):
-    aldb.cursor.execute('SELECT * FROM airlines')
+    aldb.cursor.execute('SELECT * FROM airlines WHERE name != ""')
     for row in aldb.cursor:
       if row['iata'] == "":
         row['iata'] = None
@@ -143,7 +144,7 @@ class AirlineDB(database_connector.DatabaseConnector):
       (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country']))
 
   def update_from_src(self, alid, fields):
-    field_string = ', '.join(map(lambda k: "%s='%s'" % (k, fields[k].replace("'", "''")), fields.keys()))
+    field_string = ', '.join(["%s='%s'" % (k, fields[k].replace("'", "''")) for k in list(fields.keys())])
     self.safe_execute('UPDATE airlines SET ' + field_string + ' WHERE alid=%s', (alid, ))
 
   def deduplicate(self, main_id, dupe_id):
@@ -158,10 +159,10 @@ class IATAAirlines(object):
   def load(self):
     self.airlines = []
     iata_url = 'https://www.iata.org/about/members/Pages/airline-list.aspx?All=true'
-    req = urllib2.Request(iata_url)
+    req = urllib.request.Request(iata_url)
     req.add_header('Referer', 'https://www.iata.org')
     req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36')
-    response = urllib2.urlopen(req).read()
+    response = urllib.request.urlopen(req).read()
     soup = BeautifulSoup(response, 'html.parser')
 
     # There are multiple tables, find the 'main' one
@@ -171,7 +172,7 @@ class IATAAirlines(object):
     for row in table.find_all('tr', recursive=False):
       cells = row.find_all('td')
       if len(cells) > 1:
-        name, iata, _, icao, country = [self.clean(c.get_text()) for c in cells[0:4]]
+        name, iata, _, icao, country = [self.clean(c.get_text()) for c in cells[0:5]]
         country = cc.convert(names=[country], to='name_short')
         self.airlines.append({'icao': icao, 'iata': iata, 'name': name, 'callsign': None, 'country': country, 'active': 'Y', 'source': 'IATA'})
 
@@ -188,7 +189,7 @@ class WikipediaArticle(object):
   def load(self, letter):
     self.airlines = []
     airline_url = 'https://en.wikipedia.org/w/api.php?action=query&titles=List_of_airline_codes_(%s)&prop=revisions&rvprop=content&format=php'
-    response = urllib2.urlopen(airline_url % letter).read()
+    response = urllib.request.urlopen(airline_url % letter).read()
     block = []
     header = 2
     for line in response.splitlines():
@@ -231,7 +232,8 @@ class WikipediaArticle(object):
     x = self.cleaner.get_data()
 
     # | ''[[Foo|Bar]]'' -> Bar
-    x = unicode(x.split('|')[-1].translate(None, "[|]*?").replace("''", ""), 'utf-8').split(',')[0].strip()
+    table = str.maketrans(dict.fromkeys("[|]*?"))
+    x = x.split('|')[-1].translate(table).replace("''", "").split(',')[0].strip()
     if x == '':
       return None
     return x
@@ -244,24 +246,24 @@ def process(airlines, ofa, aldb, stats):
   for airline in airlines:
     (of_airline, dupe) = ofa.match(airline)
     if of_airline:
-      print "> MATCH %s == %s" % (pp(airline), pp(of_airline))
+      print("> MATCH %s == %s" % (pp(airline), pp(of_airline)))
       stats['matched'] += 1
       if dupe:
-        print ">> DUPE %s -> %s" % (pp(dupe), pp(of_airline))
+        print(">> DUPE %s -> %s" % (pp(dupe), pp(of_airline)))
         stats['deduped'] += 1
       stats['updated'] += ofa.update_from_src(of_airline, airline, dupe)
     else:
       if airline['active'] == 'Y':
-        print "= NEW %s" % pp(airline)
+        print("= NEW %s" % pp(airline))
         aldb.add_new(airline)
         stats['added'] += 1
       else:
-        print ". DEFUNCT %s" % pp(airline)
+        print(". DEFUNCT %s" % pp(airline))
     stats['total'] += 1
 
 if __name__ == "__main__":
-  # Needed to allow piping UTF-8 (srsly Python wtf)
-  sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+#  # Needed to allow piping UTF-8 (srsly Python wtf)
+#  sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
   parser = argparse.ArgumentParser()
   parser.add_argument('--live_run', default=False, action='store_true')
@@ -272,20 +274,21 @@ if __name__ == "__main__":
   aldb = AirlineDB(args)
   ofa = OpenFlightsAirlines(aldb)
   ofa.load_all_airlines()
+  cc = coco.CountryConverter()
 
   stats = defaultdict(int)
-  print "Source %s" % args.source
+  print("Source %s" % args.source)
   if args.source == 'wiki':
     wpa = WikipediaArticle()
-    for c in xrange(ord('A'), ord('Z')+1):
+    for c in range(ord('A'), ord('Z')+1):
       wpa.load(chr(c))
-      print "### %s" % chr(c)
+      print("### %s" % chr(c))
       process(wpa.airlines, ofa, aldb, stats)
   else:
     iatadb = IATAAirlines()
     iatadb.load()
     process(iatadb.airlines, ofa, aldb, stats)
 
-  print "%s matched with %s updated and %s deduped, %s added, %s total" % (
-    stats['matched'], stats['updated'], stats['deduped'], stats['added'], stats['total'])
+  print("%s matched with %s updated and %s deduped, %s added, %s total" % (
+    stats['matched'], stats['updated'], stats['deduped'], stats['added'], stats['total']))
 
