@@ -5,10 +5,11 @@
 # virtualenv env
 # source env/bin/activate
 # curl https://bootstrap.pypa.io/get-pip.py | python
-# pip install mysql-connector unittest bs4
+# pip3 install mysql-connector unittest bs4 country_converter
 
 import argparse
 import codecs
+import country_converter as coco
 import difflib
 import mysql.connector
 import re
@@ -20,9 +21,6 @@ from HTMLParser import HTMLParser
 from pprint import pprint
 
 import database_connector
-
-# TODO:
-# Fix creation (countries...)
 
 class HTMLCleaner(HTMLParser):
   def __init__(self):
@@ -55,6 +53,7 @@ class OpenFlightsAirlines(object):
     for row in aldb.cursor:
       if row['iata'] == "":
         row['iata'] = None
+      row['source'] = 'Wikipedia'
       self.of_iata[row['iata']].append(row)
       self.of_icao[row['icao']].append(row)
 
@@ -115,7 +114,7 @@ class OpenFlightsAirlines(object):
 
   def diff(self, of, wp):
     fields = {}
-    for field in ['name', 'callsign', 'icao', 'iata']:
+    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country']:
       if wp[field] and wp[field] != of[field]:
         if not of[field] or wp[field].upper() != of[field].upper():
           if field != 'name' or len(wp[field]) > 3:
@@ -126,13 +125,13 @@ class OpenFlightsAirlines(object):
       fields['active'] = 'N'
     return fields
 
-  def update_from_wp(self, of, wp, dupe):
+  def update_from_src(self, of, wp, dupe):
     if dupe:
       self.aldb.deduplicate(of['alid'], dupe['alid'])
 
     fields = self.diff(of, wp)
     if fields:
-      self.aldb.update_from_wp(of['alid'], fields)
+      self.aldb.update_from_src(of['alid'], fields)
       return 1
     else:
       return 0
@@ -143,7 +142,7 @@ class AirlineDB(database_connector.DatabaseConnector):
       'INSERT INTO airlines(name,iata,icao,callsign,country) VALUES(%s,%s,%s,%s,%s)',
       (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country']))
 
-  def update_from_wp(self, alid, fields):
+  def update_from_src(self, alid, fields):
     field_string = ', '.join(map(lambda k: "%s='%s'" % (k, fields[k].replace("'", "''")), fields.keys()))
     self.safe_execute('UPDATE airlines SET ' + field_string + ' WHERE alid=%s', (alid, ))
 
@@ -172,9 +171,9 @@ class IATAAirlines(object):
     for row in table.find_all('tr', recursive=False):
       cells = row.find_all('td')
       if len(cells) > 1:
-        # Last field is country, but the contents are unusable (Independent State of Papua New Guinea etc)
-        name, iata, _, icao = [self.clean(c.get_text()) for c in cells[0:4]]
-        self.airlines.append({'icao': icao, 'iata': iata, 'name': name, 'callsign': None, 'country': None, 'active': 'Y', 'source': 'IATA'})
+        name, iata, _, icao, country = [self.clean(c.get_text()) for c in cells[0:4]]
+        country = cc.convert(names=[country], to='name_short')
+        self.airlines.append({'icao': icao, 'iata': iata, 'name': name, 'callsign': None, 'country': country, 'active': 'Y', 'source': 'IATA'})
 
   def clean(self, x):
     if x:
@@ -212,7 +211,7 @@ class WikipediaArticle(object):
   # ! Country
   # ! Comments
   def parse_airline(self, block):
-    if len(block) < 5:
+    if len(block) < 6:
       return None
 
     # Italicized name or 'defunct' in comments means airline is not active
@@ -250,7 +249,7 @@ def process(airlines, ofa, aldb, stats):
       if dupe:
         print ">> DUPE %s -> %s" % (pp(dupe), pp(of_airline))
         stats['deduped'] += 1
-      stats['updated'] += ofa.update_from_wp(of_airline, airline, dupe)
+      stats['updated'] += ofa.update_from_src(of_airline, airline, dupe)
     else:
       if airline['active'] == 'Y':
         print "= NEW %s" % pp(airline)
