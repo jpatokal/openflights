@@ -114,14 +114,24 @@ class OpenFlightsAirlines(object):
     return match, dupe
 
   def diff(self, of, wp):
+    # The order in which we trust sources (lower is better)
+    reliable = True
+    source_reliability = ['IATA', 'Wikipedia', 'User']
+    old_source_idx = source_reliability.index(of['source'])
+    new_source_idx = source_reliability.index(wp['source'])
+    if old_source_idx < new_source_idx:
+      reliable = False
+      print('! New source %s less reliable than %s, only adding missing values' % (wp['source'], of['source']))
+
     fields = {}
-    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country']:
-      if wp[field] and wp[field] != of[field]:
+    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code']:
+      if field in wp and wp[field] and wp[field] != of[field]:
         if not of[field] or wp[field].upper() != of[field].upper():
           if field != 'name' or len(wp[field]) > 3:
-            fields[field] = wp[field]
+            if reliable or not of[field]:
+              fields[field] = wp[field]
 
-    # Special case: Only override activeness if WP says airline is defunct
+    # Special case: Only override activeness if new source says airline is defunct
     if of['active'] == 'Y' and wp['active'] == 'N':
       fields['active'] = 'N'
     return fields
@@ -140,8 +150,8 @@ class OpenFlightsAirlines(object):
 class AirlineDB(database_connector.DatabaseConnector):
   def add_new(self, wp):
     self.safe_execute(
-      'INSERT INTO airlines(name,iata,icao,callsign,country) VALUES(%s,%s,%s,%s,%s)',
-      (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country']))
+      'INSERT INTO airlines(name,iata,icao,callsign,country,country_code,active,source) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)',
+      (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country'], wp['country_code'], wp['active'], wp['source']))
 
   def update_from_src(self, alid, fields):
     field_string = ', '.join(["%s='%s'" % (k, fields[k].replace("'", "''")) for k in list(fields.keys())])
@@ -173,8 +183,16 @@ class IATAAirlines(object):
       cells = row.find_all('td')
       if len(cells) > 1:
         name, iata, _, icao, country = [self.clean(c.get_text()) for c in cells[0:5]]
-        country = cc.convert(names=[country], to='name_short')
-        self.airlines.append({'icao': icao, 'iata': iata, 'name': name, 'callsign': None, 'country': country, 'active': 'Y', 'source': 'IATA'})
+        country, country_code = cc_clean(country)
+        self.airlines.append({
+          'icao': icao,
+          'iata': iata,
+          'name': name,
+          'callsign': None,
+          'country': country,
+          'country_code': country_code,
+          'active': 'Y',
+          'source': 'IATA'})
 
   def clean(self, x):
     if x:
@@ -189,7 +207,7 @@ class WikipediaArticle(object):
   def load(self, letter):
     self.airlines = []
     airline_url = 'https://en.wikipedia.org/w/api.php?action=query&titles=List_of_airline_codes_(%s)&prop=revisions&rvprop=content&format=php'
-    response = urllib.request.urlopen(airline_url % letter).read()
+    response = urllib.request.urlopen(airline_url % letter).read().decode('utf-8')
     block = []
     header = 2
     for line in response.splitlines():
@@ -222,8 +240,17 @@ class WikipediaArticle(object):
       active = 'Y'
 
     iata, icao, name, callsign, country, comments = [self.clean(x) for x in block[0:6]]
-
-    return {'icao': icao, 'iata': iata, 'name': name, 'callsign': callsign, 'country': country, 'active': active}
+    country, country_code = cc_clean(country)
+    return {
+      'iata': iata,
+      'icao': icao,
+      'name': name,
+      'callsign': callsign,
+      'country': country,
+      'country_code': country_code,
+      'active': active,
+      'source': 'Wikipedia'
+    }
 
   def clean(self, x):
     # Remove HTML tags and entities
@@ -262,9 +289,6 @@ def process(airlines, ofa, aldb, stats):
     stats['total'] += 1
 
 if __name__ == "__main__":
-#  # Needed to allow piping UTF-8 (srsly Python wtf)
-#  sys.stdout = codecs.getwriter('utf8')(sys.stdout)
-
   parser = argparse.ArgumentParser()
   parser.add_argument('--live_run', default=False, action='store_true')
   parser.add_argument('--local', default=False, action='store_true')
@@ -275,6 +299,13 @@ if __name__ == "__main__":
   ofa = OpenFlightsAirlines(aldb)
   ofa.load_all_airlines()
   cc = coco.CountryConverter()
+
+  def cc_clean(raw_name):
+    name = cc.convert(names=[raw_name], to='name_short')
+    if name == 'not found':
+      return (raw_name, None)
+    code = cc.convert(names=[raw_name], to='ISO2')
+    return (name, code)
 
   stats = defaultdict(int)
   print("Source %s" % args.source)
