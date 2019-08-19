@@ -54,7 +54,6 @@ class OpenFlightsAirlines(object):
     for row in aldb.cursor:
       if row['iata'] == "":
         row['iata'] = None
-      row['source'] = 'Wikipedia'
       self.of_iata[row['iata']].append(row)
       self.of_icao[row['icao']].append(row)
 
@@ -116,7 +115,7 @@ class OpenFlightsAirlines(object):
   def diff(self, of, wp):
     # The order in which we trust sources (lower is better)
     reliable = True
-    source_reliability = ['IATA', 'Wikipedia', 'User']
+    source_reliability = ['IATA', 'Wikipedia', 'Legacy', 'User']
     old_source_idx = source_reliability.index(of['source'])
     new_source_idx = source_reliability.index(wp['source'])
     if old_source_idx < new_source_idx:
