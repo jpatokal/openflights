@@ -26,7 +26,8 @@ class DatabaseConnector(object):
   def safe_execute(self, sql, params):
     if self.args.live_run:
       self.write_cursor.execute(sql, params, )
-      print ".. %s : %d rows updated" % (sql % params, self.write_cursor.rowcount)
+      print(".. %s : %d rows updated" % (sql % params, self.write_cursor.rowcount))
       self.write_cnx.commit()
     else:
-      print sql % params
+      print(sql % params)
+
