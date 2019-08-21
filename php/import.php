@@ -160,9 +160,9 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
     } else {
       $airlinepart = explode(' ', $airline);
       if($airlinepart[0] == 'Air') {
-	      $part = 'Air ' . $airlinepart[1];
+        $part = 'Air ' . $airlinepart[1];
       } else {
-	      $part = $airlinepart[0];
+        $part = $airlinepart[0];
       }
       $params = ['part' => $part . '%', 'uid' => $uid];
       $sql = "select name,alias,alid from airlines where (name like ? or alias like ?) and (iata != '' or uid = ?) order by name";
@@ -174,57 +174,57 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
     switch($sth->rowCount()) {
       
       // No match, add as new if we have a name for it, else return error
-    case "0":
+      case "0":
       if($airline != "") {
-	$color = "#fdd";
-	$alid = -2;
+        $color = "#fdd";
+        $alid = -2;
       } else {
-	$color = "#faa";
-	$alid = null;
+        $color = "#faa";
+        $alid = null;
       }
       break;
       
       // Solitary match
-    case "1":
+      case "1":
       $dbrow = $sth->fetch();
       if($airline != "" && (strcasecmp($dbrow['name'], $airline) == 0 || strcasecmp($dbrow['alias'], $airline) == 0)) {
-	// Exact match
-	$color = "#fff";
-	$airline = $dbrow['name'];
-	$alid = $dbrow['alid'];
+  // Exact match
+        $color = "#fff";
+        $airline = $dbrow['name'];
+        $alid = $dbrow['alid'];
       } else {
-	// Not an exact match
-	if($history == "yes") {
-	  $color = "#fdd";
-	  $alid = -2;
-	} else {
-	  $color = "#ddf";
-	  $airline = $dbrow['name'] . "<br><small>(" . _("was:") . " " . $airline . ")</small>";
-	  $alid = $dbrow['alid'];
-	}
+  // Not an exact match
+        if($history == "yes") {
+          $color = "#fdd";
+          $alid = -2;
+        } else {
+          $color = "#ddf";
+          $airline = $dbrow['name'] . "<br><small>(" . _("was:") . " " . $airline . ")</small>";
+          $alid = $dbrow['alid'];
+        }
       }
       break;
       
       // Many matches, default to first with a warning if we can't find an exact match
-    default:
+      default:
       $color = "#ddf";
       $first = true;
       while($dbrow = $sth->fetch()) {
-	$isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
-				      (strcasecmp($dbrow['alias'], $airline) == 0));
-	if($first || $isMatch) {
-	  if($isMatch) $color = "#fff";
-	  if($first) $first = false;
-	  $new_airline = $dbrow['name'];
-	  $alid = $dbrow['alid'];
-	}
+        $isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
+          (strcasecmp($dbrow['alias'], $airline) == 0));
+        if($first || $isMatch) {
+          if($isMatch) $color = "#fff";
+          if($first) $first = false;
+          $new_airline = $dbrow['name'];
+          $alid = $dbrow['alid'];
+        }
       }
       // No match and in historical mode? Add it as new
       if($history == "yes" && $color == "#ddf") {
-	$color = "#fdd";
-	$alid = -2;
+        $color = "#fdd";
+        $alid = -2;
       } else {
-	$airline = $new_airline;
+        $airline = $new_airline;
       }
     }
   }
@@ -380,7 +380,7 @@ foreach($rows as $row) {
     $id = pq($cols[0])->text();
 
     // Read and validate date field
-    // 	<td class="liste_rot"><nobr>10-05-2009</nobr><br>06:10<br>17:35 -1</td>
+    //  <td class="liste_rot"><nobr>10-05-2009</nobr><br>06:10<br>17:35 -1</td>
     $src_date = nth_text($cols[1], 0);
     $src_time = nth_text($cols[1], 1);
     if(strlen($src_time) < 4) $src_time = NULL; # a stray -1 or +1 is not a time
@@ -399,8 +399,8 @@ foreach($rows as $row) {
     
     // <th class="liste_gross" align="right">
     //   <table border="0" cellspacing="0" cellpadding="0">
-    //	   <tr><td align="right">429&nbsp;</td><td>mi</td></tr>
-    //	   <tr><td align="right">1:27&nbsp;</td><td>h</td></tr></table></th>
+    //     <tr><td align="right">429&nbsp;</td><td>mi</td></tr>
+    //     <tr><td align="right">1:27&nbsp;</td><td>h</td></tr></table></th>
     $cells = $row['table td']->elements;
     $distance = $cells[0]->textContent;
     $distance = str_replace(',', '', nbsp_trim($distance));
@@ -548,8 +548,8 @@ foreach($rows as $row) {
   case _("Upload"):
 #    break;
     printf ("<tr><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td></tr>\n", $id, $date_bgcolor, $src_date, $src_time, $airline_bgcolor, $airline, $number,
-	    $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $dist_bgcolor, $distance, $dist_bgcolor, $duration, $plane_bgcolor, $plane, $reg,
-	    $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $trip_bgcolor, $trid, $comment);
+      $src_bgcolor, $src_iata, $dst_bgcolor, $dst_iata, $dist_bgcolor, $distance, $dist_bgcolor, $duration, $plane_bgcolor, $plane, $reg,
+      $seatnumber, $seatpos, $seatclass, $seattype, $seatreason, $trip_bgcolor, $trid, $comment);
     break;
 
   case _("Import"):
@@ -569,14 +569,14 @@ foreach($rows as $row) {
       $sth = $dbh->prepare($sql);
       $sth->execute([$airline, $airline]);
       if($dbrow = $sth->fetch()) {
-	// Found it
-	$alid = $dbrow["alid"];
+  // Found it
+  $alid = $dbrow["alid"];
       } else {
-	$sql = "INSERT INTO airlines(name, uid) VALUES(?, ?)";
-	$sth = $dbh->prepare($sql);
-	$sth->execute([$airline, $uid]) or die ('0;Adding new airline failed.');
-	$alid = $dbh->lastInsertId();
-	print "Airline:" . $airline . " ";
+  $sql = "INSERT INTO airlines(name, uid) VALUES(?, ?)";
+  $sth = $dbh->prepare($sql);
+  $sth->execute([$airline, $uid]) or die ('0;Adding new airline failed.');
+  $alid = $dbh->lastInsertId();
+  print "Airline:" . $airline . " ";
       }
     }
 
