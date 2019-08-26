@@ -16,7 +16,7 @@ class ImportUnknownFiletypeTest extends WebTestCase {
   }
 }
 
-class ImportCSVStandardTest extends WebTestCase {
+class ImportCSVRoundtripTest extends WebTestCase {
   function test() {
     global $settings;
     cleanup();
@@ -28,6 +28,21 @@ class ImportCSVStandardTest extends WebTestCase {
     $this->assertText("Flights successfully imported");
 
     export_to_csv_and_validate($this, "fm-standard.csv");
+  }
+}
+
+class ImportCSVWithVariantsTest extends WebTestCase {
+  function test() {
+    global $settings;
+    cleanup();
+
+    $result = login($this);
+    $this->assertEqual($result->status, "1");
+
+    upload_fixture($this, "of-variants.csv", "CSV");
+    $this->assertText("Flights successfully imported");
+
+    export_to_csv_and_validate($this, "of-variants-parsed.csv");
   }
 }
 

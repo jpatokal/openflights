@@ -1,0 +1,5 @@
+2001-01-01,OSL,SVG,DY001,Norwegian Air Shuttle,208,00:54,,,,,,,,"",644,666,3737
+2001-01-02,OSL,SVG,,Norwegian Air Shuttle,208,00:54,,,,,,,,"",644,666,3737
+2001-01-03,OSL,SVG,,Norwegian,208,00:54,,,,,,,,"",644,666,9008
+2001-01-04,OSL,SVG,DY001,Norwegian Air Shuttle,208,00:54,,,,,,,,"",644,666,3737
+﻿Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
