@@ -23,6 +23,7 @@ require_once("./php/helper.php");
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js") ?>"></script>
+    <?php include("./html/analytics.html") ?>
   </head>
 
   <body>
