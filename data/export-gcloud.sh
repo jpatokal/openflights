@@ -15,7 +15,7 @@ gcloud sql export csv openflights-db gs://openflights-backup/planes.dat --databa
   --query="SELECT name,iata,icao FROM planes WHERE iata IS NOT NULL OR icao IS NOT NULL ORDER BY name"
 
 gcloud sql export csv openflights-db gs://openflights-backup/countries.dat --database=flightdb2 \
-  --query="SELECT name,code,oa_code,dst FROM countries"
+  --query="SELECT name,iso_code,dafif_code FROM countries"
 
 gcloud sql export csv openflights-db gs://openflights-backup/locales.dat --database=flightdb2 \
   --query="SELECT * FROM locales"

@@ -50,6 +50,7 @@ if __name__ == "__main__":
     for row in fdb.cursor:
       country, code = clean(row['name'])
       if not country:
+        print('WARNING: No match for country', row['name'])
         continue
       fdb.safe_execute('UPDATE countries SET name=%s, iso_code=%s WHERE name=%s', (country, code, row['name'], ))
 
