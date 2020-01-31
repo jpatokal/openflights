@@ -20,7 +20,7 @@
 
 	    <h1>Airport, airline and route data</h1>
 
-	    Navigation: <a href="#airport">Airport</a> | <a href="#airline">Airline</a> | <a href="#route">Route</a> | <a href="#plane">Plane</a> | <a href="#schedule">Schedule</a> | <a href="#other">Other</a> | <a href="#license">License</a> 
+	    Navigation: <a href="#airport">Airport</a> | <a href="#airline">Airline</a> | <a href="#route">Route</a> | <a href="#plane">Plane</a> | <a href="#country">Country</a> | <a href="#schedule">Schedule</a> | <a href="#other">Other</a> | <a href="#license">License</a> 
 
 	    <a name="airport"></a>
 	    <h2>Airport database</h2>
@@ -44,7 +44,7 @@
 		</tr>
 		<tr>
 		  <td class="head">Country</td>
-		  <td class="data">Country or territory where airport is located.  See <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/countries.dat">countries.dat</a> to cross-reference to ISO 3166-1 codes.
+		  <td class="data">Country or territory where airport is located.  See <a href="#country">Countries</a> to cross-reference to ISO 3166-1 codes.
 		  </td>
 		</tr>
 		<tr>
@@ -173,7 +173,7 @@
 		</tr>
 		<tr>
 		  <td class="head">Country</td>
-		  <td class="data">Country or territory where airline is incorporated.</td>
+		  <td class="data">Country or territory where airport is located.  See <a href="#country">Countries</a> to cross-reference to ISO 3166-1 codes.
 		</tr>
 		<tr>
 		  <td class="head">Active</td>
@@ -360,6 +360,47 @@ TOM,5013,ACE,1055,BFS,465,,0,320
 	    <p>To download the current data dump from <a href="https://github.com/jpatokal/openflights">GitHub</a> as a comma-delimited file, suitable for use in spreadsheets etc, simply click below:</p>
 
 	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/planes.dat">planes.dat</a> (~5 KB)</p>
+
+	    <a name="country"></a>
+	    <h2>Country database</h2>
+
+	    <p>The OpenFlights country database contains a list of <a href="https://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1 country codes</a>,
+	    	which can be used to look up the human-readable country names for the codes used in the Airline and Airport tables.  Each entry contains the following information:</p>
+
+	    <table>
+		<tr>
+		  <td class="head">name</td>
+		  <td class="data">Full name of the country or territory.
+		</tr>
+		<tr>
+		  <td class="head">iso_code</td>
+		  <td class="data">Unique two-letter ISO 3166-1 code for the country or territory.
+		</tr>
+		<tr>
+		  <td class="head">dafif_code</td>
+		  <td class="data">FIPS country codes as used in DAFIF.  Obsolete and primarily of historical interested.</td>
+		</tr>
+	    </table>
+
+	    <p>The data is UTF-8 encoded.  The special value <b>\N</b> is used for "NULL" to indicate that no value is available, and is understood automatically by MySQL if imported.</p>
+
+	    <i>Notes</i>:
+	    <ul>
+	      <li>Some entries have DAFIF codes, but not ISO codes.  These are primarily uninhabited islands without airports, and can be ignored for
+	      	most purposes.
+	    </ul>
+
+	    <h4>Sample entries</h4>
+	    <pre>"Australia","AU","AS"
+"Ashmore and Cartier Islands",\N,"AT"
+</pre>
+
+	    <h4>Download</h4>
+
+	    <p>To download the current data dump from <a href="https://github.com/jpatokal/openflights">GitHub</a> as a comma-delimited file, suitable for use in spreadsheets etc, simply click below:</p>
+
+	    <p style="font-size: 1.5em; padding: 10px; background-color: #ccffcc;">Download: <a href="https://raw.githubusercontent.com/jpatokal/openflights/master/data/countries.dat">countries.dat</a> (~5 KB)</p>
+
 
         <a name="schedule"></a>
 	    <h2>Schedules (Timetables)</h2>
