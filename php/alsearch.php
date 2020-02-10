@@ -108,7 +108,8 @@ if($action == "RECORD") {
     // Adding new airline
     $sql = "INSERT INTO airlines(name,alias,country,iata,icao,callsign,mode,active,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $params = [
-      $name, $alias, $country, $iata,
+      $name, $alias, $country,
+      $iata == "" ? null : $iata,
       $icao == "" ? null : $icao,
       $callsign, $mode, $active, $uid
     ];
@@ -116,7 +117,8 @@ if($action == "RECORD") {
     // Editing an existing airline
     $sql = "UPDATE airlines SET name=?, alias=?, country=?, iata=?, icao=?, callsign=?, mode=?, active=? WHERE alid=? AND (uid=? OR ?=?)";
     $params = [
-      $name, $alias, $country, $iata,
+      $name, $alias, $country,
+      $iata == "" ? null : $iata,
       $icao == "" ? null : $icao,
       $callsign, $mode, $active, $alid,
       $uid, $uid, $OF_ADMIN_UID
