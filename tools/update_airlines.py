@@ -1,11 +1,14 @@
 #!/usr/bin/python
-# Update IATA & ICAO code for planes from Wikipedia
+# Update IATA & ICAO code for planes
 #
 # Prereqs:
 # virtualenv env
 # source env/bin/activate
 # curl https://bootstrap.pypa.io/get-pip.py | python
-# pip3 install mysql-connector unittest bs4 country_converter
+# pip3 install mysql-connector unittest bs4 country_converter unicodecsv
+#
+# Example:
+# python3 tools/update_airlines.py --source acuk --file data/avcodes.csv --local
 
 import argparse
 import codecs
@@ -15,6 +18,7 @@ import mysql.connector
 import re
 import sys
 import urllib.request, urllib.error, urllib.parse
+import unicodecsv
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from html.parser import HTMLParser
@@ -115,7 +119,7 @@ class OpenFlightsAirlines(object):
   def diff(self, of, wp):
     # The order in which we trust sources (lower is better)
     reliable = True
-    source_reliability = ['IATA', 'Wikipedia', 'Legacy', 'User']
+    source_reliability = ['IATA', 'ACUK', 'Wikipedia', 'Legacy', 'User']
     old_source_idx = source_reliability.index(of['source'])
     new_source_idx = source_reliability.index(wp['source'])
     if old_source_idx < new_source_idx:
@@ -198,6 +202,35 @@ class IATAAirlines(object):
       return x.translate(self.translate_table).strip()
     else:
       return None
+
+class AirlineCodesUK(object):
+  def load(self, filename):
+    self.airlines = []
+    with open(filename, 'rb') as csvfile:
+      reader = unicodecsv.DictReader(csvfile, encoding='latin1')
+      # IATA_Code,ICAO_Code,Known_as,Airline_Name,Country,Callsign,Remarks,Start_YR,End_YR,Status
+      for airline in reader:
+        if not airline['Country']:
+          continue
+        country, country_code = cc_clean(airline['Country'])
+        if airline['IATA_Code'].endswith('*'):
+          duplicate = 'Y'
+          iata = airline['IATA_Code'][0:2]
+        else:
+          duplicate = 'N'
+          iata = airline['IATA_Code']
+        self.airlines.append({
+          'icao': airline['ICAO_Code'],
+          'iata': iata,
+          'name': airline['Known_as'], # common name
+          'alias': airline['Airline_Name'], # formal name
+          'callsign': airline['Callsign'],
+          'country': country,
+          'country_code': country_code,
+          'active': 'Y',
+          'start_year': airline['Start_YR'],
+          'duplicate': duplicate,
+          'source': 'ACUK'})
 
 class WikipediaArticle(object):
   def __init__(self):
@@ -292,6 +325,7 @@ if __name__ == "__main__":
   parser.add_argument('--live_run', default=False, action='store_true')
   parser.add_argument('--local', default=False, action='store_true')
   parser.add_argument('--source', default='wiki')
+  parser.add_argument('--file', default=None)
   args = parser.parse_args()
 
   aldb = AirlineDB(args)
@@ -314,6 +348,12 @@ if __name__ == "__main__":
       wpa.load(chr(c))
       print("### %s" % chr(c))
       process(wpa.airlines, ofa, aldb, stats)
+  elif args.source == 'acuk':
+    if not args.file:
+      exit("--file mandatory if source is acuk")
+    acuk = AirlineCodesUK()
+    acuk.load(args.file)
+    process(acuk.airlines, ofa, aldb, stats)
   else:
     iatadb = IATAAirlines()
     iatadb.load()
