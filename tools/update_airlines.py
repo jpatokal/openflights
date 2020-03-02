@@ -127,7 +127,7 @@ class OpenFlightsAirlines(object):
       print('! New source %s less reliable than %s, only adding missing values' % (wp['source'], of['source']))
 
     fields = {}
-    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code']:
+    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code', 'start_year', 'end_year', 'duplicate']:
       if field in wp and wp[field] and wp[field] != of[field]:
         if not of[field] or wp[field].upper() != of[field].upper():
           if field != 'name' or len(wp[field]) > 3:
@@ -207,8 +207,8 @@ class AirlineCodesUK(object):
   def load(self, filename):
     self.airlines = []
     with open(filename, 'rb') as csvfile:
-      reader = unicodecsv.DictReader(csvfile, encoding='latin1')
-      # IATA_Code,ICAO_Code,Known_as,Airline_Name,Country,Callsign,Remarks,Start_YR,End_YR,Status
+      reader = unicodecsv.DictReader(csvfile, delimiter=';', encoding='latin1')
+      # IATA_Code;ICAO_Code;Known_as;Airline_Name;Country;Callsign;Remarks;StartDate;Start_YR;EndDate;End_YR;IATASeqNo;ICAOSeqNo;Status
       for airline in reader:
         if not airline['Country']:
           continue
@@ -219,6 +219,13 @@ class AirlineCodesUK(object):
         else:
           duplicate = 'N'
           iata = airline['IATA_Code']
+        start_year, end_year, active = None, None, airline['Status']
+        if airline['Start_YR']:
+          # Sometimes the year actually contains a MM/DD/YYYY date
+          start_year = int(airline['Start_YR'].split('/')[-1])
+        if airline['End_YR']:
+          end_year = int(airline['End_YR'].split('/')[-1])
+          active = 'N'
         self.airlines.append({
           'icao': airline['ICAO_Code'],
           'iata': iata,
@@ -227,8 +234,9 @@ class AirlineCodesUK(object):
           'callsign': airline['Callsign'],
           'country': country,
           'country_code': country_code,
-          'active': 'Y',
+          'active': active,
           'start_year': airline['Start_YR'],
+          'end_year': airline['End_YR'],
           'duplicate': duplicate,
           'source': 'ACUK'})
 
