@@ -57,10 +57,30 @@ class OpenFlightsAirlines(object):
     # Match preferably against active ('Y') and frequency (more flights good)
     aldb.cursor.execute('SELECT * FROM airlines WHERE name != "" ORDER BY active DESC, frequency DESC')
     for row in aldb.cursor:
-      if row['iata'] == "":
-        row['iata'] = None
-      self.of_iata[row['iata']].append(row)
-      self.of_icao[row['icao']].append(row)
+      self.add_airline(row)
+
+  def add_airline(self, row):
+    if row['iata'] == "":
+      row['iata'] = None
+    self.of_iata[row['iata']].append(row)
+    self.of_icao[row['icao']].append(row)
+
+  def upsert_airline(self, alid):
+    aldb.write_cursor.execute('SELECT * FROM airlines WHERE alid = %s', [alid])
+    row = aldb.write_cursor.fetchall()[0]
+    if row['iata'] == "":
+      row['iata'] = None
+    found = False
+    for idx, val in enumerate(self.of_iata[row['iata']]):
+      if val['alid'] == alid:
+        self.of_iata[row['iata']][idx] = row
+        found = True
+    for idx, val in enumerate(self.of_icao[row['icao']]):
+      if val['alid'] == alid:
+        self.of_icao[row['icao']][idx] = row
+        found = True
+    if not found:
+      self.add_airline(row)
 
   def match(self, wp):
     icao, iata, callsign, country = wp['icao'], wp['iata'], wp['callsign'], wp['country']
@@ -140,6 +160,10 @@ class OpenFlightsAirlines(object):
       fields['active'] = 'N'
     return fields
 
+  def add_new(self, wp):
+    alid = AirlineDB.add_new(self.aldb, wp)
+    self.upsert_airline(alid)
+
   def update_from_src(self, of, wp, dupe):
     if dupe:
       self.aldb.deduplicate(of['alid'], dupe['alid'])
@@ -147,13 +171,14 @@ class OpenFlightsAirlines(object):
     fields = self.diff(of, wp)
     if fields:
       self.aldb.update_from_src(of['alid'], fields)
+      self.upsert_airline(of['alid'])
       return 1
     else:
       return 0
 
 class AirlineDB(database_connector.DatabaseConnector):
   def add_new(self, wp):
-    self.safe_execute(
+    return self.safe_execute(
       'INSERT INTO airlines(name,iata,icao,callsign,country,country_code,active,source) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)',
       (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country'], wp['country_code'], wp['active'], wp['source']))
 
@@ -321,12 +346,12 @@ def process(airlines, ofa, aldb, stats):
         stats['deduped'] += 1
       stats['updated'] += ofa.update_from_src(of_airline, airline, dupe)
     else:
-      if airline['active'] == 'Y':
+      if airline['iata'] or airline['icao']:
         print("= NEW %s" % pp(airline))
-        aldb.add_new(airline)
+        ofa.add_new(airline)
         stats['added'] += 1
       else:
-        print(". DEFUNCT %s" % pp(airline))
+        print(". IGNORE %s" % pp(airline))
     stats['total'] += 1
 
 if __name__ == "__main__":
