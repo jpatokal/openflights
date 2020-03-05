@@ -54,7 +54,8 @@ class OpenFlightsAirlines(object):
     self.of_icao = defaultdict(list)
 
   def load_all_airlines(self):
-    aldb.cursor.execute('SELECT * FROM airlines WHERE name != ""')
+    # Match preferably against active ('Y') and frequency (more flights good)
+    aldb.cursor.execute('SELECT * FROM airlines WHERE name != "" ORDER BY active DESC, frequency DESC')
     for row in aldb.cursor:
       if row['iata'] == "":
         row['iata'] = None
@@ -84,35 +85,35 @@ class OpenFlightsAirlines(object):
           break
 
     # Round 2: Find potential duplicates
-    if match and 'iata' in match and match['iata']:
-      for airline in self.of_iata[match['iata']]:
-        if airline == match:
-          continue
-        # Different countries?  Not dupes.
-        if airline['country'] != match['country']:
-          continue
-        # If non-null ICAO codes same, guaranteed dupe; if different, not dupe
-        if airline['icao'] and match['icao']:
-          if airline['icao'] == match['icao']:
-            dupe = airline
-          else:
-            continue
-
-        # If non-null callsigns same, guaranteed dupe; if different, not dupe
-        if airline['callsign'] and match['callsign']:
-          if airline['callsign'].upper() == match['callsign'].upper():
-            dupe = airline
-          else:
-            continue
-
-        # Are names very similar?
-        if difflib.SequenceMatcher(None, airline['name'], match['name']).ratio() > 0.8:
-          dupe = airline
+    #if match and 'iata' in match and match['iata']:
+    #  for airline in self.of_iata[match['iata']]:
+    #    if airline == match:
+    #      continue
+    #    # Different countries?  Not dupes.
+    #    if airline['country'] != match['country']:
+    #      continue
+    #    # If non-null ICAO codes same, guaranteed dupe; if different, not dupe
+    #    if airline['icao'] and match['icao']:
+    #      if airline['icao'] == match['icao']:
+    #        dupe = airline
+    #      else:
+    #        continue
+    #
+    #    # If non-null callsigns same, guaranteed dupe; if different, not dupe
+    #    if airline['callsign'] and match['callsign']:
+    #      if airline['callsign'].upper() == match['callsign'].upper():
+    #        dupe = airline
+    #      else:
+    #        continue
+    #
+    #    # Are names very similar?
+    #    if difflib.SequenceMatcher(None, airline['name'], match['name']).ratio() > 0.8:
+    #      dupe = airline
 
     # If dupe is active and match is not, flip order!
-    if dupe and 'active' in dupe and dupe['active'] == 'Y' and 'active' in match and match['active'] == 'N':
-      dupe = match
-      match = airline
+    #if dupe and 'active' in dupe and dupe['active'] == 'Y' and 'active' in match and match['active'] == 'N':
+    #  dupe = match
+    #  match = airline
 
     return match, dupe
 
@@ -129,7 +130,7 @@ class OpenFlightsAirlines(object):
     fields = {}
     for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code', 'start_year', 'end_year', 'duplicate']:
       if field in wp and wp[field] and wp[field] != of[field]:
-        if not of[field] or wp[field].upper() != of[field].upper():
+        if not of[field] or str(wp[field]).upper() != str(of[field]).upper():
           if field != 'name' or len(wp[field]) > 3:
             if reliable or not of[field]:
               fields[field] = wp[field]

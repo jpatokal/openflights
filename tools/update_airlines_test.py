@@ -18,6 +18,8 @@ class UpdateAirlinesTest(unittest.TestCase):
       'country': 'Åland',
       'country_code': 'AX',
       'active': 'N',
+      'start_year': 1969,
+      'end_year': 1999,
       'source': 'Wikipedia'
     }
     self.indexAirline(self.of)
@@ -46,7 +48,7 @@ class UpdateAirlinesTest(unittest.TestCase):
 
   # ICAO and callsign or country matches
   def testExactMatch(self):
-    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikipedia'}
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikipedia', 'start_year': 1969}
     self.assertEqual(self.ofa.match(wp), (self.of, None))
     self.assertEqual(self.ofa.diff(self.of, wp), {})
 
@@ -80,6 +82,17 @@ class UpdateAirlinesTest(unittest.TestCase):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'country_code': 'FI', 'source': 'Wikipedia'}
     self.assertEqual(self.ofa.match(wp), (self.of, None))
     self.assertEqual(self.ofa.diff(self.of, wp), {'country_code': 'FI'})
+
+  def testActiveToInactiveChange(self):
+    self.of['active'] = 'Y'
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Ahvenanmaa Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikipedia', 'active': 'N', 'end_year': 2019}
+    self.assertEqual(self.ofa.match(wp), (self.of, None))
+    self.assertEqual(self.ofa.diff(self.of, wp), {'name': 'Ahvenanmaa Airlines', 'active': 'N', 'end_year': 2019})
+
+  def testIgnoreInactiveToActiveChange(self):
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Ahvenanmaa Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikipedia', 'active': 'N', 'end_year': 2019}
+    self.assertEqual(self.ofa.match(wp), (self.of, None))
+    self.assertEqual(self.ofa.diff(self.of, wp), {'name': 'Ahvenanmaa Airlines', 'end_year': 2019})
 
   def testIgnoreCaseChange(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland AIRLINES', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikipedia'}
