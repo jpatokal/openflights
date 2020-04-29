@@ -1,0 +1,13 @@
+From: OpenFlights Support <info@openflights.org>
+Subject: Your OpenFlights elite status has expired
+To: %EMAIL%
+
+Your OpenFlights elite status has expired.  If you would like to continue
+supporting the site, please consider renewing your status by making a donation:
+
+https://openflights.org/donate
+
+Thank you for using OpenFlights!
+
+Cheers,
+The OpenFlights.org Team
