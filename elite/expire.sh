@@ -1,12 +1,14 @@
 #!/bin/bash
 curl https://cronitor.link/WTBCby/run -m 10
+date
+set -x
+set -e
 
 # Set directory and set up MySQL (must be in $PATH)
 cd "$(dirname "${BASH_SOURCE[0]}")"
 HOST=104.197.15.255
 PW=`cat ../sql/db.pw`
 MYSQL="mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2"
-echo MYSQL $MYSQL
 
 EXPIRED=$(echo "select email from users where validity is not null and validity < NOW() and elite != 'X' and elite != '' and email != '' order by validity desc;" | $MYSQL)
 for EMAIL in $EXPIRED; do
