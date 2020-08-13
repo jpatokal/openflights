@@ -154,6 +154,10 @@ OpenLayers.Util.onImageLoadErrorColor = <span class="literal">"transparent"</spa
     restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), <span class="comment">// not sure what this does</span>
     maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
     maxZoomLevel: 8,
+	attribution: {
+		title: "&copy; OpenStreetMap contributors",
+		href: "https://www.openstreetmap.org/"
+	},
     controls: [
 	       new OpenLayers.Control.PanZoom(),
 	       new OpenLayers.Control.Navigation({<span class="literal">'title'</span>: gt.gettext(<span class="literal">"Toggle pan and region select mode"</span>)}),
