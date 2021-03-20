@@ -106,6 +106,10 @@ function init(){
 
   map = new OpenLayers.Map('map', {
     center: new OpenLayers.LonLat(0, 1682837.6144925),
+	attribution: {
+		title: "&copy; OpenStreetMap contributors",
+		href: "https://www.openstreetmap.org/"
+	},
     controls: [
       new OpenLayers.Control.PanZoom(),
       new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),

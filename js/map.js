@@ -40,6 +40,10 @@ function OpenFlightsMap(map, layers) {
     restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
     maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
     maxZoomLevel: 8,
+	attribution: {
+		title: "&copy; OpenStreetMap contributors",
+		href: "https://www.openstreetmap.org/"
+	},
     controls: [
 	       new OpenLayers.Control.PanZoom(),
 	       new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
