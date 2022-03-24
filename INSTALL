@@ -47,8 +47,11 @@ $tripit_app_secret = "[YOUR-APP-SECRET]"
 >>>
 
 # Tell Apache where to find OpenFlights
-sudo cp apache2/openflights.conf /etc/apache2/sites-available/
+sudo cp apache2/openflights-local.conf /etc/apache2/sites-available/
+sudo cp apache2/openflights-le-ssl.conf /etc/apache2/sites-available/
 cd /etc/apache2/sites-enabled
-sudo ln -s ../sites-available/openflights.conf openflights.conf
+# Enable local testing
+sudo ln -s ../sites-available/openflights-local.conf openflights-local.conf
+# Enable Let's Encrypt SSL
+sudo ln -s ../sites-available/openflights-le-ssl.conf openflights-le-ssl.conf
 sudo service apache2 restart
-
