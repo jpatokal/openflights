@@ -4,11 +4,11 @@ session_start();
 include 'config.php';
 
 if($OF_USE_LOCALES) {
-  if (isSet($_GET["lang"])) {
+  if (isset($_GET["lang"])) {
     $locale = $_GET["lang"];
     $_SESSION["locale"] = $locale;
   } else {
-    $locale = $_SESSION["locale"];
+    $locale = isset($_SESSION["locale"])? $_SESSION["locale"] : false;
     if(!$locale or empty($locale)) {
       $locale = "en_US";
     }
