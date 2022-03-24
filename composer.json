@@ -1,5 +1,15 @@
 {
     "require": {
+        "ext-ctype",
+        "ext-curl",
+        "ext-dom",
+        "ext-gd",
+        "ext-gettext",
+        "ext-libxml",
+        "ext-json",
+        "ext-mbstring",
+        "ext-pdo",
+        "ext-simplexml",
         "knplabs/github-api": "^1.4",
         "simpletest/simpletest": "^1.1"
     }
