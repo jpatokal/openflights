@@ -16,13 +16,13 @@ sudo a2enmod rewrite
 # Checkout a copy of OpenFlights into /var/www
 cd /var/www
 sudo git clone https://github.com/jpatokal/openflights.git
+cd openflights
 
 # Set up Composer and install packages
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 sudo php /usr/local/bin/composer install
 
 # Generates locales for language support
-cd openflights
 find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
 
 # Enable uploads and badge caching
