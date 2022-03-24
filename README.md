@@ -33,4 +33,4 @@ Test coverage is woefully incomplete, but comes in three flavors:
 
 ## Installation
 
-See [INSTALL](INSTALL) for system requirements and instructions.
+See [INSTALL](INSTALL.md) for system requirements and instructions.
