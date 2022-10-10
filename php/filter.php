@@ -6,11 +6,11 @@
 // Build a flight filter string for SQL SELECT
 function getFilterString($dbh, $vars) {
   $filter = "";
-  $trid = $vars["trid"];
-  $alid = $vars["alid"];
-  $year = $vars["year"];
-  $xkey = $vars["xkey"];
-  $xvalue = $vars["xvalue"];
+  $trid = $vars["trid"] ?? null;
+  $alid = $vars["alid"] ?? null;
+  $year = $vars["year"] ?? null;
+  $xkey = $vars["xkey"] ?? null;
+  $xvalue = $vars["xvalue"] ?? null;
 
   if($trid && $trid != "0") {
     if($trid == "null") {

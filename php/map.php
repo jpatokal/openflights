@@ -5,17 +5,11 @@ include 'helper.php';
 include 'filter.php';
 
 // This applies only when viewing another's flights
-$user = $_POST["user"];
-if(! $user) {
-  $user = $_GET["user"];
-}
-$trid = $_POST["trid"];
-if(! $trid) {
-  $trid = $_GET["trid"];
-}
+$user = $_POST["user"] ?? ($_GET["user"] ?? null);
+$trid = $_POST["trid"] ?? ($_GET["trid"] ?? null);
 
 // Login via vBulletin cookies
-$bb_uid = $_COOKIE["bb_userid"];
+$bb_uid = $_COOKIE["bb_userid"] ?? null;
 if($OF_VBULLETIN_LOGIN && ! empty($bb_uid)) {
   $sth = $dbh->prepare("SELECT uid, name, email, editor, elite, units, locale FROM users WHERE bb_uid = ?");
   $sth->execute([$bb_uid]);
@@ -33,12 +27,14 @@ if($OF_VBULLETIN_LOGIN && ! empty($bb_uid)) {
   }
 }
 
-$uid = $_SESSION["uid"];
-$challenge = $_SESSION["challenge"];
+$uid = $_SESSION["uid"] ?? null;
+$challenge = $_SESSION["challenge"] ?? null;
 if(!$uid or empty($uid)) {
   // If not logged in, default to demo mode and warn app that we're (no longer?) logged in
   $uid = 1;
   $logged_in = "demo";
+  $elite = null;
+  $editor = null;
   if(!$challenge or empty($challenge)) {
     $challenge = md5(rand(1,100000));
     $_SESSION["challenge"] = $challenge;
@@ -49,11 +45,8 @@ if(!$uid or empty($uid)) {
   $editor = $_SESSION["editor"];
 }
 
-$init = $_POST["param"];
-if(! $init) {
-  $init = $_GET["init"];
-}
-$guestpw = $_POST["guestpw"];
+$init = $_POST["param"] ?? ($_GET["init"] ?? null);
+$guestpw = $_POST["guestpw"] ?? null;
 
 // Verify that this trip and user are public
 $public = "O"; // default to full access
@@ -135,7 +128,7 @@ if($row = $sth->fetch()) {
   }
   $distance = $row["distance"];
   if(!$distance) $distance = "0";
-  if($_SESSION["units"] == "K") {
+  if($_SESSION["units"] ?? null == "K") {
     $distance = round($distance * $KMPERMILE) . " " . _("km");
   } else {
     $distance = $distance . " " . _("miles");

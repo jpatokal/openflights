@@ -23,7 +23,7 @@ $offset = intval($_POST["offset"]);
 $action = $_POST["action"];
 $apid = $_POST["apid"];
 
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 
 if($action == "RECORD") {
   if(!$uid or empty($uid)) {

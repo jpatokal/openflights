@@ -3,7 +3,7 @@ header("Content-type: text/html");
 require_once("../php/locale.php");
 require_once("../php/db_pdo.php");
 
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 $logged_in = $uid and !empty($uid);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

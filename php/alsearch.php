@@ -24,7 +24,7 @@ $iatafilter = $_POST["iatafilter"];
 $action = $_POST["action"];
 $alid = $_POST["alid"];
 
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 if($action == "RECORD") {
   if(!$uid or empty($uid)) {
     printf("0;" . _("Your session has timed out, please log in again."));
