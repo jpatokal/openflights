@@ -3,7 +3,7 @@ session_start();
 include 'db_pdo.php';
 
 // List of all countries
-$sql = "SELECT code, name FROM countries ORDER BY name";
+$sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
 $first = true;
 foreach ($dbh->query($sql) as $row) {
   if($first) {

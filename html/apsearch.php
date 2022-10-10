@@ -50,7 +50,7 @@ $logged_in = $uid and !empty($uid);
                 <select name="country">
                   <option value="">ALL</option>
 <?php
-  $sql = "SELECT code, name FROM countries ORDER BY name";
+  $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
   foreach ($dbh->query($sql) as $row) {
     printf("<option value='%s'>%s</option>\n", $row["code"], $row["name"]);
   }
