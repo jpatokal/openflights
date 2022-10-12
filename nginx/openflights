@@ -2,16 +2,28 @@ server {
     server_name openflights.org www.openflights.org nginx.openflights.org 104.154.196.92;
     root /var/www/openflights;
 
-    index index.html index.htm index.php;
+    index index.html index.php;
 
     location / {
-        try_files $uri $uri/ $uri.html =404;
+	if (-e $request_filename.php){
+            rewrite ^(.*)$ /$1.php;
+        }
+        try_files $uri $uri.html $uri/ =404;
     }
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-     }
+    }
+
+    if ($uri !~ \.) {
+	rewrite "^/airline/(.+)$" /index.php?query=$1;
+	rewrite "^/airport/(.+)$" /index.php?query=$1;
+	rewrite "^/banner/(.+)$" /badge/banner.php?user=$1;
+	rewrite "^/blog/(.+)$" https://blog.openflights.org/$1;
+	rewrite "^/trip/(.+)$" /index.php?trid=$1;
+	rewrite "^/user/(.+)$" /index.php?user=$1;
+    }
 
     location ~ /\.ht {
         deny all;
@@ -23,7 +35,6 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/nginx.openflights.org/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
 }
 
 server {

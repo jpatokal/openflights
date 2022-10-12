@@ -1,54 +1,58 @@
-Installing OpenFlights on Ubuntu 14.04 LTS
-==========================================
+Installing OpenFlights/Nginx on Ubuntu 22 Minimal LTS
+=====================================================
 
-The following assumes you have a fresh install of Ubuntu 14.04 and you're logged in as 'ubuntu' with sudo rights.
-This is intended as a recipe to be followed by hand, not a fire-and-forget script that can do the job automatically.
+The following assumes you have a fresh install of Ubuntu 22 Minimal and you're
+logged in as a user with sudo rights.
 
----
+This is intended as a recipe to be followed by hand, not a fire-and-forget
+script that can do the job automatically.
 
-# Set up LAMP, Git and Sendmail (password resets & donations)
-sudo apt-get install apache2 git php5 php5-curl php5-gd php5-mysql mysql-server sendmail
+# None of these are strictly necessary, but they make debugging easier
+sudo apt-get install man vim mysql-client
 
-# Enable Apache modules (we'll restart later)
-sudo a2enmod include
-sudo a2enmod rewrite
+# OpenFlights does not support PHP8, so we need to hack in PHP7
+sudo apt install software-properties-common apt-transport-https -y
+sudo add-apt-repository ppa:ondrej/php -y
+sudo apt-get install git nginx php7.4 php7.4-curl php7.4-fpm php7.4-gd php7.4-mysql php7.4-xml locales
 
-# Checkout a copy of OpenFlights into /var/www
-cd /var/www
-sudo git clone https://github.com/jpatokal/openflights.git
+# Install OpenFlights as its own user
+adduser openflights
+alias sugit='sudo -u openflights git'
+sugit git clone https://github.com/jpatokal/openflights.git
+sudo ln -s /var/www/openflights ~/openflights
+
+# Set up Nginx. Edit domain(s) in config as needed.
+cd openflights
+sudo cp nginx/openflights /etc/nginx/sites-available/
+sudo vi /etc/nginx/sites-available/openflights
+
+sudo ln -s /etc/nginx/sites-available/openflights /etc/nginx/sites-enabled/
+sudo unlink /etc/nginx/sites-enabled/default
+
+# Set up SSL with Certbot
+sudo apt-get install certbot python3-certbot-nginx
+sudo certbot --nginx -d [YOUR_DOMAIN]
 
 # Set up Composer and install packages
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-sudo php /usr/local/bin/composer install
+sudo -u openflights php /usr/local/bin/composer install
 
 # Generates locales for language support
 cd openflights
 find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
 
 # Enable uploads and badge caching
-sudo mkdir import
-sudo mkdir badge/cache
-sudo chown www-data:www-data import badge/cache
-
-# Set up database (alternatively, if restoring from backup, just run the first line in create.sql to
-# create DB and user, then import the dump)
-mysql -u root -p <sql/create.sql
-mysql -u openflights flightdb2 --local-infile <sql/load-data.sql
+sudo -u openflights mkdir import
+sudo -u openflights mkdir badge/cache
 
 # Set up local config for database, locals, Github etc.
 # Beware of linefeeds after the ?>, will cause breakage!
-sudo cp php/config.php.sample php/config.php
+sudo -u openflights cp php/config.php.sample php/config.php
 
 # Set up TripIt (if you need it)
-sudo vi php/secrets.php
+sudo -u openflights vi php/secrets.php
 <<<
 $tripit_app_id = "[YOUR-ID]";
 $tripit_app_secret = "[YOUR-APP-SECRET]"
 >>>
-
-# Tell Apache where to find OpenFlights
-sudo cp apache2/openflights.conf /etc/apache2/sites-available/
-cd /etc/apache2/sites-enabled
-sudo ln -s ../sites-available/openflights.conf openflights.conf
-sudo service apache2 restart
 
