@@ -20,8 +20,8 @@ back when PHP seemed like a good idea and the only way to learn JavaScript was t
 Any vestiges of sanity you may encounter (eg. unit and integration tests or package management) were
 grafted on as an incomplete afterthought.
 
-Basically, though, it's your classic [LAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29) app.  JavaScript frontend (mostly in the monolithic
-[`openflights.js`](openflights.js), some bits under [`js`](js/)) talking to an Apache/PHP backend (in [`php`](php/))
+Basically, though, it's your classic [LNMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29) app.  JavaScript frontend (mostly in the monolithic
+[`openflights.js`](openflights.js), some bits under [`js`](js/)) talking to a Nginx/PHP backend (in [`php`](php/))
 that wraps around a MySQL database.
 
 ## Tests
