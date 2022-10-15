@@ -56,3 +56,14 @@ $tripit_app_id = "[YOUR-ID]";
 $tripit_app_secret = "[YOUR-APP-SECRET]"
 >>>
 
+# Set up email and cron for account expiry
+# Remember to set up Mailgun integration: https://cloud.google.com/compute/docs/tutorials/sending-mail/using-mailgun
+sudo apt-get install crontab postfix mailutils
+sudo crontab -e <<FOO
+0 2 * * * /bin/bash /home/jpatokal/openflights/elite/expire.sh >>/var/log/cronrun 2>&1
+FOO
+
+# Copy ads, analytics
+sudo -u openflights vi ad.html
+sudo -u openflights vi analytics.html
+

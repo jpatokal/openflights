@@ -1,6 +1,7 @@
 badge/cache/
 composer.phar
 html/ad*
+html/analytics
 import/
 php/config.php
 php/secrets.php
