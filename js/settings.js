@@ -180,7 +180,7 @@ function signup(str) {
 
 function changeName() {
   var name = document.forms['signupform'].username.value;
-  var url = "http://" + location.host + "/user/" + encodeURIComponent(name);
+  var url = "https://" + location.host + "/user/" + encodeURIComponent(name);
   $('profileurl').innerHTML = gt.gettext("Profile address:") + url;
 }
 
@@ -218,5 +218,5 @@ function showError(err) {
 // Need to duplicate this from openflights.js so that it opens in Settings window, not main, and
 // IE does not go nuts
 function backupFlights() {
-  location.href="http://" + location.host + "/php/flights.php?export=backup";
+  location.href="https://" + location.host + "/php/flights.php?export=backup";
 }
