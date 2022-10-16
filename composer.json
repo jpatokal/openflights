@@ -9,7 +9,9 @@
         "ext-json",
         "ext-mbstring",
         "ext-pdo",
-        "ext-simplexml",
+        "ext-simplexml"
+    },
+    "require-dev": {
         "knplabs/github-api": "^1.4",
         "simpletest/simpletest": "^1.1"
     }
