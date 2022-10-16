@@ -13,6 +13,10 @@
     },
     "require-dev": {
         "knplabs/github-api": "^1.4",
+        "php-parallel-lint/php-parallel-lint": "^1.3.2",
         "simpletest/simpletest": "^1.1"
+    },
+    "scripts": {
+        "lint": "parallel-lint --exclude vendor"
     }
 }
