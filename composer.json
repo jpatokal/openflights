@@ -1,5 +1,5 @@
 {
-    "require": {
+    "require-dev": {
         "knplabs/github-api": "^1.4",
         "simpletest/simpletest": "^1.1"
     }
