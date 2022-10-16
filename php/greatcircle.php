@@ -144,43 +144,43 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
       $step = $ASCENT_STEP;
     } else {
       if(abs($wayPoint["y"]) > 60) {
-	$step = $GC_STEP / 2;
+        $step = $GC_STEP / 2;
       } else {
-	$step = $GC_STEP;
+        $step = $GC_STEP;
       }
     }
 
     if($threed) {
       // Ascending
       if($delta > 0) {
-	if($elevation < ($CRUISE_ALTITUDE - $startPoint["z"]) / 2 + $startPoint["z"]) {
-	  $delta += $ascentspeed;
-	} else {
-	  $delta -= $ascentspeed;
-	}
-	if($elevation >= $CRUISE_ALTITUDE || $delta < 0) {
-	  $elevation = $CRUISE_ALTITUDE;
-	  $delta = 0;
-	}
+        if($elevation < ($CRUISE_ALTITUDE - $startPoint["z"]) / 2 + $startPoint["z"]) {
+          $delta += $ascentspeed;
+        } else {
+          $delta -= $ascentspeed;
+        }
+        if($elevation >= $CRUISE_ALTITUDE || $delta < 0) {
+          $elevation = $CRUISE_ALTITUDE;
+          $delta = 0;
+        }
       }
       
       // Descending
       if($d + $step >= $descentpoint) {
-	if($d >= $descentpoint) {
-	  if($elevation > ($CRUISE_ALTITUDE - $endPoint["z"]) / 2 + $endPoint["z"]) {
-	    $delta -= $descentspeed;
-	  } else {
-	    $delta += $descentspeed;
-	  }
-	  $step = $ASCENT_STEP;
-	} else {
-	  // Prepare for descent!
-	  $step = $descentpoint - $d;
-	}
-	if($elevation < $endPoint["z"]) {
-	  $delta = 0;
-	  $elevation = $endPoint["z"];
-	}
+        if($d >= $descentpoint) {
+          if($elevation > ($CRUISE_ALTITUDE - $endPoint["z"]) / 2 + $endPoint["z"]) {
+            $delta -= $descentspeed;
+          } else {
+            $delta += $descentspeed;
+          }
+          $step = $ASCENT_STEP;
+        } else {
+          // Prepare for descent!
+          $step = $descentpoint - $d;
+        }
+        if($elevation < $endPoint["z"]) {
+          $delta = 0;
+          $elevation = $endPoint["z"];
+        }
       } 
       $elevation += $delta;
     }
@@ -196,16 +196,16 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
     } else {
       // Flip paths crossing the edge of the map
       if($wayPoint["x"] < -180 && $bearing > 180) {
-	$pointList[] = array("x" => -180, "y" => $wayPoint["y"], "z" => $elevation);
-	$wayPoint["x"] += 360;
-	$pointList[] = null; // break mark
-	$pointList[] = array("x" => 180, "y" => $wayPoint["y"], "z" => $elevation);
+        $pointList[] = array("x" => -180, "y" => $wayPoint["y"], "z" => $elevation);
+        $wayPoint["x"] += 360;
+        $pointList[] = null; // break mark
+        $pointList[] = array("x" => 180, "y" => $wayPoint["y"], "z" => $elevation);
       }
       if($wayPoint["x"] > 180 && $bearing < 180) {
-	$pointList[] = array("x" => 180, "y" => $wayPoint["y"], "z" => $elevation);
-	$wayPoint["x"] -= 360;
-	$pointList[] = null; // break mark
-	$pointList[] = array("x" => -180, "y" => $wayPoint["y"], "z" => $elevation);
+        $pointList[] = array("x" => 180, "y" => $wayPoint["y"], "z" => $elevation);
+        $wayPoint["x"] -= 360;
+        $pointList[] = null; // break mark
+        $pointList[] = array("x" => -180, "y" => $wayPoint["y"], "z" => $elevation);
       }
     }
 
