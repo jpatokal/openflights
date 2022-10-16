@@ -5,6 +5,7 @@ server {
     index index.html index.php;
 
     location / {
+	ssi on;
 	if (-e $request_filename.php){
             rewrite ^(.*)$ /$1.php;
         }
