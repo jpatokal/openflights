@@ -9,20 +9,7 @@ require_once("./php/helper.php");
     <title>OpenFlights.org: <?php echo _("Flight logging, mapping, stats and sharing") ?></title>
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
-	<meta http-equiv="Content-Security-Policy" content="default-src 'none' ;
-	    font-src 'self' fonts.googleapis.com
-	                    fonts.gstatic.com ;
-	    img-src 'self' data: cartodb-basemaps-1.global.ssl.fastly.net
-	                    stamen-tiles.a.fastly.net
-	                    api.tiles.mapbox.com
-	                    www.googletagmanager.com www.google-analytics.com;
-	    style-src 'self' 'unsafe-inline' www.googletagmanager.com www.google-analytics.com
-	                    www.gstatic.com fonts.googleapis.com ;
-	    script-src      'self' 'unsafe-inline' www.googletagmanager.com www.google-analytics.com
-	                    www.google.com/jsapi www.gstatic.com ;
-        connect-src     'self' www.google-analytics.com;
-	    child-src 'none' ;
-	    object-src 'none' ;
+    <meta http-equiv="Content-Security-Policy" content="
         upgrade-insecure-requests;
         block-all-mixed-content; ;">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
