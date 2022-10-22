@@ -16,13 +16,13 @@ sudo add-apt-repository ppa:ondrej/php -y
 sudo apt-get install git nginx php7.4 php7.4-curl php7.4-fpm php7.4-gd php7.4-mysql php7.4-xml locales
 
 # Install OpenFlights as its own user
-adduser openflights
+sudo adduser openflights
 alias sugit='sudo -u openflights git'
-sugit git clone https://github.com/jpatokal/openflights.git
-sudo ln -s /var/www/openflights ~/openflights
+sugit clone https://github.com/jpatokal/openflights.git /home/openflights/openflights
+sudo ln -s /home/openflights/openflights /var/www/openflights
 
 # Set up Nginx. Edit domain(s) in config as needed.
-cd openflights
+cd /home/openflights/openflights
 sudo cp nginx/openflights /etc/nginx/sites-available/
 sudo vi /etc/nginx/sites-available/openflights
 
