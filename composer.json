@@ -1,15 +1,16 @@
 {
     "require": {
-        "ext-ctype",
-        "ext-curl",
-        "ext-dom",
-        "ext-gd",
-        "ext-gettext",
-        "ext-libxml",
-        "ext-json",
-        "ext-mbstring",
-        "ext-pdo",
-        "ext-simplexml"
+        "php": "~7.4.0",
+        "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "ext-gettext": "*",
+        "ext-libxml": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "knplabs/github-api": "^1.4",
@@ -17,6 +18,9 @@
         "simpletest/simpletest": "^1.1"
     },
     "scripts": {
-        "lint": "parallel-lint --exclude vendor"
+        "lint": "parallel-lint . --exclude vendor",
+        "test": [
+            "@lint"
+        ]
     }
 }
