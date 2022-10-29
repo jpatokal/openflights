@@ -32,7 +32,7 @@ REPLACE INTO TABLE countries
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-(name, code, oa_code, dst);
+(name, iso_code, dafif_code);
 
 \! echo Importing locales...
 
