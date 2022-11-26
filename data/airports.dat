@@ -7627,7 +7627,7 @@
 13687,"Kasese Airport","Kasese","Uganda","KSE","HUKS",0.18299999833106995,30.100000381469727,3146,3,"N",\N,"airport","OurAirports"
 13694,"Stennis International Airport","Bay St. Louis","United States",\N,"KHSA",30.367799758911133,-89.45459747314453,23,-5,"A",\N,"airport","OurAirports"
 13695,"Sunchales Aeroclub Airport","Sunchales","Argentina","NCJ","SAFS",-30.9575,-61.5283,311,-3,"N",\N,"airport","OurAirports"
-13696,"Istanbul Airport","Istanbul","Turkey","IST","LTFM",41.275278,28.751944,325,3,"E",\N,"airport","OurAirports"
+13696,"Istanbul Airport","Istanbul","Turkey","IST","LTFM",41.275278,28.751944,325,3,"E",Europe/Istanbul,"airport","OurAirports"
 13707,"Seldovia Airport","Seldovia","United States","SOV","PASO",59.442401885986,-151.70399475098,29,-9,"A",\N,"airport","OurAirports"
 13711,"Lutselk'e Airport","Lutselk'e","Canada","YSG","CYLK",62.418303,-110.681998,596,\N,\N,\N,"airport","OurAirports"
 13712,"Engeløy Airport","Engeløy","Norway",\N,"ENEN",67.967222,14.9925,0,\N,\N,\N,"airport","OurAirports"

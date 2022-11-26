@@ -12251,7 +12251,7 @@
 13693,"Lille Central Junction","Lille","France",\N,\N,50.633041,3.08144,71,1,"E",\N,\N,\N
 13694,"Stennis International Airport","Bay St. Louis","United States",\N,"KHSA",30.367799758911133,-89.45459747314453,23,-5,"A",\N,"airport","OurAirports"
 13695,"Sunchales Aeroclub Airport","Sunchales","Argentina","NCJ","SAFS",-30.9575,-61.5283,311,-3,"N",\N,"airport","OurAirports"
-13696,"Istanbul Airport","Istanbul","Turkey","IST","LTFM",41.275278,28.751944,325,3,"E",\N,"airport","OurAirports"
+13696,"Istanbul Airport","Istanbul","Turkey","IST","LTFM",41.275278,28.751944,325,3,"E",Europe/Istanbul,"airport","OurAirports"
 13697,"Bovanenkovo","Bovanenkovo","Russia","БОВ","USDB",70.314133,68.336452,85,5,"U",\N,\N,\N
 13698,"Gare de Lille Flandres","Lille","France",\N,\N,50.636187,3.071442,73,1,"E",\N,\N,\N
 13699,"Olare Orok Airstrip","Olare Motorogi Conservancy","Kenya",\N,\N,-1.32603,35.249225,5669,3,"U",\N,\N,\N
