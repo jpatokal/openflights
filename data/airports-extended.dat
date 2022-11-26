@@ -9606,7 +9606,7 @@
 11048,"Luzern-Beromunster Airport","Lucerne","Switzerland",\N,"LSZO",47.189998626708984,8.204719543457031,2146,1,"E",\N,"airport","OurAirports"
 11049,"La Grand'combe Airport","La Grand'Combe","France",\N,"LFTN",44.24440002441406,4.0122199058532715,1647,1,"E",\N,"airport","OurAirports"
 11050,"Natakhtari","Natakhtari","Georgia",\N,\N,41.921298,44.713997,1685,4,"N",\N,"unknown","User"
-11051,"Hamad International Airport","Doha","Qatar","DOH","OTHH",25.273056,51.608056,13,3,"N",\N,"airport","OurAirports"
+11051,"Hamad International Airport","Doha","Qatar","DOH","OTHH",25.273056,51.608056,13,3,"N","Asia/Qatar","airport","OurAirports"
 11052,"Valerio Catullo","VILAFRANCA","Italy",\N,\N,45.400212,10.893488,73,2,"E",\N,"unknown","User"
 11053,"Fort Mackay / Horizon Airport","Wood Buffalo","Canada","HZP","CYNR",57.3816986084,-111.700996399,916,-7,"A",\N,"airport","OurAirports"
 11054,"Canmore Municipal Heliport","Canmore","Canada",\N,"CEW9",51.07780075069999,-115.337997437,4296,-7,"A",\N,"airport","OurAirports"
@@ -12315,7 +12315,7 @@
 13757,"Vidalia Regional Airport","Vidalia","United States","VDI","KVDI",32.192699432373,-82.371200561523,275,-4,"A",\N,"airport","OurAirports"
 13758,"Granbury Regional Airport","Granbury","United States",\N,"KGDJ",32.44440079,-97.81690216,778,-5,"A",\N,"airport","OurAirports"
 13759,"Oswego County Airport","Fulton","United States",\N,"KFZY",43.350799560546875,-76.38809967041016,475,-4,"A",\N,"airport","OurAirports"
-13760,"New Islamabad International Airport","Islamabad","Pakistan","ISB","OPIS",33.560713,72.851613,1646,5,"U",\N,"airport","OurAirports"
+13760,"New Islamabad International Airport","Islamabad","Pakistan","ISB","OPIS",33.560713,72.851613,1646,5,"U","Asia/Karachi","airport","OurAirports"
 13761,"Gorokwe","Gorokwe","Botswana",\N,\N,-19.35132,23.273228,0,2,"N",\N,\N,\N
 13762,"Vumbura Airport","Vumburu","Botswana",\N,"FBVM",-18.955395,22.814533,3185,2,"N",\N,"airport","OurAirports"
 13763,"Farm Whitwater East Landing Strip","Hardap","Namibia",\N,"FYGK",-24.629999,15.9392,857,2,"N",\N,"airport","OurAirports"
