@@ -147,7 +147,7 @@ function check_airport($dbh, $code, $name) {
  */
 function check_airline($dbh, $number, $airline, $uid, $history) {
   $code = substr($number, 0, 2);
-  $isAlpha = ereg("[a-zA-Z0-9]{2}", $code) && ! ereg("[0-9]{2}", $code);
+  $isAlpha = preg_match('/[a-zA-Z0-9]{2}/', $code) && ! preg_match('/[0-9]{2}/', $code);
   if($airline == "" && ! $isAlpha) {
     $airline = _("Unknown") . "<br><small>(" . _("was:") . " " . _("No airline") . ")</small>";
     $color = "#ddf";
