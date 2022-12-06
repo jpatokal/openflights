@@ -211,7 +211,7 @@ while ($row = $sth->fetch()) {
     } else {
       $src_time = "";
     }
-    printf("%s%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+    printf("%s%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 	   $row["src_date"], $src_time, $src_code, $dst_code, $row["code"], $row["al_name"],
 	   $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"],
 	   $row["name"], $row["registration"], $row["trid"], $note,
