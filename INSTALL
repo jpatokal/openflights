@@ -66,4 +66,5 @@ FOO
 # Copy ads, analytics
 sudo -u openflights vi html/ad.html
 sudo -u openflights vi html/analytics.html
+sudo -u openflights vi html/ad-sidebar.html
 
