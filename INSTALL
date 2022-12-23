@@ -60,7 +60,7 @@ $tripit_app_secret = "[YOUR-APP-SECRET]"
 # Remember to set up Mailgun integration: https://cloud.google.com/compute/docs/tutorials/sending-mail/using-mailgun
 sudo apt-get install crontab postfix mailutils
 sudo crontab -e <<FOO
-0 2 * * * /bin/bash /home/jpatokal/openflights/elite/expire.sh >>/var/log/cronrun 2>&1
+0 2 * * * /bin/bash /home/openflights/openflights/elite/expire.sh >>/var/log/cronrun 2>&1
 FOO
 
 # Copy ads, analytics
