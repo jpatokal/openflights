@@ -38,7 +38,7 @@ if($action == "RECORD") {
     if($apid && $apid != "") {
       $filters[] = "apid=?";
       $filterParams[] = $apid;
-    } 
+    }
     if($iata != "") {
       $filters[] = " iata=?";
       $filterParams[] = $iata;
@@ -58,7 +58,7 @@ if($action == "RECORD") {
     }
   }
 
-  if(! $apid || $apid == "") {    
+  if(! $apid || $apid == "") {
     $sql = "INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $params = [
       $airport, $city, $country,
@@ -120,7 +120,7 @@ TXT;
     }
     $identifier = ($icao == "") ? $iata : $icao;
     $github = new \Github\Client();
-    $github->authenticate($GITHUB_ACCESS_TOKEN, NULL, Github\Client::AUTH_HTTP_TOKEN);
+    $github->authenticate($GITHUB_ACCESS_TOKEN, NULL, Github\AuthMethod::ACCESS_TOKEN);
 
     $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO in:title $identifier");
     if(count($issues['items']) > 0) {
@@ -187,7 +187,7 @@ if($action == "LOAD") {
       }
     }
   }
-  
+
   // Disable this filter for DAFIF (no IATA data)
   if($iatafilter == "false" || $dbname == "airports_dafif") {
     $sql .= " 1=1"; // dummy
@@ -218,7 +218,7 @@ array_pop($rows);
 foreach($rows as &$row) {
   if($dbname == "airports_dafif" || $dbname == "airports_oa") {
     $row["country"] = $row["code"];
-  } 
+  }
   if($row["uid"] || $uid == $OF_ADMIN_UID ) {
     if($row["uid"] == $uid || $uid == $OF_ADMIN_UID) {
       $row["ap_uid"] = "own"; // editable
