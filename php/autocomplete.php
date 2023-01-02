@@ -75,7 +75,9 @@ if($query && ! ($multi && $limit == 1 && strlen($query) < 3)) {
   break;
 }
 
-if($limit > 1) print ("<ul class='autocomplete'>");
+if($limit > 1) {
+  print ("<ul class='autocomplete'>");
+}
 $sth = $dbh->prepare($sql);
 
 // This is intentionally one-sided (foo%s) to avoid excessive substring matches.
@@ -87,7 +89,7 @@ if($sth->rowCount() > 0) {
       printf ("<li class='autocomplete' origin='%s' id='%s'>%s</li>\n", $ap, format_apdata($row), format_airport($row));
     } else {
       printf ("%s;%s", format_apdata($row), format_airport($row));
-	    exit; // match found, do not fall thru to airlines
+      exit; // match found, do not fall thru to airlines
     }
   }
 }
@@ -122,7 +124,9 @@ if(! $query || $multi) {
  }
  if($query) {
   $mode = $_POST["mode"];
-  if(! $mode) $mode = "F";
+  if(! $mode) {
+    $mode = "F";
+  }
   if(strlen($query) <= 3 && $mode == 'F') {
     $ext = "iata != '' AND icao != :code AND";
   } else {
@@ -141,9 +145,9 @@ if(! $query || $multi) {
       break;
       case 3: // ICAO
       if(! $multi) {
-       $sql = "SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao=:code UNION ($sql) ORDER BY sort_col, name LIMIT $limit";
-       break;
-	} // else fallthru
+        $sql = "SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao=:code UNION ($sql) ORDER BY sort_col, name LIMIT $limit";
+        break;
+      } // else fallthru
 
       default: // sort non-IATA airlines last
       $sql .= " ORDER BY LENGTH(iata) DESC, name LIMIT $limit";
@@ -152,7 +156,9 @@ if(! $query || $multi) {
   } else {
     $sql .= " ORDER BY name LIMIT $limit";
   }
-  if($limit > 1 && ! $multi) print ("<ul class='autocomplete'>");
+  if($limit > 1 && ! $multi) {
+    print ("<ul class='autocomplete'>");
+  }
   $sth = $dbh->prepare($sql);
   $sth->execute(['mode' => $mode, 'code' => $query, 'name' => "$query%"]) or die('Autocomplete failed.');
   if($sth->rowCount() > 0) {
@@ -179,10 +185,10 @@ if(! $query || $multi) {
   $sth->execute(compact('name'));
 
   print ("<ul class='autocomplete2'>");
+  $MAX_LEN = 35;
   while($data = $sth->fetch()) {
     $results = true;
     $item = stripslashes($data['name']);
-    $MAX_LEN = 35;
     if(strlen($item) > $MAX_LEN) {
      $item = substr($item, 0, $MAX_LEN-13) . "..." . substr($item, -10, 10);
     }
@@ -195,5 +201,7 @@ if(!$results) {
   http_response_code(204); // No Data
 }
 
-if($limit > 1) printf("</ul>");
+if($limit > 1) {
+  printf("</ul>");
+}
 ?>
