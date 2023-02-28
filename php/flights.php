@@ -64,6 +64,7 @@ if(!$uid or empty($uid)) {
 }
 
 $params = [];
+$route = false;
 
 // Special handling of "route" apids in form R<apid>,<coreid>
 // <apid> is user selection, <coreid> is ID of airport map is centered around
