@@ -1,4 +1,16 @@
 {
+    "name": "jpatokal/openflights",
+    "description": "Website for storing flight information, rendering paths on a zoomable world map and calculating statistics, with plenty of free airline, airport and route data",
+    "type": "project",
+    "keywords": [
+        "openflights"
+    ],
+    "license": "AGPL-3.0-only",
+    "support": {
+        "issues": "https://github.com/jpatokal/openflights/issues",
+        "source": "https://github.com/jpatokal/openflights"
+    },
+    "homepage": "https://openflights.org/",
     "require": {
         "php": "~7.4.0",
         "ext-ctype": "*",
