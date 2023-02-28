@@ -29,5 +29,10 @@
             "@lint",
             "minus-x check ."
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
