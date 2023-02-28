@@ -26,7 +26,7 @@ if(isSet($_GET["new"])) {
     <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/settings.js"></script>
-    <?php include("./html/analytics.html") ?>
+    <?php include("../html/analytics.html") ?>
   </head>
 
   <body>
