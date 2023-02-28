@@ -1,7 +1,7 @@
 <?php
 session_start();
 $uid = $_SESSION["uid"];
-$export = $_GET["export"];
+$export = $_GET["export"] ?? false;
 if($export) {
   if(!$uid or empty($uid)) {
     exit("You must be logged in to export.");
