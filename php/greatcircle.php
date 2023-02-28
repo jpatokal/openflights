@@ -55,17 +55,17 @@ function gcBearingTo($from, $to) {
     return $bearing;
   }
   if($b == 0) {
-    if($a < 0)  
+    if($a < 0)
       $bearing = 270;
     else
       $bearing = 90;
     return $bearing;
   }
-  
-  if( $b < 0) 
+
+  if( $b < 0)
     $adjust = $PI;
   else {
-    if($a < 0) 
+    if($a < 0)
       $adjust = 2 * $PI;
     else
       $adjust = 0;
@@ -84,12 +84,12 @@ function gcWaypoint($from, $distance, $bearing) {
   $x = $from["x"] * $DEG2RAD;
   $y = $from["y"] * $DEG2RAD;
   $radBearing = $bearing * $DEG2RAD;
-  
+
   // Convert arc distance to radians
   $d = $distance / $EARTH_RADIUS;
-  
+
   // Modified based on http://williams.best.vwh.net/avform.htm
-  $lat = asin( sin($y) * cos($d) + cos($y) * sin($d) * cos($radBearing));  
+  $lat = asin( sin($y) * cos($d) + cos($y) * sin($d) * cos($radBearing));
   $lon = atan2( sin($radBearing) * sin($d) * cos($y), cos($d) - sin($y) * sin($lat));
   $x = ($x + $lon) * $RAD2DEG;
   $y = $lat * $RAD2DEG;
@@ -163,7 +163,7 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
           $delta = 0;
         }
       }
-      
+
       // Descending
       if($d + $step >= $descentpoint) {
         if($d >= $descentpoint) {
@@ -181,7 +181,7 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
           $delta = 0;
           $elevation = $endPoint["z"];
         }
-      } 
+      }
       $elevation += $delta;
     }
 
@@ -214,5 +214,3 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
   $pointList[] = $endPoint;
   return $pointList;
 }
-
-?>

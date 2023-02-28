@@ -46,7 +46,6 @@ sudo -u openflights mkdir import
 sudo -u openflights mkdir badge/cache
 
 # Set up local config for database, locals, Github etc.
-# Beware of linefeeds after the ?>, will cause breakage!
 sudo -u openflights cp php/config.php.sample php/config.php
 
 # Set up TripIt (if you need it)

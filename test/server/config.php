@@ -164,14 +164,14 @@ $route = array('core_ap_iata' => 'ISG',
 
 function login($case, $name = NULL, $password = NULL, $challenge = NULL) {
   global $webroot, $settings;
-  
+
   if(! $password) {
     $password = $settings["password"];
   }
   if(! $name) {
     $name = $settings["name"];
   }
-  
+
   $map = $case->post($webroot . "php/map.php");
   $cols = preg_split('/[;\n]/', $map);
   if($challenge == NULL) {
@@ -246,4 +246,3 @@ function cleanup() {
   $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name=?)");
   $sth->execute([$settings["name"]]);
 }
-?>

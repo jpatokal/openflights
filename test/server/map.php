@@ -110,5 +110,3 @@ class CheckLoggedInFullUserMap extends WebTestCase {
     $this->assertTrue($stats[6] == $settings["editor"], "Editor");
   }
 }
-
-?>

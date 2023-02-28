@@ -214,5 +214,3 @@ class RouteMapInvalidAirlineTest extends WebTestCase {
     $this->assertText('Error');
   }
 }
-
-?>

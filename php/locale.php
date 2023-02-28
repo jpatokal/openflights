@@ -50,4 +50,3 @@ function locale_pulldown($dbh, $locale) {
   }
   echo "</select>";
 }
-?>

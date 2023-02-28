@@ -47,10 +47,10 @@ while($row = $sth->fetch()) {
     print "  <name>$src_ap-$dst_ap</name>\n  <description>$modes[$mode] $code</description>\n";
     print "  <styleUrl>#$mode</styleUrl>\n";
 
-    $points = gcPath(array("x" => $x1, "y" => $y1, "z" => $z1), 
+    $points = gcPath(array("x" => $x1, "y" => $y1, "z" => $z1),
 		     array("x" => $x2, "y" => $y2, "z" => $z2),
 		     $distance, true);
-    
+
     if($row["mode"] == "F") {
       $altitudeMode = "absolute";
     } else {
@@ -108,5 +108,3 @@ while ($row = $sth->fetch()) {
 }
 print "</Folder>\n";
 readfile("../kml/footer.kml");
-
-?>

@@ -30,4 +30,3 @@ $_SESSION["tripit_rendezvous"] = array(
 );
 
 header("Location: https://www.tripit.com/oauth/authorize?oauth_token=" . $tokens["oauth_token"] . "&oauth_token_secret=" . $tokens["oauth_token_secret"] . "&oauth_callback=" . urlencode("http://" . $_SERVER["SERVER_NAME"] . "/php/tripit_link.php"));
-?>

@@ -16,4 +16,3 @@ class OpenFlightsSeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase
     $this->setSpeed(100);
   }
 }
-?>

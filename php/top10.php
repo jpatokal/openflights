@@ -127,7 +127,7 @@ while ($row = $sth->fetch()) {
     $first = false;
   } else {
     printf(":");
-  }  
+  }
   printf ("%s,%s,%s", $row["name"], $row["count"], $row["alid"]);
 }
 printf ("\n");
@@ -144,8 +144,6 @@ while ($row = $sth->fetch()) {
     $first = false;
   } else {
     printf(":");
-  }  
+  }
   printf ("%s,%s", $row["name"], $row["count"]);
 }
-
-?>

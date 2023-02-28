@@ -48,7 +48,7 @@ $success or die ('0;Operation on trip ' . $name . ' failed.');
 if($sth->rowCount() != 1) {
   die("0;No matching trip found");
 }
-  
+
 switch($type) {
  case "NEW":
    $trid = $dbh->lastInsertId();
@@ -63,4 +63,3 @@ switch($type) {
    printf("2;%s;" . _("Trip successfully edited."), $trid);
    break;
 }
-?>

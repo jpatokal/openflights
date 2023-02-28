@@ -41,5 +41,3 @@ class ExportAirlineToCSVCase extends WebTestCase {
     $this->assertEqual(count($rows), $route_count + 1);
   }
 }
-
-?>

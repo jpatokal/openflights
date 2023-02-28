@@ -29,4 +29,3 @@ class WebMapPublicTest extends OpenFlightsSeleniumTestCase
     $this->verifyTextPresent($settings['name'] . "'s flights");
   }
 }
-?>

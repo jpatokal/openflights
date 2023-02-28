@@ -101,7 +101,7 @@ function format_alcode($iata, $icao, $mode) {
       return "Priv";
     }
   }
-}  
+}
 
 /**
  * Calculate (distance, duration) between two airport IDs
@@ -133,7 +133,7 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
     $rad = doubleval($pi/180.0);
     $lon1 = doubleval($lon1)*$rad; $lat1 = doubleval($lat1)*$rad;
     $lon2 = doubleval($lon2)*$rad; $lat2 = doubleval($lat2)*$rad;
-    
+
     $theta = $lon2 - $lon1;
     $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
     if ($dist < 0) { $dist += $pi; }
@@ -182,5 +182,3 @@ function orderAirports($src_apid, $dst_apid) {
     return array($src_apid, $dst_apid, "N");
   }
 }
-
-?>

@@ -21,7 +21,7 @@ $results = false;
 // Autocompletion for airports
 // 3 chars: match on IATA or name (major airports only)
 // 4 chars: match on ICAO or name (major airports only)
-// >4 chars: match on name or city 
+// >4 chars: match on name or city
 
 $airports = array("qs", "src_ap", "dst_ap", "src_ap1", "dst_ap1", "src_ap2", "dst_ap2", "src_ap3", "dst_ap3", "src_ap4", "dst_ap4");
 foreach($airports as $ap) {
@@ -204,4 +204,3 @@ if(!$results) {
 if($limit > 1) {
   printf("</ul>");
 }
-?>

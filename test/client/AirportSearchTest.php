@@ -77,4 +77,3 @@ class AirportSearchTest extends OpenFlightsSeleniumTestCase
     $this->assertValue("src_ap1", "Testville-EditedName");
   }
 }
-?>

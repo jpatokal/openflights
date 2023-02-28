@@ -15,4 +15,3 @@ try {
 } catch(PDOException $e) {
     die('Error;Unable to connect to database: ' . $e->getMessage());
 }
-?>

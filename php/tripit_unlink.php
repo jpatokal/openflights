@@ -18,5 +18,3 @@ try {
 
 // All good, redirect back to listing
 header("Location: /php/tripit_list_trips.php");
-
-?>

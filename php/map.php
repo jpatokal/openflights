@@ -151,7 +151,7 @@ while ($row = $sth->fetch()) {
     $first = false;
   } else {
     $map .= "\t";
-  }  
+  }
   $map .= sprintf ("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s", $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
 }
 $map .= "\n";
@@ -182,4 +182,3 @@ print $map . "\n";
 if($init == "true") {
   loadFilter($dbh, $uid, $trid, $logged_in);
 }
-?>

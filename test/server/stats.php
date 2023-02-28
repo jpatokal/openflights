@@ -27,5 +27,3 @@ class CheckAnalyseStats extends WebTestCase {
     $this->assertText('"avg_duration":"' . $flight2["duration"] . '"');
   }
 }
-
-?>

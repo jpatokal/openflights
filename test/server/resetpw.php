@@ -57,4 +57,3 @@ class ResetPwValidChallengeTest extends WebTestCase {
     $this->assertEqual($result->status, "0");
   }
 }
-?>

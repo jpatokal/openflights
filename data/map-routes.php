@@ -54,7 +54,7 @@ foreach ($dbh->query($sql) as $row) {
 
   if($distance > $GC_MIN) {
     // Plot great circle curve
-    $points = gcPath(array("x" => $x1, "y" => $y1), 
+    $points = gcPath(array("x" => $x1, "y" => $y1),
 		     array("x" => $x2, "y" => $y2),
 		     $distance, false);
   } else {
@@ -81,5 +81,3 @@ foreach ($dbh->query($sql) as $row) {
 header ("Content-type: image/png");
 imagepng($im);
 imagedestroy($im);
-
-?>

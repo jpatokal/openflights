@@ -30,15 +30,15 @@ function getFilterString($dbh, $vars) {
     case null:
     case "":
       break;
-      
+
     case "class":
       $filter = $filter . " AND f.class=" . $dbh->quote($xvalue);
       break;
-      
+
     case "distgt":
       $filter = $filter . " AND f.distance > " . $dbh->quote($xvalue, PDO::PARAM_INT);
       break;
-      
+
     case "distlt":
       $filter = $filter . " AND f.distance < " . $dbh->quote($xvalue, PDO::PARAM_INT);
       break;
@@ -46,15 +46,15 @@ function getFilterString($dbh, $vars) {
     case "mode":
       $filter = $filter . " AND f.mode=" . $dbh->quote($xvalue);
       break;
-      
+
     case "note":
       $filter = $filter . " AND f.note LIKE " . $dbh->quote("%$xvalue%");
       break;
-      
+
     case "reason":
       $filter = $filter . " AND f.reason=" . $dbh->quote($xvalue);
       break;
-      
+
     case "reg":
       $filter = $filter . " AND f.registration LIKE " . $dbh->quote("$xvalue%");
       break;
@@ -100,11 +100,11 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
       $first = false;
     } else {
       printf("\t");
-    }  
+    }
     printf ("%s;%s;%s", $row["trid"], $row["name"], $row["url"]);
   }
   printf ("\n");
-  
+
   // List of all airlines
   $sth = $dbh->prepare("SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, flights as f WHERE f.uid=?" . $filter . " AND a.alid=f.alid ORDER BY name");
   $sth->execute($params);
@@ -114,11 +114,11 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
       $first = false;
     } else {
       printf("\t");
-    }  
+    }
     printf ("%s;%s", $row["alid"], $row["name"]);
   }
   printf ("\n");
-  
+
   // List of all years
   $sth = $dbh->prepare("SELECT DISTINCT YEAR(src_date) AS year FROM flights WHERE uid=?" . $filter . " AND YEAR(src_date) != '0' ORDER BY YEAR DESC");
   $sth->execute($params);
@@ -128,8 +128,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
       $first = false;
     } else {
       printf("\t");
-    }  
+    }
     printf ("%s;%s", $row["year"], $row["year"]);
   }
 }
-?>

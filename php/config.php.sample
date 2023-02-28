@@ -19,4 +19,3 @@ $OF_VBULLETIN_LOGIN = false;
 
 // OpenFlights UID for admin user, used only for special access to airport/airline DBs
 $OF_ADMIN_UID = 3;
-?>

@@ -33,7 +33,7 @@ class CheckTop10FlightCountStats extends WebTestCase {
     $airlines = $rows[2];
     $this->assertPattern("/,1," . $flight2["alid"] . "/", $airlines);
 
-    // Top 10 planes 
+    // Top 10 planes
     $planes = $rows[3];
     $this->assertPattern("/" . $flight2["plane"] . ",1/", $planes);
   }
@@ -65,7 +65,7 @@ class CheckTop10AirlineFilteredFlightCountStats extends WebTestCase {
     $airlines = $rows[2];
     $this->assertPattern("/,1," . $flight2["alid"] . "/", $airlines);
 
-    // Top 10 planes 
+    // Top 10 planes
     $planes = $rows[3];
     $this->assertPattern("/" . $flight2["plane"] . ",1/", $planes);
   }
@@ -99,10 +99,8 @@ class CheckTop10DistanceStats extends WebTestCase {
     $airlines = $rows[2];
     $this->assertPattern("/,$distance," . $flight2["alid"] . "/", $airlines);
 
-    // Top 10 planes 
+    // Top 10 planes
     $planes = $rows[3];
     $this->assertPattern("/" . $flight2["plane"] . ",$distance/", $planes);
   }
 }
-
-?>

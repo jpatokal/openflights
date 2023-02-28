@@ -63,4 +63,3 @@ class WebLoginTest extends OpenFlightsSeleniumTestCase
     $this->verifyTextPresent("Add new flights");
   }
 }
-?>

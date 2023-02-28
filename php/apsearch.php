@@ -235,4 +235,3 @@ foreach($rows as &$row) {
 }
 $response['airports'] = $rows;
 print json_encode($response);
-?>
