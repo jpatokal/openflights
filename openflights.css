@@ -277,7 +277,7 @@ table.sortable tr.sortbottom td {
 /* Misc styles */
 
 input:focus, textarea:focus { background-color: LightYellow; }
-select.filter {  width: 160px };
+select.filter {  width: 160px; }
 
 /* OpenLayers default stuff starts here */
 
