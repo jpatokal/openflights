@@ -72,5 +72,3 @@ function handle_tripit_response($response) {
     exit();
   }
 }
-
-?>

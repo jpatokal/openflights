@@ -48,5 +48,3 @@ class DeleteUserTest extends WebTestCase {
     echo $sth->rowCount() . " user deleted\n";
   }
 }
-
-?>

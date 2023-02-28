@@ -56,4 +56,3 @@ class ExpiredSessionTest extends WebTestCase {
     $this->assertText("Session expired");
   }
 }
-?>

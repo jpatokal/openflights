@@ -73,5 +73,3 @@ $test->run(new HtmlReporter());
 $test = new TestSuite('Cleanup');
 $test->addFile('cleanup.php');
 $test->run(new HtmlReporter());
-
-?>

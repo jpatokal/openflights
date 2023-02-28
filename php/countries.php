@@ -13,4 +13,3 @@ foreach ($dbh->query($sql) as $row) {
   }
   printf ("%s;%s", $row["code"], $row["name"]);
 }
-?>

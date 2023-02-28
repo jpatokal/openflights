@@ -79,5 +79,3 @@ imagepng($im, 'cache/' . $user);
 // And output to the browser
 imagepng($im);
 imagedestroy($im);
-
-?>

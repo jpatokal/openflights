@@ -79,7 +79,7 @@ class ChangePasswordTest extends WebTestCase {
     $msg = $this->post($webroot . "php/settings.php", $params);
     $this->assertText('2;');
 
-    
+
     // Log out and validate new password
     $msg = $this->post($webroot . "php/logout.php");
     $result = login($this, $settings["name"], "newpw");
@@ -150,5 +150,3 @@ class ResetFlightsTest extends WebTestCase {
     $this->assertTrue($cols[0] == "0", "No flights recorded");
   }
 }
-
-?>

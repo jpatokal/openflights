@@ -190,5 +190,3 @@ printf ("\n");
 
 // Class (by distance); added at the end so as to not break other potential API users.
 printf ("$class_by_distance_str\n");
-
-?>

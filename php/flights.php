@@ -43,7 +43,7 @@ if(!$uid or empty($uid)) {
 
   // Viewing an "open" user's flights, or an "open" flight?
   // (will be previously set in map.php)
-  $uid = $_SESSION["openuid"]; 
+  $uid = $_SESSION["openuid"];
   if($uid && !empty($uid)) {
     // Yes we are, so check if we're limited to a single trip
     $openTrid = $_SESSION["opentrid"];
@@ -101,7 +101,7 @@ if($type == "R" || $type == "L") {
   // List of all this user's flights
   $params['uid'] = $uid;
   $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=:uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
-  
+
   // ...filtered by airport (optional)
   if($apid && $apid != 0) {
     $params['apid'] = $apid;
@@ -238,4 +238,3 @@ if($export == "gcmap") {
   // Output the redirect URL.
   header("Location: http://www.gcmap.com/mapui?P=" . $gcmap_city_pairs . "&MS=bm");
 }
-?>

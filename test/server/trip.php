@@ -58,7 +58,7 @@ class EditWrongTridTripTest extends WebTestCase {
   }
 }
 
-// Check public trip 
+// Check public trip
 class CheckPublicFullTripMap extends WebTestCase {
   function test() {
     global $webroot, $trip, $trid;
@@ -148,5 +148,3 @@ class DeleteTripTest extends WebTestCase {
     $this->assertFalse($sth->fetch(), "Deleting failed");
   }
 }
-
-?>

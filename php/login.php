@@ -50,6 +50,3 @@ if($name) {
   }
   print json_encode($myrow);
 }
-?>
-
-

@@ -182,5 +182,3 @@ class CSVExportFlightTest extends WebTestCase {
     $this->assertText($flight2["alid"] . ",");
   }
 }
-
-?>

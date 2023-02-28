@@ -178,12 +178,10 @@ class SearchRailwayByNameTest extends WebTestCase {
 
     login($this);
     $params = array("name" => $railway["name"],
-		    "mode" => "T");
+      "mode" => "T");
     $msg = $this->post($webroot . "php/alsearch.php", $params);
     $this->assertText('0;1');
     $this->assertText('"name":"' . $railway["name"] . '"');
     $this->assertText('"alias":"' . $railway["alias"] . '"');
   }
 }
-
-?>

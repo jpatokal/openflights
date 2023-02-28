@@ -104,7 +104,7 @@ if($action == "RECORD") {
     }
   }
 
-  if(! $alid || $alid == "") {    
+  if(! $alid || $alid == "") {
     // Adding new airline
     $sql = "INSERT INTO airlines(name,alias,country,iata,icao,callsign,mode,active,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $params = [
@@ -214,5 +214,3 @@ while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
   $row["al_name"] = format_airline($row);
   print "\n" . json_encode($row);
 }
-
-?>

@@ -61,6 +61,3 @@ class DeleteExtraPlanesTest extends WebTestCase {
     $this->assertTrue($sth->rowCount() >= 1, "Plane deleted");
   }
 }
-
-
-?>

@@ -248,5 +248,3 @@ class SinglePlaneIATACompleteTest extends WebTestCase {
     $this->assertText("Boeing 737-400");
   }
 }
-
-?>

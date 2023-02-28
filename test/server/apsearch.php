@@ -200,5 +200,3 @@ class SearchAirportOFDBByIATATest extends WebTestCase {
     $this->assertText('"ap_uid":"own"');
   }
 }
-
-?>

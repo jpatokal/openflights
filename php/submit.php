@@ -202,4 +202,3 @@ switch ($param) {
 }
 
 print $code . ";" . $msg;
-?>

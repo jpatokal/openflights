@@ -1,4 +1,2 @@
 <?php
-header("Location: /data.html")
-?>
-
+header("Location: /data.html");

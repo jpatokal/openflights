@@ -29,7 +29,7 @@ switch($type) {
      die("0;" . _("Sorry, that name is already taken, please try another."));
    }
    break;
-   
+
  case "EDIT":
  case "RESET":
   $uid = $_SESSION["uid"];
@@ -103,4 +103,3 @@ if($type == "NEW") {
 } else {
   printf("2;" . _("Settings changed successfully, returning..."));
 }
-?>
