@@ -7,7 +7,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // Standard log in
 class SuccessfulLoginTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
     $result = login($this);
     $this->assertEqual($result->status, "1");
@@ -17,7 +17,7 @@ class SuccessfulLoginTest extends WebTestCase {
 
 // Legacy login test (where name hash was built using uppercase chars)
 class LegacyLoginTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $name = "LegacyUser";
@@ -40,7 +40,7 @@ class LegacyLoginTest extends WebTestCase {
 
 // Wrong password
 class WrongPasswordLoginTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
     $result = login($this, $settings["name"], "incorrect");
     $this->assertEqual($result->status, "0");
@@ -49,7 +49,7 @@ class WrongPasswordLoginTest extends WebTestCase {
 
 // Login attempt with expired session
 class ExpiredSessionTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
     $result = login($this, $settings["name"], $settings["password"], "DEADBEEF");
     $this->assertEqual($result->status, "0");

@@ -10,7 +10,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // Check demo user map
 class CheckDemoFullUserMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     $params = array("param" => "true");
@@ -28,7 +28,7 @@ class CheckDemoFullUserMap extends WebTestCase {
 
 // Check public profile for user
 class CheckPublicFullUserMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     $params = array("param" => "true",
@@ -49,7 +49,7 @@ class CheckPublicFullUserMap extends WebTestCase {
 
 // Attempt to view private profile for user (fails)
 class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     $dbh = db_connect();
@@ -69,7 +69,7 @@ class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
 
 // View private profile with correct password
 class CheckPrivateGuestPasswordFullUserMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     $params = array("param" => "true",
@@ -90,7 +90,7 @@ class CheckPrivateGuestPasswordFullUserMap extends WebTestCase {
 
 // Check logged in user map
 class CheckLoggedInFullUserMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     assert_login($this);

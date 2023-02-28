@@ -3,7 +3,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // ID missing entirely
 class RouteMapNoIDTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     $map = $this->post($webroot . "php/routes.php");
@@ -13,7 +13,7 @@ class RouteMapNoIDTest extends WebTestCase {
 
 // Fetch route map for core airport
 class RouteMapCoreAirportTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct results
@@ -43,7 +43,7 @@ class RouteMapCoreAirportTest extends WebTestCase {
 
 // Fetch route map for core airport with airline filter
 class RouteMapCoreAirportFilteredTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct results
@@ -75,7 +75,7 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
 
 // Airport with no routes -- should still display itself!
 class RouteMapNoRouteAirportTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct apid
@@ -105,7 +105,7 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
 
 // Invalid airport ID
 class RouteMapInvalidAirportTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     $params = array("apid" => $route["invalid_apid"]);
@@ -116,7 +116,7 @@ class RouteMapInvalidAirportTest extends WebTestCase {
 
 // Fetch route map for core airline
 class RouteMapCoreAirlineTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct results
@@ -146,7 +146,7 @@ class RouteMapCoreAirlineTest extends WebTestCase {
 
 // Fetch route map for core airline
 class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct results
@@ -177,7 +177,7 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
 
 // Airline with no routes
 class RouteMapNoRouteAirlineTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct apid
@@ -206,7 +206,7 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
 
 // Invalid airline ID
 class RouteMapInvalidAirlineTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     $params = array("apid" => "L" . $route["invalid_alid"]);

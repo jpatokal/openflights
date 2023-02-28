@@ -8,7 +8,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // Create new user
 class SuccessfulNewUserTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $hash = md5($settings["password"] . strtolower($settings["name"]));
@@ -21,7 +21,7 @@ class SuccessfulNewUserTest extends WebTestCase {
 
 // Duplicate name
 class DuplicateUserTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $hash = md5($settings["password"] . strtolower($settings["name"]));
@@ -34,7 +34,7 @@ class DuplicateUserTest extends WebTestCase {
 
 // Try to manipulate without session
 class LoadEditResetWithoutSessionTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $params = array("type" => "EDIT");
@@ -49,7 +49,7 @@ class LoadEditResetWithoutSessionTest extends WebTestCase {
 
 // Try to change pw, but give wrong password
 class ChangePasswordWithWrongOldPasswordTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     login($this);
@@ -67,7 +67,7 @@ class ChangePasswordWithWrongOldPasswordTest extends WebTestCase {
 
 // Change password
 class ChangePasswordTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     login($this);
@@ -96,7 +96,7 @@ class ChangePasswordTest extends WebTestCase {
 
 // Change all other settings
 class ChangeSettingsTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     login($this);
@@ -124,7 +124,7 @@ class ChangeSettingsTest extends WebTestCase {
 
 // Restore original settings
 class RestoreSettingsTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     login($this);
@@ -136,7 +136,7 @@ class RestoreSettingsTest extends WebTestCase {
 
 // Reset (delete) all flights
 class ResetFlightsTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     login($this);

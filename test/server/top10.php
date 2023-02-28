@@ -10,7 +10,7 @@ $fid = null; // global for newly-added flight
 
 // Check default (flight count) Top 10 stats
 class CheckTop10FlightCountStats extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     assert_login($this);
@@ -41,7 +41,7 @@ class CheckTop10FlightCountStats extends WebTestCase {
 
 // Check flight count Top 10 stats with airline filtering
 class CheckTop10AirlineFilteredFlightCountStats extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     assert_login($this);
@@ -73,7 +73,7 @@ class CheckTop10AirlineFilteredFlightCountStats extends WebTestCase {
 
 // Check by-distance Top 10 stats
 class CheckTop10DistanceStats extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2;
 
     assert_login($this);

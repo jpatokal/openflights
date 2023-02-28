@@ -6,7 +6,7 @@ $new_apid = null;
 
 // Check that we can load up the country data
 class LoadCountriesTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array();
@@ -18,7 +18,7 @@ class LoadCountriesTest extends WebTestCase {
 
 // Try to add airport before logging in
 class RecordAirportNotLoggedInTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $params = array("action" => "RECORD", "unittest" => "true");
@@ -29,7 +29,7 @@ class RecordAirportNotLoggedInTest extends WebTestCase {
 
 // Add new airport
 class RecordNewAirportTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airport, $new_apid;
 
     login($this);
@@ -43,7 +43,7 @@ class RecordNewAirportTest extends WebTestCase {
 
 // Try to add it again
 class RecordAirportDuplicateTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airport;
 
     login($this);
@@ -59,7 +59,7 @@ class RecordAirportDuplicateTest extends WebTestCase {
 
 // Try to edit an airport not belonging to us
 class EditWrongAirportTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airport, $new_apid;
 
     login($this);
@@ -78,7 +78,7 @@ class EditWrongAirportTest extends WebTestCase {
 
 // Try to reuse an existing airport's code
 class EditAirportDuplicateICAOTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airport, $new_apid;
 
     login($this);
@@ -96,7 +96,7 @@ class EditAirportDuplicateICAOTest extends WebTestCase {
 
 // Try to edit to overwrite existing airport
 class EditAirportSuccessfulTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airport, $new_apid;
 
     login($this);
@@ -112,7 +112,7 @@ class EditAirportSuccessfulTest extends WebTestCase {
 
 // Add new location with null codes
 class RecordNewNullCodePlaceTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airport, $new_apid;
 
     login($this);
@@ -143,7 +143,7 @@ class RecordNewNullCodePlaceTest extends WebTestCase {
 
 // Load a single airport
 class LoadAirportByApidTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport, $new_apid;
 
     login($this);
@@ -168,7 +168,7 @@ class LoadAirportByApidTest extends WebTestCase {
 
 // Load a single airport
 class LoadAirportByInvalidApidTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport;
 
     $params = array("apid" => "garbage",
@@ -180,7 +180,7 @@ class LoadAirportByInvalidApidTest extends WebTestCase {
 
 // Search OpenFlights DB by IATA (of just-added airport)
 class SearchAirportOFDBByIATATest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport;
 
     login($this);

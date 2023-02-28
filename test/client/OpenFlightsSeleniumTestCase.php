@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/../server/config.php');
 
 class OpenFlightsSeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase
 {
-  protected $captureScreenshotOnFailure = TRUE;
+  protected $captureScreenshotOnFailure = true;
   protected $screenshotPath = '/tmp/screenshots';
   protected $screenshotUrl = '/tmp/screenshots';
 

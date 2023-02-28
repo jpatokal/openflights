@@ -7,7 +7,7 @@ $new_rlid = null;
 
 // Try to add airline before logging in
 class RecordAirlineNotLoggedInTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $params = array("action" => "RECORD");
@@ -18,7 +18,7 @@ class RecordAirlineNotLoggedInTest extends WebTestCase {
 
 // Try to reuse an existing airline's code
 class RecordAirlineDuplicateICAOTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airline, $new_alid;
 
     login($this);
@@ -32,7 +32,7 @@ class RecordAirlineDuplicateICAOTest extends WebTestCase {
 
 // Add new airline
 class RecordNewAirlineTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airline, $new_alid;
 
     login($this);
@@ -50,7 +50,7 @@ class RecordNewAirlineTest extends WebTestCase {
 
 // Try to record it again
 class RecordAirlineDuplicateTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airline, $new_alid;
 
     login($this);
@@ -63,7 +63,7 @@ class RecordAirlineDuplicateTest extends WebTestCase {
 
 // Add new railway
 class RecordNewRailwayTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $railway, $new_rlid;
 
     login($this);
@@ -79,7 +79,7 @@ class RecordNewRailwayTest extends WebTestCase {
 
 // Try to add the railway again
 class RecordRailwayDuplicateTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $railway;
 
     login($this);
@@ -92,7 +92,7 @@ class RecordRailwayDuplicateTest extends WebTestCase {
 
 // Try to edit an airline not belonging to us
 class EditWrongAirlineTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airline;
 
     login($this);
@@ -107,7 +107,7 @@ class EditWrongAirlineTest extends WebTestCase {
 
 // Try to reuse an existing airline's code
 class EditAirlineDuplicateICAOTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airline, $new_alid;
 
     login($this);
@@ -122,7 +122,7 @@ class EditAirlineDuplicateICAOTest extends WebTestCase {
 
 // Try to edit to overwrite existing airline
 class EditAirlineSuccessfulTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $airline, $new_alid;
 
     login($this);
@@ -138,7 +138,7 @@ class EditAirlineSuccessfulTest extends WebTestCase {
 
 // Search by IATA
 class SearchAirlineByIATATest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     login($this);
@@ -157,7 +157,7 @@ class SearchAirlineByIATATest extends WebTestCase {
 
 // Search by ICAO
 class SearchAirlineByICAOTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     login($this);
@@ -173,7 +173,7 @@ class SearchAirlineByICAOTest extends WebTestCase {
 
 // Search railway by name
 class SearchRailwayByNameTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $railway;
 
     login($this);

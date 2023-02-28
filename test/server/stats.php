@@ -10,7 +10,7 @@ $fid = null; // global for newly-added flight
 
 // Check Analyse stats
 class CheckAnalyseStats extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2, $fid;
 
     assert_login($this);
