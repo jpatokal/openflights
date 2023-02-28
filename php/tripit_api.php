@@ -22,7 +22,7 @@ class WebAuthCredential {
     var $_username;
     var $_password;
 
-    function WebAuthCredential($username, $password) {
+    function __construct($username, $password) {
         $this->_username = $username;
         $this->_password = $password;
     }
@@ -66,7 +66,7 @@ class OAuthConsumerCredential {
     var $_oauth_token_secret;
     var $_oauth_requestor_id;
 
-    function OAuthConsumerCredential($oauth_consumer_key, $oauth_consumer_secret, $oauth_token_or_requestor_id='', $oauth_token_secret='') {
+    function __construct($oauth_consumer_key, $oauth_consumer_secret, $oauth_token_or_requestor_id='', $oauth_token_secret='') {
         $this->_oauth_consumer_key = $oauth_consumer_key;
         $this->_oauth_consumer_secret = $oauth_consumer_secret;
         
@@ -237,7 +237,7 @@ class TripIt {
     var $response;
     var $info;
 
-    function TripIt($credential, $api_url='https://api.tripit.com') {
+    function __construct($credential, $api_url='https://api.tripit.com') {
         $this->_credential = $credential;
         $this->_api_version = 'v1';
         $this->_api_url = $api_url;
