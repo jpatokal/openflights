@@ -177,13 +177,13 @@ if($action == "LOAD") {
   if($country != "ALL") {
     if($dbname == "airports_dafif" || $dbname == "airports_oa") {
       if($code) {
-	$sql .= " code=? AND";
-	$params[] = $code;
+        $sql .= " code=? AND";
+        $params[] = $code;
       }
     } else {
       if($country) {
-	$sql .= " country=? AND";
-	$params[] = $country;
+        $sql .= " country=? AND";
+        $params[] = $country;
       }
     }
   }
@@ -206,7 +206,9 @@ $sth->execute($params) or json_error('Operation ' . $param . ' failed.');
 if($row = $sth->fetch()) {
   $max = $row[0];
 }
-if ($max == 0) json_error('No airports matching your query exist.');
+if ($max == 0) {
+  json_error('No airports matching your query exist.');
+}
 $response = array("status" => 1, "offset" => $offset, "max" => $max);
 
 // Fetch airport data
