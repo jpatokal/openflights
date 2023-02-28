@@ -2,9 +2,6 @@ This test suite validates client-side (browser) behavior.
 
 Requirements:
 
-* PHPUnit
-  Install into path from phpunit.de
-
 * Selenium Server (2.0+ required for Firefox 4)
   Install into directory '/openflights/test/selenium'
 
@@ -13,5 +10,5 @@ Requirements:
 
 Testing:
 
-Run ./run-suite.sh and hope for the best!  Test bootstrap logs into log/bootstrap.log, Selenium logs go into log/selenium.log.
+Run ./run-suite.sh and hope for the best! Test bootstrap logs into log/bootstrap.log, Selenium logs go into log/selenium.log.
 
