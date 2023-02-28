@@ -6,7 +6,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // Check demo user map
 class BlockAnonExportCase extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("export" => "true");
@@ -16,7 +16,7 @@ class BlockAnonExportCase extends WebTestCase {
 }
 
 class ExportAirlineToCSVCase extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $route;
 
     // First figure out the correct results

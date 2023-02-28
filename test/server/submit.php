@@ -9,7 +9,7 @@ $fid = null; // global for newly-added flight
 
 // Try to add a flight when not logged in
 class AddSingleFlightWithoutLoggingInTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight, $fid;
 
     $msg = $this->post($webroot . "php/submit.php", $flight);
@@ -19,7 +19,7 @@ class AddSingleFlightWithoutLoggingInTest extends WebTestCase {
 
 // Add loop flight (src==dest)
 class AddLoopFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $loopflight;
 
     assert_login($this);
@@ -36,7 +36,7 @@ class AddLoopFlightTest extends WebTestCase {
 
 // Add multiple flights at once
 class AddMultiFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $multiflight;
 
     assert_login($this);
@@ -53,7 +53,7 @@ class AddMultiFlightTest extends WebTestCase {
 
 // Not an actual test, just cleaning up
 class DeleteExtraFlightsTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
 
     $dbh = db_connect();
@@ -65,7 +65,7 @@ class DeleteExtraFlightsTest extends WebTestCase {
 
 // Add a single flight
 class AddSingleFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight, $fid;
 
     assert_login($this);
@@ -90,7 +90,7 @@ class AddSingleFlightTest extends WebTestCase {
 
 // Fetch and validate newly-added flight
 class FetchAddSingleFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight, $fid;
 
     assert_login($this);
@@ -117,7 +117,7 @@ class FetchAddSingleFlightTest extends WebTestCase {
 
 // Edit new flight, altering all fields into flight2
 class EditFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2, $fid;
 
     assert_login($this);
@@ -131,7 +131,7 @@ class EditFlightTest extends WebTestCase {
 
 // Fetch and validate newly-added flight
 class FetchEditedFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2, $fid;
 
     assert_login($this);
@@ -158,7 +158,7 @@ class FetchEditedFlightTest extends WebTestCase {
 
 // CSV export and validate edited flight
 class CSVExportFlightTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight2, $fid;
 
     assert_login($this);

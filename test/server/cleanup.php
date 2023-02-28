@@ -3,7 +3,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // Not an actual test, just cleaning up
 class DeleteFlightsTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
 
     $dbh = db_connect();
@@ -15,7 +15,7 @@ class DeleteFlightsTest extends WebTestCase {
 
 // Not an actual test, just cleaning up
 class DeleteAirportTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
 
     $dbh = db_connect();
@@ -27,7 +27,7 @@ class DeleteAirportTest extends WebTestCase {
 
 // Not an actual test, just cleaning up
 class DeleteAirlinesTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
 
     $dbh = db_connect();
@@ -39,7 +39,7 @@ class DeleteAirlinesTest extends WebTestCase {
 
 // Not an actual test, just cleaning up
 class DeleteUserTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
 
     $dbh = db_connect();

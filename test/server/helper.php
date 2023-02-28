@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/../../php/helper.php');
 // Airport helpers
 
 class FormatApCodeTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $row = array("iata" => "AAA", "icao" => "BBBB");
     $this->assertEqual(format_apcode($row), "AAA");
 
@@ -25,7 +25,7 @@ class FormatApCodeTest extends UnitTestCase {
 }
 
 class FormatAirportTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $row = array("name" => "Airport", "city" => "City", "country" => "Country", "iata" => "AAA", "icao" => "BBBB");
     $this->assertEqual(format_airport($row), "City-Airport (AAA), Country");
 
@@ -47,7 +47,7 @@ class FormatAirportTest extends UnitTestCase {
 // Airline helpers
 
 class FormatAirlineTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $row = array("name" => "Airline", "iata" => "AA", "icao" => "BBB", "mode" => "F");
     $this->assertEqual(format_airline($row), "Airline (AA)");
 
@@ -60,7 +60,7 @@ class FormatAirlineTest extends UnitTestCase {
 }
 
 class FormatAlCodeTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $this->assertEqual(format_alcode("AA", "BBB", "X"), "");
     $this->assertEqual(format_alcode("AA", "BBB", "F"), "AA");
     $this->assertEqual(format_alcode("AA", "BBB", null), "AA");
@@ -72,7 +72,7 @@ class FormatAlCodeTest extends UnitTestCase {
 // Great Circle helpers
 
 class GcDurationTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $this->assertEqual(gcDuration(0), "00:30");
     $this->assertEqual(gcDuration(250), "01:00");
     $this->assertEqual(gcDuration(500), "01:30");
@@ -81,14 +81,14 @@ class GcDurationTest extends UnitTestCase {
 
 // ##TODO## Extend
 class GcDistanceTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $dbh = db_connect();
     $this->assertEqual(gcDistance($dbh, 1, 1), array(0, gcDuration(0)));
   }
 }
 
 class FileUrlWithDateTest extends UnitTestCase {
-  function test() {
+  public function test() {
     $docroot = $_SERVER["DOCUMENT_ROOT"];
     $this->assertNotNull($docroot);
     $this->assertNotEqual($docroot, "/");

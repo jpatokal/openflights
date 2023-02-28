@@ -8,7 +8,7 @@ include_once(dirname(__FILE__) . '/config.php');
 $challenge = "";
 
 class ResetPwInvalidRequestLinkTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings;
 
     $reset = array('email' => $settings['email'] . "invalid",
@@ -19,7 +19,7 @@ class ResetPwInvalidRequestLinkTest extends WebTestCase {
 }
 
 class ResetPwValidRequestLinkTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $challenge;
 
     $reset = array('email' => $settings['email'],
@@ -32,7 +32,7 @@ class ResetPwValidRequestLinkTest extends WebTestCase {
 }
 
 class ResetPwInvalidChallengeTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $challenge;
 
     $reset = array('user' => $settings['name'],
@@ -43,7 +43,7 @@ class ResetPwInvalidChallengeTest extends WebTestCase {
 }
 
 class ResetPwValidChallengeTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $challenge;
 
     $reset = array('user' => $settings['name'],

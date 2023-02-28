@@ -9,7 +9,7 @@ $trid = null;
 
 // Create new trip without logging in
 class NewTripNotLoggedInTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip;
 
     $trip["type"] = "NEW";
@@ -20,7 +20,7 @@ class NewTripNotLoggedInTest extends WebTestCase {
 
 // Create new trip
 class SuccessfulNewTripTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     login($this);
@@ -35,7 +35,7 @@ class SuccessfulNewTripTest extends WebTestCase {
 
 // Try to edit when not logged in
 class EditTripWithoutLoggingInTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     $trip["type"] = "EDIT";
@@ -47,7 +47,7 @@ class EditTripWithoutLoggingInTest extends WebTestCase {
 
 // Try to manipulate wrong trip id
 class EditWrongTridTripTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip;
 
     login($this);
@@ -60,7 +60,7 @@ class EditWrongTridTripTest extends WebTestCase {
 
 // Check public trip
 class CheckPublicFullTripMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     $params = array("param" => "true",
@@ -80,7 +80,7 @@ class CheckPublicFullTripMap extends WebTestCase {
 
 // Change trip settings
 class SuccessfulEditTripTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     login($this);
@@ -105,7 +105,7 @@ class SuccessfulEditTripTest extends WebTestCase {
 
 // Check private trip (should fail)
 class CheckPrivateFullTripMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     $params = array("param" => "true",
@@ -119,7 +119,7 @@ class CheckPrivateFullTripMap extends WebTestCase {
 
 // Check invalid trid trip map (should fail)
 class CheckNonExistentFullTripMap extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     $params = array("param" => "true",
@@ -132,7 +132,7 @@ class CheckNonExistentFullTripMap extends WebTestCase {
 
 // Delete trip
 class DeleteTripTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $trip, $trid;
 
     login($this);

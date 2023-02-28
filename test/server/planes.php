@@ -9,7 +9,7 @@ $plid = null; // global for newly-added flight
 
 // Add a new plane
 class AddNewPlaneTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $settings, $flight, $plid;
 
     assert_login($this);
@@ -47,7 +47,7 @@ class AddNewPlaneTest extends WebTestCase {
 
 // Not an actual test, just cleaning up
 class DeleteExtraPlanesTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings, $plid;
 
     $dbh = db_connect();

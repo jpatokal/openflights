@@ -5,7 +5,7 @@ include_once(dirname(__FILE__) . '/config.php');
 // NB: Assumes the test user exists
 
 class ImportUnknownFiletypeTest extends WebTestCase {
-  function test() {
+  public function test() {
     cleanup();
 
     $result = login($this);
@@ -17,7 +17,7 @@ class ImportUnknownFiletypeTest extends WebTestCase {
 }
 
 class ImportCSVRoundtripTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -32,7 +32,7 @@ class ImportCSVRoundtripTest extends WebTestCase {
 }
 
 class ImportCSVWithVariantsTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -47,7 +47,7 @@ class ImportCSVWithVariantsTest extends WebTestCase {
 }
 
 class ImportCSVWithCROnlyTerminators extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -61,7 +61,7 @@ class ImportCSVWithCROnlyTerminators extends WebTestCase {
 
 // Import a normal set of FM flights
 class ImportFlightMemoryStandardTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -77,7 +77,7 @@ class ImportFlightMemoryStandardTest extends WebTestCase {
 
 // Import a set of FM flights with data in km
 class ImportFlightMemoryKilometerTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -93,7 +93,7 @@ class ImportFlightMemoryKilometerTest extends WebTestCase {
 
 // Import a set of FM flights with Latin1 data
 class ImportFlightMemoryLatin1Test extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -109,7 +109,7 @@ class ImportFlightMemoryLatin1Test extends WebTestCase {
 
 // Import a set of FM flights with new airlines
 class ImportFlightMemoryNewAirlinesTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 
@@ -125,7 +125,7 @@ class ImportFlightMemoryNewAirlinesTest extends WebTestCase {
 
 // Import a set of FM flights using slightly tweaked 2015 format
 class ImportFlightMemoryNewStyleTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $settings;
     cleanup();
 

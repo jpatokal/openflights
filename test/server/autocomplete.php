@@ -9,7 +9,7 @@ include_once(dirname(__FILE__) . '/config.php');
 
 // Search for string found in both airport and airline name
 class MultiSearchSharedLongStringTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $qs_string;
 
     $params = array("qs" => "Singapore");
@@ -24,7 +24,7 @@ class MultiSearchSharedLongStringTest extends WebTestCase {
 
 // Search for string found only in airport name
 class MultiSearchAirportOnlyLongStringTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("qs" => "Ayers");
@@ -37,7 +37,7 @@ class MultiSearchAirportOnlyLongStringTest extends WebTestCase {
 
 // Search for string found in only airline name
 class MultiSearchAirlineOnlyLongStringTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("qs" => "Qantas");
@@ -50,7 +50,7 @@ class MultiSearchAirlineOnlyLongStringTest extends WebTestCase {
 
 // Search for airport by IATA
 class MultiSearchAirportIATATest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport;
 
     $params = array("qs" => "SIN");
@@ -63,7 +63,7 @@ class MultiSearchAirportIATATest extends WebTestCase {
 
 // Search for airline by IATA
 class MultiSearchAirlineIATATest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("qs" => "SQ");
@@ -80,7 +80,7 @@ class MultiSearchAirlineIATATest extends WebTestCase {
 
 // Single airport search by short city name
 class SingleAirportShortCityCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport;
 
     $params = array("quick" => "true",
@@ -92,7 +92,7 @@ class SingleAirportShortCityCompleteTest extends WebTestCase {
 
 // Single airport search by long city name
 class SingleAirportCityLongCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport;
 
     $params = array("quick" => "true",
@@ -104,7 +104,7 @@ class SingleAirportCityLongCompleteTest extends WebTestCase {
 
 // Single airport search by IATA code
 class SingleAirportIATACompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airport;
 
     $params = array("quick" => "true",
@@ -116,7 +116,7 @@ class SingleAirportIATACompleteTest extends WebTestCase {
 
 // Single airport search by ICAO code
 class SingleAirportICAOCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("quick" => "true",
@@ -128,7 +128,7 @@ class SingleAirportICAOCompleteTest extends WebTestCase {
 
 // Ensure that autocompleted entries still match after minor edits
 class SingleAirportQueryTrimTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("quick" => "true", "src_ap" => "Singapore Changi (SIN) Blah Blah");
@@ -151,7 +151,7 @@ class SingleAirportQueryTrimTest extends WebTestCase {
 
 // Single airline search by name
 class SingleAirlineNameCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("quick" => "true",
@@ -164,7 +164,7 @@ class SingleAirlineNameCompleteTest extends WebTestCase {
 
 // Single airline search by alias
 class SingleAirlineAliasCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot;
 
     $params = array("quick" => "true",
@@ -177,7 +177,7 @@ class SingleAirlineAliasCompleteTest extends WebTestCase {
 
 // Single airline search by IATA code
 class SingleAirlineIATACompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
@@ -190,7 +190,7 @@ class SingleAirlineIATACompleteTest extends WebTestCase {
 
 // Single airline search by ICAO code
 class SingleAirlineICAOCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
@@ -206,7 +206,7 @@ class SingleAirlineICAOCompleteTest extends WebTestCase {
 //
 
 class SinglePlaneMajorNameCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
@@ -217,7 +217,7 @@ class SinglePlaneMajorNameCompleteTest extends WebTestCase {
 }
 
 class SinglePlaneMajorNameMinorVariantCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
@@ -228,7 +228,7 @@ class SinglePlaneMajorNameMinorVariantCompleteTest extends WebTestCase {
 }
 
 class SinglePlaneMinorNameCompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
@@ -239,7 +239,7 @@ class SinglePlaneMinorNameCompleteTest extends WebTestCase {
 }
 
 class SinglePlaneIATACompleteTest extends WebTestCase {
-  function test() {
+  public function test() {
     global $webroot, $airline;
 
     $params = array("quick" => "true",
