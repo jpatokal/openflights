@@ -12,11 +12,13 @@ CREATE TABLE `airlines` (
   `icao` varchar(3) default NULL,
   `callsign` text,
   `country` text,
+  `country_code` varchar(2),
   `alid` int(11) NOT NULL auto_increment,
   `uid` int(11) default NULL,
   `alias` text,
   `mode` char(1) default 'F',
   `active` varchar(1) default 'N',
+  `source` text,
   PRIMARY KEY  (`alid`),
   KEY `iata` (`iata`),
   KEY `icao` (`icao`)
@@ -27,6 +29,7 @@ CREATE TABLE `airports` (
   `name` text NOT NULL,
   `city` text,
   `country` text,
+  `country_code` varchar(2),
   `iata` varchar(3) default NULL,
   `icao` varchar(4) default NULL,
   `x` double NOT NULL,
@@ -37,6 +40,8 @@ CREATE TABLE `airports` (
   `timezone` float default NULL,
   `dst` char(1) default NULL,
   `tz_id` text,
+  `type` text,
+  `source` text,
   PRIMARY KEY  (`apid`),
   KEY `x` (`x`),
   KEY `y` (`y`),
@@ -96,12 +101,10 @@ CREATE TABLE `airports_oa` (
 
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE `countries` (
-  `junk` text,
-  `code` varchar(2) NOT NULL,
   `name` text,
-  `oa_code` varchar(2) default NULL,
-  `dst` char(1) default NULL,
-  PRIMARY KEY  (`code`)
+  `iso_code` varchar(2) default NULL,
+  `dafif_code` varchar(2) NOT NULL,
+  PRIMARY KEY  (`dafif_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `countries_oa`;
