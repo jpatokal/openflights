@@ -52,8 +52,9 @@ sudo -u openflights cp php/config.php.sample php/config.php
 # Set up TripIt (if you need it)
 sudo -u openflights vi php/secrets.php
 <<<
+<?php
 $tripit_app_id = "[YOUR-ID]";
-$tripit_app_secret = "[YOUR-APP-SECRET]"
+$tripit_app_secret = "[YOUR-APP-SECRET]";
 >>>
 
 # Set up email and cron for account expiry
