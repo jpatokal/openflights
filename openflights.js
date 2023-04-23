@@ -123,12 +123,12 @@ function init(){
 var poliLayer = new OpenLayers.Layer.XYZ(
     "Political",
     [
-"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-"https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png"
+        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png"
     ], {
-        attribution: "Map tiles by <a href='http://cartodb.com'>CartoDB</a> (CC BY 3.0), data by <a href='/http://openstreetmap.com'>OSM</a> (ODbL)",
+        attribution: "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (ODbL)",
         sphericalMercator: true,
         transitionEffect: 'resize',
         wrapDateLine: true
@@ -137,9 +137,9 @@ var poliLayer = new OpenLayers.Layer.XYZ(
 var artLayer = new OpenLayers.Layer.XYZ(
     "Artistic",
     [
-"https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.png"
+        "https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.png"
     ], {
-        attribution: "Tiles &copy; <a href='http://maps.stamen.com/'>Stamen</a>",
+        attribution: "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)",
         sphericalMercator: true,
         transitionEffect: 'resize',
         wrapDateLine: true
@@ -149,9 +149,9 @@ var artLayer = new OpenLayers.Layer.XYZ(
 var earthLayer = new OpenLayers.Layer.XYZ(
     "Satellite",
     [
-"https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg"
+        "https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg"
     ], {
-        attribution: "Tiles by <a href='https://www.mapbox.com/satellite/' target='_blank'>Mapbox</a>",
+        attribution: "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' target='_blank'>Mapbox</a>",
         sphericalMercator: true,
         transitionEffect: 'resize',
         wrapDateLine: true
