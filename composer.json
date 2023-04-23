@@ -40,7 +40,7 @@
             "minus-x fix ."
         ],
         "lint": "parallel-lint . --exclude vendor",
-        "phpcs": "phpcs -p -s --cache --encoding=utf-8 --standard=PSR12 --extensions=php --ignore=*vendor/* *",
+        "phpcs": "phpcs -p -s --cache --encoding=utf-8 --extensions=php --ignore=*vendor/* *",
         "phpcbf": "phpcbf",
         "test": [
             "@lint",
