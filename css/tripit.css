@@ -47,8 +47,7 @@ div.import_all {
 }
 
 .tripit_sprites_soc {
-  background: url("/img/tripit-sprites-social.png");
-  background-repeat: no-repeat;
+  background: url("/img/tripit-sprites-social.png") no-repeat;
   padding-left: 20px;
 }
 
