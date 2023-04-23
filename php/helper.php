@@ -91,7 +91,9 @@ function format_airline($row) {
 }
 
 function format_alcode($iata, $icao, $mode) {
-  if($mode && $mode != "F") return "";
+  if($mode && $mode != "F") {
+    return "";
+  }
   if($iata && $iata != "") {
     return $iata;
   } else {
@@ -121,7 +123,9 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
     // Handle both OO and procedural-style database handles, depending on what type we've got.
     $sth = $dbh->prepare($sql);
     $sth->execute();
-    if($sth->rowCount() != 2) return array(null, null);
+    if($sth->rowCount() != 2) {
+      return array(null, null);
+    }
     $coord1 = $sth->fetch();
     $lon1 = $coord1["x"];
     $lat1 = $coord1["y"];
