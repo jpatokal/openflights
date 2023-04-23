@@ -1,6 +1,6 @@
 /**
  * @fileoverview Base class for the OpenFlightsMap widget.  See full documentation
- * and sample code at {@link http://openflights.org/widget/ OpenFlights Widget}.
+ * and sample code at {@link https://openflights.org/widget/ OpenFlights Widget}.
  *
  * @author Jani Patokallio jani@contentshare.sg
  * @version 0.1
@@ -48,7 +48,7 @@ function OpenFlightsMap(map, layers) {
 	       new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
 	       new OpenLayers.Control.Attribution()
 	       ] });
-  
+
   var flightLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
 					    {styleMap: new OpenLayers.StyleMap({
 						strokeColor: "${color}",
@@ -226,7 +226,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
   RAD2DEG = 57.29577951308;
   GC_STEP = 500; // draw segment every GC_STEP mi
   GC_MIN = 1000; // trigger GC paths once distance is greater than this
-  
+
   var COLOR_NORMAL = "#ee9900"; //orange
   var COLOR_ROUTE = "#99ee00"; //yellow
   var COLOR_TRAIN = "#ee5555"; //dull red
@@ -252,10 +252,10 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     if(! stroke) {
       stroke = "solid";
     }
-    
+
     // 1,2 flights as single pixel
     count = Math.floor(Math.sqrt(count) + 0.5);
-    
+
     var paths = [ gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2)) ];
     // Path is in or extends into east (+) half, so we have to make a -360 copy
     if(x1 > 0 || x2 > 0) {
@@ -265,7 +265,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     if(x1 < 0 || x2 < 0) {
       paths.push(gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2)));
     }
-    
+
     var features = [];
     for(i = 0; i < paths.length; i++) {
       features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(paths[i]),
@@ -289,7 +289,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     // Description
     var desc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small><br>Flights: " + count;
     var rdesc = name + " (<B>" + code + "</B>)<br><small>" + city + ", " + country + "</small>";
-    
+
     // Select icon based on number of flights (0...airportIcons.length-1)
     var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
 
@@ -311,7 +311,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
       of_error(name + ":" + colorIndex + " of " + airportMaxFlights);
       return;
     }
-    
+
     var point = new OpenLayers.Geometry.Point(x, y);
     var feature = new OpenLayers.Feature.Vector(point);
     feature.attributes = {
@@ -323,7 +323,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
       desc: desc,
       rdesc: rdesc,
       opacity: opacity,
-      icon: airportIcons[colorIndex][0], 
+      icon: airportIcons[colorIndex][0],
       size: airportIcons[colorIndex][1],
       index: count,
       offset: Math.floor(-airportIcons[colorIndex][1]/2)
@@ -333,7 +333,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
   }
 
   // http://trac.openlayers.org/wiki/GreatCircleAlgorithms
-  
+
   // Compute great circle distance between two points (spherical law of cosines)
   // http://www.movable-type.co.uk/scripts/latlong.html
   // © 2002-2008 Chris Veness
@@ -343,46 +343,46 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     lon1 = lon1 * rad;
     lat2 = lat2 * rad;
     lon2 = lon2 * rad;
-    var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
+    var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) +
 		      Math.cos(lat1)*Math.cos(lat2) *
 		      Math.cos(lon2-lon1));
     if (d < 0) d += Math.PI;
     return Math.floor(d * EARTH_RADIUS);
-    
+
   }
-  
+
   // Compute great circle bearing from point "from" towards point "to"
   function gcBearingTo(from, to) {
     var x = new Array(2);
     var y = new Array(2);
     var bearing;
     var adjust;
-    
+
     if( isValid(from) && isValid(to)) {
       x[0] = from.x * DEG2RAD;    y[0] = from.y * DEG2RAD;
       x[1] = to.x * DEG2RAD;    y[1] = to.y * DEG2RAD;
-      
+
       var a = Math.cos(y[1]) * Math.sin(x[1] - x[0]);
-      var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0]) 
+      var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0])
 	* Math.cos(y[1]) * Math.cos(x[1] - x[0]);
-      
+
       if((a == 0) && (b == 0)) {
 	bearing = 0;
 	return bearing;
       }
-      
+
       if( b == 0) {
-	if( a < 0)  
+	if( a < 0)
 	  bearing = 270;
 	else
 	  bearing = 90;
 	return bearing;
       }
-      
-      if( b < 0) 
+
+      if( b < 0)
 	adjust = Math.PI;
       else {
-	if( a < 0) 
+	if( a < 0)
 	  adjust = 2 * Math.PI;
 	else
 	  adjust = 0;
@@ -392,34 +392,34 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     } else
       return null;
   }
-  
-  
+
+
   /**
    * Compute great circle waypoint "distance" miles away from "from" in direction "bearing"
    */
   function gcWaypoint(from, distance, bearing) {
     var wp = new OpenLayers.Geometry.Point( 0, 0 );
-    
+
     // Math.* trig functions require angles to be in radians
     var x = from.x * DEG2RAD;
     var y = from.y * DEG2RAD;
     var radBearing = bearing * DEG2RAD;
-    
+
     // Convert arc distance to radians
     var d = distance / EARTH_RADIUS;
-    
+
     // Modified based on http://williams.best.vwh.net/avform.htm
-    var lat = Math.asin( Math.sin(y) * Math.cos(d) + Math.cos(y) * Math.sin(d) * Math.cos(radBearing));  
+    var lat = Math.asin( Math.sin(y) * Math.cos(d) + Math.cos(y) * Math.sin(d) * Math.cos(radBearing));
     var lon = Math.atan2( Math.sin(radBearing) * Math.sin(d) * Math.cos(y), Math.cos(d) - Math.sin(y) * Math.sin(lat));
     wp.x = (x + lon) * RAD2DEG;
     wp.y = lat * RAD2DEG;
     return wp;
   }
-  
+
   /*
    * Return array of GC waypoints between two points
    * Flips across dateline if needed, and removes any invisible points
-   */  
+   */
   function gcPath(startPoint, endPoint) {
     // Do we cross the dateline?  If yes, then flip endPoint across it
     if(Math.abs(startPoint.x-endPoint.x) > 180) {
@@ -429,14 +429,14 @@ OpenFlightsMap.prototype.draw = function(transport, type){
 	endPoint.x += 360;
       }
     }
-    
+
     // Compute distance between points
     var distance = gcDistance(startPoint.y, startPoint.x, endPoint.y, endPoint.x);
     if(distance < GC_MIN) {
       // Short enough that we don't need to show curvature
       return [startPoint, endPoint];
     }
-    
+
     // And... action!
     var pointList = new Array();
     var wayPoint = startPoint;
@@ -456,7 +456,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
 	  break; // line's gone off the map, so stop rendering
 	}
       }
-      
+
       // Increase step resolution near the poles
       if(Math.abs(wayPoint.y) > 60) {
 	step = GC_STEP / 2;
@@ -470,12 +470,12 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     }
     return pointList;
   }
-  
+
   // Check if point is a point
   function isValid(point) {
     return ((point.x != null) && (point.y != null) && (point.x != NaN) && (point.y != NaN))
   }
-  
+
   // Core starts here
   this.debug("map.draw(" + type + ")");
   str = transport.responseText;
@@ -483,7 +483,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     this.error(str);
     return;
   }
-  
+
   var master = str.split("\n");
   var stats = master[0];
   var flights = master[1];
@@ -503,9 +503,9 @@ OpenFlightsMap.prototype.draw = function(transport, type){
     flightTotal = col[1];
     desc = col[2];
   }
-  
+
   $("maptitle").innerHTML = this.getRouteMapTitle(type, apid, flightTotal, desc);
-  
+
   // New user (or filter setting) with no flights?  Then don't even try to draw
   if(flightTotal != "0") {
     var rows = flights.split("\t");
@@ -530,12 +530,12 @@ OpenFlightsMap.prototype.draw = function(transport, type){
   } else {
     $("maptitle").innerHTML = "No flights";
   }
-  
+
   // Route maps draw the core airport even if there are no routes
   if(flightTotal != "0" || type == OpenFlightsMap.AIRPORT) {
     var rows = airports.split("\t");
     var airports = Array();
-    
+
     // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
     airportMaxFlights = rows[rows.length - 1].split(";")[4];
     for (var r = 0; r < rows.length; r++) {

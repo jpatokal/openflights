@@ -1,5 +1,5 @@
-#    Openflights-to-email - A script to read flight data from 
-#    openflights.org and send an email notice of todays flights. 
+#    Openflights-to-email - A script to read flight data from
+#    openflights.org and send an email notice of todays flights.
 #
 #    Copyright 2011 Niko Kotilainen - (http://kotilainen.eu)
 #
@@ -54,7 +54,7 @@ def get_openflights_csv(username, pass_hash):
   # Login to openflights.org
   http = httplib2.Http()
   headers = {'Content-type': 'application/x-www-form-urlencoded'}
-  url = "http://openflights.org/php/"
+  url = "https://openflights.org/php/"
   response, content = http.request(url+"map.php", 'POST', headers=headers)
   headers['Cookie'] = response['set-cookie']
   challenge = content.split("\n")[0].split(";")[-1]
@@ -74,7 +74,7 @@ def construct_email(flights_csv):
   today = "%d-%02d-%02d" %(now.year, now.month, now.day)
   #today = "2010-12-28"
 
-  # Pick todays flights  
+  # Pick todays flights
   flights_today = []
   for line in flights_csv:
     #print line
@@ -90,7 +90,7 @@ def construct_email(flights_csv):
     message += flights_today[0]
     message += "."
     return message
-  
+
   elif len(flights_today) > 1:
     message += "<br><ul><li>"
   #  flights = ["<li>%s</li" %  x for x in flights]
@@ -98,9 +98,9 @@ def construct_email(flights_csv):
     message += "</li></ul>"
     return message
   else:
-    return None  
+    return None
 
-  
+
 if __name__ == "__main__":
   flights_csv = get_openflights_csv(openflights_username, openflights_pass_hash)
   email = construct_email(flights_csv)

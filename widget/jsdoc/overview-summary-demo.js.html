@@ -7,9 +7,9 @@
 <link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
 <script>
 function asd() {
-	
+
 		parent.document.title="demo.js Overview";
-	
+
 }
 </script>
 </head>
@@ -23,11 +23,11 @@ function asd() {
 <a name="navbar_top_firstrow"><!-- --></a>
 <table border="0" cellpadding="0" cellspacing="3">
   <tr align="center" valign="top">
-  
-  
+
+
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
   <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
-  
+
 
   <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
@@ -67,23 +67,23 @@ function asd() {
 
 <hr>
 <center>
-	
+
 	   <h2>demo.js</h2>
-	
+
 </center>
 
-	
+
 
 
 <h4>Summary</h4>
 <p>
-	
+
 		OpenFlightsMap Widget demo.
- See full documentation and sample code at <a href='http://openflights.org/widget/'>OpenFlights Widget</a>.
+ See full documentation and sample code at <a href='https://openflights.org/widget/'>OpenFlights Widget</a>.
 
  <BR/><BR/><B>Version: </B>0.1<BR/><BR/><B>Author:</B> Jani Patokallio jani@contentshare.sg
  <BR/><B>See:</B><UL>- <a href="OpenFlightsMap.html#">OpenFlightsMap</a></UL>
-	
+
 </p>
 
 <hr>
@@ -101,8 +101,8 @@ function asd() {
 				</font>
 			</td>
 		</tr>
-	
-		
+
+
 		   <tr bgcolor="white" class="TableRowColor">
 		      <td align="right" valign="top" width="1%">
 			 <font size="-1">
@@ -119,7 +119,7 @@ function asd() {
 			 User has requested a change to the map
 		      </td>
 		   </tr>
-		
+
 		   <tr bgcolor="white" class="TableRowColor">
 		      <td align="right" valign="top" width="1%">
 			 <font size="-1">
@@ -136,7 +136,7 @@ function asd() {
 			 Check which map type radio button is currently selected
 		      </td>
 		   </tr>
-		
+
 		   <tr bgcolor="white" class="TableRowColor">
 		      <td align="right" valign="top" width="1%">
 			 <font size="-1">
@@ -153,7 +153,7 @@ function asd() {
 			 Called by OpenFlightsMap when an airport is selected, typically used to create a popup in response.
 		      </td>
 		   </tr>
-		
+
 		   <tr bgcolor="white" class="TableRowColor">
 		      <td align="right" valign="top" width="1%">
 			 <font size="-1">
@@ -172,8 +172,8 @@ function asd() {
  call onAirportUnselect(A) and then onAirportSelect(B).
 		      </td>
 		   </tr>
-		
-	
+
+
 	</table>
     <p>
 
@@ -182,7 +182,7 @@ function asd() {
 
         <pre class="sourceview"><span class="comment">/**
  * <span class="attrib">@fileoverview</span> OpenFlightsMap Widget demo.
- * See full documentation and sample code at {<span class="attrib">@link</span> http://openflights.org/widget/ OpenFlights Widget}.
+ * See full documentation and sample code at {<span class="attrib">@link</span> https://openflights.org/widget/ OpenFlights Widget}.
  *
  * <span class="attrib">@see</span> OpenFlightsMap
  * <span class="attrib">@author</span> Jani Patokallio jani<span class="attrib">@contentshare</span>.sg
@@ -212,12 +212,12 @@ window.onload = <span class="reserved">function</span> init(){
 					 {layers: <span class="literal">'basic'</span>},
 					 {transitionEffect: <span class="literal">'resize'</span>, wrapDateLine: true}
 					 );
-  
-  var jpl_wms = new OpenLayers.Layer.WMS(<span class="literal">"Geographical (NASA)"</span>, 
+
+  var jpl_wms = new OpenLayers.Layer.WMS(<span class="literal">"Geographical (NASA)"</span>,
                 [<span class="literal">"http://t1.hypercube.telascience.org/tiles?"</span>,
                  <span class="literal">"http://t2.hypercube.telascience.org/tiles?"</span>,
                  <span class="literal">"http://t3.hypercube.telascience.org/tiles?"</span>,
-                 <span class="literal">"http://t4.hypercube.telascience.org/tiles?"</span>], 
+                 <span class="literal">"http://t4.hypercube.telascience.org/tiles?"</span>],
                 {layers: <span class="literal">'landsat7'</span>},
 	        {transitionEffect: <span class="literal">'resize'</span>, wrapDateLine: true}
             );
@@ -259,7 +259,7 @@ window.onload = <span class="reserved">function</span> init(){
 
   <span class="reserved">if</span>(!airport.popup) {
     <span class="comment">// Create new popup</span>
-    airport.popup = new OpenLayers.Popup.FramedCloud(<span class="literal">"airport"</span>, 
+    airport.popup = new OpenLayers.Popup.FramedCloud(<span class="literal">"airport"</span>,
 						     airport.geometry.getBounds().getCenterLonLat(),
 						     new OpenLayers.Size(200,80),
 						     desc, null, false);
@@ -302,7 +302,7 @@ window.onload = <span class="reserved">function</span> init(){
  * User has requested a change to the map
  */</span>
 <span class="reserved">function</span> changeMap() {
-  var type = getMapType(); 
+  var type = getMapType();
   var id = document.forms[<span class="literal">'controlform'</span>].apid.value;
 
   <span class="reserved">if</span>((type == <span class="literal">'L'</span> || type == <span class="literal">'R'</span>) &amp;&amp; id == <span class="literal">""</span>) {
@@ -326,11 +326,11 @@ window.onload = <span class="reserved">function</span> init(){
 <a name="navbar_top_firstrow"><!-- --></a>
 <table border="0" cellpadding="0" cellspacing="3">
   <tr align="center" valign="top">
-  
-  
+
+
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
   <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
-  
+
 
   <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>

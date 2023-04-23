@@ -1,6 +1,6 @@
 /**
  * @fileoverview OpenFlightsMap Widget demo.
- * See full documentation and sample code at {@link http://openflights.org/widget/ OpenFlights Widget}.
+ * See full documentation and sample code at {@link https://openflights.org/widget/ OpenFlights Widget}.
  *
  * @see OpenFlightsMap
  * @author Jani Patokallio jani@contentshare.sg
@@ -30,12 +30,12 @@ window.onload = function init(){
 					 {layers: 'basic'},
 					 {transitionEffect: 'resize', wrapDateLine: true}
 					 );
-  
-  var jpl_wms = new OpenLayers.Layer.WMS("Geographical (NASA)", 
+
+  var jpl_wms = new OpenLayers.Layer.WMS("Geographical (NASA)",
                 ["http://t1.hypercube.telascience.org/tiles?",
                  "http://t2.hypercube.telascience.org/tiles?",
                  "http://t3.hypercube.telascience.org/tiles?",
-                 "http://t4.hypercube.telascience.org/tiles?"], 
+                 "http://t4.hypercube.telascience.org/tiles?"],
                 {layers: 'landsat7'},
 	        {transitionEffect: 'resize', wrapDateLine: true}
             );
@@ -77,7 +77,7 @@ function onAirportSelect(airport) {
 
   if(!airport.popup) {
     // Create new popup
-    airport.popup = new OpenLayers.Popup.FramedCloud("airport", 
+    airport.popup = new OpenLayers.Popup.FramedCloud("airport",
 						     airport.geometry.getBounds().getCenterLonLat(),
 						     new OpenLayers.Size(200,80),
 						     desc, null, false);
@@ -120,7 +120,7 @@ function getMapType() {
  * User has requested a change to the map
  */
 function changeMap() {
-  var type = getMapType(); 
+  var type = getMapType();
   var id = document.forms['controlform'].apid.value;
 
   if((type == 'L' || type == 'R') && id == "") {

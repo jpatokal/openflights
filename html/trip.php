@@ -67,7 +67,7 @@ if($trid) {
 	      <td><?php echo _("OpenFlights URL") ?></td>
 	      <td><input type="text" value="<?php
 if($trid) {
-  echo "http://openflights.org/trip/" . $trid;
+  echo "https://openflights.org/trip/" . $trid;
 } else {
   echo _("Not assigned yet");
 }?>" name="puburl" style="border:none" size="40" readonly></td>

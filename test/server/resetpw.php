@@ -25,7 +25,7 @@ class ResetPwValidRequestLinkTest extends WebTestCase {
     $reset = array('email' => $settings['email'],
 		   'unittest' => 'true');
     $msg = $this->post($webroot . "help/resetpw.php", $reset);
-    $this->assertText('http://openflights.org/help/resetpw?user=' . $settings['name']);
+    $this->assertText('https://openflights.org/help/resetpw?user=' . $settings['name']);
     $chunks = explode("***", $msg);
     $challenge = $chunks[1];
   }

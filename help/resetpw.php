@@ -38,7 +38,7 @@ if(isSet($_GET["challenge"])) {
   $sth->execute([$email]);
   if ($myrow = $sth->fetch()) {
     $name = $myrow['name'];
-    $link = "http://openflights.org/help/resetpw?user=" . $name
+    $link = "https://openflights.org/help/resetpw?user=" . $name
       . "&challenge=" . $myrow['challenge'];
     $subject = "OpenFlights: Reset password";
     $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'.  To proceed, please click on the link below:

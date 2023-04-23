@@ -7,9 +7,9 @@
 <link rel ="stylesheet" type="text/css" href="stylesheet.css" title="Style">
 <script>
 function asd() {
-	
+
 		parent.document.title="map.js Overview";
-	
+
 }
 </script>
 </head>
@@ -23,11 +23,11 @@ function asd() {
 <a name="navbar_top_firstrow"><!-- --></a>
 <table border="0" cellpadding="0" cellspacing="3">
   <tr align="center" valign="top">
-  
-  
+
+
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
   <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
-  
+
 
   <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
@@ -67,23 +67,23 @@ function asd() {
 
 <hr>
 <center>
-	
+
 	   <h2>map.js</h2>
-	
+
 </center>
 
-	
+
 
 
 <h4>Summary</h4>
 <p>
-	
+
 		Base class for the OpenFlightsMap widget.  See full documentation
- and sample code at <a href='http://openflights.org/widget/'>OpenFlights Widget</a>.
+ and sample code at <a href='https://openflights.org/widget/'>OpenFlights Widget</a>.
 
  <BR/><BR/><B>Version: </B>0.1<BR/><BR/><B>Author:</B> Jani Patokallio jani@contentshare.sg
  <BR/>
-	
+
 </p>
 
 <hr>
@@ -92,19 +92,19 @@ function asd() {
     <table border="1" cellpadding="3" cellspacing="0" width="100%">
     <tr bgcolor="#CCCCFF" class="TableHeadingColor">
     <td colspan=2><font size="+2">
-    
+
         <b>Class Summary</b>
-    
+
     </font></td>
     </tr>
-    
+
     <tr bgcolor="white" class="TableRowColor">
     <td width="15%"><b><a href="OpenFlightsMap.html">OpenFlightsMap</a></b></td>
     <td>Class for the OpenFlightsMap widget.</td>
     </tr>
-    
+
     </table>
-    <hr/> 
+    <hr/>
 
 
 <!-- ========== METHOD SUMMARY =========== -->
@@ -114,7 +114,7 @@ function asd() {
 
         <pre class="sourceview"><span class="comment">/**
  * <span class="attrib">@fileoverview</span> Base class for the OpenFlightsMap widget.  See full documentation
- * and sample code at {<span class="attrib">@link</span> http://openflights.org/widget/ OpenFlights Widget}.
+ * and sample code at {<span class="attrib">@link</span> https://openflights.org/widget/ OpenFlights Widget}.
  *
  * <span class="attrib">@author</span> Jani Patokallio jani<span class="attrib">@contentshare</span>.sg
  * <span class="attrib">@version</span> 0.1
@@ -162,7 +162,7 @@ OpenLayers.Util.onImageLoadErrorColor = <span class="literal">"transparent"</spa
 	       new OpenLayers.Control.OverviewMap({<span class="literal">'title'</span>: gt.gettext(<span class="literal">"Toggle overview map"</span>)}),
 	       new OpenLayers.Control.Attribution()
 	       ] });
-  
+
   var flightLayer = new OpenLayers.Layer.Vector(gt.gettext(<span class="literal">"Flights"</span>),
 					    {styleMap: new OpenLayers.StyleMap({
 						strokeColor: <span class="literal">"${color}"</span>,
@@ -340,7 +340,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
   RAD2DEG = 57.29577951308;
   GC_STEP = 500; <span class="comment">// draw segment every GC_STEP mi</span>
   GC_MIN = 1000; <span class="comment">// trigger GC paths once distance is greater than this</span>
-  
+
   var COLOR_NORMAL = <span class="literal">"#ee9900"</span>; <span class="comment">//orange</span>
   var COLOR_ROUTE = <span class="literal">"#99ee00"</span>; <span class="comment">//yellow</span>
   var COLOR_TRAIN = <span class="literal">"#ee5555"</span>; <span class="comment">//dull red</span>
@@ -366,10 +366,10 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     <span class="reserved">if</span>(! stroke) {
       stroke = <span class="literal">"solid"</span>;
     }
-    
+
     <span class="comment">// 1,2 flights as single pixel</span>
     count = Math.floor(Math.sqrt(count) + 0.5);
-    
+
     var paths = [ gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2)) ];
     <span class="comment">// Path is in or extends into east (+) half, so we have to make a -360 copy</span>
     <span class="reserved">if</span>(x1 &gt; 0 || x2 &gt; 0) {
@@ -379,7 +379,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     <span class="reserved">if</span>(x1 &lt; 0 || x2 &lt; 0) {
       paths.push(gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2)));
     }
-    
+
     var features = [];
     <span class="reserved">for</span>(i = 0; i &lt; paths.length; i++) {
       features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(paths[i]),
@@ -403,7 +403,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     <span class="comment">// Description</span>
     var desc = name + <span class="literal">" (&lt;B&gt;"</span> + code + <span class="literal">"&lt;/B&gt;)&lt;br&gt;&lt;small&gt;"</span> + city + <span class="literal">", "</span> + country + <span class="literal">"&lt;/small&gt;&lt;br&gt;Flights: "</span> + count;
     var rdesc = name + <span class="literal">" (&lt;B&gt;"</span> + code + <span class="literal">"&lt;/B&gt;)&lt;br&gt;&lt;small&gt;"</span> + city + <span class="literal">", "</span> + country + <span class="literal">"&lt;/small&gt;"</span>;
-    
+
     <span class="comment">// Select icon based on number of flights (0...airportIcons.length-1)</span>
     var colorIndex = Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
 
@@ -425,7 +425,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
       of_error(name + <span class="literal">":"</span> + colorIndex + <span class="literal">" of "</span> + airportMaxFlights);
       <span class="reserved">return</span>;
     }
-    
+
     var point = new OpenLayers.Geometry.Point(x, y);
     var feature = new OpenLayers.Feature.Vector(point);
     feature.attributes = {
@@ -437,7 +437,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
       desc: desc,
       rdesc: rdesc,
       opacity: opacity,
-      icon: airportIcons[colorIndex][0], 
+      icon: airportIcons[colorIndex][0],
       size: airportIcons[colorIndex][1],
       index: count,
       offset: Math.floor(-airportIcons[colorIndex][1]/2)
@@ -447,7 +447,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
   }
 
   <span class="comment">// http://trac.openlayers.org/wiki/GreatCircleAlgorithms</span>
-  
+
   <span class="comment">// Compute great circle distance between two points (spherical law of cosines)</span>
   <span class="comment">// http://www.movable-type.co.uk/scripts/latlong.html</span>
   <span class="comment">// © 2002-2008 Chris Veness</span>
@@ -457,46 +457,46 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     lon1 = lon1 * rad;
     lat2 = lat2 * rad;
     lon2 = lon2 * rad;
-    var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
+    var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) +
 		      Math.cos(lat1)*Math.cos(lat2) *
 		      Math.cos(lon2-lon1));
     <span class="reserved">if</span> (d &lt; 0) d += Math.PI;
     <span class="reserved">return</span> Math.floor(d * EARTH_RADIUS);
-    
+
   }
-  
+
   <span class="comment">// Compute great circle bearing from point "from" towards point "to"</span>
   <span class="reserved">function</span> gcBearingTo(from, to) {
     var x = new Array(2);
     var y = new Array(2);
     var bearing;
     var adjust;
-    
+
     <span class="reserved">if</span>( isValid(from) &amp;&amp; isValid(to)) {
       x[0] = from.x * DEG2RAD;    y[0] = from.y * DEG2RAD;
       x[1] = to.x * DEG2RAD;    y[1] = to.y * DEG2RAD;
-      
+
       var a = Math.cos(y[1]) * Math.sin(x[1] - x[0]);
-      var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0]) 
+      var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0])
 	* Math.cos(y[1]) * Math.cos(x[1] - x[0]);
-      
+
       <span class="reserved">if</span>((a == 0) &amp;&amp; (b == 0)) {
 	bearing = 0;
 	<span class="reserved">return</span> bearing;
       }
-      
+
       <span class="reserved">if</span>( b == 0) {
-	<span class="reserved">if</span>( a &lt; 0)  
+	<span class="reserved">if</span>( a &lt; 0)
 	  bearing = 270;
 	<span class="reserved">else</span>
 	  bearing = 90;
 	<span class="reserved">return</span> bearing;
       }
-      
-      <span class="reserved">if</span>( b &lt; 0) 
+
+      <span class="reserved">if</span>( b &lt; 0)
 	adjust = Math.PI;
       <span class="reserved">else</span> {
-	<span class="reserved">if</span>( a &lt; 0) 
+	<span class="reserved">if</span>( a &lt; 0)
 	  adjust = 2 * Math.PI;
 	<span class="reserved">else</span>
 	  adjust = 0;
@@ -506,34 +506,34 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     } <span class="reserved">else</span>
       <span class="reserved">return</span> null;
   }
-  
-  
+
+
   <span class="comment">/**
    * Compute great circle waypoint "distance" miles away from "from" in direction "bearing"
    */</span>
   <span class="reserved">function</span> gcWaypoint(from, distance, bearing) {
     var wp = new OpenLayers.Geometry.Point( 0, 0 );
-    
+
     <span class="comment">// Math.* trig functions require angles to be in radians</span>
     var x = from.x * DEG2RAD;
     var y = from.y * DEG2RAD;
     var radBearing = bearing * DEG2RAD;
-    
+
     <span class="comment">// Convert arc distance to radians</span>
     var d = distance / EARTH_RADIUS;
-    
+
     <span class="comment">// Modified based on http://williams.best.vwh.net/avform.htm</span>
-    var lat = Math.asin( Math.sin(y) * Math.cos(d) + Math.cos(y) * Math.sin(d) * Math.cos(radBearing));  
+    var lat = Math.asin( Math.sin(y) * Math.cos(d) + Math.cos(y) * Math.sin(d) * Math.cos(radBearing));
     var lon = Math.atan2( Math.sin(radBearing) * Math.sin(d) * Math.cos(y), Math.cos(d) - Math.sin(y) * Math.sin(lat));
     wp.x = (x + lon) * RAD2DEG;
     wp.y = lat * RAD2DEG;
     <span class="reserved">return</span> wp;
   }
-  
+
   <span class="comment">/*
    * Return array of GC waypoints between two points
    * Flips across dateline if needed, and removes any invisible points
-   */</span>  
+   */</span>
   <span class="reserved">function</span> gcPath(startPoint, endPoint) {
     <span class="comment">// Do we cross the dateline?  If yes, then flip endPoint across it</span>
     <span class="reserved">if</span>(Math.abs(startPoint.x-endPoint.x) &gt; 180) {
@@ -543,14 +543,14 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
 	endPoint.x += 360;
       }
     }
-    
+
     <span class="comment">// Compute distance between points</span>
     var distance = gcDistance(startPoint.y, startPoint.x, endPoint.y, endPoint.x);
     <span class="reserved">if</span>(distance &lt; GC_MIN) {
       <span class="comment">// Short enough that we don't need to show curvature</span>
       <span class="reserved">return</span> [startPoint, endPoint];
     }
-    
+
     <span class="comment">// And... action!</span>
     var pointList = new Array();
     var wayPoint = startPoint;
@@ -570,7 +570,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
 	  break; <span class="comment">// line's gone off the map, so stop rendering</span>
 	}
       }
-      
+
       <span class="comment">// Increase step resolution near the poles</span>
       <span class="reserved">if</span>(Math.abs(wayPoint.y) &gt; 60) {
 	step = GC_STEP / 2;
@@ -584,12 +584,12 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     }
     <span class="reserved">return</span> pointList;
   }
-  
+
   <span class="comment">// Check if point is a point</span>
   <span class="reserved">function</span> isValid(point) {
     <span class="reserved">return</span> ((point.x != null) &amp;&amp; (point.y != null) &amp;&amp; (point.x != NaN) &amp;&amp; (point.y != NaN))
   }
-  
+
   <span class="comment">// Core starts here</span>
   <span class="reserved">this</span>.debug(<span class="literal">"map.draw("</span> + type + <span class="literal">")"</span>);
   str = transport.responseText;
@@ -597,7 +597,7 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     <span class="reserved">this</span>.error(str);
     <span class="reserved">return</span>;
   }
-  
+
   var master = str.split(<span class="literal">"\n"</span>);
   var stats = master[0];
   var flights = master[1];
@@ -617,9 +617,9 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
     flightTotal = col[1];
     desc = col[2];
   }
-  
+
   $(<span class="literal">"maptitle"</span>).innerHTML = <span class="reserved">this</span>.getRouteMapTitle(type, apid, flightTotal, desc);
-  
+
   <span class="comment">// New user (or filter setting) with no flights?  Then don't even try to draw</span>
   <span class="reserved">if</span>(flightTotal != <span class="literal">"0"</span>) {
     var rows = flights.split(<span class="literal">"\t"</span>);
@@ -644,12 +644,12 @@ OpenFlightsMap.<span class="reserved">prototype</span>.draw = <span class="reser
   } <span class="reserved">else</span> {
     $(<span class="literal">"maptitle"</span>).innerHTML = <span class="literal">"No flights"</span>;
   }
-  
+
   <span class="comment">// Route maps draw the core airport even if there are no routes</span>
   <span class="reserved">if</span>(flightTotal != <span class="literal">"0"</span> || type == OpenFlightsMap.AIRPORT) {
     var rows = airports.split(<span class="literal">"\t"</span>);
     var airports = Array();
-    
+
     <span class="comment">// Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result</span>
     airportMaxFlights = rows[rows.length - 1].split(<span class="literal">";"</span>)[4];
     <span class="reserved">for</span> (var r = 0; r &lt; rows.length; r++) {
@@ -762,11 +762,11 @@ OpenFlightsMap.<span class="reserved">prototype</span>.error = <span class="rese
 <a name="navbar_top_firstrow"><!-- --></a>
 <table border="0" cellpadding="0" cellspacing="3">
   <tr align="center" valign="top">
-  
-  
+
+
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
   <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
-  
+
 
   <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
   <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
