@@ -4,7 +4,7 @@ OpenFlights currently contains about 400 strings, mostly short but some long. Yo
 
 0) First, notify info@openflights.org that you want to translate a language. This will help prevent duplication of effort.
 
-1) Download and edit POEdit (http://www.poedit.net/), a specialized editor for translation. It's free, and versions are available for Windows, Linux and Mac.
+1) Download and edit POEdit (https://poedit.net/), a specialized editor for translation. It's free, and versions are available for Windows, Linux and Mac.
 
 2a) To create a new language, download a copy of the blank template:
 
