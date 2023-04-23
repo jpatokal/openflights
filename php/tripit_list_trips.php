@@ -205,7 +205,7 @@ function resolve_airline($iata_code) {
  */
 function detect_class($class) {
   global $DEBUG;
-  # From http://en.wikipedia.org/wiki/IATA_class_codes
+  # From https://en.wikipedia.org/wiki/IATA_class_codes
   # We'll ony map F and C; everything else we'll assume is Y.
   $class_codes = array(
     "R" => "F",
