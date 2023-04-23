@@ -17,45 +17,40 @@
 /* ---------------------------------------------------------------------------- */
 
 /* ============================================================================ */
-/* Layout Styles */	
-#mainContainer
-	{
-	min-width: 740px;
-	padding: 0;
-	margin: 0;
-        height: 100%;
-	}
+/* Layout Styles */
+#mainContainer {
+  min-width: 740px;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
 
 /* You must include some sort of border on this rule.  Otherwise IE 6.0 will not */
 /* render the background image or color properly.                                */
-#sideBarContentWrapper
-        {
-	background-position: right;
-        height: 65%;
-        }
+#sideBarContentWrapper {
+  background-position: right;
+  height: 65%;
+}
 
-#contentContainer
-        {
-        float: left;
-        width: 100%;
-        height: 100%;
-        }
+#contentContainer {
+  float: left;
+  width: 100%;
+  height: 100%;
+}
 
-#nonmap
-	{
-	margin-right: 240px;
-	padding: 10px;
-        height: 65%;
-	}
+#nonmap {
+  margin-right: 240px;
+  padding: 10px;
+  height: 65%;
+}
 
-#map
-	{
-	margin-right: 240px;
-	padding: 0px;
-        height: 100%;
-	}
+#map {
+  margin-right: 240px;
+  padding: 0px;
+  height: 100%;
+}
 
-#maptitle { 
+#maptitle {
   left: 3em;
   top: 1em;
   position: absolute;
@@ -66,9 +61,9 @@
   z-index: 1000;
   padding: 5px;
   -moz-border-radius: 1em;
-} 
+}
 
-#news { 
+#news {
   left: 1em;
   top: 45%;
   position: absolute;
@@ -79,7 +74,7 @@
   z-index: 1000;
   padding: 10px;
   -moz-border-radius: 1em;
-} 
+}
 
 div.layersDiv {
   left: 17px;
@@ -103,9 +98,9 @@ div.layersDiv {
   z-index: 1000;
   padding: 10px;
   -moz-border-radius: 1em;
-} 
+}
 
-#quicksearch { 
+#quicksearch {
   right: 241px;
   top: 59%;
   position: absolute;
@@ -114,7 +109,7 @@ div.layersDiv {
   padding: 5px 5px 5px 5px;
   background-color: #00008B;
   -moz-border-radius: 1em 0 0 1em;
-} 
+}
 
 #qsmini {
   right: 241px;
@@ -123,50 +118,47 @@ div.layersDiv {
   z-index: 999;
 }
 
-#ajaxloader { 
+#ajaxloader {
   left: 40%;
   top: 25%;
   position: absolute;
   z-index: 1000;
   border: 1;
-} 
+}
 
-#sideBar
-	{
-	float: left;
-	width: 240px;
-	margin-left: -240px;
-	}
+#sideBar {
+  float: left;
+  width: 240px;
+  margin-left: -240px;
+}
 
 /* IE 6.0: For some reason, if you just specify padding here it'll add 10 px  */
 /* to the entire layout and cause the page to scroll horizontally. So we have */
 /* to specify the width and then set a margin on it.  The width is equal to   */
 /* the width of the column, 190px - the 10px margin * 2                       */
-#sideBar p
-        {
-        margin: 10px auto;
-        width: 220px;
-        }
+#sideBar p {
+  margin: 10px auto;
+  width: 220px;
+}
 
-#sideBarContentWrapper > #sideBar p
-        {
-        padding: 10px;
-        margin: 0;
-        }
+#sideBarContentWrapper > #sideBar p {
+  padding: 10px;
+  margin: 0;
+}
 
-#login{
+#login {
   max-width: 220px;
   margin: 0px 0px 0px 0px;
   padding: 10px 10px 0px 10px;
 }
 
-#filter { 
+#filter {
   max-width: 220px;
   margin: 0px 0px 0px 0px;
   padding: 10px 10px 0px 10px;
 }
 
-#statsbox { 
+#statsbox {
   max-width: 220px;
   margin: 0px 0px 0px 0px;
   padding: 10px 10px 0px 10px;
@@ -177,7 +169,7 @@ div.layersDiv {
   padding: 10px;
 }
 
-#adBar { 
+#adBar {
   float: left;
   margin-right: 240px;
   padding: 0px;
@@ -191,16 +183,15 @@ div.layersDiv {
 /* We have to include some sort of height attribute for IE 6 and 7 to render  */
 /* the columns background properly, and prevent additional, unwanted          */
 /* whitespace from being rendered.                                            */
-#resultbox
-	{
-	height: 34%;
-	margin: 0;
-	padding: 5px 10px;
-	clear: both;
-        overflow: auto;
-	}
+#resultbox {
+  height: 34%;
+  margin: 0;
+  padding: 5px 10px;
+  clear: both;
+  overflow: auto;
+}
 
-#miniresultbox { 
+#miniresultbox {
   padding: 5px 10px;
 }
 
@@ -216,7 +207,7 @@ li.selected { background: #C6DEFF; }
 
 /* Textbox hinting */
 
-input.date { 
+input.date {
   min-width: 90px;
   max-width: 90px;
 }
@@ -242,36 +233,36 @@ input.miniTextboxActive {
 }
 
 /* Sortable tables
-   Copyright 2006 Joost de Valk */
+  Copyright 2006 Joost de Valk */
 
 table.sortable {
-	border-spacing: 0;
-	border: 1px solid #000;
-	border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #000;
+  border-collapse: collapse;
 }
 table.sortable th, table.sortable td {
-	text-align: left;
-	padding: 2px 4px 2px 4px;
-	border-style: solid;
-	border-color: #444;
+  text-align: left;
+  padding: 2px 4px 2px 4px;
+  border-style: solid;
+  border-color: #444;
 }
 table.sortable th {
-	border-width: 0px 1px 1px 1px;
-	background-color: #ccc;
+  border-width: 0px 1px 1px 1px;
+  background-color: #ccc;
 }
 table.sortable td {
-	border-width: 0px 1px 0px 1px;
+  border-width: 0px 1px 0px 1px;
 }
 table.sortable tr.odd td {
-	background-color: #ddd;
+  background-color: #ddd;
 }
 table.sortable tr.even td {
-	background-color: #fff;
+  background-color: #fff;
 }
 table.sortable tr.sortbottom td {
-	border-top: 1px solid #444;
-	background-color: #ccc;
-	font-weight: bold;
+  border-top: 1px solid #444;
+  background-color: #ccc;
+  font-weight: bold;
 }
 
 /* Misc styles */
@@ -282,128 +273,128 @@ select.filter {  width: 160px; }
 /* OpenLayers default stuff starts here */
 
 div.olLayerDiv {
-   -moz-user-select: none;
-   text-align: left;
+  -moz-user-select: none;
+  text-align: left;
 }
 
 .olLayerGoogleCopyright {
-    left: 2px;
-    bottom: 2px;  
+  left: 2px;
+  bottom: 2px;
 }
 .olLayerGooglePoweredBy {
-    left: 2px;
-    bottom: 15px;   
+  left: 2px;
+  bottom: 15px;
 }
 .olControlAttribution {
-    font-size: smaller; 
-    right: 3px; 
-    bottom: 4.5em; 
-    position: absolute; 
-    display: block;
+  font-size: smaller;
+  right: 3px;
+  bottom: 4.5em;
+  position: absolute;
+  display: block;
 }
 .olControlScale {
-    right: 3px;
-    bottom: 3em;
-    display: block;
-    position: absolute;
-    font-size: smaller;
+  right: 3px;
+  bottom: 3em;
+  display: block;
+  position: absolute;
+  font-size: smaller;
 }
 .olControlScaleLine {
-   left: 10px;
-   bottom: 15px;
-   font-size: xx-small;
+  left: 10px;
+  bottom: 15px;
+  font-size: xx-small;
 }
 .olControlScaleLineBottom {
-   border: solid 2px black;
-   border-bottom: none;
-   margin-top:-2px;
-   text-align: center;
+  border: solid 2px black;
+  border-bottom: none;
+  margin-top:-2px;
+  text-align: center;
 }
 .olControlScaleLineTop {
-   border: solid 2px black;
-   border-top: none;
-   text-align: center;
+  border: solid 2px black;
+  border-top: none;
+  text-align: center;
 }
 
 .olControlPermalink {
-    right: 3px;
-    bottom: 1.5em;
-    display: block;
-    position: absolute;
-    font-size: smaller;
-} 
+  right: 3px;
+  bottom: 1.5em;
+  display: block;
+  position: absolute;
+  font-size: smaller;
+}
 
 div.olControlMousePosition {
-    bottom: 0em;
-    right: 3px;
-    display: block;
-    position: absolute;
-    font-family: Arial;
-    font-size: smaller;
+  bottom: 0em;
+  right: 3px;
+  display: block;
+  position: absolute;
+  font-family: Arial;
+  font-size: smaller;
 }
 
 .olControlOverviewMapContainer {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 }
 
 .olControlOverviewMapElement {
-    padding: 10px 18px 10px 10px;
-    background-color: #00008B;
-    -moz-border-radius: 1em 0 0 0;
+  padding: 10px 18px 10px 10px;
+  background-color: #00008B;
+  -moz-border-radius: 1em 0 0 0;
 }
 
 .olControlOverviewMapMinimizeButton {
-    right: 0px;
-    bottom: 80px;
-}    
+  right: 0px;
+  bottom: 80px;
+}
 
 .olControlOverviewMapMaximizeButton {
-    right: 0px;
-    bottom: 80px;
+  right: 0px;
+  bottom: 80px;
 }
 
 .olControlOverviewMapExtentRectangle {
-    overflow: hidden;
-    background-image: url("img/blank.gif");
-    cursor: move;
-    border: 2px dotted red;
+  overflow: hidden;
+  background-image: url("img/blank.gif");
+  cursor: move;
+  border: 2px dotted red;
 }
 .olControlOverviewMapRectReplacement {
-    overflow: hidden;
-    cursor: move;
-    background-image: url("./img/overview_replacement.gif");
-    background-repeat: no-repeat;
-    background-position: center;
+  overflow: hidden;
+  cursor: move;
+  background-image: url("./img/overview_replacement.gif");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .olLayerGeoRSSDescription {
-    float:left;
-    width:100%;
-    overflow:auto;
-    font-size:1.0em;
+  float:left;
+  width:100%;
+  overflow:auto;
+  font-size:1.0em;
 }
 .olLayerGeoRSSClose {
-    float:right;
-    color:gray;
-    font-size:1.2em;
-    margin-right:6px;
-    font-family:sans-serif;
+  float:right;
+  color:gray;
+  font-size:1.2em;
+  margin-right:6px;
+  font-family:sans-serif;
 }
 .olLayerGeoRSSTitle {
-    float:left;font-size:1.2em;
+  float:left;font-size:1.2em;
 }
 
 .olPopupContent {
-    padding:1px;
-    overflow: auto;
-}    
-.olControlNavToolbar { 
-    width:0px;
-    height:0px;
-}    
-.olControlNavToolbar div { 
+  padding:1px;
+  overflow: auto;
+}
+.olControlNavToolbar {
+  width:0px;
+  height:0px;
+}
+.olControlNavToolbar div {
   display:block;
   width:  28px;
   height: 28px;
@@ -413,49 +404,49 @@ div.olControlMousePosition {
 }
 
 .olControlNavigationHistory {
-   background-image: url("img/navigation_history.png");
-   background-repeat: no-repeat;
-   width:  24px;
-   height: 24px;
+  background-image: url("img/navigation_history.png");
+  background-repeat: no-repeat;
+  width:  24px;
+  height: 24px;
 
 }
-.olControlNavigationHistoryPreviousItemActive { 
+.olControlNavigationHistoryPreviousItemActive {
   background-position: 0px 0px;
 }
-.olControlNavigationHistoryPreviousItemInactive { 
-   background-position: 0px -24px;
+.olControlNavigationHistoryPreviousItemInactive {
+  background-position: 0px -24px;
 }
-.olControlNavigationHistoryNextItemActive { 
-   background-position: -24px 0px;
+.olControlNavigationHistoryNextItemActive {
+  background-position: -24px 0px;
 }
-.olControlNavigationHistoryNextItemInactive { 
-   background-position: -24px -24px;
+.olControlNavigationHistoryNextItemInactive {
+  background-position: -24px -24px;
 }
 
-.olControlNavToolbar .olControlNavigationItemActive { 
+.olControlNavToolbar .olControlNavigationItemActive {
   background-image: url("img/panning-hand-on.png");
   background-repeat: no-repeat;
 }
-.olControlNavToolbar .olControlNavigationItemInactive { 
+.olControlNavToolbar .olControlNavigationItemInactive {
   background-image: url("img/panning-hand-off.png");
   background-repeat: no-repeat;
 }
-.olControlNavToolbar .olControlZoomBoxItemActive { 
+.olControlNavToolbar .olControlZoomBoxItemActive {
   background-image: url("img/drag-rectangle-on.png");
   background-color: orange;
   background-repeat: no-repeat;
 }
-.olControlNavToolbar .olControlZoomBoxItemInactive { 
+.olControlNavToolbar .olControlZoomBoxItemInactive {
   background-image: url("img/drag-rectangle-off.png");
   background-repeat: no-repeat;
 }
 .olControlEditingToolbar  {
-    float:right;
-    right: 0px;
-    height: 30px; 
-    width: 200px;
+  float:right;
+  right: 0px;
+  height: 30px;
+  width: 200px;
 }
-.olControlEditingToolbar div { 
+.olControlEditingToolbar div {
   background-image: url("img/editing_tool_bar.png");
   background-repeat: no-repeat;
   float:right;
@@ -463,106 +454,106 @@ div.olControlMousePosition {
   height: 24px;
   margin: 5px;
 }
-.olControlEditingToolbar .olControlNavigationItemActive { 
-  background-position: -103px -23px; 
+.olControlEditingToolbar .olControlNavigationItemActive {
+  background-position: -103px -23px;
 }
-.olControlEditingToolbar .olControlNavigationItemInactive { 
-  background-position: -103px -0px; 
+.olControlEditingToolbar .olControlNavigationItemInactive {
+  background-position: -103px -0px;
 }
-.olControlEditingToolbar .olControlDrawFeaturePointItemActive { 
-  background-position: -77px -23px; 
+.olControlEditingToolbar .olControlDrawFeaturePointItemActive {
+  background-position: -77px -23px;
 }
-.olControlEditingToolbar .olControlDrawFeaturePointItemInactive { 
-  background-position: -77px -0px; 
+.olControlEditingToolbar .olControlDrawFeaturePointItemInactive {
+  background-position: -77px -0px;
 }
-.olControlEditingToolbar .olControlDrawFeaturePathItemInactive { 
-  background-position: -51px 0px; 
+.olControlEditingToolbar .olControlDrawFeaturePathItemInactive {
+  background-position: -51px 0px;
 }
-.olControlEditingToolbar .olControlDrawFeaturePathItemActive { 
-  background-position: -51px -23px; 
+.olControlEditingToolbar .olControlDrawFeaturePathItemActive {
+  background-position: -51px -23px;
 }
-.olControlEditingToolbar .olControlDrawFeaturePolygonItemInactive { 
-  background-position: -26px 0px; 
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemInactive {
+  background-position: -26px 0px;
 }
-.olControlEditingToolbar .olControlDrawFeaturePolygonItemActive { 
-  background-position: -26px -23px ;                                                                   
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemActive {
+  background-position: -26px -23px;
 }
-.olControlSaveFeaturesItemActive { 
-    background-image: url(img/save_features_on.png);
-    background-repeat: no-repeat;
-    background-position: 0px 1px;
+.olControlSaveFeaturesItemActive {
+  background-image: url(img/save_features_on.png);
+  background-repeat: no-repeat;
+  background-position: 0px 1px;
 }
-.olControlSaveFeaturesItemInactive { 
-    background-image: url(img/save_features_off.png);
-    background-repeat: no-repeat;
-    background-position: 0px 1px;
+.olControlSaveFeaturesItemInactive {
+  background-image: url(img/save_features_off.png);
+  background-repeat: no-repeat;
+  background-position: 0px 1px;
 }
 
 .olHandlerBoxZoomBox {
-    border: 2px solid red;
-    position: absolute;
-    background-color: white;
-    opacity: 0.50;
-    font-size: 1px;
-    filter: alpha(opacity=50);
-}   
+  border: 2px solid red;
+  position: absolute;
+  background-color: white;
+  opacity: 0.50;
+  font-size: 1px;
+  filter: alpha(opacity=50);
+}
 
 /**
  * Layer switcher
  */
 .olControlLayerSwitcher {
-    position: absolute;
-    top: 25px;
-    right: 0;
-    width: 20em;
-    font-family: sans-serif;
-    font-weight: bold;
-    margin-top: 3px;
-    margin-left: 3px;
-    margin-bottom: 3px;
-    font-size: smaller;
-    color: white;
-    background-color: transparent;
+  position: absolute;
+  top: 25px;
+  right: 0;
+  width: 20em;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin-top: 3px;
+  margin-left: 3px;
+  margin-bottom: 3px;
+  font-size: smaller;
+  color: white;
+  background-color: transparent;
 }
 
 .olControlLayerSwitcher .layersDiv {
-    padding-top: 5px;
-    padding-left: 10px;
-    padding-bottom: 5px;
-    padding-right: 10px;
-    background-color: darkblue;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  background-color: darkblue;
 }
 
 .olControlLayerSwitcher .layersDiv .baseLbl,
 .olControlLayerSwitcher .layersDiv .dataLbl {
-    margin-top: 3px;
-    margin-left: 3px;
-    margin-bottom: 3px;
+  margin-top: 3px;
+  margin-left: 3px;
+  margin-bottom: 3px;
 }
 
 .olControlLayerSwitcher .layersDiv .baseLayersDiv,
 .olControlLayerSwitcher .layersDiv .dataLayersDiv {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 .olControlLayerSwitcher .maximizeDiv,
 .olControlLayerSwitcher .minimizeDiv {
-    width: 18px;
-    height: 18px;
-    top: 5px;
-    right: 0;
-    cursor: pointer;
+  width: 18px;
+  height: 18px;
+  top: 5px;
+  right: 0;
+  cursor: pointer;
 }
 
-/* 
+/*
  * Due to current limitations in the OpenLayers code, you can only
- * replace this image with another image which is 17px x 17px. 
- */   
+ * replace this image with another image which is 17px x 17px.
+ */
 .olPopupCloseBox {
   background: url("img/close.gif") no-repeat;
   cursor: pointer;
 }
 
 .olControlNoSelect {
- -moz-user-select: none;
+  -moz-user-select: none;
 }
