@@ -102,12 +102,14 @@ if($action == "RECORD") {
     $body = <<<TXT
 New airport edit suggestion submitted by $name:
 
+```
 $newEdit;
+```
 
 Existing, potentially conflicting airport information:
 
 ```
-$existingData
+$existingData;
 ```
 
 Cross-check this edit on other sites with compatible licensing:
