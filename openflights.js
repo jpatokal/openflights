@@ -111,7 +111,8 @@ function init(){
       new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
       new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
       new OpenLayers.Control.ScaleLine(),
-      new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
+      new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
+      new OpenLayers.Control.Attribution()
     ] });
 
   // Horrible hack to stop OpenLayers 2 from showing ZL < 2

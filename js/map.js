@@ -45,7 +45,8 @@ function OpenFlightsMap(map, layers) {
 	       new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
 	       new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
 	       new OpenLayers.Control.ScaleLine(),
-	       new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")})
+	       new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
+	       new OpenLayers.Control.Attribution()
 	       ] });
   
   var flightLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
@@ -335,7 +336,7 @@ OpenFlightsMap.prototype.draw = function(transport, type){
   
   // Compute great circle distance between two points (spherical law of cosines)
   // http://www.movable-type.co.uk/scripts/latlong.html
-  // © 2002-2008 Chris Veness
+  // Â© 2002-2008 Chris Veness
   function gcDistance(lat1, lon1, lat2, lon2) {
     var rad = Math.PI / 180;
     lat1 = lat1 * rad;
