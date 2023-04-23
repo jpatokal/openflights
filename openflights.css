@@ -54,8 +54,8 @@
   left: 3em;
   top: 1em;
   position: absolute;
-  font-size:1.5em;
-  filter:alpha(opacity=70);
+  font-size: 1.5em;
+  filter: alpha(opacity=70);
   opacity: 0.7;
   background: white;
   z-index: 1000;
@@ -67,8 +67,8 @@
   left: 1em;
   top: 45%;
   position: absolute;
-  font-size:1em;
-  filter:alpha(opacity=80);
+  font-size: 1em;
+  filter: alpha(opacity=80);
   opacity: 0.8;
   background: white;
   z-index: 1000;
@@ -91,8 +91,8 @@ div.layersDiv {
   right: 260px;
   top: 55%;
   position: absolute;
-  font-size:1em;
-  filter:alpha(opacity=80);
+  font-size: 1em;
+  filter: alpha(opacity=80);
   opacity: 0.8;
   background: white;
   z-index: 1000;
@@ -104,7 +104,7 @@ div.layersDiv {
   right: 241px;
   top: 59%;
   position: absolute;
-  font-size:1em;
+  font-size: 1em;
   z-index: 1000;
   padding: 5px 5px 5px 5px;
   background-color: #00008B;
@@ -268,7 +268,7 @@ table.sortable tr.sortbottom td {
 /* Misc styles */
 
 input:focus, textarea:focus { background-color: LightYellow; }
-select.filter {  width: 160px; }
+select.filter { width: 160px; }
 
 /* OpenLayers default stuff starts here */
 
@@ -370,33 +370,34 @@ div.olControlMousePosition {
 }
 
 .olLayerGeoRSSDescription {
-  float:left;
-  width:100%;
-  overflow:auto;
-  font-size:1.0em;
+  float: left;
+  width: 100%;
+  overflow: auto;
+  font-size: 1.0em;
 }
 .olLayerGeoRSSClose {
-  float:right;
-  color:gray;
-  font-size:1.2em;
-  margin-right:6px;
-  font-family:sans-serif;
+  float: right;
+  color: gray;
+  font-size: 1.2em;
+  margin-right: 6px;
+  font-family: sans-serif;
 }
 .olLayerGeoRSSTitle {
-  float:left;font-size:1.2em;
+  float: left;
+  font-size: 1.2em;
 }
 
 .olPopupContent {
-  padding:1px;
+  padding: 1px;
   overflow: auto;
 }
 .olControlNavToolbar {
-  width:0px;
-  height:0px;
+  width: 0px;
+  height: 0px;
 }
 .olControlNavToolbar div {
-  display:block;
-  width:  28px;
+  display: block;
+  width: 28px;
   height: 28px;
   top: 200px;
   left: 6px;
@@ -406,7 +407,7 @@ div.olControlMousePosition {
 .olControlNavigationHistory {
   background-image: url("img/navigation_history.png");
   background-repeat: no-repeat;
-  width:  24px;
+  width: 24px;
   height: 24px;
 
 }
@@ -440,8 +441,8 @@ div.olControlMousePosition {
   background-image: url("img/drag-rectangle-off.png");
   background-repeat: no-repeat;
 }
-.olControlEditingToolbar  {
-  float:right;
+.olControlEditingToolbar {
+  float: right;
   right: 0px;
   height: 30px;
   width: 200px;
@@ -449,8 +450,8 @@ div.olControlMousePosition {
 .olControlEditingToolbar div {
   background-image: url("img/editing_tool_bar.png");
   background-repeat: no-repeat;
-  float:right;
-  width:  24px;
+  float: right;
+  width: 24px;
   height: 24px;
   margin: 5px;
 }
@@ -479,12 +480,12 @@ div.olControlMousePosition {
   background-position: -26px -23px;
 }
 .olControlSaveFeaturesItemActive {
-  background-image: url(img/save_features_on.png);
+  background-image: url("img/save_features_on.png");
   background-repeat: no-repeat;
   background-position: 0px 1px;
 }
 .olControlSaveFeaturesItemInactive {
-  background-image: url(img/save_features_off.png);
+  background-image: url("img/save_features_off.png");
   background-repeat: no-repeat;
   background-position: 0px 1px;
 }
