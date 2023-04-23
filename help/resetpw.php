@@ -25,14 +25,14 @@ if(isSet($_GET["challenge"])) {
       $pwstring = md5($newpw . strtolower($user));
       $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
       if (!$sth->execute([$pwstring, $user])) die ('Resetting password for user ' . $name . ' failed');
-      echo "Your new password is <b>$newpw</b>.  Please log in and change it from Settings.\n\n<INPUT type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
+      echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
     } else {
       echo "Invalid challenge.";
     }
   } else {
     echo "No such user.";
   }
-} else if(isSet($_POST["email"])) {
+} elseif(isSet($_POST["email"])) {
   $email = $_POST["email"];
   $sth = $dbh->prepare("SELECT name, md5(password) AS challenge FROM users WHERE email = ?");
   $sth->execute([$email]);
@@ -64,27 +64,26 @@ OpenFlights.org";
   }
 } else {
 ?>
-      
-      <p>Can't log in?  One tip before you panic: make sure you have entered your password <b>using the same case</b> as you did when signing up: "Secret" is not the same as "secret".  If you signed up before January 15, 2009, your <b>username</b> ("Joe" vs "joe") also has to match.</p>
+
+      <p>Can't log in? One tip before you panic: make sure you have entered your password <b>using the same case</b> as you did when signing up: "Secret" is not the same as "secret". If you signed up before January 15, 2009, your <b>username</b> ("Joe" vs "joe") also has to match.</p>
 
       <p>If that doesn't help, enter your <b>e-mail address</b> below, and
       we'll send you a link you can use to reset your password.</p>
 
       <form name="reset" action="/help/resetpw" enctype="multipart/form-data" method="post">
-        <input type="text" name="email" align="top" sizze="10" tabindex="1">
+        <input type="text" name="email" align="top" size="10" tabindex="1">
         <input type="submit" name="action" value="Reset password" tabindex="2">
       </form>
-      
+
       <p>If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do.</p>
 <?php
 }
 if(! isSet($_GET["challenge"])) {
 ?>
-      <INPUT type="button" id="close" value="Return" onClick="javascript:window.close()">
+      <input type="button" id="close" value="Return" onClick="javascript:window.close()">
 <?php
 }
 ?>
-      </FORM>
 
     </div>
 
