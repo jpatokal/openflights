@@ -1,16 +1,17 @@
 <?php
+
 session_start();
 $uid = $_SESSION["uid"];
 $export = $_GET["export"] ?? false;
-if($export) {
-    if(!$uid or empty($uid)) {
+if ($export) {
+    if (!$uid || empty($uid)) {
         exit("You must be logged in to export.");
     }
-    if($export == "export" || $export == "backup") {
+    if ($export == "export" || $export == "backup") {
         header("Content-type: text/csv; charset=utf-8");
-        header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d").".csv\"");
+        header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d") . ".csv\"");
     }
-    if($export == "export" || $export == "gcmap") {
+    if ($export == "export" || $export == "gcmap") {
         $trid = $_GET["trid"];
         $alid = $_GET["alid"];
         $year = $_GET["year"];
@@ -21,7 +22,7 @@ if($export) {
     header("Content-type: text/html; charset=utf-8");
 
     $apid = $_POST["id"];
-    if(! $apid) {
+    if (!$apid) {
         $apid = $_GET["id"];
     }
     $trid = $_POST["trid"];
@@ -39,24 +40,21 @@ include 'greatcircle.php';
 $units = $_SESSION["units"];
 
 // Logged in?
-if(!$uid or empty($uid)) {
+if (!$uid || empty($uid)) {
 
     // Viewing an "open" user's flights, or an "open" flight?
     // (will be previously set in map.php)
     $uid = $_SESSION["openuid"];
-    if($uid && !empty($uid)) {
+    if ($uid && !empty($uid)) {
         // Yes we are, so check if we're limited to a single trip
         $openTrid = $_SESSION["opentrid"];
-        if($openTrid) {
-            if($openTrid == $trid) {
-                // This trip's OK
-            } else {
+        if ($openTrid) {
+            if ($openTrid != $trid) {
                 // Naughty naughty, back to demo mode
                 $uid = 1;
             }
-        } else {
-            // No limit, do nothing
         }
+        // No limit, do nothing
     } else {
         // Nope, default to demo mode
         $uid = 1;
@@ -69,28 +67,28 @@ $route = false;
 // Special handling of "route" apids in form R<apid>,<coreid>
 // <apid> is user selection, <coreid> is ID of airport map is centered around
 $type = substr($apid, 0, 1);
-if($type == "R" || $type == "L") {
+if ($type == "R" || $type == "L") {
     $route = true;
     $ids = explode(',', substr($apid, 1));
     $apid = $ids[0];
     $coreid = $ids[1];
     $params['apid'] = $apid;
-    if($type == "L") {
-        if($coreid == "") {
+    if ($type == "L") {
+        if ($coreid == "") {
             $match = "r.alid=:apid"; // all routes on $alid
         } else {
             $params['coreid'] = $coreid;
             $match = "r.src_apid=:coreid AND r.alid=:apid"; // flight from $coreid on $alid only
         }
     } else {
-        if($apid == $coreid) {
+        if ($apid == $coreid) {
             $match = "r.src_apid=:apid"; // all flights from $apid
         } else {
             $params['coreid'] = $coreid;
             $match = "r.src_apid=:coreid AND r.dst_apid=:apid"; // flight from $coreid to $apid only
         }
         // Airline filter on top of airport
-        if($alid) {
+        if ($alid) {
             $params['alid'] = $alid;
             $match .= " AND r.alid=:alid";
         }
@@ -103,18 +101,18 @@ if($type == "R" || $type == "L") {
     $sql = "SELECT s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,f.code,f.src_date,src_time,distance,DATE_FORMAT(duration, '%H:%i') AS duration,seat,seat_type,class,reason,p.name,registration,fid,l.alid,note,trid,opp,f.plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,f.mode AS mode FROM airports AS s,airports AS d, airlines AS l,flights AS f LEFT JOIN planes AS p ON f.plid=p.plid WHERE f.uid=:uid AND f.src_apid=s.apid AND f.dst_apid=d.apid AND f.alid=l.alid";
 
     // ...filtered by airport (optional)
-    if($apid && $apid != 0) {
+    if ($apid && $apid != 0) {
         $params['apid'] = $apid;
         $sql = $sql . " AND (s.apid=:apid OR d.apid=:apid)";
     }
 }
 
 // Add filters, if any
-switch($export) {
+switch ($export) {
     case "export":
     case "gcmap":
         // Full filter only for user flight searches
-        if(! $route) {
+        if (!$route) {
             $sql = $sql . getFilterString($dbh, $_GET);
         }
         break;
@@ -125,19 +123,19 @@ switch($export) {
 
     default:
         // Full filter only for user flight searches
-        if(! $route) {
+        if (!$route) {
             $sql = $sql . getFilterString($dbh, $_POST);
         }
         break;
 }
-if($fid && $fid != "0") {
+if ($fid && $fid != "0") {
     $params['fid'] = $fid;
     $sql = $sql . " AND fid= :fid";
 }
 
 // And sort order
-if($route) {
-    if($type == "R") {
+if ($route) {
+    if ($type == "R") {
         $sql .= " ORDER BY d.iata ASC";
     } else {
         $sql .= " ORDER BY s.iata,d.iata ASC";
@@ -148,18 +146,20 @@ if($route) {
 
 // Execute!
 $sth = $dbh->prepare($sql);
-$sth->execute($params) or die ('Error;Query ' . print_r($_GET, true) . ' caused database error ' . $sql . ', ' . $sth->errorInfo()[0]);
+if (!$sth->execute($params)) {
+    die('Error;Query ' . print_r($_GET, true) . ' caused database error ' . $sql . ', ' . $sth->errorInfo()[0]);
+}
 $first = true;
 
-if($export == "export" || $export == "backup") {
+if ($export == "export" || $export == "backup") {
     // Start with byte-order mark to try to clue Excel into realizing that this is UTF-8
     print "\xEF\xBB\xBFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
-$gcmap_city_pairs = '';	// list of city pairs when doing gcmap export.
+$gcmap_city_pairs = ''; // list of city pairs when doing gcmap export.
 while ($row = $sth->fetch()) {
     $note = $row["note"];
 
-    if($route) {
+    if ($route) {
         $row["distance"] = gcPointDistance(
             array("x" => $row["sx"], "y" => $row["sy"]),
             array("x" => $row["dx"], "y" => $row["dy"])
@@ -167,23 +167,22 @@ while ($row = $sth->fetch()) {
         $row["duration"] = gcDuration($row["distance"]);
         $row["code"] = $row["al_name"] . " (" . $row["code"] . ")";
         $note = "";
-        if($row["stops"] == "0") {
+        if ($row["stops"] == "0") {
             $note = "Direct";
         } else {
             $note = $row["stops"] . " stops";
         }
-        if($row["codeshare"] == "Y") {
+        if ($row["codeshare"] == "Y") {
             $note = "Codeshare";
         }
     }
 
-    if($first) {
+    if ($first) {
         $first = false;
     } else {
-        if($export == "export" || $export == "backup") {
+        if ($export == "export" || $export == "backup") {
             printf("\r\n");
-        } elseif ($export == "gcmap") {
-        } else {
+        } elseif ($export != "gcmap") {
             printf("\n");
         }
     }
@@ -195,7 +194,7 @@ while ($row = $sth->fetch()) {
 
     $al_code = format_alcode($row["al_iata"], $row["al_icao"], $row["mode"]);
 
-    if($row["opp"] == 'Y') {
+    if ($row["opp"] == 'Y') {
         $tmp = $src_apid;
         $src_apid = $dst_apid;
         $dst_apid = $tmp;
@@ -205,24 +204,40 @@ while ($row = $sth->fetch()) {
         $dst_code = $tmp;
     }
 
-    if($export == "export" || $export == "backup") {
+    if ($export == "export" || $export == "backup") {
         $note = "\"" . $note . "\"";
         $src_time = $row["src_time"];
         // Pad time with space if it's known
-        if($src_time) {
+        if ($src_time) {
             $src_time = " " . $src_time;
         } else {
             $src_time = "";
         }
         printf(
             "%s%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-            $row["src_date"], $src_time, $src_code, $dst_code, $row["code"], $row["al_name"],
-            $row["distance"], $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"],
-            $row["name"], $row["registration"], $row["trid"], $note,
-            $src_apid, $dst_apid, $row["alid"], $row["plid"]
+            $row["src_date"],
+            $src_time,
+            $src_code,
+            $dst_code,
+            $row["code"],
+            $row["al_name"],
+            $row["distance"],
+            $row["duration"],
+            $row["seat"],
+            $row["seat_type"],
+            $row["class"],
+            $row["reason"],
+            $row["name"],
+            $row["registration"],
+            $row["trid"],
+            $note,
+            $src_apid,
+            $dst_apid,
+            $row["alid"],
+            $row["plid"]
         );
-    } elseif($export == "gcmap") {
-        if(!empty($gcmap_city_pairs)) {
+    } elseif ($export == "gcmap") {
+        if (!empty($gcmap_city_pairs)) {
             $gcmap_city_pairs .= ',';
         }
         $gcmap_city_pairs .= urlencode($src_code . '-' . $dst_code);
@@ -231,21 +246,39 @@ while ($row = $sth->fetch()) {
         $note = str_replace(array("\n", "\r", "\t"), "", $note);
 
         // Convert mi to km if units=K *and* we're not loading a single flight
-        if($units == "K" && (!$fid || $fid == "0")) {
+        if ($units == "K" && (!$fid || $fid == "0")) {
             $row["distance"] = round($row["distance"] * KM_PER_MILE);
         }
 
         printf(
             "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
-            $src_code, $src_apid, $dst_code, $dst_apid, $row["code"], $row["src_date"], $row["distance"],
-            $row["duration"], $row["seat"], $row["seat_type"], $row["class"], $row["reason"], $row["fid"],
-            $row["name"], $row["registration"], $row["alid"], $note, $row["trid"], $row["plid"], $al_code,
-            $row["src_time"], $row["mode"]
+            $src_code,
+            $src_apid,
+            $dst_code,
+            $dst_apid,
+            $row["code"],
+            $row["src_date"],
+            $row["distance"],
+            $row["duration"],
+            $row["seat"],
+            $row["seat_type"],
+            $row["class"],
+            $row["reason"],
+            $row["fid"],
+            $row["name"],
+            $row["registration"],
+            $row["alid"],
+            $note,
+            $row["trid"],
+            $row["plid"],
+            $al_code,
+            $row["src_time"],
+            $row["mode"]
         );
     }
 }
 
-if($export == "gcmap") {
+if ($export == "gcmap") {
     // Output the redirect URL.
     header("Location: http://www.gcmap.com/mapui?P=" . $gcmap_city_pairs . "&MS=bm");
 }
