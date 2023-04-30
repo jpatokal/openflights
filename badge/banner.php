@@ -42,10 +42,16 @@ if(file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 // New banner or cache out of date, so regenerate
 $sth = $dbh->prepare("SELECT uid, public, units FROM users WHERE name=?");
 $result = $sth->execute([$user]);
-if(! $result) rendererror("Database error 1");
-if($sth->rowCount() == 0) rendererror("User $user not found");
+if(! $result) {
+  rendererror("Database error 1");
+}
+if($sth->rowCount() == 0) {
+  rendererror("User $user not found");
+}
 $row = $sth->fetch();
-if($row["public"] == "N") rendererror("User is not public");
+if($row["public"] == "N") {
+  rendererror("User is not public");
+}
 $uid = $row["uid"];
 $units = $row["units"];
 
