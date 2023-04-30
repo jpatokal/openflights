@@ -4,7 +4,7 @@ require_once("../php/locale.php");
 require_once("../php/db_pdo.php");
 
 $uid = $_SESSION["uid"] ?? null;
-$logged_in = $uid and !empty($uid);
+$logged_in = $uid && !empty($uid);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -24,7 +24,7 @@ $logged_in = $uid and !empty($uid);
   <body>
     <div id="contexthelp">
     <span style="float: right"><?php echo _("Language") ?><br>
-<?php echo locale_pulldown($dbh, $locale); ?>
+<?php locale_pulldown($dbh, $locale); ?>
     </select>
   </span>
 
@@ -66,10 +66,10 @@ $logged_in = $uid and !empty($uid);
                 <select name="country">
                   <option value="">ALL</option>
 <?php
-  $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
-  foreach ($dbh->query($sql) as $row) {
-    printf("<option value='%s'>%s</option>\n", $row["code"], $row["name"]);
-  }
+    $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
+    foreach ($dbh->query($sql) as $row) {
+        printf("<option value='%s'>%s</option>\n", $row["code"], $row["name"]);
+    }
 ?>
                 </select>
 	      </td>

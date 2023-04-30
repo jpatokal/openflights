@@ -2,19 +2,20 @@
 require_once("../php/locale.php");
 require_once("../php/db_pdo.php");
 
-if(isset($_GET["trid"])) {
-  $trid = $_GET["trid"];
+if (isset($_GET["trid"])) {
+    $trid = $_GET["trid"];
 } else {
-  $trid = null;
+    $trid = null;
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php if($trid) {
-  echo _("Edit trip");
+    <title>OpenFlights: <?php
+if($trid) {
+    echo _("Edit trip");
 } else {
-  echo _("Add trip");
+    echo _("Add trip");
 } ?></title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
@@ -26,7 +27,8 @@ if(isset($_GET["trid"])) {
   <body>
     <div id="contexthelp">
       <FORM name="tripform">
-	<div id="title"><h1>OpenFlights: <?php if($trid) {
+	<div id="title"><h1>OpenFlights: <?php
+if($trid) {
   echo _("Edit trip");
 } else {
   echo _("Add trip");
@@ -34,20 +36,23 @@ if(isset($_GET["trid"])) {
 
 <?php
 $uid = $_SESSION["uid"];
-if(!$uid or empty($uid)) {
-  die(_("Your session has timed out, please log in again."));
+if (!$uid || empty($uid)) {
+    die(_("Your session has timed out, please log in again."));
 }
 
-if($trid) {
-  $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=? AND uid=?");
-  $sth->execute([$trid, $uid]);
-  if(! $trip = $sth->fetch()) {
-    die(_("Could not load trip data.") . $sql);
-  }
+if ($trid) {
+    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=? AND uid=?");
+    $sth->execute([$trid, $uid]);
+    if (!$trip = $sth->fetch()) {
+        // TODO: $sql is undefined
+        die(_("Could not load trip data.") . $sql);
+    }
 } else {
-  $trip = array("name" => "",
-		"url" => "",
-		"public" => "Y");
+    $trip = array(
+        "name" => "",
+        "url" => "",
+        "public" => "Y"
+    );
 }
 ?>
 	<div id="miniresultbox"></div>
@@ -66,20 +71,20 @@ if($trid) {
 	    </tr><tr>
 	      <td><?php echo _("OpenFlights URL") ?></td>
 	      <td><input type="text" value="<?php
-if($trid) {
-  echo "https://openflights.org/trip/" . $trid;
+if ($trid) {
+    echo "https://openflights.org/trip/" . $trid;
 } else {
-  echo _("Not assigned yet");
+    echo _("Not assigned yet");
 }?>" name="puburl" style="border:none" size="40" readonly></td>
 	    </tr>
 	</table><br>
 
-<?php if($trid) {
-  echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
-  echo "<INPUT type='hidden' name='trid' value='" . $trid . "'>\n";
-  echo "<INPUT type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
+<?php if ($trid) {
+      echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
+      echo "<INPUT type='hidden' name='trid' value='" . $trid . "'>\n";
+      echo "<INPUT type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
 } else {
-  echo "<INPUT type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
+    echo "<INPUT type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
 }
 ?>
 	<INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">

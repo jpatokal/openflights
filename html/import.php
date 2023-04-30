@@ -21,7 +21,7 @@ require_once("../php/locale.php");
 	<table style='border-spacing: 5'>
 	    <tr>
 	      <td style='vertical-align: top'></td>
-  <td><p><?php printf (_("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually.  Duplicates are detected. "))?> 
+  <td><p><?php printf (_("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually.  Duplicates are detected. "))?>
 	<INPUT type="button" value="<?php echo _("Import from Tripit") ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
             </tr>
 	      <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
@@ -29,12 +29,12 @@ require_once("../php/locale.php");
 	      </td>
 	    </tr><tr>
 	      <td style='vertical-align: top'><input type="radio" name="fileType" value="CSV"></td>
-<td><p><?php printf(_("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."), 
+<td><p><?php printf(_("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."),
 		    "a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'") ?></p>
 	      </td>
 	    </tr>
 	</table>
-	
+
 <h4><?php echo _("File to upload") ?></h4>
 <p><input type="file" name="userfile" size="30"> <b><?php echo _("Keep historical airline names?") ?></b> <input type="checkbox" name="historyMode" value="yes"></td>
 

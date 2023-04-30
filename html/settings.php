@@ -11,11 +11,12 @@ if(isset($_GET["new"])) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-<title>OpenFlights: <?php if($type == "signup") {
-  echo _("Create new account");
-    } else {
-  echo _("Account settings");
-    }
+<title>OpenFlights: <?php
+if($type == "signup") {
+    echo _("Create new account");
+} else {
+    echo _("Account settings");
+}
 ?></title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/css/signup.css" type="text/css">
@@ -32,7 +33,7 @@ if(isset($_GET["new"])) {
   <body>
     <div id="mainContainer">
       <div id="sideBarContentWrapper">
-	  
+
 	<div id="contentContainer">
 	  <div id="nonmap">
 
@@ -43,7 +44,7 @@ if(isset($_GET["new"])) {
   echo _("Account settings");
     }
 ?></h1>
-      
+
 	      <div id="miniresultbox"></div>
 
 	      <table>
@@ -75,15 +76,15 @@ if(isset($_GET["new"])) {
 		    </td>
 		  </tr>
 <?php } else {
-  $uid = $_SESSION["uid"];
-  if(!$uid or empty($uid)) {
-    die(_("Your session has timed out, please log in again."));
-  }
-  $sth = $dbh->prepare("SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=?");
-  $sth->execute([$uid]);
-  if(! $settings = $sth->fetch()) {
-    die(_("Could not load profile data"));
-  }
+    $uid = $_SESSION["uid"];
+    if( !$uid || empty($uid)) {
+        die(_("Your session has timed out, please log in again."));
+    }
+    $sth = $dbh->prepare("SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=?");
+    $sth->execute([$uid]);
+    if (!$settings = $sth->fetch()) {
+        die(_("Could not load profile data"));
+      }
 ?>
 		  <tr>
 		    <td class="key"><nobr><?php echo _("Profile address") ?></nobr></td>
@@ -196,7 +197,7 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
 	    </FORM>
 	  </div>
 	</div>
-	
+
 	<div id="sideBar">
 <?php include '../sidebar.html';
 include 'ad-sidebar.html';
