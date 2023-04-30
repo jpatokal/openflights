@@ -14,34 +14,36 @@ include '../php/db_pdo.php';
       <h1>OpenFlights: Reset password</h1>
 
 <?php
-if(isset($_GET["challenge"])) {
-  $user = $_GET["user"];
-  $challenge = $_GET["challenge"];
-  $sth = $dbh->prepare("SELECT md5(password) AS challenge FROM users WHERE name = ?");
-  $sth->execute([$user]);
-  if ($myrow = $sth->fetch()) {
-    if($challenge == $myrow['challenge']) {
-      $newpw = substr(uniqid(), 0, 8);
-      $pwstring = md5($newpw . strtolower($user));
-      $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
-      if (!$sth->execute([$pwstring, $user])) die ('Resetting password for user ' . $name . ' failed');
-      echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
+if (isset($_GET["challenge"])) {
+    $user = $_GET["user"];
+    $challenge = $_GET["challenge"];
+    $sth = $dbh->prepare("SELECT md5(password) AS challenge FROM users WHERE name = ?");
+    $sth->execute([$user]);
+    if ($myrow = $sth->fetch()) {
+        if ($challenge == $myrow['challenge']) {
+            $newpw = substr(uniqid(), 0, 8);
+            $pwstring = md5($newpw . strtolower($user));
+            $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
+            if (!$sth->execute([$pwstring, $user])) {
+                die ('Resetting password for user ' . $name . ' failed');
+            }
+            echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
+        } else {
+            echo "Invalid challenge.";
+        }
     } else {
-      echo "Invalid challenge.";
+        echo "No such user.";
     }
-  } else {
-    echo "No such user.";
-  }
-} elseif(isset($_POST["email"])) {
-  $email = $_POST["email"];
-  $sth = $dbh->prepare("SELECT name, md5(password) AS challenge FROM users WHERE email = ?");
-  $sth->execute([$email]);
-  if ($myrow = $sth->fetch()) {
-    $name = $myrow['name'];
-    $link = "https://openflights.org/help/resetpw?user=" . $name
-      . "&challenge=" . $myrow['challenge'];
-    $subject = "OpenFlights: Reset password";
-    $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'.  To proceed, please click on the link below:
+} elseif (isset($_POST["email"])) {
+    $email = $_POST["email"];
+    $sth = $dbh->prepare("SELECT name, md5(password) AS challenge FROM users WHERE email = ?");
+    $sth->execute([$email]);
+    if ($myrow = $sth->fetch()) {
+        $name = $myrow['name'];
+        $link = "https://openflights.org/help/resetpw?user=" . $name
+            . "&challenge=" . $myrow['challenge'];
+          $subject = "OpenFlights: Reset password";
+          $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'.  To proceed, please click on the link below:
 
   " . $link . "
 
@@ -49,19 +51,20 @@ If you do not want to change your password, simply ignore this mail and nothing 
 
 Cheers,
 OpenFlights.org";
-    $headers = "From: support@openflights.org";
-    if(isset($_POST["unittest"])) {
-      echo $link . "***" .  $myrow['challenge'];
-      exit(0);
-    }
-    if (mail($email, $subject, $body, $headers)) {
-      echo("<p>A password reset link has been mailed to <b>$email</b>.</p>");
+
+        $headers = "From: support@openflights.org";
+        if (isset($_POST["unittest"])) {
+            echo $link . "***" .  $myrow['challenge'];
+            exit(0);
+        }
+        if (mail($email, $subject, $body, $headers)) {
+              echo("<p>A password reset link has been mailed to <b>$email</b>.</p>");
+        } else {
+            echo("<p>Message delivery failed, please contact <a href='/about'>support</a>.</p>");
+        }
     } else {
-      echo("<p>Message delivery failed, please contact <a href='/about'>support</a>.</p>");
+        echo "<p>Sorry, that e-mail address is not registered for any OpenFlights user.</p>";
     }
-  } else {
-    echo "<p>Sorry, that e-mail address is not registered for any OpenFlights user.</p>";
-  }
 } else {
 ?>
 
@@ -78,7 +81,7 @@ OpenFlights.org";
       <p>If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do.</p>
 <?php
 }
-if(! isset($_GET["challenge"])) {
+if (!isset($_GET["challenge"])) {
 ?>
       <input type="button" id="close" value="Return" onClick="javascript:window.close()">
 <?php

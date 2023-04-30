@@ -183,7 +183,7 @@ $route = array(
 // Login
 // Use default settings unless name/password are given as arguments
 
-function login($case, $name = NULL, $password = NULL, $challenge = NULL) {
+function login($case, $name = null, $password = null, $challenge = null) {
     global $webroot, $settings;
 
     if (!$password) {
