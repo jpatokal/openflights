@@ -2,7 +2,7 @@
 require_once("../php/locale.php");
 require_once("../php/db_pdo.php");
 
-if(isSet($_GET["new"])) {
+if(isset($_GET["new"])) {
   $type = "signup";
 } else {
   $type = "settings";

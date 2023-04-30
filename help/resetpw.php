@@ -14,7 +14,7 @@ include '../php/db_pdo.php';
       <h1>OpenFlights: Reset password</h1>
 
 <?php
-if(isSet($_GET["challenge"])) {
+if(isset($_GET["challenge"])) {
   $user = $_GET["user"];
   $challenge = $_GET["challenge"];
   $sth = $dbh->prepare("SELECT md5(password) AS challenge FROM users WHERE name = ?");
@@ -32,7 +32,7 @@ if(isSet($_GET["challenge"])) {
   } else {
     echo "No such user.";
   }
-} elseif(isSet($_POST["email"])) {
+} elseif(isset($_POST["email"])) {
   $email = $_POST["email"];
   $sth = $dbh->prepare("SELECT name, md5(password) AS challenge FROM users WHERE email = ?");
   $sth->execute([$email]);
@@ -50,7 +50,7 @@ If you do not want to change your password, simply ignore this mail and nothing 
 Cheers,
 OpenFlights.org";
     $headers = "From: support@openflights.org";
-    if(isSet($_POST["unittest"])) {
+    if(isset($_POST["unittest"])) {
       echo $link . "***" .  $myrow['challenge'];
       exit(0);
     }
@@ -78,7 +78,7 @@ OpenFlights.org";
       <p>If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do.</p>
 <?php
 }
-if(! isSet($_GET["challenge"])) {
+if(! isset($_GET["challenge"])) {
 ?>
       <input type="button" id="close" value="Return" onClick="javascript:window.close()">
 <?php

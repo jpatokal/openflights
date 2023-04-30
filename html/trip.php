@@ -2,7 +2,7 @@
 require_once("../php/locale.php");
 require_once("../php/db_pdo.php");
 
-if(isSet($_GET["trid"])) {
+if(isset($_GET["trid"])) {
   $trid = $_GET["trid"];
 } else {
   $trid = null;

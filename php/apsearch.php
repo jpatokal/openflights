@@ -116,7 +116,7 @@ Cross-check this edit on other sites with compatible licensing:
 - OurAirports: http://ourairports.com/airports/$icao/pilot-info.html
 - Wikipedia: http://www.google.com/search?q=wikipedia%20$icao%20airport&btnI
 TXT;
-    if(isSet($_POST["unittest"])) {
+    if(isset($_POST["unittest"])) {
       echo $subject . "\n\n" . $body;
       exit;
     }
