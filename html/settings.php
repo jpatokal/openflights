@@ -51,7 +51,7 @@ if ($type == "signup") {
         "units" => "M",
         "editor" => "B"
     );
-?>
+    ?>
           <tr>
                 <td colspan="3"><h2><?php echo _("Basic information") ?></h2></td>
           </tr>
@@ -74,7 +74,7 @@ if ($type == "signup") {
               <?php printf(_("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."), "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'") ?>
             </td>
           </tr>
-<?php
+    <?php
 } else {
     $uid = $_SESSION["uid"];
     if ( !$uid || empty($uid)) {
@@ -85,7 +85,7 @@ if ($type == "signup") {
     if (!$settings = $sth->fetch()) {
         die(_("Could not load profile data"));
     }
-?>
+    ?>
           <tr>
             <td class="key"><nobr><?php echo _("Profile address") ?></nobr></td>
             <td class="value"><INPUT type="text" name="myurl" value="<?php echo "https://openflights.org/user/" . $settings["name"] ?>" style="border:none" size="40" READONLY>
@@ -98,10 +98,10 @@ if ($type == "signup") {
            <td class="key"><?php echo _("Banners") ?></td>
            <td class="value" colspan=2><?php echo _("Blog banner (HTML)") ?><br>
               <textarea name="banner_html" cols="60" rows="4" readonly><?php
-echo "<a href='https://openflights.org/user/" . $settings["name"] . "' target='_blank'><img src='https://openflights.org/banner/" . $settings["name"] . ".png' width=400 height=70></a>"; ?></textarea><br>
+    echo "<a href='https://openflights.org/user/" . $settings["name"] . "' target='_blank'><img src='https://openflights.org/banner/" . $settings["name"] . ".png' width=400 height=70></a>"; ?></textarea><br>
            <?php echo _("Bulletin board banner (phpBB)") ?><br>
               <textarea name="banner_phpbb" cols="60" rows="3" readonly><?php
-echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https://openflights.org/banner/" . $settings["name"] . ".png[/img][/url]"; ?></textarea><br>
+    echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https://openflights.org/banner/" . $settings["name"] . ".png[/img][/url]"; ?></textarea><br>
               <span id="banner_img"><?php echo "<img src='/banner/" . $settings["name"] . ".png' width=400 height=70>" ?></span></td>
           </tr><tr>
            <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
@@ -110,7 +110,7 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
               <?php printf(_("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."), "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'") ?>
                     </td>
           </tr>
-<?php
+    <?php
 }
 ?>
         </tr><tr>
@@ -124,9 +124,24 @@ if ($type == "signup") {
             <td class="value"><?php locale_pulldown($dbh, $locale) ?></td>
         </tr><tr>
             <td class="key"><?php echo _("Privacy") ?></td>
-  <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php if ($settings["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private") ?><br>
-                    <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" <?php if ($settings["public"] == "Y") { echo "CHECKED"; } echo ">" . _("Public") ?><br>
-            <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php if ($settings["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open") ?></td>
+  <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php
+if ($settings["public"] == "N") {
+    echo "CHECKED";
+}
+echo ">" . _("Private");
+?><br>
+                    <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" <?php
+if ($settings["public"] == "Y") {
+  echo "CHECKED";
+}
+echo ">" . _("Public");
+?><br>
+            <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php
+if ($settings["public"] == "O") {
+  echo "CHECKED";
+}
+echo ">" . _("Open");
+?></td>
             <td class="desc">
             <span id="privacyN" style="display: none">
             <?php printf (_("<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."), 'a href="/donate" target="_blank"') ?>

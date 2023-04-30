@@ -32,7 +32,7 @@ require_once("../php/locale.php");
 <td><p><?php
 printf(
     _("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."),
-"a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'"
+    "a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'"
 );
 ?></p>
           </td>
