@@ -291,15 +291,62 @@ require_once("./php/helper.php");
 <?php
 for ($row = 1; $row <= 4; $row++) {
       echo "<tr id='row$row' " . ($row > 1 ? "style='display: none;'" : "") . "> <!-- Row $row -->\n";
-      printf("<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_ap{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"));
-      printf("<input type='hidden' name='src_ap%sid' id='src_ap%sid'>\n", $row, $row);
-      printf("<img src='/img/icon_plane-src.png' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n", _("Airport search"));
-      printf("<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_ap%sAC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"), $row);
-      printf ("<input type='hidden' name='dst_ap1%s' id='dst_ap%sid'/>\n", $row, $row);
-      printf ("<img src='/img/icon_plane-dst.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n", _("Airport search"));
-      printf ("<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airline{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter airline name or code"));
-      printf ("<input type='hidden' name='airline%sid' id='airline%sid'/><img src='/img/icon_airline.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirline(\"airline1\")'/ style='margin-right: 5px'/></td>\n", $row, $row, _("Airline search"));
-      printf ("<td><input type='text' name='src_date%s' id='src_date%s' size='11' class='date' tabindex='1%s4' onChange='JavaScript:markAsChanged()';/><img src='/img/scw.gif' height='15' width='16' onclick='scwShow(scwID(\"src_date%s\"),event); markAsChanged();' style='margin-left: 5px'/></td></tr>\n", $row, $row, $row, $row);
+      printf(
+          "<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_ap{$row}AC'></span>\n",
+          $row,
+          $row,
+          $row,
+          $row,
+          _("Enter city name or airport code")
+      );
+      printf(
+          "<input type='hidden' name='src_ap%sid' id='src_ap%sid'>\n",
+          $row,
+          $row
+      );
+      printf(
+          "<img src='/img/icon_plane-src.png' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n",
+          _("Airport search")
+      );
+      printf(
+          "<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_ap%sAC'></span>\n",
+          $row,
+          $row,
+          $row,
+          $row,
+          _("Enter city name or airport code"),
+          $row
+      );
+      printf(
+          "<input type='hidden' name='dst_ap1%s' id='dst_ap%sid'/>\n",
+          $row,
+          $row
+      );
+      printf(
+          "<img src='/img/icon_plane-dst.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n",
+          _("Airport search")
+      );
+      printf(
+          "<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airline{$row}AC'></span>\n",
+          $row,
+          $row,
+          $row,
+          $row,
+          _("Enter airline name or code")
+      );
+      printf(
+          "<input type='hidden' name='airline%sid' id='airline%sid'/><img src='/img/icon_airline.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirline(\"airline1\")'/ style='margin-right: 5px'/></td>\n",
+          $row,
+          $row,
+          _("Airline search")
+      );
+      printf(
+          "<td><input type='text' name='src_date%s' id='src_date%s' size='11' class='date' tabindex='1%s4' onChange='JavaScript:markAsChanged()';/><img src='/img/scw.gif' height='15' width='16' onclick='scwShow(scwID(\"src_date%s\"),event); markAsChanged();' style='margin-left: 5px'/></td></tr>\n",
+          $row,
+          $row,
+          $row,
+          $row
+      );
 }
 ?>
 <tr>

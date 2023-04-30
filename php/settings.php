@@ -66,7 +66,7 @@ if ($type == "NEW") {
     $success = $sth->execute([$name, $pw, $email, $privacy, $editor, $locale, $units]);
 } else {
     if (!$guestpw) {
-      $guestpw = null;
+        $guestpw = null;
     }
     $params = compact('email', 'privacy', 'editor', 'guestpw', 'startpane', 'locale', 'units', 'uid');
     // Only change password if old password matched and a new one was given
