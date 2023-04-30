@@ -1,4 +1,5 @@
 <?php
+
 require_once("locale.php");
 require_once("db_pdo.php");
 require_once("tripit_common.php");
@@ -7,9 +8,9 @@ require_once("helper.php");
 $DEBUG = false;
 
 $uid = $_SESSION["uid"];
-if (!$uid or empty($uid)) {
-  print _("Not logged in, aborting");
-  exit();
+if (!$uid || empty($uid)) {
+    print _("Not logged in, aborting");
+    exit();
 }
 
 // This page requires that we're linked to a TripIt account already.
@@ -22,50 +23,52 @@ $tripit = new TripIt($oauth_cred, $tripit_api_url);
 $wants_future_trips = isset($_REQUEST["future"]) ? $_REQUEST["future"] : null;
 // Check that the parameter is valid.  If not, default to past.
 if ($wants_future_trips == null || !is_numeric($wants_future_trips)) {
-  $wants_future_trips = 0;
+    $wants_future_trips = 0;
 }
 
 // Page number, in case we have more trips than can be returned in a single TripIt call.
 $tripit_page_number = isset($_REQUEST["page"]) ? $_REQUEST["page"] : null;
 if ($tripit_page_number < 2 || $tripit_page_number > 10000) {
-  $tripit_page_number = 1;
+    $tripit_page_number = 1;
 }
 
 // For future trips, include all objects.  For past trips, do not include all objects.
 $trips = $tripit->list_trip(array(
-  'traveler' => 'true',
-  'include_objects' => 'true',
-  'past' => $wants_future_trips ? 'false' : 'true',
-  'page_num' => $tripit_page_number,
+    'traveler' => 'true',
+    'include_objects' => 'true',
+    'past' => $wants_future_trips ? 'false' : 'true',
+    'page_num' => $tripit_page_number,
 ));
 if (!isset($trips) or !isset($trips->Trip)) {
-  handle_tripit_response($tripit->response);
-  error_log("TripIt error for user $uid: " . $tripit->response);
-  die(_("Could not connect to TripIt.  Please try again later.  If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>."));
+    handle_tripit_response($tripit->response);
+    error_log("TripIt error for user $uid: " . $tripit->response);
+    die(_("Could not connect to TripIt.  Please try again later.  If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>."));
 }
 
 # Get the list of trips, sorted by start date, oldest to newest.
 $trip_index_by_date = array();
 for ($i = 0; $i < count($trips->Trip); $i++) {
-  array_push($trip_index_by_date, $i);
+    array_push($trip_index_by_date, $i);
 }
 
 function mySort($a, $b) {
-  global $trips;
-  date_default_timezone_set('America/Los_Angeles');
-  $a_date = new DateTime($trips->Trip[$a]->start_date . " 00:00:00");
-  $b_date = new DateTime($trips->Trip[$b]->start_date . " 00:00:00");
-  if ($a_date < $b_date)
-    return -1;
-  if ($a_date > $b_date)
-    return 1;
-  return 0;
+    global $trips;
+    date_default_timezone_set('America/Los_Angeles');
+    $a_date = new DateTime($trips->Trip[$a]->start_date . " 00:00:00");
+    $b_date = new DateTime($trips->Trip[$b]->start_date . " 00:00:00");
+    if ($a_date < $b_date) {
+        return -1;
+    }
+    if ($a_date > $b_date) {
+        return 1;
+    }
+    return 0;
 }
 usort($trip_index_by_date, "mySort");
 
 # If it's a past trip, sort from newest to oldest.
-if(!$wants_future_trips) {
-  $trip_index_by_date = array_reverse($trip_index_by_date);
+if (!$wants_future_trips) {
+    $trip_index_by_date = array_reverse($trip_index_by_date);
 }
 
 # Build Trip ID to segment/ticket mapping

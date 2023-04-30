@@ -26,7 +26,7 @@ class WebAuthCredential {
         $this->_username = $username;
         $this->_password = $password;
     }
-    
+
     function getUsername() {
         return $this->_username;
     }
@@ -34,7 +34,7 @@ class WebAuthCredential {
     function getPassword() {
         return $this->_password;
     }
-    
+
     function authorize($curl, $http_method, $realm, $base_url, $args) {
         curl_setopt($curl, CURLOPT_USERPWD, $this->_username . ":" . $this->_password);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
@@ -69,7 +69,7 @@ class OAuthConsumerCredential {
     function __construct($oauth_consumer_key, $oauth_consumer_secret, $oauth_token_or_requestor_id='', $oauth_token_secret='') {
         $this->_oauth_consumer_key = $oauth_consumer_key;
         $this->_oauth_consumer_secret = $oauth_consumer_secret;
-        
+
         $this->_oauth_token = $this->_oauth_token_secret = $this->_oauth_requestor_id = '';
         if ($oauth_token_or_requestor_id && $oauth_token_secret) {
             $this->_oauth_token = $oauth_token_or_requestor_id;
@@ -95,25 +95,25 @@ class OAuthConsumerCredential {
     function getOAuthTokenSecret() {
         return $this->_oauth_token_secret;
     }
-    
+
     function getOAuthRequestorId() {
         return $this->_oauth_requestor_id;
     }
-    
+
     function authorize($curl, $http_method, $realm, $base_url, $args) {
         $authorization_header = $this->_generate_authorization_header($http_method, $realm, $base_url, $args);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: ' . $authorization_header));
     }
-    
+
     function validate_signature($url) {
         list($base_url, $query) = explode('?', $url, 2);
         $params = array();
         parse_str($query, $params);
         $signature = $params['oauth_signature'];
-        
+
         return ($signature == $this->_generate_signature('GET', $base_url, $params));
     }
-    
+
     function get_session_parameters($redirect_url, $action) {
         $parameters = $this->_generate_oauth_parameters('GET', $action, array('redirect_url' => $redirect_url));
         $parameters['redirect_url'] = $redirect_url;
@@ -145,7 +145,7 @@ class OAuthConsumerCredential {
         $pairs = array ();
         foreach ($params as $key => $value) {
             if (is_array($value)) {
-                // If the value is an array, it's because there are multiple 
+                // If the value is an array, it's because there are multiple
                 // with the same key, sort them, then add all the pairs
                 natsort($value);
                 foreach ($value as $v2) {
@@ -160,17 +160,17 @@ class OAuthConsumerCredential {
         // Return the pairs, concated with &
         return implode('&', $pairs);
     }
-    
+
     private function _generate_signature($method, $base_url, $params) {
         $normalized_parameters = OAuthUtil :: urlencodeRFC3986($this->get_signable_parameters($params));
-        
+
         $normalized_http_url = OAuthUtil :: urlencodeRFC3986($base_url);
-        
+
         $base_string = $method . '&' . $normalized_http_url;
         if ($normalized_parameters) {
             $base_string .= '&' . $normalized_parameters;
         }
-        
+
         $key_parts = array ( $this->_oauth_consumer_secret, $this->_oauth_token_secret );
 
         $key_parts = array_map(array (
@@ -178,7 +178,7 @@ class OAuthConsumerCredential {
             'urlencodeRFC3986'
         ), $key_parts);
         $key = implode('&', $key_parts);
-        
+
         return base64_encode(hash_hmac('sha1', $base_string, $key, true));
     }
 
@@ -194,7 +194,7 @@ class OAuthConsumerCredential {
         if ($this->_oauth_token != '') {
             $parameters['oauth_token'] = $this->_oauth_token;
         }
-        
+
         if ($this->_oauth_requestor_id != '') {
             $parameters['xoauth_requestor_id'] = $this->_oauth_requestor_id;
         }
@@ -205,10 +205,10 @@ class OAuthConsumerCredential {
         }
 
         $parameters['oauth_signature'] = $this->_generate_signature($http_method, $base_url, $parameters_for_base_string);
-        
+
         return $parameters;
     }
-    
+
     private function _generate_authorization_header($http_method, $realm, $base_url, $args) {
         $authorization_header = 'OAuth realm="' . $realm . '",';
 
@@ -289,17 +289,17 @@ class TripIt {
         } else {
             $http_method = 'GET';
         }
-        
+
         $this->_credential->authorize($curl, $http_method, $this->_api_url, $base_url, $args);
 
         if (FALSE === $this->response = curl_exec($curl)) {
             throw new Exception(curl_error($curl));
         }
-        
+
         $this->info = curl_getinfo($curl);
         $this->http_code = $this->info['http_code'];
         curl_close($curl);
-        
+
         return $this->response;
     }
 
@@ -313,7 +313,7 @@ class TripIt {
         $entity = count($pieces) > 1 ? $pieces[1] : null;
 
         $response = $this->_do_request($verb, $entity, $url_args, $post_args);
-        return $this->_xml_to_php($response);        
+        return $this->_xml_to_php($response);
     }
 
     function get_trip($id, $filter=array()) {
@@ -368,7 +368,7 @@ class TripIt {
     function get_profile() {
         return $this->_parse_command(__FUNCTION__);
     }
-    
+
     function get_points_program($id) {
         return $this->_parse_command(__FUNCTION__, array( 'id' => $id ));
     }
@@ -420,7 +420,7 @@ class TripIt {
     function delete_directions($id) {
         return $this->_parse_command(__FUNCTION__, array( 'id' => $id ));
     }
-    
+
     function replace_trip($id, $xml) {
         return $this->_parse_command(__FUNCTION__, null, array( 'id' => $id, 'xml' => $xml ));
     }
@@ -476,7 +476,7 @@ class TripIt {
     function list_object($filter=null) {
         return $this->_parse_command(__FUNCTION__, $filter);
     }
-    
+
     function list_points_program() {
         return $this->_parse_command(__FUNCTION__);
     }
@@ -484,16 +484,16 @@ class TripIt {
     function create($xml) {
         return $this->_parse_command(__FUNCTION__, null, array( 'xml' => $xml));
     }
-    
+
     function crs_load_reservations($xml, $company_key=null) {
         $args = array('xml' => $xml);
         if ($company_key !== null) {
             $args['company_key'] = $company_key;
         }
-        
+
         return $this->_parse_command('crsLoadReservations', null, $args);
     }
-    
+
     function crs_delete_reservations($record_locator) {
         return $this->_parse_command('crsDeleteReservations', array('record_locator' => $record_locator), null);
     }
