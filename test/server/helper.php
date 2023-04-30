@@ -41,7 +41,6 @@ class FormatAirportTest extends UnitTestCase {
 
         $row = array("name" => "Really Long Airport Name", "city" => "Really Long City Name", "country" => "Country", "iata" => "AAA", "icao" => "BBBB");
         $this->assertEqual(format_airport($row), "Really Long City Name-Really Lon. (AAA), Country");
-
     }
 }
 
@@ -103,4 +102,3 @@ class FileUrlWithDateTest extends UnitTestCase {
         $this->assertEqual("$test_filename?version=$expected_date", fileUrlWithDate($test_filename));
     }
 }
-

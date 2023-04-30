@@ -92,7 +92,11 @@ foreach ($dbh->query($sql) as $row) {
         <INPUT type='button' value='<?php echo _("Clear") ?>' onClick='clearSearch()'>
         <INPUT type='button' value='<?php echo _("Cancel") ?>' onClick='window.close()'>
         </td><td style="text-align: right">
-        <?php if ( !$logged_in) { echo "<small>" . _("Please log in to enable editing.") . "</small><br>"; } ?>
+<?php
+if (!$logged_in) {
+    echo "<small>" . _("Please log in to enable editing.") . "</small><br>";
+}
+?>
          <INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' <?php if (! $logged_in) echo "DISABLED" ?> onClick="doRecord()">
         <INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airline.") ?>' value='<?php echo _("Save changes") ?>'  <?php if (! $logged_in) echo "DISABLED" ?> onClick="doRecord()" style="display: none">
         </td>

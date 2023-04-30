@@ -25,7 +25,7 @@ if (isset($_GET["challenge"])) {
             $pwstring = md5($newpw . strtolower($user));
             $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
             if (!$sth->execute([$pwstring, $user])) {
-                die ('Resetting password for user ' . $name . ' failed');
+                die('Resetting password for user ' . $name . ' failed');
             }
             echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
         } else {

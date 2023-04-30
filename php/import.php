@@ -685,7 +685,7 @@ if ($action == _("Upload")) {
 
 <form name="importform" action="/php/import.php" method="post">
 
-<?php
+    <?php
     if ($id_note == true) {
         print "<font color=blue>" . _("Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") . "</font><br>";
     }
@@ -721,13 +721,13 @@ if ($action == _("Upload")) {
     print "<INPUT type='hidden' name='fileType' value='$fileType'>";
     print "<INPUT type='hidden' name='historyMode' value='$history'>";
     print "<INPUT type='submit' name='action' title='" . _("Add these flights to your OpenFlights") . "' value='" . _("Import") . "' " . $status . ">";
-?>
+    ?>
 
 <INPUT type="button" value="<?php echo _("Upload again") ?>" title="<?php _("Cancel this import and return to file upload page") ?>" onClick="JavaScript:history.go(-1)">
 
 <INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
 
-<?php
+    <?php
 }
 if ($action == _("Import")) {
     print "<BR><H4>" . _("Flights successfully imported.") . "</H4><BR>";

@@ -26,7 +26,8 @@ if (!$_GET["oauth_token"] or empty($_GET["oauth_token"]) or $_GET["oauth_token"]
 
 // We have the token and secret; attempt to get a request token.
 $oauth_credential = new OAuthConsumerCredential(
-    $tripit_app_id, $tripit_app_secret,
+    $tripit_app_id,
+    $tripit_app_secret,
     $rendezvous["token"],
     $rendezvous["secret"]
 );

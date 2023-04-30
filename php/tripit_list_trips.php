@@ -330,7 +330,7 @@ function display_trip($trip) {
        href="https://www.tripit.com<?php echo htmlentities($trip->relative_url) ?>"><?php echo htmlentities($trip->display_name) ?></a>
   </h2>
 </div>
-<?php
+    <?php
     if (array_key_exists("$trip->id", $all_trip_segments)) {
         $valid_segments = array();
         foreach ($all_trip_segments["$trip->id"] as $segment) {
@@ -489,7 +489,7 @@ function display_segment($segment) {
   </form>
   <hr class="segment-separator"/>
 </div>
-<?php
+    <?php
 
     // Do error and duplicate checking.
     if (!$is_valid) {

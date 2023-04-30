@@ -133,7 +133,7 @@ class ImportFlightMemoryNewStyleTest extends WebTestCase {
 }
 
 function upload_fixture($context, $fixture, $filetype) {
-  global $webroot, $uploaddir;
+    global $webroot, $uploaddir;
 
     $context->assertTrue(copy("./fixtures/" . $fixture, $uploaddir . $fixture));
     $opts = array('action' => 'Import', 'tmpfile' => $fixture, 'fileType' => $filetype);

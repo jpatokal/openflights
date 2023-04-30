@@ -50,10 +50,10 @@ $logged_in = $uid && !empty($uid);
                 <select name="country">
                   <option value="">ALL</option>
 <?php
-    $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
-    foreach ($dbh->query($sql) as $row) {
-        printf("<option value='%s'>%s</option>\n", $row["code"], $row["name"]);
-    }
+$sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
+foreach ($dbh->query($sql) as $row) {
+    printf("<option value='%s'>%s</option>\n", $row["code"], $row["name"]);
+}
 ?>
                 </select>
           </td>
@@ -102,7 +102,11 @@ $logged_in = $uid && !empty($uid);
         <INPUT type="button" value='<?php echo _("Clear") ?>' onClick="clearSearch()">
         <INPUT type="button" value='<?php echo _("Cancel") ?>' onClick="window.close()">
         </td><td style="text-align: right">
-        <?php if (! $logged_in) {echo "<small>" . _("Please log in to enable editing.") . "</small><br>"; } ?>
+<?php
+if (!$logged_in) {
+    echo "<small>" . _("Please log in to enable editing.") . "</small><br>";
+}
+?>
          <INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airport.") ?>' value='<?php echo _("Add as new") ?>' DISABLED onClick="doRecord()">
         <INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airport.") ?>' value='<?php echo _("Save changes") ?>' DISABLED onClick="doRecord()" style="display: none">
         </td>
