@@ -39,17 +39,17 @@ if ($type == "signup") {
       <div id="nonmap">
 
         <FORM name="signupform" method="POST" action="/">
-  <a name="top"><h1>OpenFlights: <?php if($type == "signup") {
-  echo _("Create new account");
+  <a name="top"><h1>OpenFlights: <?php if ($type == "signup") {
+        echo _("Create new account");
     } else {
-  echo _("Account settings");
+        echo _("Account settings");
     }
 ?></h1>
 
           <div id="miniresultbox"></div>
 
           <table>
-<?php if($type == "signup") {
+<?php if ($type == "signup") {
     $settings = array(
         "public" => "Y",
         "units" => "M",
@@ -80,7 +80,7 @@ if ($type == "signup") {
           </tr>
 <?php } else {
     $uid = $_SESSION["uid"];
-    if( !$uid || empty($uid)) {
+    if ( !$uid || empty($uid)) {
         die(_("Your session has timed out, please log in again."));
     }
     $sth = $dbh->prepare("SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=?");
@@ -116,15 +116,15 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
 <?php } ?>
         </tr><tr>
                 <td colspan="4"><h2><?php echo _("Profile settings") ?></h2>
-<?php if($type == "signup") echo _("You can easily change these later by clicking on <i>Settings</i>.") ?></td>
+<?php if ($type == "signup") echo _("You can easily change these later by clicking on <i>Settings</i>.") ?></td>
         </tr><tr>
                 <td class="key"><?php echo _("Language") ?></td>
             <td class="value"><?php echo locale_pulldown($dbh, $locale) ?></td>
         </tr><tr>
             <td class="key"><?php echo _("Privacy") ?></td>
-  <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php if($settings["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private") ?><br>
-                    <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" <?php if($settings["public"] == "Y") { echo "CHECKED"; } echo ">" . _("Public") ?><br>
-            <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php if($settings["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open") ?></td>
+  <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php if ($settings["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private") ?><br>
+                    <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" <?php if ($settings["public"] == "Y") { echo "CHECKED"; } echo ">" . _("Public") ?><br>
+            <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php if ($settings["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open") ?></td>
             <td class="desc">
             <span id="privacyN" style="display: none">
             <?php printf (_("<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."), 'a href="/donate" target="_blank"') ?>
@@ -133,29 +133,29 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
             <span id="privacyO" style="display: none"><?php echo _("<b>Open</b> profiles let others see, but not edit, your detailed flight data as well.") ?></span></td>
           </tr><tr>
             <td class="key"><?php echo _("Flight editor") ?></td>
-            <td class="value"><input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" <?php if($settings["editor"] == "B") { echo "CHECKED"; } echo ">" . _("Basic") ?></br>
-            <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('D')"<?php if($settings["editor"] == "D") { echo "CHECKED"; } echo ">" . _("Detailed") ?><br>
+            <td class="value"><input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" <?php if ($settings["editor"] == "B") { echo "CHECKED"; } echo ">" . _("Basic") ?></br>
+            <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('D')"<?php if ($settings["editor"] == "D") { echo "CHECKED"; } echo ">" . _("Detailed") ?><br>
             <td class="desc">
             <span id="basiceditor" style="display: inline"><?php echo _("The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!") ?></span>
             <span id="detaileditor" style="display: none"><?php echo _("The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters.") ?></span></td></tr>
           </tr><tr>
             <td class="key"><?php echo _("Distances") ?></td>
             <td class="value">
-                      <input type="radio" name="units" value="M" <?php if($settings["units"] == "M") { echo "CHECKED"; } echo ">" . _("Miles") ?></br>
-              <input type="radio" name="units" value="K" <?php if($settings["units"] == "K") { echo "CHECKED"; } echo ">" . _("Kilometers") ?></br>
+                      <input type="radio" name="units" value="M" <?php if ($settings["units"] == "M") { echo "CHECKED"; } echo ">" . _("Miles") ?></br>
+              <input type="radio" name="units" value="K" <?php if ($settings["units"] == "K") { echo "CHECKED"; } echo ">" . _("Kilometers") ?></br>
             <td class="desc">
                     <?php echo _("Preferred unit for flight distances") ?></span>
                   </td></tr>
 
-<?php if($type == "settings") { ?>
+<?php if ($type == "settings") { ?>
           <tr class="gold">
             <td class="key"><?php echo _("Guest password") ?></td>
             <td class="value"><INPUT type="password" name="guestpw" size="20" DISABLED></td>
                 <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Password protect your Private profile, so only friends and family can see it.") ?></tr><tr class="gold">
              <td class="key"><?php echo _("Default view") ?></td>
-            <td class="value"><input type="radio" name="startpane" value="H" DISABLED <?php if($settings["startpane"] == "H") { echo "CHECKED"; } echo ">" . _("Help") ?><br>
-            <input type="radio" name="startpane" value="A" DISABLED <?php if($settings["startpane"] == "A") { echo "CHECKED"; } echo ">" . _("Analyze") ?><br>
-            <input type="radio" name="startpane" value="T" DISABLED <?php if($settings["startpane"] == "T") { echo "CHECKED"; } echo ">" . _("Top 10") ?></td>
+            <td class="value"><input type="radio" name="startpane" value="H" DISABLED <?php if ($settings["startpane"] == "H") { echo "CHECKED"; } echo ">" . _("Help") ?><br>
+            <input type="radio" name="startpane" value="A" DISABLED <?php if ($settings["startpane"] == "A") { echo "CHECKED"; } echo ">" . _("Analyze") ?><br>
+            <input type="radio" name="startpane" value="T" DISABLED <?php if ($settings["startpane"] == "T") { echo "CHECKED"; } echo ">" . _("Top 10") ?></td>
                 <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Display a screen of your choice instead of banner ads.") ?>
           </tr><tr>
              <td colspan="4"><h2><?php echo _("Manage flights") ?></h2></td>
