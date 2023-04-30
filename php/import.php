@@ -26,7 +26,7 @@ if (!$uid || empty($uid)) {
     die_nicely(_("Not logged in, aborting"));
 }
 
-include_once('phpQuery-onefile.php');
+require_once '../vendor/autoload.php';
 include_once('helper.php');
 
 $posMap = array("Window" => "W", "Middle" => "M", "Aisle" => "A");
