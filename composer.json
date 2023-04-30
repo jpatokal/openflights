@@ -25,7 +25,8 @@
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.0",
-        "knplabs/github-api": "^3.0"
+        "knplabs/github-api": "^3.0",
+        "rubobaquero/phpquery": "0.9.15"
     },
     "require-dev": {
         "mediawiki/minus-x": "^1.1.1",
