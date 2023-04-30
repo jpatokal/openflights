@@ -62,7 +62,7 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
     }
     $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE $ext (city LIKE :name";
 
-    switch(strlen($query)) {
+    switch (strlen($query)) {
         case 3: // IATA
             $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE iata=:code UNION ($sql)) ORDER BY sort_col,$sort_order LIMIT $limit";
             break;

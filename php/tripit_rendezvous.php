@@ -1,12 +1,13 @@
 <?php
+
 require_once("locale.php");
 require_once("db_pdo.php");
 require_once("tripit_common.php");
 
 $uid = $_SESSION["uid"];
-if (!$uid or empty($uid)) {
-  print _("Not logged in, aborting");
-  exit();
+if (!$uid || empty($uid)) {
+    print _("Not logged in, aborting");
+    exit();
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

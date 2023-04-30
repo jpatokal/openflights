@@ -21,7 +21,7 @@ function json_success($data) {
 //
 // Abort with a JSON-formatted localized error message
 //
-function json_error($msg, $detail='') {
+function json_error($msg, $detail = '') {
     die(json_encode(array("status" => 0, "message" => _($msg) . ' ' . $detail)));
 }
 

@@ -28,7 +28,7 @@ readfile("../kml/header.kml");
 print "<Folder>\n<name>Flights</name>\n";
 
 // Plot flights on map
-while($row = $sth->fetch()) {
+while ($row = $sth->fetch()) {
     $x1 = $row["sx"];
     $y1 = $row["sy"];
     $z1 = $row["sz"] * METERS_PER_FOOT;

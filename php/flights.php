@@ -41,7 +41,6 @@ $units = $_SESSION["units"];
 
 // Logged in?
 if (!$uid || empty($uid)) {
-
     // Viewing an "open" user's flights, or an "open" flight?
     // (will be previously set in map.php)
     $uid = $_SESSION["openuid"];
@@ -94,7 +93,6 @@ if ($type == "R" || $type == "L") {
         }
     }
     $sql = "SELECT s.x AS sx,s.y AS sy,s.iata AS src_iata,s.icao AS src_icao,s.apid AS src_apid,d.x AS dx,d.y AS dy,d.iata AS dst_iata,d.icao AS dst_icao,d.apid AS dst_apid,l.iata as code, '-' as src_date, '-' as src_time, '-' as distance, '-:-' AS duration, '' as seat, '' as seat_type, '' as class, '' as reason, r.equipment AS name, '' as registration,rid AS fid,l.alid,'' AS note,NULL as trid,'N' AS opp,NULL as plid,l.iata AS al_iata,l.icao AS al_icao,l.name AS al_name,'F' AS mode,codeshare,stops FROM airports AS s,airports AS d, airlines AS l,routes AS r WHERE $match AND r.src_apid=s.apid AND r.dst_apid=d.apid AND r.alid=l.alid";
-
 } else {
     // List of all this user's flights
     $params['uid'] = $uid;

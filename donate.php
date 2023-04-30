@@ -106,8 +106,8 @@
 <?php
 $uid = $_SESSION["uid"];
 $logged_in = $uid && !empty($uid);
-if($logged_in) {
-?>
+if ($logged_in) {
+    ?>
         <p>You are logged in <b><?php echo $_SESSION["name"]; ?></b>.
 <?php } else { ?>
         <p><b>Please <a href="/">log in</a> before donating!</b>
