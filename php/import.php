@@ -417,7 +417,8 @@ foreach ($rows as $row) {
             $distance = str_replace(',', '', nbsp_trim($distance));
             $dist_unit = $cells[1]->textContent;
             if ($dist_unit == "km") {
-                $distance = round($distance / 1.609344); // km to mi
+                // km to mi
+                $distance = round($distance / KM_PER_MILE);
             }
             $duration = nbsp_trim($cells[2]->textContent);
 
