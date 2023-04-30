@@ -74,26 +74,28 @@ if (!$wants_future_trips) {
 # Build Trip ID to segment/ticket mapping
 $all_trip_segments = array();
 foreach ($trips->AirObject as $ticket) {
-  foreach ($ticket->Segment as $segment) {
-    if (!isset($all_trip_segments["$ticket->trip_id"])) {
-      $all_trip_segments["$ticket->trip_id"] = array();
+    foreach ($ticket->Segment as $segment) {
+        if (!isset($all_trip_segments["$ticket->trip_id"])) {
+            $all_trip_segments["$ticket->trip_id"] = array();
+        }
+        # Add the name of traveler on this segment.
+        $segment->addChild("pax", generate_pax_string($ticket->Traveler));
+        array_push($all_trip_segments["$ticket->trip_id"], $segment);
     }
-    # Add the name of traveler on this segment.
-    $segment->addChild("pax", generate_pax_string($ticket->Traveler));
-    array_push($all_trip_segments["$ticket->trip_id"], $segment);
-  }
 }
 function mySort2($a, $b) {
-  $a_date = tripit_date_to_datetime($a->StartDateTime);
-  $b_date = tripit_date_to_datetime($b->StartDateTime);
-  if ($a_date < $b_date)
-    return -1;
-  if ($a_date > $b_date)
-    return 1;
-  return 0;
+    $a_date = tripit_date_to_datetime($a->StartDateTime);
+    $b_date = tripit_date_to_datetime($b->StartDateTime);
+    if ($a_date < $b_date) {
+        return -1;
+    }
+    if ($a_date > $b_date) {
+        return 1;
+    }
+    return 0;
 }
 foreach (array_keys($all_trip_segments) as $trip) {
-  usort($all_trip_segments["$trip"], "mySort2");
+    usort($all_trip_segments["$trip"], "mySort2");
 }
 
 /**
@@ -101,15 +103,15 @@ foreach (array_keys($all_trip_segments) as $trip) {
  * @param $future int 0 for past, 1 for future
  */
 function show_past_future_selector($future) {
-  print _("Show") . " ";
-  if ($future) {
-    print '<a href="?future=0">' . _("past trips") . '</a> ';
-    print '<b>' . _("future trips") . '</b>';
-  } else {
-    print '<b>' . _("past trips") . '</b> ';
-    print '<a href="?future=1">' . _("future trips") . '</a>';
-  }
-  print "<br>\n";
+    print _("Show") . " ";
+    if ($future) {
+        print '<a href="?future=0">' . _("past trips") . '</a> ';
+        print '<b>' . _("future trips") . '</b>';
+    } else {
+        print '<b>' . _("past trips") . '</b> ';
+        print '<a href="?future=1">' . _("future trips") . '</a>';
+    }
+    print "<br>\n";
 }
 
 /**
@@ -118,24 +120,25 @@ function show_past_future_selector($future) {
  * @param $max_page int Total number of pages
  */
 function show_page_numbers($cur_page, $max_page) {
-  global $wants_future_trips;
+    global $wants_future_trips;
 
-  if ($cur_page > 1) {
-    print "<a href='?future=$wants_future_trips&page=" . ($cur_page - 1) . "'><b>" . _("Previous Page") . "</b></a>\n";
-  } else {
-    print _("Page") . " ";
-  }
-  for ($i = 1; $i <= $max_page; $i++) {
-    if ($cur_page == $i) {
-      print "<b>$i</b> ";
+    if ($cur_page > 1) {
+        print "<a href='?future=$wants_future_trips&page=" . ($cur_page - 1) .
+            "'><b>" . _("Previous Page") . "</b></a>\n";
     } else {
-      print "<a href='?future=$wants_future_trips&page=$i'>$i</a>\n";
+        print _("Page") . " ";
     }
-  }
-  if ($cur_page < $max_page) {
-    print "<a href='?future=$wants_future_trips&page=" . ($cur_page + 1) . "'><b>" . _("Next Page") . "</b></a>\n";
-  }
-  print "<br>\n";
+    for ($i = 1; $i <= $max_page; $i++) {
+        if ($cur_page == $i) {
+            print "<b>$i</b> ";
+        } else {
+            print "<a href='?future=$wants_future_trips&page=$i'>$i</a>\n";
+        }
+    }
+    if ($cur_page < $max_page) {
+        print "<a href='?future=$wants_future_trips&page=" . ($cur_page + 1) . "'><b>" . _("Next Page") . "</b></a>\n";
+    }
+    print "<br>\n";
 }
 
 /**
@@ -144,144 +147,152 @@ function show_page_numbers($cur_page, $max_page) {
  * @return DateTime representation
  */
 function tripit_date_to_datetime($tripit_date) {
-  $date_str = $tripit_date->date . ' ' . $tripit_date->time . ' GMT' . $tripit_date->utc_offset;
-  $dt = new DateTime($date_str);
-  try {
-    $timezone = new DateTimeZone($tripit_date->timezone);
-    $dt->setTimezone($timezone);
-  } catch (Exception $e) {
-    error_log("Couldn't parse TripIt timezone of " . $tripit_date->timezone . "; going with default.");
-  }
-  return new DateTime($date_str);
+    $date_str = $tripit_date->date . ' ' . $tripit_date->time . ' GMT' . $tripit_date->utc_offset;
+    $dt = new DateTime($date_str);
+    try {
+        $timezone = new DateTimeZone($tripit_date->timezone);
+        $dt->setTimezone($timezone);
+    } catch (Exception $e) {
+        error_log("Couldn't parse TripIt timezone of " . $tripit_date->timezone . "; going with default.");
+    }
+    return new DateTime($date_str);
 }
 
 function generate_pax_string($travelers) {
-  $pax = array();
-  foreach ($travelers as $traveler) {
-    array_push($pax, $traveler->first_name . ' ' . $traveler->last_name);
-  }
-  return join(", ", $pax);
+    $pax = array();
+    foreach ($travelers as $traveler) {
+        array_push($pax, $traveler->first_name . ' ' . $traveler->last_name);
+    }
+    return join(", ", $pax);
 }
 
 function resolve_airport($iata_code) {
-  global $dbh;
-  if(empty($iata_code)) {
-    return null;
-  }
-  try {
-    $sth = $dbh->prepare("SELECT * FROM airports WHERE iata=?");
-    $sth->execute(array($iata_code));
-    if ($sth->rowCount()) {
-      $result = $sth->fetch();
-      return array("id" => $result["apid"], "name" => htmlentities(format_airport($result)));
-    } else {
-      return null;
+    global $dbh;
+    if (empty($iata_code)) {
+        return null;
     }
-  } catch (PDOException $e) {
-    die(_("Database error."));
-  }
+    try {
+        $sth = $dbh->prepare("SELECT * FROM airports WHERE iata=?");
+        $sth->execute(array($iata_code));
+        if ($sth->rowCount()) {
+            $result = $sth->fetch();
+            return array("id" => $result["apid"], "name" => htmlentities(format_airport($result)));
+        } else {
+            return null;
+        }
+    } catch (PDOException $e) {
+        die(_("Database error."));
+    }
 }
 
 function resolve_airline($iata_code) {
-  global $dbh;
-  if(empty($iata_code)) {
-    return null;
-  }
-  try {
-    $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata=?");
-    $sth->execute(array($iata_code));
-    if ($sth->rowCount()) {
-      $result = $sth->fetch();
-      return array("id" => $result["alid"], "name" => htmlentities(format_airline($result)));
-    } else {
-      return null;
+    global $dbh;
+    if (empty($iata_code)) {
+        return null;
     }
-  } catch (PDOException $e) {
-    die(_("Database error."));
-  }
+    try {
+        $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata=?");
+        $sth->execute(array($iata_code));
+        if ($sth->rowCount()) {
+            $result = $sth->fetch();
+            return array("id" => $result["alid"], "name" => htmlentities(format_airline($result)));
+        } else {
+            return null;
+        }
+    } catch (PDOException $e) {
+        die(_("Database error."));
+    }
 }
 
 /**
  * Try and guess the class of a given flight.
- * @param $class Class name
+ * @param $class string Class name
  * @return array Array of CHECKED values, keyed by single-letter class Y, P, C, or F.
  */
 function detect_class($class) {
-  global $DEBUG;
-  # From https://en.wikipedia.org/wiki/IATA_class_codes
-  # We'll ony map F and C; everything else we'll assume is Y.
-  $class_codes = array(
-    "R" => "F",
-    "P" => "F",
-    "F" => "F",
-    "A" => "F",
+    global $DEBUG;
+    # From https://en.wikipedia.org/wiki/IATA_class_codes
+    # We'll ony map F and C; everything else we'll assume is Y.
+    $class_codes = array(
+        "R" => "F",
+        "P" => "F",
+        "F" => "F",
+        "A" => "F",
 
-    "J" => "C",
-    "C" => "C",
-    "D" => "C",
-    "I" => "C",
-    "Z" => "C",
-  );
+        "J" => "C",
+        "C" => "C",
+        "D" => "C",
+        "I" => "C",
+        "Z" => "C",
+    );
 
-  # Initialize all to empty.
-  $class_arr = array(
-    "Y" => "",
-    "P" => "",
-    "C" => "",
-    "F" => "",
-  );
+    # Initialize all to empty.
+    $class_arr = array(
+        "Y" => "",
+        "P" => "",
+        "C" => "",
+        "F" => "",
+    );
 
-  # Skip all detection and assume Economy if the class is empty.
-  if (empty($class)) {
-    if ($DEBUG)
-      error_log("detect_class: class empty, default economy");
-    $class_arr["Y"] = " CHECKED";
+    # Skip all detection and assume Economy if the class is empty.
+    if (empty($class)) {
+        if ($DEBUG) {
+            error_log("detect_class: class empty, default economy");
+        }
+        $class_arr["Y"] = " CHECKED";
+        return $class_arr;
+    }
+
+    if (stristr($class, "econ") || stristr($class, "coach")) {
+        # Economy
+        # Check to see if it's Premium
+        if (stristr($class, "prem")) {
+            if ($DEBUG) {
+                error_log("detect_class: $class => Premium Economy via string match");
+            }
+            $class_arr["P"] = " CHECKED";
+        } else {
+            if ($DEBUG) {
+                error_log("detect_class: $class => Economy via string match");
+            }
+            $class_arr["Y"] = " CHECKED";
+        }
+    } elseif (stristr($class, "bus") && !stristr($class, "first")) {
+        # Business
+        # UA's "BusinessFirst" is generally considered to be F and not C.
+        if ($DEBUG) {
+            error_log("detect_class: $class => Business via string match");
+        }
+        $class_arr["C"] = " CHECKED";
+    } elseif (stristr($class, "first")) {
+        # First
+        if ($DEBUG) {
+            error_log("detect_class: $class => First via string match");
+        }
+        $class_arr["F"] = " CHECKED";
+    } elseif (strlen($class) == 1) {
+        # Maybe it's a class code.
+        $class = strtoupper($class);
+        if (array_key_exists($class, $class_codes)) {
+            if ($DEBUG) {
+                error_log("detect_class: $class => $class_codes[$class] via class code");
+            }
+            $class_arr[$class_codes[$class]] = " CHECKED";
+        } else {
+            if ($DEBUG) {
+                error_log("detect_class: $class => Y via other class code");
+            }
+            $class_arr["Y"] = " CHECKED";
+        }
+    } else {
+        # No clue.  Assume Economy.
+        if ($DEBUG) {
+            error_log("detect_class: $class => Y via default guess");
+        }
+        $class_arr["Y"] = " CHECKED";
+    }
+
     return $class_arr;
-  }
-
-  if (stristr($class, "econ") || stristr($class, "coach")) {
-    # Economy
-    # Check to see if it's Premium
-    if (stristr($class, "prem")) {
-      if ($DEBUG)
-        error_log("detect_class: $class => Premium Economy via string match");
-      $class_arr["P"] = " CHECKED";
-    } else {
-      if ($DEBUG)
-        error_log("detect_class: $class => Economy via string match");
-      $class_arr["Y"] = " CHECKED";
-    }
-  } elseif (stristr($class, "bus") && !stristr($class, "first")) {
-    # Business
-    # UA's "BusinessFirst" is generally considered to be F and not C.
-    if ($DEBUG)
-      error_log("detect_class: $class => Business via string match");
-    $class_arr["C"] = " CHECKED";
-  } elseif (stristr($class, "first")) {
-    # First
-    if ($DEBUG)
-      error_log("detect_class: $class => First via string match");
-    $class_arr["F"] = " CHECKED";
-  } elseif (strlen($class) == 1) {
-    # Maybe it's a class code.
-    $class = strtoupper($class);
-    if (array_key_exists($class, $class_codes)) {
-      if ($DEBUG)
-        error_log("detect_class: $class => $class_codes[$class] via class code");
-      $class_arr[$class_codes[$class]] = " CHECKED";
-    } else {
-      if ($DEBUG)
-        error_log("detect_class: $class => Y via other class code");
-      $class_arr["Y"] = " CHECKED";
-    }
-  } else {
-    # No clue.  Assume Economy.
-    if ($DEBUG)
-      error_log("detect_class: $class => Y via default guess");
-    $class_arr["Y"] = " CHECKED";
-  }
-
-  return $class_arr;
 }
 
 /**
@@ -292,16 +303,16 @@ function detect_class($class) {
  * @param $flight_number string Flight number (e.g. UA451)
  */
 function is_duplicate_segment($date, $from, $to, $flight_number) {
-  global $dbh, $DEBUG;
-  list($src_apid, $dst_apid, $opp) = orderAirports($from, $to);
-  $mysql_date = $date->format('Y-m-d');
-  $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid=? AND src_date=? AND src_apid=? AND dst_apid=? AND opp=?");
-  $sth->execute(array($_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp));
-  $result = $sth->fetch();
-  if ($DEBUG) {
-    error_log("is_duplicate_segment: $mysql_date $from-$to on $flight_number for user $_SESSION[uid] has duplicate status: " . $result[0]);
-  }
-  return $result[0] != 0;
+    global $dbh, $DEBUG;
+    list($src_apid, $dst_apid, $opp) = orderAirports($from, $to);
+    $mysql_date = $date->format('Y-m-d');
+    $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid=? AND src_date=? AND src_apid=? AND dst_apid=? AND opp=?");
+    $sth->execute(array($_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp));
+    $result = $sth->fetch();
+    if ($DEBUG) {
+        error_log("is_duplicate_segment: $mysql_date $from-$to on $flight_number for user $_SESSION[uid] has duplicate status: " . $result[0]);
+    }
+    return $result[0] != 0;
 }
 
 /**
@@ -310,34 +321,35 @@ function is_duplicate_segment($date, $from, $to, $flight_number) {
  * @param $trip SimpleXMLElement Single Trip object from TripIt
  */
 function display_trip($trip) {
-  global $all_trip_segments;
-  ?>
+    global $all_trip_segments;
+    ?>
 <div class="trip_header">
   <div class="import_all" id="import_all_<?php echo htmlentities($trip->id) ?>"></div>
   <h2>
     <a style="text-decoration: none" target="_blank"
-       href="http://www.tripit.com<?php echo htmlentities($trip->relative_url) ?>"><?php echo htmlentities($trip->display_name) ?></a>
+       href="https://www.tripit.com<?php echo htmlentities($trip->relative_url) ?>"><?php echo htmlentities($trip->display_name) ?></a>
   </h2>
 </div>
 <?php
-  if (array_key_exists("$trip->id", $all_trip_segments)) {
-    $valid_segments = array();
-    foreach ($all_trip_segments["$trip->id"] as $segment) {
-      $valid_segment = display_segment($segment);
-      // Save valid segments to be used with "Import All"
-      if ($valid_segment) {
-        array_push($valid_segments, $segment->id);
-      }
-    }
+    if (array_key_exists("$trip->id", $all_trip_segments)) {
+        $valid_segments = array();
+        foreach ($all_trip_segments["$trip->id"] as $segment) {
+            $valid_segment = display_segment($segment);
+            // Save valid segments to be used with "Import All"
+            if ($valid_segment) {
+                array_push($valid_segments, $segment->id);
+            }
+        }
 
-    // If we had some valid segments, add button to display all.
-    if (sizeof($valid_segments) > 0) {
-      $segment_string = "'" . implode("','", $valid_segments) . "'";
-      echo '<script type="text/javascript">addImportAllButton("' . _("Import All") . '", ' . $trip->id . ', "' . $segment_string . '")</script>';
+        // If we had some valid segments, add button to display all.
+        if (sizeof($valid_segments) > 0) {
+            $segment_string = "'" . implode("','", $valid_segments) . "'";
+            echo '<script type="text/javascript">addImportAllButton("' . _("Import All") . '", ' .
+                $trip->id . ', "' . $segment_string . '")</script>';
+        }
+    } else {
+        display_no_segments_message();
     }
-  } else {
-    display_no_segments_message();
-  }
 }
 
 /**
@@ -346,58 +358,58 @@ function display_trip($trip) {
  * @return boolean true if segment is importable, false otherwise.
  */
 function display_segment($segment) {
-  $start_time = tripit_date_to_datetime($segment->StartDateTime);
-  $end_time = tripit_date_to_datetime($segment->EndDateTime);
+    $start_time = tripit_date_to_datetime($segment->StartDateTime);
+    $end_time = tripit_date_to_datetime($segment->EndDateTime);
 
-  // See if we have an updated departure/arrival time based upon TripIt status.
-  if (isset($segment->Status)) {
-    $status = $segment->Status;
-    if (isset($status->EstimatedDepartureDateTime)) {
-      $start_time = tripit_date_to_datetime($status->EstimatedDepartureDateTime);
+    // See if we have an updated departure/arrival time based upon TripIt status.
+    if (isset($segment->Status)) {
+        $status = $segment->Status;
+        if (isset($status->EstimatedDepartureDateTime)) {
+            $start_time = tripit_date_to_datetime($status->EstimatedDepartureDateTime);
+        }
+        if (isset($status->EstimatedArrivalDateTime)) {
+            $end_time = tripit_date_to_datetime($status->EstimatedArrivalDateTime);
+        }
     }
-    if (isset($status->EstimatedArrivalDateTime)) {
-      $end_time = tripit_date_to_datetime($status->EstimatedArrivalDateTime);
+
+    // FIXME - Calculating this here seems wrong; we already implement most of this in JavaScript already, but
+    // it's all specific to our input form.
+    $delta_minutes = ($end_time->getTimestamp() - $start_time->getTimestamp()) / 60;
+    $duration = sprintf("%02d:%02d", floor($delta_minutes / 60), $delta_minutes % 60);
+
+    $start_date = $start_time->format('Y-m-d');
+    $start_hm = $start_time->format('G:i');
+    $end_hm = $end_time->format('G:i');
+
+    // Calculate number of days in between
+    $start_date_no_time = new DateTime($start_date);
+    $delta_days = $start_date_no_time->diff(new DateTime($end_time->format('Y-m-d')))->format('%R%a');
+
+    $src_ap = resolve_airport($segment->start_airport_code);
+    $dst_ap = resolve_airport($segment->end_airport_code);
+
+    # Prefer the operating airline over the marketing airline.
+    if (!empty($segment->operating_airline_code) && !empty($segment->operating_flight_number)) {
+        $flight_num = htmlentities(strtoupper($segment->operating_airline_code) . $segment->operating_flight_number);
+        $airline = resolve_airline($segment->operating_airline_code);
+    } else {
+        $flight_num = htmlentities(strtoupper($segment->marketing_airline_code) . $segment->marketing_flight_number);
+        $airline = resolve_airline($segment->marketing_airline_code);
     }
-  }
 
-  // FIXME - Calculating this here seems wrong; we already implement most of this in JavaScript already, but
-  // it's all specific to our input form.
-  $delta_minutes = ($end_time->getTimestamp() - $start_time->getTimestamp()) / 60;
-  $duration = sprintf("%02d:%02d", floor($delta_minutes / 60), $delta_minutes % 60);
+    $is_duplicate = is_duplicate_segment($start_time, $src_ap["id"], $dst_ap["id"], $flight_num);
 
-  $start_date = $start_time->format('Y-m-d');
-  $start_hm = $start_time->format('G:i');
-  $end_hm = $end_time->format('G:i');
+    $aircraft = htmlentities($segment->aircraft_display_name);
 
-  // Calculate number of days in between
-  $start_date_no_time = new DateTime($start_date);
-  $delta_days = $start_date_no_time->diff(new DateTime($end_time->format('Y-m-d')))->format('%R%a');
+    # Try to do some smart class detection.
+    $classes = detect_class($segment->service_class);
 
-  $src_ap = resolve_airport($segment->start_airport_code);
-  $dst_ap = resolve_airport($segment->end_airport_code);
-
-  # Prefer the operating airline over the marketing airline.
-  if (!empty($segment->operating_airline_code) && !empty($segment->operating_flight_number)) {
-    $flight_num = htmlentities(strtoupper($segment->operating_airline_code) . $segment->operating_flight_number);
-    $airline = resolve_airline($segment->operating_airline_code);
-  } else {
-    $flight_num = htmlentities(strtoupper($segment->marketing_airline_code) . $segment->marketing_flight_number);
-    $airline = resolve_airline($segment->marketing_airline_code);
-  }
-
-  $is_duplicate = is_duplicate_segment($start_time, $src_ap["id"], $dst_ap["id"], $flight_num);
-
-  $aircraft = htmlentities($segment->aircraft_display_name);
-
-  # Try to do some smart class detection.
-  $classes = detect_class($segment->service_class);
-
-  # Make sure we have the bare minimum amount of data to do an import.
-  $is_valid = false;
-  if($src_ap != null && $dst_ap != null && isset($start_date)) {
-    $is_valid = true;
-  }
-  ?>
+    # Make sure we have the bare minimum amount of data to do an import.
+    $is_valid = false;
+    if ($src_ap != null && $dst_ap != null && isset($start_date)) {
+        $is_valid = true;
+    }
+    ?>
 <div class="segment" id="segment<?php echo $segment->id ?>">
   <form id="import<?php echo $segment->id ?>">
     <input type="hidden" name="param" value="ADD">
@@ -413,16 +425,16 @@ function display_segment($segment) {
       <?php echo $start_hm ?> &rarr;
       <?php echo $end_hm ?>
       <?php
-      if ($delta_days != 0) {
-        echo "($delta_days ";
-        if (abs($delta_days) > 1) {
-          echo _("days");
-        } else {
-          echo _("day");
+        if ($delta_days != 0) {
+            echo "($delta_days ";
+            if (abs($delta_days) > 1) {
+                echo _("days");
+            } else {
+                echo _("day");
+            }
+            echo ")";
         }
-        echo ")";
-      }
-      ?>
+        ?>
       <input type="hidden" name="src_date" value="<?php echo $start_date ?>">
       <input type="hidden" name="src_time" value="<?php echo $start_hm ?>">
       <input type="hidden" name="duration" value="<?php echo $duration ?>">
@@ -479,34 +491,34 @@ function display_segment($segment) {
 </div>
 <?php
 
-  // Do error and duplicate checking.
-  if(!$is_valid) {
-    // If we don't have the bare minimum amount of data, prevent import.
-    echo '<script type="text/javascript">markSegmentInvalid(' . $segment->id . ')</script>';
-    // Log an error.  I suspect this will happen if we're having trouble parsing TripIt data.
-    error_log("display_segment: segment " . $segment->id . " for user " . $_SESSION['uid'] . " was missing minimum import data");
-    return false;
-  } elseif ($is_duplicate) {
-    // If we've already imported this segment, grey it out at load time.
-    echo '<script type="text/javascript">markSegmentImported(' . $segment->id . ')</script>';
-    return false;
-  } else {
-    return true;
-  }
+    // Do error and duplicate checking.
+    if (!$is_valid) {
+        // If we don't have the bare minimum amount of data, prevent import.
+        echo '<script type="text/javascript">markSegmentInvalid(' . $segment->id . ')</script>';
+        // Log an error.  I suspect this will happen if we're having trouble parsing TripIt data.
+        error_log("display_segment: segment " . $segment->id . " for user " . $_SESSION['uid'] . " was missing minimum import data");
+        return false;
+    } elseif ($is_duplicate) {
+      // If we've already imported this segment, grey it out at load time.
+        echo '<script type="text/javascript">markSegmentImported(' . $segment->id . ')</script>';
+        return false;
+    } else {
+        return true;
+    }
 }
 
 /**
  * Display a message indicating that there are no flight segments in a given trip.
  */
 function display_no_segments_message() {
-  ?>
+    ?>
 <div class="segment">
   <div class="segment-none">
     <?php echo _("No flight segments in this trip.") ?>
   </div>
   <hr class="segment-separator"/>
 </div>
-  <?php
+    <?php
 }
 
 #### Start display ####
@@ -529,27 +541,27 @@ function display_no_segments_message() {
       <span style="float: right"><INPUT type='button' value='<?php echo _("Close") ?>' onClick='javascript:parent.opener.refresh(true); window.close();'></span>
 
 <?php
-      # Show past/future selector
-      show_past_future_selector($wants_future_trips);
+# Show past/future selector
+show_past_future_selector($wants_future_trips);
 
-      # Show some page numbers
-      if (isset($trips->max_page)) {
-        show_page_numbers($tripit_page_number, intval($trips->max_page));
-      }
+# Show some page numbers
+if (isset($trips->max_page)) {
+    show_page_numbers($tripit_page_number, intval($trips->max_page));
+}
 
-      # Print it out, trip by trip.
-      foreach ($trip_index_by_date as $trip_index) {
-        $trip = $trips->Trip[$trip_index];
-        display_trip($trip);
-      }
+# Print it out, trip by trip.
+foreach ($trip_index_by_date as $trip_index) {
+    $trip = $trips->Trip[$trip_index];
+    display_trip($trip);
+}
 
-      # See if there are more pages to be shown.
-      if (isset($trips->max_page) && $tripit_page_number < intval($trips->max_page)) {
-        $next_page = $tripit_page_number + 1;
-        print <<<NEXT_PAGE
+# See if there are more pages to be shown.
+if (isset($trips->max_page) && $tripit_page_number < intval($trips->max_page)) {
+    $next_page = $tripit_page_number + 1;
+    print <<<NEXT_PAGE
 <a href="?future=$wants_future_trips&page=$next_page"><b>Next Page</b></a>
 NEXT_PAGE;
-      }
+}
 ?>
     </div>
   </body>
