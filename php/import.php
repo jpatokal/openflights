@@ -302,8 +302,8 @@ $uploaddir = $_SERVER["DOCUMENT_ROOT"] . '/import/';
 $action = $_POST["action"];
 switch ($action) {
     case _("Upload"):
-        $uploadfile = $uploaddir . basename($_FILES['userfile']['tmp_name']);
-        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+        $uploadFile = $uploaddir . basename($_FILES['userfile']['tmp_name']);
+        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadFile)) {
             echo "<b>" . _("Upload successful.  Parsing...") . "</b><br><h4>" . _("Results") . "</h4>";
             flush();
             print "Tmpfile " . basename($_FILES['userfile']['tmp_name']) . "<br>"; // DEBUG
@@ -315,9 +315,9 @@ switch ($action) {
     case _("Import"):
         $remove_these = array(' ','`','"','\'','\\','/');
         $filename = $_POST["tmpfile"];
-        $uploadfile = $uploaddir . str_replace($remove_these, '', $filename);
-        if (! file_exists($uploadfile)) {
-            die_nicely("File $uploadfile not found");
+        $uploadFile = $uploaddir . str_replace($remove_these, '', $filename);
+        if (! file_exists($uploadFile)) {
+            die_nicely("File $uploadFile not found");
         }
         print "<H4>" . _("Importing...") . "</H4>";
         print "Tmpfile " . $filename . "<br>"; // DEBUG
@@ -336,10 +336,10 @@ $id_note = false;
 switch ($fileType) {
     case "FM":
         // Parse it
-        $html = phpQuery::newDocumentFileHTML($uploadfile, 'ISO-8859-1');
+        $html = phpQuery::newDocumentFileHTML($uploadFile, 'ISO-8859-1');
 
         if ($html['title']->text() != "FlightMemory - FlightData") {
-            die_nicely(_("Sorry, the file $uploadfile does not appear contain FlightMemory FlightData."));
+            die_nicely(_("Sorry, the file $uploadFile does not appear contain FlightMemory FlightData."));
         }
 
         // Table with padded cells has the data
@@ -347,22 +347,17 @@ switch ($fileType) {
         break;
 
     case "CSV":
-        if ($action == _("Upload") && substr($_FILES["userfile"]["name"], -4) != ".csv") {
+        if ($action == _("Upload") && pathinfo($_FILES["userfile"]["name"], PATHINFO_EXTENSION) !== "csv") {
             die_nicely(_("Sorry, the filename must end in '.csv'."));
         }
 
-        $csvfile = fopen($uploadfile, "r");
-        if (!$csvfile) {
+        $csvFile = file($uploadFile);
+        if (!$csvFile) {
             die_nicely(_("Unable to open CSV file."));
         }
 
         // Convert whole file into giant array
-        // (stupid workaround for PHP 5.2 because str_getcsv() is not standard yet)
-        $rows = array();
-        while (($data = fgetcsv($csvfile, 1000, ",")) !== false) {
-            $rows[] = $data;
-        }
-        fclose($csvfile);
+        $rows = array_map('str_getcsv', $csvFile);
 
         break;
 
