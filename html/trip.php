@@ -11,12 +11,7 @@ if (isset($_GET["trid"])) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php
-if ($trid) {
-    echo _("Edit trip");
-} else {
-    echo _("Add trip");
-} ?></title>
+    <title>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po" />
@@ -27,12 +22,7 @@ if ($trid) {
   <body>
     <div id="contexthelp">
       <FORM name="tripform">
-    <div id="title"><h1>OpenFlights: <?php
-if ($trid) {
-    echo _("Edit trip");
-} else {
-    echo _("Add trip");
-} ?></h1></div>
+    <div id="title"><h1>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></h1></div>
 
 <?php
 $uid = $_SESSION["uid"];
@@ -70,12 +60,7 @@ if ($trid) {
           <input type="radio" name="privacy" value="O" <?php if ($trip["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open (all flight data shared)") ?></td>
         </tr><tr>
           <td><?php echo _("OpenFlights URL") ?></td>
-          <td><input type="text" value="<?php
-if ($trid) {
-    echo "https://openflights.org/trip/" . $trid;
-} else {
-    echo _("Not assigned yet");
-}?>" name="puburl" style="border:none" size="40" readonly></td>
+          <td><input type="text" value="<?php echo $trid ? "https://openflights.org/trip/" . $trid : _("Not assigned yet");?>" name="puburl" style="border:none" size="40" readonly></td>
         </tr>
     </table><br>
 

@@ -29,8 +29,12 @@ require_once("../php/locale.php");
           </td>
         </tr><tr>
           <td style='vertical-align: top'><input type="radio" name="fileType" value="CSV"></td>
-<td><p><?php printf(_("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."),
-            "a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'") ?></p>
+<td><p><?php
+printf(
+    _("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."),
+"a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'"
+);
+?></p>
           </td>
         </tr>
     </table>

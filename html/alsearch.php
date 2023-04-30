@@ -97,8 +97,16 @@ if (!$logged_in) {
     echo "<small>" . _("Please log in to enable editing.") . "</small><br>";
 }
 ?>
-         <INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' <?php if (! $logged_in) echo "DISABLED" ?> onClick="doRecord()">
-        <INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airline.") ?>' value='<?php echo _("Save changes") ?>'  <?php if (! $logged_in) echo "DISABLED" ?> onClick="doRecord()" style="display: none">
+         <INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' <?php
+if (!$logged_in) {
+    echo "DISABLED";
+}
+?> onClick="doRecord()">
+        <INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airline.") ?>' value='<?php echo _("Save changes") ?>' <?php
+if (!$logged_in) {
+    echo "DISABLED";
+}
+?> onClick="doRecord()" style="display: none">
         </td>
         </tr>
     </table>

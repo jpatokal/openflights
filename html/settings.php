@@ -39,18 +39,13 @@ if ($type == "signup") {
       <div id="nonmap">
 
         <FORM name="signupform" method="POST" action="/">
-  <a name="top"><h1>OpenFlights: <?php
-if ($type == "signup") {
-    echo _("Create new account");
-} else {
-    echo _("Account settings");
-}
-?></h1>
+  <a name="top"><h1>OpenFlights: <?php echo ($type == "signup") ? _("Create new account") : echo _("Account settings"); ?></h1>
 
           <div id="miniresultbox"></div>
 
           <table>
-<?php if ($type == "signup") {
+<?php
+if ($type == "signup") {
     $settings = array(
         "public" => "Y",
         "units" => "M",
@@ -79,7 +74,8 @@ if ($type == "signup") {
               <?php printf(_("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."), "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'") ?>
             </td>
           </tr>
-<?php } else {
+<?php
+} else {
     $uid = $_SESSION["uid"];
     if ( !$uid || empty($uid)) {
         die(_("Your session has timed out, please log in again."));
@@ -88,7 +84,7 @@ if ($type == "signup") {
     $sth->execute([$uid]);
     if (!$settings = $sth->fetch()) {
         die(_("Could not load profile data"));
-      }
+    }
 ?>
           <tr>
             <td class="key"><nobr><?php echo _("Profile address") ?></nobr></td>
@@ -114,13 +110,18 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
               <?php printf(_("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."), "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'") ?>
                     </td>
           </tr>
-<?php } ?>
+<?php
+}
+?>
         </tr><tr>
                 <td colspan="4"><h2><?php echo _("Profile settings") ?></h2>
-<?php if ($type == "signup") echo _("You can easily change these later by clicking on <i>Settings</i>.") ?></td>
+<?php
+if ($type == "signup") {
+    echo _("You can easily change these later by clicking on <i>Settings</i>.");
+} ?></td>
         </tr><tr>
                 <td class="key"><?php echo _("Language") ?></td>
-            <td class="value"><?php echo locale_pulldown($dbh, $locale) ?></td>
+            <td class="value"><?php locale_pulldown($dbh, $locale) ?></td>
         </tr><tr>
             <td class="key"><?php echo _("Privacy") ?></td>
   <td class="value"><input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php if ($settings["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private") ?><br>
@@ -155,8 +156,16 @@ echo "[url=https://openflights.org/user/" . $settings["name"] . "]\n[img]https:/
                 <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Password protect your Private profile, so only friends and family can see it.") ?></tr><tr class="gold">
              <td class="key"><?php echo _("Default view") ?></td>
             <td class="value"><input type="radio" name="startpane" value="H" DISABLED <?php if ($settings["startpane"] == "H") { echo "CHECKED"; } echo ">" . _("Help") ?><br>
-            <input type="radio" name="startpane" value="A" DISABLED <?php if ($settings["startpane"] == "A") { echo "CHECKED"; } echo ">" . _("Analyze") ?><br>
-            <input type="radio" name="startpane" value="T" DISABLED <?php if ($settings["startpane"] == "T") { echo "CHECKED"; } echo ">" . _("Top 10") ?></td>
+            <input type="radio" name="startpane" value="A" DISABLED <?php
+    if ($settings["startpane"] == "A") {
+        echo "CHECKED";
+    }
+    echo ">" . _("Analyze") ?><br>
+            <input type="radio" name="startpane" value="T" DISABLED <?php
+    if ($settings["startpane"] == "T") {
+        echo "CHECKED";
+    }
+    echo ">" . _("Top 10") ?></td>
                 <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Display a screen of your choice instead of banner ads.") ?>
           </tr><tr>
              <td colspan="4"><h2><?php echo _("Manage flights") ?></h2></td>
