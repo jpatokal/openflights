@@ -39,7 +39,7 @@ if ($type == "signup") {
       <div id="nonmap">
 
         <FORM name="signupform" method="POST" action="/">
-  <a name="top"><h1>OpenFlights: <?php echo ($type == "signup") ? _("Create new account") : echo _("Account settings"); ?></h1>
+  <a name="top"><h1>OpenFlights: <?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?></h1>
 
           <div id="miniresultbox"></div>
 
