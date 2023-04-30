@@ -1,4 +1,5 @@
 <?php
+
 require_once("./php/locale.php");
 require_once("./php/db_pdo.php");
 require_once("./php/helper.php");
@@ -33,135 +34,135 @@ require_once("./php/helper.php");
 
     <div id="mainContainer">
       <div id="sideBarContentWrapper">
-	<div id="contentContainer">
-	  <div id="map" class="smallmap"></div>
+    <div id="contentContainer">
+      <div id="map" class="smallmap"></div>
 
             <div id="maptitle"><noscript><?php echo _("Sorry, OpenFlights requires JavaScript.") ?></noscript>
-	    </div>
+        </div>
 
-	    <div id="news" style="display: none">
-	      <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
-  <B><?php echo _("News")?> </b>: 
+        <div id="news" style="display: none">
+          <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
+  <B><?php echo _("News")?> </b>:
 <?php include("./html/news.html") ?>
-	    </div>
-	    
-	    <div id="ajaxloader">
-	      <span id="ajaxstatus" style="display: none"><img src="/img/ajax-wait.gif" height=100 width=100/></span>
-	    </div>
+        </div>
 
-	    <div id="quicksearch" style="display: none">
+        <div id="ajaxloader">
+          <span id="ajaxstatus" style="display: none"><img src="/img/ajax-wait.gif" height=100 width=100/></span>
+        </div>
+
+        <div id="quicksearch" style="display: none">
               <img src="/img/layer-switcher-minimize.png" height=18 width=18 title="<?php echo _("Hide search bar") ?>" onClick="$('quicksearch').style.display='none'">
   <input type="text" name="qs" id="qs" size="60" tabindex="5" onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/><div id="qsAC"></div>
-	      <input type="hidden" name="qsid" id="qsid"/>
-	      <input type="button" id="qsgo" tabindex="6" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
-	    </div>
+          <input type="hidden" name="qsid" id="qsid"/>
+          <input type="button" id="qsgo" tabindex="6" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
+        </div>
 
-	    <div id="qsmini" style="display: block">
+        <div id="qsmini" style="display: block">
               <img src="/img/icon-search.png" height=18 width=18 title="<?php echo _("Search") ?>" onClick="$('quicksearch').style.display='inline'">
             </div>
 
-	    <div id="newairport" style="display: none">
+        <div id="newairport" style="display: none">
               <?php echo _("Duration") ?> <input type="text" id="duration" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DURATION');" value=""/>
               <?php echo _("Distance") ?> <input type="text" id="distance" size="5" style="text-align: right; background-color: transparent;" onChange="JavaScript:calcDuration('DISTANCE');" value=""/> mi&nbsp;&nbsp;
-	      <input type="button" value="<?php echo _("Add new airport") ?>" align="middle" onclick='JavaScript:popNewAirport(null)'>	    
-	    </div>
-	    
-	  </div>
+          <input type="button" value="<?php echo _("Add new airport") ?>" align="middle" onclick='JavaScript:popNewAirport(null)'>
+        </div>
+
+      </div>
 
 
-	  <div id="sideBar">
-	    <?php include("./sidebar.html") ?>
-	    <div id="login">
-	      <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
-                <?php echo locale_pulldown($dbh, $locale) ?>
-	      </div>
+      <div id="sideBar">
+        <?php include("./sidebar.html") ?>
+        <div id="login">
+          <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
+                <?php locale_pulldown($dbh, $locale) ?>
+          </div>
 
-	      <div id="loginstatus" style="display: none"></div>
- 
-	      <div id="loginform" style="display: none">
-		<form name="login" onSubmit='JavaScript:return false;'>
-		<table cellspacing="5" cellpadding="0" border="0">
- 		  <tr>
+          <div id="loginstatus" style="display: none"></div>
+
+          <div id="loginform" style="display: none">
+        <form name="login" onSubmit='JavaScript:return false;'>
+        <table cellspacing="5" cellpadding="0" border="0">
+           <tr>
                     <td><?php echo _("Username") ?>&nbsp;</td><td>
-		      <input type="Text" name="name" align="top" size="10" tabindex="1" onKeyPress='keyPress("CHANGE", "login")'>
-		    </td>
-		  </tr><tr>
-		  <td align=right><?php echo _("Password") ?>&nbsp;</td><td>
-		      <input type="password" name="pw" align="top" size="10" tabindex="2" onKeyPress='keyPress("CHANGE", "login")'>
- 		      <input type="hidden" name="challenge">    
-		    </td>
-		  </tr><tr>
-		    <td></td>
-		    <td>
-		      <input id="loginbutton" type="button" value="<?php echo _("Log in") ?>" align="middle" tabindex="3" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
-		      <a href="/html/settings?new=yes"><h7><?php echo _("Sign up") ?></a></h7>
-		    </td>
-		  </tr></table>
-	      </form>
-	      </div>
-	    </div> <!-- login -->
-	    <div id="statsbox" style="visibility: hidden; clear: both">
-	      <table style='width: 218px'>
-		<tr><td style='vertical-align: top'>
-		    <span id="stats"></span>
-		    <span id="stats_ajax" style="display: none">&nbsp;<img src='/img/ajax-wait-small.gif' height=16 width=16/></span>
-		  </td><td style='vertical-align: top; text-align: right; padding: 0px 5px'>
-		    <input type="button" value="<?php echo _("Analyze") ?>" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'><br>
-		    <input type="button" value="<?php echo _("Top 10") ?>" align="middle" onclick='JavaScript:updateTop10()'>
-		  </td>
-		</tr></table>
-	    </div>
-	    
-	    <div id="filter" style="visibility: hidden">
-	      <form id='filterform'>
-		<b><?php echo _("Filter") ?></b>
-		<table>
-		<tr>
-		  <td><?php echo _("Carrier") ?>&nbsp;</td>
-		  <td><span id="filter_airlineselect"><select class="filter" name="Airlines"><option value="">All carriers</option></select></span>
-		</tr><tr>
-		  <td><?php echo _("Year") ?></td>
-		  <td><span id="filter_yearselect"><select class="filter" name="Years"><option value="">All</option></select></span></td>
-		</tr><tr>
-		  <td><?php echo _("Trip") ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
-		  <td><span id="filter_tripselect"></span>
-		</tr><tr>
-		  <td colspan=2><select style="width: 100px" id="filter_extra_key" name="Extra" onChange="JavaScript:setExtraFilter()" style="visibility: hidden">
-		      <option value="" SELECTED><?php echo _("More...") ?></option>
-		      <option value="class"><?php echo _("Class") ?></option>
-		      <option value="distlt"><?php echo _("Distance") ?> &lt;</option>
-		      <option value="distgt"><?php echo _("Distance") ?> &gt;</option>
-		      <option value="mode"><?php echo _("Mode") ?></option>
-		      <option value="note"><?php echo _("Note") ?></option>
-		      <option value="reason"><?php echo _("Reason") ?></option>
-		      <option value="reg"><?php echo _("Registration") ?></option>
-		    </select></span> <span id="filter_extra_span"></span></td>
-	        </tr>
-	      </table>
-	      </span>
-	    </form>
-	      
+              <input type="Text" name="name" align="top" size="10" tabindex="1" onKeyPress='keyPress("CHANGE", "login")'>
+            </td>
+          </tr><tr>
+          <td align=right><?php echo _("Password") ?>&nbsp;</td><td>
+              <input type="password" name="pw" align="top" size="10" tabindex="2" onKeyPress='keyPress("CHANGE", "login")'>
+               <input type="hidden" name="challenge">
+            </td>
+          </tr><tr>
+            <td></td>
+            <td>
+              <input id="loginbutton" type="button" value="<?php echo _("Log in") ?>" align="middle" tabindex="3" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
+              <a href="/html/settings?new=yes"><h7><?php echo _("Sign up") ?></a></h7>
+            </td>
+          </tr></table>
+          </form>
+          </div>
+        </div> <!-- login -->
+        <div id="statsbox" style="visibility: hidden; clear: both">
+          <table style='width: 218px'>
+        <tr><td style='vertical-align: top'>
+            <span id="stats"></span>
+            <span id="stats_ajax" style="display: none">&nbsp;<img src='/img/ajax-wait-small.gif' height=16 width=16/></span>
+          </td><td style='vertical-align: top; text-align: right; padding: 0px 5px'>
+            <input type="button" value="<?php echo _("Analyze") ?>" align="middle" onclick='JavaScript:xmlhttpPost("/php/stats.php")'><br>
+            <input type="button" value="<?php echo _("Top 10") ?>" align="middle" onclick='JavaScript:updateTop10()'>
+          </td>
+        </tr></table>
+        </div>
 
-	      <div id="controlpanel" style="display: none">
-  		<br><b><?php echo _("Control panel") ?></b><br>
-	 	<input type="button" value="<?php echo _("New flight") ?>" align="middle" onclick='JavaScript:newFlight()'>
-		<input type="button" value="<?php echo _("List flights") ?>" align="middle" onclick='JavaScript:startListFlights()'>
-		<input type="button" value="<?php echo _("Import") ?>" align="middle" onclick='JavaScript:openImport()'>
-		<input type="button" value="<?php echo _("Settings") ?>" align="middle" onclick='JavaScript:settings()'>
-		<input type="button" value="<?php echo _("Logout") ?>" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
-	      </div>
+        <div id="filter" style="visibility: hidden">
+          <form id='filterform'>
+        <b><?php echo _("Filter") ?></b>
+        <table>
+        <tr>
+          <td><?php echo _("Carrier") ?>&nbsp;</td>
+          <td><span id="filter_airlineselect"><select class="filter" name="Airlines"><option value="">All carriers</option></select></span>
+        </tr><tr>
+          <td><?php echo _("Year") ?></td>
+          <td><span id="filter_yearselect"><select class="filter" name="Years"><option value="">All</option></select></span></td>
+        </tr><tr>
+          <td><?php echo _("Trip") ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
+          <td><span id="filter_tripselect"></span>
+        </tr><tr>
+          <td colspan=2><select style="width: 100px" id="filter_extra_key" name="Extra" onChange="JavaScript:setExtraFilter()" style="visibility: hidden">
+              <option value="" SELECTED><?php echo _("More...") ?></option>
+              <option value="class"><?php echo _("Class") ?></option>
+              <option value="distlt"><?php echo _("Distance") ?> &lt;</option>
+              <option value="distgt"><?php echo _("Distance") ?> &gt;</option>
+              <option value="mode"><?php echo _("Mode") ?></option>
+              <option value="note"><?php echo _("Note") ?></option>
+              <option value="reason"><?php echo _("Reason") ?></option>
+              <option value="reg"><?php echo _("Registration") ?></option>
+            </select></span> <span id="filter_extra_span"></span></td>
+            </tr>
+          </table>
+          </span>
+        </form>
 
-	    </div>
-	    
-	  </div> <!-- end sidebar -->
-	</div> <!-- end sidebarwrapper -->
 
-	<div id="resultbox">
-	  <div id="ad" style="display: inline;">
-	    <?php include("./html/ad.html") ?>
-	  </div>
+          <div id="controlpanel" style="display: none">
+          <br><b><?php echo _("Control panel") ?></b><br>
+         <input type="button" value="<?php echo _("New flight") ?>" align="middle" onclick='JavaScript:newFlight()'>
+        <input type="button" value="<?php echo _("List flights") ?>" align="middle" onclick='JavaScript:startListFlights()'>
+        <input type="button" value="<?php echo _("Import") ?>" align="middle" onclick='JavaScript:openImport()'>
+        <input type="button" value="<?php echo _("Settings") ?>" align="middle" onclick='JavaScript:settings()'>
+        <input type="button" value="<?php echo _("Logout") ?>" align="middle" onclick='JavaScript:xmlhttpPost("/php/logout.php")'>
+          </div>
 
-	  <div id="help" style="display: none;">
+        </div>
+
+      </div> <!-- end sidebar -->
+    </div> <!-- end sidebarwrapper -->
+
+    <div id="resultbox">
+      <div id="ad" style="display: inline;">
+        <?php include("./html/ad.html") ?>
+      </div>
+
+      <div id="help" style="display: none;">
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'> OpenFlights Map Help <small>&mdash; Didn't answer your question?  Try the <a href="faq.html" target="_blank">FAQ</a>.</small></h2>
 <p><b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
 <b>Move around</b>: Use <img src="/img/north-mini.png" height=18 width=18><img src="/img/west-mini.png" height=18 width=18><img src="/img/east-mini.png" height=18 width=18><img src="/img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
@@ -169,8 +170,8 @@ require_once("./php/helper.php");
 <b>Select region</b>: While holding down Shift key, click on the map and draw a rectangle with your mouse.<br>
 <b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.<br>
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.</p>
-	  </div> <!-- end help -->
-	  <div id="input" style="display: none;">
+      </div> <!-- end help -->
+      <div id="input" style="display: none;">
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle"><?php echo _("Add new flight") ?></span>
     <span id="editflighttitle" style="display: none"><?php echo _("Edit flight") ?></span>
@@ -273,9 +274,9 @@ require_once("./php/helper.php");
 
 </form>
 
-	</div>
+    </div>
 
-	  <div id="multiinput" style="display: none;">
+      <div id="multiinput" style="display: none;">
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> <?php echo _("Add new flights") . "<small>&mdash; " . _("Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code.") ?></small></h2>
 <p></p>
 
@@ -288,17 +289,17 @@ require_once("./php/helper.php");
   <td><?php echo _("Date") ?></td>
 </tr>
 <?php
-for($row = 1; $row <= 4; $row++) {
-  echo "<tr id='row$row' " . ($row > 1 ? "style='display: none;'" : "") . "> <!-- Row $row -->\n";
-  printf("<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_ap{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"));
-  printf("<input type='hidden' name='src_ap%sid' id='src_ap%sid'>\n", $row, $row);
-  printf("<img src='/img/icon_plane-src.png' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n", _("Airport search"));
-  printf("<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_ap%sAC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"), $row);
-  printf ("<input type='hidden' name='dst_ap1%s' id='dst_ap%sid'/>\n", $row, $row);
-  printf ("<img src='/img/icon_plane-dst.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n", _("Airport search"));
-  printf ("<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airline{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter airline name or code"));
-  printf ("<input type='hidden' name='airline%sid' id='airline%sid'/><img src='/img/icon_airline.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirline(\"airline1\")'/ style='margin-right: 5px'/></td>\n", $row, $row, _("Airline search"));
-  printf ("<td><input type='text' name='src_date%s' id='src_date%s' size='11' class='date' tabindex='1%s4' onChange='JavaScript:markAsChanged()';/><img src='/img/scw.gif' height='15' width='16' onclick='scwShow(scwID(\"src_date%s\"),event); markAsChanged();' style='margin-left: 5px'/></td></tr>\n", $row, $row, $row, $row);
+for ($row = 1; $row <= 4; $row++) {
+      echo "<tr id='row$row' " . ($row > 1 ? "style='display: none;'" : "") . "> <!-- Row $row -->\n";
+      printf("<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_ap{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"));
+      printf("<input type='hidden' name='src_ap%sid' id='src_ap%sid'>\n", $row, $row);
+      printf("<img src='/img/icon_plane-src.png' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n", _("Airport search"));
+      printf("<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_ap%sAC'></span>\n", $row, $row, $row, $row, _("Enter city name or airport code"), $row);
+      printf ("<input type='hidden' name='dst_ap1%s' id='dst_ap%sid'/>\n", $row, $row);
+      printf ("<img src='/img/icon_plane-dst.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n", _("Airport search"));
+      printf ("<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airline{$row}AC'></span>\n", $row, $row, $row, $row, _("Enter airline name or code"));
+      printf ("<input type='hidden' name='airline%sid' id='airline%sid'/><img src='/img/icon_airline.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirline(\"airline1\")'/ style='margin-right: 5px'/></td>\n", $row, $row, _("Airline search"));
+      printf ("<td><input type='text' name='src_date%s' id='src_date%s' size='11' class='date' tabindex='1%s4' onChange='JavaScript:markAsChanged()';/><img src='/img/scw.gif' height='15' width='16' onclick='scwShow(scwID(\"src_date%s\"),event); markAsChanged();' style='margin-left: 5px'/></td></tr>\n", $row, $row, $row, $row);
 }
 ?>
 <tr>
@@ -315,9 +316,9 @@ for($row = 1; $row <= 4; $row++) {
 </td>
 </tr></table>
 </form>
-	</div>
+    </div>
 
-	<div id="result" style="display: none;"></div>
+    <div id="result" style="display: none;"></div>
 
       </div> <!-- end resultbox -->
     </div> <!-- end mainContainer -->
