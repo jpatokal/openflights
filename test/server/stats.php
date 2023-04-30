@@ -10,20 +10,20 @@ $fid = null; // global for newly-added flight
 
 // Check Analyse stats
 class CheckAnalyseStats extends WebTestCase {
-  public function test() {
-    global $webroot, $settings, $flight2, $fid;
+    public function test() {
+        global $webroot, $settings, $flight2, $fid;
 
-    assert_login($this);
+        assert_login($this);
 
-    $stats = $this->post($webroot . "php/stats.php");
+        $stats = $this->post($webroot . "php/stats.php");
 
-    // Uniques
-    $this->assertText('"num_airports":"2"');
-    $this->assertText('"num_countries":"1"');
-    $this->assertText('"num_airlines":"1"');
-    $this->assertText('"num_planes":"1"');
-    $this->assertText('"distance":"' . $flight2["distance"] . '"');
-    $this->assertText('"avg_distance":"' . $flight2["distance"]); // ignore localized bit at end
-    $this->assertText('"avg_duration":"' . $flight2["duration"] . '"');
-  }
+        // Uniques
+        $this->assertText('"num_airports":"2"');
+        $this->assertText('"num_countries":"1"');
+        $this->assertText('"num_airlines":"1"');
+        $this->assertText('"num_planes":"1"');
+        $this->assertText('"distance":"' . $flight2["distance"] . '"');
+        $this->assertText('"avg_distance":"' . $flight2["distance"]); // ignore localized bit at end
+        $this->assertText('"avg_duration":"' . $flight2["duration"] . '"');
+    }
 }

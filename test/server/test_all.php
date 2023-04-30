@@ -1,4 +1,5 @@
 <?php
+
 require_once('../../vendor/simpletest/simpletest/unit_tester.php');
 require_once('../../vendor/simpletest/simpletest/reporter.php');
 require_once('config.php');
