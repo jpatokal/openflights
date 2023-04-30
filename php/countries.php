@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include 'db_pdo.php';
 
@@ -6,10 +7,10 @@ include 'db_pdo.php';
 $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
 $first = true;
 foreach ($dbh->query($sql) as $row) {
-  if($first) {
-    $first = false;
-  } else {
-    printf("\n");
-  }
-  printf ("%s;%s", $row["code"], $row["name"]);
+    if ($first) {
+        $first = false;
+    } else {
+        printf("\n");
+    }
+    printf("%s;%s", $row["code"], $row["name"]);
 }
