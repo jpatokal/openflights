@@ -52,7 +52,7 @@ foreach ($dbh->query($sql) as $row) {
   $distance = gcPointDistance(array("x" => $x1, "y" => $y1),
 			      array("x" => $x2, "y" => $y2));
 
-  if($distance > $GC_MIN) {
+  if($distance > GC_MIN) {
     // Plot great circle curve
     $points = gcPath(array("x" => $x1, "y" => $y1),
 		     array("x" => $x2, "y" => $y2),
