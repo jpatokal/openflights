@@ -232,7 +232,7 @@ while ($row = $sth->fetch()) {
 
         // Convert mi to km if units=K *and* we're not loading a single flight
         if($units == "K" && (!$fid || $fid == "0")) {
-            $row["distance"] = round($row["distance"] * $KMPERMILE);
+            $row["distance"] = round($row["distance"] * KM_PER_MILE);
         }
 
         printf(

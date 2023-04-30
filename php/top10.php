@@ -18,7 +18,7 @@ $mode = $_POST["mode"];
 switch($mode) {
  case "D":
    $mode = "SUM(distance)";
-   if($units == "K") $mode = "ROUND($mode * $KMPERMILE)";
+   if($units == "K") $mode = "ROUND($mode * KM_PER_MILE)";
    break;
 
  case "F":

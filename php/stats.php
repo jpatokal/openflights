@@ -60,7 +60,7 @@ $array = array();
 $units = $_SESSION["units"];
 if($units == "K") {
   $unit = _("km");
-  $multiplier = "* " . $KMPERMILE;
+  $multiplier = "* " . KM_PER_MILE;
 } else {
   $unit = _("mi");
   $multiplier = "";
@@ -80,7 +80,7 @@ if($row = $sth->fetch()) {
   $array += $row;
 }
 $array["avg_distance"] .= " " . $unit;
-$array["localedist"] = round($array["distance"] * ($units == "K" ? $KMPERMILE : 1)) . " " . $unit;
+$array["localedist"] = round($array["distance"] * ($units == "K" ? KM_PER_MILE : 1)) . " " . $unit;
 print json_encode($array) . "\n";
 
 // longest and shortest

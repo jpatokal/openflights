@@ -73,7 +73,7 @@ $result = $sth->execute([$uid]);
 if ($result && $row = $sth->fetch()) {
     $distance = $row["distance"];
     if ($units == "K") {
-        $distance *= $KMPERMILE;
+        $distance *= KM_PER_MILE;
         $units = "km";
     } else {
         $units = "miles";

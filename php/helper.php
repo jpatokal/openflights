@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @deprecated use KM_PER_MILE const
+ */
 $KMPERMILE = "1.609344"; // must be a string or locale may turn this into a comma!
 const KM_PER_MILE = "1.609344";
 
