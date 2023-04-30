@@ -16,24 +16,24 @@ require_once("../php/locale.php");
       <p><?php echo _("OpenFlights can import flights from three sources:") ?></p>
 
       <form name="importform" action="/php/import.php" enctype="multipart/form-data" method="post"><p>
-	  <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
+      <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 
-	<table style='border-spacing: 5'>
-	    <tr>
-	      <td style='vertical-align: top'></td>
+    <table style='border-spacing: 5'>
+        <tr>
+          <td style='vertical-align: top'></td>
   <td><p><?php printf (_("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually.  Duplicates are detected. "))?>
-	<INPUT type="button" value="<?php echo _("Import from Tripit") ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
+    <INPUT type="button" value="<?php echo _("Import from Tripit") ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
             </tr>
-	      <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
+          <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
 <td><p><?php printf (_("<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."), "a href='/contact.html'"); ?></p>
-	      </td>
-	    </tr><tr>
-	      <td style='vertical-align: top'><input type="radio" name="fileType" value="CSV"></td>
+          </td>
+        </tr><tr>
+          <td style='vertical-align: top'><input type="radio" name="fileType" value="CSV"></td>
 <td><p><?php printf(_("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."),
-		    "a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'") ?></p>
-	      </td>
-	    </tr>
-	</table>
+            "a href='#help' onClick='javascript:window.open(\"/help/csv.html\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'") ?></p>
+          </td>
+        </tr>
+    </table>
 
 <h4><?php echo _("File to upload") ?></h4>
 <p><input type="file" name="userfile" size="30"> <b><?php echo _("Keep historical airline names?") ?></b> <input type="checkbox" name="historyMode" value="yes"></td>
@@ -43,7 +43,7 @@ echo _("OpenFlights normally tries to match airlines and flight numbers to known
 printf( "<p>" . _("You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing.") . "</p>", "<input type='button' value='Settings' align='middle' onclick='JavaScript:parent.opener.settings()'>"); ?>
 
         <input type="submit" name="action" value="<?php echo _("Upload") ?>">
-	<INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+    <INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
       </form>
 
       <div id="miniresultbox"></div><br>

@@ -12,8 +12,8 @@
     <div id="mainContainer">
       <div id="sideBarContentWrapper">
 
-	<div id="contentContainer">
-	  <div id="nonmap">
+    <div id="contentContainer">
+      <div id="nonmap">
 
    This is an automatically generated list of all airline and airport
    route maps on OpenFlights.  See <a href="/data.html">Data</a> for
@@ -57,14 +57,14 @@ foreach ($dbh->query($sql) as $row) {
 }
 
 ?>
-	  </div>
-	</div>
-	<div id="sideBar">
+      </div>
+    </div>
+    <div id="sideBar">
 <?php
-        include ("../sidebar.html");
-        include ("ad-sidebar.html");
+include("../sidebar.html");
+include("ad-sidebar.html");
 ?>
-	</div>
+    </div>
 
       </div> <!-- end sidebarwrapper -->
     </div> <!-- end mainContainer -->

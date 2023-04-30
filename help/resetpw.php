@@ -66,7 +66,7 @@ OpenFlights.org";
         echo "<p>Sorry, that e-mail address is not registered for any OpenFlights user.</p>";
     }
 } else {
-?>
+    ?>
 
       <p>Can't log in? One tip before you panic: make sure you have entered your password <b>using the same case</b> as you did when signing up: "Secret" is not the same as "secret". If you signed up before January 15, 2009, your <b>username</b> ("Joe" vs "joe") also has to match.</p>
 
@@ -79,12 +79,12 @@ OpenFlights.org";
       </form>
 
       <p>If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do.</p>
-<?php
+    <?php
 }
 if (!isset($_GET["challenge"])) {
-?>
+    ?>
       <input type="button" id="close" value="Return" onClick="javascript:window.close()">
-<?php
+    <?php
 }
 ?>
 

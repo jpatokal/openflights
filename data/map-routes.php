@@ -26,9 +26,9 @@ if (! $im) {
 
 imagealphablending($im, true);
 $airportColors = array(
-    imagecolorallocate($im, 0,0,0), // black
-    imagecolorallocate($im, 0x66,0x66,0x99), // cyan
-    imagecolorallocate($im, 0x45,0xFF,0xA9) // green
+    imagecolorallocate($im, 0, 0, 0), // black
+    imagecolorallocate($im, 0x66, 0x66, 0x99), // cyan
+    imagecolorallocate($im, 0x45, 0xFF, 0xA9) // green
 );
 
 $yellow = imagecolorallocatealpha($im, 0x99, 0xEE, 0, 95);

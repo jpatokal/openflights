@@ -12,7 +12,7 @@ if (isset($_GET["trid"])) {
 <html>
   <head>
     <title>OpenFlights: <?php
-if($trid) {
+if ($trid) {
     echo _("Edit trip");
 } else {
     echo _("Add trip");
@@ -27,11 +27,11 @@ if($trid) {
   <body>
     <div id="contexthelp">
       <FORM name="tripform">
-	<div id="title"><h1>OpenFlights: <?php
-if($trid) {
-  echo _("Edit trip");
+    <div id="title"><h1>OpenFlights: <?php
+if ($trid) {
+    echo _("Edit trip");
 } else {
-  echo _("Add trip");
+    echo _("Add trip");
 } ?></h1></div>
 
 <?php
@@ -55,29 +55,29 @@ if ($trid) {
     );
 }
 ?>
-	<div id="miniresultbox"></div>
-	<table>
-	    <tr>
+    <div id="miniresultbox"></div>
+    <table>
+        <tr>
               <td><?php echo _("Name") ?></td>
-	      <td><INPUT type="text" name="name" size="40" value="<?php echo $trip["name"] ?>"></td>
-	    </tr><tr>
+          <td><INPUT type="text" name="name" size="40" value="<?php echo $trip["name"] ?>"></td>
+        </tr><tr>
               <td><?php echo _("Web address <i>(optional)</i>") ?>&nbsp;</td>
-	      <td><INPUT type="text" name="url" size="40" value="<?php echo $trip["url"] ?>"></td>
-	    </tr><tr>
-	      <td style="vertical-align: top"><?php echo _("Trip privacy") ?></td>
-	      <td><input type="radio" name="privacy" value="N" <?php if($trip["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private (visible only to you)") ?><br>
-	      <input type="radio" name="privacy" value="Y" <?php if($trip["public"] == "Y") { echo "CHECKED"; } echo ">" . _("Public (map and stats shared)") ?><br>
-	      <input type="radio" name="privacy" value="O" <?php if($trip["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open (all flight data shared)") ?></td>
-	    </tr><tr>
-	      <td><?php echo _("OpenFlights URL") ?></td>
-	      <td><input type="text" value="<?php
+          <td><INPUT type="text" name="url" size="40" value="<?php echo $trip["url"] ?>"></td>
+        </tr><tr>
+          <td style="vertical-align: top"><?php echo _("Trip privacy") ?></td>
+          <td><input type="radio" name="privacy" value="N" <?php if($trip["public"] == "N") { echo "CHECKED"; } echo ">" . _("Private (visible only to you)") ?><br>
+          <input type="radio" name="privacy" value="Y" <?php if($trip["public"] == "Y") { echo "CHECKED"; } echo ">" . _("Public (map and stats shared)") ?><br>
+          <input type="radio" name="privacy" value="O" <?php if($trip["public"] == "O") { echo "CHECKED"; } echo ">" . _("Open (all flight data shared)") ?></td>
+        </tr><tr>
+          <td><?php echo _("OpenFlights URL") ?></td>
+          <td><input type="text" value="<?php
 if ($trid) {
     echo "https://openflights.org/trip/" . $trid;
 } else {
     echo _("Not assigned yet");
 }?>" name="puburl" style="border:none" size="40" readonly></td>
-	    </tr>
-	</table><br>
+        </tr>
+    </table><br>
 
 <?php if ($trid) {
       echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
@@ -87,7 +87,7 @@ if ($trid) {
     echo "<INPUT type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
 }
 ?>
-	<INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+    <INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
       </FORM>
 
     </div>
