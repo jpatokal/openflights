@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+      - .:/openflights
+      - ./sql/create.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./sql/docker-seed.sh:/docker-entrypoint-initdb.d/2.sh
+  php7:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8007:80'
+    volumes:
+      - .:/var/www/openflights
+    links:
+      - db
+volumes:
+  db:
+    driver: local
