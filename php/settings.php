@@ -4,16 +4,16 @@ include 'locale.php';
 include 'db_pdo.php';
 
 $type = $_POST["type"];
-$name = $_POST["name"];
+$name = $_POST["name"] ?? null;
 $pw = $_POST["pw"];
-$oldpw = $_POST["oldpw"];
-$oldlpw = $_POST["oldlpw"];
+$oldpw = $_POST["oldpw"] ?? null;
+$oldlpw = $_POST["oldlpw"] ?? null;
 $email = $_POST["email"];
 $privacy = $_POST["privacy"];
 $editor = $_POST["editor"];
 $units = $_POST["units"];
-$guestpw = $_POST["guestpw"];
-$startpane = $_POST["startpane"];
+$guestpw = $_POST["guestpw"] ?? null;
+$startpane = $_POST["startpane"] ?? null;
 $locale = $_POST["locale"]; // override any value in URL/session
 
 // 0 error

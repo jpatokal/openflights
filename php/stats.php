@@ -5,19 +5,13 @@ include 'db_pdo.php';
 include 'helper.php';
 include 'filter.php';
 
-$uid = $_SESSION["uid"];
 $public = "O"; // by default...
-if (!$uid || empty($uid)) {
-    // If not logged in, default to demo mode
-    $uid = 1;
-}
 
-// This applies only when viewing another users flights
-$user = $_POST["user"];
-if (!$user) {
-    $user = $_GET["user"];
-}
-$trid = $_POST["trid"];
+// If not logged in, default to demo mode
+$uid = $_SESSION["uid"] ?? 1;
+
+$user = $_POST["user"] ?? ($_GET["user"] ?? null);
+$trid = $_POST["trid"] ?? null;
 
 // Verify that this trip and user are public
 $filter = "";
@@ -58,7 +52,7 @@ $filter = "f.uid=" . $uid . getFilterString($dbh, $_POST);
 $array = array();
 
 // Convert mi to km if units=K
-$units = $_SESSION["units"];
+$units = $_SESSION["units"] ?? null;
 if ($units == "K") {
     $unit = _("km");
     $multiplier = "* " . KM_PER_MILE;

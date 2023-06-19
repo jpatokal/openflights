@@ -5,17 +5,15 @@ include 'db_pdo.php';
 include 'helper.php';
 include 'filter.php';
 
-$uid = $_SESSION["uid"];
-if (!$uid || empty($uid)) {
-    // If not logged in, default to demo mode
-    $uid = 1;
-}
-// This applies only when viewing another users flights
-$user = $_POST["user"];
-$trid = $_POST["trid"];
-$units = $_SESSION["units"];
+// If not logged in, default to demo mode
+$uid = $_SESSION["uid"] ?? 1;
+$units = $_SESSION["units"] ?? null;
 
-$mode = $_POST["mode"];
+// This applies only when viewing another users flights
+$user = $_POST["user"] ?? null;
+$trid = $_POST["trid"] ?? null;
+
+$mode = $_POST["mode"] ?? null;
 switch ($mode) {
     case "D":
         $mode = "SUM(distance)";
@@ -29,10 +27,8 @@ switch ($mode) {
         $mode = "COUNT(fid)";
         break;
 }
-$limit = $_POST["limit"];
-if (!$limit) {
-    $limit = "10";
-}
+
+$limit = $_POST["limit"] ?? "10";
 if ($limit == "-1") {
     $limit = "9999";
 }

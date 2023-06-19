@@ -1,7 +1,5 @@
 <?php
 
-ini_set('auto_detect_line_endings', true);
-
 require_once("locale.php");
 require_once("db_pdo.php");
 ?>
@@ -29,9 +27,9 @@ if (!$uid || empty($uid)) {
 require_once '../vendor/autoload.php';
 include_once('helper.php');
 
-$posMap = array("Window" => "W", "Middle" => "M", "Aisle" => "A");
-$classMap = array("Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F");
-$reasonMap = array("Business" => "B", "Personal" => "L", "Crew" => "C", "Other" => "O");
+$posMap = array("Window" => "W", "Middle" => "M", "Aisle" => "A", "" => "");
+$classMap = array("Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F", "" => "");
+$reasonMap = array("Business" => "B", "Personal" => "L", "Crew" => "C", "Other" => "O", "" => "");
 
 function nth_text($element, $n) {
     $xpath = new DOMXPath($element->ownerDocument);
@@ -329,7 +327,7 @@ switch ($action) {
 }
 
 $fileType = $_POST["fileType"];
-$history = $_POST["historyMode"];
+$history = $_POST["historyMode"] ?? null;
 $status = "";
 $id_note = false;
 
@@ -470,10 +468,7 @@ foreach ($rows as $row) {
 
             $datetime = explode(' ', $row[0]);
             list($src_date, $date_bgcolor) = check_date($dbh, $fileType, $datetime[0]);
-            $src_time = $datetime[1];
-            if (!$src_time) {
-                $src_time = "";
-            }
+            $src_time = $datetime[1] ?? "";
 
             $src_iata = $row[1];
             $src_apid = $row[15];
@@ -521,6 +516,7 @@ foreach ($rows as $row) {
             if ($row[9] == "B") {
                 $seatclass = "Business";
             } // fix for typo in pre-0.3 versions of spec
+            $seattype = ""; // This field is not present in CSVs
             $seatreason = array_search($row[10], $reasonMap);
             $reg = $row[12];
             list($trid, $trip_bgcolor) = check_trip($dbh, $uid, $row[13]);
@@ -647,7 +643,8 @@ foreach ($rows as $row) {
                 $reg,
                 $number,
                 $seatnumber,
-                substr($seatpos, 0, 1), $classMap[$seatclass],
+                substr($seatpos, 0, 1),
+                $classMap[$seatclass],
                 $reasonMap[$seatreason],
                 $comment,
                 $plid ? $plid : null,

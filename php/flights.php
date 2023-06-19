@@ -21,15 +21,12 @@ if ($export) {
 } else {
     header("Content-type: text/html; charset=utf-8");
 
-    $apid = $_POST["id"];
-    if (!$apid) {
-        $apid = $_GET["id"];
-    }
-    $trid = $_POST["trid"];
-    $alid = $_POST["alid"];
-    $fid = $_POST["fid"];
-    $user = $_POST["user"];
-    $year = $_POST["year"];
+    $apid = $_POST["id"] ?? ($_GET["id"] ?? "");
+    $trid = $_POST["trid"] ?? null;
+    $alid = $_POST["alid"] ?? null;
+    $user = $_POST["user"] ?? null;
+    $year = $_POST["year"] ?? null;
+    $fid = $_POST["fid"] ?? null;
 }
 
 include 'helper.php';

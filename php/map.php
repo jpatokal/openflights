@@ -132,7 +132,7 @@ if ($row = $sth->fetch()) {
     if (!$distance) {
         $distance = "0";
     }
-    if ($_SESSION["units"] == "K") {
+    if ($_SESSION["units"] ?? null == "K") {
         $distance = round($distance * KM_PER_MILE) . " " . _("km");
     } else {
         $distance = $distance . " " . _("miles");
