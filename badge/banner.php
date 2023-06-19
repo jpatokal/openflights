@@ -66,9 +66,13 @@ if ($row["public"] == "N") {
 $uid = $row["uid"];
 $units = $row["units"];
 
-$sth = $dbh->prepare(
-    "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration))/60 AS duration FROM flights WHERE uid=?"
-);
+$sth = $dbh->prepare(<<<SQL
+SELECT COUNT(*) AS count,
+       COALESCE(SUM(distance), 0) AS distance,
+       COALESCE(SUM(TIME_TO_SEC(duration))/60, 0) AS duration
+FROM flights
+WHERE uid=?
+SQL);
 $result = $sth->execute([$uid]);
 if ($result && $row = $sth->fetch()) {
     $distance = $row["distance"];
@@ -83,7 +87,7 @@ if ($result && $row = $sth->fetch()) {
     $duration = sprintf(
         "%d days, %d:%02d hours",
         $row["duration"] / 1440,
-        ($row["duration"] / 60) % 24,
+        intdiv($row["duration"], 60) % 24,
         $row["duration"] % 60
     );
 } else {

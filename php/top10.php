@@ -7,11 +7,8 @@ include 'filter.php';
 
 // ----- Session parameters -----
 $units = $_SESSION["units"] ?? "M";
-$uid = $_SESSION["uid"] ?? null;
-if (!$uid || empty($uid)) {
-    // If not logged in, default to demo mode
-    $uid = 1;
-}
+// If not logged in, default to demo mode
+$uid = $_SESSION["uid"] ?? 1;
 
 // ----- Request parameters -----
 // For backwards-compatibility reasons with the front-end, value "0" is special
@@ -48,6 +45,11 @@ switch ($mode) {
         $mode = "COUNT(fid)";
         $data["countUnit"] = "segments";
         break;
+}
+
+$limit = $_POST["limit"] ?? "10";
+if ($limit == "-1") {
+    $limit = "9999";
 }
 
 // Verify that this trip and user are public
