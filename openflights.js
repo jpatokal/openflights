@@ -1521,9 +1521,9 @@ function listFlights(str, desc, id) {
 // newWindow: true if we want target URL to open in a new window.
 function exportFlights(type, newWindow) {
   if(type == "KML") {
-    url = "https://" + location.host + "/php/kml.php?" + lastQuery;
+    url = location.origin + "/php/kml.php?" + lastQuery;
   } else {
-    url = "https://" + location.host + "/php/flights.php?" + lastQuery + "&export=" + type;
+    url = location.origin + "/php/flights.php?" + lastQuery + "&export=" + type;
   }
   if(newWindow) {
     window.open(url, "openflights_export");
@@ -2962,7 +2962,7 @@ function login(str, param) {
   case 2:
     // Successful but need to switch UI language, so reload, stripping out any "?lang" in the URL
     $("loginstatus").innerHTML = "<B>" + gt.gettext("Loading") + "</B>";
-    location.href = "https://" + location.host + location.pathname;
+    location.href = location.origin + location.pathname;
     break;
 
   default:
