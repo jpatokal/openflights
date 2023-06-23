@@ -34,6 +34,14 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 (name, iso_code, dafif_code);
 
+\! echo Importing planes...
+LOAD DATA LOCAL INFILE 'data/planes.dat'
+REPLACE INTO TABLE planes
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(name, iata, icao);
+
 \! echo Importing locales...
 
 LOAD DATA LOCAL INFILE 'locale/locales.dat'

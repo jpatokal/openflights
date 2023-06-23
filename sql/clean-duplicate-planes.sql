@@ -7,7 +7,7 @@ select name, min(plid), max(plid), count(*) as dupes from planes GROUP BY name h
 
 -- Find exact dupes
 drop table if exists tmp_planes_duplicates;
-create table tmp_planes_duplicates (plid int, duplicate_of int)
+create table tmp_planes_duplicates (plid int, duplicate_of int);
 insert into tmp_planes_duplicates
     select p1.plid, min(p2.plid) as duplicate_of
     from planes p1, planes p2

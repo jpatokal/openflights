@@ -1,5 +1,7 @@
+DROP DATABASE IF EXISTS flightdb2;
 CREATE DATABASE flightdb2;
 
+DROP USER IF EXISTS openflights@localhost;
 CREATE USER openflights@localhost;
 GRANT ALL PRIVILEGES ON flightdb2.* TO openflights@localhost;
 
@@ -155,12 +157,16 @@ CREATE TABLE `locales` (
 
 DROP TABLE IF EXISTS `planes`;
 CREATE TABLE `planes` (
-  `name` text,
+  `name` varchar(80),
   `abbr` text,
   `speed` double default NULL,
   `plid` int(11) NOT NULL auto_increment,
   `public` char(1) default NULL,
-  PRIMARY KEY  (`plid`)
+  `iata` text default NULL,
+  `icao` text default NULL,
+  `frequency` int default 0,
+  PRIMARY KEY  (`plid`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `routes`;
