@@ -543,10 +543,20 @@ foreach ($rows as $row) {
         $fatal = "airport";
     } else {
         if ($duration == "" || $distance == "") {
-            list($distance, $duration) = gcDistance($dbh, $src_apid, $dst_apid);
+            list($gc_distance, $gc_duration) = gcDistance($dbh, $src_apid, $dst_apid);
+        }
+
+        $duration_bgcolor = "#fff";
+        $dist_bgcolor = "#fff";
+
+        if ($duration == "") {
+            $duration  = $gc_duration;
+            $duration_bgcolor = "#ddf";
+        }
+
+        if ($distance == "") {
+            $distance  = $gc_distance;
             $dist_bgcolor = "#ddf";
-        } else {
-            $dist_bgcolor = "#fff";
         }
     }
     if (!$alid) {
@@ -576,7 +586,7 @@ foreach ($rows as $row) {
                 $dst_iata,
                 $dist_bgcolor,
                 $distance,
-                $dist_bgcolor,
+                $duration_bgcolor,
                 $duration,
                 $plane_bgcolor,
                 $plane,
