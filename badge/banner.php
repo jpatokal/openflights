@@ -79,7 +79,7 @@ if ($result && $row = $sth->fetch()) {
         $units = "miles";
     }
     $flights = sprintf("%s flights", $row["count"]);
-    $miles = sprintf("%d,%03d %s", $distance / 1000, $distance % 1000, $units);
+    $miles = sprintf("%s %s", number_format($distance, 0, ".", ","), $units);
     $duration = sprintf(
         "%d days, %d:%02d hours",
         $row["duration"] / 1440,
