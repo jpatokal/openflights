@@ -137,7 +137,7 @@ var poliLayer = new OpenLayers.Layer.XYZ(
 var artLayer = new OpenLayers.Layer.XYZ(
     "Artistic",
     [
-        "https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.png"
+        "https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.jpg"
     ], {
         attribution: "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)",
         sphericalMercator: true,
