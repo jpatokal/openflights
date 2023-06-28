@@ -24,27 +24,21 @@ server {
 	rewrite "^/banner/(.+).png$" /badge/banner.php?user=$1;
     }
 
-    if ($uri !~ \.) {
-	rewrite "^/airline/(.+)$" /index.php?query=$1;
-	rewrite "^/airport/(.+)$" /index.php?query=$1;
-	rewrite "^/blog/(.+)$" https://blog.openflights.org/$1;
-	rewrite "^/trip/(.+)$" /index.php?trid=$1;
-	rewrite "^/user/(.+)$" /index.php?user=$1;
-    }
+    rewrite "^/airline/(.+)$" /index.php?query=$1;
+    rewrite "^/airport/(.+)$" /index.php?query=$1;
+    rewrite "^/blog/(.+)$" https://blog.openflights.org/$1;
+    rewrite "^/trip/(.+)$" /index.php?trid=$1;
+    rewrite "^/user/(.+)$" /index.php?user=$1;
 
     location ~ /\.ht {
         deny all;
     }
-
 
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/nginx.openflights.org/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/nginx.openflights.org/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-
-
 }
 
 server {
@@ -62,14 +56,7 @@ server {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
-
     listen 80;
     server_name openflights.org www.openflights.org nginx.openflights.org 104.154.196.92;
     return 404; # managed by Certbot
-
-
-
-
-
-
 }
