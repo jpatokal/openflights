@@ -161,10 +161,10 @@ CREATE TABLE `planes` (
   `abbr` text,
   `speed` double default NULL,
   `plid` int(11) NOT NULL auto_increment,
-  `public` char(1) default NULL,
+  `public` char(1) default 'N',
   `iata` text default NULL,
   `icao` text default NULL,
-  `frequency` int default 0,
+  `frequency` int(11) default 0,
   PRIMARY KEY  (`plid`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
