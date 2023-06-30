@@ -5,36 +5,49 @@ include 'db_pdo.php';
 include 'helper.php';
 include 'filter.php';
 
-$uid = $_SESSION["uid"];
+// ----- Session parameters -----
+$units = $_SESSION["units"] ?? "M";
+$uid = $_SESSION["uid"] ?? null;
 if (!$uid || empty($uid)) {
     // If not logged in, default to demo mode
     $uid = 1;
 }
-// This applies only when viewing another users flights
-$user = $_POST["user"];
-$trid = $_POST["trid"];
-$units = $_SESSION["units"];
 
-$mode = $_POST["mode"];
+// ----- Request parameters -----
+// For backwards-compatibility reasons with the front-end, value "0" is special
+// and processed the same way null.
+
+// "user" applies only when viewing another users flights
+$user = $_POST["user"] ?? null;
+$trid = $_POST["trid"] ?? null;
+$alid = $_POST["year"] ?? null;
+$mode = $_POST["mode"] ?? "F";
+$limit = $_POST["limit"] ?? "9999";
+// $year is also a valid parameter (used in `getFilterString`)
+
+$data = [
+    "routes" => [],
+    "airports" => [],
+    "airlines" => [],
+    "planes" => [],
+    // "countUnit" is set below
+];
+
 switch ($mode) {
     case "D":
         $mode = "SUM(distance)";
+        $data["countUnit"] = "miles";
         if ($units == "K") {
             $mode = "ROUND($mode * KM_PER_MILE)";
+            $data["countUnit"] = "kilometers";
         }
         break;
 
     case "F":
     default:
         $mode = "COUNT(fid)";
+        $data["countUnit"] = "segments";
         break;
-}
-$limit = $_POST["limit"];
-if (!$limit) {
-    $limit = "10";
-}
-if ($limit == "-1") {
-    $limit = "9999";
 }
 
 // Verify that this trip and user are public
@@ -44,10 +57,12 @@ if ($uid == 1 && $trid && $trid != "0") {
     $sth->execute([$trid]);
     if ($row = $sth->fetch()) {
         if ($row["uid"] != $uid and $row["public"] == "N") {
-            die('Error;' . _("This trip is not public."));
+            die(json_encode(["error" => _("This trip is not public.")]));
         } else {
             $uid = $row["uid"];
         }
+    } else {
+        die(json_encode(["error" => _("No such trip.")]));
     }
 }
 if ($user && $user != "0") {
@@ -56,34 +71,33 @@ if ($user && $user != "0") {
     $sth->execute([$user]);
     if ($row = $sth->fetch()) {
         if ($row["public"] == "N") {
-            die('Error;' . _("This user's flights are not public."));
+            die(json_encode(["error" => _("This user's flights are not public.")]));
         } else {
             $uid = $row["uid"];
         }
+    } else {
+        die(json_encode(["error" => _("No such user.")]));
     }
 }
 $filter = getFilterString($dbh, $_POST);
 
-// List top 10 routes
+// List top $limit routes
 $sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,$mode AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=:uid $filter GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT :limit";
 $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-$first = true;
 while ($row = $sth->fetch()) {
-    if ($first) {
-        $first = false;
-    } else {
-        printf(":");
-    }
-    $src = format_apcode2($row["siata"], $row["sicao"]);
-    $dst = format_apcode2($row["diata"], $row["dicao"]);
-    printf("%s,%s,%s,%s,%s", $src, $row["sapid"], $dst, $row["dapid"], $row["times"]);
+    array_push($data["routes"], [
+        "src_code" => format_apcode2($row["siata"], $row["sicao"]),
+        "src_apid" => (int) $row["sapid"],
+        "dst_code" => format_apcode2($row["diata"], $row["dicao"]),
+        "dst_apid" => (int) $row["dapid"],
+        "count" => (int) $row["times"]
+    ]);
 }
-printf("\n");
 
-// List top 10 airports
+// List top $limit airports
 
 //$sql = "SELECT a.name, a.iata, a.icao, $mode AS count, a.apid FROM airports AS a, " .
 //  "(SELECT src_apid as apid, distance, count(*) AS fid FROM flights WHERE uid = $uid GROUP BY src_apid" .
@@ -107,47 +121,39 @@ $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-$first = true;
 while ($row = $sth->fetch()) {
-    if ($first) {
-        $first = false;
-    } else {
-        printf(":");
-    }
-    $code = format_apcode($row);
-    printf("%s,%s,%s,%s", $row["name"], $code, $row["count"], $row["apid"]);
+    array_push($data["airports"], [
+        "name" => $row["name"],
+        "code" => format_apcode($row),
+        "count" => (int) $row["count"],
+        "apid" => (int) $row["apid"]
+    ]);
 }
-printf("\n");
-
-// List top 10 airlines
+// List top $limit airlines
 $sql = "select a.name, $mode as count, a.alid from airlines as a, flights as f where f.uid=:uid and f.alid=a.alid $filter group by f.alid order by count desc limit :limit";
 $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-$first = true;
 while ($row = $sth->fetch()) {
-    if ($first) {
-        $first = false;
-    } else {
-        printf(":");
-    }
-    printf("%s,%s,%s", $row["name"], $row["count"], $row["alid"]);
+    array_push($data["airlines"], [
+        "name" => $row["name"],
+        "count" => (int) $row["count"],
+        "alid" => (int) $row["alid"]
+    ]);
 }
-printf("\n");
 
-// List top 10 plane types
+// List top $limit plane types
 $sql = "select p.name, $mode as count from planes as p, flights as f where f.uid=:uid and p.plid=f.plid $filter group by f.plid order by count desc limit :limit";
 $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-$first = true;
 while ($row = $sth->fetch()) {
-    if ($first) {
-        $first = false;
-    } else {
-        printf(":");
-    }
-    printf("%s,%s", $row["name"], $row["count"]);
+    array_push($data["planes"], [
+        "name" => $row["name"],
+        "count" => (int) $row["count"]
+    ]);
 }
+
+print(json_encode($data));

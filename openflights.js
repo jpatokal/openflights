@@ -1698,9 +1698,18 @@ function googleChart(targetdiv, inputdata, labeldata) {
   chart.draw(data, GOOGLE_CHART_OPTIONS);
 }
 
-function showTop10(str) {
-  if(str.substring(0,5) == "Error") {
-    $("result").innerHTML = str.split(';')[1];
+function showTop10(responseText) {
+  let topData;
+  try {
+    topData = JSON.parse(responseText);
+  } catch (e) {
+    $("result").innerHTML = "<i>Statistics calculation failed!</i>";
+    openPane("result");
+    return;
+  }
+
+  if('error' in topData) {
+    $("result").innerHTML = topData.error;
     openPane("result");
     return;
   }
@@ -1715,94 +1724,62 @@ function showTop10(str) {
     limit = "10";
   }
 
-  openPane("result");
-  if(str == "") {
-    bigtable = "<i>Statistics calculation failed!</i>";
-  } else {
-    var master = str.split("\n");
-    var routes = master[0];
-    var airports = master[1];
-    var airlines = master[2];
-    var planes = master[3];
-    bigtable = "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
-    table = "<br>" + gt.gettext("Show...") + "<br>";
-    table += createSelectFromArray('limit', toplimits, "updateTop10()", limit) + "<br>";
-    table += gt.gettext("Sort by...") + "<br>";
-    table += createSelectFromArray('mode', topmodes, "updateTop10()", mode) + "<br>";
-    bigtable += table + "</form></td>";
+  bigtable = "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
+  table = "<br>" + gt.gettext("Show...") + "<br>";
+  table += createSelectFromArray('limit', toplimits, "updateTop10()", limit) + "<br>";
+  table += gt.gettext("Sort by...") + "<br>";
+  table += createSelectFromArray('mode', topmodes, "updateTop10()", mode) + "<br>";
+  bigtable += table + "</form></td>";
 
-    bigtable += "<td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";
-    table = "<table><tr><th colspan=3'>" + gt.gettext("Routes") + "</th></tr>";
-    var rows = routes.split(":");
-    for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      // s.name, s.apid, d.name, d.apid, count
-      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[1] + ");'>" + col[0] + "</a>&harr;" +
-	"<a href='#' onclick='JavaScript:selectAirport(" + col[3] + ");'>" + col[2] + "</a></td>" + 
-	"<td style='text-align: right; padding-left: 10px'>" + parseInt(col[4]) + "</td></tr>";
-    }
-    table += "</table>";
-
-    bigtable += table + "</td><td style='vertical-align: top; padding: 0px 10px'>";
-    table = "<table><tr><th colspan=3'>" + gt.gettext("Airports") + "</th></tr>";
-    var rows = airports.split(":");
-    for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      var noOfColumns = col.length;
-      // name, iata, count, apid
-      if(noOfColumns > 4) {
-        var tooManyColumns = noOfColumns - 4;
-        // join name back together
-        var airportName = col.slice(0, tooManyColumns + 1).join(',');
-        desc = airportName.substring(0,20) + " (" + col[noOfColumns - 3] + ")";
-      }
-      else {
-        desc = col[0].substring(0,20) + " (" + col[1] + ")";
-      }
-      table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + col[noOfColumns-1] + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[noOfColumns-2]) + "</td>";
-    }
-    table += "</table>";
-
-    bigtable += table + "</td><td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";    
-    table = "<table><tr><th colspan=3'>" + gt.gettext("Airlines") + "</th></tr>";
-    var rows = airlines.split(":");
-    for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      // name, count, apid
-      table += "<tr><td><a href='#' onclick='JavaScript:selectAirline(" + col[2] + ");refresh(false);'>" + col[0] + "</a></td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[1]) + "</td>";
-    }
-    table += "</table>";
-
-    bigtable += table + "</td><td style='vertical-align: top; padding-left: 10px;'>";
-    table = "<table><tr><th colspan=3>" + gt.gettext("Planes") + "</th></tr>";
-    var rows = planes.split(":");
-    for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      // name, count
-      table += "<tr><td>" + col[0] + "</td><td style='text-align: right; padding-left: 10px'>" + parseInt(col[1]) + "</td>";
-    }
-    table += "</table>";
-    bigtable += table + "</td>";
+  bigtable += "<td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";
+  table = "<table><tr><th colspan=3'>" + gt.gettext("Routes") + "</th></tr>";
+  for (const route of topData.routes) {
+    table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + route.src_apid + ");'>" + route.src_code + "</a>&harr;" +
+      "<a href='#' onclick='JavaScript:selectAirport(" + route.dst_apid + ");'>" + route.dst_code + "</a></td>" +
+      "<td style='text-align: right; padding-left: 10px'>" + route.count + "</td></tr>";
   }
+  table += "</table>";
 
-  var form = document.forms['top10form'];
-  if(form) {
-    mode = form.mode[form.mode.selectedIndex].value;
-    limit = form.limit[form.limit.selectedIndex].value;
+  bigtable += table + "</td><td style='vertical-align: top; padding: 0px 10px'>";
+  table = "<table><tr><th colspan=3'>" + gt.gettext("Airports") + "</th></tr>";
+  for (const airport of topData.airports) {
+    desc = airport.name.substring(0,20) + " (" + airport.code + ")";
+    table += "<tr><td><a href='#' onclick='JavaScript:selectAirport(" + airport.apid + ");'>" + desc + "</a></td><td style='text-align: right; padding-left: 10px'>" + airport.count + "</td>";
   }
+  table += "</table>";
+
+  bigtable += table + "</td><td style='vertical-align: top; background-color: #ddd; padding: 0px 10px'>";
+  table = "<table><tr><th colspan=3'>" + gt.gettext("Airlines") + "</th></tr>";
+  for (const airline of topData.airlines) {
+    table += "<tr><td><a href='#' onclick='JavaScript:selectAirline(" + airline.alid + ");refresh(false);'>" + airline.name + "</a></td><td style='text-align: right; padding-left: 10px'>" + airline.count + "</td>";
+  }
+  table += "</table>";
+
+  bigtable += table + "</td><td style='vertical-align: top; padding-left: 10px;'>";
+  table = "<table><tr><th colspan=3>" + gt.gettext("Planes") + "</th></tr>";
+  for (const plane of topData.planes) {
+    table += "<tr><td>" + plane.name + "</td><td style='text-align: right; padding-left: 10px'>" + plane.count + "</td>";
+  }
+  table += "</table>";
+  bigtable += table + "</td>";
+
   $("result").innerHTML = bigtable;
+  openPane("result");
 }
 
 function updateTop10() {
-  var form = document.forms['top10form'];
+  const form = document.forms['top10form'];
+  const params = new URLSearchParams();
   if(form) {
-    mode = form.mode[form.mode.selectedIndex].value;
-    limit = form.limit[form.limit.selectedIndex].value;
+    params.set('mode', form.mode[form.mode.selectedIndex].value);
+    const limit = form.limit[form.limit.selectedIndex].value;
+    if (limit !== "-1")
+      params.set('limit', limit);
   } else {
-    mode = "F";
-    limit = "10";
+    params.set('mode', 'F');
+    params.set('limit', 10);
   }
-  xmlhttpPost(URL_TOP10, 0, "mode=" + mode + "&limit=" + limit);
+  xmlhttpPost(URL_TOP10, 0, params.toString());
 }
 
 // Move "pointer" in flight list up or down one when user clicks prev, next
