@@ -457,6 +457,10 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
 
 // Run when the user clicks on an airport marker
 function onAirportSelect(airport) {
+  function encodeURIQuote(str) {
+    return encodeURI(str).replace("'", "&apos;");
+  }
+
   apid = airport.attributes.apid;
   code = airport.attributes.code;
   coreid = airport.attributes.coreid;
@@ -475,7 +479,7 @@ function onAirportSelect(airport) {
       // 3. privacy is set to (O)pen
       if( logged_in || demo_mode || privacy == "O") {
 	// Get list of user flights
-	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURI(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
+	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURIQuote(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
       }
     } else {
       if(code.length == 3) {
@@ -485,7 +489,7 @@ function onAirportSelect(airport) {
 	} else {
 	  idstring = "R" + apid + "," + coreid;
 	}
-	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURI(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURIQuote(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
       }
     }
     if(code.length == 3) {
