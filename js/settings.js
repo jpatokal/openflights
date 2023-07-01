@@ -177,7 +177,7 @@ function signup(str) {
 function changeName() {
   var name = document.forms['signupform'].username.value;
   var url = location.origin + "/user/" + encodeURIComponent(name);
-  $('profileurl').innerHTML = gt.gettext("Profile address: ") + url;
+  document.getElementById('profileurl').innerHTML = gt.gettext("Profile address: ") + url;
 }
 
 // Swap privacy panes
@@ -188,7 +188,7 @@ function changePrivacy(type) {
     } else {
       style = "none";
     }
-    $('privacy' + privacyList[p]).style.display = style;
+    document.getElementById('privacy' + privacyList[p]).style.display = style;
   }
 }
 
@@ -196,12 +196,12 @@ function changePrivacy(type) {
 function changeEditor(type) {
   switch(type) {
   case "B":
-    $('detaileditor').style.display = "none";
-    $('basiceditor').style.display = "inline";
+    document.getElementById('detaileditor').style.display = "none";
+    document.getElementById('basiceditor').style.display = "inline";
     break;
   case "D":
-    $('basiceditor').style.display = "none";
-    $('detaileditor').style.display = "inline";
+    document.getElementById('basiceditor').style.display = "none";
+    document.getElementById('detaileditor').style.display = "inline";
     break;
   }
 }

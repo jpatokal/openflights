@@ -12,6 +12,7 @@ require_once "./php/helper.php";
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content;">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/autocomplete.min.css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css") ?>" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
@@ -21,9 +22,7 @@ require_once "./php/helper.php";
     <script type="text/javascript" src="/js/utilities.min.js"></script>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/scw.min.js"></script>
-    <script type="text/javascript" src="/js/prototype.js"></script>
-    <script type="text/javascript" src="/js/scriptaculous.js"></script>
-    <script type="text/javascript" src="/js/controls.js"></script>
+    <script type="text/javascript" src="/js/autocomplete.min.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js"); ?>"></script>
     <?php include "./html/analytics.html"; ?>
   </head>
@@ -48,8 +47,7 @@ require_once "./php/helper.php";
 
     <div id="quicksearch" style="display: none">
       <img src="/img/layer-switcher-minimize.png" height=18 width=18 title="<?php echo _("Hide search bar") ?>" onClick="$('quicksearch').style.display='none'">
-      <input type="text" name="qs" id="qs" size="60" tabindex="5" onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/><div id="qsAC">
-    </div>
+      <input type="text" name="qs" id="qs" size="60" tabindex="5" onKeyDown='keyPress(event, "qs")' class="hintTextbox" value="<?php echo _("Enter city, airport, airline name or code") ?>"/>
       <input type="hidden" name="qsid" id="qsid"/>
       <input type="button" id="qsgo" tabindex="6" value="<?php echo _("Search") ?>" title="<?php echo _("Map of routes from this airport") ?>" align="middle" onclick='JavaScript:goQuickSearch()' DISABLED>
     </div>
@@ -217,7 +215,7 @@ require_once "./php/helper.php";
       <font color="blue"><?php echo _("From") ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a>
   </td>
   <td>
-      <input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onKeyDown='keyPress(event, "src_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="src_apAC"></div>
+      <input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onKeyDown='keyPress(event, "src_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/>
       <input type="hidden" name="src_apid" id="src_apid"/>
   </td>
   <td rowspan=2 valign=middle align=left>
@@ -227,7 +225,7 @@ require_once "./php/helper.php";
 
   <td><?php echo _("Plane") ?></td>
   <td>
-      <input style="width: 180px" type="text" name="plane" id="plane" tabindex="111" onChange="JavaScript:markAsChanged();" onKeyDown='keyPress(event, "plane")' class="hintTextbox" value="<?php echo _("Enter plane model") ?>"><div id="planeAC"></div><input type="hidden" id="plane_id" name="plane_id" />
+      <input style="width: 180px" type="text" name="plane" id="plane" tabindex="111" onChange="JavaScript:markAsChanged();" onKeyDown='keyPress(event, "plane")' class="hintTextbox" value="<?php echo _("Enter plane model") ?>"><input type="hidden" id="planeid" name="planeid" />
       <?php echo _("Reg.") ?> <input type="text" name="registration" size="8" tabindex="112" onChange="JavaScript:markAsChanged();"/>
   </td>
 
@@ -237,7 +235,7 @@ require_once "./php/helper.php";
       <font color="blue"><?php echo _("To") ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="Help: How do I enter airports?" height=11 width=10></a>
   </td>
   <td>
-      <input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onKeyDown='keyPress(event, "dst_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/><div id="dst_apAC"></div>
+      <input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onKeyDown='keyPress(event, "dst_ap")' class="hintTextbox" value="<?php echo _("Enter city name or airport code") ?>"/>
       <input type="hidden" name="dst_apid" id="dst_apid"/>
   </td>
 
@@ -283,7 +281,7 @@ require_once "./php/helper.php";
     <?php echo _("Carrier") ?><a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="Help: How do I enter airlines?" height=11 width=10></a>
   </td>
   <td>
-      <input type="text" name="airline" id="airline" size="60" tabindex="20" onKeyDown='keyPress(event, "airline")' class="hintTextbox" value="<?php echo _("Enter airline name or code") ?>"/><div id="airlineAC"></div>
+      <input type="text" name="airline" id="airline" size="60" tabindex="20" onKeyDown='keyPress(event, "airline")' class="hintTextbox" value="<?php echo _("Enter airline name or code") ?>"/>
       <input type="hidden" name="airlineid" id="airlineid"/>
   </td>
   <td>
@@ -335,7 +333,7 @@ require_once "./php/helper.php";
 for ($row = 1; $row <= 4; $row++) {
       echo "<tr id='row$row' " . ($row > 1 ? "style='display: none;'" : "") . "> <!-- Row $row -->\n";
       printf(
-          "<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='src_ap{$row}AC'></span>\n",
+          "<td><input type='text' name='src_ap%s' id='src_ap%s' size='32' tabindex='1%s1' onKeyDown='keyPress(event, \"src_ap%s\")' class='hintTextbox' value=\"%s\"/>\n",
           $row,
           $row,
           $row,
@@ -352,7 +350,7 @@ for ($row = 1; $row <= 4; $row++) {
           _("Airport search")
       );
       printf(
-          "<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/><span id='dst_ap%sAC'></span>\n",
+          "<td><input type='text' name='dst_ap%s' id='dst_ap%s' size='32' tabindex='1%s2' onKeyDown='keyPress(event, \"dst_ap%s\")' class='hintTextbox' value=\"%s\"/>\n",
           $row,
           $row,
           $row,
@@ -370,7 +368,7 @@ for ($row = 1; $row <= 4; $row++) {
           _("Airport search")
       );
       printf(
-          "<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/><span id='airline{$row}AC'></span>\n",
+          "<td><input type='text' name='airline%s' id='airline%s' size='32' tabindex='1%s3' onKeyDown='keyPress(event, \"airline%s\")' class='hintTextbox' value=\"%s\"/>\n",
           $row,
           $row,
           $row,
