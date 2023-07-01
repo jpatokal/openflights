@@ -272,9 +272,11 @@ var earthLayer = new OpenLayers.Layer.XYZ(
   }
 
   initHintTextboxes();
-  new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
-                        {afterUpdateElement : getQuickSearchId,
-                         indicator: ajaxstatus, minChars: 2});
+
+  prepareAutocomplete("qs", {
+    successCb: getQuickSearchId,
+    failureCb: (e) => undefined
+  });
 
   // Are we viewing another user's flights or trip?
   if(filter_user != "0" || filter_trid != 0) {
@@ -289,29 +291,35 @@ var earthLayer = new OpenLayers.Layer.XYZ(
 
     // Nope, set up hinting and autocompletes for editor
     ac_airport = [ "src_ap", "src_ap1", "src_ap2", "src_ap3", "src_ap4",
-		   "dst_ap", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
+                   "dst_ap", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
     ac_airline = [ "airline", "airline1", "airline2", "airline3", "airline4" ];
     ac_plane = [ "plane" ];
-    for(ac = 0; ac < ac_airport.length; ac++) {
-      !function(i){
-        new Ajax.Autocompleter(ac_airport[ac], ac_airport[ac] + "AC", "php/autocomplete.php",
-	        {afterUpdateElement : getSelectedApid,
-           on204 : function(req) { invalidateField(ac_airport[i], true); }});
-      }(ac);
+
+    for (const airportAutoCompInputId of ac_airport) {
+      prepareAutocomplete(airportAutoCompInputId, {
+        successCb: (item) => {
+          getSelectedApid(airportAutoCompInputId, item.value);
+        },
+        failureCb: (error) => {
+          invalidateField(airportAutoCompInputId, true);
+        }
+      });
     }
-    for(ac = 0; ac < ac_airline.length; ac++) {
-      !function(i){
-        new Ajax.Autocompleter(ac_airline[ac], ac_airline[ac] + "AC", "php/autocomplete.php",
-			    {afterUpdateElement : getSelectedAlid,
-           on204 : function(req) { invalidateField(ac_airline[i]); }});
-      }(ac);
+
+    for (const airlineAutoCompInputId of ac_airline) {
+      prepareAutocomplete(airlineAutoCompInputId, {
+        successCb: (item) => {
+          getSelectedAlid(airlineAutoCompInputId, item.value);
+        }
+      });
     }
-    for(ac = 0; ac < ac_plane.length; ac++) {
-      !function(i){
-        new Ajax.Autocompleter(ac_plane[ac], ac_plane[ac] + "AC", "php/autocomplete.php",
-          {afterUpdateElement : getSelectedPlid,
-           on204 : function(req) { invalidateField(ac_plane[i]); }});
-      }(ac);
+
+    for (const planeAutoCompInputId of ac_plane) {
+      prepareAutocomplete(planeAutoCompInputId, {
+        successCb: (item) => {
+          getSelectedPlid(planeAutoCompInputId, item.value);
+        }
+      });
     }
 
     // No idea why this is needed, but FF3 disables random buttons without it...
@@ -393,6 +401,59 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
 						{count: count, color: color, stroke: stroke}));
   }
   return features;
+}
+
+//
+// `autocomplete.js` wrapper to encapsulate logic dealing with setting up the
+// autocomplete widgets and interacting with the autocomplete API endpoint.
+//
+function prepareAutocomplete(inputId, {successCb, failureCb}) {
+
+  const inputElement = document.getElementById(inputId);
+
+  autocomplete({
+    input: inputElement,
+    minLength: 1,
+    debounceWaitMs: 100,
+    fetch: (text, update) => {
+      showLoadingAnimation(true);
+      fetch(URL_GETCODE, {
+        method: 'POST',
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: encodeURI(`${inputId}=${text}`)
+      }).then((response) => {
+        if (response.status !== 200) {
+          throw new Error(response.status);
+        }
+        return response.text();
+      }).then((text) => {
+        const responseXML = (new DOMParser()).parseFromString(text, "text/xml");
+
+        const suggestions = [];
+        const ul = responseXML.firstChild;
+        ul.childNodes.forEach((elem) => {
+          // Skip over newline text nodes
+          if (elem.nodeName === 'li')
+            suggestions.push({label: elem.firstChild.data, value: elem.id})
+        });
+
+        update(suggestions);
+      }).catch((e) => {
+        if (failureCb)
+          failureCb(e);
+        else
+          invalidateField(inputId);
+      }).finally(() => {
+        showLoadingAnimation(false);
+      });
+    },
+    onSelect: (item) => {
+      inputElement.value = item.label;
+      successCb(item);
+    }
+  });
 }
 
 //
@@ -607,7 +668,7 @@ function xmlhttpPost(strURL, id, param) {
 	  listFlights(self.xmlHttpReq.responseText, unescape(param), id);
 	    break;
 	}
-	$("ajaxstatus").style.display = 'none';
+        showLoadingAnimation(false);
       }
       if(strURL == URL_GETCODE) {
 	var cols = self.xmlHttpReq.responseText.split(";");
@@ -687,7 +748,7 @@ function xmlhttpPost(strURL, id, param) {
   }
 	if(str.substring(0,5) == "Error") {
 	  $("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
-	  $("ajaxstatus").style.display = 'none';
+        showLoadingAnimation(false);
 	  openPane("result");
 	} else {
 	  // Zoom map to fit when first loading another's flights/trip
@@ -722,12 +783,12 @@ function xmlhttpPost(strURL, id, param) {
 	}
       }
       if(strURL == URL_STATS) {
-	showStats(self.xmlHttpReq.responseText);
-	$("ajaxstatus").style.display = 'none';
+        showStats(self.xmlHttpReq.responseText);
+        showLoadingAnimation(false);
       }
       if(strURL == URL_TOP10) {
-	showTop10(self.xmlHttpReq.responseText);
-	$("ajaxstatus").style.display = 'none';
+        showTop10(self.xmlHttpReq.responseText);
+        showLoadingAnimation(false);
       }
       if(strURL == URL_SUBMIT) {
 	var result = self.xmlHttpReq.responseText.split(";");
@@ -794,7 +855,7 @@ function xmlhttpPost(strURL, id, param) {
 	    refresh(true); // ...else do it right now
 	  }
 	} else {
-	  $("ajaxstatus").style.display = 'none';
+        showLoadingAnimation(false);
 	}
 	majorEdit = false;
       } // end URL_SUBMIT
@@ -936,7 +997,7 @@ function xmlhttpPost(strURL, id, param) {
     break;
 
   case URL_LOGIN:
-    $("ajaxstatus").style.display = 'inline';
+    showLoadingAnimation(true);
     var name = document.forms['login'].name.value;
     var pw = document.forms['login'].pw.value;
     var challenge = document.forms['login'].challenge.value;
@@ -962,7 +1023,7 @@ function xmlhttpPost(strURL, id, param) {
 
   // URL_MAP, URL_ROUTES, URL_FLIGHTS, URL_STATS, URL_TOP10
   default:
-    $("ajaxstatus").style.display = 'inline';
+    showLoadingAnimation(true);
     var form = document.forms['filterform'];
     if(! initializing && form.Trips) {
       filter_trid = form.Trips.value.split(";")[0];
@@ -1215,8 +1276,8 @@ function createSelectFromArray(selectName, opts, hook, current) {
   var select = "<select style='width: 100px' id='" + selectName + "' name='" + selectName +
     "' onChange='JavaScript:" + hook + "'>";
   if(! current) select += "<option value=''>" + gt.gettext("All") + "</option>";
-  for (r in opts) {
-    if(r.length > 2) continue; // filter out Prototype.js cruft
+  for (const r of Object.keys(opts)) {
+    console.log(r)
     select += "<option value='" + r + "' " + (r == current ? "SELECTED" : "") + ">" + opts[r] + "</option>";
   }
   select += "</select>";
@@ -1397,7 +1458,7 @@ function updateMap(str, url){
     if(input_dstmarker) markAirport("dst_ap", true);
   }
 
-  $("ajaxstatus").style.display = 'none';
+  showLoadingAnimation(false);
   if(initializing) {
     if(! logged_in && demo_mode) {
       $("loginform").style.display = 'inline';
@@ -1878,7 +1939,7 @@ function editFlight(str, param) {
   fid = col[12]; //stored until flight is saved or deleted
 
   $('plane').value = col[13];
-  $('plane_id').value = col[18];
+  $('planeid').value = col[18];
 
   form.registration.value = col[14];
   alid = col[15];
@@ -2058,42 +2119,44 @@ function addNewAirline(alid, name, mode) {
 //
 // Inject apid into hidden src/dst_apid field after new airport is selected, and draw on map
 //
-function getSelectedApid(text, li) {
-  var element = text.id;
-  $(element).style.color = '#000000';
-  $(element + 'id').value=li.id;
-  replicateSelection(element);
-  markAirport(element);
+function getSelectedApid(inputElementId, apid) {
+  $(inputElementId).style.color = '#000000';
+  $(inputElementId + 'id').value = apid;
+  replicateSelection(inputElementId);
+  markAirport(inputElementId);
   markAsChanged(true); // new airport, force refresh
 }
 
 //
 // Inject alid into hidden alid field after new plane type is selected
 //
-function getSelectedAlid(text, li) {
-  var element = text.id;
-  $(element).style.color = '#000000';
-  $(element + 'id').value=li.id;
+function getSelectedAlid(inputElementId, alid) {
+  $(inputElementId).style.color = '#000000';
+  $(inputElementId + 'id').value = alid;
   markAsChanged(true); // new airline, force refresh
 }
 
-function getSelectedPlid(text, li) {
-  $('plane_id').value=li.id;
+function getSelectedPlid(inputElementId, plid) {
+  $(inputElementId).style.color = '#000000';
+  $(inputElementId + 'id').value = plid;
+  markAsChanged(true); // new plane, force refresh
 }
 
 //
 // Quick search
 //
 
-// Autocompleted airport or airline
-function getQuickSearchId(text, li) {
-  var id = li.id;
-  if(id.indexOf(":") > 0) {
+/// Autocompleted airport or airline
+/// item -- selected autocomplete item with data from the API {label, value}
+function getQuickSearchId(item) {
+  const data = item.value;
+  let id;
+  if (data.indexOf(":") > 0) {
     // code:apid:x:y
-    id = li.id.split(":")[1];
+    id = data.split(":")[1];
     selectAirport(id, false, true); // pop it up if we can find it
   } else {
-    id = "L" + id;
+    id = `L${data}`;
   }
   $('qsid').value = id;
   $('qsgo').disabled = false;
@@ -2950,7 +3013,7 @@ function login(str, param) {
     // Login failed
     logged_in = false;
     $("loginstatus").innerHTML = "<B>" + result['message'] + "</B>";
-    $("ajaxstatus").style.display = 'none';
+    showLoadingAnimation(false);
   }
 }
 
@@ -3186,7 +3249,7 @@ function clearInput() {
     form.seat_type.selectedIndex = 0;
     form.mode.selectedIndex = 0;
     changeMode("F");
-    form.plane_id.value = "";
+    form.planeid.value = "";
     form.registration.value = "";
     form.note.value = "";
     if(form.trips) form.trips.selectedIndex = 0;
@@ -3221,6 +3284,10 @@ function closePopup(unselect) {
 
 function closeNews() {
   $("news").style.display = 'none';
+}
+
+function showLoadingAnimation(show) {
+  $("ajaxstatus").style.display = show ? 'inline' : 'none';
 }
 
 // user has selected a new field in the extra filter
