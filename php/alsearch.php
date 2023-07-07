@@ -144,7 +144,7 @@ if ($action == "RECORD") {
         printf('1;' . $dbh->lastInsertId() . ';New ' . $modeOperators[$mode] . ' successfully added.');
     } else {
         if ($sth->rowCount() == 1) {
-            printf('1;' . $apid . ';' . _("Airline successfully edited."));
+            printf('1;' . $alid . ';' . _("Airline successfully edited."));
         } else {
             printf('0;' . _("Editing airline failed:") . ' ' . $sql);
         }
