@@ -179,9 +179,9 @@ function straightPath($startPoint, $endPoint) {
 /**
  * If $threed = true, plot path in three dimensions (x,y,z), else only two (x,y)
  *
- * @param $startPoint
- * @param $endPoint
- * @param $distance
+ * @param $startPoint array
+ * @param $endPoint array
+ * @param $distance int|float|false|null
  * @param $threed bool
  * @return array
  */
@@ -190,7 +190,7 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         $startPoint
     );
     $wayPoint = $startPoint;
-    $distance = gcPointDistance($startPoint, $endPoint);
+    $distance = $distance ?? gcPointDistance($startPoint, $endPoint);
     $elevation = 0;
 
     if ($threed) {
