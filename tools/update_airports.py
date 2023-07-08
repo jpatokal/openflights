@@ -95,7 +95,7 @@ class OpenFlightsData(object):
         dupe = self.find_by_iata(oa['iata_code'])
         if dupe:
           print '. DUPE %s/%s (%s)' % (dupe['iata'], dupe['icao'], dupe['name'])
-          # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed 
+          # If not ICAO, or they're in the same country (first letter of ICAO), we assume ICAO code has changed
           # and update existing entry with IATA using OA data (this preserves flights to it)
           if not dupe['icao'] or dupe['icao'][:1] == oa['icao'][:1]:
             print '.. ICAO match, update %s from %s to %s' % (dupe['iata'], dupe['icao'], oa['icao'])
@@ -153,7 +153,7 @@ if __name__ == "__main__":
   ofd.load_all_airports(dbc)
 
   if args.download:
-    oa_url = 'http://ourairports.com/data/airports.csv'
+    oa_url = 'https://ourairports.com/data/airports.csv'
     print 'Downloading from %s...' % oa_url
     req = urllib2.Request(oa_url)
     with open(args.file,'wb') as output:

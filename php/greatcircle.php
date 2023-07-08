@@ -146,7 +146,7 @@ function gcWaypoint($from, $distance, $bearing) {
     // Convert arc distance to radians
     $d = $distance / EARTH_RADIUS;
 
-    // Modified based on http://williams.best.vwh.net/avform.htm
+    // Modified based on https://web.archive.org/web/20161209044600/http://williams.best.vwh.net/avform.htm
     $lat = asin(
         sin($y) * cos($d) + cos($y) * sin($d) * cos($radBearing)
     );

@@ -1,4 +1,4 @@
-# Process route data from http://www.virtualradarserver.co.uk/Files/FlightNumbers.csv
+# Process route data from https://www.virtualradarserver.co.uk/Files/FlightNumbers.csv
 # Recreates 'schedules' and 'routes' tables, outputting list of unknown codes to stdout.
 
 from collections import defaultdict
