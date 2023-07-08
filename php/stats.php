@@ -1,9 +1,9 @@
 <?php
 
-include 'locale.php';
-include 'db_pdo.php';
-include 'helper.php';
-include 'filter.php';
+include_once'locale.php';
+include_once'db_pdo.php';
+include_once'helper.php';
+include_once'filter.php';
 
 $public = "O"; // by default...
 

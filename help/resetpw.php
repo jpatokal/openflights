@@ -1,5 +1,5 @@
 <?php
-include '../php/db_pdo.php';
+include_once'../php/db_pdo.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>

@@ -2,7 +2,7 @@
 
 session_set_cookie_params(['samesite' => 'Strict']);
 session_start();
-include 'config.php';
+include_once'config.php';
 
 if ($OF_USE_LOCALES) {
     if (isset($_GET["lang"])) {

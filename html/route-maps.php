@@ -20,8 +20,8 @@
    data downloads and more information.
 
 <?php
-include '../php/db_pdo.php';
-include '../php/helper.php';
+include_once'../php/db_pdo.php';
+include_once'../php/helper.php';
 
 print "<h2>Airline route maps (by IATA code)</h2>";
 
@@ -61,8 +61,8 @@ foreach ($dbh->query($sql) as $row) {
     </div>
     <div id="sideBar">
 <?php
-include "../sidebar.html" ;
-include "ad-sidebar.html" ;
+include_once"../sidebar.html" ;
+include_once"ad-sidebar.html" ;
 ?>
     </div>
 

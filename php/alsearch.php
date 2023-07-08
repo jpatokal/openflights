@@ -3,7 +3,7 @@
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
 
-include 'helper.php';
+include_once'helper.php';
 
 $name = $_POST["name"];
 $alias = $_POST["alias"];
