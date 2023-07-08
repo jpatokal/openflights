@@ -57,19 +57,19 @@ if ($type == "signup") {
           </tr>
           <tr>
                 <td class="key"><?php echo _("Username") ?></td>
-            <td class="value"><INPUT type="text" name="username" size="20" onChange="changeName();"></td>
+            <td class="value"><input type="text" name="username" size="20" onChange="changeName();"></td>
                 <td class="value"><p><?php echo _("This will be used as the name of your profile.") ?></p>
               <span id="profileurl"></span></td>
           </tr><tr>
                 <td class="key"><?php echo _("Password") ?></td>
-            <td class="value"><INPUT type="password" name="pw1" size="20"></td>
+            <td class="value"><input type="password" name="pw1" size="20"></td>
                 <td class="value"><?php echo _("Pick something hard to guess, but easy to remember.  Case-sensitive!") ?></td>
           </tr><tr>
                 <td class="key"><?php echo _("Password again") ?></td>
-            <td class="value"><INPUT type="password" name="pw2" size="20"></td>
+            <td class="value"><input type="password" name="pw2" size="20"></td>
           </tr><tr>
                 <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
-            <td class="value"><INPUT type="text" name="email" size="20"></td>
+            <td class="value"><input type="text" name="email" size="20"></td>
             <td class="desc">
               <?php printf(_("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."), "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'") ?>
             </td>
@@ -89,7 +89,7 @@ if ($type == "signup") {
     ?>
           <tr>
             <td class="key"><nobr><?php echo _("Profile address") ?></nobr></td>
-            <td class="value"><INPUT type="text" name="myurl" value="<?php echo "https://openflights.org/user/" . $settings["name"] ?>" style="border:none" size="40" READONLY>
+            <td class="value"><input type="text" name="myurl" value="<?php echo "https://openflights.org/user/" . $settings["name"] ?>" style="border:none" size="40" READONLY>
              <input type="text" name="count" value="<?php printf(_("Viewed %s times"), $settings["count"]) ?>" style="border: none" READONLY></td>
                       <td class="desc"><?php echo _("The public address of your profile and how often it has been viewed.") ?></td>
             <td class="value" rowspan=3><span id="eliteicon"></span>
@@ -106,7 +106,7 @@ if ($type == "signup") {
               <span id="banner_img"><?php echo "<img src='/banner/" . $settings["name"] . ".png' width=400 height=70>" ?></span></td>
           </tr><tr>
            <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
-            <td class="value"><INPUT type="text" name="email" value="<?php echo $settings["email"] ?>" size="20"></td>
+            <td class="value"><input type="text" name="email" value="<?php echo $settings["email"] ?>" size="20"></td>
                 <td class="desc">
               <?php printf(_("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."), "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'") ?>
                     </td>
@@ -169,7 +169,7 @@ echo ">" . _("Open");
 <?php if ($type == "settings") { ?>
           <tr class="gold">
             <td class="key"><?php echo _("Guest password") ?></td>
-            <td class="value"><INPUT type="password" name="guestpw" size="20" DISABLED></td>
+            <td class="value"><input type="password" name="guestpw" size="20" DISABLED></td>
                 <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php echo _("Password protect your Private profile, so only friends and family can see it.") ?></tr><tr class="gold">
              <td class="key"><?php echo _("Default view") ?></td>
             <td class="value"><input type="radio" name="startpane" value="H" DISABLED <?php if ($settings["startpane"] == "H") { echo "CHECKED"; } echo ">" . _("Help") ?><br>
@@ -189,8 +189,8 @@ echo ">" . _("Open");
           </tr><tr>
             <td></td>
             <td class="value">
-              <INPUT type='button' value='<?php echo _("Backup to CSV") ?>' onClick='javascript:backupFlights()'>
-              <INPUT type='button' value='<?php echo _("Delete all flights") ?>' onClick='javascript:validate("RESET")'></td>
+              <input type='button' value='<?php echo _("Backup to CSV") ?>' onClick='javascript:backupFlights()'>
+              <input type='button' value='<?php echo _("Delete all flights") ?>' onClick='javascript:validate("RESET")'></td>
             <td class="desc" colspan=2>
                <?php printf(_("<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."), "a href='/help/csv.html'"); ?>
             </td>
@@ -198,27 +198,27 @@ echo ">" . _("Open");
             <td colspan="4"><h2><?php echo _("Change password") ?></h2></td>
           </tr><tr>
             <td class="key"><?php echo _("Current password") ?></td>
-            <td class="value"><INPUT type="password" name="oldpw" size="20">
-            <INPUT type="hidden" name="username" value="<?php echo $_SESSION['name']?>"></td>
+            <td class="value"><input type="password" name="oldpw" size="20">
+            <input type="hidden" name="username" value="<?php echo $_SESSION['name']?>"></td>
             <td class="desc" colspan=2><?php echo _("You only need to enter this if changing your password.") ?></td>
           </tr><tr>
             <td class="key"><?php echo _("New password") ?></td>
-            <td class="value"><INPUT type="password" name="pw1" size="20"></td>
+            <td class="value"><input type="password" name="pw1" size="20"></td>
           </tr><tr>
             <td class="key"><?php echo _("New password again") ?>&nbsp;</td>
-            <td class="value"><INPUT type="password" name="pw2" size="20"></td>
+            <td class="value"><input type="password" name="pw2" size="20"></td>
           </tr><tr>
             <td class="key"></td>
             <td class="value">
-              <INPUT type="button" value="<?php echo _("Save changes") ?>" onClick="validate('EDIT')">
-              <INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="location.href = '/'">
+              <input type="button" value="<?php echo _("Save changes") ?>" onClick="validate('EDIT')">
+              <input type="button" value="<?php echo _("Cancel") ?>" onClick="location.href = '/'">
             </td>
           </tr>
 <?php } else { ?>
           <tr>
             <td class="key"></td>
             <td class="value">
-              <INPUT type="button" value="<?php echo _("Sign me up!") ?>" onClick="validate('NEW')">
+              <input type="button" value="<?php echo _("Sign me up!") ?>" onClick="validate('NEW')">
               <small><A href="/"><?php echo _("Cancel") ?></a></small>
             </td>
           </tr>

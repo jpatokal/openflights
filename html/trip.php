@@ -50,10 +50,10 @@ if ($trid) {
     <table>
         <tr>
               <td><?php echo _("Name") ?></td>
-          <td><INPUT type="text" name="name" size="40" value="<?php echo $trip["name"] ?>"></td>
+          <td><input type="text" name="name" size="40" value="<?php echo $trip["name"] ?>"></td>
         </tr><tr>
               <td><?php echo _("Web address <i>(optional)</i>") ?>&nbsp;</td>
-          <td><INPUT type="text" name="url" size="40" value="<?php echo $trip["url"] ?>"></td>
+          <td><input type="text" name="url" size="40" value="<?php echo $trip["url"] ?>"></td>
         </tr><tr>
           <td style="vertical-align: top"><?php echo _("Trip privacy") ?></td>
           <td><input type="radio" name="privacy" value="N"<?php
@@ -82,14 +82,14 @@ echo ">" . _("Open (all flight data shared)");
 
 <?php
 if ($trid) {
-      echo "<INPUT type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
-      echo "<INPUT type='hidden' name='trid' value='" . $trid . "'>\n";
-      echo "<INPUT type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
+      echo "<input type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
+      echo "<input type='hidden' name='trid' value='" . $trid . "'>\n";
+      echo "<input type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
 } else {
-    echo "<INPUT type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
+    echo "<input type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
 }
 ?>
-    <INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+    <input type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
       </FORM>
 
     </div>

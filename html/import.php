@@ -22,7 +22,7 @@ require_once "../php/locale.php";
         <tr>
           <td style='vertical-align: top'></td>
   <td><p><?php printf(_("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually.  Duplicates are detected. "))?>
-    <INPUT type="button" value="<?php echo _("Import from Tripit") ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
+    <input type="button" value="<?php echo _("Import from Tripit") ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
             </tr>
           <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
 <td><p><?php printf(_("<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."), "a href='/contact.html'"); ?></p>
@@ -47,7 +47,7 @@ echo _("OpenFlights normally tries to match airlines and flight numbers to known
 printf("<p>" . _("You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing.") . "</p>", "<input type='button' value='Settings' align='middle' onclick='JavaScript:parent.opener.settings()'>"); ?>
 
         <input type="submit" name="action" value="<?php echo _("Upload") ?>">
-    <INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+    <input type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
       </form>
 
       <div id="miniresultbox"></div><br>

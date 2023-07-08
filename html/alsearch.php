@@ -40,9 +40,9 @@ $logged_in = $uid && !empty($uid);
           <td><?php echo _("Mode") ?></td>
           <td><?php echo _("Active?") ?></td>
         </tr><tr>
-          <td><INPUT type="text" name="name"></td>
-          <td><INPUT type="text" name="iata" size="3"></td>
-          <td><INPUT type="text" name="icao" size="4"></td>
+          <td><input type="text" name="name"></td>
+          <td><input type="text" name="iata" size="3"></td>
+          <td><input type="text" name="icao" size="4"></td>
           <td>
         <select name="mode" onChange="JavaScript:changeMode()">
           <option value="F" selected><?php echo _("Airline") ?></option>
@@ -57,12 +57,12 @@ $logged_in = $uid && !empty($uid);
           <option value="N"><?php echo _("No") ?></option>
         </select>
               </td>
-          <td><INPUT type="text" name="alid" size="5" value="" style="border: 0px" READONLY></td>
+          <td><input type="text" name="alid" size="5" value="" style="border: 0px" READONLY></td>
         </tr><tr>
           <td><?php echo _("Alternative name") ?></td>
           <td colspan=4><?php echo _("Country") ?></td>
         </tr><tr>
-          <td><INPUT type="text" name="alias"></td>
+          <td><input type="text" name="alias"></td>
           <td colspan=4>
                 <select name="country">
                   <option value="">ALL</option>
@@ -77,7 +77,7 @@ foreach ($dbh->query($sql) as $row) {
         </tr><tr>
           <td><?php echo _("Callsign") ?></td>
         </tr><tr>
-          <td><INPUT type="text" name="callsign"></td>
+          <td><input type="text" name="callsign"></td>
           </td>
           <td colspan=3>
     <nobr><?php echo _("Show only major (IATA) airlines?") ?></nobr><input type="checkbox" name="iatafilter" value="yes" checked>
@@ -88,21 +88,21 @@ foreach ($dbh->query($sql) as $row) {
     <table width="95%">
         <tr>
           <td>
-        <INPUT type='button' value='<?php echo _("Search") ?>' onClick='doSearch(0)'>
-        <INPUT type='button' value='<?php echo _("Clear") ?>' onClick='clearSearch()'>
-        <INPUT type='button' value='<?php echo _("Cancel") ?>' onClick='window.close()'>
+        <input type='button' value='<?php echo _("Search") ?>' onClick='doSearch(0)'>
+        <input type='button' value='<?php echo _("Clear") ?>' onClick='clearSearch()'>
+        <input type='button' value='<?php echo _("Cancel") ?>' onClick='window.close()'>
         </td><td style="text-align: right">
 <?php
 if (!$logged_in) {
     echo "<small>" . _("Please log in to enable editing.") . "</small><br>";
 }
 ?>
-         <INPUT id="b_add" type="button" title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' <?php
+         <input id="b_add" type="button" title='<?php echo _("Record the current data as a new airline.") ?>' value='<?php echo _("Add as new") ?>' <?php
 if (!$logged_in) {
     echo "DISABLED";
 }
 ?> onClick="doRecord()">
-        <INPUT id="b_edit" type="button" title='<?php echo _("Record changes to this airline.") ?>' value='<?php echo _("Save changes") ?>' <?php
+        <input id="b_edit" type="button" title='<?php echo _("Record changes to this airline.") ?>' value='<?php echo _("Save changes") ?>' <?php
 if (!$logged_in) {
     echo "DISABLED";
 }
