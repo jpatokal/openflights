@@ -2,11 +2,11 @@
 #
 # Collect gettext strings from all PHP/JavaScript files and update existing .po files
 # GNU xgettext does not recognize JavaScript, but oddly enough C seems to parse it (almost) fine...
-# 
+#
 PHP="index.php php/*php html/*php"
 JS="openflights.js js/alsearch.js js/apsearch.js js/settings.js js/trip.js"
 OPTS="--omit-header --no-location --no-wrap -j"
-for lang in de_DE es_ES fi_FI fr_FR ja_JP lt_LT nl_NL pl_PL pt_BR sv_SE ru_RU; do
+for lang in de_DE en_GB es_ES fi_FI fr_FR ja_JP lt_LT nl_NL pl_PL pt_BR sv_SE ru_RU; do
   POPATH=locale/$lang.utf8/LC_MESSAGES
   echo $lang
   touch $POPATH/new.po

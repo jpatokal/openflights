@@ -116,7 +116,7 @@ msgstr "添加新航空记录"
 msgid "Edit flight"
 msgstr "编辑航空记录"
 
-msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgid "Fields in <font color='blue'>blue</font> are required. Click on airports in the map to select them or search by city name or airport code."
 msgstr "请填写<font color='blue'>蓝色</font>内容. 请点击选择地图上的机场或通过城市名称或机场代码来搜索."
 
 msgid "Date"
@@ -295,11 +295,11 @@ msgid "Your session has timed out, please log in again."
 msgstr "您的登录已超时, 请重新登录."
 
 #, php-format
-msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgid "Sorry, an airport using the IATA code %s exists already. Please double-check."
 msgstr "抱歉, 使用IATA代码%s的机场已存在. 请再次检查."
 
 #, php-format
-msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgid "Sorry, an airport using the ICAO code %s exists already. Please double-check."
 msgstr "抱歉, 使用ICAO代码%s的机场已存在. 请再次检查."
 
 msgid "Adding new airport failed:"
@@ -339,7 +339,7 @@ msgstr "取消该导入并返回文件上传页面"
 msgid "Upload"
 msgstr "上传"
 
-msgid "Upload successful.  Parsing..."
+msgid "Upload successful. Parsing..."
 msgstr "上传成功. 解析中..."
 
 msgid "Results"
@@ -408,22 +408,22 @@ msgstr "错误"
 msgid "No matches, please correct and reupload"
 msgstr "无匹配项, 请更正内容后重新上传"
 
-msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
 msgstr "注意: 该CSV文件在15-18列包含OpenFlights ID. 这些ID将覆盖任何对于机场, 航空公司以及机型等列所进行的手动更改的内容."
 
-msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgid "Your flight data includes unrecognized airports. Please add them to the database and try again. "
 msgstr "您的航空记录数据包含无法识别的机场. 请将其添加进数据库后重试."
 
-msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. "
 msgstr "您的航空记录数据包含无法识别的航空公司. 这通常是由于航班号码中的航空公司代码无法找到, 或航空公司名称未指明. 请更正或移除该航空公司代码后重试."
 
-msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
+msgid "Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted."
 msgstr "部分数据无法解析. 请使用下列格式对其进行更改: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, 或只标注YYYY.请注意DD/MM/YYYY系统<b>无法</b>接受."
 
-msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you. Please check the trip IDs."
 msgstr "您的航空记录数据包含未定义或不属于您的旅程ID. 请检查旅程ID信息."
 
-msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)"
 msgstr "<b>解析成功完成.</b> 您现在可以将这些航空记录导入您的OpenFlights了. (小差错可以在导入后在航空信息编辑器中更正)"
 
 msgid "Add these flights to your OpenFlights"
@@ -647,11 +647,11 @@ msgid "OpenFlights can import two types of data:"
 msgstr "OpenFlights支持两种数据格式导入:"
 
 #, php-format
-msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
-msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory不支持导出功能, 但是OpenFlights能够'从屏幕中刮取'其FlightData页面.  请登录您的FlightMemory账户, 进入FlightData页面, 然后在您的浏览器菜单中选择'保存网页'. 上传所保存的HTML.对每一页数据重复该操作.</p><p><i>特别注意</I>: 请务必在保存网页前将您的FlightMemory的语言设置为<b>English</b>.</p><p><i>注意</i>: 目前<b>没有重复信息检测</b>. 如果您导入同一个FlightMemory文件两次, 所有航空记录也会被添加两次.</p><p><i>注意</i>: <b>FlightMemory格式</b>随时在更改. 请<%s>告知</a>任何错误或异常, 并请务必提供明确的错误内容以及导入页面上方的\"Tmpfile\"值."
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages. Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file. Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time. If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time. Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgstr "<b>FlightMemory (.html)</b> &mdash; FlightMemory不支持导出功能, 但是OpenFlights能够'从屏幕中刮取'其FlightData页面. 请登录您的FlightMemory账户, 进入FlightData页面, 然后在您的浏览器菜单中选择'保存网页'. 上传所保存的HTML.对每一页数据重复该操作.</p><p><i>特别注意</I>: 请务必在保存网页前将您的FlightMemory的语言设置为<b>English</b>.</p><p><i>注意</i>: 目前<b>没有重复信息检测</b>. 如果您导入同一个FlightMemory文件两次, 所有航空记录也会被添加两次.</p><p><i>注意</i>: <b>FlightMemory格式</b>随时在更改. 请<%s>告知</a>任何错误或异常, 并请务必提供明确的错误内容以及导入页面上方的\"Tmpfile\"值."
 
 #, php-format
-msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet. See <%s'>format specification</a>."
 msgstr "<b>OpenFlights (.csv)</b> &mdash; 由逗号分隔数值, 由OpenFlights导出('导出'或'备份')后易于由Excel或其他表格工具编辑或新建. 详见<%s'>格式规范</a>. # It looks there are some small bugs in the original English statement...? Please correct it and then i can correct my translation accordingly (I have translated it based on my current understanding) */"
 
 msgid "File to upload"
@@ -660,11 +660,11 @@ msgstr "待上传的文件"
 msgid "Keep historical airline names?"
 msgstr "保留之前的航空公司名称?"
 
-msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines. If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
 msgstr "OpenFlights通常尝试将航空公司以及航班号码匹配于已知的或现有的航空公司. 如果您选中上面的选项, 全部航空公司名称无论对错都会依照待上传文件中<i>原样</i>保留."
 
 #, php-format
-msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgid "You will be given a chance to review the flights before they are actually imported. See %s to backup or clear your flights before importing."
 msgstr "您还可以在航空记录实际导入前对其再次检查. 详见%s以在导入前备份或清除您的航空记录."
 
 msgid "Create new account"
@@ -679,7 +679,7 @@ msgstr "基本信息"
 msgid "This will be used as the name of your profile."
 msgstr "该内容将依照您的个人记录名称使用."
 
-msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgid "Pick something hard to guess, but easy to remember. Case-sensitive!"
 msgstr "选个难猜的, 但是又好记的. 注意大小写喔亲!"
 
 msgid "Password again"
@@ -689,8 +689,8 @@ msgid "E-mail (optional)"
 msgstr "E-mail (选填)"
 
 #, php-format
-msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
-msgstr "如果您忘记了您的密码, 我们可以向该邮件地址发送新的密码.  我们<i>绝对不会</i>向您发送其它任何内容或泄露您的个人隐私信息, 更多细节详见<%s>个人隐私方针</a>."
+msgid "If you forget your password, we can mail you a new one to this address. We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgstr "如果您忘记了您的密码, 我们可以向该邮件地址发送新的密码. 我们<i>绝对不会</i>向您发送其它任何内容或泄露您的个人隐私信息, 更多细节详见<%s>个人隐私方针</a>."
 
 msgid "Could not load profile data"
 msgstr "无法载入个人记录"
@@ -755,7 +755,7 @@ msgid "Open"
 msgstr "完全公开"
 
 #, php-format
-msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgid "<b>Private</b> profiles are visible only to you. <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
 msgstr "<b>对外保密</b>个人记录只有您自己能够看到. <%s>黄金或白金</a>用户可以为他们对外保密的个人信息设置密码保护, 于是仅有知道密码的人才可以看到."
 
 msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
@@ -767,10 +767,10 @@ msgstr "<b>完全公开</b>个人记录可以使得别人查看您的航空记�
 msgid "Flight editor"
 msgstr "航空记录编辑器"
 
-msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
 msgstr "<B>基本</b>编辑器便捷简单: 从哪里, 到哪里, 哪天以及还可以填上航空公司, 最多一次填四段. 出图最快! "
 
-msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
 msgstr "<B>详细</b>编辑器中您可以添加舱位, 座位号, 机型, 飞机注册号码, 任意格式的备注等等. 各种飞人的最爱."
 
 msgid "Distances"
@@ -947,16 +947,16 @@ msgstr "请输入一个有效的出发机场."
 msgid "Please enter a valid destination airport."
 msgstr "请输入一个有效的到达机场."
 
-msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
-msgstr "'%1' 在%2数据库中未发现.  您是否要将其作为新的航空公司添加进%2?"
+msgid "'%1' not found in %2 database. Do you want to add it as a new %2 company?"
+msgstr "'%1' 在%2数据库中未发现. 您是否要将其作为新的航空公司添加进%2?"
 
 msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
 msgstr "请依照24小时格式输入时间并以冒号分隔小时和分钟, 例如21:37表示晚上9时37分."
 
-msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes. You can blank the duration to have it recalculated automatically."
 msgstr "请依照小时和分钟的形式输入航行时间并以冒号分隔小时和分钟, 例如5:37表示5小时, 37分钟. 您也可以不填写航行时间而由系统自动重新计算."
 
-msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgid "Please enter flight distance as miles, with no fractional parts. You can blank the distance to have it re-calculated automatically."
 msgstr "请填写以英里为单位的航行距离, 不需要小数部分. 您也可以不填写航行距离而由系统自动重新计算."
 
 msgid "No trips"
@@ -1098,7 +1098,7 @@ msgstr "航空公司"
 msgid "Planes"
 msgstr "机型"
 
-msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgid "Changes made to this flight have not been saved. OK to discard them?"
 msgstr "对于该航空记录的更改未保存. 确认放弃么?"
 
 msgid "Loading..."
@@ -1144,10 +1144,10 @@ msgid "Hi, <B>%1</B> !"
 msgstr "你好, <B>%1</B> !"
 # No need to translate... */"
 
-msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
-msgstr "<b>欢迎回来!</b>  我们非常高兴看到您如此支持OpenFlights.<br>如果您可以为我们更好的发展在<a href='/donate.html' target='_blank'>提供一些捐助那就太好了</a>!"
+msgid "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgstr "<b>欢迎回来!</b> 我们非常高兴看到您如此支持OpenFlights.<br>如果您可以为我们更好的发展在<a href='/donate.html' target='_blank'>提供一些捐助那就太好了</a>!"
 
-msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgid "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
 msgstr "<B>欢迎光临OpenFlights!</b> 请点击%1来添加航空记录, 或点击%2从其它地方例如FlightMemory载入已有的航空记录."
 
 msgid "You have been logged out."
@@ -1180,7 +1180,7 @@ msgstr "您还没有输入一个IATA/FAA代码. 您确认该航空公司没有�
 msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
 msgstr "您还没有输入一个ICAO代码. 您确认该航空公司没有该代码而可以继续下一步操作么?"
 
-msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
+msgid "Are you sure you want to add %1 as a new operator? Please double-check the name and any airline codes before confirming."
 msgstr "您确认添加%1为一个新承运方么? 请在确认前再次检查其名称以及代码."
 
 msgid "Cancelled."
@@ -1237,7 +1237,7 @@ msgstr "请输入一个城市名称."
 msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
 msgstr "请输入纬度, 经度以及海拔. 提示: 请查看OurAirport数据库中是否已包含您想输入的机场, 如果有的话可以从那里\"载入\"."
 
-msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point). For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr "纬度和经度必须为小数, 其中负数分别表示'南'或'西', 并至少包含(小数点后)三位精度. 例如, 旧金山(SFO)位于北纬37.6189, 西经-122.3748."
 
 msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
@@ -1250,10 +1250,10 @@ msgid "Please enter a positive number for elevation."
 msgstr "请为海拔输入一个正数."
 # I suggest accepting negative number for if some a day there is an airport nearby the Dead Sea in Middle East... */"
 
-msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."
 msgstr "请参照UTC/GMT输入一个时区, 例如新加坡是+8而纽约是-5. 对于某些非整数时区请使用小数, 例如尼泊尔是+5.75."
 
-msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST). Leave it as Unknown?"
 msgstr "您还没有输入该机场所在地是否存在夏令时(DST). 保留为未知?"
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
@@ -1262,7 +1262,7 @@ msgstr "您还没有输入一个IATA/FAA代码. 您确认该机场没有该代�
 msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
 msgstr "您还没有输入一个ICAO代码. 您确认该机场没有该代码而可以继续下一步操作么?"
 
-msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world? Please double-check the name, airport codes and exact coordinates before confirming."
 msgstr "您确认添加位于%2区域的%1为一个新机场么? 请在确认前再次检查其名称, 代码以及经纬度."
 
 msgid "No matches found in this database."
@@ -1292,7 +1292,7 @@ msgstr "账户建立中..."
 msgid "Saving changes..."
 msgstr "更改保存中..."
 
-msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
+msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS. Have you exported a backup copy, and are you sure you want to do this?"
 msgstr "该操作将永久性删除您全部航空记录. 您是否已经导出一个备份文件, 并确认进行该操作?"
 
 msgid "Deletion cancelled."

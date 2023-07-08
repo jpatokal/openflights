@@ -302,7 +302,7 @@ switch ($action) {
     case _("Upload"):
         $uploadFile = $uploaddir . basename($_FILES['userfile']['tmp_name']);
         if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadFile)) {
-            echo "<b>" . _("Upload successful.  Parsing...") . "</b><br><h4>" . _("Results") . "</h4>";
+            echo "<b>" . _("Upload successful. Parsing...") . "</b><br><h4>" . _("Results") . "</h4>";
             flush();
             print "Tmpfile " . basename($_FILES['userfile']['tmp_name']) . "<br>"; // DEBUG
         } else {
@@ -695,30 +695,30 @@ if ($action == _("Upload")) {
 
     <?php
     if ($id_note == true) {
-        print "<font color=blue>" . _("Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") . "</font><br>";
+        print "<font color=blue>" . _("Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") . "</font><br>";
     }
     if ($history == "yes") {
-        print "<font color=blue>" . ("Note: You have selected historical airline mode.  All airline names have been preserved exactly as is.") . "</font><br>";
+        print "<font color=blue>" . ("Note: You have selected historical airline mode. All airline names have been preserved exactly as is.") . "</font><br>";
     }
 
     if ($status == "disabled") {
         print "<font color=red>" . _("Error") . ": ";
         switch ($fatal) {
             case "airport":
-                print _("Your flight data includes unrecognized airports.  Please add them to the database and try again. ");
+                print _("Your flight data includes unrecognized airports. Please add them to the database and try again. ");
                 print "<INPUT type='button' value='" . _("Add new airport") . "' onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
                 break;
 
             case "airline":
-                print _("Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. ");
+                print _("Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. ");
                 break;
 
             case "date":
-                print _("Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted.");
+                print _("Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted.");
                 break;
 
             case "trip":
-                print _("Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs.");
+                print _("Your flight data includes trip IDs which are either undefined or do not belong to you. Please check the trip IDs.");
                 break;
         }
         print "</font><br><br>";

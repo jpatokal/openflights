@@ -23,7 +23,7 @@ require_once "../php/locale.php";
           <td style='vertical-align: top'></td>
           <td><p><?php
             printf(
-                _("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually. Duplicates are detected. ")
+                _("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually. Duplicates are detected.")
             );?>
             <input type="button" value="<?php
                 echo _("Import from Tripit")

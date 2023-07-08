@@ -32,7 +32,7 @@ if (!$apid) {
             $sql = "SELECT apid FROM airports WHERE icao=?";
             break;
         default:
-            die('Error;Query ' . $param . ' not understood.  For airlines, please enter a 2-letter IATA code.  For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
+            die('Error;Query ' . $param . ' not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
     }
     $sth = $dbh->prepare($sql);
     $sth->execute([$param]);

@@ -42,7 +42,7 @@ $trips = $tripit->list_trip(array(
 if (!isset($trips) or !isset($trips->Trip)) {
     handle_tripit_response($tripit->response);
     error_log("TripIt error for user $uid: " . $tripit->response);
-    die(_("Could not connect to TripIt.  Please try again later.  If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>."));
+    die(_("Could not connect to TripIt. Please try again later. If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>."));
 }
 
 # Get the list of trips, sorted by start date, oldest to newest.

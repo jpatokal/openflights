@@ -45,7 +45,7 @@ if (isset($_GET["challenge"])) {
         $link = "https://openflights.org/help/resetpw?user=" . $name
             . "&challenge=" . $row['challenge'];
           $subject = "OpenFlights: Reset password";
-          $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'.  To proceed, please click on the link below:
+          $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'. To proceed, please click on the link below:
 
   " . $link . "
 

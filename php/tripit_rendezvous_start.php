@@ -19,11 +19,11 @@ try {
     $tokens = $tripit->get_request_token();
 } catch (Exception $e) {
     error_log("Could not get rendezvous tokens: " . $e);
-    die(_("Could not connect to TripIt.  Please try again later."));
+    die(_("Could not connect to TripIt. Please try again later."));
 }
 if (!is_array($tokens)) {
     error_log("Could not get rendezvous tokens: not an array");
-    die(_("Could not connect to TripIt.  Please try again later."));
+    die(_("Could not connect to TripIt. Please try again later."));
 }
 $_SESSION["tripit_rendezvous"] = array(
   "token" => $tokens["oauth_token"],

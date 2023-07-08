@@ -150,7 +150,7 @@ if ($type == "signup") {
             <td class="value"><input type="text" name="email" value="<?php echo $settings["email"] ?>" size="20" />
             <td class="desc">
               <?php printf(
-                _("If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."),
+                _("If you forget your password, we can mail you a new one to this address. We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."),
                   "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'"
               ); ?>
             </td>
@@ -256,7 +256,7 @@ if ($type == "signup") {
                     echo ">" . _("Top 10"); ?>
             </td>
             <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php
-                echo _("Gold Elite feature"); ?>" height=17 width=17></a><?php
+                echo _("Gold Elite feature"); ?>" height=17 width=17></a> <?php
                 echo _("Display a screen of your choice instead of banner ads."); ?>
             </td>
           </tr>

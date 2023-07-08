@@ -135,7 +135,7 @@ function xmlhttpPost(strURL, offset, action) {
       if(alid == "") {
 	desc = name + ", " + country +
 	  " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
-	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."), [desc]))) {
+	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new operator? Please double-check the name and any airline codes before confirming."), [desc]))) {
 	  document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
 	  return;
 	}
