@@ -47,7 +47,7 @@ if ($action == "RECORD") {
         die('0;Duplicate check failed.');
     }
     $row = $sth->fetch();
-    if (!$row) {
+    if ($row) {
         printf("0;" . "A " . $modeOperators[$mode] . " using the name or alias " . $name . " exists already.");
         exit;
     }
@@ -67,7 +67,7 @@ if ($action == "RECORD") {
             die('0;Duplicate check failed.');
         }
         $row = $sth->fetch();
-        if (!$row) {
+        if ($row) {
             printf("0;" . "A " . $modeOperators[$mode] . " using the name or alias " . $alias . " exists already.");
             exit;
         }
@@ -89,7 +89,7 @@ if ($action == "RECORD") {
             die('0;Duplicate check failed.');
         }
         $row = $sth->fetch();
-        if (!$row) {
+        if ($row) {
             printf("0;An airline using the IATA code " . $iata . " exists already.");
             exit;
         }
@@ -111,7 +111,7 @@ if ($action == "RECORD") {
             die('0;Duplicate check failed.');
         }
         $row = $sth->fetch();
-        if (!$row) {
+        if ($row) {
             printf("0;An airline using the ICAO code " . $icao . " exists already.");
             exit;
         }
