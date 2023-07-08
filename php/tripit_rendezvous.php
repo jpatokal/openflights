@@ -1,6 +1,6 @@
 <?php
 
-require_once"locale.php";
+require_once "locale.php";
 require_once "db_pdo.php";
 require_once "tripit_common.php";
 

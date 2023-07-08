@@ -1,6 +1,6 @@
 <?php
-include_once'../php/db_pdo.php';
-include_once'../php/helper.php';
+include_once '../php/db_pdo.php';
+include_once '../php/helper.php';
 
 putenv('GDFONTPATH=' . realpath('.'));
 

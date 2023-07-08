@@ -1,9 +1,9 @@
 <?php
 
-include_once'locale.php';
-include_once'db_pdo.php';
-include_once'helper.php';
-include_once'filter.php';
+include_once 'locale.php';
+include_once 'db_pdo.php';
+include_once 'helper.php';
+include_once 'filter.php';
 
 // This applies only when viewing another users flights
 $user = $_POST["user"] ?? ($_GET["user"] ?? null);

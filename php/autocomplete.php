@@ -1,7 +1,7 @@
 <?php
 
-include_once'helper.php';
-include_once'db_pdo.php';
+include_once 'helper.php';
+include_once 'db_pdo.php';
 
 /**
  * Trim anything after a hyphen, period or left paren

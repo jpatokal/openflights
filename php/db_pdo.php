@@ -1,6 +1,6 @@
 <?php
 
-include_once'config.php';
+include_once 'config.php';
 
 // Make the PDO and the legacy database drivers mutually exclusive.
 if (isset($db)) {

@@ -1,7 +1,7 @@
 <?php
 
-include_once'locale.php';
-include_once'db_pdo.php';
+include_once 'locale.php';
+include_once 'db_pdo.php';
 
 $name = $_POST["name"];
 // pw is hashed from lowercased username, legacypw is not

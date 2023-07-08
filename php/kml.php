@@ -5,10 +5,10 @@ session_start();
 header("Content-type: application/vnd.google-earth.kml+xml");
 header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d") . ".kml\"");
 
-include_once'greatcircle.php';
-include_once'helper.php';
-include_once'filter.php';
-include_once'db_pdo.php';
+include_once 'greatcircle.php';
+include_once 'helper.php';
+include_once 'filter.php';
+include_once 'db_pdo.php';
 
 const METERS_PER_FOOT = 0.3048;
 

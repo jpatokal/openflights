@@ -1,10 +1,10 @@
 <?php
 
-include_once'locale.php';
-include_once'db_pdo.php';
-include_once'helper.php';
-include_once'greatcircle.php';
-include_once'filter.php';
+include_once 'locale.php';
+include_once 'db_pdo.php';
+include_once 'helper.php';
+include_once 'greatcircle.php';
+include_once 'filter.php';
 
 $apid = $_POST["apid"];
 if (!$apid) {

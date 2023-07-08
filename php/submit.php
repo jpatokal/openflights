@@ -1,14 +1,14 @@
 <?php
 
-include_once'locale.php';
+include_once 'locale.php';
 $uid = $_SESSION["uid"];
 if (!$uid || empty($uid)) {
     printf("Not logged in, aborting");
     exit;
 }
 
-include_once'helper.php';
-include_once'db_pdo.php';
+include_once 'helper.php';
+include_once 'db_pdo.php';
 
 $duration = $_POST["duration"];
 $distance = $_POST["distance"];
