@@ -43,8 +43,11 @@ if ($action == "RECORD") {
     }
 
     $sth = $dbh->prepare($sql);
-    $sth->execute($params) or die('0;Duplicate check failed.');
-    if ($row = $sth->fetch()) {
+    if (!$sth->execute($params)) {
+        die('0;Duplicate check failed.');
+    }
+    $row = $sth->fetch();
+    if (!$row) {
         printf("0;" . "A " . $modeOperators[$mode] . " using the name or alias " . $name . " exists already.");
         exit;
     }
@@ -60,8 +63,11 @@ if ($action == "RECORD") {
         }
 
         $sth = $dbh->prepare($sql);
-        $sth->execute($params) or die('0;Duplicate check failed.');
-        if ($row = $sth->fetch()) {
+        if (!$sth->execute($params)) {
+            die('0;Duplicate check failed.');
+        }
+        $row = $sth->fetch();
+        if (!$row) {
             printf("0;" . "A " . $modeOperators[$mode] . " using the name or alias " . $alias . " exists already.");
             exit;
         }
@@ -79,8 +85,11 @@ if ($action == "RECORD") {
         }
 
         $sth = $dbh->prepare($sql);
-        $sth->execute($params) or die('0;Duplicate check failed.');
-        if ($row = $sth->fetch()) {
+        if (!$sth->execute($params)) {
+            die('0;Duplicate check failed.');
+        }
+        $row = $sth->fetch();
+        if (!$row) {
             printf("0;An airline using the IATA code " . $iata . " exists already.");
             exit;
         }
@@ -98,8 +107,11 @@ if ($action == "RECORD") {
         }
 
         $sth = $dbh->prepare($sql);
-        $sth->execute($params) or die('0;Duplicate check failed.');
-        if ($row = $sth->fetch()) {
+        if (!$sth->execute($params)) {
+            die('0;Duplicate check failed.');
+        }
+        $row = $sth->fetch();
+        if (!$row) {
             printf("0;An airline using the ICAO code " . $icao . " exists already.");
             exit;
         }
@@ -139,15 +151,15 @@ if ($action == "RECORD") {
     }
 
     $sth = $dbh->prepare($sql);
-    $sth->execute($params) or die('0;Adding new ' . $modeOperators[$mode] . ' failed.');
+    if (!$sth->execute($params)) {
+        die('0;Adding new ' . $modeOperators[$mode] . ' failed.');
+    }
     if (!$alid || $alid == "") {
         printf('1;' . $dbh->lastInsertId() . ';New ' . $modeOperators[$mode] . ' successfully added.');
+    } elseif ($sth->rowCount() === 1) {
+        printf('1;' . $alid . ';' . _("Airline successfully edited."));
     } else {
-        if ($sth->rowCount() == 1) {
-            printf('1;' . $alid . ';' . _("Airline successfully edited."));
-        } else {
-            printf('0;' . _("Editing airline failed:") . ' ' . $sql);
-        }
+        printf('0;' . _("Editing airline failed:") . ' ' . $sql);
     }
     exit;
 }
@@ -209,12 +221,13 @@ if (!$sth->execute($params)) {
 }
 $sth2 = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
 $sth2->execute($params);
-if ($row = $sth2->fetch()) {
+$row = $sth2->fetch();
+if (!$row) {
     $max = $row[0];
 }
 printf("%s;%s", $offset, $max);
 
-while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $row) {
     if ($row["uid"] || $uid == $OF_ADMIN_UID) {
         if ($row["uid"] == $uid || $uid == $OF_ADMIN_UID) {
             $row["al_uid"] = "own"; // editable

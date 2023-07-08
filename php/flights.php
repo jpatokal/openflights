@@ -154,7 +154,7 @@ if ($export == "export" || $export == "backup") {
     print "\xEF\xBB\xBFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
 $gcmap_city_pairs = ''; // list of city pairs when doing gcmap export.
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $note = $row["note"];
 
     if ($route) {

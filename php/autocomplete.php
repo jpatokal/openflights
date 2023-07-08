@@ -89,7 +89,7 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
     $sth->execute(['name' => "$query%", 'code' => $query]);
     if ($sth->rowCount() > 0) {
         $results = true;
-        while ($row = $sth->fetch()) {
+        foreach ($sth as $row) {
             if ($limit > 1) {
                 printf(
                     "<li class='autocomplete' origin='%s' id='%s'>%s</li>\n",
@@ -173,7 +173,7 @@ if (!$query || $multi) {
         $sth->execute(['mode' => $mode, 'code' => $query, 'name' => "$query%"]) or die('Autocomplete failed.');
         if ($sth->rowCount() > 0) {
             $results = true;
-            while ($row = $sth->fetch()) {
+            foreach ($sth as $row) {
                 if ($limit > 1) {
                     printf("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
                 } else {
@@ -194,7 +194,7 @@ if (!$query || $multi) {
 
         print("<ul class='autocomplete2'>");
         $MAX_LEN = 35;
-        while ($data = $sth->fetch()) {
+        foreach ($sth as $data) {
             $results = true;
             $item = stripslashes($data['name']);
             if (strlen($item) > $MAX_LEN) {

@@ -9,7 +9,7 @@ $url = $_POST["url"];
 $trid = $_POST["trid"];
 $privacy = $_POST["privacy"];
 
-if ($type != "NEW" && (!$trid or $trid == 0)) {
+if ($type != "NEW" && (!$trid || $trid == 0)) {
     die('0;Trip ID ' . $trid . ' invalid');
 }
 

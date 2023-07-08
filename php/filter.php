@@ -96,7 +96,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
     $sth = $dbh->prepare("SELECT * FROM trips WHERE uid=?" . $privacy . " ORDER BY name");
     $sth->execute([$uid]);
     $first = true;
-    while ($row = $sth->fetch()) {
+    foreach ($sth as $row) {
         if ($first) {
             $first = false;
         } else {
@@ -110,7 +110,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
     $sth = $dbh->prepare("SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, flights as f WHERE f.uid=?" . $filter . " AND a.alid=f.alid ORDER BY name");
     $sth->execute($params);
     $first = true;
-    while ($row = $sth->fetch()) {
+    foreach ($sth as $row) {
         if ($first) {
             $first = false;
         } else {
@@ -124,7 +124,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
     $sth = $dbh->prepare("SELECT DISTINCT YEAR(src_date) AS year FROM flights WHERE uid=?" . $filter . " AND YEAR(src_date) != '0' ORDER BY YEAR DESC");
     $sth->execute($params);
     $first = true;
-    while ($row = $sth->fetch()) {
+    foreach ($sth as $row) {
         if ($first) {
             $first = false;
         } else {

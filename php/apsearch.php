@@ -31,7 +31,7 @@ if ($action == "RECORD") {
         json_error("Your session has timed out, please log in again.");
     }
 
-  // Check for potential duplicates (unless admin)
+    // Check for potential duplicates (unless admin)
     $duplicates = array();
     if ($uid != $OF_ADMIN_UID) {
         $filters = array();
@@ -52,7 +52,7 @@ if ($action == "RECORD") {
         $sql = "SELECT * FROM airports WHERE " . implode(" OR ", $filters);
         $sth = $dbh->prepare($sql);
         $sth->execute($filterParams);
-        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+        foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $row) {
             if ($row['uid'] != $uid || $row['apid'] != $apid) {
                 $duplicates[] = print_r($row, true);
             }
@@ -94,15 +94,15 @@ if ($action == "RECORD") {
 
     if (empty($duplicates)) {
         $sth = $dbh->prepare($sql);
-        $sth->execute($params) or json_error("Adding new airport failed.");
-        if (! $apid || $apid == "") {
+        if (!$sth->execute($params)) {
+            json_error("Adding new airport failed.");
+        }
+        if (!$apid || $apid == "") {
             json_success(array("apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."));
+        } elseif ($sth->rowCount() === 1) {
+            json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
         } else {
-            if ($sth->rowCount() == 1) {
-                json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
-            } else {
-                json_error("Editing airport failed.");
-            }
+            json_error("Editing airport failed.");
         }
     } else {
         $name = $_SESSION['name'];
@@ -254,7 +254,9 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute($params)) {
     die(json_encode(array("status" => 0, "message" => 'Operation ' . $param . ' failed.')));
 }
-while ($rows[] = $sth->fetch(PDO::FETCH_ASSOC));
+
+$rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+// TODO: Why are we skipping the first row?
 array_pop($rows);
 foreach ($rows as &$row) {
     if ($dbname == "airports_dafif" || $dbname == "airports_oa") {
@@ -272,5 +274,6 @@ foreach ($rows as &$row) {
     $row["ap_name"] = format_airport($row);
     unset($row["uid"]);
 }
+unset($row);
 $response['airports'] = $rows;
 print json_encode($response);
