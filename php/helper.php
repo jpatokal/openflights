@@ -9,27 +9,30 @@ const KM_PER_MILE = "1.609344";
 $modes = array ("F" => "Flight", "T" => "Train", "S" => "Ship", "R" => "Road trip");
 $modeOperators = array ("F" => "airline", "T" => "railway", "S" => "shipping company", "R" => "road transport company");
 
-//
-// End with JSON-formatted data, localized message and a successful status
-//
+/**
+ * End with JSON-formatted data, localized message and a successful status
+ * @param $data array
+ */
 function json_success($data) {
     $data["status"] = 1;
     $data["message"] = _($data["message"]);
     die(json_encode($data));
 }
 
-//
-// Abort with a JSON-formatted localized error message
-//
+/**
+ * Abort with a JSON-formatted localized error message
+ * @param $msg string
+ * @param $detail string
+ */
 function json_error($msg, $detail = '') {
     die(json_encode(array("status" => 0, "message" => _($msg) . ' ' . $detail)));
 }
 
-//
-// Standard formatting of airport data
-// Input: row: associative array containing iata, icao
-// Output: " code : apid : x : y : timezone : dstrule "
-//
+/**
+ * Standard formatting of airport data
+ * @param $row array associative array containing iata, icao
+ * @return string " code : apid : x : y : timezone : dstrule "
+ */
 function format_apdata($row) {
     return sprintf(
         "%s:%s:%s:%s:%s:%s",
@@ -42,14 +45,20 @@ function format_apdata($row) {
     );
 }
 
-//
-// Standard formatting of airport codes
-// row: associative array containing iata, icao
-//
+/**
+ * // Standard formatting of airport codes
+ * @param $row array associative array containing iata, icao
+ * @return string
+ */
 function format_apcode($row) {
     return format_apcode2($row["iata"], $row["icao"]);
 }
 
+/**
+ * @param $iata string
+ * @param $icao string
+ * @return string
+ */
 function format_apcode2($iata, $icao) {
     $code = $iata;
     if (!$code || $code == "N/A") {
@@ -61,16 +70,17 @@ function format_apcode2($iata, $icao) {
     return $code;
 }
 
-//
-// Standard formatting of airport names
-// row: associative array containing name, city, country/code and iata/icao
-//
+/**
+ * Standard formatting of airport names
+ * @param $row associative array containing name, city, country/code and iata/icao
+ * @return string
+ */
 function format_airport($row) {
     $name = $row["name"];
     $city = $row["city"];
     $country = $row["country"];
     if (array_key_exists("code", $row)) {
-        $country = $code; // hack for DAFIF
+        $country = $row['code']; // hack for DAFIF
     }
     $iata = format_apcode($row);
 
@@ -89,20 +99,28 @@ function format_airport($row) {
     return $city . $name . " (" . $iata . "), " . $country;
 }
 
-//
-// Standard formatting of airline names
-// row: associative array containing name, iata, icao and (optionally) mode
-//
+/**
+ * Standard formatting of airline names
+ *
+ * @param $row array associative array containing name, iata, icao and (optionally) mode
+ * @return string
+ */
 function format_airline($row) {
     $mode = $row["mode"];
     if ($mode && $mode != "F") {
         // Not an airline
         return $row["name"];
-    } else {
-        return $row["name"] . " (" . format_alcode($row["iata"], $row["icao"], $row["mode"]) . ")";
     }
+
+    return $row["name"] . " (" . format_alcode($row["iata"], $row["icao"], $row["mode"]) . ")";
 }
 
+/**
+ * @param $iata string
+ * @param $icao string
+ * @param $mode string
+ * @return string
+ */
 function format_alcode($iata, $icao, $mode) {
     if ($mode && $mode != "F") {
         return "";
@@ -112,9 +130,9 @@ function format_alcode($iata, $icao, $mode) {
     }
     if ($icao && $icao != "") {
         return $icao;
-    } else {
-        return "Priv";
     }
+
+    return "Priv";
 }
 
 /**
@@ -135,7 +153,7 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
         // Handle both OO and procedural-style database handles, depending on what type we've got.
         $sth = $dbh->prepare($sql);
         $sth->execute();
-        if ($sth->rowCount() != 2) {
+        if ($sth->rowCount() !== 2) {
             return array(null, null);
         }
         $coord1 = $sth->fetch();
@@ -145,12 +163,13 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
         $lon2 = $coord2["x"];
         $lat2 = $coord2["y"];
 
+        // TODO: Use gcPointDistance from greatcircle.php
         $pi = 3.1415926;
-        $rad = doubleval($pi/180.0);
-        $lon1 = doubleval($lon1)*$rad;
-        $lat1 = doubleval($lat1)*$rad;
-        $lon2 = doubleval($lon2)*$rad;
-        $lat2 = doubleval($lat2)*$rad;
+        $rad = ($pi / 180.0);
+        $lon1 = (float)$lon1 * $rad;
+        $lat1 = (float)$lat1 * $rad;
+        $lon2 = (float)$lon2 * $rad;
+        $lat2 = (float)$lat2 * $rad;
 
         $theta = $lon2 - $lon1;
         $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
@@ -163,9 +182,13 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
     return array($dist, $duration);
 }
 
+/**
+ * @param $dist
+ * @return string
+ */
 function gcDuration($dist) {
     $rawtime = floor(30 + ($dist / 500) * 60);
-    return sprintf("%02d:%02d", floor($rawtime/60), $rawtime % 60);
+    return sprintf("%02d:%02d", floor($rawtime / 60), $rawtime % 60);
 }
 
 /**
@@ -183,22 +206,24 @@ function fileUrlWithDate($filename) {
         $filename = '/' . $filename;
     }
 
-    $docroot = $_SERVER["DOCUMENT_ROOT"];
-    $full_path = $docroot . $filename;
+    $fullPath = $_SERVER["DOCUMENT_ROOT"] . $filename;
 
-    if (!file_exists($full_path)) {
-        throw new Exception("$full_path does not exist; can't get URL with date.");
+    if (!file_exists($fullPath)) {
+        throw new Exception("$fullPath does not exist; can't get URL with date.");
     }
-    $mtime = filemtime($full_path);
-    $datestamp = gmdate("Ymd", $mtime);
-    return $filename . '?version=' . $datestamp;
+    return $filename . '?version=' . gmdate("Ymd", filemtime($fullPath));
 }
 
-// Hack to record X-Y and Y-X flights as same in DB
+/**
+ * Hack to record X-Y and Y-X flights as same in DB
+ * @param $src_apid
+ * @param $dst_apid
+ * @return array
+ */
 function orderAirports($src_apid, $dst_apid) {
     if ($src_apid > $dst_apid) {
         return array($dst_apid, $src_apid, "Y");
-    } else {
-        return array($src_apid, $dst_apid, "N");
     }
+
+    return array($src_apid, $dst_apid, "N");
 }
