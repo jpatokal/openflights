@@ -10,7 +10,7 @@ var paneStack = [ "ad" ];
 // User settings (defaults)
 var privacy = "Y", flightTotal = 0, prefs_editor = "B", elite = "";
 
-// Filter selections and currently chosen airport 
+// Filter selections and currently chosen airport
 var filter_user = 0, filter_trid = 0, filter_alid = 0, filter_year = 0, apid = 0;
 var tripname, tripurl;
 
@@ -446,7 +446,7 @@ function drawAirport(airportLayer, apdata, name, city, country, count, formatted
     desc: desc,
     rdesc: rdesc,
     opacity: opacity,
-    icon: airportIcons[colorIndex][0], 
+    icon: airportIcons[colorIndex][0],
     size: airportIcons[colorIndex][1],
     index: count,
     offset: Math.floor(-airportIcons[colorIndex][1]/2)
@@ -471,7 +471,7 @@ function onAirportSelect(airport) {
     // Add toolbar to popup
     desc = "<span style='position: absolute; right: 5; bottom: 1;'>" +
       "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
-    
+
     if(coreid == 0) {
       // Detailed flights accessible only if...
       // 1. user is logged in, or
@@ -517,7 +517,7 @@ function onAirportSelect(airport) {
   closePopup(false);
 
   if (airport.popup == null) {
-    airport.popup = new OpenLayers.Popup.FramedCloud("airport", 
+    airport.popup = new OpenLayers.Popup.FramedCloud("airport",
 					     airport.geometry.getBounds().getCenterLonLat(),
 					     new OpenLayers.Size(200,80),
 					     desc, null, false);
@@ -596,7 +596,7 @@ function xmlhttpPost(strURL, id, param) {
 	  case "EDIT":
 	    editFlight(self.xmlHttpReq.responseText, param);
 	    break;
-	  
+
 	  case "RELOAD":
 	    param = lastDesc;
 	    // param contains previously escaped semi-random HTML title
@@ -714,12 +714,12 @@ function xmlhttpPost(strURL, id, param) {
 	      if(extent) map.zoomToExtent(extent);
 	    }
 	  }
-	  
+
 	  // Map now completely drawn for the first time
 	  if(initializing) {
 	    initializing = false;
 	  }
-	} 
+	}
       }
       if(strURL == URL_STATS) {
 	showStats(self.xmlHttpReq.responseText);
@@ -756,7 +756,7 @@ function xmlhttpPost(strURL, id, param) {
 	    } else {
 	      // Remove current flight
 	      fidList.splice(fidPtr, 1);
-	      
+
 	      // Edit next if you can
 	      if(fidPtr < fidList.length) {
 		editPointer(0);
@@ -780,7 +780,7 @@ function xmlhttpPost(strURL, id, param) {
 	      document.forms['inputform'].seat.value = "";
 	      document.forms['inputform'].seat_type.selectedIndex = 0;
 	      document.forms['inputform'].src_date.focus();
-	    } 
+	    }
 	  } else {
 	    clearInput(); // Always clear multiview
 	  }
@@ -948,7 +948,7 @@ function xmlhttpPost(strURL, id, param) {
   case URL_GETCODE:
     query = encodeURIComponent(param) + '=' + encodeURIComponent(id) + '&quick=true&mode=' + getMode();
     break;
-    
+
   case URL_LOGOUT:
     // no parameters needed
     break;
@@ -963,7 +963,7 @@ function xmlhttpPost(strURL, id, param) {
   // URL_MAP, URL_ROUTES, URL_FLIGHTS, URL_STATS, URL_TOP10
   default:
     $("ajaxstatus").style.display = 'inline';
-    var form = document.forms['filterform'];    
+    var form = document.forms['filterform'];
     if(! initializing && form.Trips) {
       filter_trid = form.Trips.value.split(";")[0];
     }
@@ -1026,7 +1026,7 @@ function updateFilter(str) {
     $("filter_tripselect").innerHTML = tripSelect;
     var editTripSelect = document.forms['inputform'].trips;
     if(editTripSelect) {
-      
+
       // New trip added, so now we need to figure out the newest (highest) trid to find it
       if(editTripSelect.reselect) {
 	var newestId = 0;
@@ -1152,7 +1152,7 @@ function getMapTitle(closable) {
  * length: maximum length (omit or set to <= 0 to allow any length)
  * hook: Function to call on value change, with name as argument
  * tabIndex: tabindex
- */ 
+ */
 function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   var select = "<select class='filter' id='" + selectName + "' name='" + selectName + "'";
   var r = 1;
@@ -1304,7 +1304,7 @@ function updateMap(str, url){
       elite = col[4];
       editor = col[6];
       document.forms['login'].challenge.value = col[7];
-      
+
       // Does user have a PHP session open?  Log him in!
       // Simulate login.php: "1;name;editor;elite"
       if(col[5] != "demo") {
@@ -1338,7 +1338,7 @@ function updateMap(str, url){
     }
 
     var maptitle = "<img src=\"/img/close.gif\" onclick=\"JavaScript:clearFilter(true);\" width=17 height=17> " + desc;
-    var form = document.forms['filterform'];    
+    var form = document.forms['filterform'];
     filter_alid = form.Airlines.value.split(";")[0];
     maptitle += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + coreid + "\", \"" + encodeURI(desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + title + "'></a>";
     if(filter_alid != 0 && ! apid.startsWith("L")) {
@@ -1425,7 +1425,7 @@ function listFlights(str, desc, id) {
   if(desc == "MAP") {
     desc = gt.gettext("Flights:") + " " + getMapTitle(false);
   }
-  
+
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
   table.push("<img src=\"/img/close.gif\" onclick=\"JavaScript:closePane();\" width=17 height=17> ");
@@ -1609,7 +1609,7 @@ function showStats(str) {
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
-  
+
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Seats") + "</th></tr>";
     table += "<tr>";
@@ -1629,7 +1629,7 @@ function showStats(str) {
     table += "</td><td>";
     // Empty Cell
     table += "</td></tr>";
-    
+
     table += "</table>";
     bigtable += table + "</td></tr></table>";
   }
@@ -1877,7 +1877,7 @@ function editFlight(str, param) {
   calcDuration('DEPARTURE'); // figure out arrival time according to previous dist/dur
   fid = col[12]; //stored until flight is saved or deleted
 
-  $('plane').value = col[13]; 
+  $('plane').value = col[13];
   $('plane_id').value = col[18];
 
   form.registration.value = col[14];
@@ -1924,7 +1924,7 @@ function markAsChanged(major) {
     setCommitAllowed(true);
     $("input_status").innerHTML = '';
     $("multiinput_status").innerHTML = '';
-  } 
+  }
 }
 
 // Has the user made any changes?
@@ -2095,7 +2095,7 @@ function getQuickSearchId(text, li) {
   } else {
     id = "L" + id;
   }
-  $('qsid').value = id; 
+  $('qsid').value = id;
   $('qsgo').disabled = false;
 }
 
@@ -2210,7 +2210,7 @@ function flightNumberToAirline(type) {
     var flightNumber = document.forms['inputform'].number.value.toUpperCase();
     document.forms['inputform'].number.value = flightNumber;
 
-    // Ignore all-numeric flight numbers 
+    // Ignore all-numeric flight numbers
     if(re_numeric.test(flightNumber)) {
       return;
     }
@@ -2342,7 +2342,7 @@ function calcDuration(param) {
       return;
     }
     src_time = parseTimeString(src_time);
-    
+
     // Do we have an arrival time?
     if(dst_time != 0) {
       // Yes, validate it
@@ -2391,7 +2391,7 @@ function calcDuration(param) {
 		      [src_tz > 0 ? "+" : "", src_tz, src_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
 		       dst_tz > 0 ? "+" : "", dst_tz, dst_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
 		       dst_tz-src_tz]);
- 
+
     // Case 2: Calculate arrival time from starting time and duration
     if(dst_time == 0) {
       dst_time = src_time + duration + (dst_tz-src_tz);
@@ -2417,9 +2417,9 @@ function calcDuration(param) {
 	$('dst_days').style.display = "inline";
       }
     }
-    
+
     // Case 3: Calculate duration from arrival time and starting time
-    if(duration == 0) {    
+    if(duration == 0) {
       duration = (dst_time-src_time) - (dst_tz-src_tz);
       if(duration < 0) duration += 24;
     }
@@ -2523,7 +2523,7 @@ function markAirport(element, quick) {
     }
     if(input_dstmarker && input_srcmarker) {
       if(getCurrentPane() == "input") {
-	
+
 	var lon1 = getX('src_ap');
 	var lat1 = getY('src_ap');
 	var lon2 = getX('dst_ap');
@@ -2571,7 +2571,7 @@ function markAirport(element, quick) {
   }
 }
 
-// Remove input markers and flight lines 
+// Remove input markers and flight lines
 function unmarkAirports() {
   if(input_srcmarker) {
     airportLayer.removeFeatures([input_srcmarker]);
@@ -2750,7 +2750,7 @@ function replicateSelection(source) {
   if($(source + 'id').value != 0 && $(target + 'id').value == 0) {
     $(target).value = $(source).value;
     $(target).style.color = "#000";
-    $(target + 'id').value = $(source + 'id').value;    
+    $(target + 'id').value = $(source + 'id').value;
   }
   if($(al_source + 'id').value != 0  && $(al_target + 'id').value == 0) {
     $(al_target).value = $(al_source).value;
@@ -2820,7 +2820,7 @@ function settings() {
 // Handle keypresses
 // 1. Let users log in by pressing ENTER
 // 2. Get codes if user hits TAB on autocompletable field
-// 
+//
 function keyPress(e, element) {
   var keycode;
   if (window.event) keycode = window.event.keyCode;
@@ -2903,12 +2903,12 @@ function login(str, param) {
       $("loginstatus").innerHTML = getEliteIcon(elite) + Gettext.strargs(gt.gettext("Hi, <B>%1</B> !"), [name]);
       break;
     }
-    
+
     switch(elite) {
     case "X":
       $("news").style.display = 'inline';
       $("news").innerHTML = getEliteIcon("X") +
-	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
+	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
 	gt.gettext("<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!");
       break;
 
@@ -2923,7 +2923,7 @@ function login(str, param) {
 
     if(param == "NEWUSER") {
       $("news").innerHTML =
-	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " + 
+	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
 	Gettext.strargs(gt.gettext("<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."),
 			[ "<input type='button' value='" + gt.gettext("New flight") + "' align='middle' onclick='JavaScript:newFlight()'>",
 			  "<input type='button' value='" + gt.gettext("Import") + "' align='middle' onclick='JavaScript:openImport()'>" ]);
@@ -3249,7 +3249,7 @@ function setExtraFilter() {
   case "reason":
     span = createSelectFromArray('filter_extra_value', reasons, "refresh(true)");
     break;
-    
+
   case "reg":
   case "note":
     span = "<input type='text' style='width: 100px' id='filter_extra_value' class='date' onChange='JavaScript:refresh(true)'>";
