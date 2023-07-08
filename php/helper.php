@@ -1,5 +1,7 @@
 <?php
 
+include_once 'greatcircle.php';
+
 /**
  * @deprecated use KM_PER_MILE const
  */
@@ -72,7 +74,7 @@ function format_apcode2($iata, $icao) {
 
 /**
  * Standard formatting of airport names
- * @param $row associative array containing name, city, country/code and iata/icao
+ * @param $row array associative array containing name, city, country/code and iata/icao
  * @return string
  */
 function format_airport($row) {
@@ -156,27 +158,13 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
         if ($sth->rowCount() !== 2) {
             return array(null, null);
         }
+
         $coord1 = $sth->fetch();
-        $lon1 = $coord1["x"];
-        $lat1 = $coord1["y"];
+        $from = array('x' => $coord1["x"], 'y' => $coord1["y"]);
         $coord2 = $sth->fetch();
-        $lon2 = $coord2["x"];
-        $lat2 = $coord2["y"];
+        $to = array('x' => $coord2["x"], 'y' => $coord2["y"]);
 
-        // TODO: Use gcPointDistance from greatcircle.php
-        $pi = 3.1415926;
-        $rad = ($pi / 180.0);
-        $lon1 = (float)$lon1 * $rad;
-        $lat1 = (float)$lat1 * $rad;
-        $lon2 = (float)$lon2 * $rad;
-        $lat2 = (float)$lat2 * $rad;
-
-        $theta = $lon2 - $lon1;
-        $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
-        if ($dist < 0) {
-            $dist += $pi;
-        }
-        $dist = floor($dist * 6371.2 * 0.621);
+        $dist = gcPointDistance($from, $to);
     }
     $duration = gcDuration($dist);
     return array($dist, $duration);
