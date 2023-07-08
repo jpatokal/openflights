@@ -6,7 +6,7 @@ require_once "tripit_common.php";
 
 $uid = $_SESSION["uid"];
 if (!$uid || empty($uid)) {
-    print _("Session expired.  Please try re-linking after logging back in.");
+    print _("Session expired. Please try re-linking after logging back in.");
     exit();
 }
 
@@ -36,7 +36,7 @@ try {
     $access_token = $tripit->get_access_token();
 } catch (Exception $e) {
     error_log("Could not get access token: " . $e);
-    die(_("Could not connect to TripIt.  Please try again later."));
+    die(_("Could not connect to TripIt. Please try again later."));
 }
 
 if ($access_token == null || !is_array($access_token)) {

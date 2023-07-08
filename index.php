@@ -163,10 +163,10 @@ require_once "./php/helper.php";
       </div>
 
       <div id="help" style="display: none;">
-<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'> OpenFlights Map Help <small>&mdash; Didn't answer your question?  Try the <a href="faq.html" target="_blank">FAQ</a>.</small></h2>
-<p><b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details.  Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'> OpenFlights Map Help <small>&mdash; Didn't answer your question? Try the <a href="faq.html" target="_blank">FAQ</a>.</small></h2>
+<p><b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details. Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.<br>
 <b>Move around</b>: Use <img src="/img/north-mini.png" height=18 width=18><img src="/img/west-mini.png" height=18 width=18><img src="/img/east-mini.png" height=18 width=18><img src="/img/south-mini.png" height=18 width=18> buttons (top left) or click and drag your mouse.<br>
-<b>Zoom in/out</b>: Use <img src="/img/zoom-plus-mini.png" height=18 width=18><img src="/img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to.  For the full world view, click <img src="/img/zoom-world-mini.png" height=18 width=18>.<br>
+<b>Zoom in/out</b>: Use <img src="/img/zoom-plus-mini.png" height=18 width=18><img src="/img/zoom-minus-mini.png" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to. For the full world view, click <img src="/img/zoom-world-mini.png" height=18 width=18>.<br>
 <b>Select region</b>: While holding down Shift key, click on the map and draw a rectangle with your mouse.<br>
 <b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.<br>
 <b>Minimap</b>: To activate the mini-map control, click on bottom right <img src="/img/layer-switcher-maximize.png" height=18 width=18>.</p>
@@ -175,7 +175,7 @@ require_once "./php/helper.php";
 <h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'>
     <span id="addflighttitle"><?php echo _("Add new flight") ?></span>
     <span id="editflighttitle" style="display: none"><?php echo _("Edit flight") ?></span>
-    <small>&mdash; <?php echo _("Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code.") ?></small>
+    <small>&mdash; <?php echo _("Fields in <font color='blue'>blue</font> are required. Click on airports in the map to select them or search by city name or airport code.") ?></small>
 
 </h2>
 <p></p>
@@ -277,7 +277,7 @@ require_once "./php/helper.php";
     </div>
 
       <div id="multiinput" style="display: none;">
-<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> <?php echo _("Add new flights") . "<small>&mdash; " . _("Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code.") ?></small></h2>
+<h2><img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeInput()'> <?php echo _("Add new flights") . "<small>&mdash; " . _("Fields in <font color='blue'>blue</font> are required. Click on airports in the map to select them or search by city name or airport code.") ?></small></h2>
 <p></p>
 
 <form id='multiinputform'>

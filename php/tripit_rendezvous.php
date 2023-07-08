@@ -27,7 +27,7 @@ if (!$uid || empty($uid)) {
   <div id="contexthelp">
     <h1>OpenFlights: <?php echo _("Link your TripIt Account") ?></h1>
 
-    <p><?php echo _("To import flights via TripIt, you'll need to authorize OpenFlights to access your TripIt account.  OpenFlights will only be able to look at (but not modify) your TripIt data.");?></p>
+    <p><?php echo _("To import flights via TripIt, you'll need to authorize OpenFlights to access your TripIt account. OpenFlights will only be able to look at (but not modify) your TripIt data.");?></p>
 
     <div id="loginPathSelection">
       <h2 style="border-bottom: none; font-weight: 600"><?php echo _("How do you login to your TripIt account?") ?></h2>

@@ -111,7 +111,7 @@ function validate(type) {
   var email = form.email.value;
 
   if(type == 'RESET') {
-    if(! confirm(gt.gettext("This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"))) {
+    if(! confirm(gt.gettext("This will PERMANENTLY delete ALL YOUR FLIGHTS. Have you exported a backup copy, and are you sure you want to do this?"))) {
       document.getElementById("miniresultbox").innerHTML = "<i>" + gt.gettext("Deletion cancelled.") + "</i>";
       return;
     }

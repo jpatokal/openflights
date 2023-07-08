@@ -120,7 +120,7 @@ function xmlhttpPost(strURL, offset, action) {
 	case "US":
 	  // do nothing
 	  break;
-	  
+
 	case "":
 	  warning = Gettext.strargs(gt.gettext("Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."), [iata]);
 	  code = "US";
@@ -156,7 +156,7 @@ function xmlhttpPost(strURL, offset, action) {
 	city = city.substring(0,1).toUpperCase() + city.substring(1);
 	form.city.value = city;
       }
-	
+
       if(code == "") {
 	alert(gt.gettext("Please select a country."));
 	form.country.focus();
@@ -171,7 +171,7 @@ function xmlhttpPost(strURL, offset, action) {
 
       var re_dd = /^[-+]?\d*\.\d{3,}$/;
       if(! re_dd.test(x) || ! re_dd.test(y)) {
-	alert(gt.gettext("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."));
+	alert(gt.gettext("Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point). For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."));
 	form.x.focus();
 	return;
       }
@@ -196,12 +196,12 @@ function xmlhttpPost(strURL, offset, action) {
 
       var re_tz = /^[-+]?\d*\.?\d*$/;
       if(tz == "" || ! re_tz.test(tz) || Math.abs(tz) > 14) {
-	alert(gt.gettext("Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."));
+	alert(gt.gettext("Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."));
 	form.tz.focus();
 	return;
       }
       if(dst == "U") {
-	if(! confirm(gt.gettext("You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"))) {
+	if(! confirm(gt.gettext("You have not entered whether this airport follows Daylight Savings Time (DST). Leave it as Unknown?"))) {
 	  form.dst.focus();
 	  return;
 	}
@@ -224,7 +224,7 @@ function xmlhttpPost(strURL, offset, action) {
 	desc = airport + ", " + city + ", " + country +
 	  " (IATA: " + (iata == "" ? "N/A" : iata)  + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
 	quad = (parseFloat(y) < 0 ? "SOUTH" : "NORTH") + "-" + (parseFloat(x) < 0 ? "WEST" : "EAST");
-	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."), [desc, quad]))) {
+	if(! confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world? Please double-check the name, airport codes and exact coordinates before confirming."), [desc, quad]))) {
 	  getElement("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
 	  return;
 	}
@@ -313,7 +313,7 @@ function searchResult(str) {
 
     for(a in airports) {
       // Meat of the table
-      
+
       var col = airports[a];
       if(a % 2 == 1) {
         bgcolor = "#fff";
@@ -426,7 +426,7 @@ function setEdited() {
     }
   }
 }
-    
+
 // Clear form -- everything *except* database
 function clearSearch() {
   var form = document.forms['searchform'];

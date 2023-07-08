@@ -845,7 +845,7 @@ function xmlhttpPost(strURL, id, param) {
 	    alid = "-1"; // UNKNOWN
 	  } else {
 	    mode = getMode();
-	    if(confirm(Gettext.strargs(gt.gettext("'%1' not found in %2 database.  Do you want to add it as a new %2 company?"), [airline, modeoperators[mode], modeoperators[mode]]))) {
+	    if(confirm(Gettext.strargs(gt.gettext("'%1' not found in %2 database. Do you want to add it as a new %2 company?"), [airline, modeoperators[mode], modeoperators[mode]]))) {
 	      popNewAirline('airline' + indexes[i], airline, mode);
 	    } else {
 	      $('airline' + indexes[i]).focus();
@@ -886,13 +886,13 @@ function xmlhttpPost(strURL, id, param) {
 	var note = inputform.note.value;
 	var duration = $('duration').value;
 	if(! RE_TIME.test(duration)) {
-	  alert(gt.gettext("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."));
+	  alert(gt.gettext("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes. You can blank the duration to have it recalculated automatically."));
 	  $('duration').focus();
 	  return;
 	}
 	var distance = $('distance').value;
 	if(! re_numeric.test(distance)) {
-	  alert(gt.gettext("Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."));
+	  alert(gt.gettext("Please enter flight distance as miles, with no fractional parts. You can blank the distance to have it re-calculated automatically."));
 	  $('distance').focus();
 	  return;
 	}
@@ -1791,7 +1791,7 @@ function editPointer(offset) {
   var newPtr = fidPtr + offset;
   if(newPtr >= 0 && newPtr < fidList.length) {
     if(hasChanged()) {
-      if(! confirm(gt.gettext("Changes made to this flight have not been saved.  OK to discard them?"))) {
+      if(!confirm(gt.gettext("Changes made to this flight have not been saved. OK to discard them?"))) {
 	return;
       }
     }
@@ -2752,7 +2752,7 @@ function replicateSelection(source) {
     $(target).style.color = "#000";
     $(target + 'id').value = $(source + 'id').value;
   }
-  if($(al_source + 'id').value != 0  && $(al_target + 'id').value == 0) {
+  if($(al_source + 'id').value != 0 && $(al_target + 'id').value == 0) {
     $(al_target).value = $(al_source).value;
     $(al_target).style.color = "#000";
     $(al_target + 'id').value = $(al_source + 'id').value;
@@ -2909,7 +2909,7 @@ function login(str, param) {
       $("news").style.display = 'inline';
       $("news").innerHTML = getEliteIcon("X") +
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
-	gt.gettext("<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!");
+	gt.gettext("<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!");
       break;
 
     case "G":
@@ -2924,7 +2924,7 @@ function login(str, param) {
     if(param == "NEWUSER") {
       $("news").innerHTML =
 	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
-	Gettext.strargs(gt.gettext("<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."),
+	Gettext.strargs(gt.gettext("<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."),
 			[ "<input type='button' value='" + gt.gettext("New flight") + "' align='middle' onclick='JavaScript:newFlight()'>",
 			  "<input type='button' value='" + gt.gettext("Import") + "' align='middle' onclick='JavaScript:openImport()'>" ]);
       $("news").style.display = 'inline';
@@ -3129,7 +3129,7 @@ function openBasicInput(param) {
 
 function closeInput() {
   if(hasChanged()) {
-    if(! confirm(gt.gettext("Changes made to this flight have not been saved.  OK to discard them?"))) {
+    if(!confirm(gt.gettext("Changes made to this flight have not been saved. OK to discard them?"))) {
       return;
     }
   }

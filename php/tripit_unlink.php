@@ -6,7 +6,7 @@ require_once "tripit_common.php";
 
 $uid = $_SESSION["uid"];
 if (!$uid || empty($uid)) {
-    print _("Session expired.  Please try re-linking after logging back in.");
+    print _("Session expired. Please try re-linking after logging back in.");
     exit();
 }
 

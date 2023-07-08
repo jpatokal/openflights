@@ -114,7 +114,7 @@ msgstr "새 비행 추가"
 msgid "Edit flight"
 msgstr "비행기록 편집"
 
-msgid "Fields in <font color='blue'>blue</font> are required.  Click on airports in the map to select them or search by city name or airport code."
+msgid "Fields in <font color='blue'>blue</font> are required. Click on airports in the map to select them or search by city name or airport code."
 msgstr "<font color='blue'>파란색</font>필드는 필수정보 입니다. 지도에서 공항을 클릭하여 선택하거나, 도시이름 또는 공항코드로 검색하세요."
 
 msgid "Date"
@@ -290,11 +290,11 @@ msgid "Your session has timed out, please log in again."
 msgstr "세션이 만료되었습니다. 다시 로그인 해 주세요."
 
 #, php-format
-msgid "Sorry, an airport using the IATA code %s exists already.  Please double-check."
+msgid "Sorry, an airport using the IATA code %s exists already. Please double-check."
 msgstr "죄송합니다. 입력하신 IATA code %s 는 이미 존재합니다. 다시한번 확인하세요."
 
 #, php-format
-msgid "Sorry, an airport using the ICAO code %s exists already.  Please double-check."
+msgid "Sorry, an airport using the ICAO code %s exists already. Please double-check."
 msgstr "죄송합니다. 입력하신 ICAO code %s 는 이미 존재합니다. 다시한번 확인하세요."
 
 msgid "Adding new airport failed:"
@@ -333,7 +333,7 @@ msgstr "가져온 정보 취소 및 파일 재 업로드"
 msgid "Upload"
 msgstr "업로드"
 
-msgid "Upload successful.  Parsing..."
+msgid "Upload successful. Parsing..."
 msgstr "업로드 성공 및 가공중..."
 
 msgid "Results"
@@ -402,22 +402,22 @@ msgstr "오류"
 msgid "No matches, please correct and reupload"
 msgstr "일치하지 않습니다. 확인후 다시 업로드하세요."
 
-msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18.  These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
+msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
 msgstr "노트 : CSV파일이 15-18자의 OpenFlights IDs를 포함하고 있습니다. 이 IDs가 직접 수정한 공항, 항공사, 비행기 컬럼을 덮어쓸 수 있습니다."
 
-msgid "Your flight data includes unrecognized airports.  Please add them to the database and try again. "
+msgid "Your flight data includes unrecognized airports. Please add them to the database and try again. "
 msgstr "비행정보에 알 수 없는 공항이 포함되어 있습니다. 공항을 먼저 데이터베이스에 추가하고 다시 시도하세요."
 
-msgid "Your flight data includes unrecognized airlines.  This usually means that the airline code in the flight number was not found, and an airline name was not specified.  Please fix or remove the airline code and try again. "
+msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. "
 msgstr "비행정보에 알 수 없는 항공사가 포함되어 있습니다. 이는 일반적으로 입력된 항공사코드가 잘못되었거나 혹은 항공사이름이 잘못된 경우입니다. 확인후 다시 시도하세요."
 
-msgid "Some date fields could not be parsed.  Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only.  Note that DD/MM/YYYY is <b>not</b> accepted."
-msgstr "일부 데이터를 처리할 수 없습니다. 다음의 형식을 사용하세요: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, YYYY 형식만 가능합니다.  DD/MM/YYYY 형식은 <b>사용할 수 없습니다</b>."
+msgid "Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted."
+msgstr "일부 데이터를 처리할 수 없습니다. 다음의 형식을 사용하세요: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, YYYY 형식만 가능합니다. DD/MM/YYYY 형식은 <b>사용할 수 없습니다</b>."
 
-msgid "Your flight data includes trip IDs which are either undefined or do not belong to you.  Please check the trip IDs."
+msgid "Your flight data includes trip IDs which are either undefined or do not belong to you. Please check the trip IDs."
 msgstr "입력된 비행정보가 존재하지 않거나 다른사람의 여행 IDs를 포함하고 있습니다. 여행 IDs를 확인하세요."
 
-msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)"
+msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)"
 msgstr "<b>처리가 완료되었습니다.</b> 이제 정보를 가져올 수 있습니다. (소소한 오류는 정보 에디터에서 수정할 수 있습니다)"
 
 msgid "Add these flights to your OpenFlights"
@@ -639,11 +639,11 @@ msgid "OpenFlights can import two types of data:"
 msgstr "OpenFlights는 두가지 형식의 데이터를 가져올 수 있습니다:"
 
 #, php-format
-msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages.  Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file.  Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time.  If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time.  Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
+msgid "<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages. Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file. Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time. If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time. Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."
 msgstr "<b>FlightMemory (.html)</b> &mdash; 플라이트 메모리는 데이터를 내보내는 기능이 없습니다. 하지만, 우리는 '스크린 긁어오기'를 이용하여 정보를 가져옵니다. 플라이트 메모리 사이트에 로그인하고, FlightData 페이지로 이동하십시오. 브라우저의 '웹 페이지 저장하기' 메뉴를 통해 HTML파일을 다운로드 하고 OpenFlights 에 업로드 하십시오.</p><p><i>경고</i> : 저장하기 전에 반드시 플라이트 메모리의 언어설정을 <b>영어</b>로 해야 합니다.</p><p><i>노트</i> : 중복확인 기능이 없습니다. 따라서, 두번 업로드하게 되면 데이터가 두번 입력됩니다.</p><p><i>노트</i> : 플라이트 메모리의 HTML 데이터 형식이 변경되어 입력되지 않을 수 있습니다. 이 경우 파일과 함께 <%s>오류보고</a>기능을 통해 알려주시면 즉시 작업하여 적용하도록 하겠습니다.</p>"
 
 #, php-format
-msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet.  See <%s'>format specification</a>."
+msgid "<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet. See <%s'>format specification</a>."
 msgstr "<b>OpenFlights (.csv)</b> &mdash; OpenFlights의 내보내기 또는 백업 기능을 통해 생성된 CSV파일은 엑셀과 같은 스프레드시트 프로그램에서 손쉽게 편집할 수 있습니다. <%s>파일형식</a>을 참고하십시오."
 
 msgid "File to upload"
@@ -652,11 +652,11 @@ msgstr "업로드할 파일"
 msgid "Keep historical airline names?"
 msgstr "항공사의 예전 이름을 유지함."
 
-msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines.  If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
+msgid "OpenFlights normally tries to match airlines and flight numbers to known/current airlines. If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all."
 msgstr "OpenFlights는 알려지거나 존재하는 항공사의 이름과 비교하여 항목을 맞춰 줍니다. 아래의 항목을 체크하면 입력한 이름 그대로 기록에 입력됩니다."
 
 #, php-format
-msgid "You will be given a chance to review the flights before they are actually imported.  See %s to backup or clear your flights before importing."
+msgid "You will be given a chance to review the flights before they are actually imported. See %s to backup or clear your flights before importing."
 msgstr "데이터의 입력 전에 다시한번 확인할 수 있습니다. 입력전에 %의 백업 또는 정리를 확인하세요."
 
 msgid "Create new account"
@@ -671,7 +671,7 @@ msgstr "기본 정보"
 msgid "This will be used as the name of your profile."
 msgstr "프로파일의 이름으로 사용됩니다."
 
-msgid "Pick something hard to guess, but easy to remember.  Case-sensitive!"
+msgid "Pick something hard to guess, but easy to remember. Case-sensitive!"
 msgstr "추측하기 어려우면서 기억하기 쉬운것을 선택하세요. 대소문자를 구분합니다."
 
 msgid "Password again"
@@ -681,7 +681,7 @@ msgid "E-mail (optional)"
 msgstr "전자우편(선택사항)"
 
 #, php-format
-msgid "If you forget your password, we can mail you a new one to this address.  We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
+msgid "If you forget your password, we can mail you a new one to this address. We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."
 msgstr "암호를 분실한 경우, 전자우편을 통해 새 암호를 발송할 수 있습니다. 그외에 어떠한 개인정보를 사용하거나 다른 내용을 <i>절대로</i> 발송하지 않습니다. <%s>개인정보보호규정</a>을 참고하세요."
 
 msgid "Could not load profile data"
@@ -747,7 +747,7 @@ msgid "Open"
 msgstr "공개"
 
 #, php-format
-msgid "<b>Private</b> profiles are visible only to you.  <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
+msgid "<b>Private</b> profiles are visible only to you. <%s>Gold and Platinum</a> users can password-protect their private profiles, so only people who know the password can see them."
 msgstr "<b>숨김</b> 모드는 본인만 접속 가능합니다. <%s>골드 및 플래티넘</a>등급의 사용자는 암호로 개인 프로파일을 보호할 수 있습니다. 이 경우, 암호를 아는 사람만 프로파일을 볼 수 있습니다."
 
 msgid "<b>Public</b> profiles let others see your flight map and general statistics, but flight details like exact dates and class of service are not revealed."
@@ -759,10 +759,10 @@ msgstr "<b>공개</b> 모드는 모든사람이 비행기록의 세부내용을 
 msgid "Flight editor"
 msgstr "비행정보 편집기"
 
-msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!"
+msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
 msgstr "<b>기본</b> 에디터는 쉽고 간단합니다. 출발지, 도착지, 일자를 필수정보로 입력하고, 항공사와 비행시간을 옵션으로 입력합니다. 비행기록지도를 쉽게 만들 수 있습니다."
 
-msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters."
+msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
 msgstr "<b>상세</b> 에디터는 좌석등급, 좌석번호, 비행기종 및 항공기 등록번호와 같은 세부내용을 직접 입력할 수 있습니다. 추가적인 메모도 가능합니다."
 
 msgid "Distances"
@@ -937,16 +937,16 @@ msgstr "올바른 출발지 공항을 입력하세요."
 msgid "Please enter a valid destination airport."
 msgstr "올바른 도착지 공항을 입력하세요."
 
-msgid "'%1' not found in %2 database.  Do you want to add it as a new %2 company?"
+msgid "'%1' not found in %2 database. Do you want to add it as a new %2 company?"
 msgstr "'%1' 으로 %2 에서 찾을 수 없음. %2에 추가 하시겠습니까?"
 
 msgid "Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."
 msgstr "시각은 콜론(:)을 이용하여 입력하세요. 예를들어 오후 6시 30분은 18:30 입니다."
 
-msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes.  You can blank the duration to have it recalculated automatically."
+msgid "Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes. You can blank the duration to have it recalculated automatically."
 msgstr "비행시간은 콜론(:)을 이용하여 입력하세요. 예를들어 8시간 25분은 08:25 입니다. 입력하지 않을 경우 자동으로 계산합니다."
 
-msgid "Please enter flight distance as miles, with no fractional parts.  You can blank the distance to have it re-calculated automatically."
+msgid "Please enter flight distance as miles, with no fractional parts. You can blank the distance to have it re-calculated automatically."
 msgstr "비행거리를 자연수로 입력하세요. 입력하지 않을 경우 자동으로 계산합니다."
 
 msgid "No trips"
@@ -1087,7 +1087,7 @@ msgstr "항공사"
 msgid "Planes"
 msgstr "비행기"
 
-msgid "Changes made to this flight have not been saved.  OK to discard them?"
+msgid "Changes made to this flight have not been saved. OK to discard them?"
 msgstr "변경내용이 저장되지 않았습니다. 수락하면 무시합니다."
 
 msgid "Loading..."
@@ -1132,10 +1132,10 @@ msgstr "로딩중..."
 msgid "Hi, <B>%1</B> !"
 msgstr "<b>%1</b>님 반갑습니다!"
 
-msgid "<b>Welcome back!</b>  We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
+msgid "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
 msgstr "<b>환영합니다!</b> OpenFlights가 <a href='/donate.html' target='_blank'>유지될 수 있도록 기부</a>하여 주십시오."
 
-msgid "<B>Welcome to OpenFlights!</b>  Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgid "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
 msgstr "<b>OpenFlights에 오신것을 환영합니다!</b> %1을 클릭하여 새 비행기록을 추가하거나, %2을 클릭하여 FlightMemory와 같은 다른 사이트의 정보를 가져옵니다."
 
 msgid "You have been logged out."
@@ -1168,7 +1168,7 @@ msgstr "IATA/FAA 코드를 입력하지 않았습니다. 코드 없이 항공사
 msgid "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
 msgstr "ICAO 코드를 입력하지 않았습니다. 코드 없이 항공사를 추가하시겠습니까?"
 
-msgid "Are you sure you want to add %1 as a new operator?  Please double-check the name and any airline codes before confirming."
+msgid "Are you sure you want to add %1 as a new operator? Please double-check the name and any airline codes before confirming."
 msgstr "%1 으로 새 오퍼레이터를 추가하시겠습니까? 이름과 항공사 코드를 다시한번 확인하십시오."
 
 msgid "Cancelled."
@@ -1225,7 +1225,7 @@ msgstr "도시 이름을 입력하세요."
 msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
 msgstr "위도, 경도 및 고도를 입력하세요. OurAirports.com의 데이터베이스를 확인해서 로드할 수 있습니다."
 
-msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point).  For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
+msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point). For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr "위도와 경도좌표는 십진법으로 입력합니다. 음수는 남쪽과 서쪽을 표현합니다. 소숫점 이하 최소 세자리 이상 입력되어야 합니다. 예를들어, San Francisco 국제공항(SFO)은 위도 37.6189(N), 경도 -122.3748(W) 입니다."
 
 msgid "Longitude must be in the range -180 (west) to 180 (east) degrees."
@@ -1237,10 +1237,10 @@ msgstr "위도는 반드시 90(북)에서 -90(남) 사이의 값을 가져야 �
 msgid "Please enter a positive number for elevation."
 msgstr "고도를 양수로 입력하세요."
 
-msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York.  Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."
 msgstr "UCT/GMT와 차이나는 타임존을 정수로 입력하세요. 예를들어, 싱가포르는 +8, 뉴욕은 -5 입니다. 소숫점은 없습니다."
 
-msgid "You have not entered whether this airport follows Daylight Savings Time (DST).  Leave it as Unknown?"
+msgid "You have not entered whether this airport follows Daylight Savings Time (DST). Leave it as Unknown?"
 msgstr "이 공항의 서머타임(DST) 정보를 입력하지 않았습니다. 알수없는 상태로 두시겠습니까?"
 
 msgid "You have not entered an IATA/FAA code. Are you sure the airport does not have one and you wish to proceed?"
@@ -1249,7 +1249,7 @@ msgstr "IATA/FAA 코드를 입력하지 않았습니다. 코드를 입력하지 
 msgid "You have not entered an ICAO code. Are you sure the airport does not have one and you wish to proceed?"
 msgstr "ICAO 코드를 입력하지 않았습니다. 코드를 입력하지 않은 채로 진행하시겠습니까?"
 
-msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world?  Please double-check the name, airport codes and exact coordinates before confirming."
+msgid "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world? Please double-check the name, airport codes and exact coordinates before confirming."
 msgstr "%2 의 %1 으로 새 공항을 입력하시겠습니까? 이름과 공항코드 및 정확한 좌표를 입력전에 다시한번 확인하십시오."
 
 msgid "No matches found in this database."
@@ -1279,7 +1279,7 @@ msgstr "계정을 만드는 중..."
 msgid "Saving changes..."
 msgstr "변경내용을 저장하는 중..."
 
-msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS.  Have you exported a backup copy, and are you sure you want to do this?"
+msgid "This will PERMANENTLY delete ALL YOUR FLIGHTS. Have you exported a backup copy, and are you sure you want to do this?"
 msgstr "이 작업은 당신의 모든 비행기록을 영구히 삭제합니다. 백업본을 준비해 두었나요? 정말 삭제합니까?"
 
 msgid "Deletion cancelled."

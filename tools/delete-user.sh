@@ -5,7 +5,7 @@
 source sql/mysql.sh
 uid=$1
 $MYSQL -e "select * from users where uid=$uid" flightdb2
-read -p "You're about to delete user $uid completely.  Proceed (y/N)? " input
+read -p "You're about to delete user $uid completely. Proceed (y/N)? " input
 if [ $input = "y" ]; then
   $MYSQL -e "set @uid = \"$uid\"; source sql/delete-user.sql;" flightdb2
   exit

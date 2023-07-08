@@ -65,7 +65,7 @@ function validate(type) {
 
 // Delete trip?
 function deleteTrip() {
-  if(confirm("Are you sure you want to delete this trip?  (Flights in this trip will NOT be deleted.)")) {
+  if(confirm("Are you sure you want to delete this trip? (Flights in this trip will NOT be deleted.)")) {
     xmlhttpPost(URL_TRIP, "DELETE");
   } else {
     document.getElementById("miniresultbox").innerHTML = "<i>Deleting trip cancelled.</i>";
