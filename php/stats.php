@@ -96,7 +96,7 @@ $sql = sprintf(
 );
 $sth = $dbh->query($sql);
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {
@@ -123,7 +123,7 @@ $sql = sprintf(
 
 $sth = $dbh->query($sql);
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {
@@ -145,7 +145,7 @@ $sql = "SELECT DISTINCT class,COUNT(*) num_flights,SUM(distance) distance FROM f
 $sth = $dbh->query($sql);
 $class_by_flight_str = '';
 $class_by_distance_str = '';
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if (!empty($class_by_flight_str)) {
         $class_by_flight_str .= ':';
         $class_by_distance_str .= ':';
@@ -159,7 +159,7 @@ printf("$class_by_flight_str\n");
 $sql = "SELECT DISTINCT reason,COUNT(*) FROM flights AS f WHERE " . $filter . " AND reason != '' GROUP BY reason ORDER BY reason";
 $sth = $dbh->query($sql);
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {
@@ -173,7 +173,7 @@ printf("\n");
 $sql = "SELECT DISTINCT seat_type,COUNT(*) FROM flights AS f WHERE " . $filter . " AND seat_type != '' GROUP BY seat_type ORDER BY seat_type";
 $sth = $dbh->query($sql);
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {
@@ -187,7 +187,7 @@ printf("\n");
 $sql = "SELECT DISTINCT mode,COUNT(*) FROM flights AS f WHERE " . $filter . " GROUP BY mode ORDER BY mode";
 $sth = $dbh->query($sql);
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {

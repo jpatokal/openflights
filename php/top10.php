@@ -87,7 +87,7 @@ $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $data["routes"][] = [
         "src_code" => format_apcode2($row["siata"], $row["sicao"]),
         "src_apid" => (int)$row["sapid"],
@@ -121,7 +121,7 @@ $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $data["airports"][] = [
         "name" => $row["name"],
         "code" => format_apcode($row),
@@ -135,7 +135,7 @@ $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $data["airlines"][] = [
         "name" => $row["name"],
         "count" => (int)$row["count"],
@@ -149,7 +149,7 @@ $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $data["planes"][] = [
         "name" => $row["name"],
         "count" => (int)$row["count"]

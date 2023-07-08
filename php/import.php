@@ -209,7 +209,7 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
             default:
                 $color = "#ddf";
                 $first = true;
-                while ($dbrow = $sth->fetch()) {
+                foreach ($sth as $dbrow) {
                     $isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
                     (strcasecmp($dbrow['alias'], $airline) == 0));
                     if ($first || $isMatch) {

@@ -162,7 +162,7 @@ if (!$sth->execute([$uid])) {
 }
 
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {
@@ -198,7 +198,7 @@ if (!$sth->execute([$uid])) {
 }
 
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {

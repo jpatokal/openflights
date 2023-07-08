@@ -28,7 +28,7 @@ readfile("../kml/header.kml");
 print "<Folder>\n<name>Flights</name>\n";
 
 // Plot flights on map
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $x1 = $row["sx"];
     $y1 = $row["sy"];
     $z1 = $row["sz"] * METERS_PER_FOOT;
@@ -83,7 +83,7 @@ $sql = "SELECT DISTINCT x,y,elevation,iata,icao,name,city,country,count(name) AS
 $sth = $dbh->prepare($sql);
 $sth->execute(compact('uid'));
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     $count = $row["visits"];
     if ($first) {
         $maxFlights = $count;

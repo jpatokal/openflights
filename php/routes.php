@@ -161,7 +161,7 @@ if (!$sth->execute($condParams)) {
     die('Error;Database error.');
 }
 $first = true;
-while ($row = $sth->fetch(PDO::FETCH_NUM)) {
+foreach ($sth->fetchAll(PDO::FETCH_NUM) as $row) {
     $row[7] = gcPointDistance(
         array("x" => $row[1], "y" => $row[2]),
         array("x" => $row[4], "y" => $row[5])
@@ -207,7 +207,7 @@ if (!$sth->execute($condParams)) {
     die('Error;Database error.');
 }
 $first = true;
-while ($row = $sth->fetch()) {
+foreach ($sth as $row) {
     if ($first) {
         $first = false;
     } else {
@@ -241,7 +241,7 @@ if ($type == "L") {
         die('Error;Database error.');
     }
     $first = true;
-    while ($row = $sth->fetch()) {
+    foreach ($sth as $row) {
         if ($first) {
             $first = false;
         } else {

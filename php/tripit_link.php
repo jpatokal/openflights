@@ -18,7 +18,7 @@ if (!isset($_SESSION["tripit_rendezvous"])) {
 
 $rendezvous = $_SESSION["tripit_rendezvous"];
 
-if (!$_GET["oauth_token"] or empty($_GET["oauth_token"]) or $_GET["oauth_token"] !== $rendezvous["token"]) {
+if (!$_GET["oauth_token"] || empty($_GET["oauth_token"]) || $_GET["oauth_token"] !== $rendezvous["token"]) {
     print _("Invalid token, giving up.");
     error_log("$uid attempted to rendezvous, but no token was passed in.");
     exit();
@@ -47,7 +47,7 @@ if ($access_token == null || !is_array($access_token)) {
 
 // Make sure it's not the same token as what we already have in the db.
 $existing_tripit_tokens = get_request_tokens($dbh, $uid);
-if ($existing_tripit_tokens == null or $existing_tripit_tokens["token"] !== $access_token["oauth_token"]) {
+if ($existing_tripit_tokens == null || $existing_tripit_tokens["token"] !== $access_token["oauth_token"]) {
     // No tokens or different token; add a new one.
 
     // Disable any existing TripIt links for this user.
