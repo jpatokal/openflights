@@ -1,7 +1,7 @@
 <?php
 
-require_once("../php/locale.php");
-require_once("../php/db_pdo.php");
+require_once "../php/locale.php";
+require_once "../php/db_pdo.php";
 
 include 'helper.php';
 

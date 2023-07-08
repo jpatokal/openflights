@@ -1,6 +1,6 @@
 <?php
-require_once("../php/locale.php");
-require_once("../php/db_pdo.php");
+require_once "../php/locale.php";
+require_once "../php/db_pdo.php";
 
 if (isset($_GET["trid"])) {
     $trid = $_GET["trid"];
@@ -14,7 +14,7 @@ if (isset($_GET["trid"])) {
     <title>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
-    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po" />
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po" />
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/trip.js"></script>
   </head>

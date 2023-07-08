@@ -1,5 +1,5 @@
 <?php
-include_once(dirname(__FILE__) . '/config.php');
+include_once dirname(__FILE__) . '/config.php';
 
 //
 // Test cases for php/login.php

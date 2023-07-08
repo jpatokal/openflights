@@ -1,8 +1,8 @@
 <?php
 
-require_once("./php/locale.php");
-require_once("./php/db_pdo.php");
-require_once("./php/helper.php");
+require_once "./php/locale.php";
+require_once "./php/db_pdo.php";
+require_once "./php/helper.php";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,7 +15,7 @@ require_once("./php/helper.php");
         block-all-mixed-content; ;">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css") ?>" type="text/css">
-    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po?20090715" />
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="/OpenLayers.js?version=20091204"></script>
@@ -27,7 +27,7 @@ require_once("./php/helper.php");
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
     <script type="text/javascript" src="/js/controls.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js") ?>"></script>
-    <?php include("./html/analytics.html") ?>
+    <?php include "./html/analytics.html"; ?>
   </head>
 
   <body>
@@ -43,7 +43,7 @@ require_once("./php/helper.php");
         <div id="news" style="display: none">
           <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closeNews()'>
   <B><?php echo _("News")?> </b>:
-<?php include("./html/news.html") ?>
+<?php include "./html/news.html"; ?>
         </div>
 
         <div id="ajaxloader">
@@ -71,7 +71,7 @@ require_once("./php/helper.php");
 
 
       <div id="sideBar">
-        <?php include("./sidebar.html") ?>
+        <?php include "./sidebar.html"; ?>
         <div id="login">
           <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
                 <?php locale_pulldown($dbh, $locale) ?>
@@ -159,7 +159,7 @@ require_once("./php/helper.php");
 
     <div id="resultbox">
       <div id="ad" style="display: inline;">
-        <?php include("./html/ad.html") ?>
+        <?php include "./html/ad.html"; ?>
       </div>
 
       <div id="help" style="display: none;">

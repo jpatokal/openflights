@@ -1,7 +1,7 @@
 <?php
 
-include("../php/db_pdo.php");
-include("../php/greatcircle.php");
+include "../php/db_pdo.php";
+include "../php/greatcircle.php";
 
 // First we load the background/base map. We assume it's located in same dir as the script.
 // This can be any format. We will also allocate the color for the marker.

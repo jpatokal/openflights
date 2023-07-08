@@ -1,8 +1,8 @@
 <?php
 
-require_once("tripit_api.php");
-require_once("db_pdo.php");
-require_once("secrets.php");
+require_once "tripit_api.php";
+require_once "db_pdo.php";
+require_once "secrets.php"
 
 $tripit_api_url = "https://api.tripit.com";
 

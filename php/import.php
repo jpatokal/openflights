@@ -1,7 +1,7 @@
 <?php
 
-require_once("locale.php");
-require_once("db_pdo.php");
+require_once "locale.php";
+require_once "db_pdo.php";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -25,7 +25,7 @@ if (!$uid || empty($uid)) {
 }
 
 require_once '../vendor/autoload.php';
-include_once('helper.php');
+include_once 'helper.php';
 
 $posMap = array("Window" => "W", "Middle" => "M", "Aisle" => "A", "" => "");
 $classMap = array("Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F", "" => "");

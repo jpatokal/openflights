@@ -1,8 +1,8 @@
 <?php
 
-require_once('../../vendor/simpletest/simpletest/unit_tester.php');
-require_once('../../vendor/simpletest/simpletest/reporter.php');
-require_once('config.php');
+require_once '../../vendor/simpletest/simpletest/unit_tester.php';
+require_once '../../vendor/simpletest/simpletest/reporter.php';
+require_once 'config.php';
 
 print '<h1>OpenFlights PHP/SQL Test Suite</h1>';
 

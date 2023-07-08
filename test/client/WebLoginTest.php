@@ -1,5 +1,5 @@
 <?php
-include_once(dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php');
+include_once dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php';
 
 class WebLoginTest extends OpenFlightsSeleniumTestCase
 {

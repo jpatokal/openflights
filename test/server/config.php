@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../vendor/simpletest/simpletest/autorun.php');
-require_once(dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester.php');
+require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/autorun.php';
+require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester.php' ;
 
 // Address of OpenFlights install
 $webroot = 'http://localhost:8080/';

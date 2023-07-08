@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <?php include("./html/analytics.html") ?>
+    <?php include"./html/analytics.html"; ?>
   </head>
 
   <body>
@@ -61,8 +61,8 @@ foreach ($dbh->query($sql) as $row) {
     </div>
     <div id="sideBar">
 <?php
-include("../sidebar.html");
-include("ad-sidebar.html");
+include "../sidebar.html" ;
+include "ad-sidebar.html" ;
 ?>
     </div>
 

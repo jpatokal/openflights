@@ -1,8 +1,8 @@
 <?php
 
 header("Content-type: text/html");
-require_once("../php/locale.php");
-require_once("../php/db_pdo.php");
+require_once "../php/locale.php";
+require_once "../php/db_pdo.php";
 
 $uid = $_SESSION["uid"] ?? null;
 $logged_in = $uid && !empty($uid);
@@ -13,7 +13,7 @@ $logged_in = $uid && !empty($uid);
 <title>OpenFlights:  <?php echo _("Airline search") ?></title>
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
-    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale?>/LC_MESSAGES/messages.po" />
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
 
     <script type="text/javascript" src="/js/utilities.js"></script>

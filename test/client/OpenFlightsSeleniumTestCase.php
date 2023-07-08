@@ -2,7 +2,7 @@
 
 use PHPUnit\Extensions\Selenium2TestCase;
 
-include_once(dirname(__FILE__) . '/../server/config.php');
+include_once dirname(__FILE__) . '/../server/config.php';
 
 class OpenFlightsSeleniumTestCase extends Selenium2TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-include_once(dirname(__FILE__) . '/config.php');
+include_once dirname(__FILE__) . '/config.php';
 
 //
 // Test cases for php/submit.php and php/flights.php

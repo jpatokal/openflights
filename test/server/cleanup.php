@@ -1,6 +1,6 @@
 <?php
 
-include_once(dirname(__FILE__) . '/config.php');
+include_once dirname(__FILE__) . '/config.php';
 
 // Not an actual test, just cleaning up
 class DeleteFlightsTest extends WebTestCase {

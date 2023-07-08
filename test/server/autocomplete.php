@@ -1,6 +1,6 @@
 <?php
 
-include_once(dirname(__FILE__) . '/config.php');
+include_once dirname(__FILE__) . '/config.php';
 
 // Testing the tests: curl -v http://localhost:8080/php/autocomplete.php -d qs=STRING
 
