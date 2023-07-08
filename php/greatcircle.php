@@ -26,6 +26,10 @@ const MARS_DISTANCE = 34649589;
  * factor to convert degrees to radians (PI/180)
  */
 const DEG2RAD =  0.01745329252;
+
+/**
+ * factor to convert radians to degrees
+ */
 const RAD2DEG = 57.29577951308;
 
 /**
@@ -44,7 +48,7 @@ const GC_MIN = 1000;
 const ASCENT_STEP = 1;
 
 /**
- * meters per ASCENT_STEP (from sealevel)
+ * meters per ASCENT_STEP (from sea level)
  */
 const ASCENT_SPEED = 100;
 
@@ -58,7 +62,13 @@ const CRUISE_ALTITUDE = 10000;
  */
 const MAGIC_NUMBER = 19;
 
-// Compute great circle distance from "from" to "to"
+/**
+ * Compute great circle distance from $from to $to
+ *
+ * @param $from array
+ * @param $to array
+ * @return false|float|int
+ */
 function gcPointDistance($from, $to) {
     $lon1 = $from["x"];
     $lat1 = $from["y"];
@@ -70,11 +80,11 @@ function gcPointDistance($from, $to) {
         return 0;
     }
 
-    $rad = doubleval(PI / 180.0);
-    $lon1 = doubleval($lon1) * $rad;
-    $lat1 = doubleval($lat1) * $rad;
-    $lon2 = doubleval($lon2) * $rad;
-    $lat2 = doubleval($lat2) * $rad;
+    $rad = (PI / 180.0);
+    $lon1 = (float)$lon1 * $rad;
+    $lat1 = (float)$lat1 * $rad;
+    $lon2 = (float)$lon2 * $rad;
+    $lat2 = (float)$lat2 * $rad;
 
     $theta = $lon2 - $lon1;
     $dist = acos(sin($lat1) * sin($lat2) + cos($lat1) * cos($lat2) * cos($theta));
@@ -84,7 +94,13 @@ function gcPointDistance($from, $to) {
     return floor($dist * 6371.2 * 0.621);
 }
 
-// Compute great circle bearing from point "from" towards point "to"
+/**
+ * Compute great circle bearing from point $from towards point $to
+ *
+ * @param $from array
+ * @param $to array
+ * @return float|int
+ */
 function gcBearingTo($from, $to) {
     $x1 = $from["x"] * DEG2RAD;
     $y1 = $from["y"] * DEG2RAD;
@@ -105,18 +121,21 @@ function gcBearingTo($from, $to) {
 
     if ($b < 0) {
         $adjust = PI;
+    } elseif ($a < 0) {
+        $adjust = 2 * PI;
     } else {
-        if ($a < 0) {
-            $adjust = 2 * PI;
-        } else {
-            $adjust = 0;
-        }
+        $adjust = 0;
     }
     return (atan($a / $b) + $adjust) * RAD2DEG;
 }
 
 /**
- * Compute great circle waypoint "distance" miles away from "from" in direction "bearing"
+ * Compute great circle waypoint "distance" miles away from $from in direction $bearing
+ *
+ * @param $from array
+ * @param $distance
+ * @param $bearing
+ * @return array
  */
 function gcWaypoint($from, $distance, $bearing) {
     // Math.* trig functions require angles to be in radians
@@ -140,6 +159,11 @@ function gcWaypoint($from, $distance, $bearing) {
     return array("x" => $x, "y" => $y);
 }
 
+/**
+ * @param $startPoint array
+ * @param $endPoint array
+ * @return array
+ */
 function straightPath($startPoint, $endPoint) {
     // Do we cross the dateline?  If yes, then flip endPoint across it
     if (abs($startPoint["x"] - $endPoint["x"]) > 180) {
@@ -162,26 +186,24 @@ function straightPath($startPoint, $endPoint) {
  * @return array
  */
 function gcPath($startPoint, $endPoint, $distance, $threed) {
-    $pointList = array();
-    $pointList[] = $startPoint;
+    $pointList = array(
+        $startPoint
+    );
     $wayPoint = $startPoint;
     $distance = gcPointDistance($startPoint, $endPoint);
     $elevation = 0;
 
     if ($threed) {
-        $step = ASCENT_STEP;
         $elevation = $startPoint["z"];
         $delta = 1; // Ascending
 
         // Calculate distance at which to start descent
-        $ascentspeed = (CRUISE_ALTITUDE - $startPoint["z"]) / ASCENT_SPEED;
-        $descentspeed = (CRUISE_ALTITUDE - $endPoint["z"]) / ASCENT_SPEED;
-        $descentpoint = $distance - (MAGIC_NUMBER * ASCENT_STEP);
-        if ($descentpoint < $distance / 2) {
-            $descentpoint = $distance / 2;
+        $ascentSpeed = (CRUISE_ALTITUDE - $startPoint["z"]) / ASCENT_SPEED;
+        $descentSpeed = (CRUISE_ALTITUDE - $endPoint["z"]) / ASCENT_SPEED;
+        $descentPoint = $distance - (MAGIC_NUMBER * ASCENT_STEP);
+        if ($descentPoint < $distance / 2) {
+            $descentPoint = $distance / 2;
         }
-    } else {
-        $step = GC_STEP;
     }
     $d = 0;
 
@@ -203,21 +225,19 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         // Cruising, but increase step resolution near the poles
         if ($threed && $delta != 0) {
             $step = ASCENT_STEP;
+        } elseif (abs($wayPoint["y"]) > 60) {
+            $step = GC_STEP / 2;
         } else {
-            if (abs($wayPoint["y"]) > 60) {
-                $step = GC_STEP / 2;
-            } else {
-                $step = GC_STEP;
-            }
+            $step = GC_STEP;
         }
 
         if ($threed) {
             // Ascending
             if ($delta > 0) {
                 if ($elevation < (CRUISE_ALTITUDE - $startPoint["z"]) / 2 + $startPoint["z"]) {
-                    $delta += $ascentspeed;
+                    $delta += $ascentSpeed;
                 } else {
-                    $delta -= $ascentspeed;
+                    $delta -= $ascentSpeed;
                 }
                 if ($elevation >= CRUISE_ALTITUDE || $delta < 0) {
                     $elevation = CRUISE_ALTITUDE;
@@ -226,17 +246,17 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
             }
 
             // Descending
-            if ($d + $step >= $descentpoint) {
-                if ($d >= $descentpoint) {
+            if ($d + $step >= $descentPoint) {
+                if ($d >= $descentPoint) {
                     if ($elevation > (CRUISE_ALTITUDE - $endPoint["z"]) / 2 + $endPoint["z"]) {
-                        $delta -= $descentspeed;
+                        $delta -= $descentSpeed;
                     } else {
-                        $delta += $descentspeed;
+                        $delta += $descentSpeed;
                     }
                     $step = ASCENT_STEP;
                 } else {
                     // Prepare for descent!
-                    $step = $descentpoint - $d;
+                    $step = $descentPoint - $d;
                 }
                 if ($elevation < $endPoint["z"]) {
                     $delta = 0;
