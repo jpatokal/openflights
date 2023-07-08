@@ -241,7 +241,7 @@ if (!$sth->execute($params)) {
     json_error('Operation ' . $param . ' failed.');
 }
 $row = $sth->fetch();
-if (!$row) {
+if ($row) {
     $max = $row[0];
 }
 if ($max == 0) {
