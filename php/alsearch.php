@@ -222,7 +222,7 @@ if (!$sth->execute($params)) {
 $sth2 = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
 $sth2->execute($params);
 $row = $sth2->fetch();
-if (!$row) {
+if ($row) {
     $max = $row[0];
 }
 printf("%s;%s", $offset, $max);
