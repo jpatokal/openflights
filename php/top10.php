@@ -56,7 +56,7 @@ if ($uid == 1 && $trid && $trid != "0") {
     $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
     $sth->execute([$trid]);
     if ($row = $sth->fetch()) {
-        if ($row["uid"] != $uid and $row["public"] == "N") {
+        if ($row["uid"] != $uid && $row["public"] == "N") {
             die(json_encode(["error" => _("This trip is not public.")]));
         } else {
             $uid = $row["uid"];
@@ -88,13 +88,13 @@ $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
 while ($row = $sth->fetch()) {
-    array_push($data["routes"], [
+    $data["routes"][] = [
         "src_code" => format_apcode2($row["siata"], $row["sicao"]),
-        "src_apid" => (int) $row["sapid"],
+        "src_apid" => (int)$row["sapid"],
         "dst_code" => format_apcode2($row["diata"], $row["dicao"]),
-        "dst_apid" => (int) $row["dapid"],
-        "count" => (int) $row["times"]
-    ]);
+        "dst_apid" => (int)$row["dapid"],
+        "count" => (int)$row["times"]
+    ];
 }
 
 // List top $limit airports
@@ -122,12 +122,12 @@ $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
 while ($row = $sth->fetch()) {
-    array_push($data["airports"], [
+    $data["airports"][] = [
         "name" => $row["name"],
         "code" => format_apcode($row),
-        "count" => (int) $row["count"],
-        "apid" => (int) $row["apid"]
-    ]);
+        "count" => (int)$row["count"],
+        "apid" => (int)$row["apid"]
+    ];
 }
 // List top $limit airlines
 $sql = "select a.name, $mode as count, a.alid from airlines as a, flights as f where f.uid=:uid and f.alid=a.alid $filter group by f.alid order by count desc limit :limit";
@@ -136,11 +136,11 @@ $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
 while ($row = $sth->fetch()) {
-    array_push($data["airlines"], [
+    $data["airlines"][] = [
         "name" => $row["name"],
-        "count" => (int) $row["count"],
-        "alid" => (int) $row["alid"]
-    ]);
+        "count" => (int)$row["count"],
+        "alid" => (int)$row["alid"]
+    ];
 }
 
 // List top $limit plane types
@@ -150,10 +150,10 @@ $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
 $sth->execute();
 while ($row = $sth->fetch()) {
-    array_push($data["planes"], [
+    $data["planes"][] = [
         "name" => $row["name"],
-        "count" => (int) $row["count"]
-    ]);
+        "count" => (int)$row["count"]
+    ];
 }
 
 print(json_encode($data));
