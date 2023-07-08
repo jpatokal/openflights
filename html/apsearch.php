@@ -15,7 +15,7 @@ $logged_in = $uid && !empty($uid);
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
 
-    <script type="text/javascript" src="/js/utilities.js"></script>
+    <script type="text/javascript" src="/js/utilities.min.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/apsearch.js"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>

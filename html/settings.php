@@ -37,7 +37,7 @@ if ($type == "signup") {
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po" />
     <script type="text/javascript" src="/js/prototype.js"></script>
-    <script type="text/javascript" src="/js/utilities.js"></script>
+    <script type="text/javascript" src="/js/utilities.min.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/Gettext.js"></script>
     <script type="text/javascript" src="/js/settings.js"></script>
