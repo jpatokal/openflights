@@ -723,7 +723,7 @@ if ($action == _("Upload")) {
         }
         print "</font><br><br>";
     } else {
-        print _("<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights.  (Minor issues can be corrected afterwards in the flight editor.)") . "<br><br>";
+        print _("<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)") . "<br><br>";
     }
     print "<INPUT type='hidden' name='tmpfile' value='". basename($_FILES['userfile']['tmp_name']) . "'>";
     print "<INPUT type='hidden' name='fileType' value='$fileType'>";
