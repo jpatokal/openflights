@@ -1,7 +1,5 @@
-DROP DATABASE IF EXISTS flightdb2;
 CREATE DATABASE flightdb2;
 
-DROP USER IF EXISTS openflights@localhost;
 CREATE USER openflights@localhost;
 GRANT ALL PRIVILEGES ON flightdb2.* TO openflights@localhost;
 
