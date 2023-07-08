@@ -22,15 +22,16 @@ if ($uid == 1 && $trid && $trid != "0") {
     $sql = "SELECT * FROM trips WHERE trid=?";
     $sth = $dbh->prepare($sql);
     $sth->execute([$trid]);
-    if ($row = $sth->fetch()) {
-        $public = $row["public"];
-        if ($row["uid"] != $uid && $public == "N") {
-            die('Error;' . _("This trip is not public."));
-        } else {
-            $uid = $row["uid"];
-        }
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die('Error;' . _("Trip not found."));
+    }
+
+    $public = $row["public"];
+    if ($row["uid"] != $uid && $public == "N") {
+        die('Error;' . _("This trip is not public."));
+    } else {
+        $uid = $row["uid"];
     }
 }
 if ($user && $user != "0") {
@@ -38,16 +39,17 @@ if ($user && $user != "0") {
     $sql = "SELECT uid,public FROM users WHERE name=?";
     $sth = $dbh->prepare($sql);
     $sth->execute([$user]);
-    if ($row = $sth->fetch()) {
-        $public = $row["public"];
-        if ($public == "N") {
-            die('Error;' . _("This user's flights are not public."));
-        } else {
-            $uid = $row["uid"];
-        }
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die('Error;' . _("User not found."));
     }
+
+    $public = $row["public"];
+    if ($public == "N") {
+        die('Error;' . _("This user's flights are not public."));
+    }
+
+    $uid = $row["uid"];
 }
 $filter = "f.uid=" . $uid . getFilterString($dbh, $_POST);
 $array = array();
@@ -65,14 +67,16 @@ if ($units == "K") {
 // unique airports, and countries
 $sql = "SELECT COUNT(DISTINCT a.apid) AS num_airports, COUNT(DISTINCT a.country) AS num_countries FROM flights AS f,airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND " . $filter;
 $sth = $dbh->query($sql);
-if ($row = $sth->fetch()) {
+$row = $sth->fetch();
+if ($row) {
     $array += $row;
 }
 
 // unique airlines, unique planes, total distance (mi), average distance (localized), average duration
 $sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes, SUM(distance) AS distance, ROUND(AVG(distance) $multiplier) AS avg_distance, TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i') AS avg_duration FROM flights AS f WHERE " . $filter;
 $sth = $dbh->query($sql);
-if ($row = $sth->fetch()) {
+$row = $sth->fetch();
+if ($row) {
     $array += $row;
 }
 $array["avg_distance"] .= " " . $unit;

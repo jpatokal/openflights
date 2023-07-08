@@ -4,6 +4,9 @@ include '../php/helper.php';
 
 putenv('GDFONTPATH=' . realpath('.'));
 
+/**
+ * @param $string string
+ */
 function renderError($string) {
     renderImage(array(
         37 => "Error:",
@@ -73,26 +76,32 @@ SELECT COUNT(*) AS count,
 FROM flights
 WHERE uid=?
 SQL);
+
 $result = $sth->execute([$uid]);
-if ($result && $row = $sth->fetch()) {
-    $distance = $row["distance"];
-    if ($units == "K") {
-        $distance *= KM_PER_MILE;
-        $units = "km";
-    } else {
-        $units = "miles";
-    }
-    $flights = sprintf("%s flights", $row["count"]);
-    $miles = sprintf("%s %s", number_format($distance, 0, ".", ","), $units);
-    $duration = sprintf(
-        "%d days, %d:%02d hours",
-        $row["duration"] / 1440,
-        intdiv($row["duration"], 60) % 24,
-        $row["duration"] % 60
-    );
-} else {
+if (!$result) {
     renderError("Database error 2");
 }
+
+$row = $sth->fetch();
+if (!$row) {
+    renderError("Database error 2");
+}
+
+$distance = $row["distance"];
+if ($units == "K") {
+    $distance *= KM_PER_MILE;
+    $units = "km";
+} else {
+    $units = "miles";
+}
+$flights = sprintf("%s flights", $row["count"]);
+$miles = sprintf("%s %s", number_format($distance, 0, ".", ","), $units);
+$duration = sprintf(
+    "%d days, %d:%02d hours",
+    $row["duration"] / 1440,
+    intdiv($row["duration"], 60) % 24,
+    $row["duration"] % 60
+);
 
 renderImage(
     array(

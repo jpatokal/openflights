@@ -19,8 +19,9 @@ if (isset($_GET["challenge"])) {
     $challenge = $_GET["challenge"];
     $sth = $dbh->prepare("SELECT md5(password) AS challenge FROM users WHERE name = ?");
     $sth->execute([$user]);
-    if ($myrow = $sth->fetch()) {
-        if ($challenge == $myrow['challenge']) {
+    $row = $sth->fetch();
+    if ($row) {
+        if ($challenge == $row['challenge']) {
             $newpw = substr(uniqid(), 0, 8);
             $pwstring = md5($newpw . strtolower($user));
             $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
@@ -38,10 +39,11 @@ if (isset($_GET["challenge"])) {
     $email = $_POST["email"];
     $sth = $dbh->prepare("SELECT name, md5(password) AS challenge FROM users WHERE email = ?");
     $sth->execute([$email]);
-    if ($myrow = $sth->fetch()) {
-        $name = $myrow['name'];
+    $row = $sth->fetch();
+    if ($row) {
+        $name = $row['name'];
         $link = "https://openflights.org/help/resetpw?user=" . $name
-            . "&challenge=" . $myrow['challenge'];
+            . "&challenge=" . $row['challenge'];
           $subject = "OpenFlights: Reset password";
           $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'.  To proceed, please click on the link below:
 
@@ -54,7 +56,7 @@ OpenFlights.org";
 
         $headers = "From: support@openflights.org";
         if (isset($_POST["unittest"])) {
-            echo $link . "***" .  $myrow['challenge'];
+            echo $link . "***" .  $row['challenge'];
             exit(0);
         }
         if (mail($email, $subject, $body, $headers)) {

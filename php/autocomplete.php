@@ -54,11 +54,9 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
     $sort_order = "iata IS NULL,icao IS NULL,city,name";
     if (strlen($query) <= 3) {
         $ext = "iata != '' AND iata != :code AND";
-    } else {
+    } elseif ($multi) {
         // Exclude private airports from multisearch
-        if ($multi) {
-            $ext = "icao != '' AND";
-        }
+        $ext = "icao != '' AND";
     }
     $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE $ext (city LIKE :name";
 
@@ -170,7 +168,9 @@ if (!$query || $multi) {
             print ("<ul class='autocomplete'>");
         }
         $sth = $dbh->prepare($sql);
-        $sth->execute(['mode' => $mode, 'code' => $query, 'name' => "$query%"]) or die('Autocomplete failed.');
+        if (!$sth->execute(['mode' => $mode, 'code' => $query, 'name' => "$query%"])) {
+            die('Autocomplete failed.');
+        }
         if ($sth->rowCount() > 0) {
             $results = true;
             foreach ($sth as $row) {
@@ -198,7 +198,7 @@ if (!$query || $multi) {
             $results = true;
             $item = stripslashes($data['name']);
             if (strlen($item) > $MAX_LEN) {
-                $item = substr($item, 0, $MAX_LEN-13) . "..." . substr($item, -10, 10);
+                $item = substr($item, 0, $MAX_LEN - 13) . "..." . substr($item, -10, 10);
             }
             echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
         }

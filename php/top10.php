@@ -57,29 +57,31 @@ if ($uid == 1 && $trid && $trid != "0") {
     // Verify that we're allowed to access this trip
     $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
     $sth->execute([$trid]);
-    if ($row = $sth->fetch()) {
-        if ($row["uid"] != $uid && $row["public"] == "N") {
-            die(json_encode(["error" => _("This trip is not public.")]));
-        } else {
-            $uid = $row["uid"];
-        }
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die(json_encode(["error" => _("No such trip.")]));
     }
+
+    if ($row["uid"] != $uid && $row["public"] == "N") {
+        die(json_encode(["error" => _("This trip is not public.")]));
+    }
+
+    $uid = $row["uid"];
 }
 if ($user && $user != "0") {
     // Verify that we're allowed to view this user's flights
     $sth = $dbh->prepare("SELECT uid,public FROM users WHERE name=?");
     $sth->execute([$user]);
-    if ($row = $sth->fetch()) {
-        if ($row["public"] == "N") {
-            die(json_encode(["error" => _("This user's flights are not public.")]));
-        } else {
-            $uid = $row["uid"];
-        }
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die(json_encode(["error" => _("No such user.")]));
     }
+
+    if ($row["public"] == "N") {
+        die(json_encode(["error" => _("This user's flights are not public.")]));
+    }
+
+    $uid = $row["uid"];
 }
 $filter = getFilterString($dbh, $_POST);
 

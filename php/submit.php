@@ -64,7 +64,8 @@ if ($param == "ADD" || $param == "EDIT") {
         $sql = "SELECT plid FROM planes WHERE name=? limit 1";
         $sth = $dbh->prepare($sql);
         $sth->execute(array($plane));
-        if ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+        $row = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
             // Match found, take its plid
             $plid = $row["plid"];
         } else {

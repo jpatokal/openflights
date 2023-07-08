@@ -82,7 +82,8 @@ if ($type == "signup") {
     }
     $sth = $dbh->prepare("SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=?");
     $sth->execute([$uid]);
-    if (!$settings = $sth->fetch()) {
+    $settings = $sth->fetch();
+    if (!$settings) {
         die(_("Could not load profile data"));
     }
     ?>
@@ -155,14 +156,15 @@ echo ">" . _("Open");
             <td class="desc">
             <span id="basiceditor" style="display: inline"><?php echo _("The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time.  The fastest way to build up your map!") ?></span>
             <span id="detaileditor" style="display: none"><?php echo _("The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more.  Perfect for aviation fans and planespotters.") ?></span></td></tr>
-          </tr><tr>
+          </tr>
+          <tr>
             <td class="key"><?php echo _("Distances") ?></td>
             <td class="value">
-                      <input type="radio" name="units" value="M" <?php if ($settings["units"] == "M") { echo "CHECKED"; } echo ">" . _("Miles") ?></br>
+              <input type="radio" name="units" value="M" <?php if ($settings["units"] == "M") { echo "CHECKED"; } echo ">" . _("Miles") ?></br>
               <input type="radio" name="units" value="K" <?php if ($settings["units"] == "K") { echo "CHECKED"; } echo ">" . _("Kilometers") ?></br>
-            <td class="desc">
-                    <?php echo _("Preferred unit for flight distances") ?></span>
-                  </td></tr>
+            </td>
+            <td class="desc"><?php echo _("Preferred unit for flight distances") ?></span></td>
+          </tr>
 
 <?php if ($type == "settings") { ?>
           <tr class="gold">

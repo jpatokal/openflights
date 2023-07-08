@@ -5,7 +5,7 @@ include 'db_pdo.php';
 include 'helper.php';
 include 'filter.php';
 
-// This applies only when viewing another's flights
+// This applies only when viewing another users flights
 $user = $_POST["user"] ?? ($_GET["user"] ?? null);
 $trid = $_POST["trid"] ?? ($_GET["trid"] ?? null);
 
@@ -14,14 +14,15 @@ $bb_uid = $_COOKIE["bb_userid"] ?? null;
 if ($OF_VBULLETIN_LOGIN && ! empty($bb_uid)) {
     $sth = $dbh->prepare("SELECT uid, name, email, editor, elite, units, locale FROM users WHERE bb_uid = ?");
     $sth->execute([$bb_uid]);
-    if ($myrow = $sth->fetch()) {
-        $uid = $_SESSION['uid'] = $myrow["uid"];
-        $_SESSION['name'] = $myrow["name"];
-        $_SESSION['email'] = $myrow["email"];
-        $_SESSION['editor'] = $myrow["editor"];
-        $_SESSION['elite'] = $myrow["elite"];
-        $_SESSION['units'] = $myrow["units"];
-    } elseif (!$trid && ! $user) {
+    $row = $sth->fetch();
+    if ($row) {
+        $uid = $_SESSION['uid'] = $row["uid"];
+        $_SESSION['name'] = $row["name"];
+        $_SESSION['email'] = $row["email"];
+        $_SESSION['editor'] = $row["editor"];
+        $_SESSION['elite'] = $row["elite"];
+        $_SESSION['units'] = $row["units"];
+    } elseif (!$trid && !$user) {
         die("Signup;No username found for ID " . $bb_uid);
     }
 }
@@ -55,27 +56,28 @@ if ($trid && $trid != "0" && $trid != "null") {
     // NB: a "trid" filter can mean logged-in *and* filtered, or not logged in!
     $sth = $dbh->prepare('SELECT * FROM trips WHERE trid = ?');
     $sth->execute([$trid]);
-    if ($row = $sth->fetch()) {
-        if ($row["uid"] != $uid and $row["public"] == "N") {
-            die('Error;' . _("This trip is not public."));
-        } else {
-            // Check if we're viewing out own trip
-            if ($uid != $row["uid"]) {
-                // Nope, we are *not* this user
-                $uid = $row["uid"];
-                $public = $row["public"];
-                $logged_in = "demo";
-                if ($public == "O") {
-                    $_SESSION["openuid"] = $uid;
-                    $_SESSION["opentrid"] = $trid;
-                }
-                // Increment view counter
-                $sth = $dbh->prepare('UPDATE users SET count = count + 1 WHERE uid = ?');
-                $sth->execute([$uid]);
-            }
-        }
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die('Error;' . _("No such trip."));
+    }
+
+    if ($row["uid"] != $uid and $row["public"] == "N") {
+        die('Error;' . _("This trip is not public."));
+    }
+
+    // Check if we're viewing out own trip
+    if ($uid != $row["uid"]) {
+        // Nope, we are *not* this user
+        $uid = $row["uid"];
+        $public = $row["public"];
+        $logged_in = "demo";
+        if ($public == "O") {
+            $_SESSION["openuid"] = $uid;
+            $_SESSION["opentrid"] = $trid;
+        }
+        // Increment view counter
+        $sth = $dbh->prepare('UPDATE users SET count = count + 1 WHERE uid = ?');
+        $sth->execute([$uid]);
     }
 }
 
@@ -84,33 +86,34 @@ if ($user && $user != "0") {
     // if $user is set, we are never logged in
     $sth = $dbh->prepare("SELECT uid, public, elite, guestpw, IF(? = guestpw, 'Y', 'N') AS pwmatch FROM users WHERE name = ?");
     $sth->execute([$guestpw, $user]);
-    if ($row = $sth->fetch()) {
-        if ($row["public"] == "N" && $row["pwmatch"] == "N") {
-            if ($row["guestpw"]) {
-                die(
-                    "Error;" . _("This user's flights are password-protected.") . "<br><br>" .
-                    _("Password") . ": <input type='password' id='guestpw' size='10'>" .
-                    "<input type='button' value='Submit' align='middle' onclick='JavaScript:refresh(true)'>"
-                );
-            } else {
-                die('Error;' . _("This user's flights are not public."));
-            }
-        } else {
-            $uid = $row["uid"];
-            $public = $row["public"];
-            $elite = $row["elite"];
-            $logged_in = "demo"; // we are *not* this user
-            if ($public == "O") {
-                $_SESSION["openuid"] = $uid;
-                $_SESSION["opentrid"] = null;
-            }
-            // Increment view counter
-            $sth = $dbh->prepare('UPDATE users SET count = count + 1 WHERE uid = ?');
-            $sth->execute([$uid]);
-        }
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die('Error;' . _("No such user."));
     }
+
+    if ($row["public"] == "N" && $row["pwmatch"] == "N") {
+        if (!$row["guestpw"]) {
+            die('Error;' . _("This user's flights are not public."));
+        }
+
+        die(
+            "Error;" . _("This user's flights are password-protected.") . "<br><br>" .
+            _("Password") . ": <input type='password' id='guestpw' size='10'>" .
+            "<input type='button' value='Submit' align='middle' onclick='JavaScript:refresh(true)'>"
+        );
+    }
+
+    $uid = $row["uid"];
+    $public = $row["public"];
+    $elite = $row["elite"];
+    $logged_in = "demo"; // we are *not* this user
+    if ($public == "O") {
+        $_SESSION["openuid"] = $uid;
+        $_SESSION["opentrid"] = null;
+    }
+    // Increment view counter
+    $sth = $dbh->prepare('UPDATE users SET count = count + 1 WHERE uid = ?');
+    $sth->execute([$uid]);
 }
 
 // Load up all information needed by this user
@@ -124,7 +127,8 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
     die('Error;Database error. ' . $filter . ' ' . $sql);
 }
-if ($row = $sth->fetch()) {
+$row = $sth->fetch();
+if ($row) {
     if ($row["count"] == "0" && $user && $user != "0") {
         die('Error;' . _("This user has no flights."));
     }
@@ -135,7 +139,7 @@ if ($row = $sth->fetch()) {
     if (($_SESSION["units"] ?? null) == "K") {
         $distance = round($distance * KM_PER_MILE) . " " . _("km");
     } else {
-        $distance = $distance . " " . _("miles");
+        $distance .= " " . _("miles");
     }
     $map .= sprintf(
         "%s;%s;%s;%s;%s;%s;%s;%s\n",

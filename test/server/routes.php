@@ -24,7 +24,8 @@ class RouteMapCoreAirportTest extends WebTestCase {
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
         $route["routes"] = $rows;
-        if ($row = $sth->fetch()) {
+        $row = $sth->fetch();
+        if ($row) {
             $route["core_apid"] = $row["src_apid"];
         }
 
@@ -54,7 +55,8 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
         $route["routes"] = $rows;
-        if ($row = $sth->fetch()) {
+        $row = $sth->fetch();
+        if ($row) {
             $route["core_apid"] = $row["src_apid"];
             $route["filter_alid"] = $row["alid"];
         }
@@ -129,7 +131,8 @@ class RouteMapCoreAirlineTest extends WebTestCase {
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
         $route["routes"] = $rows;
-        if ($row = $sth->fetch()) {
+        $row = $sth->fetch();
+        if ($row) {
             $route["core_alid"] = $row["alid"];
         }
 
@@ -159,7 +162,8 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
         $route["routes"] = $rows;
-        if ($row = $sth->fetch()) {
+        $row = $sth->fetch();
+        if ($row) {
             $route["core_alid"] = $row["alid"];
         }
 

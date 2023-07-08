@@ -288,7 +288,8 @@ class TripIt {
 
         $this->_credential->authorize($curl, $http_method, $this->_api_url, $base_url, $args);
 
-        if (false === $this->response = curl_exec($curl)) {
+        $this->response = curl_exec($curl);
+        if ($this->response === false) {
             throw new Exception(curl_error($curl));
         }
 

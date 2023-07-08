@@ -240,7 +240,8 @@ if (!$sth->execute($params)) {
     // TODO: $param is undefined; use $action ?
     json_error('Operation ' . $param . ' failed.');
 }
-if ($row = $sth->fetch()) {
+$row = $sth->fetch();
+if (!$row) {
     $max = $row[0];
 }
 if ($max == 0) {

@@ -23,15 +23,21 @@ class ExportAirlineToCSVCase extends WebTestCase {
         // First figure out the correct results
         $dbh = db_connect();
         $sth = $dbh->prepare("SELECT alid FROM airlines WHERE iata=?");
-        $sth->execute([$route["core_al_iata"]]) or die($sth->errorInfo());
-        if ($row = $sth->fetch()) {
+        if (!$sth->execute([$route["core_al_iata"]])) {
+            die($sth->errorInfo());
+        }
+        $row = $sth->fetch();
+        if ($row) {
             $alid = $row["alid"];
         }
 
         $sth = $dbh->prepare("SELECT COUNT(*) AS count FROM routes WHERE alid=?");
-        $sth->execute([$alid]) or die($sth->errorInfo());
-        if ($row = $sth->fetch()) {
-            $route_count = intval($row["count"]);
+        if (!$sth->execute([$alid])) {
+            die($sth->errorInfo());
+        }
+        $row = $sth->fetch();
+        if ($row) {
+            $rowCount = intval($row["count"]);
         }
 
         // Then test
@@ -39,6 +45,6 @@ class ExportAirlineToCSVCase extends WebTestCase {
         $params = array("export" => "export", "id" => "L" . $alid);
         $csv = $this->get($webroot . "php/flights.php", $params);
         $rows = explode("\n", $csv);
-        $this->assertEqual(count($rows), $route_count + 1);
+        $this->assertEqual(count($rows), $rowCount + 1);
     }
 }

@@ -17,30 +17,31 @@ if (!$alid) {
 
 if (!$apid) {
     $param = $_POST["param"];
-    if ($param) {
-        switch (strlen($param)) {
-            case 2:
-                $sql = "SELECT CONCAT('L', alid) AS apid FROM airlines WHERE iata=?";
-                break;
-            case 3:
-                $sql = "SELECT apid FROM airports WHERE iata=?";
-                break;
-            case 4:
-                $sql = "SELECT apid FROM airports WHERE icao=?";
-                break;
-            default:
-                die('Error;Query ' . $param . ' not understood.  For airlines, please enter a 2-letter IATA code.  For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
-        }
-        $sth = $dbh->prepare($sql);
-        $sth->execute([$param]);
-        if ($row = $sth->fetch()) {
-            $apid = $row["apid"];
-        } else {
-            die('Error;No match found for query ' . $param);
-        }
-    } else {
+    if (!$param) {
         die('Error;Airport or airline ID is mandatory');
     }
+
+    switch (strlen($param)) {
+        case 2:
+            $sql = "SELECT CONCAT('L', alid) AS apid FROM airlines WHERE iata=?";
+            break;
+        case 3:
+            $sql = "SELECT apid FROM airports WHERE iata=?";
+            break;
+        case 4:
+            $sql = "SELECT apid FROM airports WHERE icao=?";
+            break;
+        default:
+            die('Error;Query ' . $param . ' not understood.  For airlines, please enter a 2-letter IATA code.  For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
+    }
+    $sth = $dbh->prepare($sql);
+    $sth->execute([$param]);
+    $row = $sth->fetch();
+    if (!$row) {
+        die('Error;No match found for query ' . $param);
+    }
+
+    $apid = $row["apid"];
 }
 
 // $apid contains either mapped airport ID (no prefix) or the mapped airline ID (L + alid)
@@ -91,20 +92,21 @@ if ($type == "A") {
  ";
     $sth = $dbh->prepare($sql);
     $sth->execute($params);
-    if ($row = $sth->fetch()) {
-        printf(
-            "%s;%s;%s (<b>%s</b>)<br><small>%s, %s<br>%s routes</small>\n",
-            $apid,
-            $row["count"],
-            $row["name"],
-            format_apcode($row),
-            $row["city"],
-            $row["country"],
-            $row["count"]
-        );
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die('Error;No airport with ID ' . $apid . ' found');
     }
+
+    printf(
+        "%s;%s;%s (<b>%s</b>)<br><small>%s, %s<br>%s routes</small>\n",
+        $apid,
+        $row["count"],
+        $row["name"],
+        format_apcode($row),
+        $row["city"],
+        $row["country"],
+        $row["count"]
+    );
     if ($row["count"] == 0) {
         // No routes, print this airport and abort
         printf(
@@ -128,19 +130,20 @@ if ($type == "A") {
     $sql = "SELECT COUNT(r.alid) AS count, country, name, iata, icao FROM airlines AS l LEFT OUTER JOIN routes AS r ON r.alid=l.alid $filter WHERE l.alid=? GROUP BY r.alid";
     $sth = $dbh->prepare($sql);
     $sth->execute([$apid]);
-    if ($row = $sth->fetch()) {
-        printf(
-            "%s;%s;%s (<b>%s</b>)<br><small>%s</small><br>%s routes\n",
-            "L" . $apid,
-            $row["count"],
-            $row["name"],
-            $row["iata"],
-            $row["country"],
-            $row["count"]
-        );
-    } else {
+    $row = $sth->fetch();
+    if (!$row) {
         die('Error;No airline with ID ' . $apid . ' found');
     }
+
+    printf(
+        "%s;%s;%s (<b>%s</b>)<br><small>%s</small><br>%s routes\n",
+        "L" . $apid,
+        $row["count"],
+        $row["name"],
+        $row["iata"],
+        $row["country"],
+        $row["count"]
+    );
     if ($row["count"] == 0) {
         // No routes, abort
         printf("\n\n\n\n\n\n");

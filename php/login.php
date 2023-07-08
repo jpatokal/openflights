@@ -10,8 +10,8 @@ $legacypw = $_POST["lpw"];
 $challenge = $_POST["challenge"];
 
 if ($challenge && $challenge != $_SESSION["challenge"]) {
-    $myrow = array("status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again.");
-    die(json_encode($myrow));
+    $row = array("status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again.");
+    die(json_encode($row));
 } else {
     $challenge = $_SESSION["challenge"];
 }
@@ -31,27 +31,28 @@ if ($name) {
       )
   ");
     $sth->execute(compact('name', 'challenge', 'pw', 'legacypw'));
-    if ($myrow = $sth->fetch()) {
-        $uid = $myrow["uid"];
+    $row = $sth->fetch();
+    if ($row) {
+        $uid = $row["uid"];
         $_SESSION['uid'] = $uid;
-        $_SESSION['name'] = $myrow["name"];
-        $_SESSION['email'] = $myrow["email"];
-        $_SESSION['editor'] = $myrow["editor"];
-        $_SESSION['elite'] = $myrow["elite"];
-        $_SESSION['units'] = $myrow["units"];
-        if ($myrow["locale"] != "en_US" && $_SESSION['locale'] != $myrow["locale"]) {
-            $myrow['status'] = 2; // force reload, so UI is changed into user's language
+        $_SESSION['name'] = $row["name"];
+        $_SESSION['email'] = $row["email"];
+        $_SESSION['editor'] = $row["editor"];
+        $_SESSION['elite'] = $row["elite"];
+        $_SESSION['units'] = $row["units"];
+        if ($row["locale"] != "en_US" && $_SESSION['locale'] != $row["locale"]) {
+            $row['status'] = 2; // force reload, so UI is changed into user's language
         } else {
-            $myrow['status'] = 1;
+            $row['status'] = 1;
         }
-        $_SESSION['locale'] = $myrow["locale"];
+        $_SESSION['locale'] = $row["locale"];
     } else {
         $message = sprintf(
             _("Login failed. <%s>Create account</a> or <%s>reset password</a>?"),
             "a href='/html/settings?new=yes'",
             "a href='#' onclick='JavaScript:help(\"resetpw\")'"
         );
-        $myrow = array("status" => 0, "message" => $message);
+        $row = array("status" => 0, "message" => $message);
     }
-    print json_encode($myrow);
+    print json_encode($row);
 }

@@ -616,7 +616,8 @@ foreach ($rows as $row) {
                 $sql = "SELECT alid FROM airlines WHERE name=? OR alias=?";
                 $sth = $dbh->prepare($sql);
                 $sth->execute([$airline, $airline]);
-                if ($dbrow = $sth->fetch()) {
+                $dbrow = $sth->fetch();
+                if ($dbrow) {
                     // Found it
                     $alid = $dbrow["alid"];
                 } else {

@@ -33,7 +33,8 @@ if (!$uid || empty($uid)) {
 if ($trid) {
     $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=? AND uid=?");
     $sth->execute([$trid, $uid]);
-    if (!$trip = $sth->fetch()) {
+    $trip = $sth->fetch();
+    if (!$trip) {
         // TODO: $sql is undefined
         die(_("Could not load trip data.") . $sql);
     }
