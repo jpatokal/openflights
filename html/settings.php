@@ -117,7 +117,9 @@ if ($type == "signup") {
                 <input type="text" name="count" value="<?php
                     printf(_("Viewed %s times"), $settings["count"]) ?>" style="border: none" READONLY>
             </td>
-            <td class="desc"><?php echo _("The public address of your profile and how often it has been viewed.") ?> />
+            <td class="desc"><?php
+                echo _("The public address of your profile and how often it has been viewed.") ?>
+            </td>
             <td class="value" rowspan=3><span id="eliteicon"></span>
                 <input type="hidden" name="elite" value="<?php echo $settings["elite"] ?>">
                 <input type="hidden" name="validity" value="<?php echo $settings["validity"] ?>">
