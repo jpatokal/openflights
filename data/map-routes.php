@@ -3,7 +3,8 @@
 include_once "../php/db_pdo.php";
 include_once "../php/greatcircle.php";
 
-// First we load the background/base map. We assume it's located in same dir as the script.
+// First, we load the background/base map.
+// We assume that it's located in the same dir as the script.
 // This can be any format. We will also allocate the color for the marker.
 $im = imagecreatefrompng("map-2048.png");
 if (!$im) {
@@ -11,12 +12,6 @@ if (!$im) {
 }
 
 imagealphablending($im, true);
-$airportColors = array(
-    imagecolorallocate($im, 0, 0, 0), // black
-    imagecolorallocate($im, 0x66, 0x66, 0x99), // cyan
-    imagecolorallocate($im, 0x45, 0xFF, 0xA9) // green
-);
-
 $yellow = imagecolorallocatealpha($im, 0x99, 0xEE, 0, 95);
 
 // Next need to find the base image size.
@@ -27,19 +22,24 @@ $scale_y = imagesy($im);
 $stderr = fopen("php://stderr", "w");
 
 /**
- * @param $lat
- * @param $lon
- * @param $width
- * @param $height
+ * @param $lat float
+ * @param $lon float
+ * @param $width int
+ * @param $height int
  * @return array
  */
 function getlocationcoords($lat, $lon, $width, $height) {
     $x = (($lon + 180) * ($width / 360));
     $y = ((($lat * -1) + 90) * ($height / 180));
-    return array("x" => round($x),"y" => round($y));
+    return array("x" => round($x), "y" => round($y));
 }
 
-$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,d.x AS dx,d.y AS dy FROM routes AS r, airports AS s, airports AS d WHERE r.src_apid=s.apid AND r.dst_apid=d.apid GROUP BY s.apid,d.apid";
+$sql = <<<SQL
+SELECT DISTINCT s.x AS sx, s.y AS sy, d.x AS dx, d.y AS dy
+FROM routes AS r, airports AS s, airports AS d
+WHERE r.src_apid=s.apid AND r.dst_apid=d.apid
+GROUP BY s.apid,d.apid;
+SQL;
 
 // Now we convert the long/lat coordinates into screen coordinates
 $count = 0;
@@ -78,3 +78,4 @@ foreach ($dbh->query($sql) as $row) {
 header("Content-type: image/png");
 imagepng($im);
 imagedestroy($im);
+fclose($stderr);
