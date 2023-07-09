@@ -26,9 +26,10 @@ if (isset($_GET["challenge"])) {
             $pwstring = md5($newpw . strtolower($user));
             $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
             if (!$sth->execute([$pwstring, $user])) {
-                die('Resetting password for user ' . $name . ' failed');
+                die('Resetting password for user ' . $user . ' failed');
             }
-            echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
+            echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n";
+            echo "<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
         } else {
             echo "Invalid challenge.";
         }
@@ -40,12 +41,14 @@ if (isset($_GET["challenge"])) {
     $sth = $dbh->prepare("SELECT name, md5(password) AS challenge FROM users WHERE email = ?");
     $sth->execute([$email]);
     $row = $sth->fetch();
+    // TODO: Assumes an email address can only be assigned to one user...
+    // Which isn't true. So this will only work for the first user row returned...
     if ($row) {
         $name = $row['name'];
         $link = "https://openflights.org/help/resetpw?user=" . $name
             . "&challenge=" . $row['challenge'];
-          $subject = "OpenFlights: Reset password";
-          $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'. To proceed, please click on the link below:
+        $subject = "OpenFlights: Reset password";
+        $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'. To proceed, please click on the link below:
 
   " . $link . "
 
@@ -54,11 +57,11 @@ If you do not want to change your password, simply ignore this mail and nothing 
 Cheers,
 OpenFlights.org";
 
-        $headers = "From: support@openflights.org";
         if (isset($_POST["unittest"])) {
             echo $link . "***" .  $row['challenge'];
             exit(0);
         }
+        $headers = "From: support@openflights.org";
         if (mail($email, $subject, $body, $headers)) {
               echo("<p>A password reset link has been mailed to <b>$email</b>.</p>");
         } else {
