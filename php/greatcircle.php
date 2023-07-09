@@ -3,62 +3,62 @@
 const PI = 3.1415926;
 
 /**
- * in miles
+ * Radius of the Earth, in miles
  */
 const EARTH_RADIUS = 3958.75;
 
 /**
- * in miles
+ * Circumference of the Earth, in miles
  */
 const EARTH_CIRCUMFERENCE = 24900;
 
 /**
- * in miles
+ * Distance to the Moon, in miles
  */
 const MOON_DISTANCE = 238857;
 
 /**
- * in miles
+ * Distance to Mars, in miles
  */
 const MARS_DISTANCE = 34649589;
 
 /**
- * factor to convert degrees to radians (PI/180)
+ * Factor to convert degrees to radians (PI/180)
  */
 const DEG2RAD =  0.01745329252;
 
 /**
- * factor to convert radians to degrees
+ * Factor to convert radians to degrees
  */
 const RAD2DEG = 57.29577951308;
 
 /**
- * draw segment every GC_STEP mi
+ * Draw segment every GC_STEP mi
  */
 const GC_STEP = 100;
 
 /**
- * trigger GC paths once distance is greater than this
+ * Trigger GC paths once the distance is greater than this
  */
 const GC_MIN = 1000;
 
 /**
- * compute ascent path every ASCENT_STEP miles
+ * Compute the ascent path every ASCENT_STEP miles
  */
 const ASCENT_STEP = 1;
 
 /**
- * meters per ASCENT_STEP (from sea level)
+ * Meters per ASCENT_STEP (from sea level)
  */
 const ASCENT_SPEED = 100;
 
 /**
- * cruising altitude in meters
+ * Cruising altitude in meters
  */
 const CRUISE_ALTITUDE = 10000;
 
 /**
- * number of steps needed for the landing curve (integral of y(n)=y(n-1)+n?)
+ * Number of steps needed for the landing curve (integral of y(n)=y(n-1)+n?)
  */
 const MAGIC_NUMBER = 19;
 
@@ -197,7 +197,7 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         $elevation = $startPoint["z"];
         $delta = 1; // Ascending
 
-        // Calculate distance at which to start descent
+        // Calculate the distance at which to start descent
         $ascentSpeed = (CRUISE_ALTITUDE - $startPoint["z"]) / ASCENT_SPEED;
         $descentSpeed = (CRUISE_ALTITUDE - $endPoint["z"]) / ASCENT_SPEED;
         $descentPoint = $distance - (MAGIC_NUMBER * ASCENT_STEP);
