@@ -23,124 +23,147 @@ OpenLayers.Util.onImageLoadErrorColor = "transparent";
  * @class Class for the OpenFlightsMap widget.
  * @constructor
  * @param map DOM element to render map in
- * @param layers Array of {@link http://dev.openlayers.org/docs/files/OpenLayers/Layer-js.html OpenLayers.Layer} base layer(s).  Flights and airports will be overlaid on top of this.
+ * @param layers Array of {@link http://dev.openlayers.org/docs/files/OpenLayers/Layer-js.html OpenLayers.Layer} base layer(s). Flights and airports will be overlaid on top of this.
  * @return A new OpenFlightsMap object.
  */
 function OpenFlightsMap(map, layers) {
 
-  function clusterRadius(feature) {
-    var radius = feature.attributes.count * 5;
-    if(radius > 29) radius = 29;
-    return radius;
-  }
+    function clusterRadius(feature) {
+        var radius = feature.attributes.count * 5;
+        if (radius > 29) {
+            radius = 29;
+        }
+        return radius;
+    }
 
-  // constructor starts here
-  var ol_map = new OpenLayers.Map(map, {
-    maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
-    restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
-    maxExtent: new OpenLayers.Bounds(-180,-90.0,180.0,90.0),
-    maxZoomLevel: 8,
-    controls: [
-	       new OpenLayers.Control.PanZoom(),
-	       new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
-	       new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
-	       new OpenLayers.Control.ScaleLine(),
-	       new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
-	       new OpenLayers.Control.Attribution()
-	       ] });
+    // constructor starts here
+    var ol_map = new OpenLayers.Map(map, {
+        maxResolution: 0.3515625, // scales nicely on 1024x786 and nukes dateline gap
+        restrictedExtent: new OpenLayers.Bounds(-9999, -90, 9999, 90), // not sure what this does
+        maxExtent: new OpenLayers.Bounds(-180, -90.0, 180.0, 90.0),
+        maxZoomLevel: 8,
+        controls: [
+            new OpenLayers.Control.PanZoom(),
+            new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
+            new OpenLayers.Control.LayerSwitcher({'ascending': false, 'title': gt.gettext('Switch map layers')}),
+            new OpenLayers.Control.ScaleLine(),
+            new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
+            new OpenLayers.Control.Attribution()
+        ]
+    });
 
-  var flightLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
-					    {styleMap: new OpenLayers.StyleMap({
-						strokeColor: "${color}",
-						strokeOpacity: 1,
-						strokeWidth: "${count}",
-						strokeDashstyle: "${stroke}"
-					      })
-					    });
+    var flightLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
+        {
+            styleMap: new OpenLayers.StyleMap({
+                strokeColor: "${color}",
+                strokeOpacity: 1,
+                strokeWidth: "${count}",
+                strokeDashstyle: "${stroke}"
+            })
+        });
 
-  var style = new OpenLayers.Style({graphicTitle: "${name}",
-				    externalGraphic: "${icon}",
-				    graphicWidth: "${size}",
-				    graphicHeight: "${size}",
-				    graphicXOffset: "${offset}",
-				    graphicYOffset: "${offset}",
-				    graphicOpacity: "${opacity}",
-				    pointerEvents: "visiblePainted",
-				    label : "\xA0${code}",
-				    fontColor: "#000000",
-				    fontSize: "10px",
-				    fontFamily: "Courier New, monospace",
-				    labelAlign: "lt",
-				    fillColor: "black"
-				   }, { context: {
-				     name: function(feature) {
-					 if(feature.cluster) {
-					   // Last airport is always the largest
-					   last = feature.cluster.length - 1;
-					   if(feature.cluster[last].attributes.index > 2) {
-					     // One airport is dominant, copy its attributes into cluster
-					     feature.attributes.apid = feature.cluster[last].attributes.apid;
-					     feature.attributes.coreid = feature.cluster[last].attributes.coreid;
-					     feature.attributes.code = feature.cluster[last].attributes.code + "+";
-					     feature.attributes.desc = feature.cluster[last].attributes.desc;
-					     feature.attributes.rdesc = feature.cluster[last].attributes.rdesc;
-					     feature.attributes.icon = feature.cluster[last].attributes.icon;
-					     feature.attributes.size = feature.cluster[last].attributes.size;
-					     feature.attributes.offset = feature.cluster[last].attributes.offset;
-					     feature.attributes.name = feature.cluster[last].attributes.name + " \u2295";
-					   } else {
-					     // No dominant airport, show cluster icon with aggregate info
-					     name = "";
-					     for(c = last; c >= 0; c--) {
-					       if(c < last) name += ", ";
-					       name += feature.cluster[c].attributes.code;
-					     }
-					     feature.attributes.icon = "/img/icon_cluster.png";
-					     feature.attributes.code = "";
-					     feature.attributes.size = clusterRadius(feature);
-					     feature.attributes.offset = -clusterRadius(feature) / 2;
-					     feature.attributes.name = name;
-					   }
-					 }
-					 return feature.attributes.name;
-				       },
-				     icon: function(feature) { return feature.attributes.icon; },
-				     size: function(feature) { return feature.attributes.size; },
- 				     offset: function(feature) { return feature.attributes.offset; },
-				     opacity: function(feature) {
-					 return feature.cluster ? 1 : feature.attributes.opacity;
-				       },
-				     code: function(feature) { return feature.attributes.code; }
-				     }});
+    var style = new OpenLayers.Style({
+        graphicTitle: "${name}",
+        externalGraphic: "${icon}",
+        graphicWidth: "${size}",
+        graphicHeight: "${size}",
+        graphicXOffset: "${offset}",
+        graphicYOffset: "${offset}",
+        graphicOpacity: "${opacity}",
+        pointerEvents: "visiblePainted",
+        label: "\xA0${code}",
+        fontColor: "#000000",
+        fontSize: "10px",
+        fontFamily: "Courier New, monospace",
+        labelAlign: "lt",
+        fillColor: "black"
+    }, {
+        context: {
+            name: function (feature) {
+                if (feature.cluster) {
+                    // Last airport is always the largest
+                    last = feature.cluster.length - 1;
+                    if (feature.cluster[last].attributes.index > 2) {
+                        // One airport is dominant, copy its attributes into cluster
+                        feature.attributes.apid = feature.cluster[last].attributes.apid;
+                        feature.attributes.coreid = feature.cluster[last].attributes.coreid;
+                        feature.attributes.code = feature.cluster[last].attributes.code + "+";
+                        feature.attributes.desc = feature.cluster[last].attributes.desc;
+                        feature.attributes.rdesc = feature.cluster[last].attributes.rdesc;
+                        feature.attributes.icon = feature.cluster[last].attributes.icon;
+                        feature.attributes.size = feature.cluster[last].attributes.size;
+                        feature.attributes.offset = feature.cluster[last].attributes.offset;
+                        feature.attributes.name = feature.cluster[last].attributes.name + " \u2295";
+                    } else {
+                        // No dominant airport, show cluster icon with aggregate info
+                        name = "";
+                        for (c = last; c >= 0; c--) {
+                            if (c < last) name += ", ";
+                            name += feature.cluster[c].attributes.code;
+                        }
+                        feature.attributes.icon = "/img/icon_cluster.png";
+                        feature.attributes.code = "";
+                        feature.attributes.size = clusterRadius(feature);
+                        feature.attributes.offset = -clusterRadius(feature) / 2;
+                        feature.attributes.name = name;
+                    }
+                }
+                return feature.attributes.name;
+            },
+            icon: function (feature) {
+                return feature.attributes.icon;
+            },
+            size: function (feature) {
+                return feature.attributes.size;
+            },
+            offset: function (feature) {
+                return feature.attributes.offset;
+            },
+            opacity: function (feature) {
+                return feature.cluster ? 1 : feature.attributes.opacity;
+            },
+            code: function (feature) {
+                return feature.attributes.code;
+            }
+        }
+    });
 
-  var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-  renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-  var strategy = new OpenLayers.Strategy.Cluster({distance: 15, threshold: 3});
+    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+    var strategy = new OpenLayers.Strategy.Cluster({distance: 15, threshold: 3});
 
-  var airportLayer = new OpenLayers.Layer.Vector("Airports",
-					     {styleMap: new OpenLayers.StyleMap
-						 ({'default': style,
-						   'select':{
-						   fillOpacity: 1.0,
-						   pointerEvents: "visiblePainted",
-						   label : ""
-						       }}),
-						 renderers: renderer,
-						 strategies: [strategy]});
-  layers.push(flightLayer, airportLayer);
-  ol_map.addLayers(layers);
+    var airportLayer = new OpenLayers.Layer.Vector("Airports",
+        {
+            styleMap: new OpenLayers.StyleMap
+            ({
+                'default': style,
+                'select': {
+                    fillOpacity: 1.0,
+                    pointerEvents: "visiblePainted",
+                    label: ""
+                }
+            }),
+            renderers: renderer,
+            strategies: [strategy]
+        });
+    layers.push(flightLayer, airportLayer);
+    ol_map.addLayers(layers);
 
-  selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {onSelect: onAirportSelect,
-							              onUnselect: onAirportUnselect});
-  ol_map.addControl(selectControl);
-  selectControl.activate();
+    selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {
+        onSelect: onAirportSelect,
+        onUnselect: onAirportUnselect
+    });
+    ol_map.addControl(selectControl);
+    selectControl.activate();
 
-  OpenLayers.Util.alphaHack = function() { return false; };
+    OpenLayers.Util.alphaHack = function () {
+        return false;
+    };
 
-  __ofmap = this;
-  this.ol_map = ol_map;
-  this.flightLayer = flightLayer;
-  this.airportLayer = airportLayer;
+    __ofmap = this;
+    this.ol_map = ol_map;
+    this.flightLayer = flightLayer;
+    this.airportLayer = airportLayer;
 }
 
 /**
@@ -171,7 +194,6 @@ OpenFlightsMap.URL_MAP = "/php/map.php";
  */
 OpenFlightsMap.URL_ROUTES = "/php/routes.php";
 
-
 /**
  * Load a type of map content
  *
@@ -179,32 +201,35 @@ OpenFlightsMap.URL_ROUTES = "/php/routes.php";
  * @param {int} id Airport/airline map ID to load [AIRLINE, AIRPORT only]
  */
 OpenFlightsMap.prototype.load = function(type, id) {
-  var url;
+    var url;
 
-  this.debug("map.load(" + type + "," + id + ")");
-  switch(type) {
-  case OpenFlightsMap.FLIGHTS:
-    url = OpenFlightsMap.URL_MAP;
-    break;
-  case OpenFlightsMap.AIRLINE:
-    id = "L" + id;
-    //fallthru
-  case OpenFlightsMap.AIRPORT:
-    url = OpenFlightsMap.URL_ROUTES;
-    break;
-  default:
-    this.error("load() failed: Unknown map type " + type);
-    break;
-  }
-  $("ajaxstatus").style.display = 'inline';
-  new Ajax.Request(url,
-		   { method: 'get',
-		     parameters: "apid=" + id,
-		     onSuccess: function(transport) {
-		       __ofmap.draw(transport, type); },
-		     onFailure: function(transport) {
-		       __ofmap.error("load() from " + url + " failed: " + transport.responseText); }
-		   } );
+    this.debug("map.load(" + type + "," + id + ")");
+    switch (type) {
+        case OpenFlightsMap.FLIGHTS:
+            url = OpenFlightsMap.URL_MAP;
+            break;
+        case OpenFlightsMap.AIRLINE:
+            id = "L" + id;
+            //fallthru
+        case OpenFlightsMap.AIRPORT:
+            url = OpenFlightsMap.URL_ROUTES;
+            break;
+        default:
+            this.error("load() failed: Unknown map type " + type);
+            break;
+    }
+    $("ajaxstatus").style.display = 'inline';
+    new Ajax.Request(url,
+        {
+            method: 'get',
+            parameters: "apid=" + id,
+            onSuccess: function (transport) {
+                __ofmap.draw(transport, type);
+            },
+            onFailure: function (transport) {
+                __ofmap.error("load() from " + url + " failed: " + transport.responseText);
+            }
+        });
 }
 
 /**
@@ -236,42 +261,42 @@ OpenFlightsMap.prototype.draw = function(transport, type){
 
   var airportMaxFlights = 0;
   var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
-		       [ '/img/icon_plane-15x15.png', 15 ],
-		       [ '/img/icon_plane-17x17.png', 17 ],
-		       [ '/img/icon_plane-19x19b.png', 19 ],
-		       [ '/img/icon_plane-19x19b.png', 19 ],
-		       [ '/img/icon_plane-19x19.png', 19 ] ];
+        [ '/img/icon_plane-15x15.png', 15 ],
+        [ '/img/icon_plane-17x17.png', 17 ],
+        [ '/img/icon_plane-19x19b.png', 19 ],
+        [ '/img/icon_plane-19x19b.png', 19 ],
+        [ '/img/icon_plane-19x19.png', 19 ] ];
   var modecolors = { "F":COLOR_NORMAL, "T":COLOR_TRAIN, "R":COLOR_ROAD, "S":COLOR_SHIP };
 
   // Draw a flight connecting (x1,y1)-(x2,y2)
   // Note: Values passed in *must already be parsed as floats* or very strange things happen
   function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
-    if(! color) {
-      color = COLOR_NORMAL;
-    }
-    if(! stroke) {
-      stroke = "solid";
-    }
+      if (!color) {
+          color = COLOR_NORMAL;
+      }
+      if (!stroke) {
+          stroke = "solid";
+      }
 
-    // 1,2 flights as single pixel
-    count = Math.floor(Math.sqrt(count) + 0.5);
+      // 1,2 flights as single pixel
+      count = Math.floor(Math.sqrt(count) + 0.5);
 
-    var paths = [ gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2)) ];
-    // Path is in or extends into east (+) half, so we have to make a -360 copy
-    if(x1 > 0 || x2 > 0) {
-      paths.push(gcPath(new OpenLayers.Geometry.Point(x1-360, y1), new OpenLayers.Geometry.Point(x2-360, y2)));
-    }
-    // Path is in or extends into west (-) half, so we have to make a +360 copy
-    if(x1 < 0 || x2 < 0) {
-      paths.push(gcPath(new OpenLayers.Geometry.Point(x1+360, y1), new OpenLayers.Geometry.Point(x2+360, y2)));
-    }
+      var paths = [gcPath(new OpenLayers.Geometry.Point(x1, y1), new OpenLayers.Geometry.Point(x2, y2))];
+      // Path is in or extends into east (+) half, so we have to make a -360 copy
+      if (x1 > 0 || x2 > 0) {
+          paths.push(gcPath(new OpenLayers.Geometry.Point(x1 - 360, y1), new OpenLayers.Geometry.Point(x2 - 360, y2)));
+      }
+      // Path is in or extends into west (-) half, so we have to make a +360 copy
+      if (x1 < 0 || x2 < 0) {
+          paths.push(gcPath(new OpenLayers.Geometry.Point(x1 + 360, y1), new OpenLayers.Geometry.Point(x2 + 360, y2)));
+      }
 
-    var features = [];
-    for(i = 0; i < paths.length; i++) {
-      features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(paths[i]),
-						  {count: count, color: color, stroke: stroke}));
-    }
-    return features;
+      var features = [];
+      for (i = 0; i < paths.length; i++) {
+          features.push(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(paths[i]),
+              {count: count, color: color, stroke: stroke}));
+      }
+      return features;
   }
 
   //
@@ -338,62 +363,66 @@ OpenFlightsMap.prototype.draw = function(transport, type){
   // http://www.movable-type.co.uk/scripts/latlong.html
   // © 2002-2008 Chris Veness
   function gcDistance(lat1, lon1, lat2, lon2) {
-    var rad = Math.PI / 180;
-    lat1 = lat1 * rad;
-    lon1 = lon1 * rad;
-    lat2 = lat2 * rad;
-    lon2 = lon2 * rad;
-    var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) +
-		      Math.cos(lat1)*Math.cos(lat2) *
-		      Math.cos(lon2-lon1));
-    if (d < 0) d += Math.PI;
-    return Math.floor(d * EARTH_RADIUS);
-
+      var rad = Math.PI / 180;
+      lat1 = lat1 * rad;
+      lon1 = lon1 * rad;
+      lat2 = lat2 * rad;
+      lon2 = lon2 * rad;
+      var d = Math.acos(Math.sin(lat1) * Math.sin(lat2) +
+          Math.cos(lat1) * Math.cos(lat2) *
+          Math.cos(lon2 - lon1));
+      if (d < 0) {
+          d += Math.PI;
+      }
+      return Math.floor(d * EARTH_RADIUS);
   }
 
   // Compute great circle bearing from point "from" towards point "to"
   function gcBearingTo(from, to) {
-    var x = new Array(2);
-    var y = new Array(2);
-    var bearing;
-    var adjust;
+      var x = new Array(2);
+      var y = new Array(2);
+      var bearing;
+      var adjust;
 
-    if( isValid(from) && isValid(to)) {
-      x[0] = from.x * DEG2RAD;    y[0] = from.y * DEG2RAD;
-      x[1] = to.x * DEG2RAD;    y[1] = to.y * DEG2RAD;
+      if (isValid(from) && isValid(to)) {
+          x[0] = from.x * DEG2RAD;
+          y[0] = from.y * DEG2RAD;
+          x[1] = to.x * DEG2RAD;
+          y[1] = to.y * DEG2RAD;
 
-      var a = Math.cos(y[1]) * Math.sin(x[1] - x[0]);
-      var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0])
-	* Math.cos(y[1]) * Math.cos(x[1] - x[0]);
+          var a = Math.cos(y[1]) * Math.sin(x[1] - x[0]);
+          var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0])
+              * Math.cos(y[1]) * Math.cos(x[1] - x[0]);
 
-      if((a == 0) && (b == 0)) {
-	bearing = 0;
-	return bearing;
+          if ((a == 0) && (b == 0)) {
+              bearing = 0;
+              return bearing;
+          }
+
+          if (b == 0) {
+              if (a < 0) {
+                  bearing = 270;
+              } else {
+                  bearing = 90;
+              }
+              return bearing;
+          }
+
+          if (b < 0) {
+              adjust = Math.PI;
+          } else {
+              if (a < 0) {
+                  adjust = 2 * Math.PI;
+              } else {
+                  adjust = 0;
+              }
+          }
+          bearing = (Math.atan(a / b) + adjust) * RAD2DEG;
+          return bearing;
+      } else {
+          return null;
       }
-
-      if( b == 0) {
-	if( a < 0)
-	  bearing = 270;
-	else
-	  bearing = 90;
-	return bearing;
-      }
-
-      if( b < 0)
-	adjust = Math.PI;
-      else {
-	if( a < 0)
-	  adjust = 2 * Math.PI;
-	else
-	  adjust = 0;
-      }
-      bearing = (Math.atan(a/b) + adjust) * RAD2DEG;
-      return bearing;
-    } else
-      return null;
   }
-
-
   /**
    * Compute great circle waypoint "distance" miles away from "from" in direction "bearing"
    */
@@ -421,54 +450,55 @@ OpenFlightsMap.prototype.draw = function(transport, type){
    * Flips across dateline if needed, and removes any invisible points
    */
   function gcPath(startPoint, endPoint) {
-    // Do we cross the dateline?  If yes, then flip endPoint across it
-    if(Math.abs(startPoint.x-endPoint.x) > 180) {
-      if(startPoint.x < endPoint.x) {
-	endPoint.x -= 360;
-      } else {
-	endPoint.x += 360;
-      }
-    }
-
-    // Compute distance between points
-    var distance = gcDistance(startPoint.y, startPoint.x, endPoint.y, endPoint.x);
-    if(distance < GC_MIN) {
-      // Short enough that we don't need to show curvature
-      return [startPoint, endPoint];
-    }
-
-    // And... action!
-    var pointList = new Array();
-    var wayPoint = startPoint;
-    var d = GC_STEP;
-    var step = GC_STEP;
-    if(startPoint.x > -360 && startPoint.x < 360) {
-      pointList.push(startPoint);
-    }
-    while(d < distance) {
-      var bearing = gcBearingTo(wayPoint, endPoint); // degrees, clockwise from 0 deg at north
-      var wayPoint = gcWaypoint(wayPoint, step, bearing);
-      if(wayPoint.x > -360 && wayPoint.x < 360) {
-	pointList.push(wayPoint);
-      } else {
-	if((wayPoint.x < -360 && bearing > 180) ||
-	   (wayPoint.x > 360 && bearing < 180)) {
-	  break; // line's gone off the map, so stop rendering
-	}
+      // Do we cross the dateline?  If yes, then flip endPoint across it
+      if (Math.abs(startPoint.x - endPoint.x) > 180) {
+          if (startPoint.x < endPoint.x) {
+              endPoint.x -= 360;
+          } else {
+              endPoint.x += 360;
+          }
       }
 
-      // Increase step resolution near the poles
-      if(Math.abs(wayPoint.y) > 60) {
-	step = GC_STEP / 2;
-      } else {
-	step = GC_STEP;
+      // Compute distance between points
+      var distance = gcDistance(startPoint.y, startPoint.x, endPoint.y, endPoint.x);
+      if (distance < GC_MIN) {
+          // Short enough that we don't need to show curvature
+          return [startPoint, endPoint];
       }
-      d += step;
-    }
-    if(endPoint.x > -360 && endPoint.x < 360) {
-      pointList.push(endPoint);
-    }
-    return pointList;
+
+      // And... action!
+      var pointList = new Array();
+      var wayPoint = startPoint;
+      var d = GC_STEP;
+      var step = GC_STEP;
+      if (startPoint.x > -360 && startPoint.x < 360) {
+          pointList.push(startPoint);
+      }
+      while (d < distance) {
+          var bearing = gcBearingTo(wayPoint, endPoint); // degrees, clockwise from 0 deg at north
+          var wayPoint = gcWaypoint(wayPoint, step, bearing);
+          if (wayPoint.x > -360 && wayPoint.x < 360) {
+              pointList.push(wayPoint);
+          } else {
+              if ((wayPoint.x < -360 && bearing > 180) ||
+                  (wayPoint.x > 360 && bearing < 180)
+              ) {
+                  break; // line's gone off the map, so stop rendering
+              }
+          }
+
+          // Increase step resolution near the poles
+          if (Math.abs(wayPoint.y) > 60) {
+              step = GC_STEP / 2;
+          } else {
+              step = GC_STEP;
+          }
+          d += step;
+      }
+      if (endPoint.x > -360 && endPoint.x < 360) {
+          pointList.push(endPoint);
+      }
+      return pointList;
   }
 
   // Check if point is a point
@@ -508,25 +538,25 @@ OpenFlightsMap.prototype.draw = function(transport, type){
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
   if(flightTotal != "0") {
-    var rows = flights.split("\t");
-    for (var r = 0; r < rows.length; r++) {
-      // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8, mode 9
-      var rCol = rows[r].split(";");
-      if(rCol[8] == "Y") {
-	stroke = "dash";
-      } else {
-	stroke = "solid";
+      var rows = flights.split("\t");
+      for (var r = 0; r < rows.length; r++) {
+          // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8, mode 9
+          var rCol = rows[r].split(";");
+          if (rCol[8] == "Y") {
+              stroke = "dash";
+          } else {
+              stroke = "solid";
+          }
+          if (type == OpenFlightsMap.FLIGHTS) {
+              color = modecolors[rCol[9]];
+              if (!color) color = COLOR_NORMAL;
+          } else {
+              color = COLOR_ROUTE;
+          }
+          this.flightLayer.addFeatures(drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]),
+              parseFloat(rCol[4]), parseFloat(rCol[5]),
+              rCol[6], rCol[7], color, stroke));
       }
-      if(type == OpenFlightsMap.FLIGHTS) {
-	color = modecolors[rCol[9]];
-	if(!color) color = COLOR_NORMAL;
-      } else {
-	color = COLOR_ROUTE;
-      }
-      this.flightLayer.addFeatures(drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]),
-					    parseFloat(rCol[4]), parseFloat(rCol[5]),
-					    rCol[6], rCol[7], color, stroke));
-    }
   } else {
     $("maptitle").innerHTML = "No flights";
   }
@@ -542,9 +572,9 @@ OpenFlightsMap.prototype.draw = function(transport, type){
       var col = rows[r].split(";");
       // 0 apdata, 1 name, 2 city, 3 country, 4 count, 5 formatted_name, 6 future
       if(col[6] == "Y") {
-	opacity = 0.5;
+        opacity = 0.5;
       } else {
-	opacity = 1;
+        opacity = 1;
       }
       airports.push(drawAirport(col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid));
     }
@@ -572,12 +602,18 @@ OpenFlightsMap.prototype.clear = function() {
  */
 OpenFlightsMap.prototype.zoom = function() {
   var bounds = this.flightLayer.getDataExtent();
-  if(! bounds) return null;
+  if(!bounds) {
+      return null;
+  }
   if(bounds.left < -180 && bounds.left > -360 && bounds.right > 180 && bounds.right < 360) {
     // map spans the world, do nothing
   } else {
-    if(bounds.left < -180) bounds.left += 360;
-    if(bounds.right > 180) bounds.right -= 360;
+    if(bounds.left < -180) {
+        bounds.left += 360;
+    }
+    if(bounds.right > 180) {
+        bounds.right -= 360;
+    }
   }
   this.ol_map.zoomToExtent(bounds);
 }
@@ -611,7 +647,7 @@ OpenFlightsMap.prototype.setStatistics = function(flightTotal, distance, duratio
  * @param popup Instance of {@link http://dev.openlayers.org/docs/files/OpenLayers/Popup-js.html OpenLayers.Popup}.  Must already be attached to an OpenLayers.Feature, typically the airport provided in the onAirportSelect() callback.
  */
 OpenFlightsMap.prototype.addPopup = function(popup) {
-    this.ol_map.addPopup(popup);
+  this.ol_map.addPopup(popup);
 }
 
 /**

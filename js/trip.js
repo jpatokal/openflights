@@ -26,7 +26,7 @@ function xmlhttpPost(strURL, type) {
     if (self.xmlHttpReq.readyState == 4) {
 
       if(strURL == URL_TRIP) {
-	editTrip(self.xmlHttpReq.responseText);
+        editTrip(self.xmlHttpReq.responseText);
       }
     }
   }
@@ -37,7 +37,7 @@ function xmlhttpPost(strURL, type) {
 
     for (r=0; r < tripform.privacy.length; r++){
       if (tripform.privacy[r].checked) {
-	privacy = tripform.privacy[r].value;
+        privacy = tripform.privacy[r].value;
       }
     }
     query = 'type=' + type + '&' +

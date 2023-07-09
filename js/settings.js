@@ -14,7 +14,7 @@ window.onload = function init(){
     if(elite == "G" || elite == "P") {
       signupform.guestpw.disabled = false;
       for (r=0; r < signupform.startpane.length; r++){
-	signupform.startpane[r].disabled = false;
+        signupform.startpane[r].disabled = false;
       }
     }
   } else {
@@ -36,11 +36,8 @@ function xmlhttpPost(strURL, type) {
   self.xmlHttpReq.open('POST', strURL, true);
   self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   self.xmlHttpReq.onreadystatechange = function() {
-    if (self.xmlHttpReq.readyState == 4) {
-
-      if(strURL == URL_SETTINGS) {
-	signup(self.xmlHttpReq.responseText);
-      }
+    if (self.xmlHttpReq.readyState == 4 && strURL == URL_SETTINGS) {
+      signup(self.xmlHttpReq.responseText);
     }
   }
   var query = "";
@@ -50,17 +47,17 @@ function xmlhttpPost(strURL, type) {
 
     for (r=0; r < signupform.privacy.length; r++){
       if (signupform.privacy[r].checked) {
-	privacy = signupform.privacy[r].value;
+        privacy = signupform.privacy[r].value;
       }
     }
     for (r=0; r < signupform.editor.length; r++){
       if (signupform.editor[r].checked) {
-	editor = signupform.editor[r].value;
+        editor = signupform.editor[r].value;
       }
     }
     for (r=0; r < signupform.units.length; r++){
       if (signupform.units[r].checked) {
-	units = signupform.units[r].value;
+        units = signupform.units[r].value;
       }
     }
     query = 'type=' + type + '&' +
@@ -78,17 +75,17 @@ function xmlhttpPost(strURL, type) {
 
     case 'EDIT':
       for (r=0; r < signupform.startpane.length; r++){
-	if (signupform.startpane[r].checked) {
-	  startpane = signupform.startpane[r].value;
-	}
+        if (signupform.startpane[r].checked) {
+          startpane = signupform.startpane[r].value;
+        }
       }
       if(form.oldpw.value != "") {
-	query += '&oldpw=' + encodeURIComponent(hex_md5(form.oldpw.value + form.username.value.toLowerCase()));
-	// Legacy password for case-sensitive days of yore
-	query += '&oldlpw=' + encodeURIComponent(hex_md5(form.oldpw.value + form.username.value));
+        query += '&oldpw=' + encodeURIComponent(hex_md5(form.oldpw.value + form.username.value.toLowerCase()));
+        // Legacy password for case-sensitive days of yore
+        query += '&oldlpw=' + encodeURIComponent(hex_md5(form.oldpw.value + form.username.value));
       }
       if(form.guestpw.value != "") {
-	query += '&guestpw=' + encodeURIComponent(hex_md5(form.guestpw.value + form.username.value.toLowerCase()));
+        query += '&guestpw=' + encodeURIComponent(hex_md5(form.guestpw.value + form.username.value.toLowerCase()));
       }
       query += '&startpane=' + encodeURIComponent(startpane);
       document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Saving changes...") + "</I>";
@@ -172,7 +169,6 @@ function signup(str) {
     document.getElementById("miniresultbox").innerHTML = message;
     // Whether signup, edit or reset, go back to main screen now
     location.href = '/';
-    return;
   } else {
     showError(message);
   }

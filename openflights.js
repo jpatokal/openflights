@@ -27,9 +27,11 @@ var changed = false, majorEdit = false;
 
 // Some helpers for multiinput handling
 var multiinput_order = [ "src_ap1", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
-var multiinput_ids = [ "src_ap1id", "src_ap2id", "src_ap3id", "src_ap4id",
-		       "dst_ap1id", "dst_ap2id", "dst_ap3id", "dst_ap4id",
-		       "airline1id", "airline2id", "airline3id", "airline4id" ];
+var multiinput_ids = [
+    "src_ap1id", "src_ap2id", "src_ap3id", "src_ap4id",
+    "dst_ap1id", "dst_ap2id", "dst_ap3id", "dst_ap4id",
+    "airline1id", "airline2id", "airline3id", "airline4id"
+];
 var multiinput_rows = 1;
 
 var URL_FLIGHTS = "/php/flights.php";
@@ -58,18 +60,20 @@ var COLOR_SHIP = "#00ccff"; //cyany blue
 var COLOR_HIGHLIGHT = "#007fff"; //deeper blue
 
 var airportMaxFlights = 0;
-var airportIcons = [ [ '/img/icon_plane-13x13.png', 13 ],
-                     [ '/img/icon_plane-15x15.png', 15 ],
-		     [ '/img/icon_plane-17x17.png', 17 ],
-		     [ '/img/icon_plane-19x19b.png', 19 ],
-		     [ '/img/icon_plane-19x19b.png', 19 ],
-		     [ '/img/icon_plane-19x19.png', 19 ] ];
+var airportIcons = [
+    [ '/img/icon_plane-13x13.png', 13 ],
+    [ '/img/icon_plane-15x15.png', 15 ],
+    [ '/img/icon_plane-17x17.png', 17 ],
+    [ '/img/icon_plane-19x19b.png', 19 ],
+    [ '/img/icon_plane-19x19b.png', 19 ],
+    [ '/img/icon_plane-19x19.png', 19 ]
+];
 
 // Redefined with localized strings under init
 var classes, seattypes, reasons, classes_short, reasons_short, modenames, modesegments, modeoperators, topmodes;
 var modecolors = { "F":COLOR_NORMAL, "T":COLOR_TRAIN, "R":COLOR_ROAD, "S":COLOR_SHIP };
 var modeicons = { "F":'/img/icon_airline.png', "T": '/img/icon_train.png',
-		  "R": '/img/icon_car.png', "S": '/img/icon_ship.png' };
+  "R": '/img/icon_car.png', "S": '/img/icon_ship.png' };
 var modespeeds = { "F":500, "T":100, "R":60, "S":40 };
 var toplimits = { "10":"Top 10", "20":"Top 20", "50":"Top 50", "-1":"All" };
 
@@ -87,258 +91,331 @@ google.load('visualization', '1', {packages: ['corechart']});
 // Call init after google is done initing.
 google.setOnLoadCallback(init);
 
-function init(){
-  $("helplink").style.display = 'inline';
-  gt = new Gettext({ 'domain' : 'messages' });
+function init() {
+    $("helplink").style.display = 'inline';
+    gt = new Gettext({'domain': 'messages'});
 
-  classes = {"Y": gt.gettext("Economy"), "P": gt.gettext("Prem.Eco"), "C":gt.gettext("Business"), "F":gt.gettext("First"), "": ""};
-  seattypes = {"W":gt.gettext("Window"), "A":gt.gettext("Aisle"), "M":gt.gettext("Middle"), "": ""};
-  reasons = {"B":gt.gettext("Work"), "L":gt.gettext("Leisure"), "C":gt.gettext("Crew"), "O": gt.gettext("Other"), "": ""};
-  classes_short = {"Y":gt.gettext("Econ"), "P":gt.gettext("P.Eco"), "C":gt.gettext("Biz"), "F":gt.gettext("1st"), "": ""};
-  reasons_short = {"B":gt.gettext("Work"), "L":gt.gettext("Leis."), "C":gt.gettext("Crew"), "O":gt.gettext("Other"), "": ""};
-  modenames = { "F":gt.gettext("Flight"), "T":gt.gettext("Train"), "R":gt.gettext("Road"), "S":gt.gettext("Ship") };
-  modesegments = { "F":gt.gettext("flight"), "T":gt.gettext("train"), "R":gt.gettext("road trip"), "S":gt.gettext("ship") };
-  modeoperators = { "F":gt.gettext("airline"), "T":gt.gettext("railway"), "R":gt.gettext("road transport"), "S":gt.gettext("shipping") };
-  topmodes = { "F":gt.gettext("Segments"), "D":gt.gettext("Mileage") };
+    classes = {
+        "Y": gt.gettext("Economy"),
+        "P": gt.gettext("Prem.Eco"),
+        "C": gt.gettext("Business"),
+        "F": gt.gettext("First"),
+        "": ""
+    };
+    seattypes = {"W": gt.gettext("Window"), "A": gt.gettext("Aisle"), "M": gt.gettext("Middle"), "": ""};
+    reasons = {
+        "B": gt.gettext("Work"),
+        "L": gt.gettext("Leisure"),
+        "C": gt.gettext("Crew"),
+        "O": gt.gettext("Other"),
+        "": ""
+    };
+    classes_short = {
+        "Y": gt.gettext("Econ"),
+        "P": gt.gettext("P.Eco"),
+        "C": gt.gettext("Biz"),
+        "F": gt.gettext("1st"),
+        "": ""
+    };
+    reasons_short = {
+        "B": gt.gettext("Work"),
+        "L": gt.gettext("Leis."),
+        "C": gt.gettext("Crew"),
+        "O": gt.gettext("Other"),
+        "": ""
+    };
+    modenames = {"F": gt.gettext("Flight"), "T": gt.gettext("Train"), "R": gt.gettext("Road"), "S": gt.gettext("Ship")};
+    modesegments = {
+        "F": gt.gettext("flight"),
+        "T": gt.gettext("train"),
+        "R": gt.gettext("road trip"),
+        "S": gt.gettext("ship")
+    };
+    modeoperators = {
+        "F": gt.gettext("airline"),
+        "T": gt.gettext("railway"),
+        "R": gt.gettext("road transport"),
+        "S": gt.gettext("shipping")
+    };
+    topmodes = {"F": gt.gettext("Segments"), "D": gt.gettext("Mileage")};
 
-  var projectionName = "EPSG:4326";  // spherical Mercator
-  proj = new OpenLayers.Projection(projectionName);
+    var projectionName = "EPSG:4326";  // spherical Mercator
+    proj = new OpenLayers.Projection(projectionName);
 
-  map = new OpenLayers.Map('map', {
-    center: new OpenLayers.LonLat(0, 1682837.6144925),
-    controls: [
-      new OpenLayers.Control.PanZoom(),
-      new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
-      new OpenLayers.Control.LayerSwitcher({'ascending':false, 'title': gt.gettext('Switch map layers')}),
-      new OpenLayers.Control.ScaleLine(),
-      new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
-      new OpenLayers.Control.Attribution()
-    ] });
-
-  // Horrible hack to stop OpenLayers 2 from showing ZL < 2
-  map.events.register('zoomend', this, function (event) {
-    if(map.getZoom() < 2) { map.zoomTo(2); }
-  });
-
-var poliLayer = new OpenLayers.Layer.XYZ(
-    "Political",
-    [
-        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-        "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png"
-    ], {
-        attribution: "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (ODbL)",
-        sphericalMercator: true,
-        transitionEffect: 'resize',
-        wrapDateLine: true
+    map = new OpenLayers.Map('map', {
+        center: new OpenLayers.LonLat(0, 1682837.6144925),
+        controls: [
+            new OpenLayers.Control.PanZoom(),
+            new OpenLayers.Control.Navigation({'title': gt.gettext("Toggle pan and region select mode")}),
+            new OpenLayers.Control.LayerSwitcher({'ascending': false, 'title': gt.gettext('Switch map layers')}),
+            new OpenLayers.Control.ScaleLine(),
+            new OpenLayers.Control.OverviewMap({'title': gt.gettext("Toggle overview map")}),
+            new OpenLayers.Control.Attribution()
+        ]
     });
 
-var artLayer = new OpenLayers.Layer.XYZ(
-    "Artistic",
-    [
-        "https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.jpg"
-    ], {
-        attribution: "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)",
-        sphericalMercator: true,
-        transitionEffect: 'resize',
-        wrapDateLine: true
+    // Horrible hack to stop OpenLayers 2 from showing ZL < 2
+    map.events.register('zoomend', this, function (event) {
+        if (map.getZoom() < 2) {
+            map.zoomTo(2);
+        }
     });
-  artLayer.setVisibility(false);
 
-var earthLayer = new OpenLayers.Layer.XYZ(
-    "Satellite",
-    [
-        "https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg"
-    ], {
-        attribution: "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' target='_blank'>Mapbox</a>",
-        sphericalMercator: true,
-        transitionEffect: 'resize',
-        wrapDateLine: true
-    });
-  earthLayer.setVisibility(false);
+    var poliLayer = new OpenLayers.Layer.XYZ(
+        "Political",
+        [
+            "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+            "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+            "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+            "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png"
+        ], {
+            attribution: "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (ODbL)",
+            sphericalMercator: true,
+            transitionEffect: 'resize',
+            wrapDateLine: true
+        });
 
-  lineLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
-					{ projection: projectionName,
+    var artLayer = new OpenLayers.Layer.XYZ(
+        "Artistic",
+        [
+            "https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.jpg"
+        ], {
+            attribution: "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)",
+            sphericalMercator: true,
+            transitionEffect: 'resize',
+            wrapDateLine: true
+        });
+    artLayer.setVisibility(false);
+
+    var earthLayer = new OpenLayers.Layer.XYZ(
+        "Satellite",
+        [
+            "https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg"
+        ], {
+            attribution: "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' target='_blank'>Mapbox</a>",
+            sphericalMercator: true,
+            transitionEffect: 'resize',
+            wrapDateLine: true
+        });
+    earthLayer.setVisibility(false);
+
+    lineLayer = new OpenLayers.Layer.Vector(gt.gettext("Flights"),
+        {
+            projection: projectionName,
             styleMap: new OpenLayers.StyleMap({
-					    strokeColor: "${color}",
-						strokeOpacity: 1,
-						strokeWidth: "${count}",
-						strokeDashstyle: "${stroke}"
-						})
-					    });
+                strokeColor: "${color}",
+                strokeOpacity: 1,
+                strokeWidth: "${count}",
+                strokeDashstyle: "${stroke}"
+            })
+        });
 
-  var style = new OpenLayers.Style({graphicTitle: "${name}",
-				       externalGraphic: "${icon}",
-				       graphicWidth: "${size}",
-				       graphicHeight: "${size}",
-				       graphicXOffset: "${offset}",
-				       graphicYOffset: "${offset}",
-				       graphicOpacity: "${opacity}",
-				       pointerEvents: "visiblePainted",
-				       label : "\xA0${code}",
-				       fontColor: "#000000",
-				       fontSize: "9px",
-				       fontFamily: "Calibri, Verdana, Arial, sans-serif",
-				       labelAlign: "lt",
-				       fillColor: "black"
-				       }, { context: {
-				     name: function(feature) {
-					 if(feature.cluster) {
-					   // Last airport is always the largest
-					   last = feature.cluster.length - 1;
-					   if(feature.cluster[last].attributes.index > 2) {
-					     // One airport is dominant, copy its attributes into cluster
-					     feature.attributes.apid = feature.cluster[last].attributes.apid;
-					     feature.attributes.coreid = feature.cluster[last].attributes.coreid;
-					     feature.attributes.code = feature.cluster[last].attributes.code + "+";
-					     feature.attributes.desc = feature.cluster[last].attributes.desc;
-					     feature.attributes.rdesc = feature.cluster[last].attributes.rdesc;
-					     feature.attributes.icon = feature.cluster[last].attributes.icon;
-					     feature.attributes.size = feature.cluster[last].attributes.size;
-					     feature.attributes.offset = feature.cluster[last].attributes.offset;
-					     feature.attributes.name = feature.cluster[last].attributes.name + " \u2295";
-					   } else {
-					     // No dominant airport, show cluster icon with aggregate info
-					     name = "";
-					     for(c = last; c >= 0; c--) {
-					       if(c < last) name += ", ";
-					       name += feature.cluster[c].attributes.code;
-					     }
-					     feature.attributes.icon = "/img/icon_cluster.png";
-					     feature.attributes.code = "";
-					     feature.attributes.size = clusterRadius(feature);
-					     feature.attributes.offset = -clusterRadius(feature) / 2;
-					     feature.attributes.name = name;
-					   }
-					 }
-					 return feature.attributes.name;
-				       },
-				     icon: function(feature) { return feature.attributes.icon; },
-				     size: function(feature) { return feature.attributes.size; },
- 				     offset: function(feature) { return feature.attributes.offset; },
-				     opacity: function(feature) {
-					 return feature.cluster ? 1 : feature.attributes.opacity;
-				       },
-				     code: function(feature) { return feature.attributes.code; }
-				     }});
+    var style = new OpenLayers.Style({
+        graphicTitle: "${name}",
+        externalGraphic: "${icon}",
+        graphicWidth: "${size}",
+        graphicHeight: "${size}",
+        graphicXOffset: "${offset}",
+        graphicYOffset: "${offset}",
+        graphicOpacity: "${opacity}",
+        pointerEvents: "visiblePainted",
+        label: "\xA0${code}",
+        fontColor: "#000000",
+        fontSize: "9px",
+        fontFamily: "Calibri, Verdana, Arial, sans-serif",
+        labelAlign: "lt",
+        fillColor: "black"
+    }, {
+        context: {
+            name: function (feature) {
+                if (feature.cluster) {
+                    // Last airport is always the largest
+                    last = feature.cluster.length - 1;
+                    if (feature.cluster[last].attributes.index > 2) {
+                        // One airport is dominant, copy its attributes into cluster
+                        feature.attributes.apid = feature.cluster[last].attributes.apid;
+                        feature.attributes.coreid = feature.cluster[last].attributes.coreid;
+                        feature.attributes.code = feature.cluster[last].attributes.code + "+";
+                        feature.attributes.desc = feature.cluster[last].attributes.desc;
+                        feature.attributes.rdesc = feature.cluster[last].attributes.rdesc;
+                        feature.attributes.icon = feature.cluster[last].attributes.icon;
+                        feature.attributes.size = feature.cluster[last].attributes.size;
+                        feature.attributes.offset = feature.cluster[last].attributes.offset;
+                        feature.attributes.name = feature.cluster[last].attributes.name + " \u2295";
+                    } else {
+                        // No dominant airport, show cluster icon with aggregate info
+                        name = "";
+                        for (c = last; c >= 0; c--) {
+                            if (c < last) name += ", ";
+                            name += feature.cluster[c].attributes.code;
+                        }
+                        feature.attributes.icon = "/img/icon_cluster.png";
+                        feature.attributes.code = "";
+                        feature.attributes.size = clusterRadius(feature);
+                        feature.attributes.offset = -clusterRadius(feature) / 2;
+                        feature.attributes.name = name;
+                    }
+                }
+                return feature.attributes.name;
+            },
+            icon: function (feature) {
+                return feature.attributes.icon;
+            },
+            size: function (feature) {
+                return feature.attributes.size;
+            },
+            offset: function (feature) {
+                return feature.attributes.offset;
+            },
+            opacity: function (feature) {
+                return feature.cluster ? 1 : feature.attributes.opacity;
+            },
+            code: function (feature) {
+                return feature.attributes.code;
+            }
+        }
+    });
 
-  var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-  renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-  var strategy = new OpenLayers.Strategy.Cluster({distance: 15, threshold: 3});
-  airportLayer = new OpenLayers.Layer.Vector("Airports",
-					     { projection: projectionName,
-                 styleMap: new OpenLayers.StyleMap
-						 ({'default': style,
-						   'select':{
-						   fillOpacity: 1.0,
-						   pointerEvents: "visiblePainted",
-						   label : ""
-						       }}),
-						 renderers: renderer,
-						 strategies: [strategy]});
-  map.addLayers([poliLayer, artLayer, earthLayer, lineLayer, airportLayer]);
+    var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+    var strategy = new OpenLayers.Strategy.Cluster({distance: 15, threshold: 3});
+    airportLayer = new OpenLayers.Layer.Vector("Airports",
+        {
+            projection: projectionName,
+            styleMap: new OpenLayers.StyleMap
+            ({
+                'default': style,
+                'select': {
+                    fillOpacity: 1.0,
+                    pointerEvents: "visiblePainted",
+                    label: ""
+                }
+            }),
+            renderers: renderer,
+            strategies: [strategy]
+        });
+    map.addLayers([poliLayer, artLayer, earthLayer, lineLayer, airportLayer]);
 
-  selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {onSelect: onAirportSelect,
-							              onUnselect: onAirportUnselect});
-  map.addControl(selectControl);
-  selectControl.activate();
+    selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {
+        onSelect: onAirportSelect,
+        onUnselect: onAirportUnselect
+    });
+    map.addControl(selectControl);
+    selectControl.activate();
 
-  // When using the earth map layer, change the font color from black to white, since the map is mostly dark colors.
-  map.events.on({
-    "changelayer":function () {
-      if(earthLayer.visibility) {
-        style.defaultStyle.fontColor = "#fff";
-      } else {
-        style.defaultStyle.fontColor = "#000";
-      }
-    }
-  });
+    // When using the earth map layer, change the font color from black to white, since the map is mostly dark colors.
+    map.events.on({
+        "changelayer": function () {
+            if (earthLayer.visibility) {
+                style.defaultStyle.fontColor = "#fff";
+            } else {
+                style.defaultStyle.fontColor = "#000";
+            }
+        }
+    });
 
-  // Extract any arguments from URL
-  var query;
-  arguments = parseUrl();
-  switch(arguments[0]) {
-  case "trip":
-    filter_trid = arguments[1];
-    break;
-  case "user":
-    filter_user = arguments[1];
-    break;
-  case "query":
-  case "airport":
-  case "airline":
-    query = arguments[1];
-  }
-
-  initHintTextboxes();
-  new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
-                        {afterUpdateElement : getQuickSearchId,
-                         indicator: ajaxstatus, minChars: 2});
-
-  // Are we viewing another user's flights or trip?
-  if(filter_user != "0" || filter_trid != 0) {
-    demo_mode = false;
-    $("loginstatus").style.display = 'inline';
-    if(filter_trid != 0) {
-      $("filter_tripselect").style.display = 'none';
-    }
-  } else {
-    $("news").style.display = 'inline';
-    $("quicksearch").style.display = 'inline';
-
-    // Nope, set up hinting and autocompletes for editor
-    ac_airport = [ "src_ap", "src_ap1", "src_ap2", "src_ap3", "src_ap4",
-		   "dst_ap", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4" ];
-    ac_airline = [ "airline", "airline1", "airline2", "airline3", "airline4" ];
-    ac_plane = [ "plane" ];
-    for(ac = 0; ac < ac_airport.length; ac++) {
-      !function(i){
-        new Ajax.Autocompleter(ac_airport[ac], ac_airport[ac] + "AC", "php/autocomplete.php",
-	        {afterUpdateElement : getSelectedApid,
-           on204 : function(req) { invalidateField(ac_airport[i], true); }});
-      }(ac);
-    }
-    for(ac = 0; ac < ac_airline.length; ac++) {
-      !function(i){
-        new Ajax.Autocompleter(ac_airline[ac], ac_airline[ac] + "AC", "php/autocomplete.php",
-			    {afterUpdateElement : getSelectedAlid,
-           on204 : function(req) { invalidateField(ac_airline[i]); }});
-      }(ac);
-    }
-    for(ac = 0; ac < ac_plane.length; ac++) {
-      !function(i){
-        new Ajax.Autocompleter(ac_plane[ac], ac_plane[ac] + "AC", "php/autocomplete.php",
-          {afterUpdateElement : getSelectedPlid,
-           on204 : function(req) { invalidateField(ac_plane[i]); }});
-      }(ac);
+    // Extract any arguments from URL
+    var query;
+    arguments = parseUrl();
+    switch (arguments[0]) {
+        case "trip":
+            filter_trid = arguments[1];
+            break;
+        case "user":
+            filter_user = arguments[1];
+            break;
+        case "query":
+        case "airport":
+        case "airline":
+            query = arguments[1];
     }
 
-    // No idea why this is needed, but FF3 disables random buttons without it...
-    for(i=0;i<document.forms['inputform'].elements.length;i++){
-      document.forms['inputform'].elements[i].disabled=false;
+    initHintTextboxes();
+    new Ajax.Autocompleter("qs", "qsAC", "/php/autocomplete.php",
+        {
+            afterUpdateElement: getQuickSearchId,
+            indicator: ajaxstatus, minChars: 2
+        });
+
+    // Are we viewing another user's flights or trip?
+    if (filter_user != "0" || filter_trid != 0) {
+        demo_mode = false;
+        $("loginstatus").style.display = 'inline';
+        if (filter_trid != 0) {
+            $("filter_tripselect").style.display = 'none';
+        }
+    } else {
+        $("news").style.display = 'inline';
+        $("quicksearch").style.display = 'inline';
+
+        // Nope, set up hinting and autocompletes for editor
+        ac_airport = ["src_ap", "src_ap1", "src_ap2", "src_ap3", "src_ap4",
+            "dst_ap", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4"];
+        ac_airline = ["airline", "airline1", "airline2", "airline3", "airline4"];
+        ac_plane = ["plane"];
+        for (ac = 0; ac < ac_airport.length; ac++) {
+            !function (i) {
+                new Ajax.Autocompleter(ac_airport[ac], ac_airport[ac] + "AC", "php/autocomplete.php",
+                    {
+                        afterUpdateElement: getSelectedApid,
+                        on204: function (req) {
+                            invalidateField(ac_airport[i], true);
+                        }
+                    });
+            }(ac);
+        }
+        for (ac = 0; ac < ac_airline.length; ac++) {
+            !function (i) {
+                new Ajax.Autocompleter(ac_airline[ac], ac_airline[ac] + "AC", "php/autocomplete.php",
+                    {
+                        afterUpdateElement: getSelectedAlid,
+                        on204: function (req) {
+                            invalidateField(ac_airline[i]);
+                        }
+                    });
+            }(ac);
+        }
+        for (ac = 0; ac < ac_plane.length; ac++) {
+            !function (i) {
+                new Ajax.Autocompleter(ac_plane[ac], ac_plane[ac] + "AC", "php/autocomplete.php",
+                    {
+                        afterUpdateElement: getSelectedPlid,
+                        on204: function (req) {
+                            invalidateField(ac_plane[i]);
+                        }
+                    });
+            }(ac);
+        }
+
+        // No idea why this is needed, but FF3 disables random buttons without it...
+        for (i = 0; i < document.forms['inputform'].elements.length; i++) {
+            document.forms['inputform'].elements[i].disabled = false;
+        }
+        for (i = 0; i < document.forms['multiinputform'].elements.length; i++) {
+            document.forms['multiinputform'].elements[i].disabled = false;
+        }
+        $('b_less').disabled = true;
+
+        map.zoomTo(2);
     }
-    for(i=0;i<document.forms['multiinputform'].elements.length;i++){
-      document.forms['multiinputform'].elements[i].disabled=false;
+
+    OpenLayers.Util.alphaHack = function () {
+        return false;
+    };
+
+    if (query) {
+        xmlhttpPost(URL_ROUTES, 0, query);
+    } else {
+        xmlhttpPost(URL_MAP, 0, true);
     }
-    $('b_less').disabled = true;
-
-    map.zoomTo(2);
-  }
-
-  OpenLayers.Util.alphaHack = function() { return false; };
-
-  if(query) {
-    xmlhttpPost(URL_ROUTES, 0, query);
-  } else {
-    xmlhttpPost(URL_MAP, 0, true);
-  }
 
 }
 
 function clusterRadius(feature) {
   var radius = feature.attributes.count * 5;
-  if(radius > 29) radius = 29;
+  if(radius > 29) {
+      radius = 29;
+  }
   return radius;
 }
 
@@ -389,8 +466,8 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   }
   var features = [];
   for(i = 0; i < paths.length; i++) {
-    features.push(new OpenLayers.Feature.Vector(projectedLine(paths[i]),
-						{count: count, color: color, stroke: stroke}));
+      features.push(new OpenLayers.Feature.Vector(projectedLine(paths[i]),
+          {count: count, color: color, stroke: stroke}));
   }
   return features;
 }
@@ -473,24 +550,24 @@ function onAirportSelect(airport) {
       "<a href='#' onclick='JavaScript:selectAirport(" + apid + ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" + gt.gettext("Select this airport") + "' id='popup" + apid + "' style='visibility: hidden'></a>";
 
     if(coreid == 0) {
-      // Detailed flights accessible only if...
-      // 1. user is logged in, or
-      // 2. system is in "demo mode", or
-      // 3. privacy is set to (O)pen
-      if( logged_in || demo_mode || privacy == "O") {
-	// Get list of user flights
-	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURIQuote(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
-      }
+        // Detailed flights accessible only if...
+        // 1. user is logged in, or
+        // 2. system is in "demo mode", or
+        // 3. privacy is set to (O)pen
+        if (logged_in || demo_mode || privacy == "O") {
+            // Get list of user flights
+            desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\"," + apid + ", \"" + encodeURIQuote(airport.attributes.desc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List my flights") + "'></a>";
+        }
     } else {
-      if(code.length == 3) {
-	// Get list of airport routes
-	if(coreid.startsWith("L")) {
-	  idstring = coreid + "," + apid;
-	} else {
-	  idstring = "R" + apid + "," + coreid;
-	}
-	desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURIQuote(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
-      }
+        if (code.length == 3) {
+            // Get list of airport routes
+            if (coreid.startsWith("L")) {
+                idstring = coreid + "," + apid;
+            } else {
+                idstring = "R" + apid + "," + coreid;
+            }
+            desc += " <a href='#' onclick='JavaScript:xmlhttpPost(\"" + URL_FLIGHTS + "\",\"" + idstring + "\", \"" + encodeURIQuote(rdesc) + "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("List routes") + "'></a> ";
+        }
     }
     if(code.length == 3) {
       // IATA airport, we know its routes
@@ -499,33 +576,35 @@ function onAirportSelect(airport) {
     desc += " <a href='#' onclick='JavaScript:popNewAirport(null, " + apid + ")'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("View airport details") + "'></a>";
     desc += "</span>" + airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
   } else {
-    // Cluster, generate clickable list of members in reverse order (most flights first)
-    desc = "<b>" + gt.gettext("Airports") + "</b><br>";
-    edit = isEditMode() ? "true" : "false";
-    cmax = airport.cluster.length - 1;
-    for(c = cmax; c >= 0; c--) {
-      if(c < cmax) {
-	desc += ", ";
-	if((cmax-c) % 6 == 0) desc += "<br>";
+      // Cluster, generate clickable list of members in reverse order (most flights first)
+      desc = "<b>" + gt.gettext("Airports") + "</b><br>";
+      edit = isEditMode() ? "true" : "false";
+      cmax = airport.cluster.length - 1;
+      for (c = cmax; c >= 0; c--) {
+          if (c < cmax) {
+              desc += ", ";
+              if ((cmax - c) % 6 == 0) {
+                  desc += "<br>";
+              }
+          }
+          desc += "<a href='#' onclick='JavaScript:selectAirport(" + airport.cluster[c].attributes.apid + ","
+              + edit + ")'>" + airport.cluster[c].attributes.code + "</a>";
       }
-      desc += "<a href='#' onclick='JavaScript:selectAirport(" + airport.cluster[c].attributes.apid + ","
-	+ edit + ")'>" + airport.cluster[c].attributes.code + "</a>";
-    }
   }
 
   desc = "<img src=\"/img/close.gif\" onclick=\"JavaScript:closePopup(true);\" width=17 height=17> " + desc;
   closePopup(false);
 
   if (airport.popup == null) {
-    airport.popup = new OpenLayers.Popup.FramedCloud("airport",
-					     airport.geometry.getBounds().getCenterLonLat(),
-					     new OpenLayers.Size(200,80),
-					     desc, null, false);
-    airport.popup.minSize = new OpenLayers.Size(200,80);
-    airport.popup.overflow = "auto";
+      airport.popup = new OpenLayers.Popup.FramedCloud("airport",
+          airport.geometry.getBounds().getCenterLonLat(),
+          new OpenLayers.Size(200, 80),
+          desc, null, false);
+      airport.popup.minSize = new OpenLayers.Size(200, 80);
+      airport.popup.overflow = "auto";
 
-    map.addPopup(airport.popup);
-    airport.popup.show();
+      map.addPopup(airport.popup);
+      airport.popup.show();
   } else {
     airport.popup.setContentHTML(desc);
     airport.popup.toggle();
@@ -562,452 +641,454 @@ function toggleControl(element) {
 }
 
 function xmlhttpPost(strURL, id, param) {
-  var xmlHttpReq = false;
-  var self = this;
-  var query = "";
+    var xmlHttpReq = false;
+    var self = this;
+    var query = "";
 
-  if(! initializing) closeNews();
+    if (!initializing) closeNews();
 
-  // Mozilla/Safari
-  if (window.XMLHttpRequest) {
-    self.xmlHttpReq = new XMLHttpRequest();
-  }
-  // IE
-  else if (window.ActiveXObject) {
-    self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  self.xmlHttpReq.open('POST', strURL, true);
-  self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  self.xmlHttpReq.onreadystatechange = function() {
-    if (self.xmlHttpReq.readyState == 4) {
-
-      // Process results of query
-
-      // First make sure session is still up
-      // (note: sessionfree PHPs do not return this string)
-      if(self.xmlHttpReq.responseText.substring(0, 13) == "Not logged in") {
-	logout(self.xmlHttpReq.responseText);
-	return;
-      }
-
-      if(strURL == URL_FLIGHTS) {
-	switch(param) {
-	  case "COPY":
-	  case "EDIT":
-	    editFlight(self.xmlHttpReq.responseText, param);
-	    break;
-
-	  case "RELOAD":
-	    param = lastDesc;
-	    // param contains previously escaped semi-random HTML title
-	    // fallthru
-
-	  case "MAP":
-	  default:
-	  listFlights(self.xmlHttpReq.responseText, unescape(param), id);
-	    break;
-	}
-	$("ajaxstatus").style.display = 'none';
-      }
-      if(strURL == URL_GETCODE) {
-	var cols = self.xmlHttpReq.responseText.split(";");
-	switch(param) {
-	case 'qs':
-	  var alid = cols[0];
-	  if(alid != "" && alid != 0) {
-	    if(cols[0].indexOf(":") > 0) {
-	      $('qsid').value = cols[0].split(":")[1]; // airport
-	    } else {
-	      $('qsid').value = "L" + cols[0]; // airline
-	    }
-	    $('qs').value = cols[1];
-	    $('qs').style.color = '#000000';
-	    $('qsgo').disabled = false;
-	    $('qsgo').focus();
-	  } else {
-	    $('qsid').value = 0;
-	    $('qs').style.color = '#FF0000';
-	    $('qsgo').disabled = true;
-	  }
-	  break;
-
-	case 'airline':
-	case 'airline1':
-	case 'airline2':
-	case 'airline3':
-	case 'airline4':
-	  var alid = cols[0];
-	  if(alid != "" && alid != 0) {
-	    $(param + 'id').value = cols[0];
-	    $(param).value = cols[1];
-	    $(param).style.color = '#000000';
-	    replicateSelection(param);
-	    markAsChanged(true); // new airline, force refresh on save
-	  } else {
-	    $(param).style.color = '#FF0000';
-	    $(param + 'id').value = 0;
-	  }
-	  break;
-
-	case 'src_ap':
-	case 'dst_ap':
-	case 'src_ap1':
-	case 'dst_ap1':
-	case 'src_ap2':
-	case 'dst_ap2':
-	case 'src_ap3':
-	case 'dst_ap3':
-	case 'src_ap4':
-	case 'dst_ap4':
-	  var apdata = cols[0];
-	  var apid = apdata.split(":")[1];
-	  if(apid && apid != 0) {
-	    $(param + 'id').value = apdata;
-	    $(param).value = cols[1];
-	    $(param).style.color = '#000000';
-	    replicateSelection(param);
-	    markAirport(param); // new airport, force refresh on save
-	    markAsChanged(true);
-	  } else {
-	    invalidateField(param);
-	  }
-	  break;
-	}
-      }
-      if(strURL == URL_LOGIN) {
-	login(self.xmlHttpReq.responseText, param);
-      }
-      if(strURL == URL_LOGOUT) {
-	logout(self.xmlHttpReq.responseText);
-      }
-      if(strURL == URL_MAP || strURL == URL_ROUTES) {
-	var str = self.xmlHttpReq.responseText;
-  if(str.substring(0,6) == "Signup") {
-    window.location = "/html/settings?new=yes&vbulletin=true"
-  }
-	if(str.substring(0,5) == "Error") {
-	  $("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
-	  $("ajaxstatus").style.display = 'none';
-	  openPane("result");
-	} else {
-	  // Zoom map to fit when first loading another's flights/trip
-	  updateMap(str, strURL);
-	  if(! logged_in && ! demo_mode && initializing) {
-	    closePane();
-	    var extent = airportLayer.getDataExtent();
-	    if(extent) map.zoomToExtent(extent);
-	  }
-	  if(strURL == URL_MAP) {
-	    if(param) {
-	      updateFilter(str);
-	    }
-	    $("maptitle").innerHTML = getMapTitle(true);
-	  } else {
-	    updateFilter(str);
-	    closePopup(true);
-	    $('qs').value = $('qs').hintText;
-	    $('qs').style.color = '#888';
-	    $('qsid').value = 0;
-	    $('qsgo').disabled = true;
-	    if(filter_alid == 0) {
-        var extent = airportLayer.getDataExtent();
-	      if(extent) map.zoomToExtent(extent);
-	    }
-	  }
-
-	  // Map now completely drawn for the first time
-	  if(initializing) {
-	    initializing = false;
-	  }
-	}
-      }
-      if(strURL == URL_STATS) {
-	showStats(self.xmlHttpReq.responseText);
-	$("ajaxstatus").style.display = 'none';
-      }
-      if(strURL == URL_TOP10) {
-	showTop10(self.xmlHttpReq.responseText);
-	$("ajaxstatus").style.display = 'none';
-      }
-      if(strURL == URL_SUBMIT) {
-	var result = self.xmlHttpReq.responseText.split(";");
-	code = result[0];
-	text = result[1];
-	if(getCurrentPane() == "multiinput") {
-	  $("multiinput_status").innerHTML = '<B>' + text + '</B>';
-	} else {
-	  $("input_status").innerHTML = '<B>' + text + '</B>';
-	}
-	setCommitAllowed(false);
-
-	// Something went wrong, so we just abort
-	if(code == CODE_FAIL) {
-	  return;
-	}
-
-	// If flight was successfully deleted...
-	if(code == CODE_DELETEOK) {
-
-	  //... and we're in input mode, move to another flight
-	  if(getCurrentPane() == "input") {
-	    // Last flight deleted
-	    if(fidList.length == 1) {
-	      clearStack();
-	    } else {
-	      // Remove current flight
-	      fidList.splice(fidPtr, 1);
-
-	      // Edit next if you can
-	      if(fidPtr < fidList.length) {
-		editPointer(0);
-	      } else {
-		// Move back
-		editPointer(-1);
-	      }
-	    }
-	  } else {
-	    // Not in edit mode, so reload currently displayed list of flights
-	    xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
-	  }
-	  majorEdit = true; // trigger map refresh
-	}
-
-	if(code == CODE_EDITOK || code == CODE_ADDOK) {
-	  // If adding new flights (not editing), swap last destination to be new source and focus on date
-	  if(getCurrentPane() == "input") {
-	    if($("addflighttitle").style.display == 'inline') {
-	      swapAirports(false);
-	      document.forms['inputform'].seat.value = "";
-	      document.forms['inputform'].seat_type.selectedIndex = 0;
-	      document.forms['inputform'].src_date.focus();
-	    }
-	  } else {
-	    clearInput(); // Always clear multiview
-	  }
-	}
-
-	// A change that affected the map was made, so redraw
-	if(majorEdit) {
-	  if(code == CODE_DELETEOK) {
-	    setTimeout('refresh(true)', 1000); // wait for earlier ops to complete...
-	  } else {
-	    refresh(true); // ...else do it right now
-	  }
-	} else {
-	  $("ajaxstatus").style.display = 'none';
-	}
-	majorEdit = false;
-      } // end URL_SUBMIT
+    // Mozilla/Safari
+    if (window.XMLHttpRequest) {
+        self.xmlHttpReq = new XMLHttpRequest();
     }
-  }
-  // End result processing
-
-  // Start query string generation
-  switch(strURL) {
-
-  case URL_SUBMIT:
-    var inputform = document.forms['inputform'];
-
-    // Deleting needs only the fid, and can be run without the inputform
-    if(param != "DELETE") {
-      if(getCurrentPane() == "multiinput") {
-	query = 'multi=' + multiinput_rows + '&';
-	var indexes = [];
-	for(i = 1; i <= multiinput_rows; i++) {
-	  indexes.push(i);
-	}
-      } else {
-	var indexes = [ "" ];
-      }
-      for(i = 0; i < indexes.length; i++) {
-	var src_date = $('src_date' + indexes[i]).value;
-        if(! re_date.test(src_date)) {
-	  alert(gt.gettext("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."));
-	  $('src_date' + indexes[i]).focus();
-	  return;
-	}
-	var src_apid = getApid('src_ap' + indexes[i]);
-	if(! src_apid || src_apid == "0") {
-	  alert(gt.gettext("Please enter a valid source airport."));
-	  $('src_ap' + indexes[i]).focus();
-	  return;
-	}
-	var dst_apid = getApid('dst_ap' + indexes[i]);
-	if(! dst_apid || dst_apid == "0") {
-	  alert(gt.gettext("Please enter a valid destination airport."));
-	  $('dst_ap' + indexes[i]).focus();
-	  return;
-	}
-	var alid = $('airline' + indexes[i] + 'id').value;
-	var airline = $('airline' + indexes[i]).value.trim();
-	if(! alid || alid == 0) {
-	  if(airline == "" || airline == $('airline').hintText) {
-	    alid = "-1"; // UNKNOWN
-	  } else {
-	    mode = getMode();
-	    if(confirm(Gettext.strargs(gt.gettext("'%1' not found in %2 database. Do you want to add it as a new %2 company?"), [airline, modeoperators[mode], modeoperators[mode]]))) {
-	      popNewAirline('airline' + indexes[i], airline, mode);
-	    } else {
-	      $('airline' + indexes[i]).focus();
-	    }
-	    return;
-	  }
-	}
-	query +='alid' + indexes[i] + '=' + encodeURIComponent(alid) + '&' +
-	  'src_date' + indexes[i] + '=' + encodeURIComponent(src_date) + '&' +
-	  'src_apid' + indexes[i] + '=' + encodeURIComponent(src_apid) + '&' +
-	  'dst_apid' + indexes[i] + '=' + encodeURIComponent(dst_apid) + '&';
-      }
-      if(getCurrentPane() == "input") {
-	src_time = $('src_time').value;
-	if(src_time != "" && src_time != "HH:MM") {
-	  if(! RE_TIME.test(src_time)) {
-	    alert(gt.gettext("Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."));
-	    $('src_time').focus();
-	    return;
-	  }
-	  query += 'src_time=' + encodeURIComponent(src_time) + '&';
-	}
-
-	var type = inputform.seat_type.value;
-	if(type == "-") type = "";
-	var myClass = radioValue(inputform.myClass);
-	var reason = radioValue(inputform.reason);
-	var plane = inputform.plane.value;
-	if(plane == gt.gettext("Enter plane model")) {
-	  plane = "";
-	}
-	var trid = 0;
-	if(inputform.trips) {
-	  trid = inputform.trips[inputform.trips.selectedIndex].value.split(";")[0];
-	}
-	if(trid == 0) trid = "NULL";
-	var registration = inputform.registration.value;
-	var note = inputform.note.value;
-	var duration = $('duration').value;
-	if(! RE_TIME.test(duration)) {
-	  alert(gt.gettext("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes. You can blank the duration to have it recalculated automatically."));
-	  $('duration').focus();
-	  return;
-	}
-	var distance = $('distance').value;
-	if(! re_numeric.test(distance)) {
-	  alert(gt.gettext("Please enter flight distance as miles, with no fractional parts. You can blank the distance to have it re-calculated automatically."));
-	  $('distance').focus();
-	  return;
-	}
-	var number = inputform.number.value;
-	var seat = inputform.seat.value;
-	var mode = inputform.mode.value;
-      } else {
-	var number = "";
-	var seat = "";
-	var type = "";
-	var myClass = "";
-	var reason = "";
-	var plane = "";
-	var trid = "NULL";
-	var registration = "";
-	var note = "";
-	var duration = "";
-	var distance = "";
-	var mode = "F";
-      }
+    // IE
+    else if (window.ActiveXObject) {
+        self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    query += 'duration=' + encodeURIComponent(duration) + '&' +
-      'distance=' + encodeURIComponent(distance) + '&' +
-      'number=' + encodeURIComponent(number) + '&' +
-      'seat=' + encodeURIComponent(seat) + '&' +
-      'type=' + encodeURIComponent(type) + '&' +
-      'class=' + encodeURIComponent(myClass) + '&' +
-      'reason=' + encodeURIComponent(reason) + '&' +
-      'registration=' + encodeURIComponent(registration) + '&' +
-      'note=' + encodeURIComponent(note) + '&' +
-      'plane=' + encodeURIComponent(plane) + '&' +
-      'trid=' + encodeURIComponent(trid) + '&' +
-      'mode=' + encodeURIComponent(mode) + '&' +
-      'fid=' + encodeURIComponent(fid) + '&' +
-      'param=' + encodeURIComponent(param);
-    if(getCurrentPane() == "multiinput") {
-      $("multiinput_status").innerHTML = '<B>Saving...</B>';
-    } else {
-      $("input_status").innerHTML = '<B>Saving...</B>';
-    }
-    break;
+    self.xmlHttpReq.open('POST', strURL, true);
+    self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    self.xmlHttpReq.onreadystatechange = function () {
+        if (self.xmlHttpReq.readyState == 4) {
 
-  case URL_LOGIN:
-    $("ajaxstatus").style.display = 'inline';
-    var name = document.forms['login'].name.value;
-    var pw = document.forms['login'].pw.value;
-    var challenge = document.forms['login'].challenge.value;
-    hash = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
-    legacy_hash = hex_md5(challenge + hex_md5(pw + name));
-    query = 'name=' + encodeURIComponent(name) + '&pw=' + encodeURIComponent(hash) + '&lpw=' + encodeURIComponent(legacy_hash) + "&challenge=" + encodeURIComponent(challenge);
-    break;
+            // Process results of query
 
-  case URL_GETCODE:
-    query = encodeURIComponent(param) + '=' + encodeURIComponent(id) + '&quick=true&mode=' + getMode();
-    break;
+            // First make sure session is still up
+            // (note: sessionfree PHPs do not return this string)
+            if (self.xmlHttpReq.responseText.substring(0, 13) == "Not logged in") {
+                logout(self.xmlHttpReq.responseText);
+                return;
+            }
 
-  case URL_LOGOUT:
-    // no parameters needed
-    break;
+            if (strURL == URL_FLIGHTS) {
+                switch (param) {
+                    case "COPY":
+                    case "EDIT":
+                        editFlight(self.xmlHttpReq.responseText, param);
+                        break;
 
-  case URL_FLIGHTS:
-    if(param == "RELOAD") {
-      query = lastQuery;
-      break;
-    }
-    // ...else fallthru and generate new query
+                    case "RELOAD":
+                        param = lastDesc;
+                    // param contains previously escaped semi-random HTML title
+                    // fallthru
 
-  // URL_MAP, URL_ROUTES, URL_FLIGHTS, URL_STATS, URL_TOP10
-  default:
-    $("ajaxstatus").style.display = 'inline';
-    var form = document.forms['filterform'];
-    if(! initializing && form.Trips) {
-      filter_trid = form.Trips.value.split(";")[0];
-    }
-    filter_alid = form.Airlines.value.split(";")[0];
-    filter_year = form.Years.value;
-    query = 'user=' + encodeURIComponent(filter_user) + '&' +
-      'trid=' + encodeURIComponent(filter_trid) + '&' +
-      'alid=' + encodeURIComponent(filter_alid) + '&' +
-      'year=' + encodeURIComponent(filter_year) + '&' +
-      'param=' + encodeURIComponent(param);
-    guestpw = $('guestpw');
-    if(guestpw) {
-      query += "&guestpw=" + hex_md5(guestpw.value + filter_user.toLowerCase());
-    }
-    filter_extra_key = form.Extra.value;
-    if(filter_extra_key != "" && $('filter_extra_value')) {
-      filter_extra_value = $('filter_extra_value').value;
-      query += '&xkey=' + filter_extra_key +
-	'&xvalue=' + filter_extra_value;
-    }
-    if(strURL == URL_ROUTES) {
-      query += '&apid=' + encodeURIComponent(id);
-    }
-    if(strURL == URL_FLIGHTS) {
-      switch(param) {
-      case "EDIT":
-      case "COPY":
-	query += '&fid=' + encodeURIComponent(id);
-	break;
+                    case "MAP":
+                    default:
+                        listFlights(self.xmlHttpReq.responseText, unescape(param), id);
+                        break;
+                }
+                $("ajaxstatus").style.display = 'none';
+            }
+            if (strURL == URL_GETCODE) {
+                var cols = self.xmlHttpReq.responseText.split(";");
+                switch (param) {
+                    case 'qs':
+                        var alid = cols[0];
+                        if (alid != "" && alid != 0) {
+                            if (cols[0].indexOf(":") > 0) {
+                                $('qsid').value = cols[0].split(":")[1]; // airport
+                            } else {
+                                $('qsid').value = "L" + cols[0]; // airline
+                            }
+                            $('qs').value = cols[1];
+                            $('qs').style.color = '#000000';
+                            $('qsgo').disabled = false;
+                            $('qsgo').focus();
+                        } else {
+                            $('qsid').value = 0;
+                            $('qs').style.color = '#FF0000';
+                            $('qsgo').disabled = true;
+                        }
+                        break;
 
-      default:
-	query += '&id=' + encodeURIComponent(id);
-	lastQuery = query;
-	lastDesc = param;
-      }
+                    case 'airline':
+                    case 'airline1':
+                    case 'airline2':
+                    case 'airline3':
+                    case 'airline4':
+                        var alid = cols[0];
+                        if (alid != "" && alid != 0) {
+                            $(param + 'id').value = cols[0];
+                            $(param).value = cols[1];
+                            $(param).style.color = '#000000';
+                            replicateSelection(param);
+                            markAsChanged(true); // new airline, force refresh on save
+                        } else {
+                            $(param).style.color = '#FF0000';
+                            $(param + 'id').value = 0;
+                        }
+                        break;
+
+                    case 'src_ap':
+                    case 'dst_ap':
+                    case 'src_ap1':
+                    case 'dst_ap1':
+                    case 'src_ap2':
+                    case 'dst_ap2':
+                    case 'src_ap3':
+                    case 'dst_ap3':
+                    case 'src_ap4':
+                    case 'dst_ap4':
+                        var apdata = cols[0];
+                        var apid = apdata.split(":")[1];
+                        if (apid && apid != 0) {
+                            $(param + 'id').value = apdata;
+                            $(param).value = cols[1];
+                            $(param).style.color = '#000000';
+                            replicateSelection(param);
+                            markAirport(param); // new airport, force refresh on save
+                            markAsChanged(true);
+                        } else {
+                            invalidateField(param);
+                        }
+                        break;
+                }
+            }
+            if (strURL == URL_LOGIN) {
+                login(self.xmlHttpReq.responseText, param);
+            }
+            if (strURL == URL_LOGOUT) {
+                logout(self.xmlHttpReq.responseText);
+            }
+            if (strURL == URL_MAP || strURL == URL_ROUTES) {
+                var str = self.xmlHttpReq.responseText;
+                if (str.substring(0, 6) == "Signup") {
+                    window.location = "/html/settings?new=yes&vbulletin=true"
+                }
+                if (str.substring(0, 5) == "Error") {
+                    $("result").innerHTML = "<h4>" + str.split(';')[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
+                    $("ajaxstatus").style.display = 'none';
+                    openPane("result");
+                } else {
+                    // Zoom map to fit when first loading another's flights/trip
+                    updateMap(str, strURL);
+                    if (!logged_in && !demo_mode && initializing) {
+                        closePane();
+                        var extent = airportLayer.getDataExtent();
+                        if (extent) {
+                            map.zoomToExtent(extent);
+                        }
+                    }
+                    if (strURL == URL_MAP) {
+                        if (param) {
+                            updateFilter(str);
+                        }
+                        $("maptitle").innerHTML = getMapTitle(true);
+                    } else {
+                        updateFilter(str);
+                        closePopup(true);
+                        $('qs').value = $('qs').hintText;
+                        $('qs').style.color = '#888';
+                        $('qsid').value = 0;
+                        $('qsgo').disabled = true;
+                        if (filter_alid == 0) {
+                            var extent = airportLayer.getDataExtent();
+                            if (extent) map.zoomToExtent(extent);
+                        }
+                    }
+
+                    // Map now completely drawn for the first time
+                    if (initializing) {
+                        initializing = false;
+                    }
+                }
+            }
+            if (strURL == URL_STATS) {
+                showStats(self.xmlHttpReq.responseText);
+                $("ajaxstatus").style.display = 'none';
+            }
+            if (strURL == URL_TOP10) {
+                showTop10(self.xmlHttpReq.responseText);
+                $("ajaxstatus").style.display = 'none';
+            }
+            if (strURL == URL_SUBMIT) {
+                var result = self.xmlHttpReq.responseText.split(";");
+                code = result[0];
+                text = result[1];
+                if (getCurrentPane() == "multiinput") {
+                    $("multiinput_status").innerHTML = '<B>' + text + '</B>';
+                } else {
+                    $("input_status").innerHTML = '<B>' + text + '</B>';
+                }
+                setCommitAllowed(false);
+
+                // Something went wrong, so we just abort
+                if (code == CODE_FAIL) {
+                    return;
+                }
+
+                // If flight was successfully deleted...
+                if (code == CODE_DELETEOK) {
+
+                    //... and we're in input mode, move to another flight
+                    if (getCurrentPane() == "input") {
+                        // Last flight deleted
+                        if (fidList.length == 1) {
+                            clearStack();
+                        } else {
+                            // Remove current flight
+                            fidList.splice(fidPtr, 1);
+
+                            // Edit next if you can
+                            if (fidPtr < fidList.length) {
+                                editPointer(0);
+                            } else {
+                                // Move back
+                                editPointer(-1);
+                            }
+                        }
+                    } else {
+                        // Not in edit mode, so reload currently displayed list of flights
+                        xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
+                    }
+                    majorEdit = true; // trigger map refresh
+                }
+
+                if (code == CODE_EDITOK || code == CODE_ADDOK) {
+                    // If adding new flights (not editing), swap last destination to be new source and focus on date
+                    if (getCurrentPane() == "input") {
+                        if ($("addflighttitle").style.display == 'inline') {
+                            swapAirports(false);
+                            document.forms['inputform'].seat.value = "";
+                            document.forms['inputform'].seat_type.selectedIndex = 0;
+                            document.forms['inputform'].src_date.focus();
+                        }
+                    } else {
+                        clearInput(); // Always clear multiview
+                    }
+                }
+
+                // A change that affected the map was made, so redraw
+                if (majorEdit) {
+                    if (code == CODE_DELETEOK) {
+                        setTimeout('refresh(true)', 1000); // wait for earlier ops to complete...
+                    } else {
+                        refresh(true); // ...else do it right now
+                    }
+                } else {
+                    $("ajaxstatus").style.display = 'none';
+                }
+                majorEdit = false;
+            } // end URL_SUBMIT
+        }
     }
-    if(strURL == URL_TOP10) {
-      if(param) {
-	query += '&' + param;
-      }
+    // End result processing
+
+    // Start query string generation
+    switch (strURL) {
+
+        case URL_SUBMIT:
+            var inputform = document.forms['inputform'];
+
+            // Deleting needs only the fid, and can be run without the inputform
+            if (param != "DELETE") {
+                if (getCurrentPane() == "multiinput") {
+                    query = 'multi=' + multiinput_rows + '&';
+                    var indexes = [];
+                    for (i = 1; i <= multiinput_rows; i++) {
+                        indexes.push(i);
+                    }
+                } else {
+                    var indexes = [""];
+                }
+                for (i = 0; i < indexes.length; i++) {
+                    var src_date = $('src_date' + indexes[i]).value;
+                    if (!re_date.test(src_date)) {
+                        alert(gt.gettext("Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."));
+                        $('src_date' + indexes[i]).focus();
+                        return;
+                    }
+                    var src_apid = getApid('src_ap' + indexes[i]);
+                    if (!src_apid || src_apid == "0") {
+                        alert(gt.gettext("Please enter a valid source airport."));
+                        $('src_ap' + indexes[i]).focus();
+                        return;
+                    }
+                    var dst_apid = getApid('dst_ap' + indexes[i]);
+                    if (!dst_apid || dst_apid == "0") {
+                        alert(gt.gettext("Please enter a valid destination airport."));
+                        $('dst_ap' + indexes[i]).focus();
+                        return;
+                    }
+                    var alid = $('airline' + indexes[i] + 'id').value;
+                    var airline = $('airline' + indexes[i]).value.trim();
+                    if (!alid || alid == 0) {
+                        if (airline == "" || airline == $('airline').hintText) {
+                            alid = "-1"; // UNKNOWN
+                        } else {
+                            mode = getMode();
+                            if (confirm(Gettext.strargs(gt.gettext("'%1' not found in %2 database. Do you want to add it as a new %2 company?"), [airline, modeoperators[mode], modeoperators[mode]]))) {
+                                popNewAirline('airline' + indexes[i], airline, mode);
+                            } else {
+                                $('airline' + indexes[i]).focus();
+                            }
+                            return;
+                        }
+                    }
+                    query += 'alid' + indexes[i] + '=' + encodeURIComponent(alid) + '&' +
+                        'src_date' + indexes[i] + '=' + encodeURIComponent(src_date) + '&' +
+                        'src_apid' + indexes[i] + '=' + encodeURIComponent(src_apid) + '&' +
+                        'dst_apid' + indexes[i] + '=' + encodeURIComponent(dst_apid) + '&';
+                }
+                if (getCurrentPane() == "input") {
+                    src_time = $('src_time').value;
+                    if (src_time != "" && src_time != "HH:MM") {
+                        if (!RE_TIME.test(src_time)) {
+                            alert(gt.gettext("Please enter times in 24-hour format with a colon between hour and minute, eg. 21:37 for 9:37 PM."));
+                            $('src_time').focus();
+                            return;
+                        }
+                        query += 'src_time=' + encodeURIComponent(src_time) + '&';
+                    }
+
+                    var type = inputform.seat_type.value;
+                    if (type == "-") type = "";
+                    var myClass = radioValue(inputform.myClass);
+                    var reason = radioValue(inputform.reason);
+                    var plane = inputform.plane.value;
+                    if (plane == gt.gettext("Enter plane model")) {
+                        plane = "";
+                    }
+                    var trid = 0;
+                    if (inputform.trips) {
+                        trid = inputform.trips[inputform.trips.selectedIndex].value.split(";")[0];
+                    }
+                    if (trid == 0) trid = "NULL";
+                    var registration = inputform.registration.value;
+                    var note = inputform.note.value;
+                    var duration = $('duration').value;
+                    if (!RE_TIME.test(duration)) {
+                        alert(gt.gettext("Please enter flight duration as hours and minutes with a colon between hour and minute, eg. 5:37 for 5 hours, 37 minutes. You can blank the duration to have it recalculated automatically."));
+                        $('duration').focus();
+                        return;
+                    }
+                    var distance = $('distance').value;
+                    if (!re_numeric.test(distance)) {
+                        alert(gt.gettext("Please enter flight distance as miles, with no fractional parts. You can blank the distance to have it re-calculated automatically."));
+                        $('distance').focus();
+                        return;
+                    }
+                    var number = inputform.number.value;
+                    var seat = inputform.seat.value;
+                    var mode = inputform.mode.value;
+                } else {
+                    var number = "";
+                    var seat = "";
+                    var type = "";
+                    var myClass = "";
+                    var reason = "";
+                    var plane = "";
+                    var trid = "NULL";
+                    var registration = "";
+                    var note = "";
+                    var duration = "";
+                    var distance = "";
+                    var mode = "F";
+                }
+            }
+            query += 'duration=' + encodeURIComponent(duration) + '&' +
+                'distance=' + encodeURIComponent(distance) + '&' +
+                'number=' + encodeURIComponent(number) + '&' +
+                'seat=' + encodeURIComponent(seat) + '&' +
+                'type=' + encodeURIComponent(type) + '&' +
+                'class=' + encodeURIComponent(myClass) + '&' +
+                'reason=' + encodeURIComponent(reason) + '&' +
+                'registration=' + encodeURIComponent(registration) + '&' +
+                'note=' + encodeURIComponent(note) + '&' +
+                'plane=' + encodeURIComponent(plane) + '&' +
+                'trid=' + encodeURIComponent(trid) + '&' +
+                'mode=' + encodeURIComponent(mode) + '&' +
+                'fid=' + encodeURIComponent(fid) + '&' +
+                'param=' + encodeURIComponent(param);
+            if (getCurrentPane() == "multiinput") {
+                $("multiinput_status").innerHTML = '<B>Saving...</B>';
+            } else {
+                $("input_status").innerHTML = '<B>Saving...</B>';
+            }
+            break;
+
+        case URL_LOGIN:
+            $("ajaxstatus").style.display = 'inline';
+            var name = document.forms['login'].name.value;
+            var pw = document.forms['login'].pw.value;
+            var challenge = document.forms['login'].challenge.value;
+            hash = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
+            legacy_hash = hex_md5(challenge + hex_md5(pw + name));
+            query = 'name=' + encodeURIComponent(name) + '&pw=' + encodeURIComponent(hash) + '&lpw=' + encodeURIComponent(legacy_hash) + "&challenge=" + encodeURIComponent(challenge);
+            break;
+
+        case URL_GETCODE:
+            query = encodeURIComponent(param) + '=' + encodeURIComponent(id) + '&quick=true&mode=' + getMode();
+            break;
+
+        case URL_LOGOUT:
+            // no parameters needed
+            break;
+
+        case URL_FLIGHTS:
+            if (param == "RELOAD") {
+                query = lastQuery;
+                break;
+            }
+        // ...else fallthru and generate new query
+
+        // URL_MAP, URL_ROUTES, URL_FLIGHTS, URL_STATS, URL_TOP10
+        default:
+            $("ajaxstatus").style.display = 'inline';
+            var form = document.forms['filterform'];
+            if (!initializing && form.Trips) {
+                filter_trid = form.Trips.value.split(";")[0];
+            }
+            filter_alid = form.Airlines.value.split(";")[0];
+            filter_year = form.Years.value;
+            query = 'user=' + encodeURIComponent(filter_user) + '&' +
+                'trid=' + encodeURIComponent(filter_trid) + '&' +
+                'alid=' + encodeURIComponent(filter_alid) + '&' +
+                'year=' + encodeURIComponent(filter_year) + '&' +
+                'param=' + encodeURIComponent(param);
+            guestpw = $('guestpw');
+            if (guestpw) {
+                query += "&guestpw=" + hex_md5(guestpw.value + filter_user.toLowerCase());
+            }
+            filter_extra_key = form.Extra.value;
+            if (filter_extra_key != "" && $('filter_extra_value')) {
+                filter_extra_value = $('filter_extra_value').value;
+                query += '&xkey=' + filter_extra_key +
+                    '&xvalue=' + filter_extra_value;
+            }
+            if (strURL == URL_ROUTES) {
+                query += '&apid=' + encodeURIComponent(id);
+            }
+            if (strURL == URL_FLIGHTS) {
+                switch (param) {
+                    case "EDIT":
+                    case "COPY":
+                        query += '&fid=' + encodeURIComponent(id);
+                        break;
+
+                    default:
+                        query += '&id=' + encodeURIComponent(id);
+                        lastQuery = query;
+                        lastDesc = param;
+                }
+            }
+            if (strURL == URL_TOP10) {
+                if (param) {
+                    query += '&' + param;
+                }
+            }
     }
-  }
-  //alert(strURL + ":" + query);
-  self.xmlHttpReq.send(query);
+    //alert(strURL + ":" + query);
+    self.xmlHttpReq.send(query);
 }
 
 // Set up filter options from database result
@@ -1022,31 +1103,31 @@ function updateFilter(str) {
     $("filter_tripselect").innerHTML = "&nbsp;" + gt.gettext("No trips");
     $("input_trip_select").innerHTML = "&nbsp;" + gt.gettext("No trips. Add one? ");
   } else {
-    var tripSelect = createSelect("Trips", gt.gettext("All trips"), filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
-    $("filter_tripselect").innerHTML = tripSelect;
-    var editTripSelect = document.forms['inputform'].trips;
-    if(editTripSelect) {
+      var tripSelect = createSelect("Trips", gt.gettext("All trips"), filter_trid, trips.split("\t"), SELECT_MAXLEN, "refresh(true)");
+      $("filter_tripselect").innerHTML = tripSelect;
+      var editTripSelect = document.forms['inputform'].trips;
+      if (editTripSelect) {
 
-      // New trip added, so now we need to figure out the newest (highest) trid to find it
-      if(editTripSelect.reselect) {
-	var newestId = 0;
-	var filterTripSelect = document.forms['filterform'].Trips;
-	for(i = 0; i < filterTripSelect.length; i++) {
-	  id = filterTripSelect[i].value.split(";")[0];
-	  if(parseInt(id) > newestId) {
-	    newestId = id;
-	    selected = i;
-	  }
-	}
+          // New trip added, so now we need to figure out the newest (highest) trid to find it
+          if (editTripSelect.reselect) {
+              var newestId = 0;
+              var filterTripSelect = document.forms['filterform'].Trips;
+              for (i = 0; i < filterTripSelect.length; i++) {
+                  id = filterTripSelect[i].value.split(";")[0];
+                  if (parseInt(id) > newestId) {
+                      newestId = id;
+                      selected = i;
+                  }
+              }
+          } else {
+              selected = editTripSelect.selectedIndex;
+          }
       } else {
-	selected = editTripSelect.selectedIndex;
+          selected = null;
       }
-    } else {
-      selected = null;
-    }
-    $("input_trip_select").innerHTML =
-      cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged", selected);
-    document.forms['inputform'].trips[0].text = "Select trip";
+      $("input_trip_select").innerHTML =
+          cloneSelect(document.forms['filterform'].Trips, "trips", "markAsChanged", selected);
+      document.forms['inputform'].trips[0].text = "Select trip";
   }
 
   var airlineSelect = createSelect("Airlines", gt.gettext("All carriers"), filter_alid, airlines.split("\t"), SELECT_MAXLEN, "refresh(true)");
@@ -1084,46 +1165,50 @@ function getMapTitle(closable) {
       break;
     }
     if(alid != "0") {
-      if(text != "") text += ", ";
+      if(text != "") {
+          text += ", ";
+      }
       text += airline + " " + getAirlineMapIcon(alid);
     }
     if(year != "0") {
-      if(text != "") text += ", ";
+      if(text != "") {
+          text += ", ";
+      }
       text += year;
     }
 
   } else {
-    // Demo mode
-    if(demo_mode) {
-      if(alid != "0") {
-	text = Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]) + " " + getAirlineMapIcon(alid);
-      } else {
-	text = gt.gettext("Recently added flights");
-      }
+      // Demo mode
+      if (demo_mode) {
+          if (alid != "0") {
+              text = Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]) + " " + getAirlineMapIcon(alid);
+          } else {
+              text = gt.gettext("Recently added flights");
+          }
 
-    } else {
-      // Viewing another's profile
-      if(trid != "0") {
-	text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
       } else {
-	if(alid != "0") {
-	  if(year != "0") {
-	    text = Gettext.strargs(gt.gettext("%1's flights on %2 in %3"), [filter_user, airline, year]);
-	  } else {
-	    text = Gettext.strargs(gt.gettext("%1's flights on %2"), [filter_user, airline]);
-	  }
-	  text += " " + getAirlineMapIcon(alid);
-	} else {
-	  if(year != "0") {
-	    text = Gettext.strargs(gt.gettext("%1's flights in %2"), [filter_user, year]);
-	  } else {
-	    text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
-	  }
-	}
+          // Viewing another's profile
+          if (trid != "0") {
+              text = tripname + " <a href=\"" + tripurl + "\">\u2197</a>";
+          } else {
+              if (alid != "0") {
+                  if (year != "0") {
+                      text = Gettext.strargs(gt.gettext("%1's flights on %2 in %3"), [filter_user, airline, year]);
+                  } else {
+                      text = Gettext.strargs(gt.gettext("%1's flights on %2"), [filter_user, airline]);
+                  }
+                  text += " " + getAirlineMapIcon(alid);
+              } else {
+                  if (year != "0") {
+                      text = Gettext.strargs(gt.gettext("%1's flights in %2"), [filter_user, year]);
+                  } else {
+                      text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
+                  }
+              }
+          }
+          $("loginstatus").innerHTML = getEliteIcon(elite) + "<b>" + text +
+              "</b> <h6><a href='/'>" + gt.gettext("Home") + "</a></h6>";
       }
-      $("loginstatus").innerHTML = getEliteIcon(elite) + "<b>" + text +
-	"</b> <h6><a href='/'>" + gt.gettext("Home") + "</a></h6>";
-    }
   }
 
   // Tack on the extra filter, if any
@@ -1186,8 +1271,8 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
       selected = " SELECTED";
       // Special case: un-truncated trip name and URL
       if(selectName == "Trips") {
-	tripname = name;
-	tripurl = url;
+          tripname = name;
+          tripurl = url;
       }
     } else {
       selected = "";
@@ -1214,9 +1299,14 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
 function createSelectFromArray(selectName, opts, hook, current) {
   var select = "<select style='width: 100px' id='" + selectName + "' name='" + selectName +
     "' onChange='JavaScript:" + hook + "'>";
-  if(! current) select += "<option value=''>" + gt.gettext("All") + "</option>";
+  if(! current) {
+      select += "<option value=''>" + gt.gettext("All") + "</option>";
+  }
   for (r in opts) {
-    if(r.length > 2) continue; // filter out Prototype.js cruft
+    if(r.length > 2) {
+        // filter out Prototype.js cruft
+        continue;
+    }
     select += "<option value='" + r + "' " + (r == current ? "SELECTED" : "") + ">" + opts[r] + "</option>";
   }
   select += "</select>";
@@ -1301,20 +1391,20 @@ function updateMap(str, url){
     flightTotal = col[0];
     privacy = col[3];
     if(! logged_in) {
-      elite = col[4];
-      editor = col[6];
-      document.forms['login'].challenge.value = col[7];
+        elite = col[4];
+        editor = col[6];
+        document.forms['login'].challenge.value = col[7];
 
-      // Does user have a PHP session open?  Log him in!
-      // Simulate login.php: "1;name;editor;elite"
-      if(col[5] != "demo") {
-	if(flightTotal == "0") {
-	  op = "NEWUSER";
-	} else {
-	  op = "REFRESH";
-	}
-	login('{"status": 1, "name": "' + col[5] + '","editor": "' + col[6] + '","elite": "' + elite + '"}', op);
-      }
+        // Does user have a PHP session open?  Log him in!
+        // Simulate login.php: "1;name;editor;elite"
+        if (col[5] != "demo") {
+            if (flightTotal == "0") {
+                op = "NEWUSER";
+            } else {
+                op = "REFRESH";
+            }
+            login('{"status": 1, "name": "' + col[5] + '","editor": "' + col[6] + '","elite": "' + elite + '"}', op);
+        }
     }
     // Our PHP session has timed out, kick out the user
     if(logged_in && col[5] == "demo") {
@@ -1350,51 +1440,57 @@ function updateMap(str, url){
 
   // New user (or filter setting) with no flights?  Then don't even try to draw
   if(flightTotal != "0") {
-    var rows = flights.split("\t");
-    for (r = 0; r < rows.length; r++) {
-      // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8, mode 9
-      var rCol = rows[r].split(";");
-      if(rCol[8] == "Y") {
-	stroke = "dash";
-      } else {
-	stroke = "solid";
+      var rows = flights.split("\t");
+      for (r = 0; r < rows.length; r++) {
+          // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8, mode 9
+          var rCol = rows[r].split(";");
+          if (rCol[8] == "Y") {
+              stroke = "dash";
+          } else {
+              stroke = "solid";
+          }
+          if (url == URL_ROUTES) {
+              color = COLOR_ROUTE;
+          } else {
+              color = modecolors[rCol[9]];
+              if (!color) {
+                  color = COLOR_NORMAL;
+              }
+          }
+          lineLayer.addFeatures(drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]),
+              parseFloat(rCol[4]), parseFloat(rCol[5]),
+              rCol[6], rCol[7], color, stroke));
       }
-      if(url == URL_ROUTES) {
-	color = COLOR_ROUTE;
-      } else {
-	color = modecolors[rCol[9]];
-	if(!color) color = COLOR_NORMAL;
-      }
-      lineLayer.addFeatures(drawLine(parseFloat(rCol[1]), parseFloat(rCol[2]),
-				     parseFloat(rCol[4]), parseFloat(rCol[5]),
-				     rCol[6], rCol[7], color, stroke));
-    }
   }
 
   // Route maps draw the core airport even if there are no routes
   if(flightTotal != "0" || type == "R") {
-    var rows = airports.split("\t");
-    var airports = Array();
+      var rows = airports.split("\t");
+      var airports = Array();
 
-    // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
-    airportMaxFlights = rows[rows.length - 1].split(";")[4];
-    for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(";");
-      // 0 apdata, 1 name, 2 city, 3 country, 4 count, 5 formatted_name, 6 future
-      if(col[6] == "Y") {
-	opacity = 0.5;
-      } else {
-	opacity = 1;
+      // Airports are ordered from least busy to busiest, so we calibrate the color scale based on the last result
+      airportMaxFlights = rows[rows.length - 1].split(";")[4];
+      for (r = 0; r < rows.length; r++) {
+          var col = rows[r].split(";");
+          // 0 apdata, 1 name, 2 city, 3 country, 4 count, 5 formatted_name, 6 future
+          if (col[6] == "Y") {
+              opacity = 0.5;
+          } else {
+              opacity = 1;
+          }
+          airports.push(drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid));
       }
-      airports.push(drawAirport(airportLayer, col[0], col[1], col[2], col[3], col[4], col[5], opacity, apid));
-    }
-    airportLayer.addFeatures(airports);
+      airportLayer.addFeatures(airports);
   }
 
   // Redraw selection markers if in input mode
   if(getCurrentPane() == "input") {
-    if(input_srcmarker) markAirport("src_ap", true);
-    if(input_dstmarker) markAirport("dst_ap", true);
+    if(input_srcmarker) {
+        markAirport("src_ap", true);
+    }
+    if(input_dstmarker) {
+        markAirport("dst_ap", true);
+    }
   }
 
   $("ajaxstatus").style.display = 'none';
@@ -1433,15 +1529,15 @@ function listFlights(str, desc, id) {
     table.push("<i>" + gt.gettext("No flights found at this airport.") + "</i></span></div>");
   } else {
     if(desc) {
-      desc = desc.replace("Flights:", gt.gettext("Flights:"));
-      desc = desc.replace("routes", gt.gettext("routes"));
-      desc = desc.replace(/\<br\>/g, " &mdash; ")
-      table.push(desc);
-      table.unshift("<span style='float: right'>" + gt.gettext("Export") + " " +
-		      "<input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\", false)'>" +
-		      "<input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\", false)'>" +
-		      "<input type='button' value='GCMap' title='" + gt.gettext("Great Circle Mapper, for image export") + "' align='middle' onclick='JavaScript:exportFlights(\"gcmap\", true)'>" +
-		    "</span>"); // place at front of array
+        desc = desc.replace("Flights:", gt.gettext("Flights:"));
+        desc = desc.replace("routes", gt.gettext("routes"));
+        desc = desc.replace(/\<br\>/g, " &mdash; ")
+        table.push(desc);
+        table.unshift("<span style='float: right'>" + gt.gettext("Export") + " " +
+            "<input type='button' value='CSV' title='" + gt.gettext("Comma-Separated Value, for Excel and data processing") + "' align='middle' onclick='JavaScript:exportFlights(\"export\", false)'>" +
+            "<input type='button' value='KML' title='" + gt.gettext("Keyhole Markup Language, for Google Earth and visualization") + "' align='middle' onclick='JavaScript:exportFlights(\"KML\", false)'>" +
+            "<input type='button' value='GCMap' title='" + gt.gettext("Great Circle Mapper, for image export") + "' align='middle' onclick='JavaScript:exportFlights(\"gcmap\", true)'>" +
+            "</span>"); // place at front of array
     }
     table.push("<table width=100% class=\"sortable\" id=\"apttable\" cellpadding=\"0\" cellspacing=\"0\">");
     table.push("<tr><th class=\"unsortable\"></th><th>" + gt.gettext("From") + "</th><th>" + gt.gettext("To") + "</th><th>" + gt.gettext("Nr.") + "</th><th>" + gt.gettext("Date") + "</th><th class=\"sorttable_numeric\">" + gt.gettext("Distance") + "</th><th>" + gt.gettext("Time") + "</th><th>" + gt.gettext("Vehicle") + "</th>");
@@ -1456,62 +1552,62 @@ function listFlights(str, desc, id) {
 
     var rows = str.split("\n");
     for (r = 0; r < rows.length; r++) {
-      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, airline_code 19, src_time 20, mode 21
-      var col = rows[r].split("\t");
-      var trip = col[17];
-      var seat = col[8];
-      var plane = col[13];
-      var fid = col[12];
-      var code = col[4];
-      var date = col[5];
-      var modeicon = modeicons[col[21]];
-      var modename = modenames[col[21]];
+        // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, airline_code 19, src_time 20, mode 21
+        var col = rows[r].split("\t");
+        var trip = col[17];
+        var seat = col[8];
+        var plane = col[13];
+        var fid = col[12];
+        var code = col[4];
+        var date = col[5];
+        var modeicon = modeicons[col[21]];
+        var modename = modenames[col[21]];
 
-      // Date.parse() doesn't work on YYYY/MM/DD, so we chop it up and use Date.UTC instead (sigh)
-      if(Date.UTC(date.substring(0,4), date.substring(5,7) - 1, date.substring(8,10)) > today) {
-	date = "<I>" + date + "</I>";
-      }
+        // Date.parse() doesn't work on YYYY/MM/DD, so we chop it up and use Date.UTC instead (sigh)
+        if (Date.UTC(date.substring(0, 4), date.substring(5, 7) - 1, date.substring(8, 10)) > today) {
+            date = "<I>" + date + "</I>";
+        }
 
-      // Prepend airline code to numeric/missing flight number
-      if(/^[0-9]*$/.test(code)) {
-	code = col[19] + code;
-      }
-      if(col[14] != "") {
-	plane += " (" + col[14] + ")";
-      }
-      if(logged_in && trip != "") {
-	trip = "<a href=\"#\" onclick=\"JavaScript:editTrip(" + trip + ");\">" + trip + "</a>";
-      }
-      table.push("<tr><td><img src='" + modeicon + "' title='" + modename + "' width=17 height=17></td>" +
-		 "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
-		      "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
-		 "<td>");
-      if(route) {
-	table.push("<a href=\"#\" onclick=\"JavaScript:showAirlineMap(" + col[15] + ");\">" + code + "</a>");
-      } else {
-	table.push(code);
-      }
-      table.push("</td><td>" + date + "</td><td>" + col[6] + "</td><td>" + col[7] + "</td><td>" + plane + "</td>");
-      if(!route) {
-	table.push("<td>" + seat +
-		   "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
-		   "</td><td>" + trip + "</td>");
-      }
-      // Add an ellipsis to the note if we truncate it.
-      var note = col[16];
-      if(note.length > 15) {
-        note = note.substring(0, 15) + "&hellip;";
-      }
-      table.push("<td>" + note + "</td>");
-      if(logged_in && !route) {
-	      table.push("<td>");
-	      table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
-	      table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
-	      table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
-	      table.push("</td>");
-      }
-      table.push("</tr>");
-      fidList.push(fid);
+        // Prepend airline code to numeric/missing flight number
+        if (/^[0-9]*$/.test(code)) {
+            code = col[19] + code;
+        }
+        if (col[14] != "") {
+            plane += " (" + col[14] + ")";
+        }
+        if (logged_in && trip != "") {
+            trip = "<a href=\"#\" onclick=\"JavaScript:editTrip(" + trip + ");\">" + trip + "</a>";
+        }
+        table.push("<tr><td><img src='" + modeicon + "' title='" + modename + "' width=17 height=17></td>" +
+            "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[1] + ");\">" + col[0] + "</a></td>" +
+            "<td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[3] + ");\">" + col[2] + "</a></td>" +
+            "<td>");
+        if (route) {
+            table.push("<a href=\"#\" onclick=\"JavaScript:showAirlineMap(" + col[15] + ");\">" + code + "</a>");
+        } else {
+            table.push(code);
+        }
+        table.push("</td><td>" + date + "</td><td>" + col[6] + "</td><td>" + col[7] + "</td><td>" + plane + "</td>");
+        if (!route) {
+            table.push("<td>" + seat +
+                "</td><td>" + classes[col[10]] + "</td><td>" + reasons[col[11]] +
+                "</td><td>" + trip + "</td>");
+        }
+        // Add an ellipsis to the note if we truncate it.
+        var note = col[16];
+        if (note.length > 15) {
+            note = note.substring(0, 15) + "&hellip;";
+        }
+        table.push("<td>" + note + "</td>");
+        if (logged_in && !route) {
+            table.push("<td>");
+            table.push("<a href='#' onclick='JavaScript:preEditFlight(" + fid + "," + r + ");'><img src='/img/icon_edit.png' width=16 height=16 title='" + gt.gettext("Edit this flight") + "'></a>");
+            table.push("<a href='#' onclick='JavaScript:preCopyFlight(" + fid + ");'><img src='/img/icon_copy.png' width=16 height=16 title='" + gt.gettext("Copy to new flight") + "'></a>");
+            table.push("<a href='#' onclick='JavaScript:deleteFlight(" + fid + ");'><img src='/img/icon_delete.png' width=16 height=16 title='" + gt.gettext("Delete this flight") + "'></a>");
+            table.push("</td>");
+        }
+        table.push("</tr>");
+        fidList.push(fid);
     }
     table.push("</table>");
   }
@@ -1591,21 +1687,21 @@ function showStats(str) {
     table += "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
     var rows = extremes.split(":");
     for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      // 0 desc, 1 code, 2 apid, 3 x, 4 y
-      lat = parseFloat(col[4]).toFixed(2);
-      lon = parseFloat(col[3]).toFixed(2);
-      if(lat < 0) {
-	lat = -lat + "&deg;S";
-      } else {
-	lat += "&deg;N";
-      }
-      if(lon < 0) {
-	lon = -lon + "&deg;W";
-      } else {
-	lon += "&deg;E";
-      }
-      table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[2] + ");\">" + col[1] + "</a> (" + lat + " " + lon + ")</td></tr>";
+        var col = rows[r].split(",");
+        // 0 desc, 1 code, 2 apid, 3 x, 4 y
+        lat = parseFloat(col[4]).toFixed(2);
+        lon = parseFloat(col[3]).toFixed(2);
+        if (lat < 0) {
+            lat = -lat + "&deg;S";
+        } else {
+            lat += "&deg;N";
+        }
+        if (lon < 0) {
+            lon = -lon + "&deg;W";
+        } else {
+            lon += "&deg;E";
+        }
+        table += "<tr><td>" + col[0] + "</td><td><a href=\"#\" onclick=\"JavaScript:selectAirport(" + col[2] + ");\">" + col[1] + "</a> (" + lat + " " + lon + ")</td></tr>";
     }
     table += "</table>";
     bigtable += table + "</td><td style=\"vertical-align: top\">";
@@ -1613,16 +1709,16 @@ function showStats(str) {
     table = "<table style=\"border-spacing: 10px 0px\">";
     table += "<tr><th>" + gt.gettext("Class") + "</th><th>" + gt.gettext("Reason") + "</th><th>" + gt.gettext("Seats") + "</th></tr>";
     table += "<tr>";
-      table += "<td><div id=\"chart_class\"></div></td>";
-      table += "<td><div id=\"chart_reason\"></div></td>";
-      table += "<td><div id=\"chart_seat\"></div></td>";
+    table += "<td><div id=\"chart_class\"></div></td>";
+    table += "<td><div id=\"chart_reason\"></div></td>";
+    table += "<td><div id=\"chart_seat\"></div></td>";
     table += "</tr>";
 
     table += "<tr><th>" + gt.gettext("Class by distance") + "</th><th>" + gt.gettext("Mode") + "</th><th><!-- Empty Cell --></th></tr>";
     table += "<tr>";
-      table += "<td><div id=\"chart_class_distance\"></div></td>";
-      table += "<td><div id=\"chart_mode\"></div></td>";
-      table += "<td><!-- Empty --></td>";
+    table += "<td><div id=\"chart_class_distance\"></div></td>";
+    table += "<td><div id=\"chart_mode\"></div></td>";
+    table += "<td><!-- Empty --></td>";
     table += "</tr>";
     table += "<tr><td>";
     table += "</td><td>";
@@ -1792,7 +1888,7 @@ function editPointer(offset) {
   if(newPtr >= 0 && newPtr < fidList.length) {
     if(hasChanged()) {
       if(!confirm(gt.gettext("Changes made to this flight have not been saved. OK to discard them?"))) {
-	return;
+          return;
       }
     }
     // Load new flight
@@ -1803,8 +1899,8 @@ function editPointer(offset) {
 // Load up parameters of a given flight
 function preEditFlight(fid, idx) {
   fidPtr = idx;
-  $("b_prev").disabled = (fidPtr <= 0 ? true : false);
-  $("b_next").disabled = (fidPtr >= fidList.length - 1 ? true : false);
+  $("b_prev").disabled = (fidPtr <= 0);
+  $("b_next").disabled = (fidPtr >= fidList.length - 1);
   $("editflighttitle").innerHTML = gt.gettext("Loading...");
   xmlhttpPost(URL_FLIGHTS, fid, "EDIT");
 }
@@ -1854,19 +1950,11 @@ function editFlight(str, param) {
 
   var myClass = inputform.myClass;
   for(index = 0; index < myClass.length; index++) {
-    if(myClass[index].value == col[10]) {
-      myClass[index].checked = true;
-    } else {
-      myClass[index].checked = false;
-    }
+    myClass[index].checked = myClass[index].value == col[10];
   }
   var reason = inputform.reason;
   for(index = 0; index < reason.length; index++) {
-    if(reason[index].value == col[11]) {
-      reason[index].checked = true;
-    } else {
-      reason[index].checked = false;
-    }
+    reason[index].checked = reason[index].value == col[11];
   }
 
   // Read these after selectAirport mucks up the dist/duration
@@ -1919,7 +2007,7 @@ function markAsChanged(major) {
   if(major) {
     majorEdit = true;
   }
-  if(! changed) {
+  if(!changed) {
     changed = true;
     setCommitAllowed(true);
     $("input_status").innerHTML = '';
@@ -2204,46 +2292,46 @@ function invalidateField(type, airport=false) {
 // When user has entered flight number, try to match it to airline
 // type: element invoked
 function flightNumberToAirline(type) {
-  markAsChanged();
-  if(type == "NUMBER") {
-    // This is a flight number
-    var flightNumber = document.forms['inputform'].number.value.toUpperCase();
-    document.forms['inputform'].number.value = flightNumber;
+    markAsChanged();
+    if (type == "NUMBER") {
+        // This is a flight number
+        var flightNumber = document.forms['inputform'].number.value.toUpperCase();
+        document.forms['inputform'].number.value = flightNumber;
 
-    // Ignore all-numeric flight numbers
-    if(re_numeric.test(flightNumber)) {
-      return;
+        // Ignore all-numeric flight numbers
+        if (re_numeric.test(flightNumber)) {
+            return;
+        }
+
+        // Does flight number start with IATA or ICAO code?
+        if (flightNumber.length >= 2) {
+            var found = false;
+            var re_iata = /^([a-zA-Z0-9][a-zA-Z0-9]$|[a-zA-Z0-9][a-zA-Z0-9][ 0-9])/; // XX or XX[ ]N...
+            var re_icao = /^([a-zA-Z][a-zA-Z][a-zA-Z]$|[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9])/;  // XXX or XXX[ ]N...
+            if (re_iata.test(flightNumber.substring(0, 3))) {
+                var airlineCode = flightNumber.substring(0, 2);
+            } else if (re_icao.test(flightNumber.substring(0, 4))) {
+                var airlineCode = flightNumber.substring(0, 3);
+            } else {
+                // User has entered something weird, ignore it
+                return;
+            }
+            type = "airline";
+        }
+    } else {
+        // This is a manually entered airline name
+        // Is it blank?
+        if ($(type).value == "") {
+            $(type + 'id').value = 0;
+            return;
+        }
+        airlineCode = $(type).value;
     }
 
-    // Does flight number start with IATA or ICAO code?
-    if(flightNumber.length >= 2) {
-      var found = false;
-      var re_iata = /^([a-zA-Z0-9][a-zA-Z0-9]$|[a-zA-Z0-9][a-zA-Z0-9][ 0-9])/; // XX or XX[ ]N...
-      var re_icao = /^([a-zA-Z][a-zA-Z][a-zA-Z]$|[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9])/;  // XXX or XXX[ ]N...
-      if(re_iata.test(flightNumber.substring(0,3))) {
-	var airlineCode = flightNumber.substring(0, 2);
-      } else if(re_icao.test(flightNumber.substring(0,4))) {
-	var airlineCode = flightNumber.substring(0, 3);
-      } else {
-	// User has entered something weird, ignore it
-	return;
-      }
-      type = "airline";
+    // We've found something that looks like an airline code, so overwrite it into AIRLINE field
+    if (airlineCode) {
+        xmlhttpPost(URL_GETCODE, airlineCode, type);
     }
-  } else {
-    // This is a manually entered airline name
-    // Is it blank?
-    if($(type).value == "") {
-      $(type + 'id').value = 0;
-      return;
-    }
-    airlineCode = $(type).value;
-  }
-
-  // We've found something that looks like an airline code, so overwrite it into AIRLINE field
-  if(airlineCode) {
-    xmlhttpPost(URL_GETCODE, airlineCode, type);
-  }
 }
 
 // Calculate duration of flight given user-entered arrival and departure time
@@ -2256,173 +2344,175 @@ function calcDuration(param) {
   var days = 0, duration = 0;
 
   // Need both airports first
-  if($('src_apid').value == 0 || $('dst_apid').value == 0) return;
+  if($('src_apid').value == 0 || $('dst_apid').value == 0) {
+      return;
+  }
   dst_time = $('dst_time').value.trim();
   if(dst_time == "" || dst_time == "HH:MM") {
     dst_time = 0;
   }
 
   switch(param) {
-  case 'DISTANCE':
-    // Reestimate *only* if blanked
-    var distance = $('distance').value.trim();
-    if(distance == "") {
-      var lon1 = getX('src_ap');
-      var lat1 = getY('src_ap');
-      var lon2 = getX('dst_ap');
-      var lat2 = getY('dst_ap');
-      $('distance').value = gcDistance(lat1, lon1, lat2, lon2);
-      $('distance').style.color = "#000";
-    } else {
-      if(! re_numeric.test(distance)) {
-	$('distance').focus();
-	$('distance').style.color = "#F00";
-      } else {
-	$('distance').style.color = "#000";
-      }
-    }
-    markAsChanged();
-    return; // always terminate here
+      case 'DISTANCE':
+          // Reestimate *only* if blanked
+          var distance = $('distance').value.trim();
+          if (distance == "") {
+              var lon1 = getX('src_ap');
+              var lat1 = getY('src_ap');
+              var lon2 = getX('dst_ap');
+              var lat2 = getY('dst_ap');
+              $('distance').value = gcDistance(lat1, lon1, lat2, lon2);
+              $('distance').style.color = "#000";
+          } else {
+              if (!re_numeric.test(distance)) {
+                  $('distance').focus();
+                  $('distance').style.color = "#F00";
+              } else {
+                  $('distance').style.color = "#000";
+              }
+          }
+          markAsChanged();
+          return; // always terminate here
 
-  case 'ARRIVAL':
-    // User has changed arrival time: recompute duration
-    // User has blanked arrival time: recompute arrival time (using existing duration)
-    if(dst_time != 0) {
-      duration = 0;
-      break;
-    }
-    // else fallthru
+      case 'ARRIVAL':
+          // User has changed arrival time: recompute duration
+          // User has blanked arrival time: recompute arrival time (using existing duration)
+          if (dst_time != 0) {
+              duration = 0;
+              break;
+          }
+      // else fallthru
 
-  case 'DURATION':
-  case 'DEPARTURE':
-    // Recompute arrival time based on user-changed/previously calculated duration
-    // (if no duration is available, estimate it)
-    var duration = $('duration').value.trim();
-    if(duration != "") {
-      if(! RE_TIME.test(duration)) {
-	$('duration').focus();
-	$('duration').style.color = "#F00";
-	return;
-      }
-      $('duration').style.color = "#000";
-      duration = parseFloat(duration.split(":")[0]) + parseFloat(duration.split(":")[1] / 60);
-      dst_time = 0;
-      break;
-    }
-    // else no duration known, estimate and reset
-    param = 'AIRPORT';
-    // fallthru
+      case 'DURATION':
+      case 'DEPARTURE':
+          // Recompute arrival time based on user-changed/previously calculated duration
+          // (if no duration is available, estimate it)
+          var duration = $('duration').value.trim();
+          if (duration != "") {
+              if (!RE_TIME.test(duration)) {
+                  $('duration').focus();
+                  $('duration').style.color = "#F00";
+                  return;
+              }
+              $('duration').style.color = "#000";
+              duration = parseFloat(duration.split(":")[0]) + parseFloat(duration.split(":")[1] / 60);
+              dst_time = 0;
+              break;
+          }
+          // else no duration known, estimate and reset
+          param = 'AIRPORT';
+      // fallthru
 
-  case 'AIRPORT':
-    // User has changed airport, estimate duration based on distance then (30 min plus 1 hr/500 mi) and
-    // compute time at destination
-    var distance = $('distance').value;
-    if(! re_numeric.test(distance)) {
-      $('distance').focus();
-      $('distance').style.color = "#F00";
-      return;
-    }
-    $('distance').style.color = "#000";
-    duration = ($('distance').value / modespeeds[getMode()]) + 0.5;
-    dst_time = 0;
-    break;
+      case 'AIRPORT':
+          // User has changed airport, estimate duration based on distance then (30 min plus 1 hr/500 mi) and
+          // compute time at destination
+          var distance = $('distance').value;
+          if (!re_numeric.test(distance)) {
+              $('distance').focus();
+              $('distance').style.color = "#F00";
+              return;
+          }
+          $('distance').style.color = "#000";
+          duration = ($('distance').value / modespeeds[getMode()]) + 0.5;
+          dst_time = 0;
+          break;
 
-  default:
-    alert("Error: Unknown parameter '" + param + "' at calcDuration()");
-    return;
+      default:
+          alert("Error: Unknown parameter '" + param + "' at calcDuration()");
+          return;
   }
 
   // Do we have a starting time?
   src_time = $('src_time').value;
   if(src_time != "" && src_time != "HH:MM") {
-    // We do!  Does it make sense?
-    if(! RE_TIME.test(src_time)) {
-      $('src_time').focus();
-      $('src_time').style.color = "#F00";
-      return;
-    }
-    src_time = parseTimeString(src_time);
-
-    // Do we have an arrival time?
-    if(dst_time != 0) {
-      // Yes, validate it
-      if(! RE_TIME.test(dst_time)) {
-	$('dst_time').focus();
-	$('dst_time').style.color = "#F00";
-	return;
+      // We do!  Does it make sense?
+      if (!RE_TIME.test(src_time)) {
+          $('src_time').focus();
+          $('src_time').style.color = "#F00";
+          return;
       }
-      // Case 3: Need to determine duration
-      dst_time = parseTimeString(dst_time);
-      days = $('dst_days').value;
-      if(days != "") {
-	dst_time += parseInt($('dst_days').value) * 24;
+      src_time = parseTimeString(src_time);
+
+      // Do we have an arrival time?
+      if (dst_time != 0) {
+          // Yes, validate it
+          if (!RE_TIME.test(dst_time)) {
+              $('dst_time').focus();
+              $('dst_time').style.color = "#F00";
+              return;
+          }
+          // Case 3: Need to determine duration
+          dst_time = parseTimeString(dst_time);
+          days = $('dst_days').value;
+          if (days != "") {
+              dst_time += parseInt($('dst_days').value) * 24;
+          }
+          duration = 0;
       }
-      duration = 0;
-    }
 
-    // Get timezones
-    src_tz = getTZ('src_ap');
-    dst_tz = getTZ('dst_ap');
-    src_dst = getDST('src_ap');
-    dst_dst = getDST('dst_ap');
+      // Get timezones
+      src_tz = getTZ('src_ap');
+      dst_tz = getTZ('dst_ap');
+      src_dst = getDST('src_ap');
+      dst_dst = getDST('dst_ap');
 
-    // Verify if DST is active
-    // 2008-01-26[0],2008[1],20[2],01[3],26[4]
-    src_date = re_date.exec($('src_date').value);
-    if(! src_date) {
-      // Nonsensical date
-      return;
-    }
-    src_year = src_date[1];
-    src_month = src_date[3];
-    src_day = src_date[4];
-    src_date = new Date();
-    src_date = src_date.setFullYear(src_year, src_month - 1, src_day);
-    if(checkDST(src_dst, src_date, src_year)) {
-      src_tz += 1;
-      src_dst = "Y";
-    }
-    if(checkDST(dst_dst, src_date, src_year)) {
-      dst_tz += 1;
-      dst_dst = "Y";
-    }
-    $('icon_clock').title =
-      Gettext.strargs(gt.gettext("Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"),
-		      [src_tz > 0 ? "+" : "", src_tz, src_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
-		       dst_tz > 0 ? "+" : "", dst_tz, dst_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
-		       dst_tz-src_tz]);
-
-    // Case 2: Calculate arrival time from starting time and duration
-    if(dst_time == 0) {
-      dst_time = src_time + duration + (dst_tz-src_tz);
-      days = Math.floor(dst_time / 24);
-      dst_time = dst_time % 24;
-      while(dst_time < 0) dst_time += 24;
-      hours = Math.floor(dst_time);
-      mins = Math.floor((dst_time-hours) * 60);
-      if(mins < 10) {
-	mins = "0" + mins + "";
+      // Verify if DST is active
+      // 2008-01-26[0],2008[1],20[2],01[3],26[4]
+      src_date = re_date.exec($('src_date').value);
+      if (!src_date) {
+          // Nonsensical date
+          return;
       }
-      $('dst_time').value = hours + ":" + mins;
-      $('dst_time').style.color = '#000';
-      if(days == 0) {
-	$('dst_days').value = "";
-	$('dst_days').style.display = "none";
-      } else {
-	if(days > 0) {
-	  $('dst_days').value = Gettext.strargs(gt.gettext("+%1 day"), [days]);
-	} else {
-	  $('dst_days').value = Gettext.strargs(gt.gettext("%1 day"), [days]);
-	}
-	$('dst_days').style.display = "inline";
+      src_year = src_date[1];
+      src_month = src_date[3];
+      src_day = src_date[4];
+      src_date = new Date();
+      src_date = src_date.setFullYear(src_year, src_month - 1, src_day);
+      if (checkDST(src_dst, src_date, src_year)) {
+          src_tz += 1;
+          src_dst = "Y";
       }
-    }
+      if (checkDST(dst_dst, src_date, src_year)) {
+          dst_tz += 1;
+          dst_dst = "Y";
+      }
+      $('icon_clock').title =
+          Gettext.strargs(gt.gettext("Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"),
+              [src_tz > 0 ? "+" : "", src_tz, src_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
+                  dst_tz > 0 ? "+" : "", dst_tz, dst_dst == "Y" ? " (" + gt.gettext("DST") + ")" : "",
+                  dst_tz - src_tz]);
 
-    // Case 3: Calculate duration from arrival time and starting time
-    if(duration == 0) {
-      duration = (dst_time-src_time) - (dst_tz-src_tz);
-      if(duration < 0) duration += 24;
-    }
+      // Case 2: Calculate arrival time from starting time and duration
+      if (dst_time == 0) {
+          dst_time = src_time + duration + (dst_tz - src_tz);
+          days = Math.floor(dst_time / 24);
+          dst_time = dst_time % 24;
+          while (dst_time < 0) dst_time += 24;
+          hours = Math.floor(dst_time);
+          mins = Math.floor((dst_time - hours) * 60);
+          if (mins < 10) {
+              mins = "0" + mins + "";
+          }
+          $('dst_time').value = hours + ":" + mins;
+          $('dst_time').style.color = '#000';
+          if (days == 0) {
+              $('dst_days').value = "";
+              $('dst_days').style.display = "none";
+          } else {
+              if (days > 0) {
+                  $('dst_days').value = Gettext.strargs(gt.gettext("+%1 day"), [days]);
+              } else {
+                  $('dst_days').value = Gettext.strargs(gt.gettext("%1 day"), [days]);
+              }
+              $('dst_days').style.display = "inline";
+          }
+      }
+
+      // Case 3: Calculate duration from arrival time and starting time
+      if (duration == 0) {
+          duration = (dst_time - src_time) - (dst_tz - src_tz);
+          if (duration < 0) duration += 24;
+      }
   } else {
     // Case 1: Do nothing, just use estimated duration
     $('icon_clock').title = gt.gettext("Flight departure and arrival times");
@@ -2452,10 +2542,11 @@ function calcDuration(param) {
 // Also calculates distance and duration (unless "quick" is true)
 // type: "src_ap" or "dst_ap"
 function markAirport(element, quick) {
+  var icon;
   if(element.startsWith("src_ap")) {
-    var icon = '/img/icon_plane-src.png';
+    icon = '/img/icon_plane-src.png';
   } else {
-    var icon = '/img/icon_plane-dst.png';
+    icon = '/img/icon_plane-dst.png';
   }
   if(getCurrentPane() == "multiinput") {
     element = markingLimit(element);
@@ -2482,92 +2573,92 @@ function markAirport(element, quick) {
     airportLayer.addFeatures(marker, {silent: true});
   }
   if(element.startsWith("src_ap")) {
-    if(input_srcmarker) {
-      airportLayer.removeFeatures([input_srcmarker]);
-    }
-    if(apid > 0) {
-      input_srcmarker = marker;
-      if(element == "src_ap") {
-	input_toggle = "dst_ap"; // single input
-      } else {
-	var idx = multiinput_order.indexOf(element) + 1;
-	if(idx == multiinput_order.length) idx = 0;
-	input_toggle = multiinput_order[idx];
+      if (input_srcmarker) {
+          airportLayer.removeFeatures([input_srcmarker]);
       }
-    } else {
-      input_srcmarker = null;
-    }
+      if (apid > 0) {
+          input_srcmarker = marker;
+          if (element == "src_ap") {
+              input_toggle = "dst_ap"; // single input
+          } else {
+              var idx = multiinput_order.indexOf(element) + 1;
+              if (idx == multiinput_order.length) idx = 0;
+              input_toggle = multiinput_order[idx];
+          }
+      } else {
+          input_srcmarker = null;
+      }
   } else {
-    if(input_dstmarker) {
-      airportLayer.removeFeatures([input_dstmarker]);
-    }
-    if(apid > 0) {
-      input_dstmarker = marker;
-      if(element == "dst_ap") {
-	input_toggle = "src_ap"; // single input
-      } else {
-	var idx = multiinput_order.indexOf(element) + 1;
-	if(idx == multiinput_order.length) idx = 0;
-	input_toggle = multiinput_order[idx];
+      if (input_dstmarker) {
+          airportLayer.removeFeatures([input_dstmarker]);
       }
-    } else {
-      input_dstmarker = null;
-    }
+      if (apid > 0) {
+          input_dstmarker = marker;
+          if (element == "dst_ap") {
+              input_toggle = "src_ap"; // single input
+          } else {
+              var idx = multiinput_order.indexOf(element) + 1;
+              if (idx == multiinput_order.length) idx = 0;
+              input_toggle = multiinput_order[idx];
+          }
+      } else {
+          input_dstmarker = null;
+      }
   }
 
   // Draw line and calculate distance and duration
   if(! quick) {
-    if(input_line) {
-      lineLayer.removeFeatures(input_line);
-      input_line = null;
-    }
-    if(input_dstmarker && input_srcmarker) {
-      if(getCurrentPane() == "input") {
+      if (input_line) {
+          lineLayer.removeFeatures(input_line);
+          input_line = null;
+      }
+      if (input_dstmarker && input_srcmarker) {
+          if (getCurrentPane() == "input") {
 
-	var lon1 = getX('src_ap');
-	var lat1 = getY('src_ap');
-	var lon2 = getX('dst_ap');
-	var lat2 = getY('dst_ap');
-	var distance = gcDistance(lat1, lon1, lat2, lon2);
-	input_line = drawLine(parseFloat(lon1), parseFloat(lat1),
-			      parseFloat(lon2), parseFloat(lat2),
-			      4, distance, COLOR_HIGHLIGHT);
+              var lon1 = getX('src_ap');
+              var lat1 = getY('src_ap');
+              var lon2 = getX('dst_ap');
+              var lat2 = getY('dst_ap');
+              var distance = gcDistance(lat1, lon1, lat2, lon2);
+              input_line = drawLine(parseFloat(lon1), parseFloat(lat1),
+                  parseFloat(lon2), parseFloat(lat2),
+                  4, distance, COLOR_HIGHLIGHT);
+          } else {
+              input_line = [];
+              for (i = 1; i <= multiinput_rows; i++) {
+                  var src_ap = $('src_ap' + i + 'id').value;
+                  var dst_ap = $('dst_ap' + i + 'id').value;
+                  if (src_ap != 0 && dst_ap != 0) {
+                      var src_ap_data = src_ap.split(":");
+                      var lon1 = src_ap_data[2];
+                      var lat1 = src_ap_data[3];
+                      var dst_ap_data = dst_ap.split(":");
+                      var lon2 = dst_ap_data[2];
+                      var lat2 = dst_ap_data[3];
+                      var distance = gcDistance(lat1, lon1, lat2, lon2);
+                      line = drawLine(parseFloat(lon1), parseFloat(lat1),
+                          parseFloat(lon2), parseFloat(lat2),
+                          4, distance, COLOR_HIGHLIGHT);
+                      input_line = input_line.concat(line);
+                  } else {
+                      break; // stop drawing
+                  }
+              }
+          }
+          lineLayer.addFeatures(input_line);
+          oldDist = $('distance').value;
+          $('distance').value = distance;
+          if (oldDist == "" && $('dst_time').value != $('dst_time').hintText) {
+              // user has already manually entered arrival time
+              calcDuration("ARRIVAL");
+          } else {
+              // compute duration and arrival time
+              calcDuration("AIRPORT");
+          }
       } else {
-	input_line = [];
-	for(i = 1; i <= multiinput_rows; i++) {
-	  var src_ap = $('src_ap' + i + 'id').value;
-	  var dst_ap = $('dst_ap' + i + 'id').value;
-	  if(src_ap != 0 && dst_ap != 0) {
-	    var src_ap_data = src_ap.split(":");
-	    var lon1 = src_ap_data[2];
-	    var lat1 = src_ap_data[3];
-	    var dst_ap_data = dst_ap.split(":");
-	    var lon2 = dst_ap_data[2];
-	    var lat2 = dst_ap_data[3];
-	    var distance = gcDistance(lat1, lon1, lat2, lon2);
-	    line = drawLine(parseFloat(lon1), parseFloat(lat1),
-			    parseFloat(lon2), parseFloat(lat2),
-			    4, distance, COLOR_HIGHLIGHT);
-	    input_line = input_line.concat(line);
-	  } else {
-	    break; // stop drawing
-	  }
-	}
+          $('distance').value = "";
+          $('duration').value = "";
       }
-      lineLayer.addFeatures(input_line);
-      oldDist = $('distance').value;
-      $('distance').value = distance;
-      if(oldDist == "" && $('dst_time').value != $('dst_time').hintText) {
-	// user has already manually entered arrival time
-	calcDuration("ARRIVAL");
-      } else {
-	// compute duration and arrival time
-	calcDuration("AIRPORT");
-      }
-    } else {
-      $('distance').value = "";
-      $('duration').value = "";
-    }
   }
 }
 
@@ -2599,8 +2690,14 @@ function markingLimit(element) {
       break;
     }
   }
-  if(i == 0) return null; // no valid airports
-  if(i > multiinput_rows) i = multiinput_rows; // otherwise it goes one over if all rows are valid
+  if(i == 0) {
+      // no valid airports
+      return null;
+  }
+  if(i > multiinput_rows) {
+      // otherwise it goes one over if all rows are valid
+      i = multiinput_rows;
+  }
   return "dst_ap" + i;
 }
 
@@ -2645,39 +2742,39 @@ function swapAirports(manual) {
 function selectAirport(apid, select, quick, code) {
   var found = false;
   for(var ap = 0; ap < airportLayer.features.length; ap++) {
-    attrstack = new Array();
-    if(airportLayer.features[ap].cluster) {
-      for(var c = 0; c < airportLayer.features[ap].cluster.length; c++) {
-	attrstack.push(airportLayer.features[ap].cluster[c].attributes);
+      attrstack = [];
+      if (airportLayer.features[ap].cluster) {
+          for (var c = 0; c < airportLayer.features[ap].cluster.length; c++) {
+              attrstack.push(airportLayer.features[ap].cluster[c].attributes);
+          }
+      } else {
+          attrstack.push(airportLayer.features[ap].attributes);
       }
-    } else {
-      attrstack.push(airportLayer.features[ap].attributes);
-    }
-    while(attrstack.length > 0) {
-      attrs = attrstack.pop();
-      if((apid && attrs.apid == apid) ||
-	 (code && attrs.code == code)) {
-	// If "select" is true, we select the airport into the input form instead of popping it up
-	if(select && isEditMode()) {
-	  var element = input_toggle;
-	  $(element).value = attrs.name;
-	  $(element).style.color = "#000";
-	  $(element + 'id').value = attrs.apdata;
-	  replicateSelection(element);
-	  markAirport(element, quick);
-	  markAsChanged(true);
-	  closePopup(true);
-	} else {
-	  if(airportLayer.features[ap].cluster) {
-	    onAirportSelect(airportLayer.features[ap].cluster[attrstack.length]);
-	  } else {
-	    onAirportSelect(airportLayer.features[ap]);
-	  }
-	}
-	found = true;
-	return found;
+      while (attrstack.length > 0) {
+          attrs = attrstack.pop();
+          if ((apid && attrs.apid == apid) ||
+              (code && attrs.code == code)) {
+              // If "select" is true, we select the airport into the input form instead of popping it up
+              if (select && isEditMode()) {
+                  var element = input_toggle;
+                  $(element).value = attrs.name;
+                  $(element).style.color = "#000";
+                  $(element + 'id').value = attrs.apdata;
+                  replicateSelection(element);
+                  markAirport(element, quick);
+                  markAsChanged(true);
+                  closePopup(true);
+              } else {
+                  if (airportLayer.features[ap].cluster) {
+                      onAirportSelect(airportLayer.features[ap].cluster[attrstack.length]);
+                  } else {
+                      onAirportSelect(airportLayer.features[ap]);
+                  }
+              }
+              found = true;
+              return found;
+          }
       }
-    }
   }
   // Search failed
   if (!quick && !code) {
@@ -2691,30 +2788,30 @@ function selectAirport(apid, select, quick, code) {
 // Change number of rows displayed in multiinput
 function changeRows(type) {
   switch(type) {
-  case "More":
-    if(multiinput_rows >= 3) {
-      $('b_more').disabled = true;
-    }
-    if(multiinput_rows == 1) {
-      $('b_less').disabled = false;
-    }
-    source = "dst_ap" + multiinput_rows;
-    multiinput_rows++;
-    var row = "row" + multiinput_rows;
-    $(row).style.display = ""; // resolves to "table-row" in FF and "block" in IE...
-    replicateSelection(source);
-    break;
+      case "More":
+          if (multiinput_rows >= 3) {
+              $('b_more').disabled = true;
+          }
+          if (multiinput_rows == 1) {
+              $('b_less').disabled = false;
+          }
+          source = "dst_ap" + multiinput_rows;
+          multiinput_rows++;
+          var row = "row" + multiinput_rows;
+          $(row).style.display = ""; // resolves to "table-row" in FF and "block" in IE...
+          replicateSelection(source);
+          break;
 
-  case "Less":
-    if(multiinput_rows == 4) {
-      $('b_more').disabled = false;
-    }
-    if(multiinput_rows == 2) {
-      $('b_less').disabled = true;
-    }
-    $("row" + multiinput_rows).style.display = "none";
-    multiinput_rows--;
-    break;
+      case "Less":
+          if (multiinput_rows == 4) {
+              $('b_more').disabled = false;
+          }
+          if (multiinput_rows == 2) {
+              $('b_less').disabled = true;
+          }
+          $("row" + multiinput_rows).style.display = "none";
+          multiinput_rows--;
+          break;
   }
 
   markAirport('dst_ap' + multiinput_rows); // redraw flight path
@@ -2723,29 +2820,33 @@ function changeRows(type) {
 // In multiinput mode, copy entered airport/airline/date into next row (when empty)
 // Special argument "More" adds a row, "Less" removes one
 function replicateSelection(source) {
-  if(getCurrentPane() != "multiinput") return;
+  if(getCurrentPane() != "multiinput") {
+      return;
+  }
 
   switch(source) {
-  case "dst_ap1":
-  case "dst_ap2":
-  case "dst_ap3":
-  case "airline1":
-  case "airline2":
-  case "airline3":
-    // Check if the row we're trying to replicate to is active; if no, abort
-    idx = parseInt(source.charAt(source.length-1)) + 1;
-    row = "row" + idx;
-    if($(row).style.display == "none") return;
+      case "dst_ap1":
+      case "dst_ap2":
+      case "dst_ap3":
+      case "airline1":
+      case "airline2":
+      case "airline3":
+          // Check if the row we're trying to replicate to is active; if no, abort
+          idx = parseInt(source.charAt(source.length - 1)) + 1;
+          row = "row" + idx;
+          if ($(row).style.display == "none") {
+              return;
+          }
 
-    target = "src_ap" + idx;
-    date_target = "src_date" + idx;
-    date_source = "src_date" + (idx - 1);
-    al_target = "airline" + idx;
-    al_source = "airline" + (idx - 1);
-    break;
+          target = "src_ap" + idx;
+          date_target = "src_date" + idx;
+          date_source = "src_date" + (idx - 1);
+          al_target = "airline" + idx;
+          al_source = "airline" + (idx - 1);
+          break;
 
-  default:
-    return; // do nothing
+      default:
+          return; // do nothing
   }
   if($(source + 'id').value != 0 && $(target + 'id').value == 0) {
     $(target).value = $(source).value;
@@ -2768,16 +2869,16 @@ function replicateSelection(source) {
 function selectAirline(new_alid, edit) {
   var al_select = document.forms['filterform'].Airlines;
   for(index = 0; index < al_select.length; index++) {
-    if(al_select[index].value.split(";")[0] == new_alid) {
-      if(edit) {
-	$(input_al_toggle).value = al_select[index].value.split(";")[1];
-	$(input_al_toggle).style.color = "#000";
-	$(input_al_toggle + 'id').value = new_alid;
-      } else {
-	al_select.selectedIndex = index;
+      if (al_select[index].value.split(";")[0] == new_alid) {
+          if (edit) {
+              $(input_al_toggle).value = al_select[index].value.split(";")[1];
+              $(input_al_toggle).style.color = "#000";
+              $(input_al_toggle + 'id').value = new_alid;
+          } else {
+              al_select.selectedIndex = index;
+          }
+          return true;
       }
-      return true;
-    }
   }
   return false;
 }
@@ -2823,12 +2924,17 @@ function settings() {
 //
 function keyPress(e, element) {
   var keycode;
-  if (window.event) keycode = window.event.keyCode;
-  else if (e) keycode = e.which;
+  if (window.event) {
+      keycode = window.event.keyCode;
+  } else if (e) {
+      keycode = e.which;
+  }
 
   if(element == "login") {
     if(e == "CHANGE") {
-      if(logged_in == "pending") return true;
+      if(logged_in == "pending") {
+          return true;
+      }
     }
     if (keycode == Event.KEY_RETURN) {
       logged_in = "pending";
@@ -2837,7 +2943,9 @@ function keyPress(e, element) {
   } else {
     if(keycode == Event.KEY_TAB) {
       // Ignore fields that are already autocompleted
-      if($(element).value.length > 4) return;
+      if($(element).value.length > 4) {
+          return;
+      }
 
       switch(element) {
         case "qs":
@@ -2908,8 +3016,8 @@ function login(str, param) {
     case "X":
       $("news").style.display = 'inline';
       $("news").innerHTML = getEliteIcon("X") +
-	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
-	gt.gettext("<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!");
+          "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
+          gt.gettext("<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!");
       break;
 
     case "G":
@@ -2922,12 +3030,12 @@ function login(str, param) {
     }
 
     if(param == "NEWUSER") {
-      $("news").innerHTML =
-	"<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
-	Gettext.strargs(gt.gettext("<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."),
-			[ "<input type='button' value='" + gt.gettext("New flight") + "' align='middle' onclick='JavaScript:newFlight()'>",
-			  "<input type='button' value='" + gt.gettext("Import") + "' align='middle' onclick='JavaScript:openImport()'>" ]);
-      $("news").style.display = 'inline';
+        $("news").innerHTML =
+            "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
+            Gettext.strargs(gt.gettext("<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."),
+                ["<input type='button' value='" + gt.gettext("New flight") + "' align='middle' onclick='JavaScript:newFlight()'>",
+                    "<input type='button' value='" + gt.gettext("Import") + "' align='middle' onclick='JavaScript:openImport()'>"]);
+        $("news").style.display = 'inline';
     } else {
       closeNews();
     }
@@ -3002,7 +3110,9 @@ function isEditMode() {
 function openPane(newPane) {
   if(paneStack.length > 0) {
     var currentPane = getCurrentPane();
-    if(currentPane == newPane) return;
+    if(currentPane == newPane) {
+        return;
+    }
     $(currentPane).style.display = 'none';
   }
   $(newPane).style.display = 'inline';
@@ -3022,7 +3132,9 @@ function findPane(pane) {
 // Close current pane
 // If the current pane is the last one, do nothing
 function closePane() {
-  if(paneStack.length == 1) return;
+  if(paneStack.length == 1) {
+      return;
+  }
 
   if(isEditMode()) {
     unmarkAirports();
@@ -3051,24 +3163,26 @@ function clearStack() {
 function openDetailedInput(param) {
   // Does the user already have an input pane open?
   p = findPane("input");
-  if(!p) p = findPane("multiinput");
+  if(!p) {
+      p = findPane("multiinput");
+  }
   if(p) {
     // Have they changed it, and do they want to throw away the changes?
     if(hasChanged()) {
-      switch(param) {
-      case "ADD":
-      case "COPY":
-	msg = gt.gettext("You are already editing a flight. OK to discard your changes and add a new flight instead?");
-	break;
+        switch (param) {
+            case "ADD":
+            case "COPY":
+                msg = gt.gettext("You are already editing a flight. OK to discard your changes and add a new flight instead?");
+                break;
 
-	break;
-      case "EDIT":
-	msg = gt.gettext("You are already editing a flight. OK to discard your changes and edit this flight instead?");
-	break;
-      }
-      if(! confirm(msg)) {
-	return;
-      }
+                break;
+            case "EDIT":
+                msg = gt.gettext("You are already editing a flight. OK to discard your changes and edit this flight instead?");
+                break;
+        }
+        if (!confirm(msg)) {
+            return;
+        }
     }
     $(paneStack[p]).style.display = "none";
     paneStack.splice(p, 1); // remove the previous "input" pane from stack
@@ -3105,12 +3219,14 @@ function openDetailedInput(param) {
 function openBasicInput(param) {
   // Does the user already have an input pane open?
   p = findPane("input");
-  if(!p) p = findPane("multiinput");
+  if(!p) {
+      p = findPane("multiinput");
+  }
   if(p) {
     // Have they changed it, and do they want to throw away the changes?
     if(hasChanged()) {
       if(! confirm(gt.gettext("You are already editing a flight. OK to discard your changes and add a new flight instead?"))) {
-	return;
+        return;
       }
     }
     $(paneStack[p]).style.display = "none";
@@ -3159,9 +3275,13 @@ function clearTimes() {
 function todayString() {
   var today = new Date();
   var month = (today.getMonth() + 1) + "";
-  if(month.length == 1) month = "0" + month;
+  if(month.length == 1) {
+      month = "0" + month;
+  }
   var day = today.getDate() + "";
-  if(day.length == 1) day = "0" + day;
+  if(day.length == 1) {
+      day = "0" + day;
+  }
   return today.getFullYear()+ "-" + month + "-" + day;
 }
 
@@ -3189,7 +3309,9 @@ function clearInput() {
     form.plane_id.value = "";
     form.registration.value = "";
     form.note.value = "";
-    if(form.trips) form.trips.selectedIndex = 0;
+    if(form.trips) {
+        form.trips.selectedIndex = 0;
+    }
   } else {
     var form = document.forms["multiinputform"];
     for(i = 0; i < multiinput_ids.length; i++) {
@@ -3204,7 +3326,9 @@ function clearInput() {
 }
 
 function showHelp() {
-  if(getCurrentPane() == "help") return;
+  if(getCurrentPane() == "help") {
+      return;
+  }
   openPane("help");
 }
 
@@ -3272,7 +3396,9 @@ function clearFilter(refresh_all) {
   selectAirline(0);
   if(refresh_all && lasturl == URL_ROUTES) {
     var extent = airportLayer.getDataExtent();
-    if(extent) map.zoomToExtent(extent);
+    if(extent) {
+        map.zoomToExtent(extent);
+    }
     lasturl = URL_MAP;
   }
   refresh(refresh_all);
