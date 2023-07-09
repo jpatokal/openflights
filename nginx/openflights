@@ -5,8 +5,8 @@ server {
     index index.html index.php;
 
     location / {
-	ssi on;
-	if (-e $request_filename.php){
+    ssi on;
+    if (-e $request_filename.php){
             rewrite ^(.*)$ /$1.php;
         }
         try_files $uri $uri.html $uri/ =404;
@@ -15,13 +15,13 @@ server {
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-	fastcgi_buffers 16 32k;
+        fastcgi_buffers 16 32k;
         fastcgi_buffer_size 64k;
         fastcgi_busy_buffers_size 64k;
     }
 
     location /banner/ {
-	rewrite "^/banner/(.+).png$" /badge/banner.php?user=$1;
+        rewrite "^/banner/(.+).png$" /badge/banner.php?user=$1;
     }
 
     rewrite "^/airline/(.+)$" /index.php?query=$1;
