@@ -35,7 +35,7 @@ switch ($type) {
     case "RESET":
         $uid = $_SESSION["uid"];
         $name = $_SESSION["name"];
-        if (!$uid or empty($uid)) {
+        if (!$uid || empty($uid)) {
             die("0;" . _("Your session has timed out, please log in again."));
         }
 

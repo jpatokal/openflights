@@ -39,7 +39,7 @@ $trips = $tripit->list_trip(array(
     'past' => $wants_future_trips ? 'false' : 'true',
     'page_num' => $tripit_page_number,
 ));
-if (!isset($trips) or !isset($trips->Trip)) {
+if (!isset($trips) | |!isset($trips->Trip)) {
     handle_tripit_response($tripit->response);
     error_log("TripIt error for user $uid: " . $tripit->response);
     die(_("Could not connect to TripIt. Please try again later. If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>."));
