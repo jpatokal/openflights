@@ -10,17 +10,15 @@ require_once "./php/helper.php";
     <title>OpenFlights.org: <?php echo _("Flight logging, mapping, stats and sharing") ?></title>
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
-    <meta http-equiv="Content-Security-Policy" content="
-        upgrade-insecure-requests;
-        block-all-mixed-content; ;">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content;">
     <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css") ?>" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="/OpenLayers.js?version=20091204"></script>
-    <script type="text/javascript" src="/js/greatcircle.js?version=20190320"></script>
-    <script type="text/javascript" src="/js/utilities.min.js?version=20120817"></script>
+    <script type="text/javascript" src="/OpenLayers.js"></script>
+    <script type="text/javascript" src="/js/greatcircle.js"></script>
+    <script type="text/javascript" src="/js/utilities.min.js"></script>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/scw.min.js"></script>
     <script type="text/javascript" src="/js/prototype.js"></script>
