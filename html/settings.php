@@ -51,9 +51,8 @@ if ($type == "signup") {
     <div id="contentContainer">
       <div id="nonmap">
 
-        <FORM name="signupform" method="POST" action="/">
-  <a name="top"><h1>OpenFlights: <?php
-          echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?>
+        <form name="signupform" method="POST" action="/">
+  <a name="top"><h1>OpenFlights: <?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?>
       </h1></a>
 
           <div id="miniresultbox"></div>
@@ -71,28 +70,31 @@ if ($type == "signup") {
                 <td colspan="3"><h2><?php echo _("Basic information") ?></h2></td>
           </tr>
           <tr>
-                <td class="key"><?php echo _("Username") ?></td>
+            <td class="key"><?php echo _("Username") ?></td>
             <td class="value"><input type="text" name="username" size="20" onChange="changeName();"></td>
-                <td class="value"><p><?php echo _("This will be used as the name of your profile.") ?></p>
+            <td class="value"><p><?php echo _("This will be used as the name of your profile.") ?></p>
               <span id="profileurl"></span></td>
-          </tr><tr>
-                <td class="key"><?php echo _("Password") ?></td>
-            <td class="value"><input type="password" name="pw1" size="20"></td>
-                <td class="value"><?php
-                    echo _("Pick something hard to guess, but easy to remember. Case-sensitive!")?>
-                </td>
-          </tr><tr>
-                <td class="key"><?php echo _("Password again") ?></td>
-            <td class="value"><input type="password" name="pw2" size="20"></td>
-          </tr><tr>
-                <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
-            <td class="value"><input type="text" name="email" size="20"></td>
-            <td class="desc">
+          </tr>
+          <tr>
+              <td class="key"><?php echo _("Password") ?></td>
+              <td class="value"><input type="password" name="pw1" size="20"></td>
+              <td class="value"><?php
+                  echo _("Pick something hard to guess, but easy to remember. Case-sensitive!")?>
+              </td>
+          </tr>
+          <tr>
+              <td class="key"><?php echo _("Password again") ?></td>
+              <td class="value"><input type="password" name="pw2" size="20"></td>
+          </tr>
+          <tr>
+              <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
+              <td class="value"><input type="text" name="email" size="20"></td>
+              <td class="desc">
               <?php printf(
                   _("If you forget your password, we can mail you a new one to this address. We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."),
                   "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'"
               ); ?>
-            </td>
+              </td>
           </tr>
     <?php
 } else {
@@ -126,14 +128,14 @@ if ($type == "signup") {
             </td>
           </tr>
           <tr>
-           <td class="key"><?php echo _("Banners") ?></td>
-           <td class="value" colspan=2><?php echo _("Blog banner (HTML)") ?><br>
-              <textarea name="banner_html" cols="60" rows="4" readonly><?php
-                echo "<a href='https://openflights.org/user/" .
-                    $settings["name"] .
-                    "' target='_blank'><img src='https://openflights.org/banner/" .
-                    $settings["name"] . ".png' width=400 height=70></a>"; ?>
-              </textarea><br>
+              <td class="key"><?php echo _("Banners") ?></td>
+              <td class="value" colspan=2><?php echo _("Blog banner (HTML)") ?><br>
+                  <textarea name="banner_html" cols="60" rows="4" readonly><?php
+                    echo "<a href='https://openflights.org/user/" .
+                        $settings["name"] .
+                        "' target='_blank'><img src='https://openflights.org/banner/" .
+                        $settings["name"] . ".png' width=400 height=70></a>"; ?>
+                  </textarea><br>
            <?php echo _("Bulletin board banner (phpBB)") ?><br>
               <textarea name="banner_phpbb" cols="60" rows="3" readonly><?php
                 echo "[url=https://openflights.org/user/" .
@@ -145,7 +147,8 @@ if ($type == "signup") {
               <span id="banner_img"><?php
                   echo "<img src='/banner/" . $settings["name"] . ".png' width=400 height=70>"?>
               </span>
-          </tr><tr>
+          </tr>
+          <tr>
             <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
             <td class="value"><input type="text" name="email" value="<?php echo $settings["email"] ?>" size="20" />
             <td class="desc">
@@ -276,20 +279,25 @@ if ($type == "signup") {
                     "a href='/help/csv.html'"
                 ); ?>
             </td>
-          </tr><tr>
+          </tr>
+          <tr>
             <td colspan="4"><h2><?php echo _("Change password") ?></h2></td>
-          </tr><tr>
+          </tr>
+          <tr>
             <td class="key"><?php echo _("Current password") ?></td>
             <td class="value"><input type="password" name="oldpw" size="20">
             <input type="hidden" name="username" value="<?php echo $_SESSION['name']?>"></td>
             <td class="desc" colspan=2><?php echo _("You only need to enter this if changing your password.") ?></td>
-          </tr><tr>
+          </tr>
+          <tr>
             <td class="key"><?php echo _("New password") ?></td>
             <td class="value"><input type="password" name="pw1" size="20"></td>
-          </tr><tr>
+          </tr>
+          <tr>
             <td class="key"><?php echo _("New password again") ?>&nbsp;</td>
             <td class="value"><input type="password" name="pw2" size="20"></td>
-          </tr><tr>
+          </tr>
+          <tr>
             <td class="key"></td>
             <td class="value">
               <input type="button" value="<?php echo _("Save changes") ?>" onClick="validate('EDIT')">
@@ -306,7 +314,7 @@ if ($type == "signup") {
           </tr>
 <?php } ?>
           </table>
-        </FORM>
+        </form>
       </div>
     </div>
 

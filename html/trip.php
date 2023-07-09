@@ -21,7 +21,7 @@ if (isset($_GET["trid"])) {
 
   <body>
     <div id="contexthelp">
-      <FORM name="tripform">
+      <form name="tripform">
     <div id="title"><h1>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></h1></div>
 
 <?php
@@ -90,7 +90,7 @@ if ($trid) {
 }
 ?>
     <input type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
-      </FORM>
+      </form>
 
     </div>
 
