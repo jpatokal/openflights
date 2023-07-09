@@ -1,13 +1,13 @@
 -- Remove surrounding whitespace & all tabs
 update planes
-set name=TRIM(REPLACE(name, '\t', ''));
+set name = TRIM(REPLACE(name, '\t', ''));
 
 -- Show dupes
 select name, min(plid), max(plid), count(*) as dupes from planes GROUP BY name having count(*) > 1 order by dupes;
 
 -- Find exact dupes
 drop table if exists tmp_planes_duplicates;
-create table tmp_planes_duplicates (plid int, duplicate_of int)
+create table tmp_planes_duplicates (plid int, duplicate_of int);
 insert into tmp_planes_duplicates
     select p1.plid, min(p2.plid) as duplicate_of
     from planes p1, planes p2
@@ -33,7 +33,7 @@ alter table planes add constraint no_duplicates UNIQUE (name);
 alter table planes add column iata text;
 alter table planes add column icao text;
 alter table planes add column frequency int default 0;
-update planes p, (select plid, count(*) cnt from flights group by plid) as f set p.frequency=f.cnt where p.plid=f.plid;
+update planes p, (select plid, count(*) cnt from flights group by plid) as f set p.frequency = f.cnt where p.plid = f.plid;
 
 -- Set some basic types manually
 update planes set iata='146' where name='BAe 146';

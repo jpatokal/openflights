@@ -29,4 +29,4 @@ alter table airlines add constraint no_duplicates UNIQUE (name);
 alter table airlines add column iata text;
 alter table airlines add column icao text;
 alter table airlines add column frequency int default 0;
-update airlines p, (select alid, count(*) cnt from flights group by alid) as f set p.frequency=f.cnt where p.alid=f.alid;
+update airlines p, (select alid, count(*) cnt from flights group by alid) as f set p.frequency = f.cnt where p.alid = f.alid;
