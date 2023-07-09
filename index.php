@@ -21,8 +21,8 @@ require_once "./php/helper.php";
     <script type="text/javascript" src="/OpenLayers.js?version=20091204"></script>
     <script type="text/javascript" src="/js/greatcircle.js?version=20190320"></script>
     <script type="text/javascript" src="/js/utilities.min.js?version=20120817"></script>
-    <script type="text/javascript" src="/js/Gettext.js"></script>
-    <script type="text/javascript" src="/js/scw.js"></script>
+    <script type="text/javascript" src="/js/Gettext.min.js"></script>
+    <script type="text/javascript" src="/js/scw.min.js"></script>
     <script type="text/javascript" src="/js/prototype.js"></script>
     <script type="text/javascript" src="/js/scriptaculous.js"></script>
     <script type="text/javascript" src="/js/controls.js"></script>

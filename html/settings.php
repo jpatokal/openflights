@@ -39,7 +39,7 @@ if ($type == "signup") {
     <script type="text/javascript" src="/js/prototype.js"></script>
     <script type="text/javascript" src="/js/utilities.min.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
-    <script type="text/javascript" src="/js/Gettext.js"></script>
+    <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/settings.js"></script>
     <?php include "../html/analytics.html"; ?>
   </head>
