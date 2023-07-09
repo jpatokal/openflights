@@ -32,13 +32,13 @@ class RouteMapCoreAirportTest extends WebTestCase {
         // Then test
         $params = array("apid" => $route["core_apid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // N;Airport name...
         $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
 
         // Routes (N)
-        $rts = preg_split('/\t/', $rows[1]);
+        $rts = explode("\t", $rows[1]);
         $this->assertTrue(sizeof($rts) == $route["routes"], "Route count" . sizeof($rts) . " vs " . $route["routes"]);
     }
 }
@@ -67,13 +67,13 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
             "alid" => $route["filter_alid"]
         );
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // N;Airport name...
         $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
 
         // Routes (N)
-        $rts = preg_split('/\t/', $rows[1]);
+        $rts = explode("\t", $rows[1]);
         $this->assertTrue(sizeof($rts) == $route["routes"], "Route count" . sizeof($rts) . " vs " . $route["routes"]);
     }
 }
@@ -93,7 +93,7 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
         // Then test
         $params = array("apid" => $route["noroute_apid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // N;Airport name...
         $this->assertPattern("/0;/", $rows[0]);
@@ -102,7 +102,7 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
         $this->assertTrue($rows[1] == "", "Route count");
 
         // One airport, with details
-        $aps = preg_split('/\t/', $rows[2]);
+        $aps = explode("\t", $rows[2]);
         $this->assertTrue(sizeof($aps) == 1, "Airport count");
         $this->assertText(":" . $row["apid"] . ":" . $row["x"] . ":" . $row["y"]);
     }
@@ -139,13 +139,13 @@ class RouteMapCoreAirlineTest extends WebTestCase {
         // Then test
         $params = array("apid" => "L" . $route["core_alid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // N;Airline name...
         $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
 
         // Routes (N)
-        $rts = preg_split('/\t/', $rows[1]);
+        $rts = explode("\t", $rows[1]);
         $this->assertTrue(sizeof($rts) == $route["routes"], "Route count");
     }
 }
@@ -173,13 +173,13 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
             "alid" => "1"
         ); // any non-zero alid triggers codeshares
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // N;Airline name...
         $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
 
         // Routes (N)
-        $rts = preg_split('/\t/', $rows[1]);
+        $rts = explode("\t", $rows[1]);
         $this->assertTrue(sizeof($rts) == $route["routes"], "Route count");
     }
 }
@@ -199,7 +199,7 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
         // Then test
         $params = array("apid" => "L" . $route["noroute_apid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // N;Airport name...
         $this->assertPattern("/0;/", $rows[0]);
@@ -208,7 +208,7 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
         $this->assertTrue($rows[1] == "", "Route count");
 
         // Airports (N+1)
-        $aps = preg_split('/\t/', $rows[2]);
+        $aps = explode("\t", $rows[2]);
         $this->assertTrue(sizeof($aps) == 1, "Airport count");
     }
 }

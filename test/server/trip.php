@@ -67,11 +67,11 @@ class CheckPublicFullTripMap extends WebTestCase {
         $params = array("param" => "true",
             "trid" => $trid);
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
         $this->assertTrue(sizeof($rows) == 6, "Number of rows" . sizeof($rows));
 
         // Statistics
-        $stats = preg_split('/;/', $rows[0]);
+        $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 0, "Flight count");
         $this->assertTrue(strstr($stats[1], "0"), "Distance");
         $this->assertTrue($stats[3] == $trip["privacy"], "Public");
@@ -114,7 +114,7 @@ class CheckPrivateFullTripMap extends WebTestCase {
         $params = array("param" => "true",
             "trid" => $trid);
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/;/', $map);
+        $rows = explode(";", $map);
         $this->assertTrue($rows[0] == "Error", "Private trip blocked");
     }
 }
@@ -127,7 +127,7 @@ class CheckNonExistentFullTripMap extends WebTestCase {
         $params = array("param" => "true",
             "trid" => "-1");
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/;/', $map);
+        $rows = explode(";", $map);
         $this->assertTrue($rows[0] == "Error", "Invalid trid blocked");
     }
 }

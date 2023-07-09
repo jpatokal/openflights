@@ -59,7 +59,7 @@ class ResetPwValidChallengeTest extends WebTestCase {
         );
         $msg = $this->get($webroot . "help/resetpw.php", $reset);
         $this->assertText('Your new password');
-        $chunks = preg_split("<b>", $msg);
+        $chunks = explode("b", $msg);
         $pw = substr($chunks[1], 0, 8);
 
         $result = login($this, $settings["name"], $pw);

@@ -44,7 +44,7 @@ if (!isset($_POST["src_time"]) || empty($_POST["src_time"])) {
 } else {
     $src_time = $_POST["src_time"];
     # MySQL interprets 1000 as 00:10:00, so we force it to 100000 => 10:00:00
-    if (!strstr($src_time, ":")) {
+    if (strpos($src_time, ":") === false) {
         $src_time .= "00";
     }
 }

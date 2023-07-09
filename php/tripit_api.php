@@ -41,8 +41,7 @@ class WebAuthCredential {
 
 class OAuthUtil {
     public static function urlencodeRFC3986($string) {
-        return str_replace('+', ' ', str_replace('%7E', '~', rawurlencode($string)));
-
+        return str_replace(array('%7E', '+'), array('~', ' '), rawurlencode($string));
     }
 
     public static function generate_nonce() {

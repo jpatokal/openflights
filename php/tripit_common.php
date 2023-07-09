@@ -54,7 +54,7 @@ function get_request_tokens($dbh, $uid) {
 function handle_tripit_response($response) {
     global $dbh;
 
-    if (strstr($response, "<detailed_error_code>106.1</detailed_error_code>")) {
+    if (strpos($response, "<detailed_error_code>106.1</detailed_error_code>") !== false) {
         # 106.1 - Token invalid.  Ask user to rendezvous again.
 
         # This shouldn't happen, but let's be paranoid.

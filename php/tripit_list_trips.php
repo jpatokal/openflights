@@ -47,8 +47,8 @@ if (!isset($trips) or !isset($trips->Trip)) {
 
 # Get the list of trips, sorted by start date, oldest to newest.
 $trip_index_by_date = array();
-for ($i = 0; $i < count($trips->Trip); $i++) {
-    array_push($trip_index_by_date, $i);
+for ($i = 0, $max = count($trips->Trip); $i < $max; $i++) {
+    $trip_index_by_date[] = $i;
 }
 
 function mySort($a, $b) {
@@ -80,7 +80,7 @@ foreach ($trips->AirObject as $ticket) {
         }
         # Add the name of traveler on this segment.
         $segment->addChild("pax", generate_pax_string($ticket->Traveler));
-        array_push($all_trip_segments["$ticket->trip_id"], $segment);
+        $all_trip_segments["$ticket->trip_id"][] = $segment;
     }
 }
 function mySort2($a, $b) {
@@ -161,9 +161,9 @@ function tripit_date_to_datetime($tripit_date) {
 function generate_pax_string($travelers) {
     $pax = array();
     foreach ($travelers as $traveler) {
-        array_push($pax, $traveler->first_name . ' ' . $traveler->last_name);
+        $pax[] = $traveler->first_name . ' ' . $traveler->last_name;
     }
-    return join(", ", $pax);
+    return implode(", ", $pax);
 }
 
 function resolve_airport($iata_code) {
@@ -243,10 +243,10 @@ function detect_class($class) {
         return $class_arr;
     }
 
-    if (stristr($class, "econ") || stristr($class, "coach")) {
+    if (stripos($class, "econ") !== false || stripos($class, "coach") !== false) {
         # Economy
         # Check to see if it's Premium
-        if (stristr($class, "prem")) {
+        if (stripos($class, "prem") !== false) {
             if ($DEBUG) {
                 error_log("detect_class: $class => Premium Economy via string match");
             }
@@ -257,14 +257,14 @@ function detect_class($class) {
             }
             $class_arr["Y"] = " CHECKED";
         }
-    } elseif (stristr($class, "bus") && !stristr($class, "first")) {
+    } elseif (stripos($class, "bus") !== false && stripos($class, "first") === false) {
         # Business
         # UA's "BusinessFirst" is generally considered to be F and not C.
         if ($DEBUG) {
             error_log("detect_class: $class => Business via string match");
         }
         $class_arr["C"] = " CHECKED";
-    } elseif (stristr($class, "first")) {
+    } elseif (stripos($class, "first") !== false) {
         # First
         if ($DEBUG) {
             error_log("detect_class: $class => First via string match");
@@ -337,7 +337,7 @@ function display_trip($trip) {
             $valid_segment = display_segment($segment);
             // Save valid segments to be used with "Import All"
             if ($valid_segment) {
-                array_push($valid_segments, $segment->id);
+                $valid_segments[] = $segment->id;
             }
         }
 

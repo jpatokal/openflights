@@ -16,11 +16,11 @@ class CheckDemoFullUserMap extends WebTestCase {
 
         $params = array("param" => "true");
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
         $this->assertTrue(sizeof($rows) == 6, "Number of rows");
 
         // Statistics
-        $stats = preg_split('/;/', $rows[0]);
+        $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] > 0, "No demo flights found -- did you add some flights and run sql/update-demo.sql?");
         $this->assertTrue($stats[3] == "O", "Public"); // demo flights always full access
         $this->assertTrue($stats[5] == "demo", "Username");
@@ -37,11 +37,11 @@ class CheckPublicFullUserMap extends WebTestCase {
             "user" => $settings["name"]
         );
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
         $this->assertTrue(sizeof($rows) == 6, "Number of rows");
 
         // Statistics
-        $stats = preg_split('/;/', $rows[0]);
+        $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 1, "Flight count");
         $this->assertTrue(strstr($stats[1], $flight2["distance"]), "Distance");
         $this->assertTrue($stats[3] == $settings["privacy"], "Public");
@@ -66,8 +66,8 @@ class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
             "user" => $settings["name"]
         );
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/\n/', $map);
-        $stats = preg_split('/;/', $rows[0]);
+        $rows = explode("\n", $map);
+        $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == "Error", "Private profile blocked");
     }
 }
@@ -81,10 +81,10 @@ class CheckPrivateGuestPasswordFullUserMap extends WebTestCase {
         "guestpw" => $settings["guestpw"],
         "user" => $settings["name"]);
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
 
         // Statistics
-        $stats = preg_split('/;/', $rows[0]);
+        $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 1, "Flight count");
         $this->assertTrue(strstr($stats[1], $flight2["distance"]), "Distance");
         $this->assertTrue($stats[3] == "N", "Public");
@@ -102,11 +102,11 @@ class CheckLoggedInFullUserMap extends WebTestCase {
 
         $params = array("param" => "true");
         $map = $this->post($webroot . "php/map.php", $params);
-        $rows = preg_split('/\n/', $map);
+        $rows = explode("\n", $map);
         $this->assertTrue(sizeof($rows) == 6, "Number of rows");
 
         // Statistics
-        $stats = preg_split('/;/', $rows[0]);
+        $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 1, "Flight count");
         $this->assertTrue(strstr($stats[1], $flight2["distance"]), "Distance");
         $this->assertTrue($stats[3] == "O", "Public"); // own flights always full access
