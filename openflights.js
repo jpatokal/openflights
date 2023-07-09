@@ -1549,7 +1549,7 @@ function showStats(str) {
     bigtable = "<i>Statistics calculation failed!</i>";
   } else {
     var master = str.split("\n");
-    var uniques = jsonParse(master[0]);
+    var uniques = JSON.parse(master[0]);
     var longshort = master[1];
     var extremes = master[2];
     var classData = master[3];
@@ -2875,7 +2875,7 @@ function keyPress(e, element) {
 // NEWUSER: User using OF for the first time (or has zero flights)
 //
 function login(str, param) {
-  var result = jsonParse(str);
+  var result = JSON.parse(str);
   var name = result['name'];
   $("loginstatus").style.display = 'inline';
 
