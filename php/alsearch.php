@@ -48,7 +48,7 @@ if ($action == "RECORD") {
     }
     $row = $sth->fetch();
     if ($row) {
-        printf("0;" . "A " . $modeOperators[$mode] . " using the name or alias " . $name . " exists already.");
+        printf("0;" . "A " . MODES_OPERATOR[$mode] . " using the name or alias " . $name . " exists already.");
         exit;
     }
 
@@ -68,7 +68,7 @@ if ($action == "RECORD") {
         }
         $row = $sth->fetch();
         if ($row) {
-            printf("0;" . "A " . $modeOperators[$mode] . " using the name or alias " . $alias . " exists already.");
+            printf("0;" . "A " . MODES_OPERATOR[$mode] . " using the name or alias " . $alias . " exists already.");
             exit;
         }
     }
@@ -152,10 +152,10 @@ if ($action == "RECORD") {
 
     $sth = $dbh->prepare($sql);
     if (!$sth->execute($params)) {
-        die('0;Adding new ' . $modeOperators[$mode] . ' failed.');
+        die('0;Adding new ' . MODES_OPERATOR[$mode] . ' failed.');
     }
     if (!$alid || $alid == "") {
-        printf('1;' . $dbh->lastInsertId() . ';New ' . $modeOperators[$mode] . ' successfully added.');
+        printf('1;' . $dbh->lastInsertId() . ';New ' . MODES_OPERATOR[$mode] . ' successfully added.');
     } elseif ($sth->rowCount() === 1) {
         printf('1;' . $alid . ';' . _("Airline successfully edited."));
     } else {

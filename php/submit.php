@@ -201,7 +201,7 @@ QUERY;
 switch ($param) {
     case "DELETE":
         $code = 100;
-        $msg = $modes[$mode] . " deleted.";
+        $msg = MODES[$mode] . " deleted.";
         break;
 
     case "ADD":

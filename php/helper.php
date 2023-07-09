@@ -2,14 +2,37 @@
 
 include_once 'greatcircle.php';
 
+// must be a string or locale may turn this into a comma!
+const KM_PER_MILE = "1.609344";
+
 /**
  * @deprecated use KM_PER_MILE const
  */
-$KMPERMILE = "1.609344"; // must be a string or locale may turn this into a comma!
-const KM_PER_MILE = "1.609344";
+$KMPERMILE = KM_PER_MILE;
 
-$modes = array ("F" => "Flight", "T" => "Train", "S" => "Ship", "R" => "Road trip");
-$modeOperators = array ("F" => "airline", "T" => "railway", "S" => "shipping company", "R" => "road transport company");
+const MODES = array(
+    "F" => "Flight",
+    "T" => "Train",
+    "S" => "Ship",
+    "R" => "Road trip",
+);
+
+/**
+ * @deprecated use MODES constant
+ */
+$modes = MODES;
+
+const MODES_OPERATOR = array(
+    "F" => "airline",
+    "T" => "railway",
+    "S" => "shipping company",
+    "R" => "road transport company",
+);
+
+/**
+ * @deprecated use MODES_OPERATOR constant
+ */
+$modeOperators = MODES_OPERATOR;
 
 /**
  * End with JSON-formatted data, localized message and a successful status

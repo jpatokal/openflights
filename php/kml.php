@@ -45,7 +45,7 @@ foreach ($sth as $row) {
         $mode = $row["mode"];
 
         print "<Placemark>\n";
-        print "  <name>$src_ap-$dst_ap</name>\n  <description>$modes[$mode] $code</description>\n";
+        print "  <name>$src_ap-$dst_ap</name>\n  <description>" . MODES[$mode] . " $code</description>\n";
         print "  <styleUrl>#$mode</styleUrl>\n";
 
         $points = gcPath(
