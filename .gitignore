@@ -8,3 +8,4 @@ php/secrets.php
 vendor/*
 *.pyc
 .idea
+.DS_Store
