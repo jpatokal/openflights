@@ -305,7 +305,7 @@ for ($row = 1; $row <= 4; $row++) {
           $row
       );
       printf(
-          "<img src='/img/icon_plane-src.png' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n",
+          "<img src='/img/icon_plane-src.png' alt='aeroplane departing' title=\"%s\" height=17 width=17 onclick='JavaScript:popNewAirport(\"src_ap$row\")'/ style='margin-right: 5px'/></td>\n",
           _("Airport search")
       );
       printf(
@@ -323,7 +323,7 @@ for ($row = 1; $row <= 4; $row++) {
           $row
       );
       printf(
-          "<img src='/img/icon_plane-dst.png' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n",
+          "<img src='/img/icon_plane-dst.png' alt='aeroplane arriving' title='%s' height=17 width=17 onclick='JavaScript:popNewAirport(\"dst_ap$row\")' style='margin-right: 5px'/></td>\n",
           _("Airport search")
       );
       printf(

@@ -237,7 +237,7 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Guest password") ?></td>
             <td class="value"><input type="password" name="guestpw" size="20" DISABLED></td>
             <td class="desc" colspan=2>
-                <a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php
+                <a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" alt="Gold star" title="<?php
                     echo _("Gold Elite feature") ?>" height=17 width=17></a> <?php
                     echo _("Password protect your Private profile, so only friends and family can see it.") ?>
             </td>
@@ -255,9 +255,10 @@ if ($type == "signup") {
                     condOut($settings, 'startpane', 'T', 'CHECKED', '');
                     echo ">" . _("Top 10"); ?>
             </td>
-            <td class="desc" colspan=2><a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" title="<?php
-                echo _("Gold Elite feature"); ?>" height=17 width=17></a> <?php
-                echo _("Display a screen of your choice instead of banner ads."); ?>
+            <td class="desc" colspan=2>
+                <a href="/donate" target="_blank"><img src="/img/gold-star-mini.png" alt="Gold star" title="<?php
+                    echo _("Gold Elite feature"); ?>" height=17 width=17></a> <?php
+                    echo _("Display a screen of your choice instead of banner ads."); ?>
             </td>
           </tr>
           <tr>

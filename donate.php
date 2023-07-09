@@ -24,7 +24,7 @@
         <table>
           <tr class="donate">
           <td class="donate"><b>Cyan</b><br>
-            <img src="/img/icon-warning.png" width=34 height=34>
+            <img src="/img/icon-warning.png" alt="Warning" width=34 height=34>
           </td>
           <td class="donate2">
             Access to entire website and all functions; however, your pages may contain banner and full-page advertising. If you add <b>over 100 flights</b> or set your profile to <b>Private</b>, we figure you're using a little more than your fair share of site resources, so your profile will be tagged with a warning icon and you will receive reminders to consider donating when you log in.</td>
@@ -80,7 +80,7 @@
         </tr>
         <tr>
           <td class="donate"><b>Platinum</b><br>
-            <img src="/img/platinum-star.png" width=34 height=34>
+            <img src="/img/platinum-star.png" alt="Platinum star" width=34 height=34>
           </td>
           <td class="donate2">
             For connoisseurs of the finer things in life.  All Gold features, plus
