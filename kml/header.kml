@@ -32,7 +32,7 @@
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
         </Icon>
-	<scale>0.6</scale>
+        <scale>0.6</scale>
         <colorMode>normal</colorMode>
         <color>FFA9FF45</color>
       </IconStyle>
@@ -42,7 +42,7 @@
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
         </Icon>
-	<scale>0.7</scale>
+        <scale>0.7</scale>
         <colorMode>normal</colorMode>
         <color>FF99FF85</color>
       </IconStyle>
@@ -52,7 +52,7 @@
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
         </Icon>
-	<scale>0.8</scale>
+        <scale>0.8</scale>
         <colorMode>normal</colorMode>
         <color>FF59FFA0</color>
       </IconStyle>
@@ -62,7 +62,7 @@
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
         </Icon>
-	<scale>0.9</scale>
+        <scale>0.9</scale>
         <colorMode>normal</colorMode>
         <color>FF39FFD0</color>
       </IconStyle>
@@ -72,7 +72,7 @@
         <Icon>
           <href>http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png</href>
         </Icon>
-	<scale>0.9</scale>
+        <scale>0.9</scale>
         <colorMode>normal</colorMode>
         <color>FF00FFFF</color>
       </IconStyle>
