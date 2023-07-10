@@ -3,11 +3,11 @@
 /**
  *    Geo Constants
  */
-EARTH_RADIUS = 3958.75;    // in miles
+EARTH_RADIUS = 3958.75; // in miles
 EARTH_CIRCUMFERENCE = 24900; // in miles
-MOON_DISTANCE = 238857;    // in miles
-MARS_DISTANCE = 34649589;    // in miles
-DEG2RAD =  0.01745329252;  // factor to convert degrees to radians (PI/180)
+MOON_DISTANCE = 238857; // in miles
+MARS_DISTANCE = 34649589; // in miles
+DEG2RAD = 0.01745329252; // factor to convert degrees to radians (PI/180)
 RAD2DEG = 57.29577951308;
 GC_STEP = 100; // draw segment every GC_STEP mi
 GC_MIN = 300; // trigger GC paths once distance is greater than this
@@ -24,14 +24,14 @@ function gcDistance(lat1, lon1, lat2, lon2) {
   lon1 = lon1 * rad;
   lat2 = lat2 * rad;
   lon2 = lon2 * rad;
-  var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) +
-                  Math.cos(lat1)*Math.cos(lat2) *
-                  Math.cos(lon2-lon1));
+  var d = Math.acos(
+    Math.sin(lat1) * Math.sin(lat2) +
+      Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)
+  );
   if (d < 0) {
     d += Math.PI;
   }
   return Math.floor(d * EARTH_RADIUS);
-
 }
 
 // Compute great circle bearing from point "from" towards point "to"
@@ -41,21 +41,24 @@ function gcBearingTo(from, to) {
   var bearing;
   var adjust;
 
-  if( isValid(from) && isValid(to)) {
-    x[0] = from.x * DEG2RAD;    y[0] = from.y * DEG2RAD;
-    x[1] = to.x * DEG2RAD;    y[1] = to.y * DEG2RAD;
+  if (isValid(from) && isValid(to)) {
+    x[0] = from.x * DEG2RAD;
+    y[0] = from.y * DEG2RAD;
+    x[1] = to.x * DEG2RAD;
+    y[1] = to.y * DEG2RAD;
 
     var a = Math.cos(y[1]) * Math.sin(x[1] - x[0]);
-    var b = Math.cos(y[0]) * Math.sin(y[1]) - Math.sin(y[0])
-      * Math.cos(y[1]) * Math.cos(x[1] - x[0]);
+    var b =
+      Math.cos(y[0]) * Math.sin(y[1]) -
+      Math.sin(y[0]) * Math.cos(y[1]) * Math.cos(x[1] - x[0]);
 
-    if((a == 0) && (b == 0)) {
+    if (a == 0 && b == 0) {
       bearing = 0;
       return bearing;
     }
 
-    if(b == 0) {
-      if(a < 0) {
+    if (b == 0) {
+      if (a < 0) {
         bearing = 270;
       } else {
         bearing = 90;
@@ -63,27 +66,25 @@ function gcBearingTo(from, to) {
       return bearing;
     }
 
-    if(b < 0) {
+    if (b < 0) {
       adjust = Math.PI;
     } else {
-      if(a < 0) {
+      if (a < 0) {
         adjust = 2 * Math.PI;
       } else {
         adjust = 0;
       }
     }
-    bearing = (Math.atan(a/b) + adjust) * RAD2DEG;
+    bearing = (Math.atan(a / b) + adjust) * RAD2DEG;
     return bearing;
-  } else
-    return null;
+  } else return null;
 }
-
 
 /**
  * Compute great circle waypoint "distance" miles away from "from" in direction "bearing"
  */
 function gcWaypoint(from, distance, bearing) {
-  var wp = new OpenLayers.Geometry.Point( 0, 0 );
+  var wp = new OpenLayers.Geometry.Point(0, 0);
 
   // Math.* trig functions require angles to be in radians
   var x = from.x * DEG2RAD;
@@ -94,8 +95,13 @@ function gcWaypoint(from, distance, bearing) {
   var d = distance / EARTH_RADIUS;
 
   // Modified based on https://web.archive.org/web/20161209044600/http://williams.best.vwh.net/avform.htm
-  var lat = Math.asin( Math.sin(y) * Math.cos(d) + Math.cos(y) * Math.sin(d) * Math.cos(radBearing));
-  var lon = Math.atan2( Math.sin(radBearing) * Math.sin(d) * Math.cos(y), Math.cos(d) - Math.sin(y) * Math.sin(lat));
+  var lat = Math.asin(
+    Math.sin(y) * Math.cos(d) + Math.cos(y) * Math.sin(d) * Math.cos(radBearing)
+  );
+  var lon = Math.atan2(
+    Math.sin(radBearing) * Math.sin(d) * Math.cos(y),
+    Math.cos(d) - Math.sin(y) * Math.sin(lat)
+  );
   wp.x = (x + lon) * RAD2DEG;
   wp.y = lat * RAD2DEG;
   return wp;
@@ -107,8 +113,8 @@ function gcWaypoint(from, distance, bearing) {
  */
 function gcPath(startPoint, endPoint) {
   // Do we cross the dateline?  If yes, then flip endPoint across it
-  if(Math.abs(startPoint.x-endPoint.x) > 180) {
-    if(startPoint.x < endPoint.x) {
+  if (Math.abs(startPoint.x - endPoint.x) > 180) {
+    if (startPoint.x < endPoint.x) {
       endPoint.x -= 360;
     } else {
       endPoint.x += 360;
@@ -117,7 +123,7 @@ function gcPath(startPoint, endPoint) {
 
   // Compute distance between points
   var distance = gcDistance(startPoint.y, startPoint.x, endPoint.y, endPoint.x);
-  if(distance < GC_MIN) {
+  if (distance < GC_MIN) {
     // Short enough that we don't need to show curvature
     return [startPoint, endPoint];
   }
@@ -127,29 +133,32 @@ function gcPath(startPoint, endPoint) {
   var wayPoint = startPoint;
   var d = GC_STEP;
   var step = GC_STEP;
-  if(startPoint.x > -360 && startPoint.x < 360) {
+  if (startPoint.x > -360 && startPoint.x < 360) {
     pointList.push(startPoint);
   }
-  while(d < distance) {
+  while (d < distance) {
     var bearing = gcBearingTo(wayPoint, endPoint); // degrees, clockwise from 0 deg at north
     wayPoint = gcWaypoint(wayPoint, step, bearing);
-    if(wayPoint.x > -360 && wayPoint.x < 360) {
+    if (wayPoint.x > -360 && wayPoint.x < 360) {
       pointList.push(wayPoint);
     } else {
-      if((wayPoint.x < -360 && bearing > 180) || (wayPoint.x > 360 && bearing < 180)) {
+      if (
+        (wayPoint.x < -360 && bearing > 180) ||
+        (wayPoint.x > 360 && bearing < 180)
+      ) {
         break; // line's gone off the map, so stop rendering
       }
     }
 
     // Increase step resolution near the poles
-    if(Math.abs(wayPoint.y) > 60) {
+    if (Math.abs(wayPoint.y) > 60) {
       step = GC_STEP / 2;
     } else {
       step = GC_STEP;
     }
     d += step;
   }
-  if(endPoint.x > -360 && endPoint.x < 360) {
+  if (endPoint.x > -360 && endPoint.x < 360) {
     pointList.push(endPoint);
   }
   return pointList;
@@ -157,21 +166,26 @@ function gcPath(startPoint, endPoint) {
 
 // Check if point is a point
 function isValid(point) {
-  return ((point.x != null) && (point.y != null) && (point.x != NaN) && (point.y != NaN))
+  return point.x != null && point.y != null && point.x != NaN && point.y != NaN;
 }
 
 // Compute extent for visible data (-180 to 180)
 // Known bug: incorrectly draws whole map if flight lines span the meridian...
 function getVisibleDataExtent(layer) {
   var bounds = layer.getDataExtent();
-  if(! bounds) {
+  if (!bounds) {
     return null;
   }
-  if(bounds.left < -180 && bounds.left > -360 && bounds.right > 180 && bounds.right < 360) {
+  if (
+    bounds.left < -180 &&
+    bounds.left > -360 &&
+    bounds.right > 180 &&
+    bounds.right < 360
+  ) {
     // map spans the world, do nothing
   } else {
-    if(bounds.left < -180) bounds.left += 360;
-    if(bounds.right > 180) bounds.right -= 360;
+    if (bounds.left < -180) bounds.left += 360;
+    if (bounds.right > 180) bounds.right -= 360;
   }
   return bounds;
 }
@@ -186,10 +200,10 @@ function changeLocale() {
   var locale = "lang=" + document.getElementById("locale").value;
   var re_lang = /lang=...../;
   var url = "http://" + location.host + location.pathname + location.search; // omit #anchor
-  if(re_lang.test(url)) {
+  if (re_lang.test(url)) {
     url = url.replace(re_lang, locale);
   } else {
-    if(url.indexOf("?") == -1) {
+    if (url.indexOf("?") == -1) {
       url = url + "?" + locale;
     } else {
       url = url + "&" + locale;
@@ -201,53 +215,52 @@ function changeLocale() {
 //
 // Check if DST is active
 function checkDST(type, date, year) {
-  switch(type) {
-  case "E":
-    // Europe: Last Sunday in Mar to last Sunday in Oct
-    if (date >= getLastDay(year, 3, 0) &&
-        date < getLastDay(year, 10, 0)
-    ) {
-      return true;
-    }
-    break;
+  switch (type) {
+    case "E":
+      // Europe: Last Sunday in Mar to last Sunday in Oct
+      if (date >= getLastDay(year, 3, 0) && date < getLastDay(year, 10, 0)) {
+        return true;
+      }
+      break;
 
-  case "A":
-    // US/Canada: 2nd Sunday in Mar to 1st Sunday in Nov
-    if (date >= getNthDay(year, 3, 2, 0) &&
+    case "A":
+      // US/Canada: 2nd Sunday in Mar to 1st Sunday in Nov
+      if (
+        date >= getNthDay(year, 3, 2, 0) &&
         date < getNthDay(year, 11, 1, 0)
-    ) {
-      return true;
-    }
-    break;
+      ) {
+        return true;
+      }
+      break;
 
-  case "S":
-    // South America: Until 3rd Sunday in Mar or after 3nd Sunday in Oct
-    if (date < getNthDay(year, 3, 3, 0) ||
+    case "S":
+      // South America: Until 3rd Sunday in Mar or after 3nd Sunday in Oct
+      if (
+        date < getNthDay(year, 3, 3, 0) ||
         date >= getNthDay(year, 10, 3, 0)
-    ) {
-      return true;
-    }
-    break;
+      ) {
+        return true;
+      }
+      break;
 
-  case "O":
-    // Australia: Until 1st Sunday in April or after 1st Sunday in Oct
-    if (date < getNthDay(year, 4, 1, 0) ||
+    case "O":
+      // Australia: Until 1st Sunday in April or after 1st Sunday in Oct
+      if (
+        date < getNthDay(year, 4, 1, 0) ||
         date >= getNthDay(year, 10, 1, 0)
-    ) {
-      return true;
-    }
-    break;
+      ) {
+        return true;
+      }
+      break;
 
-  case "Z":
-    // New Zealand: Until 1st Sunday in April or after last Sunday in Sep
-    if (date < getNthDay(year, 4, 1, 0) ||
-        date >= getLastDay(year, 9, 0)
-    ) {
-      return true;
-    }
-    break;
+    case "Z":
+      // New Zealand: Until 1st Sunday in April or after last Sunday in Sep
+      if (date < getNthDay(year, 4, 1, 0) || date >= getLastDay(year, 9, 0)) {
+        return true;
+      }
+      break;
 
-  default:
+    default:
     // cases U, N -- do nothing
   }
   return false;
@@ -257,12 +270,12 @@ function checkDST(type, date, year) {
 // 'type' is 0 for Sun, 1 for Mon, etc
 function getNthDay(year, month, nth, type) {
   date = new Date();
-  date.setFullYear(year, month-1, 1); // Date object months start from 0
+  date.setFullYear(year, month - 1, 1); // Date object months start from 0
   day = date.getDay();
-  if(type >= day) {
+  if (type >= day) {
     nth--;
   }
-  date.setDate(date.getDate() + (7 - (day - type)) + ((nth-1) * 7));
+  date.setDate(date.getDate() + (7 - (day - type)) + (nth - 1) * 7);
   return date;
 }
 
@@ -270,7 +283,7 @@ function getNthDay(year, month, nth, type) {
 function getLastDay(year, month, type) {
   date = new Date();
   date.setFullYear(year, month, 1); // Date object months start from 0, so this is +1
-  date.setDate(date.getDate()-1); // last day of previous month
+  date.setDate(date.getDate() - 1); // last day of previous month
   date.setDate(date.getDate() - (date.getDay() - type));
   return date;
 }
@@ -284,25 +297,25 @@ function parseTimeString(time_str) {
 // Splice and dice apdata chunks
 // code:apid:x:y:tz:dst
 function getApid(element) {
-  return $(element + 'id').value.split(":")[1];
+  return $(element + "id").value.split(":")[1];
 }
 function getX(element) {
-  return $(element + 'id').value.split(":")[2];
+  return $(element + "id").value.split(":")[2];
 }
 function getY(element) {
-  return $(element + 'id').value.split(":")[3];
+  return $(element + "id").value.split(":")[3];
 }
 function getTZ(element) {
-  var tz = $(element + 'id').value.split(":")[4];
-  if(!tz || tz == "") {
+  var tz = $(element + "id").value.split(":")[4];
+  if (!tz || tz == "") {
     return 0;
   } else {
     return parseFloat(tz);
   }
 }
 function getDST(element) {
-  var dst = $(element + 'id').value.split(":")[5];
-  if(!dst || dst == "") {
+  var dst = $(element + "id").value.split(":")[5];
+  if (!dst || dst == "") {
     return "N";
   } else {
     return dst;
@@ -313,20 +326,40 @@ function getDST(element) {
 // If validity is not null, also return text description and validity period
 
 var eliteicons = [
-  [ 'S', 'Silver Elite', '/img/silver-star.png' ],
-  [ 'G', 'Gold Elite', '/img/gold-star.png' ],
-  [ 'P', 'Platinum Elite', '/img/platinum-star.png' ],
-  [ 'X', 'Thank you for using OpenFlights &mdash; please donate!', '/img/icon-warning.png' ]
+  ["S", "Silver Elite", "/img/silver-star.png"],
+  ["G", "Gold Elite", "/img/gold-star.png"],
+  ["P", "Platinum Elite", "/img/platinum-star.png"],
+  [
+    "X",
+    "Thank you for using OpenFlights &mdash; please donate!",
+    "/img/icon-warning.png",
+  ],
 ];
 
 function getEliteIcon(e, validity) {
-  if(e && e != "") {
-    for(i = 0; i < eliteicons.length; i++) {
-      if(eliteicons[i][0] == e) {
+  if (e && e != "") {
+    for (i = 0; i < eliteicons.length; i++) {
+      if (eliteicons[i][0] == e) {
         if (validity) {
-          return "<center><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></img><br><b>" + eliteicons[i][1] + "</b><br><small>Valid until<br>" + validity + "</small></center>";
+          return (
+            "<center><img src='" +
+            eliteicons[i][2] +
+            "' title='" +
+            eliteicons[i][1] +
+            "' height=34 width=34></img><br><b>" +
+            eliteicons[i][1] +
+            "</b><br><small>Valid until<br>" +
+            validity +
+            "</small></center>"
+          );
         } else {
-          return "<span style='float: right'><a href='/donate' target='_blank'><img src='" + eliteicons[i][2] + "' title='" + eliteicons[i][1] + "' height=34 width=34></a></span>";
+          return (
+            "<span style='float: right'><a href='/donate' target='_blank'><img src='" +
+            eliteicons[i][2] +
+            "' title='" +
+            eliteicons[i][1] +
+            "' height=34 width=34></a></span>"
+          );
         }
       }
     }
@@ -336,12 +369,12 @@ function getEliteIcon(e, validity) {
 
 // Given element "select", select option matching "value", or #0 if not found
 function selectInSelect(select, value) {
-  if(!select) {
+  if (!select) {
     return;
   }
   select.selectedIndex = 0; // default to unselected
-  for(index = 0; index < select.length; index++) {
-    if(select[index].value == value) {
+  for (index = 0; index < select.length; index++) {
+    if (select[index].value == value) {
       select.selectedIndex = index;
     }
   }
