@@ -128,6 +128,10 @@ var re_date =
 // Validate numeric value
 var re_numeric = /^[0-9]*$/;
 
+var lasturl;
+
+var airportLayer;
+
 // avoid pink tiles
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 OpenLayers.Util.onImageLoadErrorColor = "transparent";
@@ -301,7 +305,7 @@ function init() {
         name: function (feature) {
           if (feature.cluster) {
             // Last airport is always the largest
-            last = feature.cluster.length - 1;
+            var last = feature.cluster.length - 1;
             if (feature.cluster[last].attributes.index > 2) {
               // One airport is dominant, copy its attributes into cluster
               feature.attributes.apid = feature.cluster[last].attributes.apid;
@@ -319,9 +323,11 @@ function init() {
                 feature.cluster[last].attributes.name + " \u2295";
             } else {
               // No dominant airport, show cluster icon with aggregate info
-              name = "";
-              for (c = last; c >= 0; c--) {
-                if (c < last) name += ", ";
+              var name = "";
+              for (var c = last; c >= 0; c--) {
+                if (c < last) {
+                  name += ", ";
+                }
                 name += feature.cluster[c].attributes.code;
               }
               feature.attributes.icon = "/img/icon_cluster.png";
@@ -426,7 +432,7 @@ function init() {
     $("quicksearch").style.display = "inline";
 
     // Nope, set up hinting and autocompletes for editor
-    ac_airport = [
+    var ac_airport = [
       "src_ap",
       "src_ap1",
       "src_ap2",
@@ -438,8 +444,14 @@ function init() {
       "dst_ap3",
       "dst_ap4",
     ];
-    ac_airline = ["airline", "airline1", "airline2", "airline3", "airline4"];
-    ac_plane = ["plane"];
+    var ac_airline = [
+      "airline",
+      "airline1",
+      "airline2",
+      "airline3",
+      "airline4",
+    ];
+    var ac_plane = ["plane"];
 
     for (const airportAutoCompInputId of ac_airport) {
       prepareAutocomplete(airportAutoCompInputId, "airport", {
@@ -488,7 +500,7 @@ function init() {
     }
 
     // No idea why this is needed, but FF3 disables random buttons without it...
-    for (i = 0; i < document.forms["inputform"].elements.length; i++) {
+    for (var i = 0; i < document.forms["inputform"].elements.length; i++) {
       document.forms["inputform"].elements[i].disabled = false;
     }
     for (i = 0; i < document.forms["multiinputform"].elements.length; i++) {
@@ -576,7 +588,7 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
     );
   }
   var features = [];
-  for (i = 0; i < paths.length; i++) {
+  for (var i = 0; i < paths.length; i++) {
     features.push(
       new OpenLayers.Feature.Vector(projectedLine(paths[i]), {
         count: count,
@@ -756,14 +768,14 @@ function onAirportSelect(airport) {
   }
 
   apid = airport.attributes.apid;
-  code = airport.attributes.code;
-  coreid = airport.attributes.coreid;
-  rdesc = airport.attributes.rdesc;
+  var code = airport.attributes.code;
+  var coreid = airport.attributes.coreid;
+  var rdesc = airport.attributes.rdesc;
 
   // Single airport?
   if (!airport.cluster) {
     // Add toolbar to popup
-    desc =
+    var desc =
       "<span style='position: absolute; right: 5; bottom: 1;'>" +
       "<a href='#' onclick='JavaScript:selectAirport(" +
       apid +
@@ -793,6 +805,7 @@ function onAirportSelect(airport) {
       }
     } else {
       if (code.length == 3) {
+        var idstring;
         // Get list of airport routes
         if (coreid.startsWith("L")) {
           idstring = coreid + "," + apid;
@@ -834,9 +847,9 @@ function onAirportSelect(airport) {
   } else {
     // Cluster, generate clickable list of members in reverse order (most flights first)
     desc = "<b>" + gt.gettext("Airports") + "</b><br>";
-    edit = isEditMode() ? "true" : "false";
-    cmax = airport.cluster.length - 1;
-    for (c = cmax; c >= 0; c--) {
+    var edit = isEditMode() ? "true" : "false";
+    var cmax = airport.cluster.length - 1;
+    for (var c = cmax; c >= 0; c--) {
       if (c < cmax) {
         desc += ", ";
         if ((cmax - c) % 6 == 0) desc += "<br>";
@@ -895,7 +908,7 @@ function onAirportUnselect(airport) {
 }
 
 function toggleControl(element) {
-  for (key in drawControls) {
+  for (var key in drawControls) {
     var control = drawControls[key];
     if (element.value == key && element.checked) {
       control.activate();
@@ -1086,8 +1099,8 @@ function xmlhttpPost(strURL, id, param) {
       }
       if (strURL == URL_SUBMIT) {
         var result = self.xmlHttpReq.responseText.split(";");
-        code = result[0];
-        text = result[1];
+        var code = result[0];
+        var text = result[1];
         if (getCurrentPane() == "multiinput") {
           $("multiinput_status").innerHTML = "<B>" + text + "</B>";
         } else {
@@ -1163,6 +1176,7 @@ function xmlhttpPost(strURL, id, param) {
 
       // Deleting needs only the fid, and can be run without the inputform
       if (param != "DELETE") {
+        var i;
         if (getCurrentPane() == "multiinput") {
           query = "multi=" + multiinput_rows + "&";
           var indexes = [];
@@ -1243,7 +1257,7 @@ function xmlhttpPost(strURL, id, param) {
             "&";
         }
         if (getCurrentPane() == "input") {
-          src_time = $("src_time").value;
+          var src_time = $("src_time").value;
           if (src_time != "" && src_time != "HH:MM") {
             if (!RE_TIME.test(src_time)) {
               alert(
@@ -1367,8 +1381,8 @@ function xmlhttpPost(strURL, id, param) {
       var name = document.forms["login"].name.value;
       var pw = document.forms["login"].pw.value;
       var challenge = document.forms["login"].challenge.value;
-      hash = MD5(challenge + MD5(pw + name.toLowerCase()));
-      legacy_hash = MD5(challenge + MD5(pw + name));
+      var hash = MD5(challenge + MD5(pw + name.toLowerCase()));
+      var legacy_hash = MD5(challenge + MD5(pw + name));
       query =
         "name=" +
         encodeURIComponent(name) +
@@ -1424,14 +1438,17 @@ function xmlhttpPost(strURL, id, param) {
         "&" +
         "param=" +
         encodeURIComponent(param);
-      guestpw = $("guestpw");
+      var guestpw = $("guestpw");
       if (guestpw) {
         query += "&guestpw=" + MD5(guestpw.value + filter_user.toLowerCase());
       }
-      filter_extra_key = form.Extra.value;
+      var filter_extra_key = form.Extra.value;
       if (filter_extra_key != "" && $("filter_extra_value")) {
-        filter_extra_value = $("filter_extra_value").value;
-        query += "&xkey=" + filter_extra_key + "&xvalue=" + filter_extra_value;
+        query +=
+          "&xkey=" +
+          filter_extra_key +
+          "&xvalue=" +
+          $("filter_extra_value").value;
       }
       if (strURL == URL_ROUTES) {
         query += "&apid=" + encodeURIComponent(id);
@@ -1482,12 +1499,13 @@ function updateFilter(str) {
     );
     var editTripSelect = document.forms["inputform"].trips;
     if (editTripSelect) {
+      var selected;
       // New trip added, so now we need to figure out the newest (highest) trid to find it
       if (editTripSelect.reselect) {
         var newestId = 0;
         var filterTripSelect = document.forms["filterform"].Trips;
-        for (i = 0; i < filterTripSelect.length; i++) {
-          id = filterTripSelect[i].value.split(";")[0];
+        for (var i = 0; i < filterTripSelect.length; i++) {
+          var id = filterTripSelect[i].value.split(";")[0];
           if (parseInt(id) > newestId) {
             newestId = id;
             selected = i;
@@ -1611,7 +1629,7 @@ function getMapTitle(closable) {
   }
 
   // Tack on the extra filter, if any
-  filter_extra_key = form.Extra.value;
+  var filter_extra_key = form.Extra.value;
   if (filter_extra_key != "" && $("filter_extra_value")) {
     if (text != "") {
       text = text + ", ";
@@ -1739,14 +1757,10 @@ function cloneSelect(oldSelect, name, hook, selected) {
   if (hook) {
     newSelect += " onChange='JavaScript:" + hook + '("' + name + "\")'>";
   }
-  for (index = 0; index < oldSelect.length; index++) {
-    id = oldSelect[index].value.split(";")[0];
-    text = oldSelect[index].value.split(";")[1];
-    if (index == selected) {
-      selectedText = " SELECTED";
-    } else {
-      selectedText = "";
-    }
+  for (var index = 0; index < oldSelect.length; index++) {
+    var id = oldSelect[index].value.split(";")[0];
+    var text = oldSelect[index].value.split(";")[1];
+    var selectedText = index == selected ? " SELECTED" : "";
     if (id != "null") {
       // Skip "Not in trip" special option
       newSelect +=
@@ -1759,7 +1773,7 @@ function cloneSelect(oldSelect, name, hook, selected) {
 
 // Return value of currently selected radio button in this group
 function radioValue(radio) {
-  for (r = 0; r < radio.length; r++) {
+  for (var r = 0; r < radio.length; r++) {
     if (radio[r].checked) {
       return radio[r].value;
     }
@@ -1772,12 +1786,12 @@ function clearMap() {
   lineLayer.destroyFeatures();
   airportLayer.destroyFeatures();
   var popups = map.popups;
-  for (p = 0; p < popups.length; p++) {
+  for (var p = 0; p < popups.length; p++) {
     popups[p].destroy();
   }
 }
 
-// Reinsert all flights, airports from database result
+// Reinsert all flights, airports from the database result
 function updateMap(str, url) {
   lineLayer.destroyFeatures();
   airportLayer.destroyFeatures();
@@ -1823,17 +1837,13 @@ function updateMap(str, url) {
     privacy = col[3];
     if (!logged_in) {
       elite = col[4];
-      editor = col[6];
+      var editor = col[6];
       document.forms["login"].challenge.value = col[7];
 
       // Does user have a PHP session open?  Log him in!
       // Simulate login.php: "1;name;editor;elite"
       if (col[5] != "demo") {
-        if (flightTotal == "0") {
-          op = "NEWUSER";
-        } else {
-          op = "REFRESH";
-        }
+        var op = flightTotal == "0" ? "NEWUSER" : "REFRESH";
         login(
           '{"status": 1, "name": "' +
             col[5] +
@@ -1856,7 +1866,9 @@ function updateMap(str, url) {
 
     apid = col[0];
     flightTotal = col[1];
-    desc = col[2];
+    var desc = col[2];
+    var coreid;
+    var title;
     if (apid.startsWith("L")) {
       type = "L";
       coreid = apid;
@@ -1896,19 +1908,18 @@ function updateMap(str, url) {
   // New user (or filter setting) with no flights?  Then don't even try to draw
   if (flightTotal != "0") {
     var rows = flights.split("\t");
-    for (r = 0; r < rows.length; r++) {
+    for (var r = 0; r < rows.length; r++) {
       // apid1 0, x1 1, y1 2, apid2 3, x2 4, y2 5, count 6, distance 7, future 8, mode 9
       var rCol = rows[r].split(";");
-      if (rCol[8] == "Y") {
-        stroke = "dash";
-      } else {
-        stroke = "solid";
-      }
+      var stroke = rCol[8] == "Y" ? "dash" : "solid";
+      var color;
       if (url == URL_ROUTES) {
         color = COLOR_ROUTE;
       } else {
         color = modecolors[rCol[9]];
-        if (!color) color = COLOR_NORMAL;
+        if (!color) {
+          color = COLOR_NORMAL;
+        }
       }
       lineLayer.addFeatures(
         drawLine(
@@ -1935,11 +1946,7 @@ function updateMap(str, url) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(";");
       // 0 apdata, 1 name, 2 city, 3 country, 4 count, 5 formatted_name, 6 future
-      if (col[6] == "Y") {
-        opacity = 0.5;
-      } else {
-        opacity = 1;
-      }
+      var opacity = col[6] == "Y" ? 0.5 : 1;
       airports.push(
         drawAirport(
           airportLayer,
@@ -2066,7 +2073,7 @@ function listFlights(str, desc, id) {
     table.push("</tr>");
 
     var rows = str.split("\n");
-    for (r = 0; r < rows.length; r++) {
+    for (var r = 0; r < rows.length; r++) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, airline_code 19, src_time 20, mode 21
       var col = rows[r].split("\t");
       var trip = col[17];
@@ -2204,6 +2211,7 @@ function listFlights(str, desc, id) {
 // type: "backup" to export everything, "export" to export only current filter selection, "gcmap" to redirect to gcmap site
 // newWindow: true if we want target URL to open in a new window.
 function exportFlights(type, newWindow) {
+  var url;
   if (type == "KML") {
     url = location.origin + "/php/kml.php?" + lastQuery;
   } else {
@@ -2238,10 +2246,10 @@ function showStats(str) {
     var modeData = master[6];
     var classDataByDistance = master[7];
 
-    bigtable =
+    var bigtable =
       '<table><td style="vertical-align: top"><img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17></td><td style="vertical-align: top">';
 
-    table = '<table style="border-spacing: 10px 0px">';
+    var table = '<table style="border-spacing: 10px 0px">';
     table += "<tr><th colspan=2>" + gt.gettext("Unique") + "</th></tr>";
     table +=
       "<tr><td>" +
@@ -2304,7 +2312,7 @@ function showStats(str) {
     // TODO: Shouldn't be needed when stats.php returns full JSON
     // https://github.com/jpatokal/openflights/issues/1296
     var rows = longshort !== "" ? longshort.split(";") : [];
-    for (r = 0; r < rows.length; r++) {
+    for (var r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
       table +=
@@ -2342,8 +2350,8 @@ function showStats(str) {
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // 0 desc, 1 code, 2 apid, 3 x, 4 y
-      lat = parseFloat(col[4]).toFixed(2);
-      lon = parseFloat(col[3]).toFixed(2);
+      var lat = parseFloat(col[4]).toFixed(2);
+      var lon = parseFloat(col[3]).toFixed(2);
       if (lat < 0) {
         lat = -lat + "&deg;S";
       } else {
@@ -2453,7 +2461,7 @@ function googleChart(targetdiv, inputdata, labeldata) {
   data.addColumn("number", "Value");
 
   var rows = inputdata.split(":");
-  for (r = 0; r < rows.length; r++) {
+  for (var r = 0; r < rows.length; r++) {
     // col is key-value pair separated by a comma
     var col = rows[r].split(",");
     data.addRow([labeldata[col[0]], parseInt(col[1], 10)]);
@@ -2496,6 +2504,7 @@ function showTop10(responseText) {
 
   // Take note of existing settings, if any
   var form = document.forms["top10form"];
+  var mode, limit;
   if (form) {
     mode = form.mode[form.mode.selectedIndex].value;
     limit = form.limit[form.limit.selectedIndex].value;
@@ -2504,9 +2513,9 @@ function showTop10(responseText) {
     limit = "10";
   }
 
-  bigtable =
+  var bigtable =
     "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
-  table = "<br>" + gt.gettext("Show...") + "<br>";
+  var table = "<br>" + gt.gettext("Show...") + "<br>";
   table +=
     createSelectFromArray("limit", toplimits, "updateTop10()", limit) + "<br>";
   table += gt.gettext("Sort by...") + "<br>";
@@ -2539,7 +2548,7 @@ function showTop10(responseText) {
     table + "</td><td style='vertical-align: top; padding: 0px 10px'>";
   table = "<table><tr><th colspan=3'>" + gt.gettext("Airports") + "</th></tr>";
   for (const airport of topData.airports) {
-    desc = airport.name.substring(0, 20) + " (" + airport.code + ")";
+    var desc = airport.name.substring(0, 20) + " (" + airport.code + ")";
     table +=
       "<tr><td><a href='#' onclick='JavaScript:selectAirport(" +
       airport.apid +
@@ -2675,7 +2684,7 @@ function editFlight(str, param) {
   );
 
   var myClass = inputform.myClass;
-  for (index = 0; index < myClass.length; index++) {
+  for (var index = 0; index < myClass.length; index++) {
     myClass[index].checked = myClass[index].value == col[10];
   }
   var reason = inputform.reason;
@@ -2796,8 +2805,10 @@ function changeMode(mode) {
 
 // Handle the "add new airports" buttons
 function popNewAirport(type, apid) {
-  if (!apid) apid = 0;
-  url = "/html/apsearch";
+  if (!apid) {
+    apid = 0;
+  }
+  var url = "/html/apsearch";
   if (type) {
     input_toggle = type;
     apid = getApid(type);
@@ -2827,7 +2838,7 @@ function popNewAirline(type, name, mode) {
   if (type) {
     input_al_toggle = type;
   }
-  url = "/html/alsearch";
+  var url = "/html/alsearch";
   if (name) {
     url += "?name=" + encodeURIComponent(name) + "&mode=" + mode;
   }
@@ -2840,7 +2851,7 @@ function addNewAirline(alid, name, mode) {
   changeMode(mode);
   selectInSelect(inputform.mode, mode);
 
-  // Check if airline was listed already
+  // Check if the airline was listed already
   if (selectAirline(alid, true)) {
     return;
   }
@@ -3079,14 +3090,14 @@ function calcDuration(param) {
   if ($("src_apid").value == 0 || $("dst_apid").value == 0) {
     return;
   }
-  dst_time = $("dst_time").value.trim();
+  var dst_time = $("dst_time").value.trim();
   if (dst_time == "" || dst_time == "HH:MM") {
     dst_time = 0;
   }
 
   switch (param) {
     case "DISTANCE":
-      // Reestimate *only* if blanked
+      // Re-estimate *only* if blanked
       var distance = $("distance").value.trim();
       if (distance == "") {
         var lon1 = getX("src_ap");
@@ -3157,7 +3168,7 @@ function calcDuration(param) {
   }
 
   // Do we have a starting time?
-  src_time = $("src_time").value;
+  var src_time = $("src_time").value;
   if (src_time != "" && src_time != "HH:MM") {
     // We do!  Does it make sense?
     if (!RE_TIME.test(src_time)) {
@@ -3185,21 +3196,21 @@ function calcDuration(param) {
     }
 
     // Get timezones
-    src_tz = getTZ("src_ap");
-    dst_tz = getTZ("dst_ap");
-    src_dst = getDST("src_ap");
-    dst_dst = getDST("dst_ap");
+    var src_tz = getTZ("src_ap");
+    var dst_tz = getTZ("dst_ap");
+    var src_dst = getDST("src_ap");
+    var dst_dst = getDST("dst_ap");
 
     // Verify if DST is active
     // 2008-01-26[0],2008[1],20[2],01[3],26[4]
-    src_date = re_date.exec($("src_date").value);
+    var src_date = re_date.exec($("src_date").value);
     if (!src_date) {
       // Nonsensical date
       return;
     }
-    src_year = src_date[1];
-    src_month = src_date[3];
-    src_day = src_date[4];
+    var src_year = src_date[1];
+    var src_month = src_date[3];
+    var src_day = src_date[4];
     src_date = new Date();
     src_date = src_date.setFullYear(src_year, src_month - 1, src_day);
     if (checkDST(src_dst, src_date, src_year)) {
@@ -3231,8 +3242,8 @@ function calcDuration(param) {
       days = Math.floor(dst_time / 24);
       dst_time = dst_time % 24;
       while (dst_time < 0) dst_time += 24;
-      hours = Math.floor(dst_time);
-      mins = Math.floor((dst_time - hours) * 60);
+      var hours = Math.floor(dst_time);
+      var mins = Math.floor((dst_time - hours) * 60);
       if (mins < 10) {
         mins = "0" + mins + "";
       }
@@ -3372,7 +3383,7 @@ function markAirport(element, quick) {
         );
       } else {
         input_line = [];
-        for (i = 1; i <= multiinput_rows; i++) {
+        for (var i = 1; i <= multiinput_rows; i++) {
           var src_ap = $("src_ap" + i + "id").value;
           var dst_ap = $("dst_ap" + i + "id").value;
           if (src_ap != 0 && dst_ap != 0) {
@@ -3383,7 +3394,7 @@ function markAirport(element, quick) {
             var lon2 = dst_ap_data[2];
             var lat2 = dst_ap_data[3];
             var distance = gcDistance(lat1, lon1, lat2, lon2);
-            line = drawLine(
+            var line = drawLine(
               parseFloat(lon1),
               parseFloat(lat1),
               parseFloat(lon2),
@@ -3399,7 +3410,7 @@ function markAirport(element, quick) {
         }
       }
       lineLayer.addFeatures(input_line);
-      oldDist = $("distance").value;
+      var oldDist = $("distance").value;
       $("distance").value = distance;
       // TODO: Do we need this comparison against placeholder?
       if (oldDist == "" && $("dst_time").value != $("dst_time").placeholder) {
@@ -3437,15 +3448,19 @@ function markingLimit(element) {
   if (element.startsWith("src_ap")) {
     return "src_ap1";
   }
-  for (i = 1; i <= multiinput_rows; i++) {
+  for (var i = 1; i <= multiinput_rows; i++) {
     var ap = $("dst_ap" + i + "id").value;
     if (!ap || ap == "" || ap == 0) {
       i--; // this airport is no longer valid, so we use prev row as limit
       break;
     }
   }
-  if (i == 0) return null; // no valid airports
-  if (i > multiinput_rows) i = multiinput_rows; // otherwise it goes one over if all rows are valid
+  if (i == 0) {
+    return null;
+  } // no valid airports
+  if (i > multiinput_rows) {
+    i = multiinput_rows;
+  } // otherwise it goes one over if all rows are valid
   return "dst_ap" + i;
 }
 
@@ -3453,6 +3468,7 @@ function markingLimit(element) {
 // If "true" (manual), swap both
 // If "false" (automatic), swap only top to bottom and restore top to original
 function swapAirports(manual) {
+  var srcName, srcData;
   if (manual) {
     srcName = $("src_ap").value;
     srcData = $("src_apid").value;
@@ -3490,7 +3506,7 @@ function swapAirports(manual) {
 function selectAirport(apid, select, quick, code) {
   var found = false;
   for (var ap = 0; ap < airportLayer.features.length; ap++) {
-    attrstack = new Array();
+    var attrstack = new Array();
     if (airportLayer.features[ap].cluster) {
       for (var c = 0; c < airportLayer.features[ap].cluster.length; c++) {
         attrstack.push(airportLayer.features[ap].cluster[c].attributes);
@@ -3499,7 +3515,7 @@ function selectAirport(apid, select, quick, code) {
       attrstack.push(airportLayer.features[ap].attributes);
     }
     while (attrstack.length > 0) {
-      attrs = attrstack.pop();
+      var attrs = attrstack.pop();
       if ((apid && attrs.apid == apid) || (code && attrs.code == code)) {
         // If "select" is true, we select the airport into the input form instead of popping it up
         if (select && isEditMode()) {
@@ -3544,11 +3560,10 @@ function changeRows(type) {
       if (multiinput_rows == 1) {
         $("b_less").disabled = false;
       }
-      source = "dst_ap" + multiinput_rows;
       multiinput_rows++;
       var row = "row" + multiinput_rows;
       $(row).style.display = ""; // resolves to "table-row" in FF and "block" in IE...
-      replicateSelection(source);
+      replicateSelection("dst_ap" + multiinput_rows);
       break;
 
     case "Less":
@@ -3569,7 +3584,9 @@ function changeRows(type) {
 // In multiinput mode, copy entered airport/airline/date into next row (when empty)
 // Special argument "More" adds a row, "Less" removes one
 function replicateSelection(source) {
-  if (getCurrentPane() != "multiinput") return;
+  if (getCurrentPane() != "multiinput") {
+    return;
+  }
 
   switch (source) {
     case "dst_ap1":
@@ -3579,15 +3596,17 @@ function replicateSelection(source) {
     case "airline2":
     case "airline3":
       // Check if the row we're trying to replicate to is active; if no, abort
-      idx = parseInt(source.charAt(source.length - 1)) + 1;
-      row = "row" + idx;
-      if ($(row).style.display == "none") return;
+      var idx = parseInt(source.charAt(source.length - 1)) + 1;
+      var row = "row" + idx;
+      if ($(row).style.display == "none") {
+        return;
+      }
 
-      target = "src_ap" + idx;
-      date_target = "src_date" + idx;
-      date_source = "src_date" + (idx - 1);
-      al_target = "airline" + idx;
-      al_source = "airline" + (idx - 1);
+      var target = "src_ap" + idx;
+      var date_target = "src_date" + idx;
+      var date_source = "src_date" + (idx - 1);
+      var al_target = "airline" + idx;
+      var al_source = "airline" + (idx - 1);
       break;
 
     default:
@@ -3613,7 +3632,7 @@ function replicateSelection(source) {
 // return true if found, false if not
 function selectAirline(new_alid, edit) {
   var al_select = document.forms["filterform"].Airlines;
-  for (index = 0; index < al_select.length; index++) {
+  for (var index = 0; index < al_select.length; index++) {
     if (al_select[index].value.split(";")[0] == new_alid) {
       if (edit) {
         $(input_al_toggle).value = al_select[index].value.split(";")[1];
@@ -3867,7 +3886,7 @@ function getCurrentPane() {
 
 // Return true if we are in detailed or multi edit mode
 function isEditMode() {
-  currentPane = getCurrentPane();
+  var currentPane = getCurrentPane();
   return currentPane == "input" || currentPane == "multiinput";
 }
 
@@ -3885,7 +3904,7 @@ function openPane(newPane) {
 
 // Check if a named pane is already open, return index if yes
 function findPane(pane) {
-  for (i = 0; i < paneStack.length; i++) {
+  for (var i = 0; i < paneStack.length; i++) {
     if (paneStack[i] == pane) {
       return i;
     }
@@ -3924,11 +3943,14 @@ function clearStack() {
 
 function openDetailedInput(param) {
   // Does the user already have an input pane open?
-  p = findPane("input");
-  if (!p) p = findPane("multiinput");
+  var p = findPane("input");
+  if (!p) {
+    p = findPane("multiinput");
+  }
   if (p) {
     // Have they changed it, and do they want to throw away the changes?
     if (hasChanged()) {
+      var msg;
       switch (param) {
         case "ADD":
         case "COPY":
@@ -3937,7 +3959,6 @@ function openDetailedInput(param) {
           );
           break;
 
-          break;
         case "EDIT":
           msg = gt.gettext(
             "You are already editing a flight. OK to discard your changes and edit this flight instead?"
@@ -3982,8 +4003,10 @@ function openDetailedInput(param) {
 // Open basic (multiflight) editor
 function openBasicInput(param) {
   // Does the user already have an input pane open?
-  p = findPane("input");
-  if (!p) p = findPane("multiinput");
+  var p = findPane("input");
+  if (!p) {
+    p = findPane("multiinput");
+  }
   if (p) {
     // Have they changed it, and do they want to throw away the changes?
     if (hasChanged()) {
@@ -4078,10 +4101,12 @@ function clearInput() {
     form.planeid.value = "";
     form.registration.value = "";
     form.note.value = "";
-    if (form.trips) form.trips.selectedIndex = 0;
+    if (form.trips) {
+      form.trips.selectedIndex = 0;
+    }
   } else {
     var form = document.forms["multiinputform"];
-    for (i = 0; i < multiinput_ids.length; i++) {
+    for (var i = 0; i < multiinput_ids.length; i++) {
       $(multiinput_ids[i]).value = 0;
     }
     form.src_date1.value = todayString();
@@ -4179,7 +4204,9 @@ function clearFilter(refresh_all) {
   selectAirline(0);
   if (refresh_all && lasturl == URL_ROUTES) {
     var extent = airportLayer.getDataExtent();
-    if (extent) map.zoomToExtent(extent);
+    if (extent) {
+      map.zoomToExtent(extent);
+    }
     lasturl = URL_MAP;
   }
   refresh(refresh_all);
