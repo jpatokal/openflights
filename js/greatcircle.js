@@ -198,7 +198,7 @@ function getVisibleDataExtent(layer) {
 function changeLocale() {
   var locale = "lang=" + document.getElementById("locale").value;
   var re_lang = /lang=...../;
-  var url = "http://" + location.host + location.pathname + location.search; // omit #anchor
+  var url = location.origin + location.pathname + location.search; // omit #anchor
   if (re_lang.test(url)) {
     url = url.replace(re_lang, locale);
   } else {
