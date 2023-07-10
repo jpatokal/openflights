@@ -53,6 +53,7 @@ require_once "php/git.php";
         <p>Open-source packages used to create this software include:
             <a href="https://openlayers.org">OpenLayers</a>,
             <a href="https://github.com/kraaden/autocomplete"><tt>kraaden/autocomplete<tt/></a>,
+            <a href="https://github.com/pvorb/node-md5"><tt>pvorb/node-md5</tt></a>,
             <a href="https://yoast.com/articles/sortable-table/">Sortable Table</a>,
             <a href="http://www.garrett.nildram.co.uk/calendar/scw.htm">Simple Calendar Widget</a>,
             <a href="http://www.movable-type.co.uk/scripts/latlong.html">Movable Type Scripts (Great Circle)</a>,

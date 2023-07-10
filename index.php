@@ -20,6 +20,7 @@ require_once "./php/helper.php";
     <script type="text/javascript" src="/js/OpenLayers.min.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/utilities.min.js"></script>
+    <script type="text/javascript" src="/js/md5.min.js"></script>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/scw.min.js"></script>
     <script type="text/javascript" src="/js/autocomplete.min.js"></script>
