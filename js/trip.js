@@ -37,7 +37,7 @@ function xmlhttpPost(strURL, type) {
     var form = document.forms["tripform"];
     var privacy;
 
-    for (r = 0; r < tripform.privacy.length; r++) {
+    for (var r = 0; r < tripform.privacy.length; r++) {
       if (tripform.privacy[r].checked) {
         privacy = tripform.privacy[r].value;
       }

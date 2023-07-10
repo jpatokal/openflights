@@ -282,7 +282,7 @@ function xmlhttpPost(strURL, offset, action) {
 
       // Last check for new airports only
       if (apid == "") {
-        desc =
+        var desc =
           airport +
           ", " +
           city +
@@ -293,7 +293,7 @@ function xmlhttpPost(strURL, offset, action) {
           ", ICAO: " +
           (icao == "" ? "N/A" : icao) +
           ")";
-        quad =
+        var quad =
           (parseFloat(y) < 0 ? "SOUTH" : "NORTH") +
           "-" +
           (parseFloat(x) < 0 ? "WEST" : "EAST");
@@ -399,7 +399,7 @@ function searchResult(str) {
   }
 
   offset = json["offset"];
-  max = json["max"];
+  var max = json["max"];
   if (max == 0) {
     table +=
       "<tr><td><i>" +
@@ -449,15 +449,11 @@ function searchResult(str) {
     }
     table += "</tr>";
 
-    for (a in airports) {
+    for (var a in airports) {
       // Meat of the table
 
       var col = airports[a];
-      if (a % 2 == 1) {
-        bgcolor = "#fff";
-      } else {
-        bgcolor = "#ddd";
-      }
+      var bgcolor = a % 2 == 1 ? "#fff" : "#ddd";
       switch (col["ap_uid"]) {
         case "user":
           bgcolor = "#fdd";
@@ -491,7 +487,7 @@ function searchResult(str) {
         "</td>";
       if (db == DB_OPENFLIGHTS && isEditMode()) {
         // code:apid:x:y:tz:dst
-        id =
+        var id =
           (col["iata"] != "" ? col["iata"] : col["icao"]) +
           ":" +
           col["apid"] +
@@ -515,6 +511,7 @@ function searchResult(str) {
           "\")'></td>";
       }
       if (db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || !isEditMode()) {
+        var label;
         if (col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
           label = gt.gettext("Edit");
         } else {
@@ -559,9 +556,9 @@ function loadAirport(data) {
   if (col["timezone"]) {
     form.tz.value = col["timezone"];
   }
-  country = col["country"];
+  var country = col["country"];
   var country_select = form.country;
-  for (index = 0; index < country_select.length; index++) {
+  for (var index = 0; index < country_select.length; index++) {
     if (
       country_select[index].value == country ||
       country_select[index].text == country
@@ -595,9 +592,10 @@ function recordResult(str) {
     var country = form.country[form.country.selectedIndex].text;
 
     // code:apid:x:y
-    code = iata != "" ? iata : form.icao.value;
+    var code = iata != "" ? iata : form.icao.value;
     // city-airport (code), country
-    data = code + ":" + json["apid"] + ":" + form.x.value + ":" + form.y.value;
+    var data =
+      code + ":" + json["apid"] + ":" + form.x.value + ":" + form.y.value;
     name =
       form.city.value +
       "-" +

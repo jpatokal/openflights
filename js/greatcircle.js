@@ -268,9 +268,9 @@ function checkDST(type, date, year) {
 // Get Nth day of type X in a given month (eg. third Sunday in March 2009)
 // 'type' is 0 for Sun, 1 for Mon, etc
 function getNthDay(year, month, nth, type) {
-  date = new Date();
+  var date = new Date();
   date.setFullYear(year, month - 1, 1); // Date object months start from 0
-  day = date.getDay();
+  var day = date.getDay();
   if (type >= day) {
     nth--;
   }
@@ -278,18 +278,18 @@ function getNthDay(year, month, nth, type) {
   return date;
 }
 
-// Get last day of type X in a given month (eg. last Sunday in March 2009)
+// Get the last day of type X in a given month (e.g. last Sunday in March 2009)
 function getLastDay(year, month, type) {
-  date = new Date();
+  var date = new Date();
   date.setFullYear(year, month, 1); // Date object months start from 0, so this is +1
-  date.setDate(date.getDate() - 1); // last day of previous month
+  date.setDate(date.getDate() - 1); // last day of the previous month
   date.setDate(date.getDate() - (date.getDay() - type));
   return date;
 }
 
 // Parse a time string into a float
 function parseTimeString(time_str) {
-  chunks = time_str.match(RE_TIME);
+  var chunks = time_str.match(RE_TIME);
   return parseFloat(chunks[1]) + parseFloat(chunks[2] / 60);
 }
 
@@ -337,7 +337,7 @@ var eliteicons = [
 
 function getEliteIcon(e, validity) {
   if (e && e != "") {
-    for (i = 0; i < eliteicons.length; i++) {
+    for (var i = 0; i < eliteicons.length; i++) {
       if (eliteicons[i][0] == e) {
         if (validity) {
           return (
@@ -372,7 +372,7 @@ function selectInSelect(select, value) {
     return;
   }
   select.selectedIndex = 0; // default to unselected
-  for (index = 0; index < select.length; index++) {
+  for (var index = 0; index < select.length; index++) {
     if (select[index].value == value) {
       select.selectedIndex = index;
     }

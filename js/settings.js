@@ -16,7 +16,7 @@ window.onload = function init() {
     );
     if (elite == "G" || elite == "P") {
       signupform.guestpw.disabled = false;
-      for (r = 0; r < signupform.startpane.length; r++) {
+      for (var r = 0; r < signupform.startpane.length; r++) {
         signupform.startpane[r].disabled = false;
       }
     }
@@ -51,7 +51,7 @@ function xmlhttpPost(strURL, type) {
     var form = document.forms["signupform"];
     var privacy, editor, units;
 
-    for (r = 0; r < signupform.privacy.length; r++) {
+    for (var r = 0; r < signupform.privacy.length; r++) {
       if (signupform.privacy[r].checked) {
         privacy = signupform.privacy[r].value;
       }
@@ -97,6 +97,7 @@ function xmlhttpPost(strURL, type) {
         break;
 
       case "EDIT":
+        var startpane;
         for (r = 0; r < signupform.startpane.length; r++) {
           if (signupform.startpane[r].checked) {
             startpane = signupform.startpane[r].value;
@@ -238,13 +239,9 @@ function changeName() {
 
 // Swap privacy panes
 function changePrivacy(type) {
-  for (p = 0; p < privacyList.length; p++) {
-    if (type == privacyList[p]) {
-      style = "inline";
-    } else {
-      style = "none";
-    }
-    document.getElementById("privacy" + privacyList[p]).style.display = style;
+  for (var p = 0; p < privacyList.length; p++) {
+    document.getElementById("privacy" + privacyList[p]).style.display =
+      type == privacyList[p] ? "inline" : "none";
   }
 }
 
