@@ -54,7 +54,7 @@ function onHintTextboxBlur() {
   var input = this;
   if (input.value.trim().length==0) {
     input.value = input.hintText;
-    input.className = input.className.indexOf(MiniHintClass)!=-1 ? MiniHintClass : HintClass;
+    input.className = input.className.indexOf(MiniHintActiveClass)!=-1 ? MiniHintClass : HintClass;
   }
 }
 
