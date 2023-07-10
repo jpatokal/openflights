@@ -220,25 +220,16 @@ input.date {
   max-width: 90px;
 }
 
-input.hintTextbox,
-input.hintTextboxActive {
+input.hint2Textbox {
   min-width: 250px;
   max-width: 350px;
 }
+
 input.hintTextboxMini,
-input.hintTextboxActiveMini {
+input.hintTextboxActiveMini,
+input.hint2TextboxMini {
   min-width: 60px;
   max-width: 60px;
-}
-
-input.hintTextboxActive,
-input.hintTextboxActiveMini {
-  color: #000;
-}
-
-input.hintTextbox,
-input.hintTextboxMini {
-  color: #888;
 }
 
 /* Sortable tables
