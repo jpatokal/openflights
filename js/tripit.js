@@ -40,9 +40,9 @@ function importFlight(segmentId) {
  */
 var importFlightComplete = function (segmentId) {
   return function (data, responseText, jqXHR) {
-    var result = data.split(";");
-    code = result[0];
-    text = result[1];
+    var result = data.split(";"),
+      code = result[0],
+      text = result[1];
     setStatus(segmentId, "<B>" + text + "</B>");
 
     var showOverlay = false;

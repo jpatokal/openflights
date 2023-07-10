@@ -13,9 +13,9 @@ window.onload = function init() {
   // 0    1 2          3    4
   var args = window.location.href.split("?");
   if (args[1]) {
-    keys = args[1].split("&");
+    var keys = args[1].split("&");
     if (keys[0].split("=")[0] == "name") {
-      form = document.forms["searchform"];
+      var form = document.forms["searchform"];
       form.name.value = unescape(keys[0].split("=")[1]);
       selectInSelect(form.mode, keys[1].split("=")[1]);
       selectInSelect(form.active, "Y");
@@ -153,7 +153,7 @@ function xmlhttpPost(strURL, offset, action) {
 
       // Last check for new airlines only
       if (alid == "") {
-        desc =
+        var desc =
           name +
           ", " +
           country +
@@ -234,7 +234,7 @@ function searchResult(str) {
   var offset, sql;
   var disclaimer = "";
 
-  guest = !parent.opener || !parent.opener.addNewAirport;
+  var guest = !parent.opener || !parent.opener.addNewAirport;
   if (warning) {
     table +=
       "<tr><td colspan=2><i><font color='red'>" +
@@ -242,13 +242,13 @@ function searchResult(str) {
       "</font></i></td></tr>";
     warning = null;
   }
-  for (a in airlines) {
+  for (var a in airlines) {
     var col = airlines[a].split(";");
 
     // First line contains header info
     if (a == 0) {
       offset = parseInt(col[0]);
-      max = col[1];
+      var max = col[1];
       sql = col[2];
       if (max == 0) {
         table +=
@@ -290,11 +290,7 @@ function searchResult(str) {
 
     // Meat of the table
     var col = JSON.parse(airlines[a]);
-    if (a % 2 == 1) {
-      bgcolor = "#fff";
-    } else {
-      bgcolor = "#ddd";
-    }
+    var bgcolor = a % 2 == 1 ? "#fff" : "#ddd";
     switch (col["al_uid"]) {
       case "user":
         bgcolor = "#fdd";
@@ -340,6 +336,7 @@ function searchResult(str) {
       col["mode"] +
       "\")'></td>";
     if (col["al_uid"] == "own" || guest) {
+      var label;
       if (col["al_uid"] == "own") {
         label = gt.gettext("Edit");
       } else {
@@ -386,9 +383,9 @@ function loadAirline(data) {
     form.callsign.value = col["callsign"];
   }
   form.mode.value = col["mode"];
-  country = col["country"];
+  var country = col["country"];
   var country_select = form.country;
-  for (index = 0; index < country_select.length; index++) {
+  for (var index = 0; index < country_select.length; index++) {
     if (
       country_select[index].value == country ||
       country_select[index].text == country
@@ -426,8 +423,8 @@ function recordResult(str) {
     // Select newly minted airline and return to main
     // 1;alid
     var form = document.forms["searchform"];
-    name = form.name.value;
-    mode = form.mode.value;
+    var name = form.name.value;
+    var mode = form.mode.value;
     if (mode == "F") {
       var iata = form.iata.value;
       name += " (" + (iata != "" ? iata : form.icao.value) + ")";
@@ -440,7 +437,7 @@ function recordResult(str) {
 function changeMode() {
   var form = document.forms["searchform"];
   var mode = form.mode.value;
-  disabled = mode != "F";
+  var disabled = mode != "F";
   form.iata.disabled = disabled;
   form.icao.disabled = disabled;
   form.callsign.disabled = disabled;
