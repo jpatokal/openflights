@@ -1437,7 +1437,7 @@ function updateFilter(str) {
     $("input_trip_select").innerHTML =
       "&nbsp;" + gt.gettext("No trips. Add one? ");
   } else {
-    var tripSelect = createSelect(
+    $("filter_tripselect").innerHTML = createSelect(
       "Trips",
       gt.gettext("All trips"),
       filter_trid,
@@ -1445,7 +1445,6 @@ function updateFilter(str) {
       SELECT_MAXLEN,
       "refresh(true)"
     );
-    $("filter_tripselect").innerHTML = tripSelect;
     var editTripSelect = document.forms["inputform"].trips;
     if (editTripSelect) {
       // New trip added, so now we need to figure out the newest (highest) trid to find it
@@ -1473,8 +1472,7 @@ function updateFilter(str) {
     );
     document.forms["inputform"].trips[0].text = "Select trip";
   }
-
-  var airlineSelect = createSelect(
+  $("filter_airlineselect").innerHTML = createSelect(
     "Airlines",
     gt.gettext("All carriers"),
     filter_alid,
@@ -1482,8 +1480,7 @@ function updateFilter(str) {
     SELECT_MAXLEN,
     "refresh(true)"
   );
-  $("filter_airlineselect").innerHTML = airlineSelect;
-  var yearSelect = createSelect(
+  $("filter_yearselect").innerHTML = createSelect(
     "Years",
     gt.gettext("All"),
     filter_year,
@@ -1491,7 +1488,6 @@ function updateFilter(str) {
     20,
     "refresh(true)"
   );
-  $("filter_yearselect").innerHTML = yearSelect;
 }
 
 // Generate title for current map
@@ -2587,8 +2583,8 @@ function editPointer(offset) {
 // Load up parameters of a given flight
 function preEditFlight(fid, idx) {
   fidPtr = idx;
-  $("b_prev").disabled = fidPtr <= 0 ? true : false;
-  $("b_next").disabled = fidPtr >= fidList.length - 1 ? true : false;
+  $("b_prev").disabled = fidPtr <= 0;
+  $("b_next").disabled = fidPtr >= fidList.length - 1;
   $("editflighttitle").innerHTML = gt.gettext("Loading...");
   xmlhttpPost(URL_FLIGHTS, fid, "EDIT");
 }
@@ -2641,19 +2637,11 @@ function editFlight(str, param) {
 
   var myClass = inputform.myClass;
   for (index = 0; index < myClass.length; index++) {
-    if (myClass[index].value == col[10]) {
-      myClass[index].checked = true;
-    } else {
-      myClass[index].checked = false;
-    }
+    myClass[index].checked = myClass[index].value == col[10];
   }
   var reason = inputform.reason;
   for (index = 0; index < reason.length; index++) {
-    if (reason[index].value == col[11]) {
-      reason[index].checked = true;
-    } else {
-      reason[index].checked = false;
-    }
+    reason[index].checked = reason[index].value == col[11];
   }
 
   // Read these after selectAirport mucks up the dist/duration
@@ -3050,7 +3038,9 @@ function calcDuration(param) {
     duration = 0;
 
   // Need both airports first
-  if ($("src_apid").value == 0 || $("dst_apid").value == 0) return;
+  if ($("src_apid").value == 0 || $("dst_apid").value == 0) {
+    return;
+  }
   dst_time = $("dst_time").value.trim();
   if (dst_time == "" || dst_time == "HH:MM") {
     dst_time = 0;
@@ -3824,11 +3814,9 @@ function logout(str) {
 // Get current transport mode
 function getMode() {
   if (getCurrentPane() == "input") {
-    mode = document.forms["inputform"].mode.value;
-  } else {
-    mode = "F";
+    return document.forms["inputform"].mode.value;
   }
-  return mode;
+  return "F";
 }
 
 // Functions for swapping between lower panes
