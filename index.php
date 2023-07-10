@@ -356,8 +356,7 @@ for ($row = 1; $row <= 4; $row++) {
           $row,
           $row,
           $row,
-          _("Enter city name or airport code"),
-          $row
+          _("Enter city name or airport code")
       );
       printf(
           "<input type='hidden' name='dst_ap1%s' id='dst_ap%sid'/>\n",
