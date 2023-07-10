@@ -219,25 +219,26 @@ input.date {
   min-width: 90px;
   max-width: 90px;
 }
-input.hintTextbox {
-  color: #888;
-  min-width: 250px;
-  max-width: 350px;
-}
+
+input.hintTextbox,
 input.hintTextboxActive {
-  color: #000;
   min-width: 250px;
   max-width: 350px;
 }
+input.miniTextbox,
+input.miniTextboxActive {
+  min-width: 60px;
+  max-width: 60px;
+}
+
+input.hintTextboxActive,
+input.miniTextboxActive {
+  color: #000;
+}
+
+input.miniTextbox,
 input.miniTextbox {
   color: #888;
-  min-width: 60px;
-  max-width: 60px;
-}
-input.miniTextboxActive {
-  color: #888;
-  min-width: 60px;
-  max-width: 60px;
 }
 
 /* Sortable tables

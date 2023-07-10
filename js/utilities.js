@@ -34,7 +34,6 @@ function initHintTextboxes() {
   }
 }
 
-
 function resetHintTextboxes() {
   var inputs = document.getElementsByTagName('input');
   for (i=0; i<inputs.length; i++) {
@@ -46,12 +45,10 @@ function resetHintTextboxes() {
     if (input.className.indexOf(HintClass)!=-1) {
       input.className = HintClass;
       input.value = input.hintText;
-      input.style.color = "#888";
     }
     if (input.className.indexOf(miniHintClass)!=-1) {
       input.className = miniHintClass;
       input.value = input.hintText;
-      input.style.color = "#888";
     }
   }
 }
@@ -66,13 +63,11 @@ function onHintTextboxFocus() {
       input.className = miniHintActiveClass;
     }
   }
-  input.style.color = "#000";
 }
 
 function onHintTextboxBlur() {
   var input = this;
   if (input.value.trim().length==0) {
-    input.style.color = "#888";
     input.value = input.hintText;
     if(input.className.indexOf(HintClass)!=-1) {
       input.className = HintClass;
