@@ -7,7 +7,7 @@ require_once "db_pdo.php";
 <html>
   <head>
     <title>OpenFlights: <?php echo _("Import") ?></title>
-    <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
