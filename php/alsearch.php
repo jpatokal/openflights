@@ -118,7 +118,7 @@ if ($action == "RECORD") {
     }
 
     if (!$alid || $alid == "") {
-    // Adding new airline
+        // Adding new airline
         $sql = "INSERT INTO airlines(name,alias,country,iata,icao,callsign,mode,active,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $params = [
             $name,
@@ -133,7 +133,7 @@ if ($action == "RECORD") {
         ];
     } else {
         // Editing an existing airline
-        $sql = "UPDATE airlines SET name=?, alias=?, country=?, iata=?, icao=?, callsign=?, mode=?, active=? WHERE alid=? AND (uid=? OR ?=?)";
+        $sql = "UPDATE airlines SET name=?, alias=?, country=?, iata=?, icao=?, callsign=?, mode=?, active=? WHERE alid=? AND (uid=? OR ? IN (?))";
         $params = [
             $name,
             $alias,
@@ -146,7 +146,7 @@ if ($action == "RECORD") {
             $alid,
             $uid,
             $uid,
-            $OF_ADMIN_UID
+            implode(', ', (array)$OF_ADMIN_UID)
         ];
     }
 
@@ -227,9 +227,11 @@ if ($row) {
 }
 printf("%s;%s", $offset, $max);
 
+$isAdmin = in_array($uid, (array)$OF_ADMIN_UID);
+
 foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $row) {
-    if ($row["uid"] || $uid == $OF_ADMIN_UID) {
-        if ($row["uid"] == $uid || $uid == $OF_ADMIN_UID) {
+    if ($row["uid"] || $isAdmin) {
+        if ($row["uid"] == $uid || $isAdmin) {
             $row["al_uid"] = "own"; // editable
         } else {
             $row["al_uid"] = "user"; // added by another user
