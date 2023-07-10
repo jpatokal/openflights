@@ -14,13 +14,13 @@ function trim_query($query) {
 }
 
 // If quick, then return only one row, with no UL tags
-if ($_POST['quick']) {
+if (isset($_POST['quick'])) {
     $limit = 1;
 } else {
     $limit = 6;
 }
 // If multi, then search airports and airlines
-$multi = $_POST["qs"];
+$multi = $_POST["qs"] ?? false;
 $results = false;
 
 // Autocompletion for airports
@@ -30,7 +30,7 @@ $results = false;
 
 $airports = array("qs", "src_ap", "dst_ap", "src_ap1", "dst_ap1", "src_ap2", "dst_ap2", "src_ap3", "dst_ap3", "src_ap4", "dst_ap4");
 foreach ($airports as $ap) {
-    if ($_POST[$ap]) {
+    if (isset($_POST[$ap])) {
         $query = trim_query($_POST[$ap]);
         // Limit the number of rows returned in multi-input, where space is at a premium
         if ($limit > 1) {
@@ -110,7 +110,7 @@ if (!$query || $multi) {
 
     $airlines = array("qs", "airline", "airline1", "airline2", "airline3", "airline4");
     foreach ($airlines as $al) {
-        if ($_POST[$al]) {
+        if (isset($_POST[$al])) {
             $query = trim_query($_POST[$al]);
             // Limit(/expand) the number of rows returned in multiinput, where space is at a premium
             if ($limit != 1) {
