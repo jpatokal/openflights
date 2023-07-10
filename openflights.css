@@ -225,19 +225,19 @@ input.hintTextboxActive {
   min-width: 250px;
   max-width: 350px;
 }
-input.miniTextbox,
-input.miniTextboxActive {
+input.hintTextboxMini,
+input.hintTextboxActiveMini {
   min-width: 60px;
   max-width: 60px;
 }
 
 input.hintTextboxActive,
-input.miniTextboxActive {
+input.hintTextboxActiveMini {
   color: #000;
 }
 
-input.miniTextbox,
-input.miniTextbox {
+input.hintTextbox,
+input.hintTextboxMini {
   color: #888;
 }
 
