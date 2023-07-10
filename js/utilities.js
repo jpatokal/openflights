@@ -11,9 +11,6 @@ var HintActiveClass = "hintTextboxActive";
 var MiniHintClass = "hintTextboxMini";
 var MiniHintActiveClass = "hintTextboxActiveMini";
 
-// define a custom method on the string class to trim leading and training spaces
-String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ''); };
-
 function initHintTextboxes() {
   var inputs = document.getElementsByTagName('input');
   for (i=0; i<inputs.length; i++) {
