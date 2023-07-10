@@ -6,23 +6,23 @@ URL_ALSEARCH = "/php/alsearch.php";
 var warning;
 var gt;
 
-window.onload = function init(){
-  gt = new Gettext({ 'domain' : 'messages' });
+window.onload = function init() {
+  gt = new Gettext({ domain: "messages" });
 
   // ...?name=x&mode=y
   // 0    1 2          3    4
-  var args = window.location.href.split('?');
-  if(args[1]) {
-    keys = args[1].split('&');
-    if(keys[0].split('=')[0] == "name") {
-      form = document.forms['searchform'];
-      form.name.value = unescape(keys[0].split('=')[1]);
-      selectInSelect(form.mode, keys[1].split('=')[1]);
+  var args = window.location.href.split("?");
+  if (args[1]) {
+    keys = args[1].split("&");
+    if (keys[0].split("=")[0] == "name") {
+      form = document.forms["searchform"];
+      form.name.value = unescape(keys[0].split("=")[1]);
+      selectInSelect(form.mode, keys[1].split("=")[1]);
       selectInSelect(form.active, "Y");
       changeMode();
     }
   }
-}
+};
 
 function doSearch(offset) {
   xmlhttpPost(URL_ALSEARCH, offset, "SEARCH");
@@ -43,9 +43,12 @@ function xmlhttpPost(strURL, offset, action) {
   else if (window.ActiveXObject) {
     self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  self.xmlHttpReq.open('POST', strURL, true);
-  self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  self.xmlHttpReq.onreadystatechange = function() {
+  self.xmlHttpReq.open("POST", strURL, true);
+  self.xmlHttpReq.setRequestHeader(
+    "Content-Type",
+    "application/x-www-form-urlencoded"
+  );
+  self.xmlHttpReq.onreadystatechange = function () {
     if (self.xmlHttpReq.readyState == 4) {
       if (strURL == URL_ALSEARCH) {
         if (action == "SEARCH") {
@@ -56,10 +59,10 @@ function xmlhttpPost(strURL, offset, action) {
         }
       }
     }
-  }
+  };
   var query = "";
-  if(strURL == URL_ALSEARCH) {
-    var form = document.forms['searchform'];
+  if (strURL == URL_ALSEARCH) {
+    var form = document.forms["searchform"];
     var name = form.name.value;
     var country = form.country[form.country.selectedIndex].text;
     var iata = form.iata.value;
@@ -70,7 +73,7 @@ function xmlhttpPost(strURL, offset, action) {
     var active = form.active.value;
     var alid = form.alid.value;
 
-    if(iata != "" && iata.length != 2) {
+    if (iata != "" && iata.length != 2) {
       alert(gt.gettext("IATA codes must be exactly two letters."));
       form.iata.focus();
       return;
@@ -78,7 +81,7 @@ function xmlhttpPost(strURL, offset, action) {
       iata = iata.toUpperCase();
       form.iata.value = iata;
     }
-    if(icao != "" && icao.length != 3) {
+    if (icao != "" && icao.length != 3) {
       alert(gt.gettext("ICAO codes must be exactly three letters."));
       form.icao.focus();
       return;
@@ -86,18 +89,22 @@ function xmlhttpPost(strURL, offset, action) {
       icao = icao.toUpperCase();
       form.icao.value = icao;
     }
-    if(["XXX", "YYY", "ZZZ"].indexOf(icao) > -1) {
+    if (["XXX", "YYY", "ZZZ"].indexOf(icao) > -1) {
       alert(gt.gettext("Invalid ICAO code."));
       form.iata.focus();
       return;
     }
 
-    if(action == "RECORD") {
-      if(! parent.opener || ! parent.opener.addNewAirline) {
-        alert(gt.gettext("Sorry, you have to be logged into OpenFlights to use this."));
+    if (action == "RECORD") {
+      if (!parent.opener || !parent.opener.addNewAirline) {
+        alert(
+          gt.gettext(
+            "Sorry, you have to be logged into OpenFlights to use this."
+          )
+        );
         return;
       }
-      if(name == "") {
+      if (name == "") {
         alert(gt.gettext("Please enter a name."));
         form.name.focus();
         return;
@@ -106,50 +113,114 @@ function xmlhttpPost(strURL, offset, action) {
         form.name.value = name;
       }
 
-      if(country == "ALL") {
+      if (country == "ALL") {
         alert(gt.gettext("Please select a country."));
         form.country.focus();
         return;
       }
-      if(active == "") {
-        alert(gt.gettext("Please select Yes for airlines that are still operating, or No for inactive airlines."));
+      if (active == "") {
+        alert(
+          gt.gettext(
+            "Please select Yes for airlines that are still operating, or No for inactive airlines."
+          )
+        );
         form.active.focus();
         return;
       }
 
-      if(mode == "F") {
-        if (iata == "" && !confirm(gt.gettext("You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"))) {
+      if (mode == "F") {
+        if (
+          iata == "" &&
+          !confirm(
+            gt.gettext(
+              "You have not entered an IATA/FAA code. Are you sure the airline does not have one and you wish to proceed?"
+            )
+          )
+        ) {
           return;
         }
-        if (icao == "" && !confirm(gt.gettext("You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"))) {
+        if (
+          icao == "" &&
+          !confirm(
+            gt.gettext(
+              "You have not entered an ICAO code. Are you sure the airline does not have one and you wish to proceed?"
+            )
+          )
+        ) {
           return;
         }
       }
 
       // Last check for new airlines only
-      if(alid == "") {
-        desc = name + ", " + country +
-            " (IATA: " + (iata == "" ? "N/A" : iata) + ", ICAO: " + (icao == "" ? "N/A" : icao) + ")";
-        if (!confirm(Gettext.strargs(gt.gettext("Are you sure you want to add %1 as a new operator? Please double-check the name and any airline codes before confirming."), [desc]))) {
-          document.getElementById("miniresultbox").innerHTML = "<I>" + gt.gettext("Cancelled.") + "</I>";
+      if (alid == "") {
+        desc =
+          name +
+          ", " +
+          country +
+          " (IATA: " +
+          (iata == "" ? "N/A" : iata) +
+          ", ICAO: " +
+          (icao == "" ? "N/A" : icao) +
+          ")";
+        if (
+          !confirm(
+            Gettext.strargs(
+              gt.gettext(
+                "Are you sure you want to add %1 as a new operator? Please double-check the name and any airline codes before confirming."
+              ),
+              [desc]
+            )
+          )
+        ) {
+          document.getElementById("miniresultbox").innerHTML =
+            "<I>" + gt.gettext("Cancelled.") + "</I>";
           return;
         }
       }
     }
 
-    query = 'name=' + encodeURIComponent(name) + '&' +
-      'alias=' + encodeURIComponent(alias) + '&' +
-      'iata=' + encodeURIComponent(iata) + '&' +
-      'icao=' + encodeURIComponent(icao) + '&' +
-      'country=' + encodeURIComponent(country) + '&' +
-      'callsign=' + encodeURIComponent(callsign) + '&' +
-      'mode=' + encodeURIComponent(mode) + '&' +
-      'active=' + encodeURIComponent(active) + '&' +
-      'offset=' + offset + '&' +
-      'iatafilter=' + form.iatafilter.checked + '&' +
-      'alid=' + alid + '&' +
-      'action=' + action;
-    document.getElementById("miniresultbox").innerHTML = "<I>" + (action == "SEARCH" ? gt.gettext("Searching...") : gt.gettext("Recording...")) + "</I>";
+    query =
+      "name=" +
+      encodeURIComponent(name) +
+      "&" +
+      "alias=" +
+      encodeURIComponent(alias) +
+      "&" +
+      "iata=" +
+      encodeURIComponent(iata) +
+      "&" +
+      "icao=" +
+      encodeURIComponent(icao) +
+      "&" +
+      "country=" +
+      encodeURIComponent(country) +
+      "&" +
+      "callsign=" +
+      encodeURIComponent(callsign) +
+      "&" +
+      "mode=" +
+      encodeURIComponent(mode) +
+      "&" +
+      "active=" +
+      encodeURIComponent(active) +
+      "&" +
+      "offset=" +
+      offset +
+      "&" +
+      "iatafilter=" +
+      form.iatafilter.checked +
+      "&" +
+      "alid=" +
+      alid +
+      "&" +
+      "action=" +
+      action;
+    document.getElementById("miniresultbox").innerHTML =
+      "<I>" +
+      (action == "SEARCH"
+        ? gt.gettext("Searching...")
+        : gt.gettext("Recording...")) +
+      "</I>";
   }
   self.xmlHttpReq.send(query);
 }
@@ -164,35 +235,52 @@ function searchResult(str) {
   var disclaimer = "";
 
   guest = !parent.opener || !parent.opener.addNewAirport;
-  if(warning) {
-    table += "<tr><td colspan=2><i><font color='red'>" + warning + "</font></i></td></tr>";
+  if (warning) {
+    table +=
+      "<tr><td colspan=2><i><font color='red'>" +
+      warning +
+      "</font></i></td></tr>";
     warning = null;
   }
-  for(a in airlines) {
+  for (a in airlines) {
     var col = airlines[a].split(";");
 
     // First line contains header info
-    if(a == 0) {
+    if (a == 0) {
       offset = parseInt(col[0]);
       max = col[1];
       sql = col[2];
       if (max == 0) {
-        table += "<tr><td><i>" + gt.gettext("No matches found.") + "</i></td></td>";
+        table +=
+          "<tr><td><i>" + gt.gettext("No matches found.") + "</i></td></td>";
         break;
       }
-      table += "<tr><td><b>" + Gettext.strargs(gt.gettext("Results %1 to %2 of %3"), [offset + 1, Math.min(offset + 10, max), max]) + "</b><br></td>";
+      table +=
+        "<tr><td><b>" +
+        Gettext.strargs(gt.gettext("Results %1 to %2 of %3"), [
+          offset + 1,
+          Math.min(offset + 10, max),
+          max,
+        ]) +
+        "</b><br></td>";
 
       if (max > 10) {
-        table += "<td style=\"text-align: right\"><nobr>";
+        table += '<td style="text-align: right"><nobr>';
         if (offset - 10 >= 0) {
-          table += "<INPUT id=\"b_back\" type=\"button\" value=\"<\" onClick=\"doSearch(" + (offset - 10) + ")\">";
+          table +=
+            '<INPUT id="b_back" type="button" value="<" onClick="doSearch(' +
+            (offset - 10) +
+            ')">';
         } else {
-          table += "<INPUT type=\"button\" value=\"<\" disabled>";
+          table += '<INPUT type="button" value="<" disabled>';
         }
         if (offset + 10 < max) {
-          table += "<INPUT id=\"b_fwd\" type=\"button\" value=\">\" onClick=\"doSearch(" + (offset + 10) + ")\">";
+          table +=
+            '<INPUT id="b_fwd" type="button" value=">" onClick="doSearch(' +
+            (offset + 10) +
+            ')">';
         } else {
-          table += "<INPUT type=\"button\" value=\">\" disabled>";
+          table += '<INPUT type="button" value=">" disabled>';
         }
         table += "</nobr></td>";
       }
@@ -202,32 +290,69 @@ function searchResult(str) {
 
     // Meat of the table
     var col = JSON.parse(airlines[a]);
-    if(a % 2 == 1) {
+    if (a % 2 == 1) {
       bgcolor = "#fff";
     } else {
       bgcolor = "#ddd";
     }
-    switch(col["al_uid"]) {
-    case "user":
-      bgcolor = "#fdd";
-      disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Operators in pink have been added by users of OpenFlights.") + "</span>";
-      break;
+    switch (col["al_uid"]) {
+      case "user":
+        bgcolor = "#fdd";
+        disclaimer =
+          "<br><span style='background-color: " +
+          bgcolor +
+          "'>" +
+          gt.gettext(
+            "Operators in pink have been added by users of OpenFlights."
+          ) +
+          "</span>";
+        break;
 
-    case "own":
-      bgcolor = "#ddf";
-      disclaimer = "<br><span style='background-color: " + bgcolor + "'>" + gt.gettext("Operators in blue have been added by you and can be edited.") + "<span>";
-      break;
+      case "own":
+        bgcolor = "#ddf";
+        disclaimer =
+          "<br><span style='background-color: " +
+          bgcolor +
+          "'>" +
+          gt.gettext(
+            "Operators in blue have been added by you and can be edited."
+          ) +
+          "<span>";
+        break;
     }
-    table += "<tr><td style='background-color: " + bgcolor + "'>" + col["al_name"] + "</td>";
+    table +=
+      "<tr><td style='background-color: " +
+      bgcolor +
+      "'>" +
+      col["al_name"] +
+      "</td>";
     // id = alid
-    table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + gt.gettext("Select") + "' onClick='selectAirline(\"" + col["alid"] + "\",\"" + encodeURIComponent(col["al_name"]) + "\",\"" + col["mode"] + "\")'></td>";
-    if(col["al_uid"] == "own" || guest) {
+    table +=
+      "<td style='text-align: right; background-color: " +
+      bgcolor +
+      "'><INPUT type='button' value='" +
+      gt.gettext("Select") +
+      "' onClick='selectAirline(\"" +
+      col["alid"] +
+      '","' +
+      encodeURIComponent(col["al_name"]) +
+      '","' +
+      col["mode"] +
+      "\")'></td>";
+    if (col["al_uid"] == "own" || guest) {
       if (col["al_uid"] == "own") {
         label = gt.gettext("Edit");
       } else {
         label = gt.gettext("Load");
       }
-      table += "<td style='text-align: right; background-color: " + bgcolor + "'><INPUT type='button' value='" + label + "' onClick='loadAirline(\"" + encodeURIComponent(airlines[a]) + "\")'></td>";
+      table +=
+        "<td style='text-align: right; background-color: " +
+        bgcolor +
+        "'><INPUT type='button' value='" +
+        label +
+        "' onClick='loadAirline(\"" +
+        encodeURIComponent(airlines[a]) +
+        "\")'></td>";
     }
 
     table += "</tr>";
@@ -243,46 +368,49 @@ function loadAirline(data) {
 
   var b_back = document.getElementById("b_back");
   var b_fwd = document.getElementById("b_fwd");
-  if(b_back) b_back.disabled = true;
-  if(b_fwd) b_fwd.disabled = true;
+  if (b_back) b_back.disabled = true;
+  if (b_fwd) b_fwd.disabled = true;
 
-  var form = document.forms['searchform'];
+  var form = document.forms["searchform"];
   form.name.value = col["name"];
-  if(col["alias"] != "null") {
+  if (col["alias"] != "null") {
     form.alias.value = col["alias"];
   }
-  if(col["iata"] != "null") {
+  if (col["iata"] != "null") {
     form.iata.value = col["iata"];
   }
-  if(col["icao"] != "null") {
+  if (col["icao"] != "null") {
     form.icao.value = col["icao"];
   }
-  if(col["callsign"] != "null") {
+  if (col["callsign"] != "null") {
     form.callsign.value = col["callsign"];
   }
   form.mode.value = col["mode"];
   country = col["country"];
   var country_select = form.country;
-  for(index = 0; index < country_select.length; index++) {
-    if(country_select[index].value == country || country_select[index].text == country) {
+  for (index = 0; index < country_select.length; index++) {
+    if (
+      country_select[index].value == country ||
+      country_select[index].text == country
+    ) {
       country_select.selectedIndex = index;
     }
   }
   var active_select = form.active;
-  for(index = 0; index < active_select.length; index++) {
-    if(active_select[index].value == col["active"]) {
+  for (index = 0; index < active_select.length; index++) {
+    if (active_select[index].value == col["active"]) {
       active_select.selectedIndex = index;
     }
   }
 
-  if(col["alid"]) {
+  if (col["alid"]) {
     form.alid.value = col["alid"];
-    document.getElementById('b_add').style.display = "none";
-    document.getElementById('b_edit').style.display = "inline";
+    document.getElementById("b_add").style.display = "none";
+    document.getElementById("b_edit").style.display = "inline";
   } else {
     form.alid.value = "";
-    document.getElementById('b_add').style.display = "inline";
-    document.getElementById('b_edit').style.display = "none";
+    document.getElementById("b_add").style.display = "inline";
+    document.getElementById("b_edit").style.display = "none";
   }
 }
 
@@ -290,17 +418,17 @@ function loadAirline(data) {
 function recordResult(str) {
   var col = str.split(";");
   // Error?
-  if(col[0] != "1") {
+  if (col[0] != "1") {
     document.getElementById("miniresultbox").innerHTML = col[1];
   } else {
     document.getElementById("miniresultbox").innerHTML = col[2];
 
     // Select newly minted airline and return to main
     // 1;alid
-    var form = document.forms['searchform'];
+    var form = document.forms["searchform"];
     name = form.name.value;
     mode = form.mode.value;
-    if(mode == "F") {
+    if (mode == "F") {
       var iata = form.iata.value;
       name += " (" + (iata != "" ? iata : form.icao.value) + ")";
     }
@@ -310,9 +438,9 @@ function recordResult(str) {
 
 // Enable IATA,ICAO,callsign only for flights
 function changeMode() {
-  var form = document.forms['searchform'];
+  var form = document.forms["searchform"];
   var mode = form.mode.value;
-  disabled = (mode != "F");
+  disabled = mode != "F";
   form.iata.disabled = disabled;
   form.icao.disabled = disabled;
   form.callsign.disabled = disabled;
@@ -321,7 +449,7 @@ function changeMode() {
 
 // Clear form -- everything *except* database
 function clearSearch() {
-  var form = document.forms['searchform'];
+  var form = document.forms["searchform"];
   form.name.value = "";
   form.country.selectedIndex = 0;
   form.active.selectedIndex = 0;
@@ -337,8 +465,10 @@ function clearSearch() {
 
 // Airline selected, kick it back to main window and close this
 function selectAirline(data, name, mode) {
-  if(! parent.opener || ! parent.opener.addNewAirline) {
-    alert(gt.gettext("Sorry, you have to be logged into OpenFlights to do this."));
+  if (!parent.opener || !parent.opener.addNewAirline) {
+    alert(
+      gt.gettext("Sorry, you have to be logged into OpenFlights to do this.")
+    );
   }
   parent.opener.addNewAirline(data, unescape(name), mode);
   window.close();
@@ -346,5 +476,9 @@ function selectAirline(data, name, mode) {
 
 // A dupe from openflights.js...
 function help(context) {
-  window.open('/help/' + context + '.html', 'OpenFlights Help: ' + context, 'width=500,height=400,scrollbars=yes');
+  window.open(
+    "/help/" + context + ".html",
+    "OpenFlights Help: " + context,
+    "width=500,height=400,scrollbars=yes"
+  );
 }

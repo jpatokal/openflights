@@ -107,7 +107,7 @@ div.layersDiv {
   font-size: 1em;
   z-index: 1000;
   padding: 5px 5px 5px 5px;
-  background-color: #00008B;
+  background-color: #00008b;
   -moz-border-radius: 1em 0 0 1em;
 }
 
@@ -164,7 +164,7 @@ div.layersDiv {
   padding: 10px 10px 0px 10px;
 }
 
-#contexthelp{
+#contexthelp {
   margin: 0px 0px 0px 0px;
   padding: 10px;
 }
@@ -195,11 +195,23 @@ div.layersDiv {
   padding: 5px 10px;
 }
 
-td.donate { padding: 10px; vertical-align: top; text-align: center; }
-td.donate2 { padding: 10px; vertical-align: top; text-align: left; }
+td.donate {
+  padding: 10px;
+  vertical-align: top;
+  text-align: center;
+}
+td.donate2 {
+  padding: 10px;
+  vertical-align: top;
+  text-align: left;
+}
 
 /* Autocomplete styles */
-.autocomplete>div.selected,.autocomplete>div:hover:not(.group){background:#C6DEFF;cursor:pointer}
+.autocomplete > div.selected,
+.autocomplete > div:hover:not(.group) {
+  background: #c6deff;
+  cursor: pointer;
+}
 
 /* Textbox hinting */
 
@@ -236,7 +248,8 @@ table.sortable {
   border: 1px solid #000;
   border-collapse: collapse;
 }
-table.sortable th, table.sortable td {
+table.sortable th,
+table.sortable td {
   text-align: left;
   padding: 2px 4px 2px 4px;
   border-style: solid;
@@ -263,8 +276,13 @@ table.sortable tr.sortbottom td {
 
 /* Misc styles */
 
-input:focus, textarea:focus { background-color: LightYellow; }
-select.filter { width: 160px; }
+input:focus,
+textarea:focus {
+  background-color: LightYellow;
+}
+select.filter {
+  width: 160px;
+}
 
 /* OpenLayers default stuff starts here */
 
@@ -303,7 +321,7 @@ div.olLayerDiv {
 .olControlScaleLineBottom {
   border: solid 2px black;
   border-bottom: none;
-  margin-top:-2px;
+  margin-top: -2px;
   text-align: center;
 }
 .olControlScaleLineTop {
@@ -337,7 +355,7 @@ div.olControlMousePosition {
 
 .olControlOverviewMapElement {
   padding: 10px 18px 10px 10px;
-  background-color: #00008B;
+  background-color: #00008b;
   -moz-border-radius: 1em 0 0 0;
 }
 
@@ -369,7 +387,7 @@ div.olControlMousePosition {
   float: left;
   width: 100%;
   overflow: auto;
-  font-size: 1.0em;
+  font-size: 1em;
 }
 .olLayerGeoRSSClose {
   float: right;
@@ -405,7 +423,6 @@ div.olControlMousePosition {
   background-repeat: no-repeat;
   width: 24px;
   height: 24px;
-
 }
 .olControlNavigationHistoryPreviousItemActive {
   background-position: 0px 0px;
@@ -490,7 +507,7 @@ div.olControlMousePosition {
   border: 2px solid red;
   position: absolute;
   background-color: white;
-  opacity: 0.50;
+  opacity: 0.5;
   font-size: 1px;
   filter: alpha(opacity=50);
 }

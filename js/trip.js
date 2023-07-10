@@ -5,9 +5,9 @@ var URL_TRIP = "/php/trip.php";
 var trid = 0;
 var type = "NEW";
 
-window.onload = function init(){
-  gt = new Gettext({ 'domain' : 'messages' });
-}
+window.onload = function init() {
+  gt = new Gettext({ domain: "messages" });
+};
 
 function xmlhttpPost(strURL, type) {
   var xmlHttpReq = false;
@@ -20,32 +20,42 @@ function xmlhttpPost(strURL, type) {
   else if (window.ActiveXObject) {
     self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  self.xmlHttpReq.open('POST', strURL, true);
-  self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  self.xmlHttpReq.onreadystatechange = function() {
+  self.xmlHttpReq.open("POST", strURL, true);
+  self.xmlHttpReq.setRequestHeader(
+    "Content-Type",
+    "application/x-www-form-urlencoded"
+  );
+  self.xmlHttpReq.onreadystatechange = function () {
     if (self.xmlHttpReq.readyState == 4) {
-
-      if(strURL == URL_TRIP) {
+      if (strURL == URL_TRIP) {
         editTrip(self.xmlHttpReq.responseText);
       }
     }
-  }
+  };
   var query = "";
-  if(strURL == URL_TRIP) {
-    var form = document.forms['tripform'];
+  if (strURL == URL_TRIP) {
+    var form = document.forms["tripform"];
     var privacy;
 
-    for (r=0; r < tripform.privacy.length; r++){
+    for (r = 0; r < tripform.privacy.length; r++) {
       if (tripform.privacy[r].checked) {
         privacy = tripform.privacy[r].value;
       }
     }
-    query = 'type=' + type + '&' +
-      'name=' + encodeURIComponent(form.name.value) + '&' +
-      'url=' + encodeURIComponent(form.url.value) + '&' +
-      'privacy=' + encodeURIComponent(privacy);
-    if(type == 'EDIT' || type == 'DELETE') {
-      query += '&trid=' + form.trid.value;
+    query =
+      "type=" +
+      type +
+      "&" +
+      "name=" +
+      encodeURIComponent(form.name.value) +
+      "&" +
+      "url=" +
+      encodeURIComponent(form.url.value) +
+      "&" +
+      "privacy=" +
+      encodeURIComponent(privacy);
+    if (type == "EDIT" || type == "DELETE") {
+      query += "&trid=" + form.trid.value;
     }
   }
   self.xmlHttpReq.send(query);
@@ -53,8 +63,8 @@ function xmlhttpPost(strURL, type) {
 
 // Validate form
 function validate(type) {
-  var form = document.forms['tripform'];
-  if(form.name.value == "") {
+  var form = document.forms["tripform"];
+  if (form.name.value == "") {
     showError("Please enter a name for this trip.");
     return;
   }
@@ -65,10 +75,15 @@ function validate(type) {
 
 // Delete trip?
 function deleteTrip() {
-  if(confirm("Are you sure you want to delete this trip? (Flights in this trip will NOT be deleted.)")) {
+  if (
+    confirm(
+      "Are you sure you want to delete this trip? (Flights in this trip will NOT be deleted.)"
+    )
+  ) {
     xmlhttpPost(URL_TRIP, "DELETE");
   } else {
-    document.getElementById("miniresultbox").innerHTML = "<i>Deleting trip cancelled.</i>";
+    document.getElementById("miniresultbox").innerHTML =
+      "<i>Deleting trip cancelled.</i>";
   }
 }
 
@@ -78,9 +93,9 @@ function editTrip(str) {
   var trid = str.split(";")[1];
   var message = str.split(";")[2];
   // Operation successful
-  if(code != "0") {
+  if (code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;
-    var form = document.forms['tripform'];
+    var form = document.forms["tripform"];
     parent.opener.newTrip(code, trid, form.name.value, form.url.value);
     window.close();
   } else {
@@ -89,5 +104,6 @@ function editTrip(str) {
 }
 
 function showError(err) {
-  document.getElementById("miniresultbox").innerHTML = "<font color=red>" + err + "</font>";
+  document.getElementById("miniresultbox").innerHTML =
+    "<font color=red>" + err + "</font>";
 }
