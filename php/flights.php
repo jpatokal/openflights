@@ -43,17 +43,14 @@ if (!$uid || empty($uid)) {
     $uid = $_SESSION["openuid"];
     if ($uid && !empty($uid)) {
         // Yes we are, so check if we're limited to a single trip
-        $openTrid = $_SESSION["opentrid"];
-        if ($openTrid) {
-            if ($openTrid != $trid) {
-                // Naughty naughty, back to demo mode
-                $uid = 1;
-            }
+        if ($_SESSION["opentrid"] && $openTrid != $trid) {
+            // Naughty naughty, back to demo mode
+            $uid = $OF_DEMO_UID;
         }
         // No limit, do nothing
     } else {
         // Nope, default to demo mode
-        $uid = 1;
+        $uid = $OF_DEMO_UID;
     }
 }
 
