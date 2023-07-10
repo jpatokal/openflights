@@ -141,9 +141,11 @@ function importFlights(flights) {
 function addImportAllButton(importAllButtonValue, tripId, segments) {
   var importAllDiv = document.getElementById("import_all_" + tripId);
   if (importAllDiv == null) {
-    console.log(
-      "Couldn't find div to insert Import All button for trip " + tripId
-    );
+    if (CONST.DEBUG) {
+      console.log(
+        "Couldn't find div to insert Import All button for trip " + tripId
+      );
+    }
     return;
   }
 

@@ -1680,7 +1680,7 @@ function createSelectFromArray(selectName, opts, hook, current) {
     "'>";
   if (!current) select += "<option value=''>" + gt.gettext("All") + "</option>";
   for (const r of Object.keys(opts)) {
-    console.log(r);
+    // console.log(r);
     select +=
       "<option value='" +
       r +
