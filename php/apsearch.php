@@ -33,7 +33,7 @@ if ($action == "RECORD") {
 
     // Check for potential duplicates (unless admin)
     $duplicates = array();
-    if ($uid != $OF_ADMIN_UID) {
+    if (!in_array($uid, (array)$OF_ADMIN_UID)) {
         $filters = array();
         $filterParams = array();
         if ($apid && $apid != "") {
@@ -259,12 +259,15 @@ if (!$sth->execute($params)) {
 $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
 // TODO: Why are we skipping the first row?
 array_pop($rows);
+
+$isAdmin = in_array($uid, (array)$OF_ADMIN_UID);
+
 foreach ($rows as &$row) {
     if ($dbname == "airports_dafif" || $dbname == "airports_oa") {
         $row["country"] = $row["code"];
     }
-    if ($row["uid"] || $uid == $OF_ADMIN_UID) {
-        if ($row["uid"] == $uid || $uid == $OF_ADMIN_UID) {
+    if ($row["uid"] || $isAdmin) {
+        if ($row["uid"] == $uid || $isAdmin) {
             $row["ap_uid"] = "own"; // editable
         } else {
             $row["ap_uid"] = "user"; // added by another user
