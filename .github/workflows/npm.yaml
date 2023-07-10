@@ -1,8 +1,7 @@
 name: NPM Actions
 
-#on:
-#  pull_request:
-#    branches: [master]
+on:
+  pull_request:
 #  push:
 
 jobs:
@@ -13,13 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # Make sure the actual branch is checked out when running on pull requests
-          ref: ${{ github.head_ref }}
-          # This is important to fetch the changes to the previous commit
-          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
           dry: True
           only_changed: True
+          prettier_version: 2.8.8
