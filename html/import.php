@@ -5,7 +5,7 @@ require_once "../php/locale.php";
 <html>
   <head>
   <title>OpenFlights: <?php echo _("Import data") ?></title>
-    <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
   </head>
 

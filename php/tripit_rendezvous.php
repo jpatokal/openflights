@@ -14,7 +14,7 @@ if (!$uid || empty($uid)) {
 <html>
   <head>
   <title>OpenFlights: <?php echo _("TripIt") ?></title>
-    <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="stylesheet" href="/css/tripit.css" type="text/css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/ui-lightness/jquery-ui.css" type="text/css">

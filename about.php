@@ -7,7 +7,7 @@ require_once "php/git.php";
 <head>
     <title>OpenFlights: About</title>
     <meta name="version" content="<?php echo Git::getCurrentCommitID() ?? "unavailable"; ?>">
-    <link rel="stylesheet" href="/css/style_reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <!--#include virtual="/html/analytics.html" -->
