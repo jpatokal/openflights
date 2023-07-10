@@ -17,7 +17,7 @@ require_once "./php/helper.php";
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po?20090715" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="/OpenLayers.js"></script>
+    <script type="text/javascript" src="/js/OpenLayers.min.js"></script>
     <script type="text/javascript" src="/js/greatcircle.js"></script>
     <script type="text/javascript" src="/js/utilities.min.js"></script>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
