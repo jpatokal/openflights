@@ -1,7 +1,7 @@
 <?php
 
-include_once ' locale.php';
-include_once ' db_pdo.php';
+include_once 'locale.php';
+include_once 'db_pdo.php';
 
 $type = $_POST["type"];
 $name = $_POST["name"] ?? null;
