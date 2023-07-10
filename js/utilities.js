@@ -46,7 +46,7 @@ function onHintTextboxFocus() {
   var input = this;
   if (input.value.trim()==input.hintText) {
     input.value = "";
-    input.className =  input.className.indexOf(MiniHintClass)!=-1 ? MiniHintActiveClass : HintActiveClass;
+    input.className = input.className.indexOf(MiniHintClass)!=-1 ? MiniHintActiveClass : HintActiveClass;
   }
 }
 
@@ -54,7 +54,7 @@ function onHintTextboxBlur() {
   var input = this;
   if (input.value.trim().length==0) {
     input.value = input.hintText;
-    input.className =  input.className.indexOf(MiniHintClass)!=-1 ? MiniHintClass : HintClass;
+    input.className = input.className.indexOf(MiniHintClass)!=-1 ? MiniHintClass : HintClass;
   }
 }
 
