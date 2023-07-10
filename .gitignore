@@ -3,6 +3,7 @@ composer.phar
 html/ad*
 html/analytics*
 import/
+node_modules/
 php/config.php
 php/secrets.php
 vendor/*

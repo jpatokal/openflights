@@ -1,0 +1,11 @@
+# Ignore artifacts:
+build
+coverage
+# Ignore other files we don't want amending
+vendor
+composer.json
+composer.lock
+js/utilities.js
+*.html
+*.min.css
+*.min.js

@@ -37,6 +37,10 @@ sudo certbot --nginx -d [YOUR_DOMAIN]
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 sudo -u openflights php /usr/local/bin/composer install
 
+# Set up npm packages if you're going to be developing OpenFlights
+sudo apt-get install npm
+sudo -u openflights npm install
+
 # Generates locales for language support
 cd openflights
 find locale -name *utf8 -printf '%f ' | xargs sudo locale-gen
