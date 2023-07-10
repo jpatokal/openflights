@@ -72,7 +72,7 @@ function xmlhttpPost(strURL, type) {
       "&" +
       "pw=" +
       encodeURIComponent(
-        hex_md5(form.pw1.value + form.username.value.toLowerCase())
+        MD5(form.pw1.value + form.username.value.toLowerCase())
       ) +
       "&" +
       "email=" +
@@ -106,18 +106,18 @@ function xmlhttpPost(strURL, type) {
           query +=
             "&oldpw=" +
             encodeURIComponent(
-              hex_md5(form.oldpw.value + form.username.value.toLowerCase())
+              MD5(form.oldpw.value + form.username.value.toLowerCase())
             );
           // Legacy password for case-sensitive days of yore
           query +=
             "&oldlpw=" +
-            encodeURIComponent(hex_md5(form.oldpw.value + form.username.value));
+            encodeURIComponent(MD5(form.oldpw.value + form.username.value));
         }
         if (form.guestpw.value != "") {
           query +=
             "&guestpw=" +
             encodeURIComponent(
-              hex_md5(form.guestpw.value + form.username.value.toLowerCase())
+              MD5(form.guestpw.value + form.username.value.toLowerCase())
             );
         }
         query += "&startpane=" + encodeURIComponent(startpane);

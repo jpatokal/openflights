@@ -1332,8 +1332,8 @@ function xmlhttpPost(strURL, id, param) {
       var name = document.forms["login"].name.value;
       var pw = document.forms["login"].pw.value;
       var challenge = document.forms["login"].challenge.value;
-      hash = hex_md5(challenge + hex_md5(pw + name.toLowerCase()));
-      legacy_hash = hex_md5(challenge + hex_md5(pw + name));
+      hash = MD5(challenge + MD5(pw + name.toLowerCase()));
+      legacy_hash = MD5(challenge + MD5(pw + name));
       query =
         "name=" +
         encodeURIComponent(name) +
@@ -1391,8 +1391,7 @@ function xmlhttpPost(strURL, id, param) {
         encodeURIComponent(param);
       guestpw = $("guestpw");
       if (guestpw) {
-        query +=
-          "&guestpw=" + hex_md5(guestpw.value + filter_user.toLowerCase());
+        query += "&guestpw=" + MD5(guestpw.value + filter_user.toLowerCase());
       }
       filter_extra_key = form.Extra.value;
       if (filter_extra_key != "" && $("filter_extra_value")) {
