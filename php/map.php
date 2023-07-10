@@ -31,7 +31,7 @@ $uid = $_SESSION["uid"] ?? null;
 $challenge = $_SESSION["challenge"] ?? null;
 if (!$uid || empty($uid)) {
     // If not logged in, default to demo mode and warn app that we're (no longer?) logged in
-    $uid = 1;
+    $uid = $OF_DEMO_UID;
     $logged_in = "demo";
     $elite = null;
     $editor = null;

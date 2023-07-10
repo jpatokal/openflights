@@ -8,7 +8,7 @@ include_once 'filter.php';
 $public = "O"; // by default...
 
 // If not logged in, default to demo mode
-$uid = $_SESSION["uid"] ?? 1;
+$uid = $_SESSION["uid"] ?? $OF_DEMO_UID;
 
 // This applies only when viewing another users flights
 $user = $_POST["user"] ?? ($_GET["user"] ?? null);

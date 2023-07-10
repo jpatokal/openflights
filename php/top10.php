@@ -7,8 +7,8 @@ include_once 'filter.php';
 
 // ----- Session parameters -----
 $units = $_SESSION["units"] ?? "M";
-// If not logged in, default to demo mode
-$uid = $_SESSION["uid"] ?? 1;
+// If not logged in, default to demo mode user id
+$uid = $_SESSION["uid"] ?? $OF_DEMO_UID;
 
 // ----- Request parameters -----
 // For backwards-compatibility reasons with the front-end, value "0" is special
