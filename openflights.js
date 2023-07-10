@@ -409,8 +409,6 @@ function init() {
       query = arguments[1];
   }
 
-  initHintTextboxes();
-
   prepareAutocomplete("qs", {
     successCb: getQuickSearchId,
     failureCb: (e) => undefined,
@@ -1026,8 +1024,6 @@ function xmlhttpPost(strURL, id, param) {
           } else {
             updateFilter(str);
             closePopup(true);
-            $("qs").value = $("qs").hintText;
-            $("qs").style.color = "#888";
             $("qsid").value = 0;
             $("qsgo").disabled = true;
             if (filter_alid == 0) {
@@ -1164,7 +1160,8 @@ function xmlhttpPost(strURL, id, param) {
           var alid = $("airline" + indexes[i] + "id").value;
           var airline = $("airline" + indexes[i]).value.trim();
           if (!alid || alid == 0) {
-            if (airline == "" || airline == $("airline").hintText) {
+            // TODO: Do we need this comparison against placeholder?
+            if (airline == "" || airline == $("airline").placeholder) {
               alid = "-1"; // UNKNOWN
             } else {
               mode = getMode();
@@ -2658,10 +2655,7 @@ function editFlight(str, param) {
   form.registration.value = col[14];
   alid = col[15];
   if (col[16] != "") {
-    $("note").style.color = "#000";
     form.note.value = col[16];
-  } else {
-    $("note").value = $("note").hintText;
   }
   form.seat.value = col[8];
 
@@ -2974,7 +2968,8 @@ function airportCodeToAirport(type) {
 
 // User has entered invalid input: clear apid, turn field red (unless empty) and remove marker
 function invalidateField(type, airport = false) {
-  if ($(type).value != "" && $(type).value != $(type).hintText) {
+  // TODO: Do we need this comparison against placeholder?
+  if ($(type).value != "" && $(type).value != $(type).placeholder) {
     $(type).style.color = "#FF0000";
   }
   $(type + "id").value = 0;
@@ -3363,7 +3358,8 @@ function markAirport(element, quick) {
       lineLayer.addFeatures(input_line);
       oldDist = $("distance").value;
       $("distance").value = distance;
-      if (oldDist == "" && $("dst_time").value != $("dst_time").hintText) {
+      // TODO: Do we need this comparison against placeholder?
+      if (oldDist == "" && $("dst_time").value != $("dst_time").placeholder) {
         // user has already manually entered arrival time
         calcDuration("ARRIVAL");
       } else {
@@ -4000,11 +3996,9 @@ function closeInput() {
 
 // Clear out (restore to defaults) the time indicators in the editor
 function clearTimes() {
-  $("src_time").value = $("src_time").hintText;
-  $("dst_time").value = $("dst_time").hintText;
+  $("src_time").value = "";
+  $("dst_time").value = "";
   $("dst_days").value = "";
-  $("src_time").style.color = "#888";
-  $("dst_time").style.color = "#888";
   $("dst_days").style.display = "none";
 }
 
@@ -4020,7 +4014,6 @@ function todayString() {
 
 // Clear out (restore to defaults) the input box
 function clearInput() {
-  resetHintTextboxes();
   if (getCurrentPane() == "input") {
     var form = document.forms["inputform"];
     form.src_date.value = todayString();
