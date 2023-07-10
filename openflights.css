@@ -225,8 +225,6 @@ input.hint2Textbox {
   max-width: 350px;
 }
 
-input.hintTextboxMini,
-input.hintTextboxActiveMini,
 input.hint2TextboxMini {
   min-width: 60px;
   max-width: 60px;
