@@ -11,7 +11,7 @@ class Git {
 
         $matches = [];
         if (preg_match("/ref: (.*)/", $head, $matches)) {
-            $head = file_get_contents(".git/{$matches[1]}");
+            $head = trim(file_get_contents(".git/{$matches[1]}"));
         }
 
         return $head ? $head : null;
