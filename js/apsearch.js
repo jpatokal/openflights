@@ -271,7 +271,7 @@ function describe(action) {
  * Display results of search
  */
 function searchResult(str) {
-  var json = jsonParse(str);
+  var json = JSON.parse(str);
   var airports = json["airports"];
   var table = "<table width=95% cellspacing=0>";
   var offset, sql;
@@ -357,7 +357,7 @@ function searchResult(str) {
 
 // Load data from search result into form
 function loadAirport(data) {
-  var json = jsonParse(data);
+  var json = JSON.parse(data);
   if(json["status"] != 1 || json["max"] == 0) {
     getElement("miniresultbox").innerHTML = gt.gettext("No matches found in this database.");
     return;
@@ -399,7 +399,7 @@ function loadAirport(data) {
 
 // Did we manage to record the airport?
 function recordResult(str) {
-  var json = jsonParse(str);
+  var json = JSON.parse(str);
   if(json["status"] == "1") {
     alert(json["message"]);
     // Select newly minted airport and return to main

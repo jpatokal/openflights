@@ -201,7 +201,7 @@ function searchResult(str) {
     }
 
     // Meat of the table
-    var col = jsonParse(airlines[a]);
+    var col = JSON.parse(airlines[a]);
     if(a % 2 == 1) {
       bgcolor = "#fff";
     } else {
@@ -239,7 +239,7 @@ function searchResult(str) {
 
 // Load data from search result into form
 function loadAirline(data) {
-  var col = jsonParse(unescape(data));
+  var col = JSON.parse(unescape(data));
 
   var b_back = document.getElementById("b_back");
   var b_fwd = document.getElementById("b_fwd");
