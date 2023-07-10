@@ -1,6 +1,6 @@
 This test suite validates PHP calls and MySQL database content.
 
-*** Instructions
+### Instructions
 
 0. Install Composer from https://getcomposer.org/download/
 1. `php composer.phar install`
