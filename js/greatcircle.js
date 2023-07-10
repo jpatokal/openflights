@@ -53,17 +53,15 @@ function gcBearingTo(from, to) {
       Math.sin(y[0]) * Math.cos(y[1]) * Math.cos(x[1] - x[0]);
 
     if (a == 0 && b == 0) {
-      bearing = 0;
-      return bearing;
+      return 0;
     }
 
     if (b == 0) {
       if (a < 0) {
-        bearing = 270;
+        return 270;
       } else {
-        bearing = 90;
+        return 90;
       }
-      return bearing;
     }
 
     if (b < 0) {
@@ -75,9 +73,10 @@ function gcBearingTo(from, to) {
         adjust = 0;
       }
     }
-    bearing = (Math.atan(a / b) + adjust) * RAD2DEG;
-    return bearing;
-  } else return null;
+    return (Math.atan(a / b) + adjust) * RAD2DEG;
+  } else {
+    return null;
+  }
 }
 
 /**
