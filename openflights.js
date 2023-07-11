@@ -2263,7 +2263,9 @@ function showStats(str) {
     table = '<table style="border-spacing: 10px 0px">';
     table +=
       "<tr><th colspan=2>" + gt.gettext("Journey records") + "</th></tr>";
-    var rows = longshort.split(";");
+    // TODO: Shouldn't be needed when stats.php returns full JSON
+    // https://github.com/jpatokal/openflights/issues/1296
+    var rows = longshort !== "" ? longshort.split(";") : [];
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
@@ -2296,7 +2298,9 @@ function showStats(str) {
     table += "<tr><td>&nbsp;</td></tr>";
     table +=
       "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
-    var rows = extremes.split(":");
+    // TODO: Shouldn't be needed when stats.php returns full JSON
+    // https://github.com/jpatokal/openflights/issues/1296
+    var rows = extremes !== "" ? extremes.split(":") : [];
     for (r = 0; r < rows.length; r++) {
       var col = rows[r].split(",");
       // 0 desc, 1 code, 2 apid, 3 x, 4 y
