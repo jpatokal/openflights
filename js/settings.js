@@ -5,11 +5,13 @@ var URL_SETTINGS = "/php/settings.php";
 
 var privacyList = ["N", "Y", "O"];
 
+var gt;
+
 window.onload = function init() {
   gt = new Gettext({ domain: "messages" });
   if (window.location.href.indexOf("settings") != -1) {
-    var form = document.forms["signupform"];
-    var elite = form.elite.value;
+    var form = document.forms["signupform"],
+      elite = form.elite.value;
     document.getElementById("eliteicon").innerHTML = getEliteIcon(
       elite,
       form.validity.value
@@ -26,7 +28,6 @@ window.onload = function init() {
 };
 
 function xmlhttpPost(strURL, type) {
-  var xmlHttpReq = false;
   var self = this;
   // Mozilla/Safari
   if (window.XMLHttpRequest) {
@@ -48,8 +49,10 @@ function xmlhttpPost(strURL, type) {
   };
   var query = "";
   if (strURL == URL_SETTINGS) {
-    var form = document.forms["signupform"];
-    var privacy, editor, units;
+    var form = document.forms["signupform"],
+      privacy,
+      editor,
+      units;
 
     for (var r = 0; r < signupform.privacy.length; r++) {
       if (signupform.privacy[r].checked) {
@@ -137,28 +140,26 @@ function xmlhttpPost(strURL, type) {
 
 // Validate form
 function validate(type) {
-  var form = document.forms["signupform"];
-  var pw1 = form.pw1.value;
-  var pw2 = form.pw2.value;
-  var email = form.email.value;
+  var form = document.forms["signupform"],
+    pw1 = form.pw1.value,
+    pw2 = form.pw2.value,
+    email = form.email.value;
 
-  if (type == "RESET") {
-    if (
-      !confirm(
-        gt.gettext(
-          "This will PERMANENTLY delete ALL YOUR FLIGHTS. Have you exported a backup copy, and are you sure you want to do this?"
-        )
+  if (
+    type == "RESET" &&
+    !confirm(
+      gt.gettext(
+        "This will PERMANENTLY delete ALL YOUR FLIGHTS. Have you exported a backup copy, and are you sure you want to do this?"
       )
-    ) {
-      document.getElementById("miniresultbox").innerHTML =
-        "<i>" + gt.gettext("Deletion cancelled.") + "</i>";
-      return;
-    }
+    )
+  ) {
+    document.getElementById("miniresultbox").innerHTML =
+      "<i>" + gt.gettext("Deletion cancelled.") + "</i>";
+    return;
   }
 
   if (type == "NEW") {
-    var name = form.username.value;
-    if (name == "") {
+    if (form.username.value == "") {
       showError(gt.gettext("Please enter a username."));
       form.username.focus();
       return;
@@ -217,13 +218,13 @@ function validate(type) {
 // Check if user creation succeeded
 //
 function signup(str) {
-  var code = str.split(";")[0];
-  var message = str.split(";")[1];
+  var code = str.split(";")[0],
+    message = str.split(";")[1];
 
   // Operation successful
   if (code.length == 1 && code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;
-    // Whether signup, edit or reset, go back to main screen now
+    // Whether signup, edit or reset, or to go back to the main screen now
     location.href = "/";
   } else {
     showError(message);
@@ -231,8 +232,8 @@ function signup(str) {
 }
 
 function changeName() {
-  var name = document.forms["signupform"].username.value;
-  var url = location.origin + "/user/" + encodeURIComponent(name);
+  var name = document.forms["signupform"].username.value,
+    url = location.origin + "/user/" + encodeURIComponent(name);
   document.getElementById("profileurl").innerHTML =
     gt.gettext("Profile address: ") + url;
 }
@@ -247,16 +248,13 @@ function changePrivacy(type) {
 
 // Swap editor panes
 function changeEditor(type) {
-  switch (type) {
-    case "B":
-      document.getElementById("detaileditor").style.display = "none";
-      document.getElementById("basiceditor").style.display = "inline";
-      break;
-    case "D":
-      document.getElementById("basiceditor").style.display = "none";
-      document.getElementById("detaileditor").style.display = "inline";
-      break;
-  }
+  var isBasic = type === "B";
+  document.getElementById("detaileditor").style.display = isBasic
+    ? "none"
+    : "inline";
+  document.getElementById("basiceditor").style.display = isBasic
+    ? "inline"
+    : "none";
 }
 
 function showError(err) {
@@ -265,8 +263,8 @@ function showError(err) {
   location.hash = "top";
 }
 
-// Need to duplicate this from openflights.js so that it opens in Settings window, not main, and
-// IE does not go nuts
+// Need to duplicate this from openflights.js so that it opens in the Settings window,
+// not the main window, and IE does not go nuts
 function backupFlights() {
   location.href = location.origin + "/php/flights.php?export=backup";
 }
