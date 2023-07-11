@@ -156,27 +156,29 @@ if (!$query || $multi) {
                 }
             }
         }
-    } elseif ($_POST['plane']) {
-        // Autocompletion for plane types
-        // First match against major types with IATA codes, then pad to max 6 by matching against frequency of use
-        $query = $_POST['plane'];
-        $name = "%$query%";
-        $query = "(name LIKE :name OR iata LIKE :name) ";
-        $sql = "(SELECT name,plid FROM planes WHERE " . $query . " AND iata IS NOT NULL ORDER BY name LIMIT 6) UNION " .
-        "(SELECT name,plid FROM planes WHERE " . $query . " AND iata IS NULL ORDER BY frequency DESC LIMIT 6) LIMIT 6";
-        $sth = $dbh->prepare($sql);
-        $sth->execute(compact('name'));
+    }
+}
 
-        print("<ul class='autocomplete2'>");
-        $MAX_LEN = 35;
-        foreach ($sth as $data) {
-            $results = true;
-            $item = stripslashes($data['name']);
-            if (strlen($item) > $MAX_LEN) {
-                $item = substr($item, 0, $MAX_LEN - 13) . "..." . substr($item, -10, 10);
-            }
-            echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
+if ($_POST['plane']) {
+    // Autocompletion for plane types
+    // First match against major types with IATA codes, then pad to max 6 by matching against frequency of use
+    $query = $_POST['plane'];
+    $name = "%$query%";
+    $filter = "(name LIKE :name OR iata LIKE :name) ";
+    $sql = "(SELECT name,plid FROM planes WHERE " . $filter . " AND iata IS NOT NULL ORDER BY name LIMIT 6) UNION " .
+    "(SELECT name,plid FROM planes WHERE " . $filter . " AND iata IS NULL ORDER BY frequency DESC LIMIT 6) LIMIT 6";
+    $sth = $dbh->prepare($sql);
+    $sth->execute(compact('name'));
+
+    print("<ul class='autocomplete2'>");
+    $MAX_LEN = 35;
+    foreach ($sth as $data) {
+        $results = true;
+        $item = stripslashes($data['name']);
+        if (strlen($item) > $MAX_LEN) {
+            $item = substr($item, 0, $MAX_LEN - 13) . "..." . substr($item, -10, 10);
         }
+        echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
     }
 }
 
