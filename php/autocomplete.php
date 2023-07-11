@@ -13,35 +13,42 @@ function trim_query($query) {
     return trim($chunks[0]);
 }
 
-// If quick, then return only one row, with no UL tags
-if ($_POST['quick']) {
-    $limit = 1;
-} else {
-    $limit = 6;
+const SEARCH_TYPES = array("airport", "airline", "plane", "quick");
+
+if (!in_array($_POST['searchType'] ?? null, SEARCH_TYPES)
+    || empty($_POST['searchText'] ?? "")) {
+    http_response_code(400);
+    exit;
 }
+
+$searchType = $_POST['searchType'];
+$searchText = trim_query($_POST['searchText']);
+
+if (empty($searchText)) {
+    exit;
+}
+
 // If multi, then search airports and airlines
-$multi = $_POST["qs"];
+$multi = ($searchType == 'quick');
+
+// If quick, then return only one row, with no UL tags
+$limit = ($searchType == 'quick') ? 1 : 6;
+
 $results = false;
 
-// Autocompletion for airports
-// 3 chars: match on IATA or name (major airports only)
-// 4 chars: match on ICAO or name (major airports only)
-// >4 chars: match on name or city
 
-$airports = array("qs", "src_ap", "dst_ap", "src_ap1", "dst_ap1", "src_ap2", "dst_ap2", "src_ap3", "dst_ap3", "src_ap4", "dst_ap4");
-foreach ($airports as $ap) {
-    if ($_POST[$ap]) {
-        $query = trim_query($_POST[$ap]);
-        break;
-    }
-}
+// Skip this block for two-letter strings in limited multi-mode
+// (generic search box covering airlines & airports),
+// since they're assumed to be airlines.
+if ($searchType == 'airport' || ($multi && strlen($searchText) != 2)) {
+    // Autocompletion for airports
+    // 3 chars: match on IATA or name (major airports only)
+    // 4 chars: match on ICAO or name (major airports only)
+    // >4 chars: match on name or city
 
-// Skip this block for two-letter strings in limited multi-mode (generic search box covering airlines & airports),
-// since they're assumed to be airlines
-if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
     $ext = "";
     $sort_order = "iata IS NULL,icao IS NULL,city,name";
-    if (strlen($query) <= 3) {
+    if (strlen($searchText) <= 3) {
         $ext = "iata != '' AND iata != :code AND";
     } elseif ($multi) {
         // Exclude private airports from multisearch
@@ -49,7 +56,7 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
     }
     $sql = "SELECT 2 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE $ext (city LIKE :name";
 
-    switch (strlen($query)) {
+    switch (strlen($searchText)) {
         case 3: // IATA
             $sql = "SELECT 1 as sort_col,apid,name,city,country,iata,icao,x,y,timezone,dst FROM airports WHERE iata=:code UNION ($sql)) ORDER BY sort_col,$sort_order LIMIT $limit";
             break;
@@ -59,7 +66,7 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
             break;
 
         default:
-            if (strlen($query) > 4) {
+            if (strlen($searchText) > 4) {
                 $sql .= " OR name LIKE :name) ORDER BY $sort_order LIMIT $limit";
             } else {
                 $sql .= ") ORDER BY $sort_order LIMIT $limit";
@@ -73,7 +80,7 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
     $sth = $dbh->prepare($sql);
 
     // This is intentionally one-sided (foo%s) to avoid excessive substring matches.
-    $sth->execute(['name' => "$query%", 'code' => $query]);
+    $sth->execute(['name' => "$searchText%", 'code' => $searchText]);
     if ($sth->rowCount() > 0) {
         $results = true;
         foreach ($sth as $row) {
@@ -91,82 +98,73 @@ if ($query && !($multi && $limit == 1 && strlen($query) < 3)) {
         }
     }
 }
-if (!$query || $multi) {
+if ($searchType == 'airline' || $multi) {
     // Autocompletion for airlines
     // 2 chars: match on IATA or name (major airlines only)
     // 3 chars: match on ICAO or name (major airlines only)
     // >3 chars: match on name (any airline)
 
-    $airlines = array("qs", "airline", "airline1", "airline2", "airline3", "airline4");
-    foreach ($airlines as $al) {
-        if ($_POST[$al]) {
-            $query = trim_query($_POST[$al]);
-            break;
-        }
+    $mode = $_POST["mode"] ?? "F";
+    if (strlen($searchText) <= 3 && $mode == 'F') {
+        $ext = "iata != '' AND icao != :code AND";
+    } else {
+        $ext = ""; // anything goes!
     }
-    if ($query) {
-        $mode = $_POST["mode"];
-        if (!$mode) {
-            $mode = "F";
-        }
-        if (strlen($query) <= 3 && $mode == 'F') {
-            $ext = "iata != '' AND icao != :code AND";
-        } else {
-            $ext = ""; // anything goes!
-        }
-        if ($multi) {
-            $ext = "iata!='' AND active='Y' AND"; // quick search only for active, IATA-coded airlines
-        }
-        $sql = "SELECT 2 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE mode=:mode AND $ext (name LIKE :name OR alias LIKE :name)";
+    if ($multi) {
+        $ext = "iata!='' AND active='Y' AND"; // quick search only for active, IATA-coded airlines
+    }
+    $sql = "SELECT 2 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE mode=:mode AND $ext (name LIKE :name OR alias LIKE :name)";
 
-        // IATA/ICAO only apply to flights
-        if ($mode == 'F') {
-            switch (strlen($query)) {
-                case 2: // IATA
-                    $sql = "SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE iata=:code AND active='Y' UNION ($sql) ORDER BY sort_col, name LIMIT $limit";
+    // IATA/ICAO only apply to flights
+    if ($mode == 'F') {
+        switch (strlen($searchText)) {
+            case 2: // IATA
+                $sql = "SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE iata=:code AND active='Y' UNION ($sql) ORDER BY sort_col, name LIMIT $limit";
+                break;
+
+            case 3: // ICAO
+                if (!$multi) {
+                    $sql = "SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao=:code UNION ($sql) ORDER BY sort_col, name LIMIT $limit";
                     break;
+                } // else fallthru
 
-                case 3: // ICAO
-                    if (!$multi) {
-                        $sql = "SELECT 1 as sort_col,alid,name,iata,icao,mode FROM airlines WHERE icao=:code UNION ($sql) ORDER BY sort_col, name LIMIT $limit";
-                        break;
-                    } // else fallthru
-
-                default: // sort non-IATA airlines last
-                    $sql .= " ORDER BY LENGTH(iata) DESC, name LIMIT $limit";
-                    break;
-            }
-        } else {
-            $sql .= " ORDER BY name LIMIT $limit";
+            default: // sort non-IATA airlines last
+                $sql .= " ORDER BY LENGTH(iata) DESC, name LIMIT $limit";
+                break;
         }
-        if ($limit > 1 && ! $multi) {
-            print ("<ul class='autocomplete'>");
-        }
-        $sth = $dbh->prepare($sql);
-        if (!$sth->execute(['mode' => $mode, 'code' => $query, 'name' => "$query%"])) {
-            die('Autocomplete failed.');
-        }
-        if ($sth->rowCount() > 0) {
-            $results = true;
-            foreach ($sth as $row) {
-                if ($limit > 1) {
-                    printf("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
-                } else {
-                    printf("%s;%s", $row["alid"], format_airline($row));
-                }
+    } else {
+        $sql .= " ORDER BY name LIMIT $limit";
+    }
+    if ($limit > 1 && ! $multi) {
+        print ("<ul class='autocomplete'>");
+    }
+    $sth = $dbh->prepare($sql);
+    if (!$sth->execute(['mode' => $mode, 'code' => $searchText, 'name' => "$searchText%"])) {
+        die('Autocomplete failed.');
+    }
+    if ($sth->rowCount() > 0) {
+        $results = true;
+        foreach ($sth as $row) {
+            if ($limit > 1) {
+                printf("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
+            } else {
+                printf("%s;%s", $row["alid"], format_airline($row));
             }
         }
     }
 }
 
-if ($_POST['plane']) {
+if ($searchType == 'plane') {
     // Autocompletion for plane types
     // First match against major types with IATA codes, then pad to max 6 by matching against frequency of use
-    $query = $_POST['plane'];
-    $name = "%$query%";
+    $name = "%$searchText%";
     $filter = "(name LIKE :name OR iata LIKE :name) ";
-    $sql = "(SELECT name,plid FROM planes WHERE " . $filter . " AND iata IS NOT NULL ORDER BY name LIMIT 6) UNION " .
-    "(SELECT name,plid FROM planes WHERE " . $filter . " AND iata IS NULL ORDER BY frequency DESC LIMIT 6) LIMIT 6";
+    $sql = <<<SQL
+(SELECT name,plid FROM planes WHERE $filter AND iata IS NOT NULL ORDER BY name LIMIT 6)
+UNION
+(SELECT name,plid FROM planes WHERE $filter AND iata IS NULL ORDER BY frequency DESC LIMIT 6)
+LIMIT 6;
+SQL;
     $sth = $dbh->prepare($sql);
     $sth->execute(compact('name'));
 

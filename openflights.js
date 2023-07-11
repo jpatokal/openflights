@@ -409,7 +409,7 @@ function init() {
       query = arguments[1];
   }
 
-  prepareAutocomplete("qs", {
+  prepareAutocomplete("qs", "quick", {
     successCb: getQuickSearchId,
     failureCb: (e) => undefined,
   });
@@ -442,7 +442,7 @@ function init() {
     ac_plane = ["plane"];
 
     for (const airportAutoCompInputId of ac_airport) {
-      prepareAutocomplete(airportAutoCompInputId, {
+      prepareAutocomplete(airportAutoCompInputId, "airport", {
         successCb: (item) => {
           getSelectedApid(airportAutoCompInputId, item.value);
         },
@@ -453,7 +453,7 @@ function init() {
     }
 
     for (const airlineAutoCompInputId of ac_airline) {
-      prepareAutocomplete(airlineAutoCompInputId, {
+      prepareAutocomplete(airlineAutoCompInputId, "airline", {
         successCb: (item) => {
           getSelectedAlid(airlineAutoCompInputId, item.value);
         },
@@ -461,7 +461,7 @@ function init() {
     }
 
     for (const planeAutoCompInputId of ac_plane) {
-      prepareAutocomplete(planeAutoCompInputId, {
+      prepareAutocomplete(planeAutoCompInputId, "plane", {
         successCb: (item) => {
           getSelectedPlid(planeAutoCompInputId, item.value);
         },
@@ -573,13 +573,13 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
 // `autocomplete.js` wrapper to encapsulate logic dealing with setting up the
 // autocomplete widgets and interacting with the autocomplete API endpoint.
 //
-function prepareAutocomplete(inputId, { successCb, failureCb }) {
+function prepareAutocomplete(inputId, searchType, { successCb, failureCb }) {
   const inputElement = document.getElementById(inputId);
 
   autocomplete({
     input: inputElement,
     minLength: 1,
-    debounceWaitMs: 100,
+    debounceWaitMs: 300,
     fetch: (text, update) => {
       showLoadingAnimation(true);
       fetch(URL_GETCODE, {
@@ -588,6 +588,13 @@ function prepareAutocomplete(inputId, { successCb, failureCb }) {
           "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
         },
         body: encodeURI(`${inputId}=${text}`),
+        body: new URLSearchParams([
+          // legacy format for backwards-compatibility
+          [inputId, text],
+          // new format
+          ['searchType', searchType],
+          ['searchText', text]
+        ])
       })
         .then((response) => {
           if (response.status !== 200) {
@@ -1351,12 +1358,13 @@ function xmlhttpPost(strURL, id, param) {
       break;
 
     case URL_GETCODE:
-      query =
-        encodeURIComponent(param) +
-        "=" +
-        encodeURIComponent(id) +
-        "&quick=true&mode=" +
-        getMode();
+      const getcodeParams = new URLSearchParams();
+      getcodeParams.set('mode', getMode());
+      getcodeParams.set(param, id);
+      getcodeParams.set('searchType', 'quick');
+      getcodeParams.set('searchText', id);
+      getcodeParams.set('quick', true);
+      query = getcodeParams.toString();
       break;
 
     case URL_LOGOUT:
