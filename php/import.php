@@ -705,12 +705,12 @@ if ($action == _("Upload")) {
         print "<font color=red>" . _("Error") . ": ";
         switch ($fatal) {
             case "airport":
-                print _("Your flight data includes unrecognized airports. Please add them to the database and try again. ");
+                print _("Your flight data includes unrecognized airports. Please add them to the database and try again.");
                 print "<INPUT type='button' value='" . _("Add new airport") . "' onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
                 break;
 
             case "airline":
-                print _("Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. ");
+                print _("Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again.");
                 break;
 
             case "date":

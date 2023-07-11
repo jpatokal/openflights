@@ -405,10 +405,10 @@ msgstr "Nessuna corrispondenza, prego correggere e ricaricare"
 msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
 msgstr "Nota: Questo file CSV contiene identità di OpenFlights nelle colonne 15-18. Queste identità annulleranno i valori di qualunque cambiamento manuale fatto nelle colonne aeroporto, compagnia aerea e/o aeroplano."
 
-msgid "Your flight data includes unrecognized airports. Please add them to the database and try again. "
+msgid "Your flight data includes unrecognized airports. Please add them to the database and try again."
 msgstr "I tuoi dati di volo includono aeroporti non riconosciuti. Per favore aggiungili al database e prova di nuovo."
 
-msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. "
+msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again."
 msgstr "I tuoi dati di volo includono compagnie aeree non riconosciute. Questo in genere significa che non è stato trovato il codice della compagnia aerea nel numero di volo , e non è stato specificato un nome della compagnia aerea. Prego aggiustare o rimuovere il codice della compagnia aerea e provare di nuovo."
 
 msgid "Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted."
@@ -1222,8 +1222,8 @@ msgstr "Per favore inserisci un nome di aeroporto"
 msgid "Please enter a city name."
 msgstr "Per favore inserisci un nome di città"
 
-msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
-msgstr "Per favore inserisci latitudine, longitudine ed altezza. Suggerimento: Controllare se il database OurAirport contiene già il tuo aeroporto, e \"Load\" i dati da lì."
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and 'Load' the data from there."
+msgstr "Per favore inserisci latitudine, longitudine ed altezza. Suggerimento: Controllare se il database OurAirport contiene già il tuo aeroporto, e 'Load' i dati da lì."
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point). For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr "La latitudine e la longitudine devono essere espresse con gradi decimali, dove i numeri negativi indicano rispettivamente 'sud' e 'ovest', e con almeno tre cifre di precisione (dopo il punto decimale). Per esempio, San Francisco (SFO) è alla latitudine 37.6189(N), longitudine -122.3748(W)."
