@@ -207,6 +207,14 @@ td.donate2 {
 }
 
 /* Autocomplete styles */
+.autocomplete {
+ /* TODO: improve this in code review
+  *
+  * We want the autocomplete suggestions to appear *over* the km/mi map
+  * distance measure when displaying them above the text entry. But how?
+  */
+  z-index: 9999;
+}
 .autocomplete > div.selected,
 .autocomplete > div:hover:not(.group) {
   background: #c6deff;
