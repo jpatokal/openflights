@@ -620,6 +620,14 @@ function prepareAutocomplete(inputId, { successCb, failureCb }) {
       inputElement.value = item.label;
       successCb(item);
     },
+    customize: (input, inputRect, container, maxHeight) => {
+      if (maxHeight < 100) {
+        container.style.top = "";
+        container.style.bottom =
+          window.innerHeight - inputRect.bottom + input.offsetHeight + "px";
+        container.style.maxHeight = "200px";
+      }
+    },
   });
 }
 
