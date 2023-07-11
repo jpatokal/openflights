@@ -101,7 +101,7 @@ if ($type == "NEW") {
     $_SESSION['uid'] = $uid;
     $_SESSION['name'] = $name;
     $_SESSION['editor'] = $editor;
-    $_SESSION['elite'] = $elite;
+    $_SESSION['elite'] = '';
     $_SESSION['units'] = $units;
 } else {
     printf("2;" . _("Settings changed successfully, returning..."));

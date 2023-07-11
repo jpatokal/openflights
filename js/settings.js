@@ -11,11 +11,17 @@ window.onload = function init() {
   gt = new Gettext({ domain: "messages" });
   if (window.location.href.indexOf("settings") != -1) {
     var form = document.forms["signupform"],
-      elite = form.elite.value;
-    document.getElementById("eliteicon").innerHTML = getEliteIcon(
-      elite,
-      form.validity.value
-    );
+      elite = "elite" in form ? form.elite.value : "";
+
+    var eliteIcon = document.getElementById("eliteicon");
+
+    if (eliteIcon != null) {
+      eliteIcon.innerHTML = getEliteIcon(
+        elite,
+        "validity" in form ? form.validity.value : ""
+      );
+    }
+
     if (elite == "G" || elite == "P") {
       signupform.guestpw.disabled = false;
       for (var r = 0; r < signupform.startpane.length; r++) {
