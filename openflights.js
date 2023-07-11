@@ -2099,7 +2099,7 @@ function listFlights(str, desc, id) {
       }
 
       // Prepend airline code to numeric/missing flight number
-      if (/^[0-9]*$/.test(code)) {
+      if (re_numeric.test(code)) {
         code = col[19] + code;
       }
       if (col[14] != "") {
