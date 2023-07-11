@@ -23,7 +23,7 @@ $fid = $_POST["fid"];
 $mode = $_POST["mode"];
 $note = stripslashes($_POST["note"]);
 $param = $_POST["param"];
-$multi = $_POST["multi"];
+$multi = $_POST["multi"] ?? false;
 
 if (!$mode || $mode == "") {
     $mode = "F";

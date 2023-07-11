@@ -82,7 +82,7 @@ if ($type == "signup") {
           </tr>
     <?php
 } else {
-    $uid = $_SESSION["uid"];
+    $uid = $_SESSION["uid"] ?? null;
     if ( !$uid || empty($uid)) {
         die(_("Your session has timed out, please log in again."));
     }
