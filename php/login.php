@@ -12,13 +12,12 @@ $challenge = $_POST["challenge"];
 if ($challenge && $challenge != $_SESSION["challenge"]) {
     $row = array("status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again.");
     die(json_encode($row));
-} else {
-    $challenge = $_SESSION["challenge"];
 }
 
 // Log in user
 if ($name) {
-    // CHAP: Use random challenge key in addition to password
+    $challenge = $_SESSION["challenge"];
+    // CHAP: Use a random challenge key in addition to the password
     // user_pw == MD5(challenge, db_pw)
     $sth = $dbh->prepare("
     SELECT uid, name, email, editor, elite, units, locale
@@ -40,8 +39,8 @@ if ($name) {
         $_SESSION['editor'] = $row["editor"];
         $_SESSION['elite'] = $row["elite"];
         $_SESSION['units'] = $row["units"];
-        if ($row["locale"] != "en_US" && $_SESSION['locale'] != $row["locale"]) {
-            $row['status'] = 2; // force reload, so UI is changed into user's language
+        if ($row["locale"] != "en_US" && ( $_SESSION['locale'] ?? null ) != $row["locale"]) {
+            $row['status'] = 2; // force reload, so the UI is changed into user's language
         } else {
             $row['status'] = 1;
         }
