@@ -411,10 +411,10 @@ msgstr "无匹配项, 请更正内容后重新上传"
 msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
 msgstr "注意: 该CSV文件在15-18列包含OpenFlights ID. 这些ID将覆盖任何对于机场, 航空公司以及机型等列所进行的手动更改的内容."
 
-msgid "Your flight data includes unrecognized airports. Please add them to the database and try again. "
+msgid "Your flight data includes unrecognized airports. Please add them to the database and try again."
 msgstr "您的航空记录数据包含无法识别的机场. 请将其添加进数据库后重试."
 
-msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. "
+msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again."
 msgstr "您的航空记录数据包含无法识别的航空公司. 这通常是由于航班号码中的航空公司代码无法找到, 或航空公司名称未指明. 请更正或移除该航空公司代码后重试."
 
 msgid "Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted."
@@ -542,7 +542,7 @@ msgstr "旅程删除成功"
 
 #, php-format
 msgid "Trip successfully edited."
-msgstr "旅程编辑成功. "
+msgstr "旅程编辑成功."
 
 msgid "Language"
 msgstr "语言"
@@ -1234,8 +1234,8 @@ msgstr "请输入一个机场名称."
 msgid "Please enter a city name."
 msgstr "请输入一个城市名称."
 
-msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
-msgstr "请输入纬度, 经度以及海拔. 提示: 请查看OurAirport数据库中是否已包含您想输入的机场, 如果有的话可以从那里\"载入\"."
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and 'Load' the data from there."
+msgstr "请输入纬度, 经度以及海拔. 提示: 请查看OurAirport数据库中是否已包含您想输入的机场, 如果有的话可以从那里'载入'."
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point). For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."
 msgstr "纬度和经度必须为小数, 其中负数分别表示'南'或'西', 并至少包含(小数点后)三位精度. 例如, 旧金山(SFO)位于北纬37.6189, 西经-122.3748."

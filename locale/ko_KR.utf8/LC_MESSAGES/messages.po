@@ -405,10 +405,10 @@ msgstr "일치하지 않습니다. 확인후 다시 업로드하세요."
 msgid "Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns."
 msgstr "노트 : CSV파일이 15-18자의 OpenFlights IDs를 포함하고 있습니다. 이 IDs가 직접 수정한 공항, 항공사, 비행기 컬럼을 덮어쓸 수 있습니다."
 
-msgid "Your flight data includes unrecognized airports. Please add them to the database and try again. "
+msgid "Your flight data includes unrecognized airports. Please add them to the database and try again."
 msgstr "비행정보에 알 수 없는 공항이 포함되어 있습니다. 공항을 먼저 데이터베이스에 추가하고 다시 시도하세요."
 
-msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again. "
+msgid "Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again."
 msgstr "비행정보에 알 수 없는 항공사가 포함되어 있습니다. 이는 일반적으로 입력된 항공사코드가 잘못되었거나 혹은 항공사이름이 잘못된 경우입니다. 확인후 다시 시도하세요."
 
 msgid "Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted."
@@ -1222,7 +1222,7 @@ msgstr "공항 이름을 입력하세요."
 msgid "Please enter a city name."
 msgstr "도시 이름을 입력하세요."
 
-msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and \"Load\" the data from there."
+msgid "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and 'Load' the data from there."
 msgstr "위도, 경도 및 고도를 입력하세요. OurAirports.com의 데이터베이스를 확인해서 로드할 수 있습니다."
 
 msgid "Latitude and longitude must be given as decimal degrees, where negative numbers indicate 'south' and 'west' respectively, and with at least three digits of precision (after the decimal point). For example, San Francisco (SFO) is at latitude 37.6189(N), longitude -122.3748(W)."

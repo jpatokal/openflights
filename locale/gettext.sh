@@ -7,15 +7,26 @@ PHP="index.php php/*php html/*php"
 JS="openflights.js js/alsearch.js js/apsearch.js js/settings.js js/trip.js"
 OPTS="--omit-header --no-location --no-wrap -j"
 for lang in de_DE en_GB es_ES fi_FI fr_FR ja_JP lt_LT nl_NL pl_PL pt_BR sv_SE ru_RU; do
-  POPATH=locale/$lang.utf8/LC_MESSAGES
+  PO_PATH=locale/$lang.utf8/LC_MESSAGES
   echo $lang
-  touch $POPATH/new.po
-  xgettext $OPTS -o $POPATH/new.po $PHP
-  xgettext $OPTS -L C -o $POPATH/new.po $JS
+
+  PO_NEW=$PO_PATH/new.po
+  touch $PO_NEW
+
+  xgettext $OPTS -o $PO_NEW $PHP
+  xgettext $OPTS -L C -o $PO_NEW $JS
+
   # Filter out obsoleted strings
-  msgmerge -N $POPATH/messages.po $POPATH/new.po >$POPATH/newest.po
-  grep -v "^#~" $POPATH/newest.po >$POPATH/messages.po
-  rm $POPATH/new.po $POPATH/newest.po
+  PO_NEWEST=$PO_PATH/newest.po
+  PO_MESSAGES=$PO_PATH/messages.po
+
+  msgmerge -N $PO_MESSAGES $PO_NEW >$PO_NEWEST
+  grep -v ^#~ $PO_NEWEST >$PO_MESSAGES
+  rm $PO_NEW $PO_NEWEST
+
+  # Make .mo files
+  MO_FILE=$PO_PATH/messages.mo
+  msgfmt -o $MO_FILE $PO_MESSAGES
 done
 
 touch locale/new.po

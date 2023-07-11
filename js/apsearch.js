@@ -189,7 +189,7 @@ function xmlhttpPost(strURL, offset, action) {
       if (x == "" || y == "" || elevation == "") {
         alert(
           gt.gettext(
-            'Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and "Load" the data from there.'
+            "Please enter latitude, longitude and elevation. Tip: Check if the OurAirport database already contains your airport, and 'Load' the data from there."
           )
         );
         form.x.focus();
