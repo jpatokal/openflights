@@ -35,7 +35,7 @@ switch ($mode) {
         $mode = "SUM(distance)";
         $data["countUnit"] = "miles";
         if ($units == "K") {
-            $mode = "ROUND($mode * KM_PER_MILE)";
+            $mode = "ROUND($mode * " . KM_PER_MILE . ")";
             $data["countUnit"] = "kilometers";
         }
         break;
