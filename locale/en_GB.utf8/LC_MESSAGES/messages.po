@@ -1053,6 +1053,9 @@ msgstr ""
 msgid "Toggle pan and region select mode"
 msgstr ""
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr ""
 
@@ -1164,6 +1167,12 @@ msgid "routes"
 msgstr ""
 
 msgid "No flights found at this airport."
+msgstr ""
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
 msgstr ""
 
 msgid "Export"
@@ -1418,11 +1427,6 @@ msgid "Please enter an airport name."
 msgstr ""
 
 msgid "Please enter a city name."
-msgstr ""
-
-msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
 msgstr ""
 
 msgid ""

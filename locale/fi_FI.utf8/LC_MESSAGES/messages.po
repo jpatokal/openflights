@@ -1114,6 +1114,9 @@ msgstr "Mailit"
 msgid "Toggle pan and region select mode"
 msgstr "Kartan siirto vs. alueen valinta"
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Overview-kartta"
 
@@ -1233,6 +1236,12 @@ msgstr "reittiä"
 
 msgid "No flights found at this airport."
 msgstr "Ei lentoja tältä kentältä."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Export"
@@ -1507,13 +1516,6 @@ msgid "Please enter a city name."
 msgstr "Kaupungin nimi puuttuu."
 
 msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Lisää leveys- ja pituusasteet sekä korkeus. Oletko tarkistanut onko kenttä "
-"kenties jo OurAirports-kannassa? Voit ladata tiedot sieltä valmiiksi."
-
-msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "
 "numbers indicate 'south' and 'west' respectively, and with at least three "
 "digits of precision (after the decimal point). For example, San Francisco "
@@ -1625,3 +1627,4 @@ msgstr "Käsitellään..."
 
 msgid "Profile address: "
 msgstr ""
+

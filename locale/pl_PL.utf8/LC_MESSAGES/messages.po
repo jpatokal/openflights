@@ -1116,6 +1116,9 @@ msgstr "Dystans"
 msgid "Toggle pan and region select mode"
 msgstr "Przełącz między trybem przeciągania i powiększania."
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Pokaż mapę ogólną"
 
@@ -1236,6 +1239,12 @@ msgstr ""
 
 msgid "No flights found at this airport."
 msgstr "Nie ma lotów przypisanych do tego lotniska."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Eksportuj"
@@ -1494,11 +1503,6 @@ msgstr "Podaj nazwę lotniska."
 
 msgid "Please enter a city name."
 msgstr "Podaj nazwę miasta."
-
-msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
 
 msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "

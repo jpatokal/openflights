@@ -1157,6 +1157,9 @@ msgstr "Antal mil"
 msgid "Toggle pan and region select mode"
 msgstr "Växla förstoringsglas/markering"
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Översiktskarta av/på"
 
@@ -1281,6 +1284,12 @@ msgstr ""
 
 msgid "No flights found at this airport."
 msgstr "Inga flyg funna på den här flygplatsen."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Exportera"
@@ -1557,13 +1566,6 @@ msgid "Please enter a city name."
 msgstr "Skriv ett stadsnamn."
 
 msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Skriv latitud, longitud och höjd. Tips: Kolla först om OurAirport-databasen "
-"redan innehåller din flygplats, och \"Läs\" datan därifrån."
-
-msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "
 "numbers indicate 'south' and 'west' respectively, and with at least three "
 "digits of precision (after the decimal point). For example, San Francisco "
@@ -1672,3 +1674,4 @@ msgstr ""
 
 msgid "Profile address: "
 msgstr ""
+

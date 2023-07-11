@@ -31,7 +31,7 @@ var tripname, tripurl;
 var fidList,
   fidPtr = 0,
   fid = 0;
-// Query and description of current list
+// Query and description of the current list
 var lastQuery, lastDesc;
 
 // Temporary variables for current flight being edited
@@ -2010,11 +2010,17 @@ function listFlights(str, desc, id) {
     '<img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17> '
   );
   if (str == "") {
-    table.push(
-      "<i>" +
-        gt.gettext("No flights found at this airport.") +
-        "</i></span></div>"
-    );
+    var msg;
+    if (!route && id > 0) {
+      msg = gt.gettext("No flights found at this airport.");
+    } else if (route) {
+      msg = gt.gettext("No routes found at this airport.");
+    } else {
+      // https://github.com/jpatokal/openflights/issues/1277
+      msg = gt.gettext("No flights found.");
+    }
+
+    table.push("<i>" + msg + "</i></span></div>");
   } else {
     if (desc) {
       desc = desc.replace("Flights:", gt.gettext("Flights:"));
