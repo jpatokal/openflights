@@ -13,7 +13,7 @@ function trim_query($query) {
     return trim($chunks[0]);
 }
 
-const SEARCH_TYPES = array("airport", "airline", "plane", "quick");
+const SEARCH_TYPES = array("airport", "airline", "plane", "multisearch");
 
 if (!in_array($_POST['searchType'] ?? null, SEARCH_TYPES)
     || empty($_POST['searchText'] ?? "")) {
@@ -29,12 +29,13 @@ if (empty($searchText)) {
 }
 
 // If multi, then search airports and airlines
-$multi = ($searchType == 'quick');
+$multi = $searchType == 'multisearch';
 
 // If quick, then return only one row, with no UL tags
-$limit = ($searchType == 'quick') ? 1 : 6;
+$quick = ($_POST['quick'] ?? false) == 'true';
+$limit = $quick ? 1 : 6;
 
-$results = false;
+$results = [];
 
 
 // Skip this block for two-letter strings in limited multi-mode
@@ -74,27 +75,18 @@ if ($searchType == 'airport' || ($multi && strlen($searchText) != 2)) {
             break;
     }
 
-    if ($limit > 1) {
-        print ("<ul class='autocomplete'>");
-    }
     $sth = $dbh->prepare($sql);
 
     // This is intentionally one-sided (foo%s) to avoid excessive substring matches.
     $sth->execute(['name' => "$searchText%", 'code' => $searchText]);
-    if ($sth->rowCount() > 0) {
-        $results = true;
-        foreach ($sth as $row) {
-            if ($limit > 1) {
-                printf(
-                    "<li class='autocomplete' origin='%s' id='%s'>%s</li>\n",
-                    $ap,
-                    format_apdata($row),
-                    format_airport($row)
-                );
-            } else {
-                printf("%s;%s", format_apdata($row), format_airport($row));
-                exit; // match found, do not fall thru to airlines
-            }
+    foreach ($sth as $row) {
+        $results[] = ['value' => format_apdata($row), 'label' => format_airport($row)];
+
+        if ($quick) {
+            // match found, don't search anything else
+            $searchType = null;
+            $multi = null;
+            break;
         }
     }
 }
@@ -135,28 +127,17 @@ if ($searchType == 'airline' || $multi) {
     } else {
         $sql .= " ORDER BY name LIMIT $limit";
     }
-    if ($limit > 1 && ! $multi) {
-        print ("<ul class='autocomplete'>");
-    }
     $sth = $dbh->prepare($sql);
-    if (!$sth->execute(['mode' => $mode, 'code' => $searchText, 'name' => "$searchText%"])) {
-        die('Autocomplete failed.');
-    }
-    if ($sth->rowCount() > 0) {
-        $results = true;
-        foreach ($sth as $row) {
-            if ($limit > 1) {
-                printf("<li class='autocomplete' id='%s'>%s</li>", $row["alid"], format_airline($row));
-            } else {
-                printf("%s;%s", $row["alid"], format_airline($row));
-            }
-        }
+    !$sth->execute(['mode' => $mode, 'code' => $searchText, 'name' => "$searchText%"]);
+    foreach ($sth as $row) {
+        $results[] = ['label' => format_airline($row), 'value' => (int)$row['alid']];
     }
 }
 
 if ($searchType == 'plane') {
     // Autocompletion for plane types
-    // First match against major types with IATA codes, then pad to max 6 by matching against frequency of use
+    // First match against major types with IATA codes,
+    // then pad to max 6 by matching against frequency of use.
     $name = "%$searchText%";
     $filter = "(name LIKE :name OR iata LIKE :name) ";
     $sql = <<<SQL
@@ -168,22 +149,15 @@ SQL;
     $sth = $dbh->prepare($sql);
     $sth->execute(compact('name'));
 
-    print("<ul class='autocomplete2'>");
     $MAX_LEN = 35;
     foreach ($sth as $data) {
-        $results = true;
-        $item = stripslashes($data['name']);
-        if (strlen($item) > $MAX_LEN) {
-            $item = substr($item, 0, $MAX_LEN - 13) . "..." . substr($item, -10, 10);
+        $name = $data['name'];
+        if (strlen($name) > $MAX_LEN) {
+            $name = substr($name, 0, $MAX_LEN - 13) . "..." . substr($name, -10, 10);
         }
-        echo "<li class='autocomplete' id='" . $data['plid'] . "'>" . $item . "</li>";
+        $results[] = ['label' => $name, 'value' => (int)$data['plid']];
     }
 }
 
-if (!$results) {
-    http_response_code(204); // No Data
-}
-
-if ($limit > 1) {
-    printf("</ul>");
-}
+header("Content-type: application/json; charset=utf-8");
+echo json_encode($results);

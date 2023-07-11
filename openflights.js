@@ -409,7 +409,7 @@ function init() {
       query = arguments[1];
   }
 
-  prepareAutocomplete("qs", "quick", {
+  prepareAutocomplete("qs", "multisearch", {
     successCb: getQuickSearchId,
     failureCb: (e) => undefined,
   });
@@ -444,6 +444,7 @@ function init() {
     for (const airportAutoCompInputId of ac_airport) {
       prepareAutocomplete(airportAutoCompInputId, "airport", {
         successCb: (item) => {
+          inputElement.value = item.label;
           getSelectedApid(airportAutoCompInputId, item.value);
         },
         failureCb: (error) => {
@@ -455,6 +456,7 @@ function init() {
     for (const airlineAutoCompInputId of ac_airline) {
       prepareAutocomplete(airlineAutoCompInputId, "airline", {
         successCb: (item) => {
+          inputElement.value = item.label;
           getSelectedAlid(airlineAutoCompInputId, item.value);
         },
       });
@@ -463,6 +465,7 @@ function init() {
     for (const planeAutoCompInputId of ac_plane) {
       prepareAutocomplete(planeAutoCompInputId, "plane", {
         successCb: (item) => {
+          inputElement.value = item.label;
           getSelectedPlid(planeAutoCompInputId, item.value);
         },
       });
@@ -589,31 +592,18 @@ function prepareAutocomplete(inputId, searchType, { successCb, failureCb }) {
         },
         body: encodeURI(`${inputId}=${text}`),
         body: new URLSearchParams([
-          // legacy format for backwards-compatibility
-          [inputId, text],
-          // new format
-          ['searchType', searchType],
-          ['searchText', text]
-        ])
+          ["searchType", searchType],
+          ["searchText", text],
+        ]),
       })
         .then((response) => {
           if (response.status !== 200) {
             throw new Error(response.status);
           }
-          return response.text();
+          return response.json();
         })
-        .then((text) => {
-          const responseXML = new DOMParser().parseFromString(text, "text/xml");
-
-          const suggestions = [];
-          const ul = responseXML.firstChild;
-          ul.childNodes.forEach((elem) => {
-            // Skip over newline text nodes
-            if (elem.nodeName === "li")
-              suggestions.push({ label: elem.firstChild.data, value: elem.id });
-          });
-
-          update(suggestions);
+        .then((data) => {
+          update(data);
         })
         .catch((e) => {
           if (failureCb) failureCb(e);
@@ -624,7 +614,6 @@ function prepareAutocomplete(inputId, searchType, { successCb, failureCb }) {
         });
     },
     onSelect: (item) => {
-      inputElement.value = item.label;
       successCb(item);
     },
     customize: (input, inputRect, container, maxHeight) => {
@@ -941,7 +930,15 @@ function xmlhttpPost(strURL, id, param) {
         showLoadingAnimation(false);
       }
       if (strURL == URL_GETCODE) {
-        var cols = self.xmlHttpReq.responseText.split(";");
+        const resp = JSON.parse(self.xmlHttpReq.responseText);
+        var cols;
+        // Hack the old format back in (for now)
+        if (resp.length) {
+          cols = [resp[0].value, resp[0].label];
+        } else {
+          cols = [""];
+        }
+        console.log("cols", cols);
         switch (param) {
           case "qs":
             var alid = cols[0];
@@ -1359,11 +1356,10 @@ function xmlhttpPost(strURL, id, param) {
 
     case URL_GETCODE:
       const getcodeParams = new URLSearchParams();
-      getcodeParams.set('mode', getMode());
-      getcodeParams.set(param, id);
-      getcodeParams.set('searchType', 'quick');
-      getcodeParams.set('searchText', id);
-      getcodeParams.set('quick', true);
+      getcodeParams.set("mode", getMode());
+      getcodeParams.set("searchType", "multisearch");
+      getcodeParams.set("searchText", id);
+      getcodeParams.set("quick", true);
       query = getcodeParams.toString();
       break;
 
@@ -2888,6 +2884,7 @@ function getQuickSearchId(item) {
   } else {
     id = `L${data}`;
   }
+  $("qs").value = item.label;
   $("qsid").value = id;
   $("qsgo").disabled = false;
 }
