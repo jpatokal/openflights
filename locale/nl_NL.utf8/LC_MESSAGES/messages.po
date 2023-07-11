@@ -888,6 +888,9 @@ msgstr ""
 msgid "Could not load profile data"
 msgstr "Profiel gegevens konden niet geladen worden"
 
+msgid "User ID"
+msgstr ""
+
 msgid "Profile address"
 msgstr "Profieladres"
 
