@@ -207,7 +207,7 @@ require_once "./php/helper.php";
       <?php echo _("Trip") ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a>
   </td>
   <td width=""><span id="input_trip_select"></span>
-      <img src="/img/icon_add.png" title="<?php echo _("Add new trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="<?php echo _("Edit this trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/>
+      <img id="trip_add" src="/img/icon_add.png" title="<?php echo _("Add new trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img id="trip_edit" src="/img/icon_edit.png" title="<?php echo _("Edit this trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/>
   </td>
 
 </tr>
