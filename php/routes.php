@@ -6,14 +6,8 @@ include_once 'helper.php';
 include_once 'greatcircle.php';
 include_once 'filter.php';
 
-$apid = $_POST["apid"];
-if (!$apid) {
-    $apid = $_GET["apid"];
-}
-$alid = $_POST["alid"];
-if (!$alid) {
-    $alid = $_GET["alid"];
-}
+$apid = $_POST["apid"] ?? $_GET["apid"] ?? null;
+$alid = $_POST["alid"] ?? $_GET["alid"] ?? null;
 
 if (!$apid) {
     $param = $_POST["param"];
