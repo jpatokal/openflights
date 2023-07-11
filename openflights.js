@@ -1482,6 +1482,9 @@ function updateFilter(str) {
     $("filter_tripselect").innerHTML = "&nbsp;" + gt.gettext("No trips");
     $("input_trip_select").innerHTML =
       "&nbsp;" + gt.gettext("No trips. Add one? ");
+    document
+      .getElementById("trip_edit")
+      .setAttribute("onclick", 'JavaScript:editTrip("ADD")');
   } else {
     $("filter_tripselect").innerHTML = createSelect(
       "Trips",
@@ -1515,6 +1518,9 @@ function updateFilter(str) {
       "markAsChanged",
       selected
     );
+    document
+      .getElementById("trip_edit")
+      .setAttribute("onclick", 'JavaScript:editTrip("EDIT")');
     document.forms["inputform"].trips[0].text = "Select trip";
   }
   $("filter_airlineselect").innerHTML = createSelect(
@@ -2937,16 +2943,14 @@ function goQuickSearch() {
 //
 function editTrip(thisTrip) {
   var url = "/html/trip";
+  // default (for `thisTrip == "ADD"`); we'll create a new trip
   var trid = 0;
-  if (thisTrip == "ADD") {
-    // do nothing, we'll create a new trip
-  } else {
-    if (thisTrip == "EDIT") {
-      var inputform = document.forms["inputform"];
-      trid = inputform.trips[inputform.trips.selectedIndex].value;
-    } else {
-      trid = thisTrip;
-    }
+
+  if (thisTrip == "EDIT") {
+    var inputform = document.forms["inputform"];
+    trid = inputform.trips[inputform.trips.selectedIndex].value;
+  } else if (thisTrip != "ADD") {
+    trid = thisTrip;
   }
   if (trid != 0) {
     url += "?trid=" + trid;
@@ -2969,6 +2973,9 @@ function newTrip(code, newTrid, name, url) {
   if (!trips) {
     $("input_trip_select").innerHTML =
       "<select style='width: 100px' name='trips'></select>";
+    document
+      .getElementById("trip_edit")
+      .setAttribute("onclick", 'JavaScript:editTrip("ADD")');
     trips = document.forms["inputform"].trips;
   }
   if (trips) {
