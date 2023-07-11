@@ -4,10 +4,7 @@ include_once 'locale.php';
 include_once 'db_pdo.php';
 
 $type = $_POST["type"];
-$name = $_POST["name"];
-$url = $_POST["url"];
-$trid = $_POST["trid"];
-$privacy = $_POST["privacy"];
+$trid = $_POST["trid"] ?? null;
 
 if ($type != "NEW" && (!$trid || $trid == 0)) {
     die('0;Trip ID ' . $trid . ' invalid');
@@ -18,21 +15,25 @@ if (!$uid || empty($uid)) {
     die('0;' . _("Your session has timed out, please log in again."));
 }
 
+$name = $_POST["name"];
+$url = $_POST["url"];
+$privacy = $_POST["privacy"];
+
 switch ($type) {
     case "NEW":
-        // Create new trip
+        // Create a new trip
         $sth = $dbh->prepare("INSERT INTO trips(name,url,public,uid) VALUES(?,?,?,?)");
         $success = $sth->execute([$name, $url, $privacy, $uid]);
         break;
 
     case "EDIT":
-        // Edit existing trip
+        // Edit an existing trip
         $sth = $dbh->prepare("UPDATE trips SET name=?, url=?, public=? WHERE uid=? AND trid=?");
         $success = $sth->execute([$name, $url, $privacy, $uid, $trid]);
         break;
 
     case "DELETE":
-        // Assign its flights to null and delete trip
+        // Assign flights with this trip id to null and then delete the trip
         $sth = $dbh->prepare("UPDATE flights SET trid=NULL WHERE trid=? AND uid=?");
         if (!$sth->execute([$trid, $uid])) {
             die('0;Operation on trip ' . $name . ' failed.');
@@ -49,7 +50,7 @@ switch ($type) {
 if (!$success) {
     die('0;Operation on trip ' . $name . ' failed.');
 }
-if ($sth->rowCount() != 1) {
+if ($sth->rowCount() !== 1) {
     die("0;No matching trip found");
 }
 
