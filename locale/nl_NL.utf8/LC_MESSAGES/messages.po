@@ -1118,6 +1118,9 @@ msgstr "Afstand"
 msgid "Toggle pan and region select mode"
 msgstr "Wissel tussen modus voor verplaatsen en regioselectie"
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Wissel naar overzichtskaart"
 
@@ -1242,6 +1245,12 @@ msgstr "routes"
 
 msgid "No flights found at this airport."
 msgstr "Geen vluchten gevonden van/naar deze luchthaven."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Exporteren"
@@ -1524,13 +1533,6 @@ msgid "Please enter a city name."
 msgstr "Voer a.u.b. een plaatsnaam in."
 
 msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Voer a.u.b. een breedtegraad, lengtegraad en hoogte in. Tip: Ga na of de "
-"OurAirport database uw luchthaven al bevat en \"Laad\" de data daar uit."
-
-msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "
 "numbers indicate 'south' and 'west' respectively, and with at least three "
 "digits of precision (after the decimal point). For example, San Francisco "
@@ -1650,3 +1652,4 @@ msgstr "Aan het verwerken..."
 
 msgid "Profile address: "
 msgstr ""
+

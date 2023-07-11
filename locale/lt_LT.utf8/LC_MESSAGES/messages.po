@@ -1161,6 +1161,9 @@ msgstr "Atstumas"
 msgid "Toggle pan and region select mode"
 msgstr "Perjungti stumdymo ir regiono pasirinkimo režimus"
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Perjungti žemėlapio peržiūrą"
 
@@ -1284,6 +1287,12 @@ msgstr "maršrutai"
 
 msgid "No flights found at this airport."
 msgstr "Šiame oro uoste nerasta skrydžių."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Eksportas"
@@ -1568,14 +1577,6 @@ msgid "Please enter a city name."
 msgstr "Įveskite miesto pavadinimą."
 
 msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Įveskite platumą, ilgumą ir aukštį. Pastaba: Patikrinkite mūsų duomenų bazę, "
-"gal joje jau yra jus dominantis oro uostas ir pasirinkite\"Įkrauti\" "
-"duomenis."
-
-msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "
 "numbers indicate 'south' and 'west' respectively, and with at least three "
 "digits of precision (after the decimal point). For example, San Francisco "
@@ -1695,3 +1696,4 @@ msgstr "Vykdoma..."
 
 msgid "Profile address: "
 msgstr ""
+

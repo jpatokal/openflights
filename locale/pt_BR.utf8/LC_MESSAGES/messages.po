@@ -1161,6 +1161,9 @@ msgstr "Milhagem"
 msgid "Toggle pan and region select mode"
 msgstr "Alternar modo de mover/selecionar região"
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Alternar mapa global"
 
@@ -1286,6 +1289,12 @@ msgstr ""
 
 msgid "No flights found at this airport."
 msgstr "Não foram encontrados voos nesse aeroporto."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Exportar"
@@ -1566,14 +1575,6 @@ msgid "Please enter a city name."
 msgstr "Por favor, entre uma cidade."
 
 msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Por favor, entre a latitude, longitude e elevação. Diva: verifique se o "
-"banco de dados OurAirport já contém seu aeroporto e \"Carregue\" seu dados "
-"de lá."
-
-msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "
 "numbers indicate 'south' and 'west' respectively, and with at least three "
 "digits of precision (after the decimal point). For example, San Francisco "
@@ -1689,3 +1690,4 @@ msgstr "Processando..."
 
 msgid "Profile address: "
 msgstr ""
+

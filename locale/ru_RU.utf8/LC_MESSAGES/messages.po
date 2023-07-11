@@ -1160,6 +1160,9 @@ msgstr "Милям"
 msgid "Toggle pan and region select mode"
 msgstr "Переключиться между увеличением и выбором региона"
 
+msgid "Switch map layers"
+msgstr ""
+
 msgid "Toggle overview map"
 msgstr "Включить/выключить общую карту"
 
@@ -1283,6 +1286,12 @@ msgstr ""
 
 msgid "No flights found at this airport."
 msgstr "Полеты в аэропорт не найдены."
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
 
 msgid "Export"
 msgstr "Экспортировать"
@@ -1559,14 +1568,6 @@ msgid "Please enter a city name."
 msgstr "Введите название города."
 
 msgid ""
-"Please enter latitude, longitude and elevation. Tip: Check if the OurAirport "
-"database already contains your airport, and \"Load\" the data from there."
-msgstr ""
-"Введите широту, долготу и высоту над уровнем моря. Подсказка: Проверьте, не "
-"содержит ли база OurAirports того, что вы ищете и \"Загрузите\" данные "
-"оттуда."
-
-msgid ""
 "Latitude and longitude must be given as decimal degrees, where negative "
 "numbers indicate 'south' and 'west' respectively, and with at least three "
 "digits of precision (after the decimal point). For example, San Francisco "
@@ -1678,3 +1679,4 @@ msgstr ""
 
 msgid "Profile address: "
 msgstr ""
+

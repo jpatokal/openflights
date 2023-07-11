@@ -1458,3 +1458,12 @@ msgstr ""
 
 msgid "Profile address: "
 msgstr ""
+
+msgid "Switch map layers"
+msgstr ""
+
+msgid "No routes found at this airport."
+msgstr ""
+
+msgid "No flights found."
+msgstr ""
