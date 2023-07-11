@@ -164,7 +164,7 @@ function isValid(point) {
 }
 
 // Compute extent for visible data (-180 to 180)
-// Known bug: incorrectly draws whole map if flight lines span the meridian...
+// Known bug: incorrectly draws the whole map if flight lines span the meridian...
 function getVisibleDataExtent(layer) {
   var bounds = layer.getDataExtent();
   if (!bounds) {
