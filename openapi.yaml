@@ -1,0 +1,126 @@
+openapi: 3.1.0
+info:
+  version: 0.0.1
+  title: OpenFlights Internal API Documentation
+externalDocs:
+  description: Project source code
+  url: https://github.com/jpatokal/openflights
+tags:
+  - name: login
+    description: User session management
+paths:
+  /php/login.php:
+    post:
+      tags:
+        - login
+      summary: Logs user into the system and creates a session
+      operationId: loginUser
+      parameters:
+        - name: challenge
+          in: query
+          description: Server-generated challenge string returned from the `php/map.php` endpoint
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: pw
+          in: query
+          description: The user password as `base64(md5(challenge + md5(password + lowercase(name))))`
+          required: true
+          schema:
+            type: string
+        - name: lpw
+          in: query
+          description: Same as `pw` except the name is not converted to lowercase
+          required: false
+          schema:
+            type: string
+          deprecated: true
+
+      responses:
+        '200':
+          description: The server processed the request. Different types are returned for success/failure.
+          content:
+            application/json:
+              schema:
+                 oneOf:
+                  - $ref: '#/components/schemas/LoginSuccess'
+                  - $ref: '#/components/schemas/LoginFailure'
+
+  /php/logout.php:
+    post:
+      tags:
+        - login
+      summary: Logs out current logged in user session
+      parameters: []
+      responses:
+        '200':
+          description: Successful logout. This response has no content.
+
+components:
+  schemas:
+    DistanceUnit:
+      type: string
+      oneOf:
+      - title: Kilometers
+        const: "K"
+      - title: Miles
+        const: "M"
+    EditorType:
+      type: string
+      oneOf:
+      - title: Basic
+        const: "B"
+      - title: Detailed
+        const: "D"
+    LoginStatus:
+      type: integer
+      oneOf:
+      - title: Failure
+        const: 0
+        description: Invalid username/password or an expired session.
+      - title: Success
+        const: 1
+      - title: Success (reload for user locale)
+        const: 2
+    LoginSuccess:
+      type: object
+      description: "Login success and associated user information"
+      properties:
+        status:
+          $ref: '#/components/schemas/LoginStatus'
+        uid:
+          type: string
+          description: "User ID"
+          example: "123"
+        name:
+          type: string
+          description: "User name"
+          example: "woof"
+        locale:
+          description: "User locale"
+          type: string
+          example: "en_US"
+        units:
+          $ref: '#/components/schemas/DistanceUnit'
+        email:
+          type: string
+          example: "email@example.com"
+        editor:
+          $ref: '#/components/schemas/EditorType'
+        elite:
+          type: string
+    LoginFailure:
+      type: object
+      description: "Login failure and failure message"
+      properties:
+        status:
+          $ref: '#/components/schemas/LoginStatus'
+        message:
+          type: string
+          example: "Login failed"
