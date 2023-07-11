@@ -208,10 +208,8 @@ td.donate2 {
 
 /* Autocomplete styles */
 .autocomplete {
- /*
-  * We want the autocomplete suggestions to appear *over* the km/mi map
-  * distance measure when displaying them above the text entry.
-  */
+  /* We want the autocomplete suggestions to appear *over* the km/mi map */
+  /* distance measure when displaying them above the text entry.         */
   z-index: 9999;
 }
 .autocomplete > div.selected,

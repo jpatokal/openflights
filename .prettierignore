@@ -9,3 +9,4 @@ js/utilities.js
 *.html
 *.min.css
 *.min.js
+*.yaml
