@@ -32,17 +32,6 @@ $airports = array("qs", "src_ap", "dst_ap", "src_ap1", "dst_ap1", "src_ap2", "ds
 foreach ($airports as $ap) {
     if ($_POST[$ap]) {
         $query = trim_query($_POST[$ap]);
-        // Limit the number of rows returned in multi-input, where space is at a premium
-        if ($limit > 1) {
-            $idx = substr($ap, -1);
-            switch ($idx) {
-                case "4":
-                case "3":
-                case "2":
-                case "1":
-                    $limit = 7 - $idx;
-            }
-        }
         break;
     }
 }
@@ -112,20 +101,6 @@ if (!$query || $multi) {
     foreach ($airlines as $al) {
         if ($_POST[$al]) {
             $query = trim_query($_POST[$al]);
-            // Limit(/expand) the number of rows returned in multiinput, where space is at a premium
-            if ($limit != 1) {
-                $idx = substr($al, -1);
-                switch ($idx) {
-                    case "4":
-                    case "3":
-                    case "2":
-                    case "1":
-                        $limit = 7 - $idx;
-                        break;
-                    default:
-                        $limit = 3;
-                }
-            }
             break;
         }
     }
