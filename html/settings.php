@@ -131,6 +131,7 @@ if ($type == "signup") {
               <span id="banner_img"><?php
                   echo "<img src='/banner/" . $settings["name"] . ".png' width=400 height=70>"?>
               </span>
+              </td>
           </tr>
           <tr>
             <td class="key"><?php echo _("E-mail (optional)") ?>&nbsp;&nbsp;</td>
