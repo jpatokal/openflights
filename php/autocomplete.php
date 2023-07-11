@@ -3,6 +3,7 @@
 include_once 'helper.php';
 include_once 'db_pdo.php';
 
+// TODO: Why do we do this?
 /**
  * Trim anything after a hyphen, period or left paren
  * @param $query
@@ -12,6 +13,8 @@ function trim_query($query) {
     $chunks = preg_split("/[-.(]/", $query);
     return trim($chunks[0]);
 }
+
+header("Content-type: application/json; charset=utf-8");
 
 const SEARCH_TYPES = array("airport", "airline", "plane", "multisearch");
 
@@ -25,6 +28,7 @@ $searchType = $_POST['searchType'];
 $searchText = trim_query($_POST['searchText']);
 
 if (empty($searchText)) {
+    echo json_encode([]);
     exit;
 }
 
@@ -152,12 +156,8 @@ SQL;
     $MAX_LEN = 35;
     foreach ($sth as $data) {
         $name = $data['name'];
-        if (strlen($name) > $MAX_LEN) {
-            $name = substr($name, 0, $MAX_LEN - 13) . "..." . substr($name, -10, 10);
-        }
         $results[] = ['label' => $name, 'value' => (int)$data['plid']];
     }
 }
 
-header("Content-type: application/json; charset=utf-8");
 echo json_encode($results);

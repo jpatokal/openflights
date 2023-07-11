@@ -444,7 +444,7 @@ function init() {
     for (const airportAutoCompInputId of ac_airport) {
       prepareAutocomplete(airportAutoCompInputId, "airport", {
         successCb: (item) => {
-          inputElement.value = item.label;
+          document.getElementById(airportAutoCompInputId).value = item.label;
           getSelectedApid(airportAutoCompInputId, item.value);
         },
         failureCb: (error) => {
@@ -456,7 +456,7 @@ function init() {
     for (const airlineAutoCompInputId of ac_airline) {
       prepareAutocomplete(airlineAutoCompInputId, "airline", {
         successCb: (item) => {
-          inputElement.value = item.label;
+          document.getElementById(airlineAutoCompInputId).value = item.label;
           getSelectedAlid(airlineAutoCompInputId, item.value);
         },
       });
@@ -464,8 +464,24 @@ function init() {
 
     for (const planeAutoCompInputId of ac_plane) {
       prepareAutocomplete(planeAutoCompInputId, "plane", {
+        preprocessCb: (list) =>
+          list.map((item) => {
+            // Logic moved from `autocomplete.php` to house presentation details
+            // in the UI. But why are planes special? We don't shorten airport
+            // or airline names. Is it because that input field isn't as wide?
+            // This is the only type of autocomplete that needs this kind of
+            // preprocessing...
+            const maxLen = 35;
+            let label = item.label;
+            if (label.length > maxLen) {
+              label = `${label.slice(0, maxLen - 13)}...${label.slice(-10)}`;
+            }
+
+            item.label = label;
+            return item;
+          }),
         successCb: (item) => {
-          inputElement.value = item.label;
+          document.getElementById(planeAutoCompInputId).value = item.label;
           getSelectedPlid(planeAutoCompInputId, item.value);
         },
       });
@@ -576,13 +592,17 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
 // `autocomplete.js` wrapper to encapsulate logic dealing with setting up the
 // autocomplete widgets and interacting with the autocomplete API endpoint.
 //
-function prepareAutocomplete(inputId, searchType, { successCb, failureCb }) {
+function prepareAutocomplete(
+  inputId,
+  searchType,
+  { successCb, failureCb, preprocessCb }
+) {
   const inputElement = document.getElementById(inputId);
 
   autocomplete({
     input: inputElement,
     minLength: 1,
-    debounceWaitMs: 300,
+    debounceWaitMs: 100,
     fetch: (text, update) => {
       showLoadingAnimation(true);
       fetch(URL_GETCODE, {
@@ -602,7 +622,14 @@ function prepareAutocomplete(inputId, searchType, { successCb, failureCb }) {
           }
           return response.json();
         })
-        .then((data) => {
+        .then((response) => {
+          let data = response;
+          if (preprocessCb) data = preprocessCb(data);
+
+          if (data.length === 0) {
+            throw new Error("No data available");
+          }
+
           update(data);
         })
         .catch((e) => {
@@ -938,7 +965,6 @@ function xmlhttpPost(strURL, id, param) {
         } else {
           cols = [""];
         }
-        console.log("cols", cols);
         switch (param) {
           case "qs":
             var alid = cols[0];
@@ -2875,7 +2901,7 @@ function getSelectedPlid(inputElementId, plid) {
 /// Autocompleted airport or airline
 /// item -- selected autocomplete item with data from the API {label, value}
 function getQuickSearchId(item) {
-  const data = item.value;
+  const data = item.value.toString();
   let id;
   if (data.indexOf(":") > 0) {
     // code:apid:x:y
