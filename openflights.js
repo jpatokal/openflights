@@ -1492,8 +1492,8 @@ function updateFilter(str) {
       "refresh(true)"
     );
     var editTripSelect = document.forms["inputform"].trips;
+    var selected = null;
     if (editTripSelect) {
-      var selected;
       // New trip added, so now we need to figure out the newest (highest) trid to find it
       if (editTripSelect.reselect) {
         var newestId = 0;
@@ -1508,8 +1508,6 @@ function updateFilter(str) {
       } else {
         selected = editTripSelect.selectedIndex;
       }
-    } else {
-      selected = null;
     }
     $("input_trip_select").innerHTML = cloneSelect(
       document.forms["filterform"].Trips,
