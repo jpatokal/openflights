@@ -10,7 +10,6 @@ window.onload = function init() {
 };
 
 function xmlhttpPost(strURL, type) {
-  var xmlHttpReq = false;
   var self = this;
   // Mozilla/Safari
   if (window.XMLHttpRequest) {
@@ -26,16 +25,14 @@ function xmlhttpPost(strURL, type) {
     "application/x-www-form-urlencoded"
   );
   self.xmlHttpReq.onreadystatechange = function () {
-    if (self.xmlHttpReq.readyState == 4) {
-      if (strURL == URL_TRIP) {
-        editTrip(self.xmlHttpReq.responseText);
-      }
+    if (self.xmlHttpReq.readyState == 4 && strURL == URL_TRIP) {
+      editTrip(self.xmlHttpReq.responseText);
     }
   };
   var query = "";
   if (strURL == URL_TRIP) {
-    var form = document.forms["tripform"];
-    var privacy;
+    var form = document.forms["tripform"],
+      privacy;
 
     for (var r = 0; r < tripform.privacy.length; r++) {
       if (tripform.privacy[r].checked) {
@@ -89,9 +86,10 @@ function deleteTrip() {
 
 // Check if trip creation/editing/deletion succeeded
 function editTrip(str) {
-  var code = str.split(";")[0];
-  var trid = str.split(";")[1];
-  var message = str.split(";")[2];
+  var code = str.split(";")[0],
+    trid = str.split(";")[1],
+    message = str.split(";")[2];
+
   // Operation successful
   if (code != "0") {
     document.getElementById("miniresultbox").innerHTML = message;

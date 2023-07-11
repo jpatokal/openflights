@@ -15,6 +15,16 @@ if (!$uid || empty($uid)) {
     die('0;' . _("Your session has timed out, please log in again."));
 }
 
+/**
+ * @param $res bool
+ * @param $name string
+ */
+function failIfFalse($res, $name) {
+    if (!$res) {
+        die('0;Operation on trip ' . $name . ' failed.');
+    }
+}
+
 $name = $_POST["name"];
 $url = $_POST["url"];
 $privacy = $_POST["privacy"];
@@ -35,9 +45,7 @@ switch ($type) {
     case "DELETE":
         // Assign flights with this trip id to null and then delete the trip
         $sth = $dbh->prepare("UPDATE flights SET trid=NULL WHERE trid=? AND uid=?");
-        if (!$sth->execute([$trid, $uid])) {
-            die('0;Operation on trip ' . $name . ' failed.');
-        }
+        failIfFalse($sth->execute([$trid, $uid]), $name);
 
         $sth = $dbh->prepare("DELETE FROM trips WHERE trid=? AND uid=?");
         $success = $sth->execute([$trid, $uid]);
@@ -47,10 +55,13 @@ switch ($type) {
         die('0;Unknown operation ' . $type);
 }
 
-if (!$success) {
-    die('0;Operation on trip ' . $name . ' failed.');
-}
+failIfFalse($success, $name);
+
 if ($sth->rowCount() !== 1) {
+    if ($type == "EDIT") {
+        die("0;No updates were performed, was anything changed?");
+    }
+    // DELETE
     die("0;No matching trip found");
 }
 

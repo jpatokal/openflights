@@ -2,11 +2,7 @@
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
 
-if (isset($_GET["trid"])) {
-    $trid = $_GET["trid"];
-} else {
-    $trid = null;
-}
+$trid = $_GET["trid"] ?? null;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -35,8 +31,7 @@ if ($trid) {
     $sth->execute([$trid, $uid]);
     $trip = $sth->fetch();
     if (!$trip) {
-        // TODO: $sql is undefined
-        die(_("Could not load trip data.") . $sql);
+        die(_("Could not load trip data."));
     }
 } else {
     $trip = array(
