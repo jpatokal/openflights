@@ -2,25 +2,10 @@
 
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
+require_once "../php/functions.php";
 
-if (isset($_GET["new"])) {
-    $type = "signup";
-} else {
-    $type = "settings";
-}
+$type = isset($_GET["new"]) ? "signup" : "settings";
 
-/**
- * @param $arr array
- * @param $key string
- * @param $value mixed
- * @param $true string
- * @param $false string
- */
-function condOut($arr, $key, $value, $true, $false) {
-    echo $arr[$key] == $value
-        ? $true
-        : $false;
-}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -175,15 +160,15 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Privacy") ?></td>
             <td class="value">
                 <input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php
-                    condOut($settings, 'public', 'N', 'CHECKED', '');
+                    condOut($settings, 'public', 'N', 'CHECKED');
                     echo ">" . _("Private");
                 ?><br>
                 <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" <?php
-                    condOut($settings, 'public', 'Y', 'CHECKED', '');
+                    condOut($settings, 'public', 'Y', 'CHECKED');
                     echo ">" . _("Public");
                 ?><br>
                 <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php
-                    condOut($settings, 'public', '0', 'CHECKED', '');
+                    condOut($settings, 'public', '0', 'CHECKED');
                     echo ">" . _("Open");
                 ?><br>
             </td>
@@ -206,10 +191,10 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Flight editor") ?></td>
             <td class="value">
                 <input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" <?php
-                    condOut($settings, 'editor', 'B', 'CHECKED', '');
+                    condOut($settings, 'editor', 'B', 'CHECKED');
                     echo ">" . _("Basic"); ?><br>
                 <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('D')"<?php
-                    condOut($settings, 'editor', 'D', 'CHECKED', '');
+                    condOut($settings, 'editor', 'D', 'CHECKED');
                     echo ">" . _("Detailed"); ?><br>
             </td>
             <td class="desc">
@@ -227,9 +212,9 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Distances") ?></td>
             <td class="value">
               <input type="radio" name="units" value="M" <?php
-                condOut($settings, 'units', 'M', 'CHECKED', ''); echo ">" . _("Miles") ?><br>
+                condOut($settings, 'units', 'M', 'CHECKED'); echo ">" . _("Miles") ?><br>
               <input type="radio" name="units" value="K" <?php
-                condOut($settings, 'units', 'K', 'CHECKED', ''); echo ">" . _("Kilometers") ?><br>
+                condOut($settings, 'units', 'K', 'CHECKED'); echo ">" . _("Kilometers") ?><br>
             </td>
             <td class="desc"><?php echo _("Preferred unit for flight distances") ?></td>
           </tr>
@@ -248,13 +233,13 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Default view") ?></td>
             <td class="value">
                 <input type="radio" name="startpane" value="H" DISABLED <?php
-                    condOut($settings, 'startpane', 'H', 'CHECKED', '');
+                    condOut($settings, 'startpane', 'H', 'CHECKED');
                     echo ">" . _("Help"); ?><br>
                 <input type="radio" name="startpane" value="A" DISABLED <?php
-                    condOut($settings, 'startpane', 'A', 'CHECKED', '');
+                    condOut($settings, 'startpane', 'A', 'CHECKED');
                     echo ">" . _("Analyze"); ?><br>
                 <input type="radio" name="startpane" value="T" DISABLED <?php
-                    condOut($settings, 'startpane', 'T', 'CHECKED', '');
+                    condOut($settings, 'startpane', 'T', 'CHECKED');
                     echo ">" . _("Top 10"); ?>
             </td>
             <td class="desc" colspan=2>

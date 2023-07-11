@@ -1,6 +1,7 @@
 <?php
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
+require_once "../php/functions.php";
 
 $trid = $_GET["trid"] ?? null;
 ?>
@@ -44,32 +45,22 @@ if ($trid) {
     <div id="miniresultbox"></div>
     <table>
         <tr>
-              <td><?php echo _("Name") ?></td>
+          <td><?php echo _("Name") ?></td>
           <td><input type="text" name="name" size="40" value="<?php echo $trip["name"] ?>"></td>
-        </tr><tr>
-              <td><?php echo _("Web address <i>(optional)</i>") ?>&nbsp;</td>
+        </tr>
+        <tr>
+          <td><?php echo _("Web address <i>(optional)</i>") ?>&nbsp;</td>
           <td><input type="text" name="url" size="40" value="<?php echo $trip["url"] ?>"></td>
         </tr><tr>
           <td style="vertical-align: top"><?php echo _("Trip privacy") ?></td>
-          <td><input type="radio" name="privacy" value="N"<?php
-if ($trip["public"] == "N") {
-    echo "CHECKED";
-}
-echo ">" . _("Private (visible only to you)");
-?><br>
-          <input type="radio" name="privacy" value="Y" <?php
-if ($trip["public"] == "Y") {
-    echo "CHECKED";
-}
-echo ">" . _("Public (map and stats shared)");
-?><br>
-          <input type="radio" name="privacy" value="O" <?php
-if ($trip["public"] == "O") {
-    echo "CHECKED";
-}
-echo ">" . _("Open (all flight data shared)");
-?></td>
-        </tr><tr>
+          <td><input type="radio" name="privacy" value="N"<?php condOut($trip, "public", "N", "CHECKED"); echo ">"
+                    . _("Private (visible only to you)"); ?><br>
+          <input type="radio" name="privacy" value="Y" <?php condOut($trip, "public", "Y", "CHECKED"); echo ">"
+                    . _("Public (map and stats shared)"); ?><br>
+          <input type="radio" name="privacy" value="O" <?php condOut($trip, "public", "0", "CHECKED"); echo ">"
+                    . _("Open (all flight data shared)"); ?></td>
+        </tr>
+        <tr>
           <td><?php echo _("OpenFlights URL") ?></td>
           <td><input type="text" value="<?php echo $trid ? "https://openflights.org/trip/" . $trid : _("Not assigned yet");?>" name="puburl" style="border:none" size="40" readonly></td>
         </tr>
