@@ -920,11 +920,12 @@ function toggleControl(element) {
 }
 
 function xmlhttpPost(strURL, id, param) {
-  var xmlHttpReq = false;
   var self = this;
   var query = "";
 
-  if (!initializing) closeNews();
+  if (!initializing) {
+    closeNews();
+  }
 
   // Mozilla/Safari
   if (window.XMLHttpRequest) {
@@ -940,231 +941,221 @@ function xmlhttpPost(strURL, id, param) {
     "application/x-www-form-urlencoded"
   );
   self.xmlHttpReq.onreadystatechange = function () {
-    if (self.xmlHttpReq.readyState == 4) {
-      // Process results of query
+    // 4 means "request finished and response is ready"
+    if (self.xmlHttpReq.readyState != 4) {
+      return;
+    }
+    if (self.xmlHttpReq.responseText.substring(0, 13) == "Not logged in") {
+      logout(self.xmlHttpReq.responseText);
+      return;
+    }
+    if (strURL == URL_FLIGHTS) {
+      switch (param) {
+        case "COPY":
+        case "EDIT":
+          editFlight(self.xmlHttpReq.responseText, param);
+          break;
 
-      // First make sure session is still up
-      // (note: sessionfree PHPs do not return this string)
-      if (self.xmlHttpReq.responseText.substring(0, 13) == "Not logged in") {
-        logout(self.xmlHttpReq.responseText);
+        case "RELOAD":
+          param = lastDesc;
+        // param contains previously escaped semi-random HTML title
+        // fallthru
+
+        case "MAP":
+        default:
+          listFlights(self.xmlHttpReq.responseText, unescape(param), id);
+          break;
+      }
+      showLoadingAnimation(false);
+    } else if (strURL == URL_GETCODE) {
+      const resp = JSON.parse(self.xmlHttpReq.responseText);
+      var cols;
+      // Hack the old format back in (for now)
+      if (resp.length) {
+        cols = [resp[0].value, resp[0].label];
+      } else {
+        cols = [""];
+      }
+      switch (param) {
+        case "qs":
+          var alid = cols[0];
+          if (alid != "" && alid != 0) {
+            if (cols[0].indexOf(":") > 0) {
+              $("qsid").value = cols[0].split(":")[1]; // airport
+            } else {
+              $("qsid").value = "L" + cols[0]; // airline
+            }
+            $("qs").value = cols[1];
+            $("qs").style.color = "#000000";
+            $("qsgo").disabled = false;
+            $("qsgo").focus();
+          } else {
+            $("qsid").value = 0;
+            $("qs").style.color = "#FF0000";
+            $("qsgo").disabled = true;
+          }
+          break;
+
+        case "airline":
+        case "airline1":
+        case "airline2":
+        case "airline3":
+        case "airline4":
+          var alid = cols[0];
+          if (alid != "" && alid != 0) {
+            $(param + "id").value = cols[0];
+            $(param).value = cols[1];
+            $(param).style.color = "#000000";
+            replicateSelection(param);
+            markAsChanged(true); // new airline, force refresh on save
+          } else {
+            $(param).style.color = "#FF0000";
+            $(param + "id").value = 0;
+          }
+          break;
+
+        case "src_ap":
+        case "dst_ap":
+        case "src_ap1":
+        case "dst_ap1":
+        case "src_ap2":
+        case "dst_ap2":
+        case "src_ap3":
+        case "dst_ap3":
+        case "src_ap4":
+        case "dst_ap4":
+          var apdata = cols[0];
+          var apid = apdata.split(":")[1];
+          if (apid && apid != 0) {
+            $(param + "id").value = apdata;
+            $(param).value = cols[1];
+            $(param).style.color = "#000000";
+            replicateSelection(param);
+            markAirport(param); // new airport, force refresh on save
+            markAsChanged(true);
+          } else {
+            invalidateField(param);
+          }
+          break;
+      }
+    } else if (strURL == URL_LOGIN) {
+      login(self.xmlHttpReq.responseText, param);
+    } else if (strURL == URL_LOGOUT) {
+      logout(self.xmlHttpReq.responseText);
+    } else if (strURL == URL_MAP || strURL == URL_ROUTES) {
+      var str = self.xmlHttpReq.responseText;
+      if (str.substring(0, 6) == "Signup") {
+        window.location = "/html/settings?new=yes&vbulletin=true";
+      }
+      if (str.substring(0, 5) == "Error") {
+        $("result").innerHTML =
+          "<h4>" + str.split(";")[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
+        showLoadingAnimation(false);
+        openPane("result");
+      } else {
+        // Zoom map to fit when first loading another user's flights/trip
+        updateMap(str, strURL);
+        if (!logged_in && !demo_mode && initializing) {
+          closePane();
+          var extent = airportLayer.getDataExtent();
+          if (extent) {
+            map.zoomToExtent(extent);
+          }
+        }
+        if (strURL == URL_MAP) {
+          if (param) {
+            updateFilter(str);
+          }
+          $("maptitle").innerHTML = getMapTitle(true);
+        } else {
+          updateFilter(str);
+          closePopup(true);
+          $("qsid").value = 0;
+          $("qsgo").disabled = true;
+          if (filter_alid == 0) {
+            var extent = airportLayer.getDataExtent();
+            if (extent) {
+              map.zoomToExtent(extent);
+            }
+          }
+        }
+
+        // Map now completely drawn for the first time
+        if (initializing) {
+          initializing = false;
+        }
+      }
+    } else if (strURL == URL_STATS) {
+      showStats(self.xmlHttpReq.responseText);
+      showLoadingAnimation(false);
+    } else if (strURL == URL_TOP10) {
+      showTop10(self.xmlHttpReq.responseText);
+      showLoadingAnimation(false);
+    } else if (strURL == URL_SUBMIT) {
+      var result = self.xmlHttpReq.responseText.split(";"),
+        code = result[0],
+        text = result[1];
+      if (getCurrentPane() == "multiinput") {
+        $("multiinput_status").innerHTML = "<B>" + text + "</B>";
+      } else {
+        $("input_status").innerHTML = "<B>" + text + "</B>";
+      }
+      setCommitAllowed(false);
+
+      // Something went wrong, so we just abort
+      if (code == CODE_FAIL) {
         return;
       }
 
-      if (strURL == URL_FLIGHTS) {
-        switch (param) {
-          case "COPY":
-          case "EDIT":
-            editFlight(self.xmlHttpReq.responseText, param);
-            break;
-
-          case "RELOAD":
-            param = lastDesc;
-          // param contains previously escaped semi-random HTML title
-          // fallthru
-
-          case "MAP":
-          default:
-            listFlights(self.xmlHttpReq.responseText, unescape(param), id);
-            break;
-        }
-        showLoadingAnimation(false);
-      }
-      if (strURL == URL_GETCODE) {
-        const resp = JSON.parse(self.xmlHttpReq.responseText);
-        var cols;
-        // Hack the old format back in (for now)
-        if (resp.length) {
-          cols = [resp[0].value, resp[0].label];
-        } else {
-          cols = [""];
-        }
-        switch (param) {
-          case "qs":
-            var alid = cols[0];
-            if (alid != "" && alid != 0) {
-              if (cols[0].indexOf(":") > 0) {
-                $("qsid").value = cols[0].split(":")[1]; // airport
-              } else {
-                $("qsid").value = "L" + cols[0]; // airline
-              }
-              $("qs").value = cols[1];
-              $("qs").style.color = "#000000";
-              $("qsgo").disabled = false;
-              $("qsgo").focus();
-            } else {
-              $("qsid").value = 0;
-              $("qs").style.color = "#FF0000";
-              $("qsgo").disabled = true;
-            }
-            break;
-
-          case "airline":
-          case "airline1":
-          case "airline2":
-          case "airline3":
-          case "airline4":
-            var alid = cols[0];
-            if (alid != "" && alid != 0) {
-              $(param + "id").value = cols[0];
-              $(param).value = cols[1];
-              $(param).style.color = "#000000";
-              replicateSelection(param);
-              markAsChanged(true); // new airline, force refresh on save
-            } else {
-              $(param).style.color = "#FF0000";
-              $(param + "id").value = 0;
-            }
-            break;
-
-          case "src_ap":
-          case "dst_ap":
-          case "src_ap1":
-          case "dst_ap1":
-          case "src_ap2":
-          case "dst_ap2":
-          case "src_ap3":
-          case "dst_ap3":
-          case "src_ap4":
-          case "dst_ap4":
-            var apdata = cols[0];
-            var apid = apdata.split(":")[1];
-            if (apid && apid != 0) {
-              $(param + "id").value = apdata;
-              $(param).value = cols[1];
-              $(param).style.color = "#000000";
-              replicateSelection(param);
-              markAirport(param); // new airport, force refresh on save
-              markAsChanged(true);
-            } else {
-              invalidateField(param);
-            }
-            break;
-        }
-      }
-      if (strURL == URL_LOGIN) {
-        login(self.xmlHttpReq.responseText, param);
-      }
-      if (strURL == URL_LOGOUT) {
-        logout(self.xmlHttpReq.responseText);
-      }
-      if (strURL == URL_MAP || strURL == URL_ROUTES) {
-        var str = self.xmlHttpReq.responseText;
-        if (str.substring(0, 6) == "Signup") {
-          window.location = "/html/settings?new=yes&vbulletin=true";
-        }
-        if (str.substring(0, 5) == "Error") {
-          $("result").innerHTML =
-            "<h4>" +
-            str.split(";")[1] +
-            "</h4><br><h6><a href='/'>Home</a></h6>";
-          showLoadingAnimation(false);
-          openPane("result");
-        } else {
-          // Zoom map to fit when first loading another's flights/trip
-          updateMap(str, strURL);
-          if (!logged_in && !demo_mode && initializing) {
-            closePane();
-            var extent = airportLayer.getDataExtent();
-            if (extent) map.zoomToExtent(extent);
-          }
-          if (strURL == URL_MAP) {
-            if (param) {
-              updateFilter(str);
-            }
-            $("maptitle").innerHTML = getMapTitle(true);
+      // If flight was successfully deleted...
+      if (code == CODE_DELETEOK) {
+        //... and we're in input mode, move to another flight
+        if (getCurrentPane() == "input") {
+          // Last flight deleted
+          if (fidList.length == 1) {
+            clearStack();
           } else {
-            updateFilter(str);
-            closePopup(true);
-            $("qsid").value = 0;
-            $("qsgo").disabled = true;
-            if (filter_alid == 0) {
-              var extent = airportLayer.getDataExtent();
-              if (extent) map.zoomToExtent(extent);
+            // Remove current flight
+            fidList.splice(fidPtr, 1);
+
+            // Edit next if you can
+            if (fidPtr < fidList.length) {
+              editPointer(0);
+            } else {
+              // Move back
+              editPointer(-1);
             }
           }
-
-          // Map now completely drawn for the first time
-          if (initializing) {
-            initializing = false;
-          }
-        }
-      }
-      if (strURL == URL_STATS) {
-        showStats(self.xmlHttpReq.responseText);
-        showLoadingAnimation(false);
-      }
-      if (strURL == URL_TOP10) {
-        showTop10(self.xmlHttpReq.responseText);
-        showLoadingAnimation(false);
-      }
-      if (strURL == URL_SUBMIT) {
-        var result = self.xmlHttpReq.responseText.split(";");
-        var code = result[0];
-        var text = result[1];
-        if (getCurrentPane() == "multiinput") {
-          $("multiinput_status").innerHTML = "<B>" + text + "</B>";
         } else {
-          $("input_status").innerHTML = "<B>" + text + "</B>";
+          // Not in edit mode, so reload the currently displayed list of flights
+          xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
         }
-        setCommitAllowed(false);
-
-        // Something went wrong, so we just abort
-        if (code == CODE_FAIL) {
-          return;
+        majorEdit = true; // trigger map refresh
+      } else if (code == CODE_EDITOK || code == CODE_ADDOK) {
+        // If adding new flights (not editing), swap last destination to be new source and focus on date
+        if (getCurrentPane() == "input") {
+          if ($("addflighttitle").style.display == "inline") {
+            swapAirports(false);
+            document.forms["inputform"].seat.value = "";
+            document.forms["inputform"].seat_type.selectedIndex = 0;
+            document.forms["inputform"].src_date.focus();
+          }
+        } else {
+          clearInput(); // Always clear multiview
         }
+      }
 
-        // If flight was successfully deleted...
+      // A change that affected the map was made, so redraw
+      if (majorEdit) {
         if (code == CODE_DELETEOK) {
-          //... and we're in input mode, move to another flight
-          if (getCurrentPane() == "input") {
-            // Last flight deleted
-            if (fidList.length == 1) {
-              clearStack();
-            } else {
-              // Remove current flight
-              fidList.splice(fidPtr, 1);
-
-              // Edit next if you can
-              if (fidPtr < fidList.length) {
-                editPointer(0);
-              } else {
-                // Move back
-                editPointer(-1);
-              }
-            }
-          } else {
-            // Not in edit mode, so reload currently displayed list of flights
-            xmlhttpPost(URL_FLIGHTS, 0, "RELOAD");
-          }
-          majorEdit = true; // trigger map refresh
-        }
-
-        if (code == CODE_EDITOK || code == CODE_ADDOK) {
-          // If adding new flights (not editing), swap last destination to be new source and focus on date
-          if (getCurrentPane() == "input") {
-            if ($("addflighttitle").style.display == "inline") {
-              swapAirports(false);
-              document.forms["inputform"].seat.value = "";
-              document.forms["inputform"].seat_type.selectedIndex = 0;
-              document.forms["inputform"].src_date.focus();
-            }
-          } else {
-            clearInput(); // Always clear multiview
-          }
-        }
-
-        // A change that affected the map was made, so redraw
-        if (majorEdit) {
-          if (code == CODE_DELETEOK) {
-            setTimeout("refresh(true)", 1000); // wait for earlier ops to complete...
-          } else {
-            refresh(true); // ...else do it right now
-          }
+          setTimeout("refresh(true)", 1000); // wait for earlier ops to complete...
         } else {
-          showLoadingAnimation(false);
+          refresh(true); // ...else do it right now
         }
-        majorEdit = false;
-      } // end URL_SUBMIT
+      } else {
+        showLoadingAnimation(false);
+      }
+      majorEdit = false;
     }
   };
   // End result processing
@@ -1176,15 +1167,15 @@ function xmlhttpPost(strURL, id, param) {
 
       // Deleting needs only the fid, and can be run without the inputform
       if (param != "DELETE") {
-        var i;
+        var i, indexes;
         if (getCurrentPane() == "multiinput") {
           query = "multi=" + multiinput_rows + "&";
-          var indexes = [];
+          indexes = [];
           for (i = 1; i <= multiinput_rows; i++) {
             indexes.push(i);
           }
         } else {
-          var indexes = [""];
+          indexes = [""];
         }
         for (i = 0; i < indexes.length; i++) {
           var src_date = $("src_date" + indexes[i]).value;
@@ -1272,10 +1263,13 @@ function xmlhttpPost(strURL, id, param) {
           }
 
           var type = inputform.seat_type.value;
-          if (type == "-") type = "";
-          var myClass = radioValue(inputform.myClass);
-          var reason = radioValue(inputform.reason);
-          var plane = inputform.plane.value;
+          if (type == "-") {
+            type = "";
+          }
+          var myClass = radioValue(inputform.myClass),
+            reason = radioValue(inputform.reason),
+            plane = inputform.plane.value;
+
           if (plane == gt.gettext("Enter plane model")) {
             plane = "";
           }
@@ -1286,10 +1280,12 @@ function xmlhttpPost(strURL, id, param) {
                 ";"
               )[0];
           }
-          if (trid == 0) trid = "NULL";
-          var registration = inputform.registration.value;
-          var note = inputform.note.value;
-          var duration = $("duration").value;
+          if (trid == 0) {
+            trid = "NULL";
+          }
+          var registration = inputform.registration.value,
+            note = inputform.note.value,
+            duration = $("duration").value;
           if (!RE_TIME.test(duration)) {
             alert(
               gt.gettext(
@@ -1309,22 +1305,22 @@ function xmlhttpPost(strURL, id, param) {
             $("distance").focus();
             return;
           }
-          var number = inputform.number.value;
-          var seat = inputform.seat.value;
-          var mode = inputform.mode.value;
+          var number = inputform.number.value,
+            seat = inputform.seat.value,
+            mode = inputform.mode.value;
         } else {
-          var number = "";
-          var seat = "";
-          var type = "";
-          var myClass = "";
-          var reason = "";
-          var plane = "";
-          var trid = "NULL";
-          var registration = "";
-          var note = "";
-          var duration = "";
-          var distance = "";
-          var mode = "F";
+          var number = "",
+            seat = "",
+            type = "",
+            myClass = "",
+            reason = "",
+            plane = "",
+            trid = "NULL",
+            registration = "",
+            note = "",
+            duration = "",
+            distance = "",
+            mode = "F";
         }
       }
       query +=
@@ -1378,11 +1374,11 @@ function xmlhttpPost(strURL, id, param) {
 
     case URL_LOGIN:
       showLoadingAnimation(true);
-      var name = document.forms["login"].name.value;
-      var pw = document.forms["login"].pw.value;
-      var challenge = document.forms["login"].challenge.value;
-      var hash = MD5(challenge + MD5(pw + name.toLowerCase()));
-      var legacy_hash = MD5(challenge + MD5(pw + name));
+      var name = document.forms["login"].name.value,
+        pw = document.forms["login"].pw.value,
+        challenge = document.forms["login"].challenge.value,
+        hash = MD5(challenge + MD5(pw + name.toLowerCase())),
+        legacy_hash = MD5(challenge + MD5(pw + name));
       query =
         "name=" +
         encodeURIComponent(name) +
@@ -1466,18 +1462,16 @@ function xmlhttpPost(strURL, id, param) {
             lastDesc = param;
         }
       }
-      if (strURL == URL_TOP10) {
-        if (param) {
-          query += "&" + param;
-        }
+      if (strURL == URL_TOP10 && param) {
+        query += "&" + param;
       }
   }
   //alert(strURL + ":" + query);
   self.xmlHttpReq.send(query);
 }
 
-// Set up filter options from database result
-// (also copies list of trips into editor)
+// Set up filter options from the database result
+// (also copies the list of trips into the editor)
 function updateFilter(str) {
   var master = str.split("\n");
   var trips = master[3];
@@ -1570,11 +1564,15 @@ function getMapTitle(closable) {
         break;
     }
     if (alid != "0") {
-      if (text != "") text += ", ";
+      if (text != "") {
+        text += ", ";
+      }
       text += airline + " " + getAirlineMapIcon(alid);
     }
     if (year != "0") {
-      if (text != "") text += ", ";
+      if (text != "") {
+        text += ", ";
+      }
       text += year;
     }
   } else {
@@ -1607,15 +1605,13 @@ function getMapTitle(closable) {
             ]);
           }
           text += " " + getAirlineMapIcon(alid);
+        } else if (year != "0") {
+          text = Gettext.strargs(gt.gettext("%1's flights in %2"), [
+            filter_user,
+            year,
+          ]);
         } else {
-          if (year != "0") {
-            text = Gettext.strargs(gt.gettext("%1's flights in %2"), [
-              filter_user,
-              year,
-            ]);
-          } else {
-            text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
-          }
+          text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
         }
       }
       $("loginstatus").innerHTML =
@@ -1724,7 +1720,7 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   return select;
 }
 
-// If current value is given, don't add "All" option
+// If the current value is given, don't add "All" option
 function createSelectFromArray(selectName, opts, hook, current) {
   var select =
     "<select style='width: 100px' id='" +
@@ -1734,7 +1730,9 @@ function createSelectFromArray(selectName, opts, hook, current) {
     "' onChange='JavaScript:" +
     hook +
     "'>";
-  if (!current) select += "<option value=''>" + gt.gettext("All") + "</option>";
+  if (!current) {
+    select += "<option value=''>" + gt.gettext("All") + "</option>";
+  }
   for (const r of Object.keys(opts)) {
     // console.log(r);
     select +=
@@ -1771,7 +1769,7 @@ function cloneSelect(oldSelect, name, hook, selected) {
   return newSelect;
 }
 
-// Return value of currently selected radio button in this group
+// Return value of the currently selected radio button in this group
 function radioValue(radio) {
   for (var r = 0; r < radio.length; r++) {
     if (radio[r].checked) {
@@ -1808,12 +1806,16 @@ function updateMap(str, url) {
   if (url == URL_MAP) {
     // User flight map
     var distance = col[1];
-    if (!distance) distance = 0;
+    if (!distance) {
+      distance = 0;
+    }
     var duration = col[2]; // minutes
     var days = Math.floor(col[2] / (60 * 24));
     var hours = Math.floor((col[2] / 60) % 24);
     var min = Math.floor(col[2] % 60);
-    if (min < 10) min = "0" + min;
+    if (min < 10) {
+      min = "0" + min;
+    }
 
     stats =
       col[0] +
@@ -1840,7 +1842,7 @@ function updateMap(str, url) {
       var editor = col[6];
       document.forms["login"].challenge.value = col[7];
 
-      // Does user have a PHP session open?  Log him in!
+      // Does the user have a PHP session open?  Log him in!
       // Simulate login.php: "1;name;editor;elite"
       if (col[5] != "demo") {
         var op = flightTotal == "0" ? "NEWUSER" : "REFRESH";
@@ -1991,7 +1993,7 @@ function startListFlights() {
 
 function listFlights(str, desc, id) {
   openPane("result");
-  fidList = new Array();
+  fidList = [];
   var route = !re_numeric.test(id); // ids starting with R are routes
   var today = new Date().getTime();
   if (desc == "MAP") {
@@ -2431,7 +2433,7 @@ function showStats(str) {
 // Chart configuration.
 var GOOGLE_CHART_OPTIONS = {
   fontSize: 10,
-  // Google seems to be adding a 10px highlights above/beloww the chart when moused over.
+  // Google seems to be adding a 10px highlights above/below the chart when moused over.
   // The actual chart height should be in chartArea[height] and the div height will be
   // chartHeight+20.  A margin of 10 at the top will ensure the top highlight will show up.
   chartArea: { left: 0, top: 10, width: "100%", height: "100" },
