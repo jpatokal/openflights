@@ -928,6 +928,9 @@ msgstr ""
 msgid "Could not load profile data"
 msgstr "Impossible de charger les données du profil"
 
+msgid "User ID"
+msgstr ""
+
 msgid "Profile address"
 msgstr "Adresse du profil"
 

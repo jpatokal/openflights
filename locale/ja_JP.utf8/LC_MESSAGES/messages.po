@@ -881,6 +881,9 @@ msgstr ""
 msgid "Could not load profile data"
 msgstr "プロファイルデータをアップロード出来ませんでした。"
 
+msgid "User ID"
+msgstr ""
+
 msgid "Profile address"
 msgstr "プロファイルの住所"
 

@@ -1470,3 +1470,6 @@ msgstr ""
 
 msgid "Airport ID"
 msgstr ""
+
+msgid "User ID"
+msgstr ""
