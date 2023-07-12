@@ -58,7 +58,7 @@ class DeleteExtraFlightsTest extends WebTestCase {
         global $settings;
 
         $dbh = db_connect();
-        $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+        $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
         $sth->execute([$settings["name"]]);
         $this->assertTrue($sth->rowCount() >= 1, "Flights deleted");
     }
@@ -81,7 +81,7 @@ class AddSingleFlightTest extends WebTestCase {
 
         // Get the ID of the newly-added flight
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT fid FROM flights WHERE note=?");
+        $sth = $dbh->prepare("SELECT fid FROM flights WHERE note = ?");
         $sth->execute([$flight["note"]]);
         $row = $sth->fetch();
         $fid = $row["fid"];

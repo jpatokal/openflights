@@ -56,7 +56,7 @@ class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
         global $webroot, $settings, $flight2;
 
         $dbh = db_connect();
-        $sth = $dbh->prepare("UPDATE users SET public='N', guestpw=? WHERE name=?");
+        $sth = $dbh->prepare("UPDATE users SET public='N', guestpw = ? WHERE name = ?");
         $sth->execute([$settings["guestpw"], $settings["name"]]);
         $this->assertTrue($sth->rowCount() == 1, "Set profile to private");
 

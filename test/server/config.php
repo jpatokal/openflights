@@ -239,7 +239,7 @@ function db_connect() {
 function db_uid($dbh) {
     global $settings;
 
-    $sth = $dbh->prepare("SELECT uid FROM users WHERE name=?");
+    $sth = $dbh->prepare("SELECT uid FROM users WHERE name = ?");
     $sth->execute([$settings["name"]]);
     return $sth->fetchColumn(0);
 }
@@ -253,7 +253,7 @@ function db_uid($dbh) {
 function db_apid($dbh) {
     global $airport;
 
-    $sth = $dbh->prepare("SELECT apid FROM airports WHERE iata=?");
+    $sth = $dbh->prepare("SELECT apid FROM airports WHERE iata = ?");
     $sth->execute([$airport["iata"]]);
     return $sth->fetchColumn(0);
 }
@@ -262,10 +262,10 @@ function cleanup() {
     global $settings;
 
     $dbh = db_connect();
-    $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
     $sth->execute([$settings["name"]]);
-    $sth = $dbh->prepare("DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth = $dbh->prepare("DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
     $sth->execute([$settings["name"]]);
-    $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+    $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
     $sth->execute([$settings["name"]]);
 }

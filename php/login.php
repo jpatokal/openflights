@@ -10,7 +10,7 @@ $legacypw = $_POST["lpw"];
 $challenge = $_POST["challenge"];
 
 if ($challenge && $challenge != $_SESSION["challenge"]) {
-    $row = array("status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again.");
+    $row = ["status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again."];
     die(json_encode($row));
 }
 
@@ -51,7 +51,7 @@ if ($name) {
             "a href='/html/settings?new=yes'",
             "a href='#' onclick='JavaScript:help(\"resetpw\")'"
         );
-        $row = array("status" => 0, "message" => $message);
+        $row = ["status" => 0, "message" => $message];
     }
     print json_encode($row);
 }

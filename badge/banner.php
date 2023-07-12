@@ -54,7 +54,7 @@ if (file_exists($cache) && (time() - filemtime($cache) < 3600)) {
 }
 
 // New banner or cache out of date, so regenerate
-$sth = $dbh->prepare("SELECT uid, public, units FROM users WHERE name=?");
+$sth = $dbh->prepare("SELECT uid, public, units FROM users WHERE name = ?");
 $result = $sth->execute([$user]);
 if (!$result) {
     renderError("Database error 1");
@@ -74,7 +74,7 @@ SELECT COUNT(*) AS count,
        COALESCE(SUM(distance), 0) AS distance,
        COALESCE(SUM(TIME_TO_SEC(duration))/60, 0) AS duration
 FROM flights
-WHERE uid=?
+WHERE uid = ?
 SQL);
 
 $result = $sth->execute([$uid]);

@@ -33,7 +33,7 @@ if ($action == "RECORD") {
     }
 
     // Check for duplicates
-    $sql = "SELECT * FROM airlines WHERE mode=? AND (name LIKE ? OR alias LIKE ?)";
+    $sql = "SELECT * FROM airlines WHERE mode = ? AND (name LIKE ? OR alias LIKE ?)";
     $params = [$mode, $name, $name];
 
     // Editing an existing entry, so make sure we're not overwriting something else
@@ -53,7 +53,7 @@ if ($action == "RECORD") {
     }
 
     if ($alias != "") {
-        $sql = "SELECT * FROM airlines WHERE mode=? AND (name LIKE ? OR alias LIKE ?)";
+        $sql = "SELECT * FROM airlines WHERE mode = ? AND (name LIKE ? OR alias LIKE ?)";
         $params = [$mode, $name, $alias];
 
         // Editing an existing entry, so make sure we're not overwriting something else
@@ -75,7 +75,7 @@ if ($action == "RECORD") {
 
     // IATA duplicates allowed only for non-active airlines
     if ($iata != "") {
-        $sql = "SELECT * FROM airlines WHERE iata=? AND active='Y'";
+        $sql = "SELECT * FROM airlines WHERE iata = ? AND active = 'Y'";
         $params = [$iata];
 
         // Editing an existing entry, so make sure we're not overwriting something else
@@ -97,7 +97,7 @@ if ($action == "RECORD") {
 
     // ICAO duplicates are not
     if ($icao != "") {
-        $sql = "SELECT * FROM airlines WHERE icao=?";
+        $sql = "SELECT * FROM airlines WHERE icao = ?";
         $params = [$icao];
 
         // Editing an existing entry, so make sure we're not overwriting something else
@@ -119,7 +119,10 @@ if ($action == "RECORD") {
 
     if (!$alid || $alid == "") {
         // Adding new airline
-        $sql = "INSERT INTO airlines(name,alias,country,iata,icao,callsign,mode,active,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = <<<SQL
+            INSERT INTO airlines(name, alias, country, iata, icao, callsign, mode, active, uid)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+        SQL;
         $params = [
             $name,
             $alias,
@@ -133,7 +136,11 @@ if ($action == "RECORD") {
         ];
     } else {
         // Editing an existing airline
-        $sql = "UPDATE airlines SET name=?, alias=?, country=?, iata=?, icao=?, callsign=?, mode=?, active=? WHERE alid=? AND (uid=? OR ? IN (?))";
+        $sql = <<<SQL
+            UPDATE airlines
+            SET name = ?, alias = ?, country = ?, iata = ?, icao = ?, callsign = ?, mode = ?, active = ?
+            WHERE alid = ? AND (uid = ? OR ? IN (?))
+        SQL;
         $params = [
             $name,
             $alias,
@@ -164,63 +171,61 @@ if ($action == "RECORD") {
     exit;
 }
 
-$sql = "SELECT * FROM airlines WHERE ";
-$params = [];
+$filters = [];
+$filterParams = [];
 
 // Build filter
 if ($name) {
-    $sql .= " (name LIKE ? OR alias LIKE ?) AND";
-    $params[] = $name . '%';
-    $params[] = $name . '%';
+    $filters[] = "(name LIKE ? OR alias LIKE ?)";
+    $filterParams[] = $name . '%';
+    $filterParams[] = $name . '%';
 }
 if ($alias) {
-    $sql .= " (name LIKE ? OR alias LIKE ?) AND";
-    $params[] = $alias . '%';
-    $params[] = $alias . '%';
+    $filters[] = "(name LIKE ? OR alias LIKE ?)";
+    $filterParams[] = $alias . '%';
+    $filterParams[] = $alias . '%';
 }
 if ($callsign) {
-    $sql .= " callsign LIKE ? AND";
-    $params[] = $callsign . '%';
+    $filters[] = "callsign LIKE ?";
+    $filterParams[] = $callsign . '%';
 }
 
 if ($iata) {
-    $sql .= " iata=? AND";
-    $params[] = $iata;
+    $filters[] = "iata = ?";
+    $filterParams[] = $iata;
 }
 if ($icao) {
-    $sql .= " icao=? AND";
-    $params[] = $icao;
+    $filters[] = "icao = ?";
+    $filterParams[] = $icao;
 }
 if ($country != "ALL" && $country) {
-    $sql .= " country=? AND";
-    $params[] = $country;
+    $filters[] = "country = ?";
+    $filterParams[] = $country;
 }
 if ($mode) {
-    $sql .= " mode=? AND";
-    $params[] = $mode;
+    $filters[] = "mode = ?";
+    $filterParams[] = $mode;
 }
 if ($active != "") {
-    $sql .= " active=? AND";
-    $params[] = $active;
+    $filters[] = "active = ?";
+    $filterParams[] = $active;
 }
 
-if ($mode != "F" || $iatafilter == "false") {
-    $sql .= " 1=1"; // dummy
-} else {
-    $sql .= " iata != '' AND iata != 'N/A'";
+if ($mode == "F" && $iatafilter != "false") {
+    $filters[] = "iata NOT IN ('', 'N/A')";
 }
 if (!$offset) {
     $offset = 0;
 }
-$sql .= " ORDER BY name";
+
+$sql = "SELECT * FROM airlines WHERE "  . implode(" AND ", $filters) . " ORDER BY name";
 
 $sth = $dbh->prepare($sql . " LIMIT 10 OFFSET " . $offset);
-if (!$sth->execute($params)) {
-    // TODO: $param is undefined; not sure it wants to be $params either...
-    die('0;Operation ' . $param . ' failed.');
+if (!$sth->execute($filterParams)) {
+    die("0;Operation $action failed.");
 }
 $sth2 = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
-$sth2->execute($params);
+$sth2->execute($filterParams);
 $row = $sth2->fetch();
 if ($row) {
     $max = $row[0];

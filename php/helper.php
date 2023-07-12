@@ -10,24 +10,24 @@ const KM_PER_MILE = "1.609344";
  */
 $KMPERMILE = KM_PER_MILE;
 
-const MODES = array(
+const MODES = [
     "F" => "Flight",
     "T" => "Train",
     "S" => "Ship",
     "R" => "Road trip",
-);
+];
 
 /**
  * @deprecated use MODES constant
  */
 $modes = MODES;
 
-const MODES_OPERATOR = array(
+const MODES_OPERATOR = [
     "F" => "airline",
     "T" => "railway",
     "S" => "shipping company",
     "R" => "road transport company",
-);
+];
 
 /**
  * @deprecated use MODES_OPERATOR constant
@@ -50,7 +50,7 @@ function json_success($data) {
  * @param $detail string
  */
 function json_error($msg, $detail = '') {
-    die(json_encode(array("status" => 0, "message" => _($msg) . ' ' . $detail)));
+    die(json_encode(["status" => 0, "message" => _($msg) . ' ' . $detail]));
 }
 
 /**
@@ -109,8 +109,8 @@ function format_airport($row) {
     }
     $iata = format_apcode($row);
 
-  // Foobar-Foobar Intl into Foobar Intl
-  // Foo-bar-Foo Bar Intl into Foo Bar Intl
+    // Foobar-Foobar Intl into Foobar Intl
+    // Foo-bar-Foo Bar Intl into Foo Bar Intl
     if (strncasecmp(strtr($name, "-", " "), strtr($city, "-", " "), strlen($city)) == 0) {
         $city = "";
     } else {
@@ -173,24 +173,24 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
     if ($src_apid == $dst_apid) {
         $dist = 0;
     } else {
-        $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid=$dst_apid";
+        $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid = $dst_apid";
 
         // Handle both OO and procedural-style database handles, depending on what type we've got.
         $sth = $dbh->prepare($sql);
         $sth->execute();
         if ($sth->rowCount() !== 2) {
-            return array(null, null);
+            return [null, null];
         }
 
         $coord1 = $sth->fetch();
-        $from = array('x' => $coord1["x"], 'y' => $coord1["y"]);
+        $from = ['x' => $coord1["x"], 'y' => $coord1["y"]];
         $coord2 = $sth->fetch();
-        $to = array('x' => $coord2["x"], 'y' => $coord2["y"]);
+        $to = ['x' => $coord2["x"], 'y' => $coord2["y"]];
 
         $dist = gcPointDistance($from, $to);
     }
     $duration = gcDuration($dist);
-    return array($dist, $duration);
+    return [$dist, $duration];
 }
 
 /**
@@ -233,10 +233,10 @@ function fileUrlWithDate($filename) {
  */
 function orderAirports($src_apid, $dst_apid) {
     if ($src_apid > $dst_apid) {
-        return array($dst_apid, $src_apid, "Y");
+        return [$dst_apid, $src_apid, "Y"];
     }
 
-    return array($src_apid, $dst_apid, "N");
+    return [$src_apid, $dst_apid, "N"];
 }
 
 /**

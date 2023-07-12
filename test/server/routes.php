@@ -19,7 +19,7 @@ class RouteMapCoreAirportTest extends WebTestCase {
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid FROM routes WHERE src_ap=?");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid FROM routes WHERE src_ap = ?");
         $sth->execute([$route["core_ap_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -50,7 +50,7 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE src_ap=? AND airline=?");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE src_ap = ? AND airline = ?");
         $sth->execute([$route["core_ap_iata"], $route["core_ap_filter_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -85,7 +85,7 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
 
         // First figure out the correct apid
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT * FROM airports WHERE iata=?");
+        $sth = $dbh->prepare("SELECT * FROM airports WHERE iata = ?");
         $sth->execute([$route["noroute_ap_iata"]]);
         $this->assertTrue($row = $sth->fetch(), "No-route airport not found");
         $route["noroute_apid"] = $row["apid"];
@@ -126,7 +126,7 @@ class RouteMapCoreAirlineTest extends WebTestCase {
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline=? AND codeshare=''");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline = ? AND codeshare=''");
         $sth->execute([$route["core_al_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -157,7 +157,7 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline=?");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline = ?");
         $sth->execute([$route["core_al_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -191,7 +191,7 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
 
         // First figure out the correct apid
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata=?");
+        $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata = ?");
         $sth->execute([$route["noroute_al_iata"]]);
         $this->assertTrue($row = $sth->fetch(), "No-route airline not found");
         $route["noroute_alid"] = $row["alid"];

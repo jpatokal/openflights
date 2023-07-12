@@ -32,20 +32,20 @@ if ($action == "RECORD") {
     }
 
     // Check for potential duplicates (unless admin)
-    $duplicates = array();
+    $duplicates = [];
     if (!in_array($uid, (array)$OF_ADMIN_UID)) {
-        $filters = array();
-        $filterParams = array();
+        $filters = [];
+        $filterParams = [];
         if ($apid && $apid != "") {
-            $filters[] = "apid=?";
+            $filters[] = "apid = ?";
             $filterParams[] = $apid;
         }
         if ($iata != "") {
-            $filters[] = " iata=?";
+            $filters[] = "iata = ?";
             $filterParams[] = $iata;
         }
         if ($icao != "") {
-            $filters[] = " icao=?";
+            $filters[] = "icao = ?";
             $filterParams[] = $icao;
         }
 
@@ -60,7 +60,10 @@ if ($action == "RECORD") {
     }
 
     if (!$apid || $apid == "") {
-        $sql = "INSERT INTO airports(name,city,country,iata,icao,x,y,elevation,timezone,dst,uid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = <<<SQL
+            INSERT INTO airports(name, city, country, iata, icao, x, y, elevation, timezone, dst, uid)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        SQL;
         $params = [
             $airport,
             $city,
@@ -76,7 +79,11 @@ if ($action == "RECORD") {
         ];
     } else {
         // Editing an existing airport
-        $sql = "UPDATE airports SET name=?, city=?, country=?, iata=?, icao=?, x=?, y=?, elevation=?, timezone=?, dst=? WHERE apid=?";
+        $sql = <<<SQL
+            UPDATE airports
+            SET name = ?, city = ?, country = ?, iata = ?, icao = ?, x = ?, y = ?, elevation = ?, timezone = ?, dst = ?
+            WHERE apid = ?
+        SQL;
         $params = [
             $airport,
             $city,
@@ -98,9 +105,9 @@ if ($action == "RECORD") {
             json_error("Adding new airport failed.");
         }
         if (!$apid || $apid == "") {
-            json_success(array("apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."));
+            json_success(["apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."]);
         } elseif ($sth->rowCount() === 1) {
-            json_success(array("apid" => $apid, "message" => "Airport successfully edited."));
+            json_success(["apid" => $apid, "message" => "Airport successfully edited."]);
         } else {
             json_error("Editing airport failed.");
         }
@@ -141,6 +148,7 @@ Cross-check this edit on other sites with compatible licensing:
 - OurAirports: https://ourairports.com/airports/$icao/pilot-info.html
 - Wikipedia: https://www.google.com/search?q=wikipedia%20$icao%20airport&btnI
 TXT;
+
         if (isset($_POST["unittest"])) {
             echo $subject . "\n\n" . $body;
             exit;
@@ -152,25 +160,28 @@ TXT;
         $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO in:title $identifier");
         if (count($issues['items']) > 0) {
             // Existing issue, add comment
-            $issue_number = $issues['items'][0]['number'];
+            $issueNumber = $issues['items'][0]['number'];
+            //https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
             $result = $github->api('issue')->comments()->create(
                 $GITHUB_USER,
                 $GITHUB_REPO,
-                $issue_number,
-                array('body' => $body)
+                $issueNumber,
+                ['body' => $body]
             );
         } else {
             // New issue
+            // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
             $result = $github->api('issue')->create(
                 $GITHUB_USER,
                 $GITHUB_REPO,
-                array('title' => $subject, 'body' => $body, 'labels' => array('airport'))
+                ['title' => $subject, 'body' => $body, 'labels' => ['airport']]
             );
-            $issue_number = $result['number'];
+            $issueNumber = $result['number'];
         }
+        // TODO: Actually do error handling
         if (true) {
-            $message = "Edit submitted for review on Github: Issue {$issue_number}, {$result['html_url']}";
-            json_success(array("apid" => $apid, "message" => $message));
+            $message = "Edit submitted for review on Github: Issue {$issueNumber}, {$result['html_url']}";
+            json_success(["apid" => $apid, "message" => $message]);
         } else {
             json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
         }
@@ -181,63 +192,58 @@ TXT;
 if ($tableName != "airports" || $tableName != "airports_dafif" || $tableName != "airports_oa") {
     $tableName = "airports";
 }
-$sql = "SELECT * FROM $tableName WHERE ";
-$params = [];
+
+$filters = [];
+$filterParams = [];
+
 if ($action == "LOAD") {
     // Single-airport fetch
-    $sql .= " apid=?";
-    $params[] = $apid;
+    $filters[] = "apid = ?";
+    $filterParams[] = $apid;
     $offset = 0;
 } else {
-  // Real search, build filter
+    // Real search, build filter
     if ($airport) {
-        $sql .= " name LIKE ? AND";
-        $params[] = "%$airport%";
+        $filters[] = "name LIKE ?";
+        $filterParams[] = "%$airport%";
     }
     if ($iata) {
-        $sql .= " iata=? AND";
-        $params[] = $iata;
+        $filters[] = "iata = ?";
+        $filterParams[] = $iata;
     }
     if ($icao) {
-        $sql .= " icao=? AND";
-        $params[] = $icao;
+        $filters[] = "icao = ?";
+        $filterParams[] = $icao;
     }
     if ($city) {
-        $sql .= " city LIKE ? AND";
-        $params[] = $city . '%';
+        $filters[] =  "city LIKE ?";
+        $filterParams[] = $city . '%';
     }
     if ($country != "ALL") {
         if ($tableName == "airports_dafif" || $tableName == "airports_oa") {
             if ($code) {
-                $sql .= " code=? AND";
-                $params[] = $code;
+                $filters[] =  "code = ?";
+                $filterParams[] = $code;
             }
-        } else {
-            if ($country) {
-                $sql .= " country=? AND";
-                $params[] = $country;
-            }
+        } elseif ($country) {
+            $filters[] = "country = ?";
+            $filterParams[] = $country;
         }
     }
 
     // Disable this filter for DAFIF (no IATA data)
-    if ($iatafilter == "false" || $tableName == "airports_dafif") {
-        $sql .= " 1=1"; // dummy
-    } else {
-        $sql .= " iata != '' AND iata != 'N/A'";
+    if ($iatafilter != "false" && $tableName != "airports_dafif") {
+        $filters[] = "iata != ''";
+        $filters[] = "iata != 'N/A'";
     }
 }
 
-if (!$offset || !is_int($offset)) {
-    $offset = 0;
-}
+$sql = "SELECT * FROM $tableName WHERE " . implode(" AND ", $filters);
 
 // Check result count
-$sql2 = str_replace("*", "COUNT(*)", $sql);
-$sth = $dbh->prepare($sql2);
-if (!$sth->execute($params)) {
-    // TODO: $param is undefined; use $action ?
-    json_error('Operation ' . $param . ' failed.');
+$sth = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
+if (!$sth->execute($filterParams)) {
+    json_error("Operation $action failed.");
 }
 $row = $sth->fetch();
 if ($row) {
@@ -246,13 +252,22 @@ if ($row) {
 if ($max == 0) {
     json_error('No airports matching your query exist.');
 }
-$response = array("status" => 1, "offset" => $offset, "max" => $max);
+
+if (!$offset || !is_int($offset)) {
+    $offset = 0;
+}
+
+$response = ["status" => 1, "offset" => $offset, "max" => $max];
 
 // Fetch airport data
 $sql .= " ORDER BY name LIMIT 10 OFFSET $offset";
 $sth = $dbh->prepare($sql);
-if (!$sth->execute($params)) {
-    die(json_encode(array("status" => 0, "message" => 'Operation ' . $param . ' failed.')));
+if (!$sth->execute($filterParams)) {
+    die(
+        json_encode(
+            ["status" => 0, "message" => "Operation $action failed."]
+        )
+    );
 }
 
 $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -278,3 +293,4 @@ foreach ($rows as &$row) {
 unset($row);
 $response['airports'] = $rows;
 print json_encode($response);
+

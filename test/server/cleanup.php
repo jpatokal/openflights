@@ -8,7 +8,7 @@ class DeleteFlightsTest extends WebTestCase {
         global $settings;
 
         $dbh = db_connect();
-        $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+        $sth = $dbh->prepare("DELETE FROM flights WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
         $sth->execute([$settings["name"]]);
         echo $sth->rowCount() . " flights deleted\n";
     }
@@ -20,7 +20,7 @@ class DeleteAirportTest extends WebTestCase {
         global $settings;
 
         $dbh = db_connect();
-        $sth = $dbh->prepare("DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+        $sth = $dbh->prepare("DELETE FROM airports WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
         $sth->execute([$settings["name"]]);
         echo $sth->rowCount() . " airports deleted\n";
     }
@@ -32,7 +32,7 @@ class DeleteAirlinesTest extends WebTestCase {
         global $settings;
 
         $dbh = db_connect();
-        $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name=?)");
+        $sth = $dbh->prepare("DELETE FROM airlines WHERE uid IN (SELECT uid FROM users WHERE name = ?)");
         $sth->execute([$settings["name"]]);
         echo $sth->rowCount() . " airline(s) deleted\n";
     }
@@ -44,7 +44,7 @@ class DeleteUserTest extends WebTestCase {
         global $settings;
 
         $dbh = db_connect();
-        $sth = $dbh->prepare("DELETE FROM users WHERE name=?");
+        $sth = $dbh->prepare("DELETE FROM users WHERE name = ?");
         $sth->execute([$settings["name"]]);
         echo $sth->rowCount() . " user deleted\n";
     }

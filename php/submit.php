@@ -61,9 +61,9 @@ if ($param == "ADD" || $param == "EDIT") {
 
     // New planes can be created on the fly
     if (!empty($plane)) {
-        $sql = "SELECT plid FROM planes WHERE name=? limit 1";
+        $sql = "SELECT plid FROM planes WHERE name = ? LIMIT 1";
         $sth = $dbh->prepare($sql);
-        $sth->execute(array($plane));
+        $sth->execute([$plane]);
         $row = $sth->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             // Match found, take its plid
@@ -72,7 +72,7 @@ if ($param == "ADD" || $param == "EDIT") {
             // No match, create new entry
             $sql = "INSERT INTO planes(name, public) VALUES(?, 'N')";
             $sth = $dbh->prepare($sql);
-            if (!$sth->execute(array($plane))) {
+            if (!$sth->execute([$plane])) {
                 die('0;Adding new plane failed');
             }
             $plid = $dbh->lastInsertId();
@@ -89,21 +89,16 @@ switch ($param) {
                 $rows[$idx] = $idx + 1;
             }
         } else {
-            $rows = array("");
+            $rows = [""];
         }
         # 8 columns per "row" in this string; non-bound variables in the last line.
         $sql = <<<QUERY
-    INSERT INTO flights(
-      uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration,
-      code, seat, seat_type, class, reason, note, plid, alid,
-      trid, opp, mode,
-      upd_time)
-    VALUES(
-      ?, ?, ?, ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?, ?, ?, ?,
-      ?, ?, ?,
-      NOW())
-QUERY;
+            INSERT INTO flights(
+              uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration,
+              code, seat, seat_type, class, reason, note, plid, alid, trid, opp, mode, upd_time
+            )
+            VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())
+        QUERY;
         $sth = $dbh->prepare($sql);
         foreach ($rows as $idx) {
             $src_date = $_POST["src_date" . $idx];
@@ -132,11 +127,11 @@ QUERY;
                 $sql .= ",";
             }
             $success = $sth->execute(
-                array(
+                [
                     $uid, $src_apid, $src_date, $src_time, $dst_apid, $duration, $distance, $registration,
                     $number, $seat, $seat_type, $class, $reason, $note, $plid, $alid,
                     $trid, $opp, $mode
-                )
+                ]
             );
             if (!$success) {
                 # PDO will print a warning with the error.
@@ -160,20 +155,20 @@ QUERY;
     # 6 parameters per row
         $sql = <<<QUERY
 UPDATE flights
-SET src_apid=?, src_date=?, src_time=?, dst_apid=?, duration=?, distance=?,
-    registration=?, code=?, seat=?, seat_type=?, class=?, reason=?,
-    note=?, plid=?, alid=?, trid=?, opp=?, mode=?,
-    upd_time=NOW()
-WHERE fid=? AND uid=?
+SET src_apid = ?, src_date = ?, src_time = ?, dst_apid = ?, duration = ?, distance = ?,
+    registration  =  ?, code = ?, seat = ?, seat_type = ?, class = ?, reason = ?,
+    note = ?, plid = ?, alid = ?, trid = ?, opp = ?, mode = ?,
+    upd_time = NOW()
+WHERE fid = ? AND uid = ?
 QUERY;
         $sth = $dbh->prepare($sql);
         $success = $sth->execute(
-            array(
+            [
                 $src_apid, $src_date, $src_time, $dst_apid, $duration, $distance,
                 $registration, $number, $seat, $seat_type, $class, $reason, $note,
                 $plid, $alid, $trid, $opp, $mode,
                 $fid, $uid
-            )
+            ]
         );
         if (!$success) {
             # PDO will print a warning with the error.
@@ -184,9 +179,9 @@ QUERY;
 
     case "DELETE":
         // Check uid to prevent an evil logged-in hacker from deleting somebody else's flight
-        $sql = "DELETE FROM flights WHERE uid=? AND fid=?";
+        $sql = "DELETE FROM flights WHERE uid = ? AND fid = ?";
         $sth = $dbh->prepare($sql);
-        $success = $sth->execute(array($uid, $fid));
+        $success = $sth->execute([$uid, $fid]);
         if (!$success) {
             # PDO will print a warning with the error.
             error_log("Could not insert flight for user $uid.");
@@ -219,4 +214,4 @@ switch ($param) {
         break;
 }
 
-print $code . ";" . $msg;
+print "$code;$msg";

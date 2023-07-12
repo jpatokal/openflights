@@ -32,7 +32,7 @@ class LegacyLoginTest extends WebTestCase {
         $result = login($this, $name, $password);
         $this->assertEqual($result->status, "1");
 
-        $sth = $dbh->prepare("DELETE FROM users WHERE name=?");
+        $sth = $dbh->prepare("DELETE FROM users WHERE name = ?");
         $sth->execute([$name]);
         $this->assertTrue($sth->rowCount() == 1, "Legacy user deleted");
     }

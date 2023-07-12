@@ -97,7 +97,7 @@ class SuccessfulEditTripTest extends WebTestCase {
 
         // Validate changes
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
+        $sth = $dbh->prepare("SELECT * FROM trips WHERE trid = ?");
         $sth->execute([$trid]);
         $row = $sth->fetch();
         $this->assertTrue($row["name"] == "New AutoTest Trip", "Name");
@@ -145,7 +145,7 @@ class DeleteTripTest extends WebTestCase {
 
         // Verify
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
+        $sth = $dbh->prepare("SELECT * FROM trips WHERE trid = ?");
         $sth->execute([$trid]);
         $this->assertFalse($sth->fetch(), "Deleting failed");
     }

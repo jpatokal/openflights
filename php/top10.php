@@ -14,7 +14,7 @@ $uid = $_SESSION["uid"] ?? $OF_DEMO_UID;
 // For backwards-compatibility reasons with the front-end, value "0" is special
 // and processed the same way null.
 
-// "user" applies only when viewing another users flights
+// "user" applies only when viewing another user's flights
 $user = $_POST["user"] ?? null;
 $trid = $_POST["trid"] ?? null;
 $alid = $_POST["year"] ?? null;
@@ -55,7 +55,7 @@ if ($limit == "-1") {
 // Verify that this trip and user are public
 if ($uid == 1 && $trid && $trid != "0") {
     // Verify that we're allowed to access this trip
-    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=?");
+    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid = ?");
     $sth->execute([$trid]);
     $row = $sth->fetch();
     if (!$row) {
@@ -70,7 +70,7 @@ if ($uid == 1 && $trid && $trid != "0") {
 }
 if ($user && $user != "0") {
     // Verify that we're allowed to view this user's flights
-    $sth = $dbh->prepare("SELECT uid,public FROM users WHERE name=?");
+    $sth = $dbh->prepare("SELECT uid, public FROM users WHERE name = ?");
     $sth->execute([$user]);
     $row = $sth->fetch();
     if (!$row) {
@@ -86,7 +86,13 @@ if ($user && $user != "0") {
 $filter = getFilterString($dbh, $_POST);
 
 // List top $limit routes
-$sql = "SELECT DISTINCT s.iata AS siata,s.icao AS sicao,s.apid AS sapid,d.iata AS diata,d.icao AS dicao,d.apid AS dapid,$mode AS times FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=:uid $filter GROUP BY s.apid,d.apid ORDER BY times DESC LIMIT :limit";
+$sql = "SELECT DISTINCT s.iata AS siata, s.icao AS sicao, s.apid AS sapid, d.iata AS diata, d.icao AS dicao, d.apid AS dapid, $mode AS times
+    FROM flights AS f, airports AS s, airports AS d
+    WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND f.uid = :uid $filter
+    GROUP BY s.apid,d.apid
+    ORDER BY times DESC
+    LIMIT :limit
+";
 $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
@@ -114,11 +120,15 @@ foreach ($sth as $row) {
 
 $sql = <<<SQL
 SELECT a.name, a.iata, a.icao, $mode AS count, a.apid FROM airports AS a,
-(select src_apid AS apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
-UNION ALL
-select dst_apid as apid, distance, fid from flights AS f WHERE uid = :uid $filter) AS f
-WHERE f.apid=a.apid
-GROUP BY a.apid ORDER BY count DESC limit :limit
+(
+    SELECT src_apid AS apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
+    UNION ALL
+    SELECT dst_apid as apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
+) AS f
+WHERE f.apid = a.apid
+GROUP BY a.apid
+ORDER BY count DESC
+LIMIT :limit
 SQL;
 
 $sth = $dbh->prepare($sql);
@@ -134,7 +144,13 @@ foreach ($sth as $row) {
     ];
 }
 // List top $limit airlines
-$sql = "select a.name, $mode as count, a.alid from airlines as a, flights as f where f.uid=:uid and f.alid=a.alid $filter group by f.alid order by count desc limit :limit";
+$sql = "SELECT a.name, $mode AS count, a.alid
+    FROM airlines AS a, flights AS f
+    WHERE f.uid = :uid AND f.alid = a.alid $filter
+    GROUP BY f.alid
+    ORDER BY count DESC
+    LIMIT :limit
+";
 $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);
@@ -148,7 +164,13 @@ foreach ($sth as $row) {
 }
 
 // List top $limit plane types
-$sql = "select p.name, $mode as count from planes as p, flights as f where f.uid=:uid and p.plid=f.plid $filter group by f.plid order by count desc limit :limit";
+$sql = "SELECT p.name, $mode AS count
+    FROM planes AS p, flights AS f
+    WHERE f.uid = :uid and p.plid = f.plid $filter
+    GROUP BY f.plid
+    ORDER BY count DESC
+    LIMIT :limit
+";
 $sth = $dbh->prepare($sql);
 $sth->bindValue(':uid', $uid, PDO::PARAM_INT);
 $sth->bindValue(':limit', intval($limit), PDO::PARAM_INT);

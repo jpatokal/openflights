@@ -156,7 +156,7 @@ function gcWaypoint($from, $distance, $bearing) {
     );
     $x = ($x + $lon) * RAD2DEG;
     $y = $lat * RAD2DEG;
-    return array("x" => $x, "y" => $y);
+    return ["x" => $x, "y" => $y];
 }
 
 /**
@@ -173,7 +173,7 @@ function straightPath($startPoint, $endPoint) {
             $endPoint["x"] += 360;
         }
     }
-    return array($startPoint, $endPoint);
+    return [$startPoint, $endPoint];
 }
 
 /**
@@ -186,9 +186,9 @@ function straightPath($startPoint, $endPoint) {
  * @return array
  */
 function gcPath($startPoint, $endPoint, $distance, $threed) {
-    $pointList = array(
+    $pointList = [
         $startPoint
-    );
+    ];
     $wayPoint = $startPoint;
     $distance = $distance ?? gcPointDistance($startPoint, $endPoint);
     $elevation = 0;
@@ -277,16 +277,16 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         } else {
             // Flip paths crossing the edge of the map
             if ($wayPoint["x"] < -180 && $bearing > 180) {
-                $pointList[] = array("x" => -180, "y" => $wayPoint["y"], "z" => $elevation);
+                $pointList[] = ["x" => -180, "y" => $wayPoint["y"], "z" => $elevation];
                 $wayPoint["x"] += 360;
                 $pointList[] = null; // break mark
-                $pointList[] = array("x" => 180, "y" => $wayPoint["y"], "z" => $elevation);
+                $pointList[] = ["x" => 180, "y" => $wayPoint["y"], "z" => $elevation];
             }
             if ($wayPoint["x"] > 180 && $bearing < 180) {
-                $pointList[] = array("x" => 180, "y" => $wayPoint["y"], "z" => $elevation);
+                $pointList[] = ["x" => 180, "y" => $wayPoint["y"], "z" => $elevation];
                 $wayPoint["x"] -= 360;
                 $pointList[] = null; // break mark
-                $pointList[] = array("x" => -180, "y" => $wayPoint["y"], "z" => $elevation);
+                $pointList[] = ["x" => -180, "y" => $wayPoint["y"], "z" => $elevation];
             }
         }
 

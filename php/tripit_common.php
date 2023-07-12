@@ -65,7 +65,7 @@ function handle_tripit_response($response) {
         }
 
         # Disable the old tokens.
-        $sth = $dbh->prepare("UPDATE tripit_tokens SET active='N' WHERE uid=?");
+        $sth = $dbh->prepare("UPDATE tripit_tokens SET active='N' WHERE uid = ?");
         $sth->execute(array($uid));
 
         header("Location: /php/tripit_rendezvous.php");
