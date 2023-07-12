@@ -63,9 +63,9 @@ OpenFlights.org";
         }
         $headers = "From: support@openflights.org";
         if (mail($email, $subject, $body, $headers)) {
-              echo("<p>A password reset link has been mailed to <b>$email</b>.</p>");
+              echo "<p>A password reset link has been mailed to <b>$email</b>.</p>";
         } else {
-            echo("<p>Message delivery failed, please contact <a href='/about'>support</a>.</p>");
+            echo "<p>Message delivery failed, please contact <a href='/about'>support</a>.</p>";
         }
     } else {
         echo "<p>Sorry, that e-mail address is not registered for any OpenFlights user.</p>";
