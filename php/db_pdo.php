@@ -13,9 +13,9 @@ try {
         "mysql:host=$host;dbname=$dbname",
         $user,
         $password,
-        array(
+        [
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"
-        )
+        ]
     );
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 } catch (PDOException $e) {

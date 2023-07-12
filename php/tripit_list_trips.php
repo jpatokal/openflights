@@ -172,7 +172,7 @@ function resolve_airport($iata_code) {
         return null;
     }
     try {
-        $sth = $dbh->prepare("SELECT * FROM airports WHERE iata=?");
+        $sth = $dbh->prepare("SELECT * FROM airports WHERE iata = ?");
         $sth->execute(array($iata_code));
         if ($sth->rowCount()) {
             $result = $sth->fetch();
@@ -191,7 +191,7 @@ function resolve_airline($iata_code) {
         return null;
     }
     try {
-        $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata=?");
+        $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata = ?");
         $sth->execute(array($iata_code));
         if ($sth->rowCount()) {
             $result = $sth->fetch();
@@ -306,7 +306,7 @@ function is_duplicate_segment($date, $from, $to, $flight_number) {
     global $dbh, $DEBUG;
     list($src_apid, $dst_apid, $opp) = orderAirports($from, $to);
     $mysql_date = $date->format('Y-m-d');
-    $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid=? AND src_date=? AND src_apid=? AND dst_apid=? AND opp=?");
+    $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid = ? AND src_date = ? AND src_apid = ? AND dst_apid = ? AND opp = ?");
     $sth->execute(array($_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp));
     $result = $sth->fetch();
     if ($DEBUG) {

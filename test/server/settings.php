@@ -118,7 +118,7 @@ class ChangeSettingsTest extends WebTestCase {
 
         // Validate changes
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT * FROM users WHERE name=?");
+        $sth = $dbh->prepare("SELECT * FROM users WHERE name = ?");
         $sth->execute([$settings["name"]]);
         $row = $sth->fetch();
         $this->assertTrue($row["public"] == $params["privacy"], "Public");

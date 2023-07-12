@@ -3,7 +3,6 @@
 include_once 'locale.php';
 include_once 'db_pdo.php';
 include_once 'helper.php';
-include_once 'greatcircle.php';
 include_once 'filter.php';
 
 $apid = $_POST["apid"] ?? $_GET["apid"] ?? null;
@@ -17,13 +16,13 @@ if (!$apid) {
 
     switch (strlen($param)) {
         case 2:
-            $sql = "SELECT CONCAT('L', alid) AS apid FROM airlines WHERE iata=?";
+            $sql = "SELECT CONCAT('L', alid) AS apid FROM airlines WHERE iata = ?";
             break;
         case 3:
-            $sql = "SELECT apid FROM airports WHERE iata=?";
+            $sql = "SELECT apid FROM airports WHERE iata = ?";
             break;
         case 4:
-            $sql = "SELECT apid FROM airports WHERE icao=?";
+            $sql = "SELECT apid FROM airports WHERE icao = ?";
             break;
         default:
             die('Error;Query ' . $param . ' not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
@@ -45,19 +44,18 @@ if (substr($apid, 0, 1) == "L") {
     $type = "L";
     $apid = substr($apid, 1);
     $condParams = [$apid];
-    if ($alid) {
-        $condition = "r.alid=?";
-    } else {
-        $condition  = "r.alid=? AND r.codeshare=''"; // exclude codeshares by default
+    $condition = "r.alid = ?";
+    if (!$alid) {
+        $condition .= " AND r.codeshare = ''"; // exclude codeshares by default
     }
     $codeshare = "codeshare";
 } else {
     $type = "A";
     $condParams = [$apid];
-    $condition = "r.src_apid=?";
+    $condition = "r.src_apid = ?";
     if ($alid) {
         $condParams[] = $alid;
-        $condition .= " AND r.alid=?";
+        $condition .= " AND r.alid = ?";
         $codeshare = "codeshare";
     } else {
         $codeshare = "'N'"; // never show dotted lines for airport route maps
@@ -71,7 +69,7 @@ $map = "";
 if ($type == "A") {
     if ($alid) {
         $params = [$alid, $apid];
-        $filter = " AND r.alid=?";
+        $filter = " AND r.alid = ?";
     } else {
         $params = [$apid];
         $filter = "";
@@ -117,11 +115,14 @@ if ($type == "A") {
     if ($alid) {
         $filter = "";
     } else {
-        $filter = " AND r.codeshare=''"; // by default, don't display codeshares
+        $filter = " AND r.codeshare = ''"; // by default, don't display codeshares
     }
 
     // Airline route map
-    $sql = "SELECT COUNT(r.alid) AS count, country, name, iata, icao FROM airlines AS l LEFT OUTER JOIN routes AS r ON r.alid=l.alid $filter WHERE l.alid=? GROUP BY r.alid";
+    $sql = "SELECT COUNT(r.alid) AS count, country, name, iata, icao 
+            FROM airlines AS l
+            LEFT OUTER JOIN routes AS r ON r.alid = l.alid $filter
+            WHERE l.alid = ? GROUP BY r.alid";
     $sth = $dbh->prepare($sql);
     $sth->execute([$apid]);
     $row = $sth->fetch();
@@ -157,18 +158,13 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute($condParams)) {
     die('Error;Database error.');
 }
-$first = true;
+$rows = [];
 foreach ($sth->fetchAll(PDO::FETCH_NUM) as $row) {
     $row[7] = gcPointDistance(
-        array("x" => $row[1], "y" => $row[2]),
-        array("x" => $row[4], "y" => $row[5])
+        ["x" => $row[1], "y" => $row[2]],
+        ["x" => $row[4], "y" => $row[5]]
     );
-    if ($first) {
-        $first = false;
-    } else {
-        $map .= "\t";
-    }
-    $map .= sprintf(
+    $rows[] = sprintf(
         "%s;%s;%s;%s;%s;%s;%s;%s;%s;%s",
         $row[0],
         $row[1],
@@ -182,13 +178,13 @@ foreach ($sth->fetchAll(PDO::FETCH_NUM) as $row) {
         $row[9]
     );
 }
-$map .= "\n";
+$map .= implode("\t", $rows) . "\n";
 
 // List of all airports with flights FROM this airport
 if ($type == "A") {
-    $apcond = "(r.src_apid=a.apid OR r.dst_apid=a.apid)"; // include source airport
+    $apcond = "(r.src_apid = a.apid OR r.dst_apid = a.apid)"; // include source airport
 } else {
-    $apcond = "r.src_apid=a.apid"; // prevent double-counting
+    $apcond = "r.src_apid = a.apid"; // prevent double-counting
 }
 
 // MIN(codeshare) returns '' as long as at least one route is not 'Y'!
@@ -203,14 +199,9 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute($condParams)) {
     die('Error;Database error.');
 }
-$first = true;
+$rows = [];
 foreach ($sth as $row) {
-    if ($first) {
-        $first = false;
-    } else {
-        $map .= "\t";
-    }
-    $map .= sprintf(
+    $rows[] = sprintf(
         "%s;%s;%s;%s;%s;%s;%s",
         format_apdata($row),
         $row["name"],
@@ -223,7 +214,7 @@ foreach ($sth as $row) {
 }
 
 // Trips always null
-$map .= "\n\n";
+$map .= implode("\t", $rows) . "\n\n";
 
 // List of all airlines in this route map
 if ($type == "L") {
@@ -232,20 +223,18 @@ if ($type == "L") {
     $map .= sprintf("%s;%s", $apid . "C", $alname . _(" and codeshares"));
 } else {
     // Note: Existing airline filter is purposely ignored here
-    $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, routes as r WHERE r.src_apid=? AND a.alid=r.alid ORDER BY a.alid, name;";
+    $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, routes as r
+                 WHERE r.src_apid = ? AND a.alid = r.alid
+                 ORDER BY a.alid, name;";
     $sth = $dbh->prepare($sql);
     if (!$sth->execute([$apid])) {
         die('Error;Database error.');
     }
-    $first = true;
+    $rows = [];
     foreach ($sth as $row) {
-        if ($first) {
-            $first = false;
-        } else {
-            $map .= "\t";
-        }
-        $map .= sprintf("%s;%s", $row["alid"], $row["name"]);
+        $rows[] = sprintf("%s;%s", $row["alid"], $row["name"]);
     }
+    $map .= implode("\t", $rows);
 }
 
 // And years also null

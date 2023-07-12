@@ -62,7 +62,9 @@ switch ($type) {
 
 // Note: Password is actually an MD5 hash of pw and username
 if ($type == "NEW") {
-    $sth = $dbh->prepare("INSERT INTO users (name, password, email, public, editor, locale, units) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $sth = $dbh->prepare(
+        "INSERT INTO users (name, password, email, public, editor, locale, units) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    );
     $success = $sth->execute([$name, $pw, $email, $privacy, $editor, $locale, $units]);
 } else {
     if (!$guestpw) {
@@ -89,7 +91,7 @@ if (!$success) {
     die("0;Operation on user $name failed.");
 }
 
-// In all cases change locale and units to user selection
+// In all cases, change locale and units to user selection
 $_SESSION['locale'] = $locale;
 $_SESSION['units'] = $units;
 

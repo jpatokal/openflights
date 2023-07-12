@@ -23,7 +23,7 @@ class AddNewPlaneTest extends WebTestCase {
         $this->assertText('1;');
 
         // Check the PLID of the newly-added flight
-        $sth = $dbh->prepare("SELECT plid FROM flights WHERE note=?");
+        $sth = $dbh->prepare("SELECT plid FROM flights WHERE note = ?");
         $sth->execute([$flight2["note"]]);
         $row = $sth->fetch();
         $plid = $row["plid"];
@@ -37,7 +37,7 @@ class AddNewPlaneTest extends WebTestCase {
         $this->assertText('1;');
 
         // Check that new plid was reused
-        $sth = $dbh->prepare("SELECT plid FROM flights WHERE note=?");
+        $sth = $dbh->prepare("SELECT plid FROM flights WHERE note = ?");
         $sth->execute([$flight3["note"]]);
         $row = $sth->fetch();
         $plid2 = $row["plid"];

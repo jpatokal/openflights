@@ -52,7 +52,7 @@ if ($existing_tripit_tokens == null || $existing_tripit_tokens["token"] !== $acc
 
     // Disable any existing TripIt links for this user.
     try {
-        $sth = $dbh->prepare("UPDATE tripit_tokens SET active='N' WHERE uid=?");
+        $sth = $dbh->prepare("UPDATE tripit_tokens SET active='N' WHERE uid = ?");
         $sth->execute(array($uid));
     } catch (PDOException $e) {
         die(_("Failed to disable old TripIt links."));

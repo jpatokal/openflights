@@ -5,7 +5,6 @@ session_start();
 header("Content-type: application/vnd.google-earth.kml+xml");
 header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d") . ".kml\"");
 
-include_once 'greatcircle.php';
 include_once 'helper.php';
 include_once 'filter.php';
 include_once 'db_pdo.php';
@@ -18,7 +17,13 @@ if (!$uid || empty($uid)) {
     $uid = 1;
 }
 
-$sql = "SELECT DISTINCT s.x AS sx,s.y AS sy,s.elevation AS sz,s.iata AS siata,s.icao AS sicao,d.x AS dx,d.y AS dy,d.elevation AS dz,d.iata AS diata,d.icao AS dicao,code,distance,mode FROM flights AS f, airports AS s, airports AS d WHERE f.src_apid=s.apid AND f.dst_apid=d.apid AND f.uid=:uid" . getFilterString($dbh, $_GET) . " GROUP BY f.fid,s.apid,d.apid";
+$filterString = getFilterString($dbh, $_GET);
+$sql = <<<SQL
+    SELECT DISTINCT s.x AS sx, s.y AS sy, s.elevation AS sz, s.iata AS siata, s.icao AS sicao, d.x AS dx, d.y AS dy, d.elevation AS dz, d.iata AS diata, d.icao AS dicao, code, distance, mode
+    FROM flights AS f, airports AS s, airports AS d
+    WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND f.uid = :uid $filterString
+    GROUP BY f.fid,s.apid,d.apid
+SQL;
 
 $sth = $dbh->prepare($sql);
 $sth->execute(compact('uid'));
@@ -49,8 +54,8 @@ foreach ($sth as $row) {
         print "  <styleUrl>#$mode</styleUrl>\n";
 
         $points = gcPath(
-            array("x" => $x1, "y" => $y1, "z" => $z1),
-            array("x" => $x2, "y" => $y2, "z" => $z2),
+            ["x" => $x1, "y" => $y1, "z" => $z1],
+            ["x" => $x2, "y" => $y2, "z" => $z2],
             $distance,
             true
         );
@@ -79,7 +84,13 @@ print "<Folder><name>Airports</name>\n";
 // Draw airports from largest to smallest
 $airportColors = array ("black", "gray", "purple", "cyan", "cyan", "green");
 
-$sql = "SELECT DISTINCT x,y,elevation,iata,icao,name,city,country,count(name) AS visits FROM flights AS f, airports AS a WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND f.uid=:uid" . getFilterString($dbh, $_GET) . " GROUP BY a.apid,name ORDER BY visits DESC";
+$sql = <<<SQL
+    SELECT DISTINCT x, y, elevation, iata, icao, name, city, country, count(name) AS visits
+    FROM flights AS f, airports AS a
+    WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND f.uid = :uid $filterString
+    GROUP BY a.apid,name
+    ORDER BY visits DESC
+SQL;
 $sth = $dbh->prepare($sql);
 $sth->execute(compact('uid'));
 $first = true;

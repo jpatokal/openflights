@@ -24,7 +24,7 @@ if (isset($_GET["challenge"])) {
         if ($challenge == $row['challenge']) {
             $newpw = substr(uniqid(), 0, 8);
             $pwstring = md5($newpw . strtolower($user));
-            $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name=?");
+            $sth = $dbh->prepare("UPDATE users SET password = ? WHERE name = ?");
             if (!$sth->execute([$pwstring, $user])) {
                 die('Resetting password for user ' . $user . ' failed');
             }

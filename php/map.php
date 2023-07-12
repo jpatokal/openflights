@@ -84,7 +84,9 @@ if ($trid && $trid != "0" && $trid != "null") {
 if ($user && $user != "0") {
     // Verify that we're allowed to view this user's flights
     // if $user is set, we are never logged in
-    $sth = $dbh->prepare("SELECT uid, public, elite, guestpw, IF(? = guestpw, 'Y', 'N') AS pwmatch FROM users WHERE name = ?");
+    $sth = $dbh->prepare(
+        "SELECT uid, public, elite, guestpw, IF(guestpw = ?, 'Y', 'N') AS pwmatch FROM users WHERE name = ?"
+    );
     $sth->execute([$guestpw, $user]);
     $row = $sth->fetch();
     if (!$row) {
@@ -118,16 +120,19 @@ if ($user && $user != "0") {
 
 // Load up all information needed by this user
 $filter = getFilterString($dbh, $_POST);
-$map = "";
 
 // Statistics
 // Number of flights, total distance (mi), total duration (minutes), public/open
-$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration)) / 60 AS duration FROM flights AS f WHERE uid = ? $filter";
+$sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(duration)) / 60 AS duration
+    FROM flights AS f
+    WHERE uid = ? $filter
+";
 $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
     die('Error;Database error. ' . $filter . ' ' . $sql);
 }
 $row = $sth->fetch();
+$map = "";
 if ($row) {
     if ($row["count"] == "0" && $user && $user != "0") {
         die('Error;' . _("This user has no flights."));
@@ -141,7 +146,7 @@ if ($row) {
     } else {
         $distance .= " " . _("miles");
     }
-    $map .= sprintf(
+    $map = sprintf(
         "%s;%s;%s;%s;%s;%s;%s;%s\n",
         $row["count"],
         $distance,
@@ -156,23 +161,19 @@ if ($row) {
 
 // List of all flights (unique by airport pair)
 $sql = "SELECT DISTINCT s.apid, s.x, s.y, d.apid, d.x, d.y, COUNT(fid) as visits, AVG(distance), IF(MIN(src_date) > NOW(), 'Y', 'N') AS future, f.mode
-FROM flights AS f, airports AS s, airports AS d
-WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND f.uid = ?
-$filter
-GROUP BY s.apid, s.x, s.y, d.apid, d.x, d.y, f.mode";
+    FROM flights AS f, airports AS s, airports AS d
+    WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND f.uid = ?
+    $filter
+    GROUP BY s.apid, s.x, s.y, d.apid, d.x, d.y, f.mode
+";
 $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
     die('Error;Database error.');
 }
 
-$first = true;
+$rows = [];
 foreach ($sth as $row) {
-    if ($first) {
-        $first = false;
-    } else {
-        $map .= "\t";
-    }
-    $map .= sprintf(
+    $rows[] = sprintf(
         "%s;%s;%s;%s;%s;%s;%s;%s;%s;%s",
         $row[0],
         $row[1],
@@ -186,29 +187,25 @@ foreach ($sth as $row) {
         $row[9]
     );
 }
-$map .= "\n";
+$map .= implode("\t", $rows) . "\n";
 
 // List of all airports
 $sql = "SELECT DISTINCT a.apid, x, y, name, iata, icao, city, country, timezone, dst, count(name) AS visits, IF(MIN(src_date) > NOW(), 'Y', 'N') AS future
-FROM flights AS f, airports AS a
-WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND f.uid = ?
-$filter
-GROUP BY a.apid, x, y, name, icao, city, country, timezone, dst
-ORDER BY visits ASC";
+    FROM flights AS f, airports AS a
+    WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND f.uid = ?
+    $filter
+    GROUP BY a.apid, x, y, name, icao, city, country, timezone, dst
+    ORDER BY visits ASC
+";
 
 $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
     die('Error;Database error.');
 }
 
-$first = true;
+$rows = [];
 foreach ($sth as $row) {
-    if ($first) {
-        $first = false;
-    } else {
-        $map .= "\t";
-    }
-    $map .= sprintf(
+    $rows[] = sprintf(
         "%s;%s;%s;%s;%s;%s;%s",
         format_apdata($row),
         $row["name"],
@@ -220,7 +217,7 @@ foreach ($sth as $row) {
     );
 }
 
-print $map . "\n";
+print $map . implode("\t", $rows) . "\n";
 
 // When running for the first time, load up possible filter settings for this user
 if ($init == "true") {

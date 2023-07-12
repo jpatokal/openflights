@@ -43,7 +43,7 @@ function locale_pulldown($dbh, $locale) {
     if ($OF_USE_LOCALES) {
         $sql = "SELECT * FROM locales ORDER BY name ASC";
         foreach ($dbh->query($sql) as $row) {
-            $selected = ($row["locale"] . ".utf8" == $locale ? "SELECTED" : "");
+            $selected = $row["locale"] . ".utf8" == $locale ? "SELECTED" : "";
             printf(
                 "<option value='%s' %s>%s (%s)</option>\n",
                 $row["locale"],

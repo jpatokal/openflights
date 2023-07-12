@@ -32,22 +32,22 @@ $privacy = $_POST["privacy"];
 switch ($type) {
     case "NEW":
         // Create a new trip
-        $sth = $dbh->prepare("INSERT INTO trips(name,url,public,uid) VALUES(?,?,?,?)");
+        $sth = $dbh->prepare("INSERT INTO trips(name, url, public, uid) VALUES(?, ?, ?, ?)");
         $success = $sth->execute([$name, $url, $privacy, $uid]);
         break;
 
     case "EDIT":
         // Edit an existing trip
-        $sth = $dbh->prepare("UPDATE trips SET name=?, url=?, public=? WHERE uid=? AND trid=?");
+        $sth = $dbh->prepare("UPDATE trips SET name = ?, url = ?, public = ? WHERE uid = ? AND trid = ?");
         $success = $sth->execute([$name, $url, $privacy, $uid, $trid]);
         break;
 
     case "DELETE":
         // Assign flights with this trip id to null and then delete the trip
-        $sth = $dbh->prepare("UPDATE flights SET trid=NULL WHERE trid=? AND uid=?");
+        $sth = $dbh->prepare("UPDATE flights SET trid = NULL WHERE trid = ? AND uid = ?");
         failIfFalse($sth->execute([$trid, $uid]), $name);
 
-        $sth = $dbh->prepare("DELETE FROM trips WHERE trid=? AND uid=?");
+        $sth = $dbh->prepare("DELETE FROM trips WHERE trid = ? AND uid = ?");
         $success = $sth->execute([$trid, $uid]);
         break;
 

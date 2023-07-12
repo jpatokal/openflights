@@ -87,7 +87,9 @@ if ($type == "signup") {
         die(_("Your session has timed out, please log in again."));
     }
     $sth = $dbh->prepare(
-        "SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale FROM users WHERE uid=?"
+        "SELECT elite, validity, email, name, guestpw, public, count, editor, units, startpane, locale
+         FROM users
+         WHERE uid = ?"
     );
     $sth->execute([$uid]);
     $settings = $sth->fetch();

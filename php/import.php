@@ -27,9 +27,9 @@ if (!$uid || empty($uid)) {
 require_once '../vendor/autoload.php';
 include_once 'helper.php';
 
-$posMap = array("Window" => "W", "Middle" => "M", "Aisle" => "A", "" => "");
-$classMap = array("Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F", "" => "");
-$reasonMap = array("Business" => "B", "Personal" => "L", "Crew" => "C", "Other" => "O", "" => "");
+$posMap = ["Window" => "W", "Middle" => "M", "Aisle" => "A", "" => ""];
+$classMap = ["Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F", "" => ""];
+$reasonMap = ["Business" => "B", "Personal" => "L", "Crew" => "C", "Other" => "O", "" => ""];
 
 function nth_text($element, $n) {
     $xpath = new DOMXPath($element->ownerDocument);
@@ -78,7 +78,7 @@ function check_date($dbh, $type, $date) {
         $color = "#fff";
         $date = $db_date;
     }
-    return array($date, $color);
+    return [$date, $color];
 }
 
 /**
@@ -93,17 +93,17 @@ function check_airport($dbh, $code, $name) {
     switch (strlen($code)) {
         case 3:
             $params = [$code];
-            $sql = "select apid,city,country from airports where iata=?";
+            $sql = "SELECT apid, city, country FROM airports WHERE iata = ?";
             break;
 
         case 4:
             $params = [$code];
-            $sql = "select apid,city,country from airports where icao=?";
+            $sql = "SELECT apid, city, country FROM airports WHERE icao = ?";
             break;
 
         default:
             $params = [$name . '%'];
-            $sql = "select apid,city,country from airports where name like ?";
+            $sql = "SELECT apid, city, country FROM airports WHERE name LIKE ?";
             break;
     }
 
@@ -126,16 +126,16 @@ function check_airport($dbh, $code, $name) {
         default:
             $dbrow = $sth->fetch();
             $apid = $dbrow["apid"];
-            $code = $code . "<br><small>" . $dbrow["city"] . "," . $dbrow["country"] . "</small>";
+            $code .= "<br><small>{$dbrow["city"]},{$dbrow["country"]}</small>";
             $color = "#ddf";
     }
-    return array($apid, $code, $color);
+    return [$apid, $code, $color];
 }
 
 /**
  * Validate that this flight number/airline name are found in DB
  * If flight number starts with an IATA code, match that (and double-check it against name)
- * Else match first word of airline name
+ * Else match the first word of airline name
  *
  * @param $dbh PDO OpenFlights DB handler
  * @param $number string Flight number
@@ -155,7 +155,7 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
         // is alphanumeric, but not all numeric? then it's probably an airline code
         if ($isAlpha && $history != "yes") {
             $params = [$code];
-            $sql = "select name,alias,alid from airlines where iata=? order by name";
+            $sql = "SELECT name, alias, alid FROM airlines WHERE iata = ? ORDER BY name";
         } else {
             $airlinepart = explode(' ', $airline);
             if ($airlinepart[0] == 'Air') {
@@ -164,7 +164,11 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
                 $part = $airlinepart[0] . '%';
             }
             $params = [$part, $part, $airline];
-            $sql = "select name,alias,alid from airlines where ((name like ? or alias like ?) and (iata != '')) or (name = ?) order by frequency desc;";
+            $sql = <<<SQL
+                SELECT name, alias, alid FROM airlines
+                WHERE ((name LIKE ? OR alias LIKE ?) AND (iata != '')) OR (name = ?)
+                ORDER BY frequency DESC
+            SQL;
         }
         $sth = $dbh->prepare($sql);
         $sth->execute($params);
@@ -190,16 +194,14 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
                     $color = "#fff";
                     $airline = $dbrow['name'];
                     $alid = $dbrow['alid'];
-                } else {
+                } elseif ($history == "yes") {
                     // Not an exact match
-                    if ($history == "yes") {
-                        $color = "#fdd";
-                        $alid = -2;
-                    } else {
-                        $color = "#ddf";
-                        $airline = $dbrow['name'] . "<br><small>(" . _("was:") . " " . $airline . ")</small>";
-                        $alid = $dbrow['alid'];
-                    }
+                    $color = "#fdd";
+                    $alid = -2;
+                } else {
+                    $color = "#ddf";
+                    $airline = $dbrow['name'] . "<br><small>(" . _("was:") . " {$airline})</small>";
+                    $alid = $dbrow['alid'];
                 }
                 break;
 
@@ -209,7 +211,7 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
                 $first = true;
                 foreach ($sth as $dbrow) {
                     $isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
-                    (strcasecmp($dbrow['alias'], $airline) == 0));
+                        (strcasecmp($dbrow['alias'], $airline) == 0));
                     if ($first || $isMatch) {
                         if ($isMatch) {
                             $color = "#fff";
@@ -230,7 +232,7 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
                 }
         }
     }
-    return array($alid, $airline, $color);
+    return [$alid, $airline, $color];
 }
 
 /**
@@ -243,10 +245,10 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
 function check_plane($dbh, $plane) {
     // If no plane set, return OK
     if (!$plane || $plane == "") {
-        return array(null, "#fff");
+        return [null, "#fff"];
     }
 
-    $sql = "select plid from planes where name=?";
+    $sql = "SELECT plid FROM planes WHERE name = ?";
     $sth = $dbh->prepare($sql);
     $sth->execute([$plane]);
     if ($sth->rowCount() == 1) {
@@ -256,7 +258,7 @@ function check_plane($dbh, $plane) {
         $plid = "-1"; // new plane
         $color = "#fdd";
     }
-    return array($plid, $color);
+    return [$plid, $color];
 }
 
 /**
@@ -270,22 +272,18 @@ function check_plane($dbh, $plane) {
 function check_trip($dbh, $uid, $trid) {
     // If no trip set, return OK
     if (!$trid || $trid == "") {
-        return array(null, "#fff");
+        return [null, "#fff"];
     }
 
-    $sql = "select uid from trips where trid=?";
+    $sql = "SELECT uid FROM trips WHERE trid = ?";
     $sth = $dbh->prepare($sql);
     $sth->execute([$trid]);
-    if ($sth->rowCount() == 1) {
-        if ($uid == $sth->fetchColumn(0)) {
-            $color = "#fff";
-        } else {
-            $color = "#faa";
-        }
+    if (($sth->rowCount() == 1) && $uid == $sth->fetchColumn(0)) {
+        $color = "#fff";
     } else {
         $color = "#faa";
     }
-    return array($trid, $color);
+    return [$trid, $color];
 }
 
 function die_nicely($msg) {
@@ -311,7 +309,7 @@ switch ($action) {
         break;
 
     case _("Import"):
-        $remove_these = array(' ','`','"','\'','\\','/');
+        $remove_these = [' ','`','"','\'','\\','/'];
         $filename = $_POST["tmpfile"];
         $uploadFile = $uploaddir . str_replace($remove_these, '', $filename);
         if (! file_exists($uploadFile)) {
@@ -354,7 +352,7 @@ switch ($fileType) {
             die_nicely(_("Unable to open CSV file."));
         }
 
-        // Convert whole file into giant array
+        // Convert whole file into a giant array
         $rows = array_map('str_getcsv', $csvFile);
 
         break;
@@ -524,7 +522,7 @@ foreach ($rows as $row) {
             break;
     }
 
-    // Skip first row for CSV
+    // Skip the first row for CSV
     if ($fileType == "CSV" && $count == 1) {
         continue;
     }
@@ -566,7 +564,6 @@ foreach ($rows as $row) {
 
     switch ($action) {
         case _("Upload"):
-            #    break;
             printf(
                 "<tr><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td style='background-color: %s'>%s %s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td style='background-color: %s'>%s</td><td>%s</td><td>%s %s</td><td>%s</td><td>%s</td><td>%s</td><td style='background-color: %s'>%s</td><td>%s</td></tr>\n",
                 $id,
@@ -613,7 +610,7 @@ foreach ($rows as $row) {
             // Do we need a new airline?
             if ($alid == -2) {
                 // Last-ditch effort to check through non-IATA airlines
-                $sql = "SELECT alid FROM airlines WHERE name=? OR alias=?";
+                $sql = "SELECT alid FROM airlines WHERE name = ? OR alias = ?";
                 $sth = $dbh->prepare($sql);
                 $sth->execute([$airline, $airline]);
                 $dbrow = $sth->fetch();
@@ -642,7 +639,10 @@ foreach ($rows as $row) {
             }
 
             // And now the flight
-            $sql = "INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
+            $sql = <<<SQL
+                INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)
+            SQL;
             $params = [
                 $uid,
                 $src_apid,

@@ -28,7 +28,7 @@ if (!$uid || empty($uid)) {
 }
 
 if ($trid) {
-    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid=? AND uid=?");
+    $sth = $dbh->prepare("SELECT * FROM trips WHERE trid = ? AND uid = ?");
     $sth->execute([$trid, $uid]);
     $trip = $sth->fetch();
     if (!$trip) {
