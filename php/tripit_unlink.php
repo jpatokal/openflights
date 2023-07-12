@@ -1,5 +1,7 @@
 <?php
 
+// https://github.com/jpatokal/openflights/issues/701
+
 require_once "locale.php";
 require_once "db_pdo.php";
 require_once "tripit_common.php";
