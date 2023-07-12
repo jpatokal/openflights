@@ -257,8 +257,6 @@ if (!$sth->execute($params)) {
 }
 
 $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
-// TODO: Why are we skipping the first row?
-array_pop($rows);
 
 $isAdmin = in_array($uid, (array)$OF_ADMIN_UID);
 
