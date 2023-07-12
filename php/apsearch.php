@@ -18,7 +18,7 @@ $myY = $_POST["y"];
 $elevation = $_POST["elevation"];
 $tz = $_POST["timezone"];
 $dst = $_POST["dst"];
-$dbname = $_POST["db"];
+$tableName = $_POST["db"];
 $iatafilter = $_POST["iatafilter"];
 $offset = intval($_POST["offset"]);
 $action = $_POST["action"];
@@ -178,12 +178,11 @@ TXT;
     exit;
 }
 
-if ($dbname != "airports" || $dbname != "airports_dafif" || $dbname != "airports_oa") {
-    $dbname = "airports";
+if ($tableName != "airports" || $tableName != "airports_dafif" || $tableName != "airports_oa") {
+    $tableName = "airports";
 }
-$sql = "SELECT * FROM $dbname WHERE ";
+$sql = "SELECT * FROM $tableName WHERE ";
 $params = [];
-
 if ($action == "LOAD") {
     // Single-airport fetch
     $sql .= " apid=?";
@@ -208,7 +207,7 @@ if ($action == "LOAD") {
         $params[] = $city . '%';
     }
     if ($country != "ALL") {
-        if ($dbname == "airports_dafif" || $dbname == "airports_oa") {
+        if ($tableName == "airports_dafif" || $tableName == "airports_oa") {
             if ($code) {
                 $sql .= " code=? AND";
                 $params[] = $code;
@@ -222,7 +221,7 @@ if ($action == "LOAD") {
     }
 
     // Disable this filter for DAFIF (no IATA data)
-    if ($iatafilter == "false" || $dbname == "airports_dafif") {
+    if ($iatafilter == "false" || $tableName == "airports_dafif") {
         $sql .= " 1=1"; // dummy
     } else {
         $sql .= " iata != '' AND iata != 'N/A'";
@@ -261,7 +260,7 @@ $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
 $isAdmin = in_array($uid, (array)$OF_ADMIN_UID);
 
 foreach ($rows as &$row) {
-    if ($dbname == "airports_dafif" || $dbname == "airports_oa") {
+    if ($tableName == "airports_dafif" || $tableName == "airports_oa") {
         $row["country"] = $row["code"];
     }
     if ($row["uid"] || $isAdmin) {
