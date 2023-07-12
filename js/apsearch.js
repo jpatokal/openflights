@@ -553,7 +553,7 @@ function loadAirport(data) {
   form.x.value = col["x"];
   form.y.value = col["y"];
   form.elevation.value = col["elevation"];
-  if (col["timezone"]) {
+  if (col["timezone"] != null) {
     form.tz.value = col["timezone"];
   }
   var country = col["country"];
