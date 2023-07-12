@@ -2,7 +2,7 @@
 
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
-require_once "../php/functions.php";
+require_once "../php/helper.php";
 
 $type = isset($_GET["new"]) ? "signup" : "settings";
 
