@@ -19,7 +19,7 @@ CREATE TABLE `airlines` (
   `mode` char(1) default 'F',
   `active` varchar(1) default 'N',
   `source` text,
-  `frequency` int(11) DEFAULT '0',
+  `frequency` int(11) default 0,
   PRIMARY KEY  (`alid`),
   KEY `iata` (`iata`),
   KEY `icao` (`icao`)
