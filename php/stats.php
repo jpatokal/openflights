@@ -74,8 +74,8 @@ if ($row) {
     $array += $row;
 }
 
-// unique airlines, unique planes, total distance (mi), average distance (localized), average duration
-$sql = "SELECT COUNT(DISTINCT alid) AS num_airlines, COUNT(DISTINCT plid) AS num_planes,
+// unique airlines (excluding unknown), unique planes, total distance (mi), average distance (localized), average duration
+$sql = "SELECT COUNT(DISTINCT case when alid <> -1 then alid end) AS num_airlines, COUNT(DISTINCT plid) AS num_planes,
 IFNULL(SUM(distance), 0) AS distance, IFNULL(ROUND(AVG(distance) $multiplier),0) AS avg_distance,
 IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i'), '00:00') AS avg_duration
 FROM flights AS f
