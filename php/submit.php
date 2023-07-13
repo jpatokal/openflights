@@ -140,6 +140,13 @@ switch ($param) {
             }
             $num_added++;
         }
+
+        $code = 1;
+        if ($num_added == 1) {
+            $msg = _("Added.");
+        } else {
+            $msg = sprintf(_("%s flights added."), $num_added);
+        }
         break;
 
     case "EDIT":
@@ -175,6 +182,9 @@ QUERY;
             error_log("Could not insert flight for user $uid.");
             die('0;Database error when executing query.');
         }
+
+        $code = 2;
+        $msg = _("Edited.");
         break;
 
     case "DELETE":
@@ -187,31 +197,13 @@ QUERY;
             error_log("Could not insert flight for user $uid.");
             die('0;Database error when executing query.');
         }
-        break;
 
-    default:
-        die('0;Unknown operation ' . $param);
-}
-
-switch ($param) {
-    case "DELETE":
         $code = 100;
         $msg = MODES[$mode] . " deleted.";
         break;
 
-    case "ADD":
-        $code = 1;
-        if ($num_added == 1) {
-            $msg = _("Added.");
-        } else {
-            $msg = sprintf(_("%s flights added."), $num_added);
-        }
-        break;
-
-    case "EDIT":
-        $code = 2;
-        $msg = _("Edited.");
-        break;
+    default:
+        die('0;Unknown operation ' . $param);
 }
 
 print "$code;$msg";
