@@ -181,7 +181,7 @@ function straightPath($startPoint, $endPoint) {
  *
  * @param $startPoint array
  * @param $endPoint array
- * @param $distance int|float|false|null
+ * @param $distance
  * @param $threed bool
  * @return array
  */
@@ -190,7 +190,8 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         $startPoint
     ];
     $wayPoint = $startPoint;
-    $distance = $distance ?? gcPointDistance($startPoint, $endPoint);
+    // TODO: Why do we pass $distance as a parameter, then just ignore it?
+    $distance = gcPointDistance($startPoint, $endPoint);
     $elevation = 0;
 
     if ($threed) {
