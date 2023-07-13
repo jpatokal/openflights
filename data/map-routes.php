@@ -49,8 +49,8 @@ foreach ($dbh->query($sql) as $row) {
         fwrite($stderr, "$count ");
     }
 
-    $from = array("x" => $row["sx"], "y" => $row["sy"]);
-    $to = array("x" => $row["dx"], "y" => $row["dy"]);
+    $from = ["x" => $row["sx"], "y" => $row["sy"]];
+    $to = ["x" => $row["dx"], "y" => $row["dy"]];
     $distance = gcPointDistance($from, $to);
 
     if ($distance > GC_MIN) {

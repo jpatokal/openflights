@@ -19,7 +19,7 @@ if (!$uid || empty($uid)) {
 
 $filterString = getFilterString($dbh, $_GET);
 $sql = <<<SQL
-    SELECT DISTINCT s.x AS sx, s.y AS sy, s.elevation AS sz, s.iata AS siata, s.icao AS sicao, d.x AS dx, d.y AS dy, d.elevation AS dz, d.iata AS diata, d.icao AS dicao, code, distance, mode
+    SELECT DISTINCT s.x AS sx, s.y AS sy, s.elevation AS sz, s.iata AS siata, s.icao AS sicao, d.x AS dx, d.y AS dy, d.elevation AS dz, d.iata AS diata, d.icao AS dicao, code, mode
     FROM flights AS f, airports AS s, airports AS d
     WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND f.uid = :uid $filterString
     GROUP BY f.fid,s.apid,d.apid
@@ -32,7 +32,7 @@ readfile("../kml/header.kml");
 
 print "<Folder>\n<name>Flights</name>\n";
 
-// Plot flights on map
+// Plot flights on the map
 foreach ($sth as $row) {
     $x1 = $row["sx"];
     $y1 = $row["sy"];
@@ -40,7 +40,6 @@ foreach ($sth as $row) {
     $x2 = $row["dx"];
     $y2 = $row["dy"];
     $z2 = $row["dz"] * METERS_PER_FOOT;
-    $distance = $row["distance"];
 
     // Skip flights where src==dest
     if ($x1 != $x2 && $y1 != $y2) {
@@ -56,7 +55,7 @@ foreach ($sth as $row) {
         $points = gcPath(
             ["x" => $x1, "y" => $y1, "z" => $z1],
             ["x" => $x2, "y" => $y2, "z" => $z2],
-            $distance,
+            null,
             true
         );
 

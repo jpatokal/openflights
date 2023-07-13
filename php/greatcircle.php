@@ -181,8 +181,8 @@ function straightPath($startPoint, $endPoint) {
  *
  * @param $startPoint array
  * @param $endPoint array
- * @param $distance
- * @param $threed bool
+ * @param $distance float|null Distance if already calculated by gcPointDistance()
+ * @param $threed bool Is this a 3D calculation?
  * @return array
  */
 function gcPath($startPoint, $endPoint, $distance, $threed) {
@@ -190,8 +190,9 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         $startPoint
     ];
     $wayPoint = $startPoint;
-    // TODO: Why do we pass $distance as a parameter, then just ignore it?
-    $distance = gcPointDistance($startPoint, $endPoint);
+    if ($distance === null) {
+        $distance = gcPointDistance($startPoint, $endPoint);
+    }
     $elevation = 0;
 
     if ($threed) {
@@ -210,19 +211,6 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
 
     // And... action!
     while ($d + 1 < $distance) {
-        /*printf("%s of %s: from %s,%s now at %s,%s step %s bearing %s target %s,%s\n",
-            $d,
-            $distance,
-            $startPoint["x"],
-            $startPoint["y"],
-            $step,
-            $bearing,
-            $wayPoint["x"],
-            $wayPoint["y"],
-            $endPoint["x"],
-            $endPoint["y"]
-        );*/
-
         // Cruising, but increase step resolution near the poles
         if ($threed && $delta != 0) {
             $step = ASCENT_STEP;
@@ -292,6 +280,19 @@ function gcPath($startPoint, $endPoint, $distance, $threed) {
         }
 
         $d = gcPointDistance($startPoint, $wayPoint);
+
+        /*printf("%s of %s: from %s,%s now at %s,%s step %s bearing %s target %s,%s\n",
+            $d,
+            $distance,
+            $startPoint["x"],
+            $startPoint["y"],
+            $step,
+            $bearing,
+            $wayPoint["x"],
+            $wayPoint["y"],
+            $endPoint["x"],
+            $endPoint["y"]
+        );*/
     }
     $pointList[] = $endPoint;
     return $pointList;
