@@ -57,8 +57,8 @@ require_once "php/git.php";
             <a href="https://yoast.com/articles/sortable-table/">Sortable Table</a>,
             <a href="http://www.garrett.nildram.co.uk/calendar/scw.htm">Simple Calendar Widget</a>,
             <a href="http://www.movable-type.co.uk/scripts/latlong.html">Movable Type Scripts (Great Circle)</a>,
-            <a href="https://pajhome.org.uk/crypt/md5/">MD5</a> and
-            <a href="https://simplehtmldom.sourceforge.net/">PHP Simple HTML DOM Parser</a>.
+            <a href="https://pajhome.org.uk/crypt/md5/">MD5</a>.
+            <a href="https://github.com/rubobaquero/phpquery">phpQuery</a>.
         </p>
 
         <p>Map tiles come from <a href='https://carto.com/'>CartoDB</a>, <a href='http://maps.stamen.com/'>Stamen</a> and <a href='https://www.mapbox.com/'>Mapbox</a>.</p>
