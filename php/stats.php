@@ -135,67 +135,36 @@ foreach ($sth as $row) {
 }
 echo implode(";", $rows) . "\n";
 
-// North, South, West, East
-// 0 desc, 1 iata, 2 icao, 3 apid, 4 x, 5 y
 $sql = <<<SQL
-(
-    SELECT '%s', iata, icao, apid, x, y
-    FROM airports WHERE y = (
-        SELECT MAX(y)
-        FROM airports AS a, flights AS f
-        WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND $filter
-    )
-    ORDER BY iata
-    LIMIT 1
+WITH visited_airports AS (
+    SELECT a.iata, a.icao, a.apid, a.x, a.y
+    FROM flights f
+    JOIN airports a ON (f.src_apid = a.apid OR f.dst_apid = a.apid)
+    WHERE $filter
+    ORDER BY a.apid ASC
 )
-UNION
-(
-    SELECT '%s',iata,icao,apid,x,y
-    FROM airports
-    WHERE y = (
-        SELECT MIN(y)
-        FROM airports AS a, flights AS f
-        WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND $filter
-    )
-    ORDER BY iata
-    LIMIT 1
-)
-UNION
-(
-    SELECT '%s',iata,icao,apid,x,y
-    FROM airports
-    WHERE x = (
-        SELECT MIN(x)
-        FROM airports AS a, flights AS f
-        WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND $filter
-    )
-    ORDER BY iata
-    LIMIT 1
-)
-UNION
-(
-    SELECT '%s',iata,icao,apid,x,y
-    FROM airports WHERE x=(
-        SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND $filter
-    )
-    ORDER BY iata
-    LIMIT 1
-)
+(SELECT 'N' dir, a.* FROM visited_airports a ORDER BY y DESC LIMIT 1)
+UNION ALL
+(SELECT 'S' dir, a.* FROM visited_airports a ORDER BY y ASC LIMIT 1)
+UNION ALL
+(SELECT 'E' dir, a.* FROM visited_airports a ORDER BY x DESC LIMIT 1)
+UNION ALL
+(SELECT 'W' dir, a.* FROM visited_airports a ORDER BY x ASC LIMIT 1)
 SQL;
 
-$sth = $dbh->query(
-    sprintf(
-        $sql,
-        addslashes(_("Northernmost")),
-        addslashes(_("Southernmost")),
-        addslashes(_("Westernmost")),
-        addslashes(_("Easternmost"))
-    )
-);
+$compass_labels = [
+    'N' => _("Northernmost"),
+    'S' => _("Southernmost"),
+    'E' => _("Easternmost"),
+    'W' => _("Westernmost")
+];
+
+$sth = $dbh->query($sql);
 $rows = [];
 foreach ($sth as $row) {
-    $code = format_apcode2($row[1], $row[2]);
-    $rows[] = sprintf("%s,%s,%s,%s,%s", $row[0], $code, $row[3], $row[4], $row[5]);
+    $dir = $compass_labels[$row["dir"]];
+    $code = format_apcode2($row["iata"], $row["icao"]);
+    $rows[] = sprintf("%s,%s,%s,%s,%s", $dir, $code, $row["apid"], $row["x"], $row["y"]);
 }
 echo implode(":", $rows) . "\n";
 
