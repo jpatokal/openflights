@@ -1,9 +1,5 @@
 <?php
 
-use Github\Api\Issue;
-use Github\Api\Search;
-use Github\Client;
-
 require_once '../vendor/autoload.php';
 require_once '../php/locale.php';
 require_once '../php/db_pdo.php';
@@ -116,15 +112,6 @@ SQL;
             json_error("Editing airport failed.");
         }
     } else {
-        if (
-            // Check for empty strings, or default values as per config.php.sample
-            in_array($GITHUB_USER, [ "", "YOUR_USERNAME"] ) ||
-            in_array($GITHUB_ACCESS_TOKEN, ["", "YOUR_TOKEN"]) ||
-            $GITHUB_REPO == ''
-        ) {
-            json_error("Cannot submit edit request to GitHub; please check config!");
-        }
-
         $name = $_SESSION['name'];
         $newEdit = print_r(
             [
@@ -200,7 +187,7 @@ TXT;
             // $ex->code === 401 is Unauthorised
             // Probably not localised...
             json_error($ex->getMessage());
-            // json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
+            // json_error(_("Could not submit edit for review, please contact <a href='/about'>support</a>."));
         }
     }
     exit;

@@ -6,7 +6,7 @@ require_once "db_pdo.php";
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php echo _("Import") ?></title>
+    <title>OpenFlights: <?php echo _("Import"); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
@@ -17,7 +17,7 @@ require_once "db_pdo.php";
   <body>
     <div id="contexthelp">
 
-  <h1>OpenFlights: <?php echo _("Import") ?></h1>
+  <h1>OpenFlights: <?php echo _("Import"); ?></h1>
 <?php
 $uid = $_SESSION["uid"];
 if (!$uid || empty($uid)) {
@@ -313,7 +313,7 @@ switch ($action) {
         $filename = $_POST["tmpfile"];
         $uploadFile = $uploaddir . str_replace($remove_these, '', $filename);
         if (! file_exists($uploadFile)) {
-            die_nicely("File $uploadFile not found");
+            die_nicely(_(sprintf("File %s not found", $uploadFile)));
         }
         print "<H4>" . _("Importing...") . "</H4>";
         print "Tmpfile " . $filename . "<br>"; // DEBUG
@@ -335,7 +335,7 @@ switch ($fileType) {
         $html = phpQuery::newDocumentFileHTML($uploadFile, 'ISO-8859-1');
 
         if ($html['title']->text() != "FlightMemory - FlightData") {
-            die_nicely(_("Sorry, the file $uploadFile does not appear contain FlightMemory FlightData."));
+            die_nicely(_(sprintf("Sorry, the file %s does not appear contain FlightMemory FlightData.", $uploadFile)));
         }
 
         // Table with padded cells has the data
@@ -358,7 +358,7 @@ switch ($fileType) {
         break;
 
     default:
-        die_nicely(_("Unknown file type $fileType"));
+        die_nicely(sprintf(_("Unknown file type %s"), $fileType));
 }
 
 if ($action == _("Upload")) {
@@ -601,7 +601,7 @@ foreach ($rows as $row) {
                 $sql = "INSERT INTO planes(name) VALUES(?)";
                 $sth = $dbh->prepare($sql);
                 if (!$sth->execute([$plane])) {
-                    die('0;Adding new plane failed.');
+                    die('0;' .  _('Adding new plane failed.'));
                 }
                 $plid = $dbh->lastInsertId();
                 print "Plane:" . $plane . " ";
@@ -621,7 +621,7 @@ foreach ($rows as $row) {
                     $sql = "INSERT INTO airlines(name, uid) VALUES(?, ?)";
                     $sth = $dbh->prepare($sql);
                     if (!$sth->execute([$airline, $uid])) {
-                        die('0;Adding new airline failed.');
+                        die('0;' .  _('Adding new airline failed.'));
                     }
                     $alid = $dbh->lastInsertId();
                     print "Airline:" . $airline . " ";
@@ -666,7 +666,7 @@ SQL;
             ];
             $sth = $dbh->prepare($sql);
             if (!$sth->execute($params)) {
-                die('0;Importing flight failed.');
+                die('0;' .  _('Importing flight failed.'));
             }
             print $id . " ";
             break;
@@ -677,18 +677,18 @@ if ($action == _("Upload")) {
     ?>
 </table>
 
-    <h4><?php echo _("Key to results") ?></h4>
+    <h4><?php echo _("Key to results"); ?></h4>
 
 <table style='border-spacing: 3'>
  <tr>
-    <th><?php echo _("Color") ?></th><th><?php echo _("Meaning") ?></th>
+    <th><?php echo _("Color"); ?></th><th><?php echo _("Meaning"); ?></th>
  </tr><tr style='background-color: #fff'>
-    <td><?php echo _("None") ?></td><td><?php echo _("Exact match") ?></td>
+    <td><?php echo _("None"); ?></td><td><?php echo _("Exact match"); ?></td>
  </tr><tr style='background-color: #ddf'>
-    <td><?php echo _("Info") ?></td><td><?php echo _("Probable match, please verify") ?></tr><tr style='background-color: #fdd'>
-    <td><?php echo _("Warning") ?></td><td><?php echo _("No matches, will be added as new") ?></td>
+    <td><?php echo _("Info"); ?></td><td><?php echo _("Probable match, please verify"); ?></tr><tr style='background-color: #fdd'>
+    <td><?php echo _("Warning"); ?></td><td><?php echo _("No matches, will be added as new"); ?></td>
  </tr><tr style='background-color: #faa'>
-    <td><?php echo _("Error") ?></td><td><?php echo _("No matches, please correct and reupload") ?></td>
+    <td><?php echo _("Error"); ?></td><td><?php echo _("No matches, please correct and reupload"); ?></td>
  </tr>
 </table><br>
 
@@ -696,10 +696,14 @@ if ($action == _("Upload")) {
 
     <?php
     if ($id_note == true) {
-        print "<font color=blue>" . _("Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") . "</font><br>";
+        print "<font color=blue>" .
+            _("Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") .
+            "</font><br>";
     }
     if ($history == "yes") {
-        print "<font color=blue>" . ("Note: You have selected historical airline mode. All airline names have been preserved exactly as is.") . "</font><br>";
+        print "<font color=blue>" .
+            _("Note: You have selected historical airline mode. All airline names have been preserved exactly as is.") .
+            "</font><br>";
     }
 
     if ($status == "disabled") {
@@ -707,7 +711,8 @@ if ($action == _("Upload")) {
         switch ($fatal) {
             case "airport":
                 print _("Your flight data includes unrecognized airports. Please add them to the database and try again.");
-                print "<INPUT type='button' value='" . _("Add new airport") . "' onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
+                print "<INPUT type='button' value='" . _("Add new airport") .
+                    "' onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
                 break;
 
             case "airline":
@@ -724,24 +729,30 @@ if ($action == _("Upload")) {
         }
         print "</font><br><br>";
     } else {
-        print _("<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)") . "<br><br>";
+        print _(
+            "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)"
+        ) . "<br><br>";
     }
-    print "<INPUT type='hidden' name='tmpfile' value='". basename($_FILES['userfile']['tmp_name']) . "'>";
+    print "<INPUT type='hidden' name='tmpfile' value='" . basename($_FILES['userfile']['tmp_name']) . "'>";
     print "<INPUT type='hidden' name='fileType' value='$fileType'>";
     print "<INPUT type='hidden' name='historyMode' value='$history'>";
-    print "<INPUT type='submit' name='action' title='" . _("Add these flights to your OpenFlights") . "' value='" . _("Import") . "' " . $status . ">";
+    print "<INPUT type='submit' name='action' title='" . _("Add these flights to your OpenFlights") . "' value='" .
+        _("Import") . "' " . $status . ">";
     ?>
 
-<INPUT type="button" value="<?php echo _("Upload again") ?>" title="<?php _("Cancel this import and return to file upload page") ?>" onClick="JavaScript:history.go(-1)">
+<INPUT type="button" value="<?php echo _("Upload again"); ?>" title="<?php
+    _("Cancel this import and return to file upload page"); ?>" onClick="JavaScript:history.go(-1)">
 
-<INPUT type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+<INPUT type="button" value="<?php echo _("Cancel"); ?>" onClick="window.close()">
 
     <?php
 }
 if ($action == _("Import")) {
     print "<BR><H4>" . _("Flights successfully imported.") . "</H4><BR>";
-    print "<INPUT type='button' value='" . _("Import more flights") . "' onClick='javascript:window.location=\"/html/import\"'>";
-    print "<INPUT type='button' value='" . _("Close") . "' onClick='javascript:parent.opener.refresh(true); window.close();'>";
+    print "<INPUT type='button' value='" .
+        ("Import more flights") . "' onClick='javascript:window.location=\"/html/import\"'>";
+    print "<INPUT type='button' value='" . _("Close") .
+        "' onClick='javascript:parent.opener.refresh(true); window.close();'>";
 }
 
 ?>
