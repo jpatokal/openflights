@@ -12,6 +12,203 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
+msgid "About"
+msgstr ""
+
+msgid ""
+"OpenFlights is a tool that lets you map your flights around the world, "
+"search and filter them in all sorts of interesting ways, calculate "
+"statistics automatically, and share your flights and trips with friends and "
+"the entire world (if you wish). It's also the name of the open-source "
+"project to build the tool. Read more about it in the <a href=\"faq\">FAQ</a>."
+msgstr ""
+
+msgid ""
+"Having completed its Alpha, Beta and Gamma test phases, OpenFlights is now "
+"in its Delta phase: all core functionality is implemented, but development "
+"on new features continues. If you'd like to be informed about major updates "
+"to the site, subscribe to <a href=\"https://blog.openflights.org\">our blog</"
+"a> or follow us on your favorite social networking/microblogging site:"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid ""
+"<a href=\"https://github.com/jpatokal/openflights/issues\">Bug reports</a> "
+"and <a href=\"https://github.com/jpatokal/openflights/issues\">feature "
+"requests</a> should be filed on <a href=\"https://github.com/jpatokal/"
+"openflights\">GitHub</a>."
+msgstr ""
+
+msgid ""
+"To get in touch with the team behind OpenFlights, send mail to <i>info at "
+"openflights dot org</i>."
+msgstr ""
+
+msgid "Site statistics"
+msgstr ""
+
+msgid "Recent changes"
+msgstr ""
+
+msgid ""
+"See <a href=\"https://github.com/jpatokal/openflights/commits/"
+"master\">recent commits on Github</a>."
+msgstr ""
+
+msgid "Credits"
+msgstr ""
+
+msgid "Open-source packages used to create this software include:"
+msgstr ""
+
+msgid ""
+"Map tiles come from <a href='https://carto.com/'>CartoDB</a>, <a "
+"href='http://maps.stamen.com/'>Stamen</a> and <a href='https://www.mapbox."
+"com/'>Mapbox</a>."
+msgstr ""
+
+msgid ""
+"Map data is provided by <a href='https://www.openstreetmap.org'>OSM</a>."
+msgstr ""
+
+msgid ""
+"Special thanks to the OpenFlights beta testing team of <a href=\"https://"
+"flyertalk.com\">FlyerTalk</a> users <b>FCYTravis</b>, <b>marc</b>, <b>sbm12</"
+"b> and <b>trsqr</b>."
+msgstr ""
+
+msgid "OpenFlights: Donations and Elite Levels"
+msgstr ""
+
+msgid "Donations and Elite Levels"
+msgstr ""
+
+msgid ""
+"True to our name, we at OpenFlights believe in open access &mdash; the "
+"functionality on our website, and the source code behind it, is free to all. "
+"However, hosting the site costs real money, and the ads alone aren't enough "
+"to pay our bills. Donations to help support the site are thus <b>very</b> "
+"much appreciated, and in addition to an Elite-level star on your profile and "
+"bragging rights, donors receive a few extra goodies."
+msgstr ""
+
+msgid "OpenFlights Elite levels"
+msgstr ""
+
+msgid "Cyan"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid ""
+"Access to entire website and all functions; however, your pages may contain "
+"banner and full-page advertising. If you add <b>over 100 flights</b> or set "
+"your profile to <b>Private</b>, we figure you're using a little more than "
+"your fair share of site resources, so your profile will be tagged with a "
+"warning icon and you will receive reminders to consider donating when you "
+"log in."
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Silver"
+msgstr ""
+
+msgid "Silver star"
+msgstr ""
+
+msgid "The cheapest way to soothe your conscience."
+msgstr ""
+
+msgid "No reminders or full-page ads when logging in."
+msgstr ""
+
+msgid "No warning icon on your profile."
+msgstr ""
+
+msgid "US$12/year"
+msgstr ""
+
+msgid "Gold"
+msgstr ""
+
+msgid "Gold star"
+msgstr ""
+
+msgid "This is where the action is. All Silver features, plus"
+msgstr ""
+
+msgid "Banner ads replaced with panel of your choice (Help, Top 10, Analyze)."
+msgstr ""
+
+msgid ""
+"Password-protect your private profile, so you can share it with friends."
+msgstr ""
+
+msgid "Dedicated mail address for support."
+msgstr ""
+
+msgid "US$24/year"
+msgstr ""
+
+msgid "Platinum"
+msgstr ""
+
+msgid "Platinum star"
+msgstr ""
+
+msgid "For connoisseurs of the finer things in life. All Gold features, plus"
+msgstr ""
+
+msgid "Priority handling for bug reports and feature requests."
+msgstr ""
+
+msgid "Access to future versions before public release."
+msgstr ""
+
+msgid "US$48/year"
+msgstr ""
+
+#, php-format
+msgid "You are logged in <b>%s</b>."
+msgstr ""
+
+msgid "Please <a href=\"/\">log in</a> before donating!"
+msgstr ""
+
+msgid ""
+"Our payments are processed through PayPal, but you do <i>not</i> need a "
+"PayPal account: Visa, MasterCard, American Express and Discover cards are "
+"also accepted. Please allow one business day for your elite status to be "
+"activated."
+msgstr ""
+
+msgid "Limited time offer"
+msgstr ""
+
+msgid ""
+"Submit OpenFlights to any website that sends over 1000 people our way, or "
+"any newspaper or magazine indexed on Google News, and we'll either give you "
+"a Silver status for a year or bump you up a level if you're already an elite "
+"member. Send your claim and the link as proof to us via <a href=\"/contact."
+"html\">Contact</a>, and we'll get back to you."
+msgstr ""
+
+msgid "Obligatory disclaimer"
+msgstr ""
+
+msgid ""
+"We have no intention of alienating our fans, but for the record: OpenFlights "
+"reserves the right to adjust elite level privileges in any way and grant or "
+"revoke elite level privileges for any user at any time for any reason. No "
+"refunds are possible, even if OpenFlights is temporarily not accessible or "
+"goes permanently offline."
+msgstr ""
+
 msgid "Flight logging, mapping, stats and sharing"
 msgstr ""
 
@@ -108,6 +305,48 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+msgid ""
+"OpenFlights Map Help <small>&mdash; Didn't answer your question? Try the <a "
+"href=\"faq.html\" target=\"_blank\">FAQ</a>.</small>"
+msgstr ""
+
+msgid ""
+"<p><b>View airport</b>: Click on an airport <img src=\"/img/icon_plane-15x15."
+"png\" height=15 width=15> to view details. Click on <img src=\"/img/close."
+"gif\" height=17 width=17> or another airport to close the pop-up."
+msgstr ""
+
+msgid ""
+"<b>Move around</b>: Use <img src=\"/img/north-mini.png\" height=18 "
+"width=18><img src=\"/img/west-mini.png\" height=18 width=18><img src=\"/img/"
+"east-mini.png\" height=18 width=18><img src=\"/img/south-mini.png\" "
+"height=18 width=18> buttons (top left) or click and drag your mouse."
+msgstr ""
+
+msgid ""
+"<b>Zoom in/out</b>: Use <img src=\"/img/zoom-plus-mini.png\" height=18 "
+"width=18><img src=\"/img/zoom-minus-mini.png\" height=18 width=18>, roll "
+"your mouse wheel, or double-click on the point you want to zoom to. For the "
+"full world view, click <img src=\"/img/zoom-world-mini.png\" height=18 "
+"width=18>."
+msgstr ""
+
+msgid ""
+"<b>Select region</b>: While holding down Shift key, click on the map and "
+"draw a rectangle with your mouse."
+msgstr ""
+
+msgid ""
+"<b>Map options</b>: To choose your map type and what to show on it, click on "
+"the top right <img src=\"/img/layer-switcher-maximize.png\" height=18 "
+"width=18>."
+msgstr ""
+
+msgid ""
+"<b>Minimap</b>: To activate the mini-map control, click on bottom right <img "
+"src=\"/img/layer-switcher-maximize.png\" height=18 width=18>."
+msgstr ""
+
 msgid "Add new flight"
 msgstr ""
 
@@ -125,6 +364,9 @@ msgstr ""
 msgid "Departure and arrival time"
 msgstr ""
 
+msgid "Help: What is a trip?"
+msgstr ""
+
 msgid "Add new trip"
 msgstr ""
 
@@ -132,6 +374,9 @@ msgid "Edit this trip"
 msgstr ""
 
 msgid "From"
+msgstr ""
+
+msgid "Help: How do I enter airports?"
 msgstr ""
 
 msgid "Enter city name or airport code"
@@ -209,6 +454,9 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
+msgid "Help: How do I enter airlines?"
+msgstr ""
+
 msgid "Enter airline name or code"
 msgstr ""
 
@@ -260,7 +508,16 @@ msgstr ""
 msgid "Add new flights"
 msgstr ""
 
+msgid "Help: How do I enter where I flew from?"
+msgstr ""
+
+msgid "Help: How do I enter where I flew to?"
+msgstr ""
+
 msgid "Airline"
+msgstr ""
+
+msgid "Help: How do I enter the airline?"
 msgstr ""
 
 msgid "Save these flights"
@@ -291,6 +548,29 @@ msgstr ""
 msgid "Your session has timed out, please log in again."
 msgstr ""
 
+msgid "Duplicate check failed."
+msgstr ""
+
+#, php-format
+msgid "A %s using the name or alias %s exists already."
+msgstr ""
+
+#, php-format
+msgid "An airline using the IATA code %s exists already."
+msgstr ""
+
+#, php-format
+msgid "An airline using the ICAO code %s exists already."
+msgstr ""
+
+#, php-format
+msgid "Adding new %s failed."
+msgstr ""
+
+#, php-format
+msgid "New %s successfully added."
+msgstr ""
+
 #, php-format
 msgid "Airline successfully edited."
 msgstr ""
@@ -299,6 +579,53 @@ msgstr ""
 msgid "Editing airline failed:"
 msgstr ""
 
+#, php-format
+msgid "Operation %s failed."
+msgstr ""
+
+msgid "Adding new airport failed."
+msgstr ""
+
+msgid "New airport successfully added."
+msgstr ""
+
+msgid "Airport successfully edited."
+msgstr ""
+
+msgid "Editing airport failed."
+msgstr ""
+
+#, php-format
+msgid "Edit submitted for review on Github: Issue %s, %s"
+msgstr ""
+
+msgid "No airports matching your query exist."
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+#, php-format
+msgid "Query %s caused database error %s, %s"
+msgstr ""
+
+msgid "Direct"
+msgstr ""
+
+#, php-format
+msgid "% stops"
+msgstr ""
+
+msgid "Codeshare"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Priv"
+msgstr ""
+
+#, php-format
 msgid "Not logged in, aborting"
 msgstr ""
 
@@ -338,6 +665,10 @@ msgstr ""
 msgid "Unable to open CSV file."
 msgstr ""
 
+#, php-format
+msgid "Unknown file type %s"
+msgstr ""
+
 msgid "Miles"
 msgstr ""
 
@@ -348,6 +679,15 @@ msgid "Reg"
 msgstr ""
 
 msgid "Comment"
+msgstr ""
+
+msgid "Adding new plane failed."
+msgstr ""
+
+msgid "Adding new airline failed."
+msgstr ""
+
+msgid "Importing flight failed."
 msgstr ""
 
 msgid "Key to results"
@@ -371,13 +711,7 @@ msgstr ""
 msgid "Probable match, please verify"
 msgstr ""
 
-msgid "Warning"
-msgstr ""
-
 msgid "No matches, will be added as new"
-msgstr ""
-
-msgid "Error"
 msgstr ""
 
 msgid "No matches, please correct and reupload"
@@ -387,6 +721,11 @@ msgid ""
 "Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs "
 "will override the values of any manual changes made to the airport, airline "
 "and/or plane columns."
+msgstr ""
+
+msgid ""
+"Note: You have selected historical airline mode. All airline names have been "
+"preserved exactly as is."
 msgstr ""
 
 msgid ""
@@ -431,14 +770,18 @@ msgstr ""
 msgid "Flights successfully imported."
 msgstr ""
 
-msgid "Import more flights"
+msgid "Close"
 msgstr ""
 
-msgid "Close"
+msgid "Session expired. Please <a href='/'>refresh</a> and try again."
 msgstr ""
 
 #, php-format
 msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr ""
+
+#, php-format
+msgid "Signup;No username found for ID %s"
 msgstr ""
 
 msgid "No such trip."
@@ -456,6 +799,12 @@ msgstr ""
 msgid "This user's flights are password-protected."
 msgstr ""
 
+msgid "Submit"
+msgstr ""
+
+msgid "Database error."
+msgstr ""
+
 msgid "This user has no flights."
 msgstr ""
 
@@ -463,6 +812,21 @@ msgid "km"
 msgstr ""
 
 msgid "miles"
+msgstr ""
+
+msgid "Airport or airline ID is mandatory"
+msgstr ""
+
+#, php-format
+msgid "No match found for query %s"
+msgstr ""
+
+#, php-format
+msgid "Error;No airport with ID %s found"
+msgstr ""
+
+#, php-format
+msgid "Error;No airline with ID %s found"
 msgstr ""
 
 msgid "-operated"
@@ -479,6 +843,14 @@ msgid "Account reset, %s flights deleted."
 msgstr ""
 
 msgid "Sorry, current password is not correct."
+msgstr ""
+
+#, php-format
+msgid "Unknown action %s"
+msgstr ""
+
+#, php-format
+msgid "Operation on user %s failed."
 msgstr ""
 
 #, php-format
@@ -524,6 +896,9 @@ msgid "%s flights added."
 msgstr ""
 
 msgid "Edited."
+msgstr ""
+
+msgid " deleted."
 msgstr ""
 
 #, php-format
@@ -575,9 +950,6 @@ msgid "Page"
 msgstr ""
 
 msgid "Next Page"
-msgstr ""
-
-msgid "Database error."
 msgstr ""
 
 msgid "Import All"
@@ -657,6 +1029,18 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgid "International Air Transport Association"
+msgstr ""
+
+msgid "IATA"
+msgstr ""
+
+msgid "International Civil Aviation Organization"
+msgstr ""
+
+msgid "ICAO"
+msgstr ""
+
 msgid "Active?"
 msgstr ""
 
@@ -703,6 +1087,12 @@ msgid "Fill one or more fields below to search for matching airports."
 msgstr ""
 
 msgid "Airport name"
+msgstr ""
+
+msgid "Federal Aviation Administration"
+msgstr ""
+
+msgid "FAA"
 msgstr ""
 
 msgid "Airport ID"
@@ -809,6 +1199,18 @@ msgstr ""
 msgid ""
 "You will be given a chance to review the flights before they are actually "
 "imported. See %s to backup or clear your flights before importing."
+msgstr ""
+
+msgid "Route maps"
+msgstr ""
+
+msgid "Airline route maps (by IATA code)"
+msgstr ""
+
+msgid "Airport route maps (by IATA code)"
+msgstr ""
+
+msgid "Airport route maps (by ICAO code)"
 msgstr ""
 
 msgid "Create new account"
@@ -1003,6 +1405,50 @@ msgid "Not assigned yet"
 msgstr ""
 
 msgid "Save"
+msgstr ""
+
+msgid "Reset password"
+msgstr ""
+
+#, php-format
+msgid ""
+"Your new password is <b>%s</b>. Please log in and change it from Settings."
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Invalid challenge."
+msgstr ""
+
+#, php-format
+msgid "A password reset link has been mailed to <b>%s</b>."
+msgstr ""
+
+msgid "Message delivery failed, please contact <a href='/about'>support</a>."
+msgstr ""
+
+msgid "Sorry, that e-mail address is not registered for any OpenFlights user."
+msgstr ""
+
+msgid ""
+"Can't log in? One tip before you panic: make sure you have entered your "
+"password <b>using the same case</b> as you did when signing up: \"Secret\" "
+"is not the same as \"secret\". If you signed up before January 15, 2009, "
+"your <b>username</b> (\"Joe\" vs \"joe\") also has to match. "
+msgstr ""
+
+msgid ""
+"If that doesn't help, enter your <b>e-mail address</b> below, and we'll send "
+"you a link you can use to reset your password."
+msgstr ""
+
+msgid ""
+"If you didn't register an e-mail address, then sorry, we don't know that "
+"you're you, so there's really nothing we can do."
+msgstr ""
+
+msgid "Return"
 msgstr ""
 
 msgid "Prem.Eco"
