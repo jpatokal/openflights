@@ -70,7 +70,7 @@ if ($type == "signup") {
               <td class="desc">
               <?php printf(
                   _("If you forget your password, we can mail you a new one to this address. We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."),
-                  "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'"
+                  "a href='#' onClick='window.open(\"/help/privacy.php\", \"Help\", \"width=500,height=400,scrollbars=yes\")'"
               ); ?>
               </td>
           </tr>
@@ -135,7 +135,7 @@ if ($type == "signup") {
             <td class="desc">
               <?php printf(
                 _("If you forget your password, we can mail you a new one to this address. We will <i>never</i> send you any other mail or share your private information, see <%s>privacy policy</a> for details."),
-                  "a href='#' onClick='window.open(\"/help/privacy.html\", \"Help\", \"width=500,height=400,scrollbars=yes\")'"
+                  "a href='#' onClick='window.open(\"/help/privacy.php\", \"Help\", \"width=500,height=400,scrollbars=yes\")'"
               ); ?>
             </td>
           </tr>
@@ -258,7 +258,7 @@ if ($type == "signup") {
             <td class="desc" colspan=2><?php
                 printf(
                     _("<%s>CSV</a> files can be opened and edited with spreadsheets like Excel."),
-                    "a href='/help/csv.html'"
+                    "a href='/help/csv.php'"
                 ); ?>
             </td>
           </tr>

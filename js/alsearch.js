@@ -472,7 +472,7 @@ function selectAirline(data, name, mode) {
 // A dupe from openflights.js...
 function help(context) {
   window.open(
-    "/help/" + context + ".html",
+    "/help/" + context + ".php",
     // TODO: Localise?
     "OpenFlights Help: " + context,
     "width=500,height=400,scrollbars=yes"
