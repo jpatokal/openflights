@@ -4,7 +4,7 @@ Welcome to the code base for [OpenFlights](https://openflights.org), a tool that
 
 ## Data
 
-Most people come here for the **free airport, airline and route data**. See the [documentation](https://openflights.org/data.html) or plunge straight into the [data itself](data/).
+Most people come here for the **free airport, airline and route data**. See the [documentation](https://openflights.org/data.php) or plunge straight into the [data itself](data/).
 
 ## User interface
 
