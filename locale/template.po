@@ -2976,3 +2976,23 @@ msgstr ""
 
 msgid "OpenFlights may display, package, and provide for reuse your flights, as well as any airports or airlines added by you, in an anonymized format. (See <a href=\"/data.php\">Databases</a> for details.)"
 msgstr ""
+
+msgid "OpenFlights: %1"
+msgstr ""
+
+msgid "Airport and airline data"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+#, php-format
+msgid "Want a copy of this data? See %s"
+msgstr ""
+
+msgid "Privacy policy"
+msgstr ""
+
+#, php-format
+msgid "OpenFlights: %s"
+msgstr ""
