@@ -65,7 +65,7 @@ if ($searchType == 'airport' || ($multi && strlen($searchText) != 2)) {
         SELECT 2 as sort_col, apid, name, city, country, iata, icao, x, y, timezone, dst
         FROM airports
         WHERE $ext (city LIKE :name
-    SQL;
+SQL;
 
     switch (strlen($searchText)) {
         case 3: // IATA
@@ -76,18 +76,18 @@ if ($searchType == 'airport' || ($multi && strlen($searchText) != 2)) {
                 UNION ($sql))
                 ORDER BY sort_col,$sort_order
                 LIMIT $limit
-            SQL;
+SQL;
             break;
 
         case 4: // ICAO
             $sql = <<<SQL
-            SELECT 1 as sort_col, apid, name, city, country, iata, icao, x, y, timezone, dst
-            FROM airports
-            WHERE icao = :code
-            UNION ($sql))
-            ORDER BY sort_col, $sort_order
-            LIMIT $limit
-        SQL;
+                SELECT 1 as sort_col, apid, name, city, country, iata, icao, x, y, timezone, dst
+                FROM airports
+                WHERE icao = :code
+                UNION ($sql))
+                ORDER BY sort_col, $sort_order
+                LIMIT $limit
+SQL;
             break;
 
         default:
@@ -134,7 +134,7 @@ if ($searchType == 'airline' || $multi) {
         SELECT 2 as sort_col, alid, name, iata, icao, mode
         FROM airlines
         WHERE mode = :mode AND $ext (name LIKE :name OR alias LIKE :name)
-    SQL;
+SQL;
 
     // IATA/ICAO only apply to flights
     if ($mode == 'F') {
@@ -147,7 +147,7 @@ if ($searchType == 'airline' || $multi) {
                     UNION ($sql)
                     ORDER BY sort_col, name
                     LIMIT $limit
-                SQL;
+SQL;
                 break;
 
             case 3: // ICAO
@@ -159,7 +159,7 @@ if ($searchType == 'airline' || $multi) {
                         UNION ($sql)
                         ORDER BY sort_col, name
                         LIMIT $limit
-                    SQL;
+SQL;
                     break;
                 } // else fallthru
 
@@ -200,7 +200,7 @@ if ($searchType == 'plane') {
             LIMIT 6
         )
         LIMIT 6;
-    SQL;
+SQL;
     $sth = $dbh->prepare($sql);
     $sth->execute(compact('name'));
 

@@ -89,10 +89,10 @@ print json_encode($array) . "\n";
 
 // longest and shortest
 // 0 desc, 1 distance, 2 duration, 3 src_iata, 4 src_icao, 5 src_apid, 6 dst_iata, 7 dst_icao, 8 dst_apid
-$sql = sprintf(
-<<<SQL
+$sql = <<<SQL
 (
-    SELECT '%s', ROUND(f.distance %s) AS distance, DATE_FORMAT(duration, '%%H:%%i') AS duration, s.iata, s.icao, s.apid, d.iata, d.icao, d.apid
+    SELECT '%s', ROUND(f.distance %s) AS distance, DATE_FORMAT(duration, '%%H:%%i') AS duration,
+           s.iata, s.icao, s.apid, d.iata, d.icao, d.apid
     FROM flights AS f, airports AS s, airports AS d
     WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND $filter
     ORDER BY distance DESC
@@ -100,19 +100,23 @@ $sql = sprintf(
 )
 UNION 
 (
-    SELECT '%s', ROUND(f.distance %s) AS distance, DATE_FORMAT(duration, '%%H:%%i') AS duration, s.iata, s.icao, s.apid, d.iata, d.icao, d.apid
+    SELECT '%s', ROUND(f.distance %s) AS distance, DATE_FORMAT(duration, '%%H:%%i') AS duration,
+           s.iata, s.icao, s.apid, d.iata, d.icao, d.apid
     FROM flights AS f, airports AS s, airports AS d
     WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND $filter
     ORDER BY distance ASC
     LIMIT 1
 )
-SQL,
-    _("Longest"),
-    $multiplier,
-    _("Shortest"),
-    $multiplier
+SQL;
+$sth = $dbh->query(
+    sprintf(
+        $sql,
+        _("Longest"),
+        $multiplier,
+        _("Shortest"),
+        $multiplier
+    )
 );
-$sth = $dbh->query($sql);
 $rows = [];
 foreach ($sth as $row) {
     $src_code = format_apcode2($row[3], $row[4]);
@@ -133,8 +137,7 @@ echo implode(";", $rows) . "\n";
 
 // North, South, West, East
 // 0 desc, 1 iata, 2 icao, 3 apid, 4 x, 5 y
-$sql = sprintf(
-<<<SQL
+$sql = <<<SQL
 (
     SELECT '%s', iata, icao, apid, x, y
     FROM airports WHERE y = (
@@ -178,14 +181,17 @@ UNION
     ORDER BY iata
     LIMIT 1
 )
-SQL,
-    addslashes(_("Northernmost")),
-    addslashes(_("Southernmost")),
-    addslashes(_("Westernmost")),
-    addslashes(_("Easternmost"))
-);
+SQL;
 
-$sth = $dbh->query($sql);
+$sth = $dbh->query(
+    sprintf(
+        $sql,
+        addslashes(_("Northernmost")),
+        addslashes(_("Southernmost")),
+        addslashes(_("Westernmost")),
+        addslashes(_("Easternmost"))
+    )
+);
 $rows = [];
 foreach ($sth as $row) {
     $code = format_apcode2($row[1], $row[2]);

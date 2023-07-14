@@ -63,7 +63,7 @@ if ($action == "RECORD") {
         $sql = <<<SQL
             INSERT INTO airports(name, city, country, iata, icao, x, y, elevation, timezone, dst, uid)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        SQL;
+SQL;
         $params = [
             $airport,
             $city,
@@ -83,7 +83,7 @@ if ($action == "RECORD") {
             UPDATE airports
             SET name = ?, city = ?, country = ?, iata = ?, icao = ?, x = ?, y = ?, elevation = ?, timezone = ?, dst = ?
             WHERE apid = ?
-        SQL;
+SQL;
         $params = [
             $airport,
             $city,

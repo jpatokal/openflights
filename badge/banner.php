@@ -70,11 +70,11 @@ $uid = $row["uid"];
 $units = $row["units"];
 
 $sth = $dbh->prepare(<<<SQL
-SELECT COUNT(*) AS count,
-       COALESCE(SUM(distance), 0) AS distance,
-       COALESCE(SUM(TIME_TO_SEC(duration))/60, 0) AS duration
-FROM flights
-WHERE uid = ?
+    SELECT COUNT(*) AS count,
+           COALESCE(SUM(distance), 0) AS distance,
+           COALESCE(SUM(TIME_TO_SEC(duration))/60, 0) AS duration
+    FROM flights
+    WHERE uid = ?
 SQL);
 
 $result = $sth->execute([$uid]);

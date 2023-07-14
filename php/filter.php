@@ -104,7 +104,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
         FROM airlines as a, flights as f
         WHERE f.uid = ? $filter AND a.alid = f.alid
         ORDER BY name
-    SQL
+SQL
     );
     $sth->execute($params);
     $rows = [];
@@ -118,7 +118,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
         SELECT DISTINCT YEAR(src_date) AS year
         FROM flights WHERE uid = ? $filter AND YEAR(src_date) != '0'
         ORDER BY year DESC
-    SQL
+SQL
     );
     $sth->execute($params);
     $rows = [];
