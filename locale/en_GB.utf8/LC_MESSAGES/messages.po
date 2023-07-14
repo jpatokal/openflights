@@ -1508,7 +1508,29 @@ msgstr ""
 msgid "Toggle overview map"
 msgstr ""
 
+msgid ""
+"Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> "
+"(CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' "
+"target='_blank'>OSM</a> (ODbL)"
+msgstr ""
+
+msgid ""
+"Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</"
+"a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' "
+"target='_blank'>OSM</a> (CC BY SA)"
+msgstr ""
+
+msgid ""
+"Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' "
+"target='_blank'>Mapbox</a>"
+msgstr ""
+
 msgid "Flights"
+msgstr ""
+
+msgid ""
+"ERROR: %1: %2 of %3.<br>Please hit CTRL-F5 to force refresh, and <a href='/"
+"about'>report</a> this error if it does not go away."
 msgstr ""
 
 msgid "Select this airport"
@@ -1527,6 +1549,9 @@ msgid "Flights:"
 msgstr ""
 
 msgid "Airports"
+msgstr ""
+
+msgid "Home"
 msgstr ""
 
 msgid ""
@@ -1597,9 +1622,6 @@ msgstr ""
 msgid "%1's flights"
 msgstr ""
 
-msgid "Home"
-msgstr ""
-
 msgid "Not in a trip"
 msgstr ""
 
@@ -1648,6 +1670,9 @@ msgstr ""
 msgid "Copy to new flight"
 msgstr ""
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr ""
 
@@ -1679,6 +1704,18 @@ msgid "Average"
 msgstr ""
 
 msgid "Airport records"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
+msgid "E"
 msgstr ""
 
 msgid "Seats"
@@ -1720,6 +1757,9 @@ msgstr ""
 msgid "Search for %1"
 msgstr ""
 
+msgid "Error: Unknown parameter '%1' at calcDuration()"
+msgstr ""
+
 msgid "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
 msgstr ""
 
@@ -1732,19 +1772,22 @@ msgstr ""
 msgid "Flight departure and arrival times"
 msgstr ""
 
+msgid "This airport is currently filtered out. Clear filter?"
+msgstr ""
+
 msgid "Show airline route map"
 msgstr ""
 
-msgid "Logged in as <B>%1</B>"
+msgid "Logged in as <b>%1</b>"
 msgstr ""
 
-msgid "Welcome, <B>%1</B> !"
+msgid "Welcome, <b>%1</b> !"
 msgstr ""
 
 msgid "Loading"
 msgstr ""
 
-msgid "Hi, <B>%1</B> !"
+msgid "Hi, <b>%1</b> !"
 msgstr ""
 
 msgid ""
@@ -1919,6 +1962,18 @@ msgid ""
 "one and you wish to proceed?"
 msgstr ""
 
+msgid "SOUTH"
+msgstr ""
+
+msgid "NORTH"
+msgstr ""
+
+msgid "WEST"
+msgstr ""
+
+msgid "EAST"
+msgstr ""
+
 msgid ""
 "Are you sure you want to add %1 as a new airport, located in the %2 quadrant "
 "of the world? Please double-check the name, airport codes and exact "
@@ -1938,6 +1993,18 @@ msgid "Airports in pink have been added by users of OpenFlights."
 msgstr ""
 
 msgid "Airports in blue have been added by you and can be edited."
+msgstr ""
+
+msgid "Silver Elite"
+msgstr ""
+
+msgid "Gold Elite"
+msgstr ""
+
+msgid "Platinum Elite"
+msgstr ""
+
+msgid "Thank you for using OpenFlights &mdash; please donate!"
 msgstr ""
 
 msgid "Creating account..."
@@ -1976,4 +2043,15 @@ msgid "Processing..."
 msgstr ""
 
 msgid "Profile address: "
+msgstr ""
+
+msgid "Please enter a name for this trip."
+msgstr ""
+
+msgid ""
+"Are you sure you want to delete this trip? (Flights in this trip will NOT be "
+"deleted.)"
+msgstr ""
+
+msgid "Deleting trip cancelled."
 msgstr ""

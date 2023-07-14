@@ -1829,3 +1829,78 @@ msgstr ""
 
 msgid "FAA"
 msgstr ""
+
+msgid "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (ODbL)"
+msgstr ""
+
+msgid "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)"
+msgstr ""
+
+msgid "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' target='_blank'>Mapbox</a>"
+msgstr ""
+
+msgid "ERROR: %1: %2 of %3.<br>Please hit CTRL-F5 to force refresh, and <a href='/about'>report</a> this error if it does not go away."
+msgstr ""
+
+msgid "Statistics calculation failed!"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
+msgid "E"
+msgstr ""
+
+msgid "Error: Unknown parameter '%1' at calcDuration()"
+msgstr ""
+
+msgid "This airport is currently filtered out. Clear filter?"
+msgstr ""
+
+msgid "Logged in as <b>%1</b>"
+msgstr ""
+
+msgid "Welcome, <b>%1</b> !"
+msgstr ""
+
+msgid "Hi, <b>%1</b> !"
+msgstr ""
+
+msgid "SOUTH"
+msgstr ""
+
+msgid "NORTH"
+msgstr ""
+
+msgid "WEST"
+msgstr ""
+
+msgid "EAST"
+msgstr ""
+
+msgid "Please enter a name for this trip."
+msgstr ""
+
+msgid "Are you sure you want to delete this trip? (Flights in this trip will NOT be deleted.)"
+msgstr ""
+
+msgid "Deleting trip cancelled."
+msgstr ""
+
+msgid "Silver Elite"
+msgstr ""
+
+msgid "Gold Elite"
+msgstr ""
+
+msgid "Platinum Elite"
+msgstr ""
+
+msgid "Thank you for using OpenFlights &mdash; please donate!"
+msgstr ""
