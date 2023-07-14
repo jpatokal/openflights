@@ -66,7 +66,7 @@ foreach ($dbh->query($sql) as $row) {
     </div>
     <div id="sideBar">
 <?php
-include_once "../sidebar.html" ;
+include_once "../sidebar.php" ;
 include_once "ad-sidebar.html" ;
 ?>
     </div>
