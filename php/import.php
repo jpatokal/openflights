@@ -168,7 +168,7 @@ function check_airline($dbh, $number, $airline, $uid, $history) {
                 SELECT name, alias, alid FROM airlines
                 WHERE ((name LIKE ? OR alias LIKE ?) AND (iata != '')) OR (name = ?)
                 ORDER BY frequency DESC
-            SQL;
+SQL;
         }
         $sth = $dbh->prepare($sql);
         $sth->execute($params);
@@ -640,9 +640,10 @@ foreach ($rows as $row) {
 
             // And now the flight
             $sql = <<<SQL
-                INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp)
+                INSERT INTO flights(uid, src_apid, src_date, src_time, dst_apid, duration, distance,
+                    registration, code, seat, seat_type, class, reason, note, plid, alid, trid, upd_time, opp)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)
-            SQL;
+SQL;
             $params = [
                 $uid,
                 $src_apid,

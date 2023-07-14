@@ -92,13 +92,13 @@ switch ($param) {
             $rows = [""];
         }
         # 8 columns per "row" in this string; non-bound variables in the last line.
-        $sql = <<<QUERY
+        $sql = <<<SQL
             INSERT INTO flights(
               uid, src_apid, src_date, src_time, dst_apid, duration, distance, registration,
               code, seat, seat_type, class, reason, note, plid, alid, trid, opp, mode, upd_time
             )
             VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())
-        QUERY;
+SQL;
         $sth = $dbh->prepare($sql);
         foreach ($rows as $idx) {
             $src_date = $_POST["src_date" . $idx];
@@ -159,15 +159,15 @@ switch ($param) {
             $alid = -1;
         }
         list($src_apid, $dst_apid, $opp) = orderAirports($src_apid, $dst_apid);
-    # 6 parameters per row
-        $sql = <<<QUERY
-UPDATE flights
-SET src_apid = ?, src_date = ?, src_time = ?, dst_apid = ?, duration = ?, distance = ?,
-    registration  =  ?, code = ?, seat = ?, seat_type = ?, class = ?, reason = ?,
-    note = ?, plid = ?, alid = ?, trid = ?, opp = ?, mode = ?,
-    upd_time = NOW()
-WHERE fid = ? AND uid = ?
-QUERY;
+        # 6 parameters per row
+        $sql = <<<SQL
+            UPDATE flights
+            SET src_apid = ?, src_date = ?, src_time = ?, dst_apid = ?, duration = ?, distance = ?,
+                registration  =  ?, code = ?, seat = ?, seat_type = ?, class = ?, reason = ?,
+                note = ?, plid = ?, alid = ?, trid = ?, opp = ?, mode = ?,
+                upd_time = NOW()
+            WHERE fid = ? AND uid = ?
+SQL;
         $sth = $dbh->prepare($sql);
         $success = $sth->execute(
             [

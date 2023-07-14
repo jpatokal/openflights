@@ -31,14 +31,14 @@ $stderr = fopen("php://stderr", "w");
 function getlocationcoords($lat, $lon, $width, $height) {
     $x = (($lon + 180) * ($width / 360));
     $y = ((($lat * -1) + 90) * ($height / 180));
-    return array("x" => round($x), "y" => round($y));
+    return ["x" => round($x), "y" => round($y)];
 }
 
 $sql = <<<SQL
-SELECT DISTINCT s.x AS sx, s.y AS sy, d.x AS dx, d.y AS dy
-FROM routes AS r, airports AS s, airports AS d
-WHERE r.src_apid=s.apid AND r.dst_apid=d.apid
-GROUP BY s.apid,d.apid;
+    SELECT DISTINCT s.x AS sx, s.y AS sy, d.x AS dx, d.y AS dy
+    FROM routes AS r, airports AS s, airports AS d
+    WHERE r.src_apid = s.apid AND r.dst_apid = d.apid
+    GROUP BY s.apid, d.apid;
 SQL;
 
 // Now we convert the long/lat coordinates into screen coordinates

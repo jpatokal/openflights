@@ -92,7 +92,7 @@ if ($type == "R" || $type == "L") {
                codeshare, stops
         FROM airports AS s,airports AS d, airlines AS l,routes AS r
         WHERE $match AND r.src_apid = s.apid AND r.dst_apid = d.apid AND r.alid = l.alid
-    SQL;
+SQL;
 } else {
     // List of all this user's flights
     $params['uid'] = $uid;
@@ -101,10 +101,10 @@ if ($type == "R" || $type == "L") {
                d.apid AS dst_apid, f.code, f.src_date, src_time, distance, DATE_FORMAT(duration,  '%H:%i') AS duration,
                seat, seat_type, class, reason, p.name, registration, fid, l.alid, note, trid, opp, f.plid,
                l.iata AS al_iata, l.icao AS al_icao, l.name AS al_name, f.mode AS mode
-        FROM airports AS s,airports AS d, airlines AS l,flights AS f
+        FROM airports AS s, airports AS d, airlines AS l,flights AS f
         LEFT JOIN planes AS p ON f.plid = p.plid
         WHERE f.uid = :uid AND f.src_apid = s.apid AND f.dst_apid = d.apid AND f.alid = l.alid
-    SQL;
+SQL;
 
     // ...filtered by airport (optional)
     if ($apid && $apid != 0) {

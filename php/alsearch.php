@@ -122,7 +122,7 @@ if ($action == "RECORD") {
         $sql = <<<SQL
             INSERT INTO airlines(name, alias, country, iata, icao, callsign, mode, active, uid)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
-        SQL;
+SQL;
         $params = [
             $name,
             $alias,
@@ -140,7 +140,7 @@ if ($action == "RECORD") {
             UPDATE airlines
             SET name = ?, alias = ?, country = ?, iata = ?, icao = ?, callsign = ?, mode = ?, active = ?
             WHERE alid = ? AND (uid = ? OR ? IN (?))
-        SQL;
+SQL;
         $params = [
             $name,
             $alias,

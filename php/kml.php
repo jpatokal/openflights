@@ -19,7 +19,8 @@ if (!$uid || empty($uid)) {
 
 $filterString = getFilterString($dbh, $_GET);
 $sql = <<<SQL
-    SELECT DISTINCT s.x AS sx, s.y AS sy, s.elevation AS sz, s.iata AS siata, s.icao AS sicao, d.x AS dx, d.y AS dy, d.elevation AS dz, d.iata AS diata, d.icao AS dicao, code, mode
+    SELECT DISTINCT s.x AS sx, s.y AS sy, s.elevation AS sz, s.iata AS siata, s.icao AS sicao, d.x AS dx,
+        d.y AS dy, d.elevation AS dz, d.iata AS diata, d.icao AS dicao, code, mode
     FROM flights AS f, airports AS s, airports AS d
     WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND f.uid = :uid $filterString
     GROUP BY f.fid,s.apid,d.apid

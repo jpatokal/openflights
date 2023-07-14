@@ -119,16 +119,16 @@ foreach ($sth as $row) {
 // ^^^ this is even faster, but $mode has to be SUM(fid), not COUNT(fid), to count flights correctly...
 
 $sql = <<<SQL
-SELECT a.name, a.iata, a.icao, $mode AS count, a.apid FROM airports AS a,
-(
-    SELECT src_apid AS apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
-    UNION ALL
-    SELECT dst_apid as apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
-) AS f
-WHERE f.apid = a.apid
-GROUP BY a.apid
-ORDER BY count DESC
-LIMIT :limit
+    SELECT a.name, a.iata, a.icao, $mode AS count, a.apid FROM airports AS a,
+    (
+        SELECT src_apid AS apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
+        UNION ALL
+        SELECT dst_apid as apid, distance, fid FROM flights AS f WHERE uid = :uid $filter
+    ) AS f
+    WHERE f.apid = a.apid
+    GROUP BY a.apid
+    ORDER BY count DESC
+    LIMIT :limit
 SQL;
 
 $sth = $dbh->prepare($sql);
