@@ -4,7 +4,7 @@
 # GNU xgettext does not recognize JavaScript, but oddly enough C seems to parse it (almost) fine...
 #
 PHP="about.php data.php donate.php faq.php index.php sidebar.php help/*php html/*php php/*php"
-JS="openflights.js js/alsearch.js js/apsearch.js js/settings.js js/trip.js"
+JS="openflights.js js/alsearch.js js/apsearch.js js/functions.js js/settings.js js/trip.js"
 OPTS="--omit-header --no-location --no-wrap -j"
 for lang in de_DE en_GB es_ES fi_FI fr_FR ja_JP lt_LT nl_NL pl_PL pt_BR sv_SE ru_RU; do
   PO_PATH=locale/$lang.utf8/LC_MESSAGES

@@ -124,12 +124,12 @@ function getDST(element) {
 }
 
 const eliteicons = [
-  ["S", "Silver Elite", "/img/silver-star.png"],
-  ["G", "Gold Elite", "/img/gold-star.png"],
-  ["P", "Platinum Elite", "/img/platinum-star.png"],
+  ["S", gt.gettext("Silver Elite"), "/img/silver-star.png"],
+  ["G", gt.gettext("Gold Elite"), "/img/gold-star.png"],
+  ["P", gt.gettext("Platinum Elite"), "/img/platinum-star.png"],
   [
     "X",
-    "Thank you for using OpenFlights &mdash; please donate!",
+    gt.gettext("Thank you for using OpenFlights &mdash; please donate!"),
     "/img/icon-warning.png",
   ],
 ];
@@ -146,6 +146,7 @@ function getEliteIcon(e, validity) {
     }
     if (validity) {
       return (
+        // TODO: Add alt tags
         "<center><img src='" +
         eliteicons[i][2] +
         "' title='" +
@@ -158,6 +159,7 @@ function getEliteIcon(e, validity) {
       );
     } else {
       return (
+        // TODO: Add alt tags
         "<span style='float: right'><a href='/donate' target='_blank'><img src='" +
         eliteicons[i][2] +
         "' title='" +
@@ -174,7 +176,7 @@ function selectInSelect(select, value) {
   if (!select) {
     return;
   }
-  select.selectedIndex = 0; // default to unselected
+  select.selectedIndex = 0; // default to not selected
   for (var index = 0; index < select.length; index++) {
     if (select[index].value == value) {
       select.selectedIndex = index;
