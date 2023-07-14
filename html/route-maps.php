@@ -21,7 +21,7 @@ require_once "../php/locale.php";
       <div id="nonmap">
 
    This is an automatically generated list of all airline and airport
-   route maps on OpenFlights.  See <a href="/data.html">Data</a> for
+   route maps on OpenFlights.  See <a href="/data.php">Data</a> for
    data downloads and more information.
 
 <?php
