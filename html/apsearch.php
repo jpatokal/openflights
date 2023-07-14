@@ -34,6 +34,7 @@ $logged_in = $uid && !empty($uid);
           <td><?php echo _("Airport name") ?></td>
           <td>IATA/FAA</td>
           <td>ICAO</td>
+          <td><?php echo _("Airport ID") ?></td>
         </tr>
         <tr>
           <td><input type="text" name="airport" onFocus="setEdited()"></td>
