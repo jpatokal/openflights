@@ -60,7 +60,7 @@ function payPalOutput($short = true) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: Airport and airline data</title>
+    <title><?php echo sprintf(_('OpenFlights: %s'), _('Airport and airline data')); ?></title>
     <meta name="description" content="Free airport and airline data with IATA, ICAO, latitude, longitude, elevation, timezone, DST information">
     <meta name="keywords" content="airport,airline,data,database,iata,icao,latitude,longitude,elevation,coordinates,timezone,dafif,free">
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">

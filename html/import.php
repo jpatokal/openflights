@@ -4,7 +4,7 @@ require_once "../php/locale.php";
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-  <title>OpenFlights: <?php echo _("Import data"); ?></title>
+  <title><?php echo sprintf(_('OpenFlights: %s'), _('Import data')); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
@@ -12,7 +12,7 @@ require_once "../php/locale.php";
 
   <body>
     <div id="contexthelp">
-      <h1>OpenFlights: <?php echo _("Import data"); ?></h1>
+      <h1><?php echo _("Import data"); ?></h1>
 
       <p><?php echo _("OpenFlights can import flights from three sources:"); ?></p>
 

@@ -8,7 +8,7 @@ $trid = $_GET["trid"] ?? null;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></title>
+    <title><?php echo sprintf(_('OpenFlights: %s'), $trid ? _("Edit trip") : _("Add trip")); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
@@ -19,7 +19,7 @@ $trid = $_GET["trid"] ?? null;
   <body>
     <div id="contexthelp">
       <form name="tripform">
-    <div id="title"><h1>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></h1></div>
+    <div id="title"><h1><?php echo $trid ? _("Edit trip") : _("Add trip"); ?></h1></div>
 
 <?php
 $uid = $_SESSION["uid"];

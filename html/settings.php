@@ -10,7 +10,7 @@ $type = isset($_GET["new"]) ? "signup" : "settings";
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?></title>
+    <title><?php echo sprintf(_('OpenFlights: %s'), ($type == "signup") ? _("Create new account") : _("Account settings")); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/css/signup.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
@@ -30,8 +30,9 @@ $type = isset($_GET["new"]) ? "signup" : "settings";
       <div id="nonmap">
 
         <form name="signupform" method="POST" action="/">
-  <a name="top"><h1>OpenFlights: <?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?>
-      </h1></a>
+        <h1>
+            <a name="top"><?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?> />
+        </h1>
 
           <div id="miniresultbox"></div>
 
