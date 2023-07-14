@@ -74,7 +74,7 @@ require_once "./php/helper.php";
     </div>
 
   <div id="sideBar">
-    <?php include "./sidebar.html"; ?>
+    <?php include "./sidebar.php"; ?>
     <div id="login">
       <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
         <?php locale_pulldown($dbh, $locale); ?>
@@ -198,7 +198,7 @@ require_once "./php/helper.php";
       <div id="help" style="display: none;">
         <h2>
           <img src="/img/close.gif" height=17 width=17 onClick='JavaScript:closePane()'><?php
-            echo _("OpenFlights Map Help <small>&mdash; Didn't answer your question? Try the <a href=\"faq.html\" target=\"_blank\">FAQ</a>.</small>");
+            echo _("OpenFlights Map Help <small>&mdash; Didn't answer your question? Try the <a href=\"faq.php\" target=\"_blank\">FAQ</a>.</small>");
             ?></h2>
           <?php echo _('<p><b>View airport</b>: Click on an airport <img src="/img/icon_plane-15x15.png" height=15 width=15> to view details. Click on <img src="/img/close.gif" height=17 width=17> or another airport to close the pop-up.');
             ?><br>

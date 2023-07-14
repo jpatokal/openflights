@@ -301,7 +301,7 @@ if ($type == "signup") {
     </div>
 
     <div id="sideBar">
-<?php include '../sidebar.html';
+<?php include '../sidebar.php';
 include 'ad-sidebar.html';
 ?>
     </div>

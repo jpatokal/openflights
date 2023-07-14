@@ -123,7 +123,7 @@ if ($logged_in) {
     </div>
 
     <div id="sideBar">
-        <!--#include virtual="/sidebar.html" -->
+        <!--#include virtual="/sidebar.php" -->
         <!--#include virtual="/html/ad-sidebar.html" -->
     </div>
 
