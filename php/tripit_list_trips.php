@@ -548,11 +548,11 @@ function display_no_segments_message() {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php echo _("TripIt"); ?></title>
+    <title><?php echo sprintf(_('OpenFlights: %s'), _('TripIt')); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css"); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo fileUrlWithDate("/css/tripit.css"); ?>" type="text/css">
-    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.min.js"); ?>></script>
+    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.min.js"); ?>"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.blockUI.min.js"); ?>"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/tripit.js"); ?>"></script>
   </head>
@@ -560,7 +560,7 @@ function display_no_segments_message() {
   <body>
     <div id="contexthelp">
       <h1>OpenFlights: <?php echo _("TripIt Trips"); ?></h1>
-      <span style="float: right"><INPUT type='button' value='<?php echo _("Close"); ?>' onClick='javascript:parent.opener.refresh(true); window.close();'></span>
+      <span style="float: right"><input type='button' value='<?php echo _("Close"); ?>' onClick='javascript:parent.opener.refresh(true); window.close();'></span>
 
 <?php
 # Show past/future selector
