@@ -3,7 +3,7 @@
 session_start();
 
 header("Content-type: application/vnd.google-earth.kml+xml");
-header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d") . ".kml\"");
+header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d-Hi") . ".kml\"");
 
 include_once 'helper.php';
 include_once 'filter.php';

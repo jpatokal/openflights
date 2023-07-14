@@ -9,7 +9,7 @@ if ($export) {
     }
     if ($export == "export" || $export == "backup") {
         header("Content-type: text/csv; charset=utf-8");
-        header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d") . ".csv\"");
+        header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d-Hi") . ".csv\"");
     }
     if ($export == "export" || $export == "gcmap") {
         $trid = $_GET["trid"];
