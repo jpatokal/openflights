@@ -229,6 +229,7 @@ function init() {
   });
 
   var poliLayer = new OpenLayers.Layer.XYZ(
+    // TODO: Localise
     "Political",
     [
       "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
@@ -237,8 +238,9 @@ function init() {
       "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
     ],
     {
-      attribution:
-        "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (ODbL)",
+      attribution: gt.gettext(
+        "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (ODbL)"
+      ),
       sphericalMercator: true,
       transitionEffect: "resize",
       wrapDateLine: true,
@@ -246,11 +248,13 @@ function init() {
   );
 
   var artLayer = new OpenLayers.Layer.XYZ(
+    // TODO: Localise
     "Artistic",
     ["https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.jpg"],
     {
-      attribution:
-        "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)",
+      attribution: gt.gettext(
+        "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)"
+      ),
       sphericalMercator: true,
       transitionEffect: "resize",
       wrapDateLine: true,
@@ -259,13 +263,15 @@ function init() {
   artLayer.setVisibility(false);
 
   var earthLayer = new OpenLayers.Layer.XYZ(
+    // TODO: Localise
     "Satellite",
     [
       "https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg",
     ],
     {
-      attribution:
-        "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' target='_blank'>Mapbox</a>",
+      attribution: gt.gettext(
+        "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' target='_blank'>Mapbox</a>"
+      ),
       sphericalMercator: true,
       transitionEffect: "resize",
       wrapDateLine: true,
@@ -304,7 +310,7 @@ function init() {
       context: {
         name: function (feature) {
           if (feature.cluster) {
-            // Last airport is always the largest
+            // The last airport is always the largest
             var last = feature.cluster.length - 1;
             if (feature.cluster[last].attributes.index > 2) {
               // One airport is dominant, copy its attributes into cluster
@@ -366,6 +372,7 @@ function init() {
     distance: 15,
     threshold: 3,
   });
+  // TODO: Localise?
   airportLayer = new OpenLayers.Layer.Vector("Airports", {
     projection: projectionName,
     styleMap: new OpenLayers.StyleMap({
@@ -391,11 +398,7 @@ function init() {
   // When using the earth map layer, change the font color from black to white, since the map is mostly dark colors.
   map.events.on({
     changelayer: function () {
-      if (earthLayer.visibility) {
-        style.defaultStyle.fontColor = "#fff";
-      } else {
-        style.defaultStyle.fontColor = "#000";
-      }
+      style.defaultStyle.fontColor = earthLayer.visibility ? "#fff" : "#000";
     },
   });
 
@@ -524,7 +527,9 @@ function init() {
 
 function clusterRadius(feature) {
   var radius = feature.attributes.count * 5;
-  if (radius > 29) radius = 29;
+  if (radius > 29) {
+    radius = 29;
+  }
   return radius;
 }
 
@@ -535,7 +540,9 @@ function parseUrl() {
   var urlbits = window.location.href.split(/[\/#?]+/);
   if (urlbits.length > 3) {
     return [urlbits[2], unescape(urlbits[3])];
-  } else return [null, null];
+  } else {
+    return [null, null];
+  }
 }
 
 function projectedPoint(x, y) {
@@ -569,7 +576,7 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
       new OpenLayers.Geometry.Point(x2, y2)
     ),
   ];
-  // Path is in or extends into east (+) half, so we have to make a -360 copy
+  // The path is in or extends into east (+) half, so we have to make a -360 copy
   if (x1 > 0 || x2 > 0) {
     paths.push(
       gcPath(
@@ -578,7 +585,7 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
       )
     );
   }
-  // Path is in or extends into west (-) half, so we have to make a +360 copy
+  // The path is in or extends into west (-) half, so we have to make a +360 copy
   if (x1 < 0 || x2 < 0) {
     paths.push(
       gcPath(
@@ -638,14 +645,18 @@ function prepareAutocomplete(
           if (preprocessCb) data = preprocessCb(data);
 
           if (data.length === 0) {
+            // TODO: Localise?
             throw new Error("No data available");
           }
 
           update(data);
         })
         .catch((e) => {
-          if (failureCb) failureCb(e);
-          else invalidateField(inputId);
+          if (failureCb) {
+            failureCb(e);
+          } else {
+            invalidateField(inputId);
+          }
         })
         .finally(() => {
           showLoadingAnimation(false);
@@ -713,7 +724,7 @@ function drawAirport(
   var colorIndex =
     Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
 
-  // Two or less flights: smallest dot
+  // When two or fewer flights: smallest dot
   if (count <= 2 || colorIndex < 0) {
     colorIndex = 0;
   }
@@ -722,21 +733,20 @@ function drawAirport(
     colorIndex = Math.max(1, colorIndex);
   }
   // Max out at top color
-  // Core airport of route map always uses max color
+  // Core airport of the route map always uses max color
   if (colorIndex >= airportIcons.length || apid == coreid) {
     colorIndex = airportIcons.length - 1;
   }
   // This should never happen
   if (!airportIcons[colorIndex]) {
     $("news").style.display = "inline";
-    $("news").innerHTML =
-      "ERROR: " +
-      name +
-      ":" +
-      colorIndex +
-      " of " +
-      airportMaxFlights +
-      ".i<br>Please hit CTRL-F5 to force refresh, and <a href='/about'>report</a> this error if it does not go away.";
+    $("news").innerHTML = gt.strargs(
+      gt.gettext(
+        "ERROR: %1: %2 of %3.<br>Please hit CTRL-F5 to force refresh, and <a href='/about'>report</a> this error if it does not go away."
+      ),
+      [name, colorIndex, airportMaxFlights]
+    );
+
     colorIndex = 0;
     return;
   }
@@ -778,6 +788,7 @@ function onAirportSelect(airport) {
       "<span style='position: absolute; right: 5; bottom: 1;'>" +
       "<a href='#' onclick='JavaScript:selectAirport(" +
       apid +
+      // TODO: alt text
       ", true);'><img src='/img/icon_plane-src.png' width=17 height=17 title='" +
       gt.gettext("Select this airport") +
       "' id='popup" +
@@ -798,6 +809,7 @@ function onAirportSelect(airport) {
           apid +
           ', "' +
           encodeURIQuote(airport.attributes.desc) +
+          // TODO: alt text
           "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" +
           gt.gettext("List my flights") +
           "'></a>";
@@ -818,6 +830,7 @@ function onAirportSelect(airport) {
           idstring +
           '", "' +
           encodeURIQuote(rdesc) +
+          // TODO: alt text
           "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" +
           gt.gettext("List routes") +
           "'></a> ";
@@ -830,6 +843,7 @@ function onAirportSelect(airport) {
         URL_ROUTES +
         '",' +
         apid +
+        // TODO: alt text
         ");'><img src='/img/icon_routes.png' width=17 height=17 title='" +
         gt.gettext("Map of routes from this airport") +
         "'></a>";
@@ -837,6 +851,7 @@ function onAirportSelect(airport) {
     desc +=
       " <a href='#' onclick='JavaScript:popNewAirport(null, " +
       apid +
+      // TODO: alt text
       ")'><img src='/img/icon_edit.png' width=16 height=16 title='" +
       gt.gettext("View airport details") +
       "'></a>";
@@ -844,14 +859,16 @@ function onAirportSelect(airport) {
       "</span>" +
       airport.attributes.desc.replace("Flights:", gt.gettext("Flights:"));
   } else {
-    // Cluster, generate clickable list of members in reverse order (most flights first)
+    // Cluster, generate a clickable list of members in reverse order (most flights first)
     desc = "<b>" + gt.gettext("Airports") + "</b><br>";
     var edit = isEditMode() ? "true" : "false";
     var cmax = airport.cluster.length - 1;
     for (var c = cmax; c >= 0; c--) {
       if (c < cmax) {
         desc += ", ";
-        if ((cmax - c) % 6 == 0) desc += "<br>";
+        if ((cmax - c) % 6 == 0) {
+          desc += "<br>";
+        }
       }
       desc +=
         "<a href='#' onclick='JavaScript:selectAirport(" +
@@ -864,6 +881,7 @@ function onAirportSelect(airport) {
     }
   }
 
+  // TODO: alt text
   desc =
     '<img src="/img/close.gif" onclick="JavaScript:closePopup(true);" width=17 height=17> ' +
     desc;
@@ -944,6 +962,7 @@ function xmlhttpPost(strURL, id, param) {
     if (self.xmlHttpReq.readyState != 4) {
       return;
     }
+    // TODO: Localised response? But also, probably just "Not logged in, aborting" based on usages
     if (self.xmlHttpReq.responseText.substring(0, 13) == "Not logged in") {
       logout(self.xmlHttpReq.responseText);
       return;
@@ -1043,12 +1062,16 @@ function xmlhttpPost(strURL, id, param) {
       logout(self.xmlHttpReq.responseText);
     } else if (strURL == URL_MAP || strURL == URL_ROUTES) {
       var str = self.xmlHttpReq.responseText;
+      // TODO: Localise
       if (str.substring(0, 6) == "Signup") {
         window.location = "/html/settings?new=yes&vbulletin=true";
-      }
-      if (str.substring(0, 5) == "Error") {
+      } else if (str.substring(0, 5) == "Error") {
         $("result").innerHTML =
-          "<h4>" + str.split(";")[1] + "</h4><br><h6><a href='/'>Home</a></h6>";
+          "<h4>" +
+          str.split(";")[1] +
+          "</h4><br><h6><a href='/'>" +
+          gt.gettext("Home") +
+          "</a></h6>";
         showLoadingAnimation(false);
         openPane("result");
       } else {
@@ -1164,7 +1187,7 @@ function xmlhttpPost(strURL, id, param) {
     case URL_SUBMIT:
       var inputform = document.forms["inputform"];
 
-      // Deleting needs only the fid, and can be run without the inputform
+      // Deleting needs only the fid, and can be run without the input form
       if (param != "DELETE") {
         var i, indexes;
         if (getCurrentPane() == "multiinput") {
@@ -1209,7 +1232,7 @@ function xmlhttpPost(strURL, id, param) {
               mode = getMode();
               if (
                 confirm(
-                  Gettext.strargs(
+                  gt.strargs(
                     gt.gettext(
                       "'%1' not found in %2 database. Do you want to add it as a new %2 company?"
                     ),
@@ -1447,8 +1470,7 @@ function xmlhttpPost(strURL, id, param) {
       }
       if (strURL == URL_ROUTES) {
         query += "&apid=" + encodeURIComponent(id);
-      }
-      if (strURL == URL_FLIGHTS) {
+      } else if (strURL == URL_FLIGHTS) {
         switch (param) {
           case "EDIT":
           case "COPY":
@@ -1460,8 +1482,7 @@ function xmlhttpPost(strURL, id, param) {
             lastQuery = query;
             lastDesc = param;
         }
-      }
-      if (strURL == URL_TOP10 && param) {
+      } else if (strURL == URL_TOP10 && param) {
         query += "&" + param;
       }
   }
@@ -1583,7 +1604,7 @@ function getMapTitle(closable) {
     if (demo_mode) {
       if (alid != "0") {
         text =
-          Gettext.strargs(gt.gettext("Recent flights on %1"), [airline]) +
+          gt.strargs(gt.gettext("Recent flights on %1"), [airline]) +
           " " +
           getAirlineMapIcon(alid);
       } else {
@@ -1596,25 +1617,25 @@ function getMapTitle(closable) {
       } else {
         if (alid != "0") {
           if (year != "0") {
-            text = Gettext.strargs(gt.gettext("%1's flights on %2 in %3"), [
+            text = gt.strargs(gt.gettext("%1's flights on %2 in %3"), [
               filter_user,
               airline,
               year,
             ]);
           } else {
-            text = Gettext.strargs(gt.gettext("%1's flights on %2"), [
+            text = gt.strargs(gt.gettext("%1's flights on %2"), [
               filter_user,
               airline,
             ]);
           }
           text += " " + getAirlineMapIcon(alid);
         } else if (year != "0") {
-          text = Gettext.strargs(gt.gettext("%1's flights in %2"), [
+          text = gt.strargs(gt.gettext("%1's flights in %2"), [
             filter_user,
             year,
           ]);
         } else {
-          text = Gettext.strargs(gt.gettext("%1's flights"), [filter_user]);
+          text = gt.strargs(gt.gettext("%1's flights"), [filter_user]);
         }
       }
       $("loginstatus").innerHTML =
@@ -1642,6 +1663,7 @@ function getMapTitle(closable) {
   // Add X for easy filter removal (only for logged-in users with non-null titles)
   if (closable && logged_in && text != "") {
     text =
+      // TODO: alt text
       '<img src="/img/close.gif" onclick="JavaScript:clearFilter(true);" width=17 height=17> ' +
       text;
   }
@@ -1883,6 +1905,7 @@ function updateMap(str, url) {
       title = gt.gettext("List all routes from this airport");
     }
 
+    // TODO: alt text
     var maptitle =
       '<img src="/img/close.gif" onclick="JavaScript:clearFilter(true);" width=17 height=17> ' +
       desc;
@@ -1895,6 +1918,7 @@ function updateMap(str, url) {
       coreid +
       '", "' +
       encodeURI(desc) +
+      // TODO: alt text
       "\");'><img src='/img/icon_copy.png' width=16 height=16 title='" +
       title +
       "'></a>";
@@ -2005,6 +2029,7 @@ function listFlights(str, desc, id) {
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
   table.push(
+    // TODO: alt text
     '<img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17> '
   );
   if (str == "") {
@@ -2121,6 +2146,7 @@ function listFlights(str, desc, id) {
           trip +
           "</a>";
       }
+      // TODO: alt text
       table.push(
         "<tr><td><img src='" +
           modeicon +
@@ -2187,6 +2213,7 @@ function listFlights(str, desc, id) {
             fid +
             "," +
             r +
+            // TODO: alt text
             ");'><img src='/img/icon_edit.png' width=16 height=16 title='" +
             gt.gettext("Edit this flight") +
             "'></a>"
@@ -2194,6 +2221,7 @@ function listFlights(str, desc, id) {
         table.push(
           "<a href='#' onclick='JavaScript:preCopyFlight(" +
             fid +
+            // TODO: alt text
             ");'><img src='/img/icon_copy.png' width=16 height=16 title='" +
             gt.gettext("Copy to new flight") +
             "'></a>"
@@ -2236,6 +2264,7 @@ function exportFlights(type, newWindow) {
 
 // The "Analyze" button (detailed stats)
 function showStats(str) {
+  // TODO: localise?
   if (str.substring(0, 5) == "Error") {
     $("result").innerHTML = str.split(";")[1];
     openPane("result");
@@ -2244,7 +2273,7 @@ function showStats(str) {
 
   openPane("result");
   if (str == "") {
-    bigtable = "<i>Statistics calculation failed!</i>";
+    bigtable = "<i>".gt.gettext("Statistics calculation failed!") + "</i>";
   } else {
     var master = str.split("\n");
     var uniques = JSON.parse(master[0]);
@@ -2256,6 +2285,7 @@ function showStats(str) {
     var modeData = master[6];
     var classDataByDistance = master[7];
 
+    // TODO: alt text
     var bigtable =
       '<table><td style="vertical-align: top"><img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17></td><td style="vertical-align: top">';
 
@@ -2370,14 +2400,14 @@ function showStats(str) {
       var lat = parseFloat(col[4]).toFixed(2);
       var lon = parseFloat(col[3]).toFixed(2);
       if (lat < 0) {
-        lat = -lat + "&deg;S";
+        lat = -lat + "&deg;" + gt.gettext("S");
       } else {
-        lat += "&deg;N";
+        lat += "&deg;" + gt.gettext("N");
       }
       if (lon < 0) {
-        lon = -lon + "&deg;W";
+        lon = -lon + "&deg;" + gt.gettext("W");
       } else {
-        lon += "&deg;E";
+        lon += "&deg;" + gt.gettext("E");
       }
       table +=
         "<tr><td>" +
@@ -2521,7 +2551,8 @@ function showTop10(responseText) {
   try {
     topData = JSON.parse(responseText);
   } catch (e) {
-    $("result").innerHTML = "<i>Statistics calculation failed!</i>";
+    $("result").innerHTML =
+      "<i>".gt.gettext("Statistics calculation failed!") + "</i>";
     openPane("result");
     return;
   }
@@ -2543,6 +2574,7 @@ function showTop10(responseText) {
     limit = "10";
   }
 
+  // TODO: alt text
   var bigtable =
     "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
 
@@ -2631,7 +2663,9 @@ function updateTop10() {
   if (form) {
     params.set("mode", form.mode[form.mode.selectedIndex].value);
     const limit = form.limit[form.limit.selectedIndex].value;
-    if (limit !== "-1") params.set("limit", limit);
+    if (limit !== "-1") {
+      params.set("limit", limit);
+    }
   } else {
     params.set("mode", "F");
     params.set("limit", 10);
@@ -2672,7 +2706,7 @@ function preCopyFlight(fid) {
   xmlhttpPost(URL_FLIGHTS, fid, "COPY");
 }
 
-// Load existing flight data into input form
+// Load existing flight data into the input form
 function editFlight(str, param) {
   // Oops, no matches!?
   if (str == "") {
@@ -2685,7 +2719,9 @@ function editFlight(str, param) {
     openDetailedInput(param);
   }
 
-  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, alcode 19, src_time 20, mode 21
+  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9,
+  // class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, alcode 19, src_time 20,
+  // mode 21
   var col = str.split("\t");
   var form = document.forms["inputform"];
   form.number.value = col[4];
@@ -2709,7 +2745,7 @@ function editFlight(str, param) {
   selectInSelect(inputform.mode, col[21]);
   changeMode(col[21]);
 
-  $("editflighttitle").innerHTML = Gettext.strargs(
+  $("editflighttitle").innerHTML = gt.strargs(
     gt.gettext("Edit segment %1 of %2"),
     [fidPtr + 1, fidList.length]
   );
@@ -2816,7 +2852,7 @@ function deleteFlight(id) {
     xmlhttpPost(URL_SUBMIT, false, "DELETE");
   } else {
     $("input_status").innerHTML =
-      "<B>" + gt.gettext("Deleting flight cancelled.") + "</B>";
+      "<b>" + gt.gettext("Deleting flight cancelled.") + "</b>";
   }
 }
 
@@ -2827,7 +2863,7 @@ function changeMode(mode) {
     mode = document.forms["inputform"].mode.value;
   }
   $("icon_airline").src = modeicons[mode];
-  $("icon_airline").title = Gettext.strargs(gt.gettext("Search for %1"), [
+  $("icon_airline").title = gt.strargs(gt.gettext("Search for %1"), [
     modeoperators[mode],
   ]);
   calcDuration("AIRPORT"); // recompute duration estimate
@@ -3039,7 +3075,6 @@ function airportCodeToAirport(type) {
   // Try to match against existing airports
   // TODO: Also match against marker.name
   var code = $(type).value.toUpperCase();
-  var found = false;
   if (selectAirport(null, true, false, code)) {
     if (type == "qs") {
       $("qsid").value = attrs.apid;
@@ -3059,10 +3094,12 @@ function invalidateField(type, airport = false) {
     $(type).style.color = "#FF0000";
   }
   $(type + "id").value = 0;
-  if (airport) unmarkAirports();
+  if (airport) {
+    unmarkAirports();
+  }
 }
 
-// When user has entered flight number, try to match it to airline
+// When the user has entered flight number, try to match it to airline
 // type: element invoked
 function flightNumberToAirline(type) {
   markAsChanged();
@@ -3076,16 +3113,16 @@ function flightNumberToAirline(type) {
       return;
     }
 
-    // Does flight number start with IATA or ICAO code?
+    // Does the flight number start with IATA or ICAO code?
     if (flightNumber.length >= 2) {
-      var found = false;
       var re_iata = /^([a-zA-Z0-9][a-zA-Z0-9]$|[a-zA-Z0-9][a-zA-Z0-9][ 0-9])/; // XX or XX[ ]N...
       var re_icao =
         /^([a-zA-Z][a-zA-Z][a-zA-Z]$|[a-zA-Z][a-zA-Z][a-zA-Z][ 0-9])/; // XXX or XXX[ ]N...
+      var airlineCode;
       if (re_iata.test(flightNumber.substring(0, 3))) {
-        var airlineCode = flightNumber.substring(0, 2);
+        airlineCode = flightNumber.substring(0, 2);
       } else if (re_icao.test(flightNumber.substring(0, 4))) {
-        var airlineCode = flightNumber.substring(0, 3);
+        airlineCode = flightNumber.substring(0, 3);
       } else {
         // User has entered something weird, ignore it
         return;
@@ -3138,13 +3175,11 @@ function calcDuration(param) {
         var lat2 = getY("dst_ap");
         $("distance").value = gcDistance(lat1, lon1, lat2, lon2);
         $("distance").style.color = "#000";
+      } else if (!re_numeric.test(distance)) {
+        $("distance").focus();
+        $("distance").style.color = "#F00";
       } else {
-        if (!re_numeric.test(distance)) {
-          $("distance").focus();
-          $("distance").style.color = "#F00";
-        } else {
-          $("distance").style.color = "#000";
-        }
+        $("distance").style.color = "#000";
       }
       markAsChanged();
       return; // always terminate here
@@ -3195,7 +3230,12 @@ function calcDuration(param) {
       break;
 
     default:
-      alert("Error: Unknown parameter '" + param + "' at calcDuration()");
+      alert(
+        gt.strargs(
+          gt.gettext("Error: Unknown parameter '%1' at calcDuration()"),
+          [param]
+        )
+      );
       return;
   }
 
@@ -3246,14 +3286,14 @@ function calcDuration(param) {
     src_date = new Date();
     src_date = src_date.setFullYear(src_year, src_month - 1, src_day);
     if (checkDST(src_dst, src_date, src_year)) {
-      src_tz += 1;
+      src_tz++;
       src_dst = "Y";
     }
     if (checkDST(dst_dst, src_date, src_year)) {
-      dst_tz += 1;
+      dst_tz++;
       dst_dst = "Y";
     }
-    $("icon_clock").title = Gettext.strargs(
+    $("icon_clock").title = gt.strargs(
       gt.gettext(
         "Departure UTC %1%2%3, Arrival UTC %4%5%6, Time difference %7 hours"
       ),
@@ -3286,9 +3326,9 @@ function calcDuration(param) {
         $("dst_days").style.display = "none";
       } else {
         if (days > 0) {
-          $("dst_days").value = Gettext.strargs(gt.gettext("+%1 day"), [days]);
+          $("dst_days").value = gt.strargs(gt.gettext("+%1 day"), [days]);
         } else {
-          $("dst_days").value = Gettext.strargs(gt.gettext("%1 day"), [days]);
+          $("dst_days").value = gt.strargs(gt.gettext("%1 day"), [days]);
         }
         $("dst_days").style.display = "inline";
       }
@@ -3297,7 +3337,9 @@ function calcDuration(param) {
     // Case 3: Calculate duration from arrival time and starting time
     if (duration == 0) {
       duration = dst_time - src_time - (dst_tz - src_tz);
-      if (duration < 0) duration += 24;
+      if (duration < 0) {
+        duration += 24;
+      }
     }
   } else {
     // Case 1: Do nothing, just use estimated duration
@@ -3328,15 +3370,16 @@ function calcDuration(param) {
 // Also calculates distance and duration (unless "quick" is true)
 // type: "src_ap" or "dst_ap"
 function markAirport(element, quick) {
-  if (element.startsWith("src_ap")) {
-    var icon = "/img/icon_plane-src.png";
-  } else {
-    var icon = "/img/icon_plane-dst.png";
-  }
+  var icon = element.startsWith("src_ap")
+    ? "/img/icon_plane-src.png"
+    : "/img/icon_plane-dst.png";
   if (getCurrentPane() == "multiinput") {
     element = markingLimit(element);
   }
-  if (!element) return; // nothing to draw
+  if (!element) {
+    // nothing to draw
+    return;
+  }
 
   var data = $(element + "id").value.split(":");
   var iata = data[0];
@@ -3367,7 +3410,9 @@ function markAirport(element, quick) {
         input_toggle = "dst_ap"; // single input
       } else {
         var idx = multiinput_order.indexOf(element) + 1;
-        if (idx == multiinput_order.length) idx = 0;
+        if (idx == multiinput_order.length) {
+          idx = 0;
+        }
         input_toggle = multiinput_order[idx];
       }
     } else {
@@ -3383,7 +3428,9 @@ function markAirport(element, quick) {
         input_toggle = "src_ap"; // single input
       } else {
         var idx = multiinput_order.indexOf(element) + 1;
-        if (idx == multiinput_order.length) idx = 0;
+        if (idx == multiinput_order.length) {
+          idx = 0;
+        }
         input_toggle = multiinput_order[idx];
       }
     } else {
@@ -3492,7 +3539,7 @@ function markingLimit(element) {
   } // no valid airports
   if (i > multiinput_rows) {
     i = multiinput_rows;
-  } // otherwise it goes one over if all rows are valid
+  } // otherwise, it goes one over if all rows are valid
   return "dst_ap" + i;
 }
 
@@ -3575,7 +3622,11 @@ function selectAirport(apid, select, quick, code) {
   }
   // Search failed
   if (!quick && !code) {
-    if (confirm("This airport is currently filtered out. Clear filter?")) {
+    if (
+      confirm(
+        gt.gettext("This airport is currently filtered out. Clear filter?")
+      )
+    ) {
       clearFilter(false);
     }
   }
@@ -3683,6 +3734,7 @@ function getAirlineMapIcon(alid) {
   return (
     "<a href='#' onclick='JavaScript:showAirlineMap(" +
     alid +
+    //TODO: alt text
     ")'><img src='/img/icon_routes.png' width=16 height=16 title='" +
     gt.gettext("Show airline route map") +
     "'></a>"
@@ -3730,12 +3782,15 @@ function settings() {
 //
 function keyPress(e, element) {
   var keycode;
-  if (window.event) keycode = window.event.keyCode;
-  else if (e) keycode = e.which;
+  if (window.event) {
+    keycode = window.event.keyCode;
+  } else if (e) {
+    keycode = e.which;
+  }
 
   if (element == "login") {
-    if (e == "CHANGE") {
-      if (logged_in == "pending") return true;
+    if (e == "CHANGE" && logged_in == "pending") {
+      return true;
     }
     if (keycode == Event.KEY_RETURN) {
       logged_in = "pending";
@@ -3744,7 +3799,9 @@ function keyPress(e, element) {
   } else {
     if (keycode == Event.KEY_TAB) {
       // Ignore fields that are already autocompleted
-      if ($(element).value.length > 4) return;
+      if ($(element).value.length > 4) {
+        return;
+      }
 
       switch (element) {
         case "qs":
@@ -3799,13 +3856,13 @@ function login(str, param) {
         case "REFRESH":
           $("loginstatus").innerHTML =
             getEliteIcon(elite) +
-            Gettext.strargs(gt.gettext("Logged in as <B>%1</B>"), [name]);
+            gt.strargs(gt.gettext("Logged in as <b>%1</b>"), [name]);
           break;
 
         case "NEWUSER":
           $("loginstatus").innerHTML =
             getEliteIcon(elite) +
-            Gettext.strargs(gt.gettext("Welcome, <B>%1</B> !"), [name]);
+            gt.strargs(gt.gettext("Welcome, <b>%1</b> !"), [name]);
           break;
 
         default:
@@ -3813,7 +3870,7 @@ function login(str, param) {
           $("stats_ajax").style.display = "inline";
           $("loginstatus").innerHTML =
             getEliteIcon(elite) +
-            Gettext.strargs(gt.gettext("Hi, <B>%1</B> !"), [name]);
+            gt.strargs(gt.gettext("Hi, <b>%1</b> !"), [name]);
           break;
       }
 
@@ -3822,6 +3879,7 @@ function login(str, param) {
           $("news").style.display = "inline";
           $("news").innerHTML =
             getEliteIcon("X") +
+            // TODO: alt text
             "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
             gt.gettext(
               "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!"
@@ -3839,8 +3897,9 @@ function login(str, param) {
 
       if (param == "NEWUSER") {
         $("news").innerHTML =
+          // TODO: alt text
           "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
-          Gettext.strargs(
+          gt.strargs(
             gt.gettext(
               "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
             ),
@@ -3868,14 +3927,14 @@ function login(str, param) {
 
     case 2:
       // Successful but need to switch UI language, so reload, stripping out any "?lang" in the URL
-      $("loginstatus").innerHTML = "<B>" + gt.gettext("Loading") + "</B>";
+      $("loginstatus").innerHTML = "<b>" + gt.gettext("Loading") + "</b>";
       location.href = location.origin + location.pathname;
       break;
 
     default:
       // Login failed
       logged_in = false;
-      $("loginstatus").innerHTML = "<B>" + result["message"] + "</B>";
+      $("loginstatus").innerHTML = "<b>" + result["message"] + "</b>";
       showLoadingAnimation(false);
   }
 }
@@ -3883,7 +3942,7 @@ function login(str, param) {
 function logout(str) {
   logged_in = false;
   $("loginstatus").innerHTML =
-    "<B>" + gt.gettext("You have been logged out.") + "</B>";
+    "<b>" + gt.gettext("You have been logged out.") + "</b>";
   $("stats").innerHTML = "<i>" + gt.gettext("Loading") + "</i>";
   $("stats_ajax").style.display = "inline";
   $("loginform").style.display = "inline";
@@ -3927,7 +3986,9 @@ function isEditMode() {
 function openPane(newPane) {
   if (paneStack.length > 0) {
     var currentPane = getCurrentPane();
-    if (currentPane == newPane) return;
+    if (currentPane == newPane) {
+      return;
+    }
     $(currentPane).style.display = "none";
   }
   $(newPane).style.display = "inline";
@@ -3947,7 +4008,9 @@ function findPane(pane) {
 // Close current pane
 // If the current pane is the last one, do nothing
 function closePane() {
-  if (paneStack.length == 1) return;
+  if (paneStack.length == 1) {
+    return;
+  }
 
   if (isEditMode()) {
     unmarkAirports();
@@ -3963,7 +4026,9 @@ function closePane() {
   $(lastPane).style.display = "inline";
 
   // If ad pane is now displayed, refresh it
-  if (paneStack.length == 1 && paneStack[0] == "ad") refreshAd();
+  if (paneStack.length == 1 && paneStack[0] == "ad") {
+    refreshAd();
+  }
 }
 
 // Clear all panes until the base pane (ad)
@@ -4080,8 +4145,8 @@ function closeInput() {
   }
   closePane();
 
-  // Reload flights list if we were editing flights, or
-  // user had a result pane open when he opened new flight editor
+  // Reload the flights list if we were editing flights, or
+  // user had a result pane open when they opened a new flight editor
 
   if (
     getCurrentPane() == "result" &&
@@ -4280,8 +4345,8 @@ function refreshAd() {
   if (d) {
     var s = d.getElementsByTagName("iframe");
     if (s && s.length) {
-      var src = s[0].src.split(/&xtime=/)[0];
-      s[0].src = src + "&xtime=" + new Date().getTime();
+      s[0].src =
+        s[0].src.split(/&xtime=/)[0] + "&xtime=" + new Date().getTime();
     }
   }
   return true;

@@ -62,11 +62,12 @@ function xmlhttpPost(strURL, type) {
 function validate(type) {
   var form = document.forms["tripform"];
   if (form.name.value == "") {
-    showError("Please enter a name for this trip.");
+    showError(gt.gettext("Please enter a name for this trip."));
     return;
   }
 
-  document.getElementById("miniresultbox").innerHTML = "<i>Processing...</i>";
+  document.getElementById("miniresultbox").innerHTML =
+    "<i>" + gt.gettext("Processing...") + "</i>";
   xmlhttpPost(URL_TRIP, type);
 }
 
@@ -74,13 +75,15 @@ function validate(type) {
 function deleteTrip() {
   if (
     confirm(
-      "Are you sure you want to delete this trip? (Flights in this trip will NOT be deleted.)"
+      gt.gettext(
+        "Are you sure you want to delete this trip? (Flights in this trip will NOT be deleted.)"
+      )
     )
   ) {
     xmlhttpPost(URL_TRIP, "DELETE");
   } else {
     document.getElementById("miniresultbox").innerHTML =
-      "<i>Deleting trip cancelled.</i>";
+      "<i>" + gt.gettext("Deleting trip cancelled.") + "</i>";
   }
 }
 

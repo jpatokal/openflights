@@ -15,11 +15,9 @@ window.onload = function init() {
   gt = new Gettext({ domain: "messages" });
   // ...?apid=code:apid:...
   var args = window.location.href.split("?");
-  if (args[1]) {
-    if (args[1].split("=")[0] == "apid") {
-      apid = args[1].split("=")[1];
-      xmlhttpPost(URL_APSEARCH, apid, "LOAD");
-    }
+  if (args[1] && args[1].split("=")[0] == "apid") {
+    apid = args[1].split("=")[1];
+    xmlhttpPost(URL_APSEARCH, apid, "LOAD");
   }
 };
 
@@ -36,7 +34,6 @@ function doLoad(apid) {
 }
 
 function xmlhttpPost(strURL, offset, action) {
-  var xmlHttpReq = false;
   var self = this;
   // Mozilla/Safari
   if (window.XMLHttpRequest) {
@@ -61,11 +58,9 @@ function xmlhttpPost(strURL, offset, action) {
       if (strURL == URL_APSEARCH) {
         if (action == "SEARCH") {
           searchResult(self.xmlHttpReq.responseText);
-        }
-        if (action == "RECORD") {
+        } else if (action == "RECORD") {
           recordResult(self.xmlHttpReq.responseText);
-        }
-        if (action == "LOAD") {
+        } else if (action == "LOAD") {
           loadAirport(self.xmlHttpReq.responseText);
         }
       }
@@ -120,7 +115,7 @@ function xmlhttpPost(strURL, offset, action) {
 
     if (action == "SEARCH" && db == DB_DAFIF) {
       if (city != "") {
-        warning = Gettext.strargs(
+        warning = gt.strargs(
           gt.gettext(
             "Ignoring city '%1', since the DAFIF database does not contain city information."
           ),
@@ -135,7 +130,7 @@ function xmlhttpPost(strURL, offset, action) {
             break;
 
           case "":
-            warning = Gettext.strargs(
+            warning = gt.strargs(
               gt.gettext(
                 "Search for IATA/FAA code '%1' limited to United States airports, since DAFIF does not contain IATA codes for cities outside the US."
               ),
@@ -145,7 +140,7 @@ function xmlhttpPost(strURL, offset, action) {
             break;
 
           default:
-            warning = Gettext.strargs(
+            warning = gt.strargs(
               gt.gettext(
                 "Ignoring IATA code '%1', since DAFIF does not contain IATA codes for cities outside the United States."
               ),
@@ -288,18 +283,22 @@ function xmlhttpPost(strURL, offset, action) {
           city +
           ", " +
           country +
-          " (IATA: " +
-          (iata == "" ? "N/A" : iata) +
-          ", ICAO: " +
-          (icao == "" ? "N/A" : icao) +
+          " (" +
+          gt.gettext("IATA") +
+          ": " +
+          (iata == "" ? gt.gettext("N/A") : iata) +
+          ", " +
+          gt.gettext("ICAO") +
+          ": " +
+          (icao == "" ? gt.gettext("N/A") : icao) +
           ")";
         var quad =
-          (parseFloat(y) < 0 ? "SOUTH" : "NORTH") +
+          (parseFloat(y) < 0 ? gt.gettext("SOUTH") : gt.gettext("NORTH")) +
           "-" +
-          (parseFloat(x) < 0 ? "WEST" : "EAST");
+          (parseFloat(x) < 0 ? gt.gettext("WEST") : gt.gettext("EAST"));
         if (
           !confirm(
-            Gettext.strargs(
+            gt.strargs(
               gt.gettext(
                 "Are you sure you want to add %1 as a new airport, located in the %2 quadrant of the world? Please double-check the name, airport codes and exact coordinates before confirming."
               ),
@@ -369,6 +368,7 @@ function xmlhttpPost(strURL, offset, action) {
 }
 
 function describe(action) {
+  // Localised in usage above
   switch (action) {
     case "SEARCH":
       return "Searching...";
@@ -421,7 +421,7 @@ function searchResult(str) {
   } else {
     table +=
       "<tr><td><b>" +
-      Gettext.strargs(gt.gettext("Results %1 to %2 of %3"), [
+      gt.strargs(gt.gettext("Results %1 to %2 of %3"), [
         offset + 1,
         Math.min(offset + 10, max),
         max,
@@ -473,6 +473,7 @@ function searchResult(str) {
             "<br><span style='background-color: " +
             bgcolor +
             "'>" +
+            // Or you're an admin...
             gt.gettext(
               "Airports in blue have been added by you and can be edited."
             ) +
@@ -511,12 +512,10 @@ function searchResult(str) {
           "\")'></td>";
       }
       if (db != DB_OPENFLIGHTS || col["ap_uid"] == "own" || !isEditMode()) {
-        var label;
-        if (col["ap_uid"] == "own" && db == DB_OPENFLIGHTS) {
-          label = gt.gettext("Edit");
-        } else {
-          label = gt.gettext("Load");
-        }
+        var label =
+          col["ap_uid"] == "own" && db == DB_OPENFLIGHTS
+            ? gt.gettext("Edit")
+            : gt.gettext("Load");
         table +=
           "<td style='text-align: right; background-color: " +
           bgcolor +
@@ -534,7 +533,7 @@ function searchResult(str) {
   getElement("miniresultbox").innerHTML = table;
 }
 
-// Load data from search result into form
+// Load data from the search results into the form
 function loadAirport(data) {
   var json = JSON.parse(data);
   if (json["status"] != 1 || json["max"] == 0) {
@@ -654,7 +653,7 @@ function isEditMode() {
   return isLoggedIn() && parent.opener.isEditMode();
 }
 
-// Airport selected, kick it back to main window and close this
+// Airport selected, kick it back to the main window and close this
 function selectAirport(data, name) {
   parent.opener.addNewAirport(data, unescape(name));
   window.close();
