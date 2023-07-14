@@ -22,7 +22,7 @@ require_once "./php/locale.php";
             </ul>
 
             <p><?php echo _('Data from OpenAirports and GAD can be preloaded into the search form for easy adding to the OpenFlights DB.'); ?></p>
-            <p><?php echo _('Want a copy of this data? See <a href="/data.html">OpenFlights: Airport and airline data</a>.'); ?></p>
+            <p><?php echo _('Want a copy of this data? See <a href="/data.php">OpenFlights: Airport and airline data</a>.'); ?></p>
 
             <form>
                 <input type="button" value="<?php echo _('Close'); ?>" onClick="window.close()">

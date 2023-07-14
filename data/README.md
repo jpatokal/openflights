@@ -1,6 +1,6 @@
 This directory contains snapshots of the OpenFlights airport, airline and route databases.
 
-Please see [Data](https://openflights.org/data.html) for file format, licensing, and more.
+Please see [Data](https://openflights.org/data.php) for file format, licensing, and more.
 
 Since these files are only snapshots of live data, **pull requests are not accepted**.
 

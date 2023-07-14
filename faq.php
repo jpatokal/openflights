@@ -72,7 +72,7 @@ require_once "./php/locale.php";
           <li>OpenFlights <b>works in realtime</b>. Make any change, and you'll see it right then and there.'); ?></li>
           <li><?php echo _('OpenFlights supports <b>"trips"</b> (<a href="/help/trip.php">read more</a>). You can join up any flights together into a trip, which you can then display on its own page and even share with friends.'); ?></li>
           <li><?php echo _("OpenFlights is <b>free in spirit</b>. We don't try to lock you in: it's easy to import your data <i>and</i> export copies for safekeeping."); ?></li>
-          <li><?php echo _('OpenFlights is <b>free software</b>. All our source code is licensed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="https://github.com/jpatokal/openflights/">GitHub</a>, so you can set up your own copy or just use the bits you like. <a href="data.html">Airport, airline and route data</a> is freely available as well.'); ?></li>
+          <li><?php echo _('OpenFlights is <b>free software</b>. All our source code is licensed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="https://github.com/jpatokal/openflights/">GitHub</a>, so you can set up your own copy or just use the bits you like. <a href="data.php">Airport, airline and route data</a> is freely available as well.'); ?></li>
           <li><?php echo _('OpenFlights <b>can be used anywhere</b>. No need to install any programs, synchronize data or take care of backups, just point your browser to the site.'); ?></li>
         </ul>
 
