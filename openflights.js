@@ -622,7 +622,6 @@ function prepareAutocomplete(
         headers: {
           "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
         },
-        body: encodeURI(`${inputId}=${text}`),
         body: new URLSearchParams([
           ["searchType", searchType],
           ["searchText", text],
