@@ -6,7 +6,7 @@ require_once "./php/locale.php";
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>OpenFlights: <?php echo _('About'); ?></title>
+    <title><?php echo sprintf(_('OpenFlights: %s'), _('About')); ?></title>
     <meta name="version" content="<?php echo Git::getCurrentCommitID() ?? "unavailable"; ?>">
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">

@@ -13,7 +13,7 @@ if (!$uid || empty($uid)) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-  <title>OpenFlights: <?php echo _("TripIt"); ?></title>
+  <title><?php echo sprintf(_('OpenFlights: %s'), _('TripIt')); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="stylesheet" href="/css/tripit.css" type="text/css">
@@ -25,7 +25,7 @@ if (!$uid || empty($uid)) {
 
   <body onload="rendezvousPageInit()">
   <div id="contexthelp">
-    <h1>OpenFlights: <?php echo _("Link your TripIt Account"); ?></h1>
+    <h1> <?php echo _("Link your TripIt Account"); ?></h1>
 
     <p><?php
         echo _("To import flights via TripIt, you'll need to authorize OpenFlights to access your TripIt account. OpenFlights will only be able to look at (but not modify) your TripIt data.");

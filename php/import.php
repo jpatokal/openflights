@@ -6,7 +6,7 @@ require_once "db_pdo.php";
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: <?php echo _("Import"); ?></title>
+    <title><?php echo sprintf(_('OpenFlights: %s'), _('Import')); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
 
@@ -17,7 +17,7 @@ require_once "db_pdo.php";
   <body>
     <div id="contexthelp">
 
-  <h1>OpenFlights: <?php echo _("Import"); ?></h1>
+  <h1><?php echo _("Import"); ?></h1>
 <?php
 $uid = $_SESSION["uid"];
 if (!$uid || empty($uid)) {
