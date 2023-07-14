@@ -4,16 +4,17 @@ require_once "../php/locale.php";
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-  <title>OpenFlights: <?php echo _("Import data") ?></title>
+  <title>OpenFlights: <?php echo _("Import data"); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
   </head>
 
   <body>
     <div id="contexthelp">
-      <h1>OpenFlights: <?php echo _("Import data") ?></h1>
+      <h1>OpenFlights: <?php echo _("Import data"); ?></h1>
 
-      <p><?php echo _("OpenFlights can import flights from three sources:") ?></p>
+      <p><?php echo _("OpenFlights can import flights from three sources:"); ?></p>
 
       <form name="importform" action="/php/import.php" enctype="multipart/form-data" method="post"><p>
       <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
@@ -24,9 +25,9 @@ require_once "../php/locale.php";
           <td><p><?php
             printf(
                 _("<b>TripIt</b> &mdash; Connect directly to TripIt.com to import past and future trips, in bulk or individually. Duplicates are detected.")
-            );?>
+            ); ?>
             <input type="button" value="<?php
-                echo _("Import from Tripit")
+                echo _("Import from Tripit");
             ?>" onClick="window.location='/php/tripit_list_trips.php'"/></p>
           </td>
         </tr>
@@ -50,9 +51,9 @@ require_once "../php/locale.php";
         </tr>
     </table>
 
-<h4><?php echo _("File to upload") ?></h4>
+<h4><?php echo _("File to upload"); ?></h4>
   <p><input type="file" name="userfile" size="30"><b><?php
-      echo _("Keep historical airline names?") ?></b><input type="checkbox" name="historyMode" value="yes">
+      echo _("Keep historical airline names?"); ?></b><input type="checkbox" name="historyMode" value="yes">
   </p>
 
 <p><?php
@@ -62,8 +63,8 @@ require_once "../php/locale.php";
         "<input type='button' value='Settings' align='middle' onclick='JavaScript:parent.opener.settings()'>"
     ); ?>
 
-    <input type="submit" name="action" value="<?php echo _("Upload") ?>">
-    <input type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+    <input type="submit" name="action" value="<?php echo _("Upload"); ?>">
+    <input type="button" value="<?php echo _("Cancel"); ?>" onClick="window.close()">
   </form>
 
   <div id="miniresultbox"></div><br>

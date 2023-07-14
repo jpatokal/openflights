@@ -1,12 +1,14 @@
 <?php
 include_once '../php/db_pdo.php';
+require_once "./php/locale.php";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: Reset password</title>
+    <title>OpenFlights: <?php echo _('Reset password'); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
   </head>
 
   <body>
@@ -28,10 +30,11 @@ if (isset($_GET["challenge"])) {
             if (!$sth->execute([$pwstring, $user])) {
                 die('Resetting password for user ' . $user . ' failed');
             }
-            echo "Your new password is <b>$newpw</b>. Please log in and change it from Settings.\n\n";
-            echo "<input type='button' value='Login' onClick='javascript:window.location=\"/\"'>";
+            printf(_("Your new password is <b>%s</b>. Please log in and change it from Settings."), $newpw)
+                . "\n\n";
+            echo "<input type='button' value='" . _('Login') . "' onClick='javascript:window.location=\"/\"'>";
         } else {
-            echo "Invalid challenge.";
+            echo _("Invalid challenge.");
         }
     } else {
         echo "No such user.";
@@ -63,33 +66,33 @@ OpenFlights.org";
         }
         $headers = "From: support@openflights.org";
         if (mail($email, $subject, $body, $headers)) {
-              echo "<p>A password reset link has been mailed to <b>$email</b>.</p>";
+              echo "<p>" . sprintf(_("A password reset link has been mailed to <b>%s</b>."), $email) . "</p>";
         } else {
-            echo "<p>Message delivery failed, please contact <a href='/about'>support</a>.</p>";
+            echo "<p>" . _("Message delivery failed, please contact <a href='/about'>support</a>.") . "</p>";
         }
     } else {
-        echo "<p>Sorry, that e-mail address is not registered for any OpenFlights user.</p>";
+        echo "<p>" . _("Sorry, that e-mail address is not registered for any OpenFlights user.") . "</p>";
     }
 } else {
-    ?>
+    echo "<p>" .
+        _("Can't log in? One tip before you panic: make sure you have entered your password <b>using the same case</b> as you did when signing up: \"Secret\" is not the same as \"secret\". If you signed up before January 15, 2009, your <b>username</b> (\"Joe\" vs \"joe\") also has to match. ")
+        . "</p>";
 
-      <p>Can't log in? One tip before you panic: make sure you have entered your password <b>using the same case</b> as you did when signing up: "Secret" is not the same as "secret". If you signed up before January 15, 2009, your <b>username</b> ("Joe" vs "joe") also has to match.</p>
-
-      <p>If that doesn't help, enter your <b>e-mail address</b> below, and
-      we'll send you a link you can use to reset your password.</p>
-
+    echo "<p>" .
+        _("If that doesn't help, enter your <b>e-mail address</b> below, and we'll send you a link you can use to reset your password.")
+        . "</p>";
+?>
       <form name="reset" action="/help/resetpw" enctype="multipart/form-data" method="post">
         <input type="text" name="email" align="top" size="10" tabindex="1">
-        <input type="submit" name="action" value="Reset password" tabindex="2">
+        <input type="submit" name="action" value="<?php _("Reset password"); ?>" tabindex="2">
       </form>
-
-      <p>If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do.</p>
     <?php
+    echo "<p>" .
+        _("If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do.")
+        . "</p>";
 }
 if (!isset($_GET["challenge"])) {
-    ?>
-      <input type="button" id="close" value="Return" onClick="javascript:window.close()">
-    <?php
+    echo "<input type=\"button\" id=\"close\" value=\"" . _("Return") . "\" onClick=\"javascript:window.close()\">";
 }
 ?>
 

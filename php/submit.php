@@ -3,7 +3,7 @@
 include_once 'locale.php';
 $uid = $_SESSION["uid"];
 if (!$uid || empty($uid)) {
-    printf("Not logged in, aborting");
+    printf(_("Not logged in, aborting"));
     exit;
 }
 
@@ -199,7 +199,7 @@ SQL;
         }
 
         $code = 100;
-        $msg = MODES[$mode] . " deleted.";
+        $msg = MODES[$mode] . _(" deleted.");
         break;
 
     default:

@@ -32,7 +32,7 @@ function get_request_tokens($dbh, $uid) {
     try {
         $sql = "SELECT auth_token, auth_token_secret FROM tripit_tokens WHERE uid = ? AND active = 'Y'";
         $sth = $dbh->prepare($sql);
-        $sth->execute(array($uid));
+        $sth->execute([$uid]);
     } catch (PDOException $e) {
         die("Internal error.");
     }
@@ -40,7 +40,7 @@ function get_request_tokens($dbh, $uid) {
     if ($sth->rowCount()) {
         // User has a token.
         $row = $sth->fetch();
-        return array("token" => $row["auth_token"], "secret" => $row["auth_token_secret"]);
+        return ["token" => $row["auth_token"], "secret" => $row["auth_token_secret"]];
     } else {
         return null;
     }
@@ -66,7 +66,7 @@ function handle_tripit_response($response) {
 
         # Disable the old tokens.
         $sth = $dbh->prepare("UPDATE tripit_tokens SET active='N' WHERE uid = ?");
-        $sth->execute(array($uid));
+        $sth->execute([$uid]);
 
         header("Location: /php/tripit_rendezvous.php");
         exit();
