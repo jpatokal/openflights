@@ -171,7 +171,7 @@ SQL;
         $sql .= " ORDER BY name LIMIT $limit";
     }
     $sth = $dbh->prepare($sql);
-    !$sth->execute(['mode' => $mode, 'code' => $searchText, 'name' => "$searchText%"]);
+    $sth->execute(['mode' => $mode, 'code' => $searchText, 'name' => "$searchText%"]);
     foreach ($sth as $row) {
         $results[] = ['label' => format_airline($row), 'value' => (int)$row['alid']];
     }
