@@ -751,6 +751,9 @@ msgstr "Чтобы найти аэропорт, заполните одно ил
 msgid "Airport name"
 msgstr "Название аэропорта"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "Город"
 

@@ -1467,3 +1467,6 @@ msgstr ""
 
 msgid "No flights found."
 msgstr ""
+
+msgid "Airport ID"
+msgstr ""

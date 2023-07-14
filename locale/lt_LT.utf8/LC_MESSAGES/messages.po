@@ -754,6 +754,9 @@ msgstr "Užpildykite vieną arba daugiau laukų surasti reikiamą oro uostą."
 msgid "Airport name"
 msgstr "Oro uosto pavadinimas"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "Miesto pavadinimas"
 

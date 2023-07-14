@@ -753,6 +753,9 @@ msgstr "Fyll i nedan för att söka efter flygbolag."
 msgid "Airport name"
 msgstr "Namn på flygplats"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "Namn på stad"
 

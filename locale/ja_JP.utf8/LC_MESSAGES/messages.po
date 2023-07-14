@@ -720,6 +720,9 @@ msgstr "空港検索：1つ以上の項目を入力"
 msgid "Airport name"
 msgstr "空港"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "都市"
 

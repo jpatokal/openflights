@@ -761,6 +761,9 @@ msgstr ""
 msgid "Airport name"
 msgstr "Nom de l'aéroport"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "Nom de la ville"
 

@@ -724,6 +724,9 @@ msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
 msgid "Airport name"
 msgstr "Lentokentän nimi"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "Kaupunki"
 

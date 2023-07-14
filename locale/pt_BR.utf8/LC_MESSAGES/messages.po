@@ -755,6 +755,9 @@ msgstr "Preencha pelo menos um campo abaixo para procurar por aeroportos."
 msgid "Airport name"
 msgstr "Nome do aeroporto"
 
+msgid "Airport ID"
+msgstr ""
+
 msgid "City name"
 msgstr "Nome da cidade"
 
