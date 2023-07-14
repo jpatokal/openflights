@@ -85,6 +85,640 @@ msgid ""
 "b> and <b>trsqr</b>."
 msgstr ""
 
+msgid ""
+"Creating and maintaining this database has required and continues to require "
+"an <i>immense amount</i> of work."
+msgstr ""
+
+msgid ""
+"Creating and maintaining this database has required and continues to require "
+"an <i>immense amount</i> of work, which is why it would cost you <i>over one "
+"thousand dollars</i> to buy it from a commercial supplier."
+msgstr ""
+
+msgid ""
+"We need your support to keep this database up-to-date: just click on the "
+"PayPal link to the right (Visa, MasterCard, American Express and Discover "
+"also accepted)."
+msgstr ""
+
+msgid ""
+"We suggest <b>US$50</b>, but any amount at all is welcome, and you may use "
+"the data for free if you feel that you are unable to pay."
+msgstr ""
+
+msgid ""
+"If you do donate, please specify in the comments if you would like a "
+"itemized receipt for business expense or tax purposes."
+msgstr ""
+
+msgid "Support OpenFlights"
+msgstr ""
+
+msgid "Small Donation"
+msgstr ""
+
+msgid "Small Donation $20.00 USD"
+msgstr ""
+
+msgid "Donation"
+msgstr ""
+
+msgid "Donation $50.00 USD"
+msgstr ""
+
+msgid "Combo Donation"
+msgstr ""
+
+msgid "Combo Donation $100.00 USD"
+msgstr ""
+
+msgid ""
+"The GitHub copy is only a sporadically updated static snapshot of the live "
+"OpenFlights database (see <a href=\"https://github.com/jpatokal/openflights/"
+"commits/master/data/airports.dat\">revision log</a>). If you would like an "
+"up-to-the-minute copy, or you would like your data filtered by any "
+"information available to us (eg. number of routes at the airport), do not "
+"hesitate to <a href=\"/about\">contact us</a>."
+msgstr ""
+
+msgid "Airport, airline and route data"
+msgstr ""
+
+msgid "Navigation: "
+msgstr ""
+
+msgid "Airport"
+msgstr ""
+
+msgid "Airline"
+msgstr "Lentoyhtiö"
+
+msgid "Route"
+msgstr ""
+
+msgid "Plane"
+msgstr "Kone"
+
+msgid "Country"
+msgstr "Maa"
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Other"
+msgstr "Muu"
+
+msgid "License"
+msgstr ""
+
+msgid "Airport database"
+msgstr ""
+
+msgid "(click to enlarge)"
+msgstr ""
+
+msgid ""
+"As of January 2017, the OpenFlights Airports Database contains <b>over "
+"10,000</b> airports, train stations and ferry terminals spanning the globe, "
+"as shown in the map above. Each entry contains the following information:"
+msgstr ""
+
+msgid "Airport ID"
+msgstr ""
+
+msgid "Unique OpenFlights identifier for this airport."
+msgstr ""
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Name of airport. May or may not contain the <b>City</b> name."
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid ""
+"Main city served by airport. May be spelled differently from <b>Name</b>."
+msgstr ""
+
+msgid ""
+"Country or territory where airport is located. See <a "
+"href=\"#country\">Countries</a> to cross-reference to ISO 3166-1 codes."
+msgstr ""
+
+msgid "IATA"
+msgstr ""
+
+msgid "3-letter IATA code. Null if not assigned/unknown."
+msgstr ""
+
+msgid "ICAO"
+msgstr ""
+
+msgid ""
+"4-letter ICAO code.<br>\n"
+"                Null if not assigned."
+msgstr ""
+
+msgid "Latitude"
+msgstr "Leveysaste"
+
+msgid ""
+"Decimal degrees, usually to six significant digits. Negative is South, "
+"positive is North."
+msgstr ""
+
+msgid "Longitude"
+msgstr "Pituusaste"
+
+msgid ""
+"Decimal degrees, usually to six significant digits. Negative is West, "
+"positive is East."
+msgstr ""
+
+msgid "Altitude"
+msgstr ""
+
+msgid "In feet."
+msgstr ""
+
+msgid "Timezone"
+msgstr ""
+
+msgid ""
+"Hours offset from UTC. Fractional hours are expressed as decimals, eg. India "
+"is 5.5."
+msgstr ""
+
+msgid "DST"
+msgstr "Kesäaika"
+
+msgid ""
+"Daylight savings time. One of E (Europe), A (US/Canada), S (South America), "
+"O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a "
+"target=\"_blank\" href=\"help/time.php\">Help: Time</a></i>"
+msgstr ""
+
+msgid "Tz database time zone"
+msgstr ""
+
+msgid ""
+"Timezone in <a href=\"https://en.wikipedia.org/wiki/"
+"Tz_database\">\"tz\" (Olson) format</a>, eg. \"America/Los_Angeles\"."
+msgstr ""
+
+msgid "Type"
+msgstr "Laji"
+
+msgid ""
+"Type of the airport. Value \"airport\" for air terminals, \"station\" for "
+"train stations, \"port\" for ferry terminals and \"unknown\" if not known. "
+"<i>In airports.csv, only type=airport is included.</i>"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid ""
+"Source of this data. \"OurAirports\" for data sourced from <a href=\"https://"
+"ourairports.com/data/\">OurAirports</a>, \"Legacy\" for old data not matched "
+"to OurAirports (mostly DAFIF), \"User\" for unverified user contributions. "
+"<i>In airports.csv, only source=OurAirports is included.</i>"
+msgstr ""
+
+msgid "The data is UTF-8 encoded."
+msgstr ""
+
+msgid ""
+"<i>Note</i>: Rules for daylight savings time change from year to year and "
+"from country to country. The current data is an approximation for 2009, "
+"built on a country level. Most airports in DST-less regions in countries "
+"that generally observe DST (eg. AL, HI in the USA, NT, QL in Australia, "
+"parts of Canada) are marked incorrectly."
+msgstr ""
+
+msgid "Sample entries"
+msgstr ""
+
+msgid ""
+"Try it out: <a target=\"_blank\" href=\"html/apsearch\">Airport Search</a> "
+"(new window)"
+msgstr ""
+
+msgid ""
+"<i>Note</i>: The Airport Search window above is a part of <a href=\"https://"
+"openflights.org\">OpenFlights</a>. You will not be able to add or edit "
+"airports unless you are logged in."
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid ""
+"To download the current data dump from <a href=\"https://github.com/jpatokal/"
+"openflights\">GitHub</a> as a very straightforward CSV (comma-separated "
+"value) file, suitable for use in spreadsheets etc., simply click below:"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/airports.dat\">airports.dat</a> (Airports only, high quality)"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/airports-extended.dat\">airports-extended.dat</a> (Airports, "
+"train stations and ferry terminals, including user contributions)"
+msgstr ""
+
+msgid ""
+"If you'd like an even more thorough database, with extensive coverage of "
+"airstrips, heliports and other places of less interest for commercial "
+"airline frequent flyers, do check out <a href=\"https://ourairports."
+"com\">OurAirports</a>, whose public domain database covers over 40,000 "
+"places to fly from."
+msgstr ""
+
+msgid "Airline database"
+msgstr ""
+
+msgid ""
+"As of January 2012, the OpenFlights Airlines Database contains <b>5888</b> "
+"airlines. Each entry contains the following information:"
+msgstr ""
+
+msgid "Airline ID"
+msgstr ""
+
+msgid "Unique OpenFlights identifier for this airline."
+msgstr ""
+
+msgid "Name of the airline."
+msgstr ""
+
+msgid "Alias"
+msgstr ""
+
+msgid ""
+"Alias of the airline. For example, All Nippon Airways is commonly known as "
+"\"ANA\". "
+msgstr ""
+
+msgid "2-letter IATA code, if available."
+msgstr ""
+
+msgid "3-letter ICAO code, if available."
+msgstr ""
+
+msgid "Callsign"
+msgstr "Kutsutunnus"
+
+msgid "Airline callsign."
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid ""
+"\"Y\" if the airline is or has until recently been operational, \"N\" if it "
+"is defunct. This field is <i>not</i> reliable: in particular, major airlines "
+"that stopped flying long ago, but have not had their IATA code reassigned "
+"(eg. Ansett/AN), will incorrectly show as \"Y\"."
+msgstr ""
+
+msgid ""
+"The data is UTF-8 encoded. The special value <b>\\N</b> is used for \"NULL\" "
+"to indicate that no value is available, and is understood automatically by "
+"MySQL if imported."
+msgstr ""
+
+msgid ""
+"<i>Notes</i>: Airlines with null codes/callsigns/countries generally "
+"represent user-added airlines. Since the data is intended primarily for "
+"current flights, defunct IATA codes are generally not included. For example, "
+"\"Sabena\" is not listed with a SN IATA code, since \"SN\" is presently used "
+"by its successor Brussels Airlines."
+msgstr ""
+
+msgid ""
+"Try it out: <a target=\"_blank\" href=\"html/alsearch\">Airline Search</a> "
+"(new window)"
+msgstr ""
+
+msgid ""
+"<i>Note</i>: The Airline Search window above is a part of <a href=\"https://"
+"openflights.org\">OpenFlights</a>. You will not be able to view, add or edit "
+"airline details unless you are logged in."
+msgstr ""
+
+msgid ""
+"To download the current data dump from <a href=\"https://github.com/jpatokal/"
+"openflights/\">GitHub</a> as a very straightforward CSV (comma-separated "
+"value) file, suitable for use in spreadsheets etc, simply click below:"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/airlines.dat\">airlines.dat</a> (~400 KB)"
+msgstr ""
+
+msgid "Route database"
+msgstr ""
+
+msgid ""
+"Warning: The third-party that OpenFlights uses for route data ceased "
+"providing updates in June 2014. The current data is of historical value only."
+msgstr ""
+
+msgid ""
+"As of June 2014, the OpenFlights/Airline Route Mapper Route Database "
+"contains <b>67663</b> routes between <b>3321</b> airports on <b>548</b> "
+"airlines spanning the globe, as shown in the map above. Each entry contains "
+"the following information:"
+msgstr ""
+
+msgid "2-letter (IATA) or 3-letter (ICAO) code of the airline."
+msgstr ""
+
+msgid ""
+"Unique OpenFlights identifier for airline (see <a href=\"#airline\">Airline</"
+"a>)."
+msgstr ""
+
+msgid "Source airport"
+msgstr ""
+
+msgid "3-letter (IATA) or 4-letter (ICAO) code of the source airport."
+msgstr ""
+
+msgid "Source airport ID"
+msgstr ""
+
+msgid ""
+"Unique OpenFlights identifier for source airport (see <a "
+"href=\"#airport\">Airport</a>)"
+msgstr ""
+
+msgid "Destination airport"
+msgstr ""
+
+msgid "3-letter (IATA) or 4-letter (ICAO) code of the destination airport."
+msgstr ""
+
+msgid "Destination airport ID"
+msgstr ""
+
+msgid ""
+"Unique OpenFlights identifier for destination airport (see <a "
+"href=\"#airport\">Airport</a>)"
+msgstr ""
+
+msgid "Codeshare"
+msgstr ""
+
+msgid ""
+"\"Y\" if this flight is a codeshare (that is, not operated by <i>Airline</"
+"i>, but another carrier), empty otherwise."
+msgstr ""
+
+msgid "Stops"
+msgstr ""
+
+msgid "Number of stops on this flight (\"0\" for direct)"
+msgstr ""
+
+msgid "Equipment"
+msgstr ""
+
+msgid ""
+"3-letter codes for plane type(s) generally used on this flight, separated by "
+"spaces"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid ""
+"Routes are directional: if an airline operates services from A to B and from "
+"B to A, both A-B and B-A are listed separately."
+msgstr ""
+
+msgid ""
+"Route maps for airports and airlines can be viewed by <a href=\"https://"
+"openflights.org/blog/2009/07/15/airline-route-maps-launched-metric-distances-"
+"available/\">searching for their names or code in the website's Search\n"
+"        box</a>; alternatively, check out the <a href=\"/html/route-"
+"maps\">alphabetical list of all covered airports and airlines</a>."
+msgstr ""
+
+msgid ""
+"To download the current data dump from <a href=\"https://github.com/jpatokal/"
+"openflights\">GitHub</a> as a comma-delimited file, suitable for use in "
+"spreadsheets etc, simply click below:"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/routes.dat\">routes.dat</a> (~2 MB)"
+msgstr ""
+
+msgid "Plane database"
+msgstr ""
+
+msgid ""
+"The OpenFlights plane database contains a curated selection of <b>173</b> "
+"passenger aircraft with IATA and/or ICAO codes, covering the\n"
+"        vast majority of flights operated today and commonly used in flight "
+"schedules and reservation systems. Each entry contains the following "
+"information:"
+msgstr ""
+
+msgid "Full name of the aircraft."
+msgstr ""
+
+msgid "IATA code"
+msgstr ""
+
+msgid "Unique three-letter IATA identifier for the aircraft."
+msgstr ""
+
+msgid "ICAO code"
+msgstr ""
+
+msgid "Unique four-letter ICAO identifier for the aircraft."
+msgstr ""
+
+msgid ""
+"Aircraft with IATA but without ICAO codes are generally aircraft classes: "
+"for example, IATA \"747\" can be any type of Boeing 747, whereas\n"
+"            IATA \"744\"/ICAO \"B744\" is specifically a Boeing 747-400."
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/planes.dat\">planes.dat</a> (~5 KB)"
+msgstr ""
+
+msgid "ountry database"
+msgstr ""
+
+msgid ""
+"he OpenFlights country database contains a list of <a href=\"https://en."
+"wikipedia.org/wiki/ISO_3166-1\">ISO 3166-1 country codes</a>,\n"
+"            which can be used to look up the human-readable country names "
+"for the codes used in the Airline and Airport tables. Each entry contains "
+"the following information:"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "Full name of the country or territory."
+msgstr ""
+
+msgid "iso_code"
+msgstr ""
+
+msgid "Unique two-letter ISO 3166-1 code for the country or territory."
+msgstr ""
+
+msgid "dafif_code"
+msgstr ""
+
+msgid ""
+"FIPS country codes as used in DAFIF.Obsolete and primarily of historical "
+"interested."
+msgstr ""
+
+msgid ""
+"Some entries have DAFIF codes, but not ISO codes. These are primarily "
+"uninhabited islands without airports, and can be ignored for most purposes."
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/countries.dat\">countries.dat</a> (~5 KB)"
+msgstr ""
+
+msgid "Schedules (Timetables)"
+msgstr ""
+
+msgid ""
+"OpenFlights is currently considering launching an airline schedule "
+"(timetable) data service. Please register your interest by <a href=\"https://"
+"docs.google.com/forms/d/1KadfmOED90LHtUEOxA2oYW9nrN9ibqkz0oRVVogxM8A/"
+"viewform\">filling out this short survey</a>."
+msgstr ""
+
+msgid ""
+"OpenFlights can, on request, create customized versions of the images you "
+"see above. Options include higher resolution (suitable for printing), "
+"different backgrounds, filtering to highlight an airport or airline, etc. "
+"Please <a href=\"/about\">contact us</a> for a quote."
+msgstr ""
+
+msgid ""
+"OpenFlights offers only airport, airline and route data; we do <em>not</em> "
+"have any other data available. We also do not have historical data older "
+"than 2009."
+msgstr ""
+
+msgid "Some alternative commercial sources of data include:"
+msgstr ""
+
+msgid ": airfares"
+msgstr ""
+
+msgid ": flight tracking"
+msgstr ""
+
+msgid ": schedules, flight tracking, historical data"
+msgstr ""
+
+msgid ""
+"If you or a website you know of offers any of these for free, please <a "
+"href=\"/about\">let us know</a>!"
+msgstr ""
+
+msgid "Licensing and disclaimer"
+msgstr ""
+
+msgid ""
+"The OpenFlights Airport, Airline, Plane and Route Databases are made "
+"available under the <a href=\"https://opendatacommons.org/licenses/odbl/1-0/"
+"\">Open Database License</a>. Any rights in individual contents of the "
+"database are licensed under the <a href=\"http://opendatacommons.org/"
+"licenses/dbcl/1.0/\">Database Contents License</a>. In short, these mean "
+"that you are welcome to use the data as you wish, if and only if you "
+"<i>both</i> acknowledge the source <i>and</i> and license any derived works "
+"made available to the public with a free license as well."
+msgstr ""
+
+msgid ""
+"Licenses for commercial use of data or derived images are available on "
+"request. Most simple cases, for example use of an image within a book or "
+"other printed publication, are granted for a flat fee of US$100. Please <a "
+"href=\"/about\">contact us</a> for details."
+msgstr ""
+
+msgid ""
+"Airport data derived <a href=\"https://ourairports.com\">OurAirports</a> and "
+"DAFIF, as well as route data from <a href=\"http://arm.64hosts.com/"
+"\">Airline Route Mapper</a>, is in the public domain. Airline and plane data "
+"derived from Wikipedia may be subject to the <a href=\"http://www.gnu.org/"
+"copyleft/fdl.html\">GNU Free Documentation License</a>. Whether these "
+"databases pass the <a href=\"https://en.wikipedia.org/wiki/"
+"Threshold_of_originality\">threshold of originality</a> and are thus "
+"copyrightable in the United States is an open question, and OpenFlights does "
+"not assert the validity or lack thereof of such a claim."
+msgstr ""
+
+msgid ""
+"<b>This data is not suitable for navigation.</b> OpenFlights does not assume "
+"any responsibility whatsoever for its accuracy, and consequently assumes no "
+"liability whatsoever for results obtained or loss or damage incurred as a "
+"result of application of the data. OpenFlights expressly disclaims all "
+"warranties, expressed or implied, including but not limited to implied "
+"warranties of merchantability and fitness for any particular purpose."
+msgstr ""
+
+msgid "Any corrections will be <a href=\"/about\">gratefully received</a>."
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid ""
+"Airport base data was generated by from DAFIF (October 2006 cycle) and <a "
+"href=\"https://ourairports.com\">OurAirports</a>, plus timezone information "
+"from <a href=\"https://web.archive.org/web/20150407192035/http://www."
+"earthtools.org/\">EarthTools</a>. All DST information added manually. "
+"Significant revisions and additions made by the users of OpenFlights."
+msgstr ""
+
+msgid ""
+"Airline data was extracted directly from Wikipedia's gargantuan <a "
+"href=\"https://en.wikipedia.org/en/List_of_airlines\">List of airlines</"
+"a>.'); ?>\n"
+"        Plane data from <a href=\"https://en.wikipedia.org/wiki/"
+"List_of_ICAO_aircraft_type_designators\">List of ICAO aircraft type "
+"designators</a>.'); ?>\n"
+"        Significant revisions and additions made by the users of OpenFlights."
+msgstr ""
+
+msgid ""
+"Route data is maintained by and imported directly from <a href=\"http://"
+"arm.64hosts.com/\">Airline Route Mapper</a>. Duplicate entry removal and "
+"cross-referencing to airport/airline IDs by OpenFlights."
+msgstr ""
+
+msgid ""
+"<i>See also: <a target=\"_blank\" href=\"help/database.php\">Help: Database</"
+"a>"
+msgstr ""
+
 msgid "OpenFlights: Donations and Elite Levels"
 msgstr ""
 
@@ -324,7 +958,7 @@ msgid ""
 "the <a href=\"https://www.gnu.org/licenses/agpl-3.0.html\">GNU Affero "
 "General Public License</a> and can be downloaded from <a href=\"https://"
 "github.com/jpatokal/openflights/\">GitHub</a>, so you can set up your own "
-"copy or just use the bits you like. <a href=\"data.html\">Airport, airline "
+"copy or just use the bits you like. <a href=\"data.php\">Airport, airline "
 "and route data</a> is freely available as well."
 msgstr ""
 
@@ -814,9 +1448,6 @@ msgstr "Lentokenttähaku"
 msgid "Swap To and From airports"
 msgstr "Vaihda Mistä ja Mihin keskenään"
 
-msgid "Plane"
-msgstr "Kone"
-
 msgid "Enter plane model"
 msgstr "Lentokoneen malli"
 
@@ -856,9 +1487,6 @@ msgstr "Nro"
 msgid "Seat"
 msgstr "Paikka"
 
-msgid "Type"
-msgstr "Laji"
-
 msgid "Window"
 msgstr "Ikkuna"
 
@@ -876,9 +1504,6 @@ msgstr "Hupi"
 
 msgid "Crew"
 msgstr "Henkilökunta"
-
-msgid "Other"
-msgstr "Muu"
 
 msgid "Help: How do I enter airlines?"
 msgstr ""
@@ -939,9 +1564,6 @@ msgstr ""
 
 msgid "Help: How do I enter where I flew to?"
 msgstr ""
-
-msgid "Airline"
-msgstr "Lentoyhtiö"
 
 msgid "Help: How do I enter the airline?"
 msgstr ""
@@ -1367,8 +1989,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Want a copy of this data? See <a href=\"/data.html\">OpenFlights: Airport "
-"and airline data</a>."
+"Want a copy of this data? See <a href=\"/data.php\">OpenFlights: Airport and "
+"airline data</a>."
 msgstr ""
 
 msgid "OpenFlights: Privacy policy"
@@ -1392,7 +2014,7 @@ msgstr ""
 msgid ""
 "OpenFlights may display, package, and provide for reuse your flights, as "
 "well as any airports or airlines added by you, in an anonymized format. (See "
-"<a href=\"/data.html\">Databases</a> for details.)"
+"<a href=\"/data.php\">Databases</a> for details.)"
 msgstr ""
 
 msgid ""
@@ -1487,9 +2109,6 @@ msgid "recalculates these"
 msgstr ""
 
 msgid "Arrival time"
-msgstr ""
-
-msgid "Airport"
 msgstr ""
 
 msgid "Yes"
@@ -1644,19 +2263,10 @@ msgid ""
 "transport operators."
 msgstr "Täytä yksi tai useampi allaolevista kentistä hakua varten."
 
-msgid "Name"
-msgstr "Nimi"
-
 msgid "International Air Transport Association"
 msgstr ""
 
-msgid "IATA"
-msgstr ""
-
 msgid "International Civil Aviation Organization"
-msgstr ""
-
-msgid "ICAO"
 msgstr ""
 
 msgid "Active?"
@@ -1673,12 +2283,6 @@ msgstr "Laivayhtiö"
 
 msgid "Alternative name"
 msgstr "Vaihtoehtoinen nimi"
-
-msgid "Country"
-msgstr "Maa"
-
-msgid "Callsign"
-msgstr "Kutsutunnus"
 
 msgid "Show only major (IATA) airlines?"
 msgstr "Näytä vain isot (IATA-koodatut) lentoyhtiöt?"
@@ -1710,29 +2314,17 @@ msgstr ""
 msgid "FAA"
 msgstr ""
 
-msgid "Airport ID"
-msgstr ""
-
 msgid "City name"
 msgstr "Kaupunki"
 
 msgid "Country name"
 msgstr "Maa"
 
-msgid "Latitude"
-msgstr "Leveysaste"
-
-msgid "Longitude"
-msgstr "Pituusaste"
-
 msgid "Elevation"
 msgstr "Korkeus"
 
 msgid "UTC"
 msgstr "UTC"
-
-msgid "DST"
-msgstr "Kesäaika"
 
 msgid "Unknown"
 msgstr "Tuntematon"
@@ -2143,9 +2735,6 @@ msgstr ""
 
 #, php-format
 msgid "% stops"
-msgstr ""
-
-msgid "Codeshare"
 msgstr ""
 
 msgid "N/A"
