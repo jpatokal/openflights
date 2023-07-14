@@ -15,8 +15,6 @@ $user = $_POST["user"] ?? ($_GET["user"] ?? null);
 $trid = $_POST["trid"] ?? null;
 
 // Verify that this trip and user are public
-$filter = "";
-
 if ($uid == 1 && $trid && $trid != "0") {
     // Verify that we're allowed to access this trip
     $sql = "SELECT * FROM trips WHERE trid = ?";
@@ -175,7 +173,7 @@ UNION
 (
     SELECT '%s',iata,icao,apid,x,y
     FROM airports WHERE x=(
-        SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid=a.apid OR f.dst_apid=a.apid) AND $filter
+        SELECT MAX(x) FROM airports AS a, flights AS f WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND $filter
     )
     ORDER BY iata
     LIMIT 1
