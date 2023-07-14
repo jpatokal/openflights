@@ -16,37 +16,43 @@ if (!$uid || empty($uid)) {
 // This page requires that we're linked to a TripIt account already.
 $tripit_tokens = require_tripit_link($dbh, $uid);
 
-$oauth_cred = new OAuthConsumerCredential($tripit_app_id, $tripit_app_secret, $tripit_tokens["token"], $tripit_tokens["secret"]);
+$oauth_cred = new OAuthConsumerCredential(
+    $tripit_app_id, $tripit_app_secret,
+    $tripit_tokens["token"],
+    $tripit_tokens["secret"]
+);
 $tripit = new TripIt($oauth_cred, $tripit_api_url);
 
 // Figure out if user wants past or future trips.
-$wants_future_trips = isset($_REQUEST["future"]) ? $_REQUEST["future"] : null;
+$wants_future_trips = $_REQUEST["future"] ?? null;
 // Check that the parameter is valid.  If not, default to past.
 if ($wants_future_trips == null || !is_numeric($wants_future_trips)) {
     $wants_future_trips = 0;
 }
 
 // Page number, in case we have more trips than can be returned in a single TripIt call.
-$tripit_page_number = isset($_REQUEST["page"]) ? $_REQUEST["page"] : null;
+$tripit_page_number = $_REQUEST["page"] ?? null;
 if ($tripit_page_number < 2 || $tripit_page_number > 10000) {
     $tripit_page_number = 1;
 }
 
 // For future trips, include all objects.  For past trips, do not include all objects.
-$trips = $tripit->list_trip(array(
+$trips = $tripit->list_trip([
     'traveler' => 'true',
     'include_objects' => 'true',
     'past' => $wants_future_trips ? 'false' : 'true',
     'page_num' => $tripit_page_number,
-));
+]);
 if (!isset($trips) || !isset($trips->Trip)) {
     handle_tripit_response($tripit->response);
     error_log("TripIt error for user $uid: " . $tripit->response);
-    die(_("Could not connect to TripIt. Please try again later. If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>."));
+    die(
+        _("Could not connect to TripIt. Please try again later. If you are seeing this repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your account</a>.")
+    );
 }
 
 # Get the list of trips, sorted by start date, oldest to newest.
-$trip_index_by_date = array();
+$trip_index_by_date = [];
 for ($i = 0, $max = count($trips->Trip); $i < $max; $i++) {
     $trip_index_by_date[] = $i;
 }
@@ -72,11 +78,11 @@ if (!$wants_future_trips) {
 }
 
 # Build Trip ID to segment/ticket mapping
-$all_trip_segments = array();
+$all_trip_segments = [];
 foreach ($trips->AirObject as $ticket) {
     foreach ($ticket->Segment as $segment) {
         if (!isset($all_trip_segments["$ticket->trip_id"])) {
-            $all_trip_segments["$ticket->trip_id"] = array();
+            $all_trip_segments["$ticket->trip_id"] = [];
         }
         # Add the name of traveler on this segment.
         $segment->addChild("pax", generate_pax_string($ticket->Traveler));
@@ -306,11 +312,16 @@ function is_duplicate_segment($date, $from, $to, $flight_number) {
     global $dbh, $DEBUG;
     list($src_apid, $dst_apid, $opp) = orderAirports($from, $to);
     $mysql_date = $date->format('Y-m-d');
-    $sth = $dbh->prepare("SELECT COUNT(*) as NUM FROM flights WHERE uid = ? AND src_date = ? AND src_apid = ? AND dst_apid = ? AND opp = ?");
-    $sth->execute(array($_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp));
+    $sth = $dbh->prepare(
+        "SELECT COUNT(*) as NUM FROM flights WHERE uid = ? AND src_date = ? AND src_apid = ? AND dst_apid = ? AND opp = ?"
+    );
+    $sth->execute([$_SESSION["uid"], $mysql_date, $src_apid, $dst_apid, $opp]);
     $result = $sth->fetch();
     if ($DEBUG) {
-        error_log("is_duplicate_segment: $mysql_date $from-$to on $flight_number for user $_SESSION[uid] has duplicate status: " . $result[0]);
+        error_log(
+            "is_duplicate_segment: $mysql_date $from-$to on $flight_number for user {$_SESSION[uid]} has duplicate status: "
+            . $result[0]
+        );
     }
     return $result[0] != 0;
 }
@@ -324,15 +335,15 @@ function display_trip($trip) {
     global $all_trip_segments;
     ?>
 <div class="trip_header">
-  <div class="import_all" id="import_all_<?php echo htmlentities($trip->id) ?>"></div>
+  <div class="import_all" id="import_all_<?php echo htmlentities($trip->id); ?>"></div>
   <h2>
     <a style="text-decoration: none" target="_blank"
-       href="https://www.tripit.com<?php echo htmlentities($trip->relative_url) ?>"><?php echo htmlentities($trip->display_name) ?></a>
+       href="https://www.tripit.com<?php echo htmlentities($trip->relative_url); ?>"><?php echo htmlentities($trip->display_name); ?></a>
   </h2>
 </div>
     <?php
     if (array_key_exists("$trip->id", $all_trip_segments)) {
-        $valid_segments = array();
+        $valid_segments = [];
         foreach ($all_trip_segments["$trip->id"] as $segment) {
             $valid_segment = display_segment($segment);
             // Save valid segments to be used with "Import All"
@@ -410,20 +421,20 @@ function display_segment($segment) {
         $is_valid = true;
     }
     ?>
-<div class="segment" id="segment<?php echo $segment->id ?>">
-  <form id="import<?php echo $segment->id ?>">
+<div class="segment" id="segment<?php echo $segment->id; ?>">
+  <form id="import<?php echo $segment->id; ?>">
     <input type="hidden" name="param" value="ADD">
     <input type="hidden" name="mode" value="F">
 
     <div class="segment-left-cell">
-      <?php echo _("Passenger") ?>: <?php echo htmlentities($segment->pax) ?>
+      <?php echo _("Passenger"); ?>: <?php echo htmlentities($segment->pax); ?>
       <br>
 
-      <?php echo _("Date") ?>:
+      <?php echo _("Date"); ?>:
       <!-- Even thought we display the start and end time, we only store the start date, start time, and duration. -->
-      <?php echo $start_date ?> &rarr;
-      <?php echo $start_hm ?> &rarr;
-      <?php echo $end_hm ?>
+      <?php echo $start_date; ?> &rarr;
+      <?php echo $start_hm; ?> &rarr;
+      <?php echo $end_hm; ?>
       <?php
         if ($delta_days != 0) {
             echo "($delta_days ";
@@ -435,56 +446,64 @@ function display_segment($segment) {
             echo ")";
         }
         ?>
-      <input type="hidden" name="src_date" value="<?php echo $start_date ?>">
-      <input type="hidden" name="src_time" value="<?php echo $start_hm ?>">
-      <input type="hidden" name="duration" value="<?php echo $duration ?>">
+      <input type="hidden" name="src_date" value="<?php echo $start_date; ?>">
+      <input type="hidden" name="src_time" value="<?php echo $start_hm; ?>">
+      <input type="hidden" name="duration" value="<?php echo $duration; ?>">
       <br>
 
-      <?php echo _("From") ?>: <?php echo htmlentities($src_ap["name"]) ?>
-      <input type="hidden" name="src_apid" value="<?php echo $src_ap["id"] ?>">
+      <?php echo _("From"); ?>: <?php echo htmlentities($src_ap["name"]); ?>
+      <input type="hidden" name="src_apid" value="<?php echo $src_ap["id"]; ?>">
       <br>
 
-      <?php echo _("To") ?>: <?php echo htmlentities($dst_ap["name"]) ?>
-      <input type="hidden" name="dst_apid" value="<?php echo $dst_ap["id"] ?>">
+      <?php echo _("To"); ?>: <?php echo htmlentities($dst_ap["name"]); ?>
+      <input type="hidden" name="dst_apid" value="<?php echo $dst_ap["id"]; ?>">
       <br>
 
-      <?php echo _("Nr.") ?> <?php echo $flight_num ?> - <?php echo $airline["name"] ?>
-      <input type="hidden" name="number" value="<?php echo $flight_num ?>"/>
-      <input type="hidden" name="alid" value="<?php echo $airline["id"] ?>"/>
+      <?php echo _("Nr."); ?> <?php echo $flight_num; ?> - <?php echo $airline["name"]; ?>
+      <input type="hidden" name="number" value="<?php echo $flight_num; ?>"/>
+      <input type="hidden" name="alid" value="<?php echo $airline["id"]; ?>"/>
     </div>
     <div class="segment-right-cell">
       <?php if ($is_duplicate) { ?>
       <input type="button" value="Import" disabled>
       <?php } else { ?>
-      <input type="button" onclick='importFlight(<?php echo $segment->id?>);' value="Import">
+      <input type="button" onclick='importFlight(<?php echo $segment->id; ?>);' value="Import">
       <?php } ?>
-      <span id="input_status<?php echo $segment->id ?>"></span>
+      <span id="input_status<?php echo $segment->id; ?>"></span>
       <br>
 
       <?php # TODO: Figure out what to do with trip. ?>
-      <!--td><?php echo _("Trip") ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
-      <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="<?php echo _("Add new trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="<?php echo _("Edit this trip") ?>" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td-->
+      <!--td><?php echo _("Trip"); ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="Help: What is a trip?" height=11 width=10></a></td>
+      <td width=""><span id="input_trip_select"></span> <img src="/img/icon_add.png" title="<?php echo _("Add new trip"); ?>" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img src="/img/icon_edit.png" title="<?php echo _("Edit this trip"); ?>" height=17 width=17 onclick='JavaScript:editTrip("EDIT")'/></td-->
 
-      <?php echo _("Plane") ?>: <?php echo $aircraft ?>
-      <input type="hidden" id="plane" name="plane" value="<?php echo $aircraft ?>"/>
+      <?php echo _("Plane"); ?>: <?php echo $aircraft; ?>
+      <input type="hidden" id="plane" name="plane" value="<?php echo $aircraft; ?>"/>
       <br>
 
-      <?php echo _("Class") ?>&nbsp;
-      <input type="radio" id="class_Y_<?php echo $segment->id ?>" name="class" value="Y"<?php echo $classes["Y"] ?>><label
-        for="class_Y_<?php echo $segment->id ?>"><?php echo _("Economy") ?></label>
-      <input type="radio" id="class_P_<?php echo $segment->id ?>" name="class" value="P"<?php echo $classes["P"] ?>><label
-        for="class_P_<?php echo $segment->id ?>"><?php echo _("Premium Eco.") ?></label>
-      <input type="radio" id="class_C_<?php echo $segment->id ?>" name="class" value="C"<?php echo $classes["C"] ?>><label
-        for="class_C_<?php echo $segment->id ?>"><?php echo _("Business") ?></label>
-      <input type="radio" id="class_F_<?php echo $segment->id ?>" name="class" value="F"<?php echo $classes["F"] ?>><label
-        for="class_F_<?php echo $segment->id ?>"><?php echo _("First") ?></label>
+      <?php echo _("Class"); ?>&nbsp;
+      <input type="radio" id="class_Y_<?php echo $segment->id ?>" name="class" value="Y"<?php echo $classes["Y"];
+        ?>><label for="class_Y_<?php echo $segment->id; ?>"><?php echo _("Economy"); ?></label>
+      <input type="radio" id="class_P_<?php echo $segment->id ?>" name="class" value="P"<?php echo $classes["P"];
+        ?>><label for="class_P_<?php echo $segment->id; ?>"><?php echo _("Premium Eco."); ?></label>
+      <input type="radio" id="class_C_<?php echo $segment->id ?>" name="class" value="C"<?php echo $classes["C"];
+        ?>><label for="class_C_<?php echo $segment->id; ?>"><?php echo _("Business"); ?></label>
+      <input type="radio" id="class_F_<?php echo $segment->id ?>" name="class" value="F"<?php echo $classes["F"];
+        ?>><label for="class_F_<?php echo $segment->id; ?>"><?php echo _("First"); ?></label>
       <br>
 
-      <?php echo _("Reason") ?>&nbsp;
-      <input type="radio" id="reason_B_<?php echo $segment->id ?>" name="reason" value="B" CHECKED><label for="reason_B_<?php echo $segment->id ?>"><?php echo _("Work") ?></label>
-      <input type="radio" id="reason_L_<?php echo $segment->id ?>" name="reason" value="L"><label for="reason_L_<?php echo $segment->id ?>"><?php echo _("Leisure") ?></label>
-      <input type="radio" id="reason_C_<?php echo $segment->id ?>" name="reason" value="C"><label for="reason_C_<?php echo $segment->id ?>"><?php echo _("Crew") ?></label>
-      <input type="radio" id="reason_O_<?php echo $segment->id ?>" name="reason" value="O"><label for="reason_O_<?php echo $segment->id ?>"><?php echo _("Other") ?></label>
+      <?php echo _("Reason"); ?>&nbsp;
+      <input type="radio" id="reason_B_<?php echo $segment->id
+        ?>" name="reason" value="B" CHECKED><label for="reason_B_<?php echo $segment->id; ?>"><?php echo _("Work");
+        ?></label>
+      <input type="radio" id="reason_L_<?php echo $segment->id
+        ?>" name="reason" value="L"><label for="reason_L_<?php echo $segment->id; ?>"><?php echo _("Leisure");
+        ?></label>
+      <input type="radio" id="reason_C_<?php echo $segment->id ?>" name="reason" value="C"><label for="reason_C_<?php
+        echo $segment->id; ?>"><?php echo _("Crew");
+        ?></label>
+      <input type="radio" id="reason_O_<?php echo $segment->id ?>" name="reason" value="O"><label for="reason_O_<?php
+        echo $segment->id; ?>"><?php echo _("Other");
+        ?></label>
     </div>
   </form>
   <hr class="segment-separator"/>
@@ -496,7 +515,10 @@ function display_segment($segment) {
         // If we don't have the bare minimum amount of data, prevent import.
         echo '<script type="text/javascript">markSegmentInvalid(' . $segment->id . ')</script>';
         // Log an error.  I suspect this will happen if we're having trouble parsing TripIt data.
-        error_log("display_segment: segment " . $segment->id . " for user " . $_SESSION['uid'] . " was missing minimum import data");
+        error_log(
+            "display_segment: segment " . $segment->id . " for user " . $_SESSION['uid']
+            . " was missing minimum import data"
+        );
         return false;
     } elseif ($is_duplicate) {
       // If we've already imported this segment, grey it out at load time.
@@ -514,7 +536,7 @@ function display_no_segments_message() {
     ?>
 <div class="segment">
   <div class="segment-none">
-    <?php echo _("No flight segments in this trip.") ?>
+    <?php echo _("No flight segments in this trip."); ?>
   </div>
   <hr class="segment-separator"/>
 </div>
@@ -526,19 +548,19 @@ function display_no_segments_message() {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-  <title>OpenFlights: <?php echo _("TripIt") ?></title>
+    <title>OpenFlights: <?php echo _("TripIt"); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
-    <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css") ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo fileUrlWithDate("/css/tripit.css") ?>" type="text/css">
-    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.min.js") ?>></script>
-    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.blockUI.min.js") ?>"></script>
-    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/tripit.js") ?>"></script>
+    <link rel="stylesheet" href="<?php echo fileUrlWithDate("/openflights.css"); ?>" type="text/css">
+    <link rel="stylesheet" href="<?php echo fileUrlWithDate("/css/tripit.css"); ?>" type="text/css">
+    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.min.js"); ?>></script>
+    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/jquery.blockUI.min.js"); ?>"></script>
+    <script type="text/javascript" src="<?php echo fileUrlWithDate("/js/tripit.js"); ?>"></script>
   </head>
 
   <body>
     <div id="contexthelp">
-      <h1>OpenFlights: <?php echo _("TripIt Trips") ?></h1>
-      <span style="float: right"><INPUT type='button' value='<?php echo _("Close") ?>' onClick='javascript:parent.opener.refresh(true); window.close();'></span>
+      <h1>OpenFlights: <?php echo _("TripIt Trips"); ?></h1>
+      <span style="float: right"><INPUT type='button' value='<?php echo _("Close"); ?>' onClick='javascript:parent.opener.refresh(true); window.close();'></span>
 
 <?php
 # Show past/future selector
@@ -558,8 +580,9 @@ foreach ($trip_index_by_date as $trip_index) {
 # See if there are more pages to be shown.
 if (isset($trips->max_page) && $tripit_page_number < intval($trips->max_page)) {
     $next_page = $tripit_page_number + 1;
+    $text = _('Next Page');
     print <<<NEXT_PAGE
-<a href="?future=$wants_future_trips&page=$next_page"><b>Next Page</b></a>
+<a href="?future=$wants_future_trips&page=$next_page"><b>$text</b></a>
 NEXT_PAGE;
 }
 ?>

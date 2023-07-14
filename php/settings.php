@@ -57,7 +57,7 @@ switch ($type) {
         break;
 
     default:
-        die("0;Unknown action $type");
+        die("0;" . sprintf(_("Unknown action %s"), $type));
 }
 
 // Note: Password is actually an MD5 hash of pw and username
@@ -88,7 +88,7 @@ if ($type == "NEW") {
     $success = $sth->execute($params);
 }
 if (!$success) {
-    die("0;Operation on user $name failed.");
+    die("0;" . sprintf(_("Operation on user %s failed."), $name));
 }
 
 // In all cases, change locale and units to user selection

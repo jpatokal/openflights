@@ -1,9 +1,14 @@
+<?php
+require_once "../php/locale.php";
+?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>OpenFlights: Route maps</title>
+    <title>OpenFlights: <?php echo _('Route maps'); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <?php include"./html/analytics.html"; ?>
   </head>
@@ -23,7 +28,7 @@
 include_once '../php/db_pdo.php';
 include_once '../php/helper.php';
 
-print "<h2>Airline route maps (by IATA code)</h2>";
+print "<h2>" . _("Airline route maps (by IATA code)") . "</h2>";
 
 $sql = "SELECT * FROM airlines WHERE alid IN (SELECT DISTINCT alid FROM routes) ORDER BY iata";
 foreach ($dbh->query($sql) as $row) {
@@ -34,7 +39,7 @@ foreach ($dbh->query($sql) as $row) {
     }
 }
 
-print "<h2>Airport route maps (by IATA code)</h2>";
+print "<h2>" . _("Airport route maps (by IATA code)") . "</h2>";
 
 $sql = "SELECT * FROM airports WHERE apid IN (SELECT DISTINCT src_apid FROM routes) ORDER BY iata";
 foreach ($dbh->query($sql) as $row) {
@@ -45,7 +50,7 @@ foreach ($dbh->query($sql) as $row) {
     }
 }
 
-print "<h2>Airport route maps (by ICAO code)</h2>";
+print "<h2>" . _("Airport route maps (by ICAO code)") . "</h2>";
 
 $sql = "SELECT * FROM airports WHERE apid IN (SELECT DISTINCT src_apid FROM routes) ORDER BY iata";
 foreach ($dbh->query($sql) as $row) {

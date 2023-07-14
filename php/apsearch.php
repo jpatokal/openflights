@@ -28,7 +28,7 @@ $uid = $_SESSION["uid"] ?? null;
 
 if ($action == "RECORD") {
     if (!$uid || empty($uid)) {
-        json_error("Your session has timed out, please log in again.");
+        json_error(_("Your session has timed out, please log in again."));
     }
 
     // Check for potential duplicates (unless admin)
@@ -102,14 +102,14 @@ SQL;
     if (empty($duplicates)) {
         $sth = $dbh->prepare($sql);
         if (!$sth->execute($params)) {
-            json_error("Adding new airport failed.");
+            json_error(_("Adding new airport failed."));
         }
         if (!$apid || $apid == "") {
-            json_success(["apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."]);
+            json_success(["apid" => $dbh->lastInsertId(), "message" => _("New airport successfully added.")]);
         } elseif ($sth->rowCount() === 1) {
-            json_success(["apid" => $apid, "message" => "Airport successfully edited."]);
+            json_success(["apid" => $apid, "message" => _("Airport successfully edited.")]);
         } else {
-            json_error("Editing airport failed.");
+            json_error(_("Editing airport failed."));
         }
     } else {
         $name = $_SESSION['name'];
@@ -180,10 +180,14 @@ TXT;
         }
         // TODO: Actually do error handling
         if (true) {
-            $message = "Edit submitted for review on Github: Issue {$issueNumber}, {$result['html_url']}";
+            $message = sprintf(
+                _("Edit submitted for review on Github: Issue %s, %s"),
+                $issueNumber,
+                $result['html_url']
+            );
             json_success(["apid" => $apid, "message" => $message]);
         } else {
-            json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
+            json_error(_s("Could not submit edit for review, please contact <a href='/about'>support</a>."));
         }
     }
     exit;
@@ -243,14 +247,14 @@ $sql = "SELECT * FROM $tableName WHERE " . implode(" AND ", $filters);
 // Check result count
 $sth = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
 if (!$sth->execute($filterParams)) {
-    json_error("Operation $action failed.");
+    json_error(sprintf(_("Operation %s failed."), $action));
 }
 $row = $sth->fetch();
 if ($row) {
     $max = $row[0];
 }
 if ($max == 0) {
-    json_error('No airports matching your query exist.');
+    json_error(_('No airports matching your query exist.'));
 }
 
 if (!$offset || !is_int($offset)) {
@@ -265,7 +269,7 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute($filterParams)) {
     die(
         json_encode(
-            ["status" => 0, "message" => "Operation $action failed."]
+            ["status" => 0, "message" => sprintf(_("Operation %s failed."), $action)]
         )
     );
 }

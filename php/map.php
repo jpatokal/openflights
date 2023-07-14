@@ -23,7 +23,7 @@ if ($OF_VBULLETIN_LOGIN && ! empty($bb_uid)) {
         $_SESSION['elite'] = $row["elite"];
         $_SESSION['units'] = $row["units"];
     } elseif (!$trid && !$user) {
-        die("Signup;No username found for ID " . $bb_uid);
+        die(sprintf(_("Signup;No username found for ID %s"), $bb_uid));
     }
 }
 
@@ -101,7 +101,7 @@ if ($user && $user != "0") {
         die(
             "Error;" . _("This user's flights are password-protected.") . "<br><br>" .
             _("Password") . ": <input type='password' id='guestpw' size='10'>" .
-            "<input type='button' value='Submit' align='middle' onclick='JavaScript:refresh(true)'>"
+            "<input type='button' value='" . _('Submit') . "' align='middle' onclick='JavaScript:refresh(true)'>"
         );
     }
 
@@ -129,13 +129,13 @@ $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance, SUM(TIME_TO_SEC(dur
 ";
 $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
-    die('Error;Database error. ' . $filter . ' ' . $sql);
+    die(_('Error') . ';' . _('Database error.') . " $filter $sql");
 }
 $row = $sth->fetch();
 $map = "";
 if ($row) {
     if ($row["count"] == "0" && $user && $user != "0") {
-        die('Error;' . _("This user has no flights."));
+        die(_('Error') . ';' . _("This user has no flights."));
     }
     $distance = $row["distance"] ?? "0";
     if (($_SESSION["units"] ?? null) == "K") {
@@ -165,7 +165,7 @@ $sql = "SELECT DISTINCT s.apid, s.x, s.y, d.apid, d.x, d.y, COUNT(fid) as visits
 ";
 $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
-    die('Error;Database error.');
+    die(_('Error') . ';' . _('Database error.'));
 }
 
 $rows = [];
@@ -197,7 +197,7 @@ $sql = "SELECT DISTINCT a.apid, x, y, name, iata, icao, city, country, timezone,
 
 $sth = $dbh->prepare($sql);
 if (!$sth->execute([$uid])) {
-    die('Error;Database error.');
+    die(_('Error') . ';' . _('Database error.'));
 }
 
 $rows = [];

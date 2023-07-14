@@ -312,6 +312,7 @@ msgstr ""
 msgid "Editing airport failed:"
 msgstr ""
 
+#, php-format
 msgid "Not logged in, aborting"
 msgstr ""
 
@@ -1469,4 +1470,293 @@ msgid "No flights found."
 msgstr ""
 
 msgid "Airport ID"
+msgstr ""
+
+msgid "Airline route maps (by IATA code)"
+msgstr ""
+
+msgid "Airport route maps (by IATA code)"
+msgstr ""
+
+msgid "Airport route maps (by ICAO code)"
+msgstr ""
+
+msgid "Gold star"
+msgstr ""
+
+#, php-format
+msgid "Your new password is <b>%s</b>. Please log in and change it from Settings."
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Invalid challenge."
+msgstr ""
+
+#, php-format
+msgid "A password reset link has been mailed to <b>%s</b>."
+msgstr ""
+
+msgid "Message delivery failed, please contact <a href='/about'>support</a>."
+msgstr ""
+
+msgid "Sorry, that e-mail address is not registered for any OpenFlights user."
+msgstr ""
+
+msgid "Can't log in? One tip before you panic: make sure you have entered your password <b>using the same case</b> as you did when signing up: \"Secret\" is not the same as \"secret\". If you signed up before January 15, 2009, your <b>username</b> (\"Joe\" vs \"joe\") also has to match. "
+msgstr ""
+
+msgid "If that doesn't help, enter your <b>e-mail address</b> below, and we'll send you a link you can use to reset your password."
+msgstr ""
+
+msgid "Reset password"
+msgstr ""
+
+msgid "If you didn't register an e-mail address, then sorry, we don't know that you're you, so there's really nothing we can do."
+msgstr ""
+
+msgid "Return"
+msgstr ""
+
+#, php-format
+msgid "A %s using the name or alias %s exists already."
+msgstr ""
+
+msgid "Duplicate check failed."
+msgstr ""
+
+#, php-format
+msgid "An airline using the IATA code %s exists already."
+msgstr ""
+
+#, php-format
+msgid "An airline using the ICAO code %s exists already."
+msgstr ""
+
+#, php-format
+msgid "Adding new %s failed."
+msgstr ""
+
+#, php-format
+msgid "New %s successfully added."
+msgstr ""
+
+#, php-format
+msgid "Operation %s failed."
+msgstr ""
+
+msgid "Adding new airport failed."
+msgstr ""
+
+msgid "Editing airport failed."
+msgstr ""
+
+#, php-format
+msgid "Edit submitted for review on Github: Issue %s, %s"
+msgstr ""
+
+msgid "No airports matching your query exist."
+msgstr ""
+
+#, php-format
+msgid "Query %s caused database error %s, %s"
+msgstr ""
+
+msgid "Direct"
+msgstr ""
+
+#, php-format
+msgid "% stops"
+msgstr ""
+
+msgid "Codeshare"
+msgstr ""
+
+#, php-format
+msgid "Unknown file type %s"
+msgstr ""
+
+msgid "Adding new plane failed."
+msgstr ""
+
+msgid "Adding new airline failed."
+msgstr ""
+
+msgid "Importing flight failed."
+msgstr ""
+
+msgid "Note: You have selected historical airline mode. All airline names have been preserved exactly as is."
+msgstr ""
+
+msgid "Session expired. Please <a href='/'>refresh</a> and try again."
+msgstr ""
+
+#, php-format
+msgid "Signup;No username found for ID %s"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Airport or airline ID is mandatory"
+msgstr ""
+
+#, php-format
+msgid "No match found for query %s"
+msgstr ""
+
+#, php-format
+msgid "Error;No airport with ID %s found"
+msgstr ""
+
+#, php-format
+msgid "Error;No airline with ID %s found"
+msgstr ""
+
+#, php-format
+msgid "Unknown action %s"
+msgstr ""
+
+#, php-format
+msgid "Operation on user %s failed."
+msgstr ""
+
+msgid " deleted."
+msgstr ""
+
+msgid "OpenFlights: Donations and Elite Levels"
+msgstr ""
+
+msgid "Donations and Elite Levels"
+msgstr ""
+
+msgid "True to our name, we at OpenFlights believe in open access &mdash; the functionality on our website, and the source code behind it, is free to all. However, hosting the site costs real money, and the ads alone aren't enough to pay our bills. Donations to help support the site are thus <b>very</b> much appreciated, and in addition to an Elite-level star on your profile and bragging rights, donors receive a few extra goodies."
+msgstr ""
+
+msgid "OpenFlights Elite levels"
+msgstr ""
+
+msgid "Cyan"
+msgstr ""
+
+msgid "Access to entire website and all functions; however, your pages may contain banner and full-page advertising. If you add <b>over 100 flights</b> or set your profile to <b>Private</b>, we figure you're using a little more than your fair share of site resources, so your profile will be tagged with a warning icon and you will receive reminders to consider donating when you log in."
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Silver"
+msgstr ""
+
+msgid "Silver star"
+msgstr ""
+
+msgid "The cheapest way to soothe your conscience."
+msgstr ""
+
+msgid "No reminders or full-page ads when logging in."
+msgstr ""
+
+msgid "No warning icon on your profile."
+msgstr ""
+
+msgid "US$12/year"
+msgstr ""
+
+msgid "Gold"
+msgstr ""
+
+msgid "This is where the action is. All Silver features, plus"
+msgstr ""
+
+msgid "Banner ads replaced with panel of your choice (Help, Top 10, Analyze)."
+msgstr ""
+
+msgid "Password-protect your private profile, so you can share it with friends."
+msgstr ""
+
+msgid "Dedicated mail address for support."
+msgstr ""
+
+msgid "US$24/year"
+msgstr ""
+
+msgid "Platinum"
+msgstr ""
+
+msgid "Platinum star"
+msgstr ""
+
+msgid "For connoisseurs of the finer things in life. All Gold features, plus"
+msgstr ""
+
+msgid "Priority handling for bug reports and feature requests."
+msgstr ""
+
+msgid "Access to future versions before public release."
+msgstr ""
+
+msgid "US$48/year"
+msgstr ""
+
+#, php-format
+msgid "You are logged in <b>%s</b>."
+msgstr ""
+
+msgid "Please <a href=\"/\">log in</a> before donating!"
+msgstr ""
+
+msgid "Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted. Please allow one business day for your elite status to be activated."
+msgstr ""
+
+msgid "Limited time offer"
+msgstr ""
+
+msgid "Submit OpenFlights to any website that sends over 1000 people our way, or any newspaper or magazine indexed on Google News, and we'll either give you a Silver status for a year or bump you up a level if you're already an elite member. Send your claim and the link as proof to us via <a href=\"/contact.html\">Contact</a>, and we'll get back to you."
+msgstr ""
+
+msgid "Obligatory disclaimer"
+msgstr ""
+
+msgid "We have no intention of alienating our fans, but for the record: OpenFlights reserves the right to adjust elite level privileges in any way and grant or revoke elite level privileges for any user at any time for any reason. No refunds are possible, even if OpenFlights is temporarily not accessible or goes permanently offline."
+msgstr ""
+
+msgid "OpenFlights Map Help <small>&mdash; Didn't answer your question? Try the <a href=\"faq.html\" target=\"_blank\">FAQ</a>.</small>"
+msgstr ""
+
+msgid "<p><b>View airport</b>: Click on an airport <img src=\"/img/icon_plane-15x15.png\" height=15 width=15> to view details. Click on <img src=\"/img/close.gif\" height=17 width=17> or another airport to close the pop-up."
+msgstr ""
+
+msgid "<b>Move around</b>: Use <img src=\"/img/north-mini.png\" height=18 width=18><img src=\"/img/west-mini.png\" height=18 width=18><img src=\"/img/east-mini.png\" height=18 width=18><img src=\"/img/south-mini.png\" height=18 width=18> buttons (top left) or click and drag your mouse."
+msgstr ""
+
+msgid "<b>Zoom in/out</b>: Use <img src=\"/img/zoom-plus-mini.png\" height=18 width=18><img src=\"/img/zoom-minus-mini.png\" height=18 width=18>, roll your mouse wheel, or double-click on the point you want to zoom to. For the full world view, click <img src=\"/img/zoom-world-mini.png\" height=18 width=18>."
+msgstr ""
+
+msgid "<b>Select region</b>: While holding down Shift key, click on the map and draw a rectangle with your mouse."
+msgstr ""
+
+msgid "<b>Map options</b>: To choose your map type and what to show on it, click on the top right <img src=\"/img/layer-switcher-maximize.png\" height=18 width=18>."
+msgstr ""
+
+msgid "<b>Minimap</b>: To activate the mini-map control, click on bottom right <img src=\"/img/layer-switcher-maximize.png\" height=18 width=18>."
+msgstr ""
+
+msgid "Help: What is a trip?"
+msgstr ""
+
+msgid "Help: How do I enter airports?"
+msgstr ""
+
+msgid "Help: How do I enter airlines?"
+msgstr ""
+
+msgid "Help: How do I enter where I flew from?"
+msgstr ""
+
+msgid "Help: How do I enter where I flew to?"
+msgstr ""
+
+msgid "Help: How do I enter the airline?"
 msgstr ""

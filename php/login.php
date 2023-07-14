@@ -10,7 +10,7 @@ $legacypw = $_POST["lpw"];
 $challenge = $_POST["challenge"];
 
 if ($challenge && $challenge != $_SESSION["challenge"]) {
-    $row = ["status" => 0, "message" => "Session expired. Please <a href='/'>refresh</a> and try again."];
+    $row = ["status" => 0, "message" => _("Session expired. Please <a href='/'>refresh</a> and try again.")];
     die(json_encode($row));
 }
 

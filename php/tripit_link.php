@@ -53,15 +53,17 @@ if ($existing_tripit_tokens == null || $existing_tripit_tokens["token"] !== $acc
     // Disable any existing TripIt links for this user.
     try {
         $sth = $dbh->prepare("UPDATE tripit_tokens SET active='N' WHERE uid = ?");
-        $sth->execute(array($uid));
+        $sth->execute([$uid]);
     } catch (PDOException $e) {
         die(_("Failed to disable old TripIt links."));
     }
 
     // Add the new link.
     try {
-        $sth = $dbh->prepare("INSERT INTO tripit_tokens (uid, auth_token, auth_token_secret, active) VALUES(?, ?, ?, 'Y')");
-        $sth->execute(array($uid, $access_token["oauth_token"], $access_token["oauth_token_secret"]));
+        $sth = $dbh->prepare(
+            "INSERT INTO tripit_tokens (uid, auth_token, auth_token_secret, active) VALUES(?, ?, ?, 'Y')"
+        );
+        $sth->execute([$uid, $access_token["oauth_token"], $access_token["oauth_token_secret"]]);
     } catch (PDOException $e) {
         die(_("Failed to link new TripIt account."));
     }

@@ -44,11 +44,16 @@ if ($action == "RECORD") {
 
     $sth = $dbh->prepare($sql);
     if (!$sth->execute($params)) {
-        die('0;Duplicate check failed.');
+        die('0;' . _('Duplicate check failed.'));
     }
     $row = $sth->fetch();
     if ($row) {
-        printf("0;" . "A " . MODES_OPERATOR[$mode] . " using the name or alias " . $name . " exists already.");
+        printf("0;" .
+            sprintf(
+                _("A %s using the name or alias %s exists already."),
+                MODES_OPERATOR[$mode],
+                $name
+            ));
         exit;
     }
 
@@ -64,11 +69,16 @@ if ($action == "RECORD") {
 
         $sth = $dbh->prepare($sql);
         if (!$sth->execute($params)) {
-            die('0;Duplicate check failed.');
+            die('0;' . _('Duplicate check failed.'));
         }
         $row = $sth->fetch();
         if ($row) {
-            printf("0;" . "A " . MODES_OPERATOR[$mode] . " using the name or alias " . $alias . " exists already.");
+            printf("0;" .
+                sprintf(
+                    _("A %s using the name or alias %s exists already."),
+                    MODES_OPERATOR[$mode],
+                    $alias
+                ));
             exit;
         }
     }
@@ -86,11 +96,11 @@ if ($action == "RECORD") {
 
         $sth = $dbh->prepare($sql);
         if (!$sth->execute($params)) {
-            die('0;Duplicate check failed.');
+            die('0;' . _('Duplicate check failed.'));
         }
         $row = $sth->fetch();
         if ($row) {
-            printf("0;An airline using the IATA code " . $iata . " exists already.");
+            printf('0;' . sprintf(_('An airline using the IATA code %s exists already.'), $iata));
             exit;
         }
     }
@@ -108,11 +118,11 @@ if ($action == "RECORD") {
 
         $sth = $dbh->prepare($sql);
         if (!$sth->execute($params)) {
-            die('0;Duplicate check failed.');
+            die('0;' . _('Duplicate check failed.'));
         }
         $row = $sth->fetch();
         if ($row) {
-            printf("0;An airline using the ICAO code " . $icao . " exists already.");
+            printf('0;' . sprintf(_('An airline using the ICAO code %s exists already.'), $icao));
             exit;
         }
     }
@@ -159,10 +169,12 @@ SQL;
 
     $sth = $dbh->prepare($sql);
     if (!$sth->execute($params)) {
-        die('0;Adding new ' . MODES_OPERATOR[$mode] . ' failed.');
+        die('0;' . sprintf(_('Adding new %s failed.'), MODES_OPERATOR[$mode]));
     }
     if (!$alid || $alid == "") {
-        printf('1;' . $dbh->lastInsertId() . ';New ' . MODES_OPERATOR[$mode] . ' successfully added.');
+        printf('1;' . $dbh->lastInsertId() . ';' .
+            sprintf(_('New %s successfully added.'), MODES_OPERATOR[$mode])
+        );
     } elseif ($sth->rowCount() === 1) {
         printf('1;' . $alid . ';' . _("Airline successfully edited."));
     } else {
@@ -222,7 +234,7 @@ $sql = "SELECT * FROM airlines WHERE "  . implode(" AND ", $filters) . " ORDER B
 
 $sth = $dbh->prepare($sql . " LIMIT 10 OFFSET " . $offset);
 if (!$sth->execute($filterParams)) {
-    die("0;Operation $action failed.");
+    die('0;' . sprintf(_('Operation %s failed.'), $action));
 }
 $sth2 = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
 $sth2->execute($filterParams);

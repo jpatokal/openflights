@@ -11,7 +11,7 @@ $alid = $_POST["alid"] ?? $_GET["alid"] ?? null;
 if (!$apid) {
     $param = $_POST["param"];
     if (!$param) {
-        die('Error;Airport or airline ID is mandatory');
+        die(_('Error') . ';' . _('Airport or airline ID is mandatory'));
     }
 
     switch (strlen($param)) {
@@ -25,13 +25,17 @@ if (!$apid) {
             $sql = "SELECT apid FROM airports WHERE icao = ?";
             break;
         default:
-            die('Error;Query ' . $param . ' not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.');
+            die(_('Error') . ';' .
+                sprintf(
+                    _s('Query %s not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.'),
+                    $param
+                ));
     }
     $sth = $dbh->prepare($sql);
     $sth->execute([$param]);
     $row = $sth->fetch();
     if (!$row) {
-        die('Error;No match found for query ' . $param);
+        die(_('Error') . ';' . sprintf(_('No match found for query %s'), $param));
     }
 
     $apid = $row["apid"];
@@ -86,7 +90,7 @@ if ($type == "A") {
     $sth->execute($params);
     $row = $sth->fetch();
     if (!$row) {
-        die('Error;No airport with ID ' . $apid . ' found');
+        die(_('Error') . ';' . sprintf(_('Error;No airport with ID %s found'), $apid));
     }
 
     printf(
@@ -127,7 +131,7 @@ if ($type == "A") {
     $sth->execute([$apid]);
     $row = $sth->fetch();
     if (!$row) {
-        die('Error;No airline with ID ' . $apid . ' found');
+        die(_('Error') . ';' . sprintf(_('Error;No airline with ID %s found'), $apid));
     }
 
     printf(
@@ -156,7 +160,7 @@ $sql = "
 ";
 $sth = $dbh->prepare($sql);
 if (!$sth->execute($condParams)) {
-    die('Error;Database error.');
+    die(_('Error') . ';' . _('Database error.'));
 }
 $rows = [];
 foreach ($sth->fetchAll(PDO::FETCH_NUM) as $row) {
@@ -197,7 +201,7 @@ $sql = "
 ";
 $sth = $dbh->prepare($sql);
 if (!$sth->execute($condParams)) {
-    die('Error;Database error.');
+    die(_('Error') . ';' . _('Database error.'));
 }
 $rows = [];
 foreach ($sth as $row) {
@@ -228,7 +232,7 @@ if ($type == "L") {
                  ORDER BY a.alid, name;";
     $sth = $dbh->prepare($sql);
     if (!$sth->execute([$apid])) {
-        die('Error;Database error.');
+        die(_('Error') . ';' . _('Database error.'));
     }
     $rows = [];
     foreach ($sth as $row) {

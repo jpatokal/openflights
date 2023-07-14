@@ -11,7 +11,7 @@ $trid = $_GET["trid"] ?? null;
     <title>OpenFlights: <?php echo $trid ? _("Edit trip") : _("Add trip"); ?></title>
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
-    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale;?>/LC_MESSAGES/messages.po" />
+    <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/trip.js"></script>
   </head>
@@ -35,47 +35,47 @@ if ($trid) {
         die(_("Could not load trip data."));
     }
 } else {
-    $trip = array(
+    $trip = [
         "name" => "",
         "url" => "",
         "public" => "Y"
-    );
+    ];
 }
 ?>
     <div id="miniresultbox"></div>
     <table>
         <tr>
-          <td><?php echo _("Name") ?></td>
-          <td><input type="text" name="name" size="40" value="<?php echo $trip["name"] ?>"></td>
+          <td><?php echo _("Name"); ?></td>
+          <td><input type="text" name="name" size="40" value="<?php echo $trip["name"]; ?>"></td>
         </tr>
         <tr>
-          <td><?php echo _("Web address <i>(optional)</i>") ?>&nbsp;</td>
-          <td><input type="text" name="url" size="40" value="<?php echo $trip["url"] ?>"></td>
+          <td><?php echo _("Web address <i>(optional)</i>"); ?>&nbsp;</td>
+          <td><input type="text" name="url" size="40" value="<?php echo $trip["url"]; ?>"></td>
         </tr><tr>
-          <td style="vertical-align: top"><?php echo _("Trip privacy") ?></td>
-          <td><input type="radio" name="privacy" value="N"<?php condOut($trip, "public", "N", "CHECKED"); echo ">"
+          <td style="vertical-align: top"><?php echo _("Trip privacy"); ?></td>
+          <td><input type="radio" name="privacy" value="N"<?php condArrOut($trip, "public", "N", "CHECKED"); echo ">"
                     . _("Private (visible only to you)"); ?><br>
-          <input type="radio" name="privacy" value="Y" <?php condOut($trip, "public", "Y", "CHECKED"); echo ">"
+          <input type="radio" name="privacy" value="Y" <?php condArrOut($trip, "public", "Y", "CHECKED"); echo ">"
                     . _("Public (map and stats shared)"); ?><br>
-          <input type="radio" name="privacy" value="O" <?php condOut($trip, "public", "0", "CHECKED"); echo ">"
+          <input type="radio" name="privacy" value="O" <?php condArrOut($trip, "public", "0", "CHECKED"); echo ">"
                     . _("Open (all flight data shared)"); ?></td>
         </tr>
         <tr>
-          <td><?php echo _("OpenFlights URL") ?></td>
-          <td><input type="text" value="<?php echo $trid ? "https://openflights.org/trip/" . $trid : _("Not assigned yet");?>" name="puburl" style="border:none" size="40" readonly></td>
+          <td><?php echo _("OpenFlights URL"); ?></td>
+          <td><input type="text" value="<?php echo $trid ? "https://openflights.org/trip/$trid" : _("Not assigned yet"); ?>" name="puburl" style="border:none" size="40" readonly></td>
         </tr>
     </table><br>
 
 <?php
 if ($trid) {
       echo "<input type='button' value='" . _("Save") . "' onClick='validate(\"EDIT\")'>\n";
-      echo "<input type='hidden' name='trid' value='" . $trid . "'>\n";
+      echo "<input type='hidden' name='trid' value='$trid'>\n";
       echo "<input type='button' value='" . _("Delete") . "' onClick='deleteTrip()'>\n";
 } else {
     echo "<input type='button' value='" . _("Add") . "' onClick='validate(\"NEW\")'";
 }
 ?>
-    <input type="button" value="<?php echo _("Cancel") ?>" onClick="window.close()">
+    <input type="button" value="<?php echo _("Cancel"); ?>" onClick="window.close()">
       </form>
 
     </div>

@@ -1,5 +1,6 @@
 <?php
 
+require_once "../php/locale.php";
 include_once 'greatcircle.php';
 
 // must be a string or locale may turn this into a comma!
@@ -10,6 +11,9 @@ const KM_PER_MILE = "1.609344";
  */
 $KMPERMILE = KM_PER_MILE;
 
+/**
+ * @TODO: Internationalise? differing case messages exist
+ */
 const MODES = [
     "F" => "Flight",
     "T" => "Train",
@@ -22,6 +26,9 @@ const MODES = [
  */
 $modes = MODES;
 
+/**
+ * @TODO: Internationalise?
+ */
 const MODES_OPERATOR = [
     "F" => "airline",
     "T" => "railway",
@@ -86,10 +93,10 @@ function format_apcode($row) {
  */
 function format_apcode2($iata, $icao) {
     $code = $iata;
-    if (!$code || $code == "N/A") {
+    if (!$code || $code == _("N/A")) {
         $code = $icao;
         if (!$code) {
-            $code = "Priv";
+            $code = _("Priv");
         }
     }
     return $code;
@@ -244,11 +251,19 @@ function orderAirports($src_apid, $dst_apid) {
  * @param $arr array
  * @param $key string
  * @param $value mixed
- * @param $true string
+ * @param $true string Default ''
  * @param $false string Default ''
  */
-function condOut($arr, $key, $value, $true, $false = '') {
-    echo $arr[$key] == $value
-        ? $true
-        : $false;
+function condArrOut($arr, $key, $value, $true = '', $false = '') {
+    condOut($arr[$key] == $value, $true, $false);
+}
+
+/**
+ * if $arr[$key] == $value then echo $true else echo $false
+ * @param $cond bool
+ * @param $true string Default ''
+ * @param $false string Default ''
+ */
+function condOut($cond, $true = '', $false = '') {
+    echo $cond  ? $true : $false;
 }

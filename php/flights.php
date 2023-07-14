@@ -137,7 +137,13 @@ if ($route) {
 // Execute!
 $sth = $dbh->prepare($sql);
 if (!$sth->execute($params)) {
-    die('Error;Query ' . print_r($_GET, true) . ' caused database error ' . $sql . ', ' . $sth->errorInfo()[0]);
+    die(_('Error') . ';' .
+        sprintf(
+            _('Query %s caused database error %s, %s'),
+            print_r($_GET, true),
+            $sql,
+            $sth->errorInfo()[0]
+        ));
 }
 
 if ($export == "export" || $export == "backup") {
@@ -184,12 +190,12 @@ foreach ($sth as $row) {
         $row["duration"] = gcDuration($row["distance"]);
         $row["code"] = $row["al_name"] . " (" . $row["code"] . ")";
         $note = $row["stops"] == "0"
-            ? "Direct"
-            : $row["stops"] . " stops";
+            ? _("Direct")
+            :  sprintf(_("% stops"), $row["stops"]);
 
         // TODO: This clobbers the $note set above... Suspect it should append?
         if ($row["codeshare"] == "Y") {
-            $note = "Codeshare";
+            $note = _("Codeshare");
         }
     } else {
         $note = $row["note"];
