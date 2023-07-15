@@ -1,16 +1,21 @@
 <?php
 
-//
-// Helper functions for filter handling
-//
+/**
+ * Helper functions for filter handling
+ */
 
-// Build a flight filter string for SQL SELECT
+/**
+ * Build a flight filter string for SQL SELECT
+ *
+ * @param $dbh PDO
+ * @param $vars array
+ * @return string
+ */
 function getFilterString($dbh, $vars) {
     $filter = "";
     $trid = $vars["trid"] ?? null;
     $alid = $vars["alid"] ?? null;
     $year = $vars["year"] ?? null;
-    $xkey = $vars["xkey"] ?? null;
     $xvalue = $vars["xvalue"] ?? null;
 
     if ($trid && $trid != "0") {
@@ -27,13 +32,16 @@ function getFilterString($dbh, $vars) {
         $filter .= " AND YEAR(f.src_date)=" . $dbh->quote($year, PDO::PARAM_INT);
     }
     if ($xvalue && $xvalue != "") {
+        $xkey = $vars["xkey"] ?? null;
         switch ($xkey) {
             case null:
             case "":
                 break;
 
             case "class":
-                $filter .= " AND f.class = " . $dbh->quote($xvalue);
+            case "mode":
+            case "reason":
+                $filter .= " AND f.{$xkey} = " . $dbh->quote($xvalue);
                 break;
 
             case "distgt":
@@ -44,20 +52,9 @@ function getFilterString($dbh, $vars) {
                 $filter .= " AND f.distance < " . $dbh->quote($xvalue, PDO::PARAM_INT);
                 break;
 
-            case "mode":
-                $filter .= " AND f.mode = " . $dbh->quote($xvalue);
-                break;
-
             case "note":
-                $filter .= " AND f.note LIKE " . $dbh->quote("%$xvalue%");
-                break;
-
-            case "reason":
-                $filter .= " AND f.reason = " . $dbh->quote($xvalue);
-                break;
-
             case "reg":
-                $filter .= " AND f.registration LIKE " . $dbh->quote("$xvalue%");
+                $filter .= " AND f.{$xkey} LIKE " . $dbh->quote("%$xvalue%");
                 break;
         }
     }
@@ -76,6 +73,7 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
     // Limit selections to a single trip?
     $filter = "";
     $params = [$uid];
+    // TODO: Can we reuse getFilterString()
     if ($trid && $trid != "0") {
         if ($trid == "null") {
             $filter = "AND trid IS NULL";

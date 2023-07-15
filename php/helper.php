@@ -2,7 +2,11 @@
 
 include_once 'greatcircle.php';
 
-// must be a string or locale may turn this into a comma!
+/**
+ * The number of kilometers in a mile
+ * Must be a string or locale may turn this into a comma!
+ * @var string
+ */
 const KM_PER_MILE = "1.609344";
 
 /**
@@ -10,6 +14,10 @@ const KM_PER_MILE = "1.609344";
  */
 $KMPERMILE = KM_PER_MILE;
 
+/**
+ * Mapping of modes from shorthand
+ * @var array
+ */
 const MODES = [
     "F" => "Flight",
     "T" => "Train",
@@ -22,6 +30,10 @@ const MODES = [
  */
 $modes = MODES;
 
+/**
+ * Mapping of mode operators from shorthand
+ * @var array
+ */
 const MODES_OPERATOR = [
     "F" => "airline",
     "T" => "railway",
@@ -55,7 +67,7 @@ function json_error($msg, $detail = '') {
 
 /**
  * Standard formatting of airport data
- * @param $row array associative array containing iata, icao
+ * @param $row array associative array containing iata, icao, apid, x, y, timezone and dst
  * @return string " code : apid : x : y : timezone : dstrule "
  */
 function format_apdata($row) {
@@ -71,7 +83,7 @@ function format_apdata($row) {
 }
 
 /**
- * // Standard formatting of airport codes
+ * Standard formatting of airport codes
  * @param $row array associative array containing iata, icao
  * @return string
  */
@@ -97,7 +109,7 @@ function format_apcode2($iata, $icao) {
 
 /**
  * Standard formatting of airport names
- * @param $row array associative array containing name, city, country/code and iata/icao
+ * @param $row array associative array containing name, city, country/code, iata and icao
  * @return string
  */
 function format_airport($row) {
@@ -164,16 +176,16 @@ function format_alcode($iata, $icao, $mode) {
  * Calculate (distance, duration) between two airport IDs
  *
  * @param $dbh PDO OpenFlights DB handler
- * @param $src_apid string Source APID
- * @param $dst_apid string Destination APID
+ * @param $src_apid string Source Airport ID
+ * @param $dst_apid string Destination Airport ID
  * @return array Distance, duration
  */
 function gcDistance($dbh, $src_apid, $dst_apid) {
-    // Special case: loop flight to/from same airport
+    // Special case: loop flight to/from the same airport
     if ($src_apid == $dst_apid) {
         $dist = 0;
     } else {
-        $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid = $dst_apid";
+        $sql = "SELECT x, y FROM airports WHERE apid = $src_apid OR apid = $dst_apid";
 
         // Handle both OO and procedural-style database handles, depending on what type we've got.
         $sth = $dbh->prepare($sql);
@@ -194,7 +206,7 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
 }
 
 /**
- * @param $dist
+ * @param $dist int|float
  * @return string
  */
 function gcDuration($dist) {
@@ -205,7 +217,7 @@ function gcDuration($dist) {
 /**
  * Convert a filename (relative to the document root) to a relative URL with a date-based version string appended.
  * @param $filename string|null Relative filename (e.g. "/js/foo.js")
- * @return string Relative filename with version (e.g. "/js/foo.js?version=20120102")
+ * @return string Relative filename with version appended (e.g. "/js/foo.js?version=20120102")
  * @throws Exception Invalid input
  */
 function fileUrlWithDate($filename) {
