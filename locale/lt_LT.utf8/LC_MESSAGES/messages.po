@@ -2160,7 +2160,7 @@ msgid ""
 "If duration is blanked, it is re-estimated based on the current distance."
 msgstr ""
 
-msgid "ime zones"
+msgid "Time zones"
 msgstr ""
 
 msgid ""

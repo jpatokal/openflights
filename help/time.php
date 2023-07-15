@@ -77,7 +77,7 @@ require_once "./php/locale.php";
             <li><?php echo _('If duration is blanked, it is re-estimated based on the current distance.'); ?></li>
         </ul></p>
 
-        <h2>T<?php echo _('ime zones'); ?></h2>
+        <h2><?php echo _('Time zones'); ?></h2>
 
         <p><?php echo _('OpenFlights uses UTC offsets as time zones, so UTC+8 (Singapore) is recorded as "+8" and UTC-5 (New York) as "-5". Time zone data for OpenFlights was obtained from <a href="https://web.archive.org/web/20150407192111/http://www.earthtools.org/webservices.htm">EarthTools</a>.'); ?></p>
 
