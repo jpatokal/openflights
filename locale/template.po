@@ -2898,3 +2898,6 @@ msgstr ""
 
 msgid "OpenFlights may display, package, and provide for reuse your flights, as well as any airports or airlines added by you, in an anonymized format. (See <a href=\"/data.php\">Databases</a> for details.)"
 msgstr ""
+
+msgid "Time zones"
+msgstr ""
