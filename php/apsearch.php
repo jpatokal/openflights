@@ -1,5 +1,9 @@
 <?php
 
+use Github\Api\Issue;
+use Github\Api\Search;
+use Github\Client;
+
 require_once '../vendor/autoload.php';
 require_once '../php/locale.php';
 require_once '../php/db_pdo.php';
@@ -112,6 +116,15 @@ SQL;
             json_error("Editing airport failed.");
         }
     } else {
+        if (
+            // Check for empty strings, or default values as per config.php.sample
+            in_array($GITHUB_USER, [ "", "YOUR_USERNAME"] ) ||
+            in_array($GITHUB_ACCESS_TOKEN, ["", "YOUR_TOKEN"]) ||
+            $GITHUB_REPO == ''
+        ) {
+            json_error("Cannot submit edit request to GitHub; please check config!");
+        }
+
         $name = $_SESSION['name'];
         $newEdit = print_r(
             [
@@ -154,36 +167,40 @@ TXT;
             exit;
         }
         $identifier = ($icao == "") ? $iata : $icao;
-        $github = new \Github\Client();
-        $github->authenticate($GITHUB_ACCESS_TOKEN, null, Github\AuthMethod::ACCESS_TOKEN);
+        $github = new Client();
+        try {
+            $github->authenticate($GITHUB_ACCESS_TOKEN, null, Github\AuthMethod::ACCESS_TOKEN);
 
-        $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO in:title $identifier");
-        if (count($issues['items']) > 0) {
-            // Existing issue, add comment
-            $issueNumber = $issues['items'][0]['number'];
-            //https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
-            $result = $github->api('issue')->comments()->create(
-                $GITHUB_USER,
-                $GITHUB_REPO,
-                $issueNumber,
-                ['body' => $body]
-            );
-        } else {
-            // New issue
-            // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
-            $result = $github->api('issue')->create(
-                $GITHUB_USER,
-                $GITHUB_REPO,
-                ['title' => $subject, 'body' => $body, 'labels' => ['airport']]
-            );
-            $issueNumber = $result['number'];
-        }
-        // TODO: Actually do error handling
-        if (true) {
+            $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO is:issue in:title $identifier");
+
+            if (count($issues['items']) > 0) {
+                // Existing issue, add comment
+                $issueNumber = $issues['items'][0]['number'];
+                // https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
+                $result = $github->api('issue')->comments()->create(
+                    $GITHUB_USER,
+                    $GITHUB_REPO,
+                    $issueNumber,
+                    ['body' => $body]
+                );
+            } else {
+                // New issue
+                // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
+                $result = $github->api('issue')->create(
+                    $GITHUB_USER,
+                    $GITHUB_REPO,
+                    ['title' => $subject, 'body' => $body, 'labels' => ['airport']]
+                );
+                $issueNumber = $result['number'];
+            }
+
             $message = "Edit submitted for review on Github: Issue {$issueNumber}, {$result['html_url']}";
             json_success(["apid" => $apid, "message" => $message]);
-        } else {
-            json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
+        } catch (GitHub\Exception\RuntimeException $ex) {
+            // $ex->code === 401 is Unauthorised
+            // Probably not localised...
+            json_error($ex->getMessage());
+            // json_error("Could not submit edit for review, please contact <a href='/about'>support</a>.");
         }
     }
     exit;
