@@ -1,5 +1,9 @@
 <?php
 
+use Github\Api\Issue;
+use Github\Api\Search;
+use Github\Client;
+
 require_once '../vendor/autoload.php';
 require_once '../php/locale.php';
 require_once '../php/db_pdo.php';
@@ -30,13 +34,14 @@ if ($action == "RECORD") {
     if (!$uid || empty($uid)) {
         json_error("Your session has timed out, please log in again.");
     }
+    $addAirport = !$apid || $apid == "";
 
     // Check for potential duplicates (unless admin)
     $duplicates = [];
     if (!in_array($uid, (array)$OF_ADMIN_UID)) {
         $filters = [];
         $filterParams = [];
-        if ($apid && $apid != "") {
+        if (!$addAirport) {
             $filters[] = "apid = ?";
             $filterParams[] = $apid;
         }
@@ -49,7 +54,11 @@ if ($action == "RECORD") {
             $filterParams[] = $icao;
         }
 
-        $sql = "SELECT * FROM airports WHERE " . implode(" OR ", $filters);
+        // Column order to match $newEdit below
+        $sql = "SELECT apid, name, city, country, iata, icao, x, y, elevation, timezone,
+            dst, country_code, uid, tz_id, type, source
+            FROM airports
+            WHERE " . implode(" OR ", $filters);
         $sth = $dbh->prepare($sql);
         $sth->execute($filterParams);
         foreach ($sth->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -59,137 +68,299 @@ if ($action == "RECORD") {
         }
     }
 
-    if (!$apid || $apid == "") {
-        $sql = <<<SQL
+    if (empty($duplicates)) {
+        // If no duplicates, attempt to insert/update as appropriate
+        if ($addAirport) {
+            $sql = <<<SQL
             INSERT INTO airports(name, city, country, iata, icao, x, y, elevation, timezone, dst, uid)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL;
-        $params = [
-            $airport,
-            $city,
-            $country,
-            $iata == "" ? null : $iata,
-            $icao == "" ? null : $icao,
-            $myX,
-            $myY,
-            $elevation,
-            $tz,
-            $dst,
-            $uid
-        ];
-    } else {
-        // Editing an existing airport
-        $sql = <<<SQL
+            $params = [
+                $airport,
+                $city,
+                $country,
+                $iata == "" ? null : $iata,
+                $icao == "" ? null : $icao,
+                $myX,
+                $myY,
+                $elevation,
+                $tz,
+                $dst,
+                $uid
+            ];
+        } else {
+            // Editing an existing airport
+            $sql = <<<SQL
             UPDATE airports
             SET name = ?, city = ?, country = ?, iata = ?, icao = ?, x = ?, y = ?, elevation = ?, timezone = ?, dst = ?
             WHERE apid = ?
 SQL;
-        $params = [
-            $airport,
-            $city,
-            $country,
-            $iata == "" ? null : $iata,
-            $icao == "" ? null : $icao,
-            $myX,
-            $myY,
-            $elevation,
-            $tz,
-            $dst,
-            $apid
-        ];
-    }
-
-    if (empty($duplicates)) {
-        $sth = $dbh->prepare($sql);
-        if (!$sth->execute($params)) {
-            json_error("Adding new airport failed.");
+            $params = [
+                $airport,
+                $city,
+                $country,
+                $iata == "" ? null : $iata,
+                $icao == "" ? null : $icao,
+                $myX,
+                $myY,
+                $elevation,
+                $tz,
+                $dst,
+                $apid
+            ];
         }
-        if (!$apid || $apid == "") {
-            json_success(["apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."]);
-        } elseif ($sth->rowCount() === 1) {
+
+        $sth = $dbh->prepare($sql);
+        $res = $sth->execute($params);
+
+        if ($addAirport) {
+            if ($res) {
+                json_success(["apid" => $dbh->lastInsertId(), "message" => "New airport successfully added."]);
+            } else {
+                json_error("Adding new airport failed.");
+            }
+        } elseif ($res && $sth->rowCount() === 1) {
             json_success(["apid" => $apid, "message" => "Airport successfully edited."]);
         } else {
             json_error("Editing airport failed.");
         }
-    } else {
-        $name = $_SESSION['name'];
-        $newEdit = print_r(
-            [
-                'apid' => $apid,
-                'name' => $airport,
-                'city' => $city,
-                'country' => $country,
-                'iata' => $iata,
-                'icao' => $icao,
-                'x' => $myX,
-                'y' => $myY,
-                'elevation' => $elevation,
-                'timezone' => $tz,
-                'dst' => $dst
-            ],
-            true
-        );
+
+        // Not needed, but most IDE's won't know json_success()/json_error() call die()
+        exit;
+    }
+
+    if (
+        // Check for empty strings, or default values as per config.php.sample
+        in_array($GITHUB_USER, [ "", "YOUR_USERNAME"]) ||
+        in_array($GITHUB_ACCESS_TOKEN, ["", "YOUR_TOKEN"]) ||
+        $GITHUB_REPO == ''
+    ) {
+        json_error("Cannot submit edit request to GitHub; please check config!");
+    }
+
+    $name = $_SESSION['name'];
+    $newEdit = print_r(
+        [
+            'apid' => $apid,
+            'name' => $airport,
+            'city' => $city,
+            'country' => $country,
+            'iata' => $iata,
+            'icao' => $icao,
+            'x' => $myX,
+            'y' => $myY,
+            'elevation' => $elevation,
+            'timezone' => $tz,
+            'dst' => $dst,
+        ],
+        true
+    );
+
+    $suffixForamt = '(%s/%s)';
+    $suffix = sprintf($suffixForamt, $iata, $icao);
+    $add = sprintf(
+        "Add airport %s %s",
+        $airport,
+        $suffix
+    );
+
+    $update = sprintf(
+        "Update airport %s %s",
+        $airport,
+        $suffix
+    );
+
+    $title = $addAirport ? $add : $update;
+
+    $body = $addAirport
+        ? "New airport addition suggestion submitted by `$name`:"
+        : "New airport edit suggestion submitted by `$name`:";
+
+    $body .= <<<TXT
+
+```
+$newEdit
+```
+
+TXT;
+
+    if (count($duplicates)) {
         $existingData = print_r(implode("\n", $duplicates), true);
-        $subject = sprintf("Update airport %s (%s/%s)", $airport, $iata, $icao);
-        $body = <<<TXT
-New airport edit suggestion submitted by $name:
-
-```
-$newEdit;
-```
-
+        $body .= <<<TXT
 Existing, potentially conflicting airport information:
 
 ```
-$existingData;
+$existingData
 ```
 
-Cross-check this edit on other sites with compatible licensing:
-- OurAirports: https://ourairports.com/airports/$icao/pilot-info.html
-- Wikipedia: https://www.google.com/search?q=wikipedia%20$icao%20airport&btnI
+TXT;
+}
+
+    $body .= <<<TXT
+Cross-check this on other sites with compatible licensing:
+
 TXT;
 
-        if (isset($_POST["unittest"])) {
-            echo $subject . "\n\n" . $body;
-            exit;
+    if ($icao != '') {
+        $body .= <<<TXT
+
+**ICAO:**
+- **OurAirports:** https://ourairports.com/airports/$icao/pilot-info.html
+- **Wikipedia:** https://www.google.com/search?q=wikipedia%20$icao%20airport&btnI
+
+TXT;
+}
+
+    if ($iata != '') {
+        $body .= <<<TXT
+
+**IATA:**
+- **OurAirports:** https://ourairports.com/search?q=$iata
+- **Wikipedia:** https://www.google.com/search?q=wikipedia%20$iata%20airport&btnI
+
+TXT;
+}
+
+    $htmlAirport = htmlspecialchars($airport);
+    $body .= <<<TXT
+
+**Name:**
+- **OurAirports:** https://ourairports.com/search?q=$htmlAirport
+- **Wikipedia:** https://www.google.com/search?q=wikipedia%20$htmlAirport%20airport&btnI
+TXT;
+
+
+    if (isset($_POST["unittest"])) {
+        echo $title . "\n\n" . $body;
+        exit;
+    }
+
+
+    $searchStrings = [
+        // Try the exact subject that would be used if we were to create a new issue.
+        // This could be a title indicating an update or a request for addition.
+        $title,
+        // Try the other message (add if looking to update, or update if we're looking to add)
+        $addAirport ? $update : $add,
+        // Try the "($iata/$icao)" string in existing titles...
+        $suffix,
+        // Try just "($iata/)"
+        sprintf($suffixForamt, $iata, ""),
+        // Try just "(/$icao)"
+        sprintf($suffixForamt, "", $icao),
+    ];
+
+    // Disabled for now; they likely cause false positives.
+    // Then last but not least, try for the exact codes in any string
+    // These possibly shouldn't be used, but we shall see...
+    // Unfortunately still could result in a false positive...
+    // Which was the original issue - https://github.com/jpatokal/openflights/issues/1318
+    // if ($icao != "") {
+    //    $searchStrings[] = $icao;
+    // }
+    // if ($iata != "") {
+    //    $searchStrings[] = $iata;
+    // }
+
+    $github = new Client();
+    try {
+        $github->authenticate($GITHUB_ACCESS_TOKEN, null, Github\AuthMethod::ACCESS_TOKEN);
+
+        // This would previously leave comments on closed issues...
+        // This could be because the newer is a dupe and may have been closed...
+        // Or it was declined...
+        // Maybe nice to be able to cross-reference them one day...
+        $issues = [];
+        foreach ($searchStrings as $searchText) {
+            // Search for issues with the airport label first, then try without
+            // (such as old tasks that are not correctly labelled tasks...)
+            foreach (['label:airport', ''] as $l) {
+                // https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#search-issues-and-pull-requests
+                $issues = $github->api('search')->issues(
+                    trim(implode(
+                        " ",
+                        [
+                            "repo:$GITHUB_USER/$GITHUB_REPO",
+                            "is:issue",
+                            "is:open",
+                            "in:title \"$searchText\"",
+                            $l
+                        ]
+                    ))
+                );
+
+                if (count($issues['items']) > 0) {
+                    // Found something, probably should use it as the closest possible match...
+                    break;
+                }
+            }
         }
-        $identifier = ($icao == "") ? $iata : $icao;
-        $github = new Client();
-        try {
-            $github->authenticate($GITHUB_ACCESS_TOKEN, null, Github\AuthMethod::ACCESS_TOKEN);
 
-            $issues = $github->api('search')->issues("repo:$GITHUB_USER/$GITHUB_REPO is:issue in:title $identifier");
+        // Duplicate issue merging would be nice.
+        // But this will only be the results for one specific string in the task title,
+        // so doesn't necessarily help much until ...
+        // We could also print the list of other potentially related issue numbers too into the comment,
+        // which may include closed tasks (which could be "previous updates" etc.).
+        // I think I'm overthinking this now.
+        // Though that could be useful, for sure.
+        if (count($issues['items']) > 0) {
+            $issueNumber = $issues['items'][0]['number'];
 
-            if (count($issues['items']) > 0) {
-                // Existing issue, add comment
-                $issueNumber = $issues['items'][0]['number'];
-                // https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
-                $result = $github->api('issue')->comments()->create(
+            // Existing issue, add comment
+            // https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
+            $result = $github->api('issue')->comments()->create(
+                $GITHUB_USER,
+                $GITHUB_REPO,
+                $issueNumber,
+                [
+                    'body' => sprintf("**Title:** %s\n\n%s", $title, $body)
+                ]
+            );
+            $hasLabel = false;
+            foreach ($issues['items'][0]['labels'] as $l) {
+                if ($l['name'] === 'airport') {
+                    $hasLabel = true;
+                    break;
+                }
+            }
+            if (!$hasLabel) {
+                $github->api('issue')->labels()->add(
                     $GITHUB_USER,
                     $GITHUB_REPO,
                     $issueNumber,
-                    ['body' => $body]
+                    'airport'
                 );
-            } else {
-                // New issue
-                // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
-                $result = $github->api('issue')->create(
-                    $GITHUB_USER,
-                    $GITHUB_REPO,
-                    ['title' => $subject, 'body' => $body, 'labels' => ['airport']]
-                );
-                $issueNumber = $result['number'];
             }
-
-            $message = "Edit submitted for review on Github: Issue {$issueNumber}, {$result['html_url']}";
-            json_success(["apid" => $apid, "message" => $message]);
-        } catch (GitHub\Exception\RuntimeException $ex) {
-            // $ex->code === 401 is Unauthorised
-            // Probably not localised...
-            json_error($ex->getMessage());
-            // json_error(_("Could not submit edit for review, please contact <a href='/about'>support</a>."));
+            // TODO: Make a hyperlink when not using the alert() box.
+            // Potentially need to pass things through as parameters
+            $message = $addAirport
+                ? _("Airport addition comment submitted for review on existing GitHub Issue: %s; %s")
+                : _("Airport edit comment submitted for review on existing GitHub Issue: %s; %s");
+        } else {
+            // New issue
+            // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
+            $result = $github->api('issue')->create(
+                $GITHUB_USER,
+                $GITHUB_REPO,
+                ['title' => $title, 'body' => $body, 'labels' => ['airport']]
+            );
+            $issueNumber = $result['number'];
+            $message = $addAirport
+                ? _("Airport addition issue created for review on new GitHub Issue: %s; %s")
+                : _("Airport edit issue created for review on new GitHub Issue:  %s; %s");
         }
+
+        json_success(["apid" => $apid, "message" => sprintf($message, $issueNumber, $result['html_url'])]);
+    } catch (GitHub\Exception\RuntimeException $ex) {
+        // $ex->code === 401 is Unauthorized
+
+        json_error(
+            _("Could not submit edit for review, please contact <a href='/about'>support</a>.")
+            // Probably not going to be localized...
+            . "\n\n" . $ex->getMessage()
+        );
     }
+
     exit;
 }
 
@@ -297,4 +468,3 @@ foreach ($rows as &$row) {
 unset($row);
 $response['airports'] = $rows;
 print json_encode($response);
-
