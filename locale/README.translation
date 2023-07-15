@@ -8,7 +8,7 @@ OpenFlights currently contains about 400 strings, mostly short but some long. Yo
 
 2a) To create a new language, download a copy of the blank template:
 
-  https://github.com/jpatokal/openflights/blob/master/locale/template.po
+  https://github.com/jpatokal/openflights/blob/master/locale/template.pot
 
 2b) To edit an existing language, browse to:
 

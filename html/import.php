@@ -33,20 +33,29 @@ require_once "../php/locale.php";
         </tr>
         <tr>
           <td style='vertical-align: top'><input type="radio" name="fileType" value="FM" CHECKED></td>
-           <td><p><?php
-                printf(
-                    _("<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages. Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file. Repeat once for each page of data.</p><p><i>Warning</I>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.</p><p><i>Note</i>: There is <b>no duplicate detection</b> at this time. If you import a FlightMemory file twice, all flights in it will be added twice.</p><p><i>Note</i>: The <b>FlightMemory format</b> changes from time to time. Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."),
-                    "a href='/contact.html'"
-                ); ?></p>
+          <td>
+              <p><?php
+                  echo _("<b>FlightMemory (.html)</b> &mdash; FlightMemory does not have an export function, but OpenFlights can 'screen-scrape' its FlightData pages. Log into your FlightMemory account, go to the FlightData page, and select 'Save Web Page' in your browser. Upload the resulting HTML file. Repeat once for each page of data."); ?>
+              </p>
+              <p><?php
+                  echo _('<i>Warning</i>: Be sure to set your FlightMemory language to <b>English</b> before saving the pages.');
+              ?></p>
+              <p><?php
+                  echo _('<i>Note</i>: There is <b>no duplicate detection</b> at this time. If you import a FlightMemory file twice, all flights in it will be added twice.');
+                  ?></p>
+              <p><?php
+                  printf(
+                      _("<i>Note</i>: The <b>FlightMemory format</b> changes from time to time. Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."),
+                      "a href='/contact.html'"
+                  ); ?></p>
           </td>
         </tr>
         <tr>
           <td style='vertical-align: top'><input type="radio" name="fileType" value="CSV"></td>
-          <td><p><?php
-                printf(
-                    _("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet. See <%s'>format specification</a>."),
-            "a href='#help' onClick='javascript:window.open(\"/help/csv.php\", \"CSV\", \"width=500,height=400,scrollbars=yes\")'"
-                ); ?></p>
+          <td><p><?php printf(
+              _("<b>OpenFlights (.csv)</b> &mdash; Comma-separated value, exported from OpenFlights 'Export' or 'Backup') and easily edited or created in Excel or any other spreadsheet. See <%s>format specification</a>."),
+              'a href="#help" onClick="javascript:window.open("/help/csv.php", "CSV", "width=500, height=400,scrollbars=yes")"'
+          ); ?></p>
           </td>
         </tr>
     </table>

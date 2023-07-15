@@ -105,7 +105,7 @@ function payPalOutput($buttonId){
 $uid = $_SESSION["uid"];
 $logged_in = $uid && !empty($uid);
 if ($logged_in) {
-    echo '<p>' . sprintf(_('You are logged in <b>%s</b>.'), $_SESSION["name"]) . '</p>';
+    echo '<p>' . sprintf(_('You are logged in as <b>%s</b>.'), $_SESSION["name"]) . '</p>';
 } else {
     echo '<p><b>' . _('Please <a href="/">log in</a> before donating!') . '</b>';
 } ?>

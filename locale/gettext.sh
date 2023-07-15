@@ -30,8 +30,8 @@ for lang in de_DE en_GB es_ES fi_FI fr_FR ja_JP lt_LT nl_NL pl_PL pt_BR sv_SE ru
 done
 
 touch locale/new.po
-xgettext $OPTS -o locale/template.po $PHP
-xgettext $OPTS -L C -o locale/template.po $JS
-msgmerge -N locale/template.po locale/new.po >locale/newest.po
-grep -v "^#~" locale/newest.po >locale/messages.po
+xgettext $OPTS -o locale/template.pot $PHP
+xgettext $OPTS -L C -o locale/template.pot $JS
+msgmerge -N locale/template.pot locale/new.po >locale/newest.po
+grep -v ^#~ locale/newest.po >locale/messages.po
 rm locale/new.po locale/newest.po

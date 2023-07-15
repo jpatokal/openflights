@@ -2552,7 +2552,7 @@ function showTop10(responseText) {
     topData = JSON.parse(responseText);
   } catch (e) {
     $("result").innerHTML =
-      "<i>".gt.gettext("Statistics calculation failed!") + "</i>";
+      "<i>" + gt.gettext("Statistics calculation failed!") + "</i>";
     openPane("result");
     return;
   }
