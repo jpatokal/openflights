@@ -4,10 +4,17 @@ $dbname = "flightdb2";
 $user = "openflights";
 $password = "";
 
-// Authentication for creating Github issues from suggested data updates
-// https://help.github.com/articles/creating-an-access-token-for-command-line-use/
+// Authentication for creating Github issues from suggested data updates.
+// https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#fine-grained-personal-access-tokens
+// Note, these expire at max a year...
+
+// Repo used will end up being $GITHUB_USER/$GITHUB_REPO.
 $GITHUB_REPO = "openflights";
+// This is the username/organisation that the repo lives under.
+// Not actually used for login.
 $GITHUB_USER = "YOUR_USERNAME";
+// The user that this belongs to (which does not have to be the same as $GITHUB_USER), that issues
+// will be created as, as comments left as.
 $GITHUB_ACCESS_TOKEN = "YOUR_TOKEN";
 
 // Enable non-English locales? (true/false)

@@ -61,11 +61,9 @@ function xmlhttpPost(strURL, offset, action) {
       if (strURL == URL_APSEARCH) {
         if (action == "SEARCH") {
           searchResult(self.xmlHttpReq.responseText);
-        }
-        if (action == "RECORD") {
+        } else if (action == "RECORD") {
           recordResult(self.xmlHttpReq.responseText);
-        }
-        if (action == "LOAD") {
+        } else if (action == "LOAD") {
           loadAirport(self.xmlHttpReq.responseText);
         }
       }
@@ -155,13 +153,9 @@ function xmlhttpPost(strURL, offset, action) {
             break;
         }
       }
-    }
-
-    if (action == "LOAD") {
+    } else if (action == "LOAD") {
       apid = offset; // ugly hack!
-    }
-
-    if (action == "RECORD") {
+    } else if (action == "RECORD") {
       if (airport == "") {
         alert(gt.gettext("Please enter an airport name."));
         form.airport.focus();
@@ -307,8 +301,9 @@ function xmlhttpPost(strURL, offset, action) {
             )
           )
         ) {
-          getElement("miniresultbox").innerHTML =
-            "<I>" + gt.gettext("Cancelled.") + "</I>";
+          var box = getElement("miniresultbox");
+          box.style.color = "FF0000";
+          box.innerHTML = "<p><i>" + gt.gettext("Cancelled.") + "</i></p>";
           return;
         }
       }
@@ -363,8 +358,9 @@ function xmlhttpPost(strURL, offset, action) {
         action;
     }
   }
-  getElement("miniresultbox").innerHTML =
-    "<I>" + gt.gettext(describe(action)) + "</I>";
+  var box = getElement("miniresultbox");
+  box.style.color = "#222";
+  box.innerHTML = "<p><i>" + gt.gettext(describe(action)) + "</i></p>";
   self.xmlHttpReq.send(query + "&offset=" + offset);
 }
 
@@ -431,19 +427,19 @@ function searchResult(str) {
       table += '<td style="text-align: right"><nobr>';
       if (offset - 10 >= 0) {
         table +=
-          '<INPUT id="b_back" type="button" value="<" onClick="doSearch(' +
+          '<input id="b_back" type="button" value="<" onClick="doSearch(' +
           (offset - 10) +
           ')">';
       } else {
-        table += '<INPUT type="button" value="<" disabled>';
+        table += '<input type="button" value="<" disabled>';
       }
       if (offset + 10 < max) {
         table +=
-          '<INPUT id="b_fwd" type="button" value=">" onClick="doSearch(' +
+          '<input id="b_fwd" type="button" value=">" onClick="doSearch(' +
           (offset + 10) +
           ')">';
       } else {
-        table += '<INPUT type="button" value=">" disabled>';
+        table += '<input type="button" value=">" disabled>';
       }
       table += "</nobr></td>";
     }
@@ -531,16 +527,19 @@ function searchResult(str) {
   }
   table += "</table>";
   table += disclaimer;
-  getElement("miniresultbox").innerHTML = table;
+  var box = getElement("miniresultbox");
+  box.style.color = "#222";
+  box.innerHTML = table;
 }
 
-// Load data from search result into form
+// Load data from the search result into the form
 function loadAirport(data) {
   var json = JSON.parse(data);
   if (json["status"] != 1 || json["max"] == 0) {
-    getElement("miniresultbox").innerHTML = gt.gettext(
-      "No matches found in this database."
-    );
+    var box = getElement("miniresultbox");
+    box.style.color = "#FF0000";
+    box.innerHTML =
+      "<p>" + gt.gettext("No matches found in this database.") + "</p>";
     return;
   }
   var col = json["airports"][0];
@@ -578,12 +577,16 @@ function loadAirport(data) {
   getElement("b_add").style.display = "none";
   getElement("b_edit").style.display = "inline";
   getElement("b_edit").disabled = true;
-  getElement("miniresultbox").innerHTML = "";
+  var box = getElement("miniresultbox");
+  box.innerHTML = "";
+  box.style.color = "#222";
 }
 
 // Did we manage to record the airport?
 function recordResult(str) {
   var json = JSON.parse(str);
+  // Success
+  var box = getElement("miniresultbox");
   if (json["status"] == "1") {
     alert(json["message"]);
     // Select newly minted airport and return to main
@@ -605,8 +608,11 @@ function recordResult(str) {
       "), " +
       country;
     selectAirport(data, name);
+    box.style.color = "#222";
+  } else {
+    box.style.color = "#FF0000";
   }
-  getElement("miniresultbox").innerHTML = json["message"];
+  box.innerHTML = "<p>" + json["message"] + "</p>";
   getElement("b_edit").disabled = true;
 }
 
@@ -638,7 +644,9 @@ function clearSearch() {
   getElement("b_add").style.display = "inline";
   getElement("b_add").disabled = true;
   getElement("b_edit").style.display = "none";
-  getElement("miniresultbox").innerHTML = "";
+  var box = getElement("miniresultbox");
+  box.style.color = "#222";
+  box.innerHTML = "";
 }
 
 function isLoggedIn() {
