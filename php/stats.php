@@ -1,6 +1,7 @@
 <?php
 
 include_once 'locale.php';
+include_once 'config.php';
 include_once 'db_pdo.php';
 include_once 'helper.php';
 include_once 'filter.php';
@@ -22,12 +23,12 @@ if ($uid == 1 && $trid && $trid != "0") {
     $sth->execute([$trid]);
     $row = $sth->fetch();
     if (!$row) {
-        die('Error;' . _("Trip not found."));
+        die(json_encode(["error" => _("Trip not found.")]));
     }
 
     $public = $row["public"];
     if ($row["uid"] != $uid && $public == "N") {
-        die('Error;' . _("This trip is not public."));
+        die(json_encode(["error" => _("This trip is not public.")]));
     }
 
     $uid = $row["uid"];
@@ -39,101 +40,126 @@ if ($user && $user != "0") {
     $sth->execute([$user]);
     $row = $sth->fetch();
     if (!$row) {
-        die('Error;' . _("User not found."));
+        die(json_encode(["error" => _("User not found.")]));
     }
 
     $public = $row["public"];
     if ($public == "N") {
-        die('Error;' . _("This user's flights are not public."));
+        die(json_encode(["error" => _("This user's flights are not public.")]));
     }
 
     $uid = $row["uid"];
 }
 $filter = "f.uid = " . $uid . getFilterString($dbh, $_POST);
-$array = [];
 
 // Convert mi to km if units=K
 $units = $_SESSION["units"] ?? null;
 if ($units == "K") {
-    $unit = _("km");
-    $multiplier = "* " . KM_PER_MILE;
+    $unit = "km";
+    $unitMultiplier = KM_PER_MILE;
 } else {
-    $unit = _("mi");
-    $multiplier = "";
+    $unit = "mi";
+    $unitMultiplier = 1;
 }
+
+header("Content-type: application/json; charset=utf-8");
+$response = [
+    // All distance values in this message will be of this unit ("km" or "mi")
+    // unless the unit is indicated in the property name.
+    "distance_unit" => $unit,
+    "unique" => [],
+    "extreme" => [],
+    "longshort" => [],
+    "total" => [
+        "segments" => 0
+    ],
+    "average" => [],
+    "by_reason" => [],
+    "by_seattype" => [],
+    "by_mode" => [],
+    "by_class" => [],
+];
 
 // unique airports, and countries
 $sql = "SELECT COUNT(DISTINCT a.apid) AS num_airports, COUNT(DISTINCT a.country) AS num_countries
 FROM flights AS f,airports AS a
 WHERE (f.src_apid = a.apid OR f.dst_apid = a.apid) AND $filter";
-$sth = $dbh->query($sql);
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 $row = $sth->fetch();
 if ($row) {
-    $array += $row;
+    $response["unique"]["airports"] = (int)$row["num_airports"];
+    $response["unique"]["countries"] = (int)$row["num_countries"];
 }
 
-// unique airlines (excluding unknown), unique planes, total distance (mi), average distance (localized), average duration
-$sql = "SELECT COUNT(DISTINCT case when alid <> -1 then alid end) AS num_airlines, COUNT(DISTINCT plid) AS num_planes,
-IFNULL(SUM(distance), 0) AS distance, IFNULL(ROUND(AVG(distance) $multiplier),0) AS avg_distance,
-IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i'), '00:00') AS avg_duration
+// unique airlines (excluding unknown), unique planes, total segments,
+// total distance (mi), average distance (mi),
+// total duration (s), average duration
+$sql = <<<SQL
+SELECT COUNT(DISTINCT case when alid <> -1 then alid end) AS num_airlines,
+       COUNT(DISTINCT plid) AS num_planes,
+       COUNT(*) as segments,
+       IFNULL(SUM(distance), 0) AS distance,
+       IFNULL(AVG(distance), 0) AS avg_distance,
+       IFNULL(SUM(TIME_TO_SEC(duration)), 0) AS duration,
+       IFNULL(TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(duration))/COUNT(duration)), '%H:%i'), '00:00') AS avg_duration
 FROM flights AS f
-WHERE $filter";
-$sth = $dbh->query($sql);
+WHERE $filter
+SQL;
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 $row = $sth->fetch();
 if ($row) {
-    $array += $row;
+    $response["unique"] += [
+        "carriers" => (int)$row["num_airlines"],
+        "vehicles" => (int)$row["num_planes"]
+    ];
+    $response["total"] = [
+        "segments" => (int)$row["segments"],
+        "distance_mi" => round((int)$row["distance"]),
+        "distance_km" => round((int)$row["distance"] * KM_PER_MILE),
+        "distance" => round((int)$row["distance"] * $unitMultiplier),
+        "duration_s" => round((int)$row["distance"] * KM_PER_MILE),
+    ];
+    $response["average"] = [
+        "distance" => round((int)$row["avg_distance"] * $unitMultiplier),
+        "duration" => $row["avg_duration"]
+    ];
 }
-$array["avg_distance"] = number_format($array["avg_distance"]) . " " . $unit;
-$array["localedist"] = number_format(round($array["distance"] * ($units == "K" ? KM_PER_MILE : 1))) . " " . $unit;
-print json_encode($array) . "\n";
 
 // longest and shortest
-// 0 desc, 1 distance, 2 duration, 3 src_iata, 4 src_icao, 5 src_apid, 6 dst_iata, 7 dst_icao, 8 dst_apid
 $sql = <<<SQL
 (
-    SELECT '%s', ROUND(f.distance %s) AS distance, DATE_FORMAT(duration, '%%H:%%i') AS duration,
-           s.iata, s.icao, s.apid, d.iata, d.icao, d.apid
+    SELECT 'longest' AS prop, f.distance, DATE_FORMAT(duration, '%H:%i') AS duration,
+           s.iata AS src_iata, s.icao AS src_icao, s.apid AS src_apid,
+           d.iata AS dst_iata, d.icao AS dst_icao, d.apid AS dst_apid
     FROM flights AS f, airports AS s, airports AS d
     WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND $filter
     ORDER BY distance DESC
     LIMIT 1
 )
-UNION 
+UNION
 (
-    SELECT '%s', ROUND(f.distance %s) AS distance, DATE_FORMAT(duration, '%%H:%%i') AS duration,
-           s.iata, s.icao, s.apid, d.iata, d.icao, d.apid
+    SELECT 'shortest' AS prop, f.distance, DATE_FORMAT(duration, '%H:%i') AS duration,
+           s.iata AS src_iata, s.icao AS src_icao, s.apid AS src_apid,
+           d.iata AS dst_iata, d.icao AS dst_icao, d.apid AS dst_apid
     FROM flights AS f, airports AS s, airports AS d
     WHERE f.src_apid = s.apid AND f.dst_apid = d.apid AND $filter
     ORDER BY distance ASC
     LIMIT 1
 )
 SQL;
-$sth = $dbh->query(
-    sprintf(
-        $sql,
-        _("Longest"),
-        $multiplier,
-        _("Shortest"),
-        $multiplier
-    )
-);
-$rows = [];
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 foreach ($sth as $row) {
-    $src_code = format_apcode2($row[3], $row[4]);
-    $dst_code = format_apcode2($row[6], $row[7]);
-    $rows[] = sprintf(
-        "%s,%s %s,%s,%s,%s,%s,%s",
-        $row[0],
-        $row[1],
-        $unit,
-        $row[2],
-        $src_code,
-        $row[5],
-        $dst_code,
-        $row[8]
-    );
+    $src_code = format_apcode2($row["src_iata"], $row["src_icao"]);
+    $dst_code = format_apcode2($row["dst_iata"], $row["dst_icao"]);
+    $response["longshort"][$row["prop"]] = [
+        "src_code" => $src_code,
+        "src_apid" => (int)$row["src_apid"],
+        "dst_code" => $dst_code,
+        "dst_apid" => (int)$row["dst_apid"],
+        "distance" => round((int)$row["distance"] * $unitMultiplier),
+        "duration" => $row["duration"]
+    ];
 }
-echo implode(";", $rows) . "\n";
 
 $sql = <<<SQL
 WITH visited_airports AS (
@@ -152,85 +178,89 @@ UNION ALL
 (SELECT 'W' dir, a.* FROM visited_airports a ORDER BY x ASC LIMIT 1)
 SQL;
 
-$compass_labels = [
-    'N' => _("Northernmost"),
-    'S' => _("Southernmost"),
-    'E' => _("Easternmost"),
-    'W' => _("Westernmost")
-];
-
-$sth = $dbh->query($sql);
-$rows = [];
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 foreach ($sth as $row) {
-    $dir = $compass_labels[$row["dir"]];
     $code = format_apcode2($row["iata"], $row["icao"]);
-    $rows[] = sprintf("%s,%s,%s,%s,%s", $dir, $code, $row["apid"], $row["x"], $row["y"]);
+    $response["extreme"][$row["dir"]] = [
+        "code" => $code,
+        "apid" => (int)$row["apid"],
+        "lat" => (float)$row["x"],
+        "lon" => (float)$row["y"],
+    ];
 }
-echo implode(":", $rows) . "\n";
 
 // Censor remaining info unless in full-public mode
 if ($public != "O") {
-    print "\n\n\n";
+    echo json_encode($response);
     exit;
 }
 
-// Classes (by number of flights and distance)
-$sql = "SELECT DISTINCT class, COUNT(*) num_flights, SUM(distance) distance
+// Classes
+$sql = <<<SQL
+    SELECT DISTINCT class, COUNT(*) segments, SUM(distance) distance
     FROM flights AS f
     WHERE $filter AND class != ''
     GROUP BY class
     ORDER BY class
-";
-$sth = $dbh->query($sql);
-$classByFlight = [];
-$classByDistance = [];
+SQL;
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 foreach ($sth as $row) {
-    $classByFlight[] = "$row[0],$row[1]";
-    $classByDistance[] = "$row[0],$row[2]";
+    $response["by_class"][] = [
+        "class" => $row["class"],
+        "segments" => (int)$row["segments"],
+        "distance" => round((int)$row["distance"] * $unitMultiplier),
+    ];
 }
-echo implode(":", $classByFlight) . "\n";
 
 // Reason
-$sql = "SELECT DISTINCT reason, COUNT(*)
+$sql = <<<SQL
+    SELECT DISTINCT reason, COUNT(*) segments, SUM(distance) distance
     FROM flights AS f
     WHERE $filter AND reason != ''
     GROUP BY reason
     ORDER BY reason
-";
-$sth = $dbh->query($sql);
-$rows = [];
+SQL;
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 foreach ($sth as $row) {
-    $rows[] = sprintf("%s,%s", $row[0], $row[1]);
+    $response["by_reason"][] = [
+        "reason" => $row["reason"],
+        "segments" => (int)$row["segments"],
+        "distance" => round((int)$row["distance"] * $unitMultiplier),
+    ];
 }
-echo implode(":", $rows) . "\n";
 
 // Seat Type
-$sql = "SELECT DISTINCT seat_type, COUNT(*)
+$sql = <<<SQL
+    SELECT DISTINCT seat_type, COUNT(*) segments, SUM(distance) distance
     FROM flights AS f
     WHERE $filter AND seat_type != ''
     GROUP BY seat_type
     ORDER BY seat_type
-";
-$sth = $dbh->query($sql);
-$rows = [];
+SQL;
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 foreach ($sth as $row) {
-    $rows[] = sprintf("%s,%s", $row[0], $row[1]);
+    $response["by_seattype"][] = [
+        "seattype" => $row["seat_type"],
+        "segments" => (int)$row["segments"],
+        "distance" => round((int)$row["distance"] * $unitMultiplier),
+    ];
 }
-echo implode(":", $rows) . "\n";
 
 // Mode
-$sql = "SELECT DISTINCT mode, COUNT(*)
+$sql = <<<SQL
+    SELECT DISTINCT mode, COUNT(*) segments, SUM(distance) distance
     FROM flights AS f
     WHERE $filter
     GROUP BY mode
     ORDER BY mode
-";
-$sth = $dbh->query($sql);
-$rows = [];
+SQL;
+$sth = $dbh->query($sql, PDO::FETCH_ASSOC);
 foreach ($sth as $row) {
-    $rows[] = sprintf("%s,%s", $row[0], $row[1]);
+    $response["by_mode"][] = [
+        "mode" => $row["mode"],
+        "segments" => (int)$row["segments"],
+        "distance" => round((int)$row["distance"] * $unitMultiplier),
+    ];
 }
-echo implode(":", $rows) . "\n";
 
-// Class (by distance); added at the end. This is to not break other potential API users.
-echo implode(":", $classByDistance) . "\n";
+echo json_encode($response);
