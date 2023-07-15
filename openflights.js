@@ -103,6 +103,8 @@ var classes,
   reasons,
   classes_short,
   reasons_short,
+  extreme_directions,
+  distance_units,
   modenames,
   modesegments,
   modeoperators,
@@ -196,6 +198,16 @@ function init() {
     T: gt.gettext("railway"),
     R: gt.gettext("road transport"),
     S: gt.gettext("shipping"),
+  };
+  extreme_directions = {
+    N: gt.gettext("Northernmost"),
+    S: gt.gettext("Southernmost"),
+    E: gt.gettext("Easternmost"),
+    W: gt.gettext("Westernmost"),
+  };
+  distance_units = {
+    km: gt.gettext("km"),
+    mi: gt.gettext("miles"),
   };
   topmodes = { F: gt.gettext("Segments"), D: gt.gettext("Mileage") };
 
@@ -2234,215 +2246,224 @@ function exportFlights(type, newWindow) {
   }
 }
 
+const createAirportLinkElement = (apid, text) => {
+  const link = document.createElement("a");
+  link.setAttribute("href", "#");
+  link.setAttribute("onclick", `JavaScript:selectAirport(${apid});`);
+  link.append(text);
+  return link;
+};
+
+const formatCoordinates = ({ lat, lon }) => {
+  const latStr = Math.abs(lat).toFixed(2);
+  const lonStr = Math.abs(lon).toFixed(2);
+  return `${lonStr}°${lon >= 0 ? "N" : "S"} ${latStr}°${lat >= 0 ? "E" : "W"}`;
+};
+
 // The "Analyze" button (detailed stats)
 function showStats(str) {
-  if (str.substring(0, 5) == "Error") {
-    $("result").innerHTML = str.split(";")[1];
-    openPane("result");
+  openPane("result");
+  const result = document.getElementById("result");
+  while (result.firstChild) result.removeChild(result.firstChild);
+
+  let statsData;
+  try {
+    statsData = JSON.parse(str);
+  } catch (e) {
+    result.append = gt.gettext("Statistics calculation failed!");
     return;
   }
 
-  openPane("result");
-  if (str == "") {
-    bigtable = "<i>Statistics calculation failed!</i>";
-  } else {
-    var master = str.split("\n");
-    var uniques = JSON.parse(master[0]);
-    var longshort = master[1];
-    var extremes = master[2];
-    var classData = master[3];
-    var reasonData = master[4];
-    var seatData = master[5];
-    var modeData = master[6];
-    var classDataByDistance = master[7];
-
-    var bigtable =
-      '<table><td style="vertical-align: top"><img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17></td><td style="vertical-align: top">';
-
-    var table = '<table style="border-spacing: 10px 0px">';
-    table += "<tr><th colspan=2>" + gt.gettext("Unique") + "</th></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("Airports") +
-      "</td><td>" +
-      // TODO: Use more specific locale if one exists
-      uniques["num_airports"].toLocaleString("en-US") +
-      "</td></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("Carriers") +
-      "</td><td>" +
-      // TODO: Use more specific locale if one exists
-      uniques["num_airlines"].toLocaleString("en-US") +
-      "</td></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("Countries") +
-      "</td><td>" +
-      // TODO: Use more specific locale if one exists
-      uniques["num_countries"].toLocaleString("en-US") +
-      "</td></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("Vehicles") +
-      "</td><td>" +
-      // TODO: Use more specific locale if one exists
-      uniques["num_planes"].toLocaleString("en-US") +
-      "</td></tr>";
-    table += "<tr><td>&nbsp;</td></tr>";
-
-    var distance = parseInt(uniques["distance"]);
-    table += "<tr><th colspan=2>" + gt.gettext("Distance") + "</th></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("Total flown") +
-      "</td><td>" +
-      // TODO: Use more specific locale if one exists
-      uniques["localedist"].toLocaleString("en-US") +
-      "</td></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("Around the world") +
-      "</td><td>" +
-      (distance / EARTH_CIRCUMFERENCE).toFixed(2) +
-      "x</td></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("To the Moon") +
-      "</td><td>" +
-      (distance / MOON_DISTANCE).toFixed(3) +
-      "x</td></tr>";
-    table +=
-      "<tr><td>" +
-      gt.gettext("To Mars") +
-      "</td><td>" +
-      (distance / MARS_DISTANCE).toFixed(4) +
-      "x</td></tr>";
-    table += "</table>";
-    bigtable += table + '</td><td style="vertical-align: top">';
-
-    table = '<table style="border-spacing: 10px 0px">';
-    table +=
-      "<tr><th colspan=2>" + gt.gettext("Journey records") + "</th></tr>";
-    // TODO: Shouldn't be needed when stats.php returns full JSON
-    // https://github.com/jpatokal/openflights/issues/1296
-    var rows = longshort !== "" ? longshort.split(";") : [];
-    for (var r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      // desc 0, distance 1, duration 2, s.iata 3, s.apid 4, d.iata 5, d.apid 6
-      table +=
-        "<tr><td>" +
-        col[0] +
-        '</td><td><a href="#" onclick="JavaScript:selectAirport(' +
-        col[4] +
-        ');">' +
-        col[3] +
-        '</a>&harr;<a href="#" onclick="JavaScript:selectAirport(' +
-        col[6] +
-        ');">' +
-        col[5] +
-        "</a>, " +
-        // TODO: Use more specific locale if one exists
-        col[1].toLocaleString("en-US") +
-        ", " +
-        col[2] +
-        "</td></tr>";
-    }
-    table +=
-      "<tr><td>" +
-      gt.gettext("Average") +
-      "</td><td>" +
-      // TODO: Use more specific locale if one exists
-      uniques["avg_distance"].toLocaleString("en-US") +
-      ", " +
-      uniques["avg_duration"] +
-      "</td></tr>";
-    table += "<tr><td>&nbsp;</td></tr>";
-    table += "<tr><td>&nbsp;</td></tr>";
-    table +=
-      "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
-    // TODO: Shouldn't be needed when stats.php returns full JSON
-    // https://github.com/jpatokal/openflights/issues/1296
-    var rows = extremes !== "" ? extremes.split(":") : [];
-    for (r = 0; r < rows.length; r++) {
-      var col = rows[r].split(",");
-      // 0 desc, 1 code, 2 apid, 3 x, 4 y
-      var lat = parseFloat(col[4]).toFixed(2);
-      var lon = parseFloat(col[3]).toFixed(2);
-      if (lat < 0) {
-        lat = -lat + "&deg;S";
-      } else {
-        lat += "&deg;N";
-      }
-      if (lon < 0) {
-        lon = -lon + "&deg;W";
-      } else {
-        lon += "&deg;E";
-      }
-      table +=
-        "<tr><td>" +
-        col[0] +
-        '</td><td><a href="#" onclick="JavaScript:selectAirport(' +
-        col[2] +
-        ');">' +
-        col[1] +
-        "</a> (" +
-        lat +
-        " " +
-        lon +
-        ")</td></tr>";
-    }
-    table += "</table>";
-    bigtable += table + '</td><td style="vertical-align: top">';
-
-    table = '<table style="border-spacing: 10px 0px">';
-    table +=
-      "<tr><th>" +
-      gt.gettext("Class") +
-      "</th><th>" +
-      gt.gettext("Reason") +
-      "</th><th>" +
-      gt.gettext("Seats") +
-      "</th></tr>";
-    table += "<tr>";
-    table += '<td><div id="chart_class"></div></td>';
-    table += '<td><div id="chart_reason"></div></td>';
-    table += '<td><div id="chart_seat"></div></td>';
-    table += "</tr>";
-
-    table +=
-      "<tr><th>" +
-      gt.gettext("Class by distance") +
-      "</th><th>" +
-      gt.gettext("Mode") +
-      "</th><th><!-- Empty Cell --></th></tr>";
-    table += "<tr>";
-    table += '<td><div id="chart_class_distance"></div></td>';
-    table += '<td><div id="chart_mode"></div></td>';
-    table += "<td><!-- Empty --></td>";
-    table += "</tr>";
-    table += "<tr><td>";
-    table += "</td><td>";
-    table += "</td><td>";
-    // Empty Cell
-    table += "</td></tr>";
-
-    table += "</table>";
-    bigtable += table + "</td></tr></table>";
+  if ("error" in statsData) {
+    result.append(gt.gettext(response.error));
+    return;
   }
 
-  $("result").innerHTML = bigtable;
-
-  if (str != "") {
-    // First row of charts
-    googleChart("chart_class", classData, classes_short);
-    googleChart("chart_reason", reasonData, reasons_short);
-    googleChart("chart_seat", seatData, seattypes);
-
-    // Second row of charts
-    googleChart("chart_class_distance", classDataByDistance, classes_short);
-    googleChart("chart_mode", modeData, modenames);
+  if (statsData.total.segments === 0) {
+    result.append(gt.gettext("This user has no flights."));
+    return;
   }
+
+  const displayUnit = distance_units[statsData.distance_unit];
+
+  var bigtable =
+    '<table><td style="vertical-align: top"><img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17></td><td style="vertical-align: top">';
+
+  var table = '<table style="border-spacing: 10px 0px">';
+  table += "<tr><th colspan=2>" + gt.gettext("Unique") + "</th></tr>";
+  for (const dataPoint of [
+    ["Airports", "airports"],
+    ["Carriers", "carriers"],
+    ["Countries", "countries"],
+    ["Vehicles", "vehicles"],
+  ]) {
+    const row = document.createElement("tr");
+    const label = document.createElement("td");
+    label.append(gt.gettext(dataPoint[0]));
+    const value = document.createElement("td");
+    value.append(statsData.unique[dataPoint[1]]);
+    row.append(label);
+    row.append(value);
+    table += row.outerHTML;
+  }
+  table += "<tr><td>&nbsp;</td></tr>";
+
+  var distance = statsData.total.distance_mi;
+  table += "<tr><th colspan=2>" + gt.gettext("Distance") + "</th></tr>";
+  table +=
+    "<tr>" +
+    `<td>${gt.gettext("Total flown")}</td>` +
+    `<td>${statsData.total.distance} ${displayUnit}</td>` +
+    "</tr>";
+  table +=
+    "<tr>" +
+    `<td>${gt.gettext("Around the world")}</td>` +
+    `<td>${(distance / EARTH_CIRCUMFERENCE).toFixed(2)}x</td>` +
+    "</tr>";
+  table +=
+    "<tr>" +
+    `<td>${gt.gettext("To the Moon")}</td>` +
+    `<td>${(distance / MOON_DISTANCE).toFixed(3)}x</td>` +
+    "</tr>";
+  table +=
+    "<tr>" +
+    `<td>${gt.gettext("To Mars")}</td>` +
+    `<td>${(distance / MARS_DISTANCE).toFixed(4)}x</td>` +
+    "</tr>";
+  table += "</table>";
+  bigtable += table + '</td><td style="vertical-align: top">';
+
+  table = '<table style="border-spacing: 10px 0px">';
+  table += "<tr><th colspan=2>" + gt.gettext("Journey records") + "</th></tr>";
+
+  for (const [label, prop] of [
+    ["Longest", "longest"],
+    ["Shortest", "shortest"],
+  ]) {
+    const flight = statsData.longshort[prop];
+    const row = document.createElement("tr");
+    const keyCol = document.createElement("td");
+    keyCol.append(gt.gettext(label));
+    const valCol = document.createElement("td");
+    valCol.append(createAirportLinkElement(flight.src_apid, flight.src_code));
+    valCol.append(" ↔ ");
+    valCol.append(createAirportLinkElement(flight.dst_apid, flight.dst_code));
+    valCol.append(`, ${flight.distance} ${displayUnit}, ${flight.duration}`);
+    row.append(keyCol);
+    row.append(valCol);
+    table += row.outerHTML;
+  }
+
+  table +=
+    "<tr><td>" +
+    gt.gettext("Average") +
+    "</td><td>" +
+    statsData.average.distance +
+    " " +
+    displayUnit +
+    ", " +
+    statsData.average.duration +
+    "</td></tr>";
+  table += "<tr><td>&nbsp;</td></tr>";
+  table += "<tr><td>&nbsp;</td></tr>";
+  table += "<tr><th colspan=2>" + gt.gettext("Airport records") + "</th></tr>";
+  for (const [direction, stat] of Object.entries(statsData.extreme)) {
+    const row = document.createElement("tr");
+    const keyCol = document.createElement("td");
+    keyCol.append(extreme_directions[direction]);
+    const valCol = document.createElement("td");
+    valCol.append(createAirportLinkElement(stat.apid, stat.code));
+    valCol.append(` (${formatCoordinates(stat)})`);
+    row.append(keyCol);
+    row.append(valCol);
+    table += row.outerHTML;
+  }
+  table += "</table>";
+  bigtable += table + '</td><td style="vertical-align: top">';
+
+  table = '<table style="border-spacing: 10px 0px">';
+  table +=
+    "<tr><th>" +
+    gt.gettext("Class") +
+    "</th><th>" +
+    gt.gettext("Reason") +
+    "</th><th>" +
+    gt.gettext("Seats") +
+    "</th></tr>";
+  table += "<tr>";
+  table += '<td><div id="chart_class"></div></td>';
+  table += '<td><div id="chart_reason"></div></td>';
+  table += '<td><div id="chart_seat"></div></td>';
+  table += "</tr>";
+
+  table +=
+    "<tr><th>" +
+    gt.gettext("Class by distance") +
+    "</th><th>" +
+    gt.gettext("Mode") +
+    "</th><th><!-- Empty Cell --></th></tr>";
+  table += "<tr>";
+  table += '<td><div id="chart_class_distance"></div></td>';
+  table += '<td><div id="chart_mode"></div></td>';
+  table += "<td><!-- Empty --></td>";
+  table += "</tr>";
+  table += "<tr><td>";
+  table += "</td><td>";
+  table += "</td><td>";
+  // Empty Cell
+  table += "</td></tr>";
+
+  table += "</table>";
+  bigtable += table + "</td></tr></table>";
+
+  result.innerHTML = bigtable;
+
+  // First row of charts
+  googleChart(
+    "chart_class",
+    statsData.by_class.map((stat) => ({
+      key: stat.class,
+      value: stat.segments,
+    })),
+    classes_short
+  );
+
+  googleChart(
+    "chart_reason",
+    statsData.by_reason.map((stat) => ({
+      key: stat.reason,
+      value: stat.segments,
+    })),
+    reasons_short
+  );
+
+  googleChart(
+    "chart_seat",
+    statsData.by_seattype.map((stat) => ({
+      key: stat.seattype,
+      value: stat.segments,
+    })),
+    seattypes
+  );
+
+  // Second row of charts
+  googleChart(
+    "chart_class_distance",
+    statsData.by_class.map((stat) => ({
+      key: stat.class,
+      value: stat.distance,
+    })),
+    classes_short
+  );
+
+  googleChart(
+    "chart_mode",
+    statsData.by_mode.map((stat) => ({
+      key: stat.mode,
+      value: stat.segments,
+    })),
+    modenames
+  );
 }
 
 // Chart configuration.
@@ -2463,8 +2484,8 @@ var GOOGLE_CHART_THREE_COLORS = ["2A416A", "688BC3", "B2C3DF"];
 var GOOGLE_CHART_FOUR_COLORS = ["2A416A", "39588E", "688BC3", "B2C3DF"];
 
 // Generate a pie chart image via Google Charts API
-// targetdiv is the DIV where we should write out the chart
-// inputdata is a colon-separated string of label short-names to values, which are separated by commas
+// targetdiv is the <div> id for where we should place the chart
+// inputdata is a list of {'key': short-name, 'value': number}
 // labeldata is a hash of short-names (Y, C, F) to localized names (Econ, Biz, 1st).
 // e.g. inputdata = F,1:C,2:F,3
 //      labeldata = {F: 'First', C: 'Biz', Y: 'Econ'}
@@ -2473,34 +2494,32 @@ function googleChart(targetdiv, inputdata, labeldata) {
     return;
   }
 
-  var data = new google.visualization.DataTable();
-  data.addColumn("string", "Key");
-  data.addColumn("number", "Value");
+  const dataTable = new google.visualization.DataTable();
+  dataTable.addColumn("string", "Key");
+  dataTable.addColumn("number", "Value");
 
-  var rows = inputdata.split(":");
-  for (var r = 0; r < rows.length; r++) {
-    // col is key-value pair separated by a comma
-    var col = rows[r].split(",");
-    data.addRow([labeldata[col[0]], parseInt(col[1], 10)]);
+  for (const dataPoint of inputdata) {
+    dataTable.addRow([labeldata[dataPoint.key], dataPoint.value]);
   }
 
   // Apply formatter to the "Value" column.
-  var formatter = new google.visualization.NumberFormat({
+  const formatter = new google.visualization.NumberFormat({
     fractionDigits: 0,
   });
-  formatter.format(data, 1);
+  formatter.format(dataTable, 1);
 
-  var chart = new google.visualization.PieChart(
-    document.getElementById(targetdiv)
-  );
-  if (rows.length <= 2) {
+  if (inputdata.length <= 2) {
     GOOGLE_CHART_OPTIONS.colors = GOOGLE_CHART_TWO_COLORS;
-  } else if (rows.length <= 3) {
+  } else if (inputdata.length <= 3) {
     GOOGLE_CHART_OPTIONS.colors = GOOGLE_CHART_THREE_COLORS;
   } else {
     GOOGLE_CHART_OPTIONS.colors = GOOGLE_CHART_FOUR_COLORS;
   }
-  chart.draw(data, GOOGLE_CHART_OPTIONS);
+
+  const chart = new google.visualization.PieChart(
+    document.getElementById(targetdiv)
+  );
+  chart.draw(dataTable, GOOGLE_CHART_OPTIONS);
 }
 
 function formatTop10Numbers(mode, countUnit, value) {
