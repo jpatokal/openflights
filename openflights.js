@@ -2503,6 +2503,19 @@ function googleChart(targetdiv, inputdata, labeldata) {
   chart.draw(data, GOOGLE_CHART_OPTIONS);
 }
 
+function formatTop10Numbers(mode, countUnit, value) {
+  // TODO: Use more specific locale if one exists
+  var formattedNumber = value.toLocaleString("en-US");
+  if (mode == "F") {
+    return formattedNumber;
+  } else {
+    // Must be distance
+    return (
+      formattedNumber + " " + gt.gettext(countUnit == "miles" ? "mi" : "km")
+    );
+  }
+}
+
 function showTop10(responseText) {
   let topData;
   try {
@@ -2557,8 +2570,7 @@ function showTop10(responseText) {
       route.dst_code +
       "</a></td>" +
       "<td style='text-align: right; padding-left: 10px'>" +
-      // TODO: Use more specific locale if one exists
-      route.count.toLocaleString("en-US") +
+      formatTop10Numbers(mode, topData["countUnit"], route.count) +
       "</td></tr>";
   }
   table += "</table>";
@@ -2574,8 +2586,7 @@ function showTop10(responseText) {
       ");'>" +
       desc +
       "</a></td><td style='text-align: right; padding-left: 10px'>" +
-      // TODO: Use more specific locale if one exists
-      airport.count.toLocaleString("en-US") +
+      formatTop10Numbers(mode, topData["countUnit"], airport.count) +
       "</td>";
   }
   table += "</table>";
@@ -2591,8 +2602,7 @@ function showTop10(responseText) {
       ");refresh(false);'>" +
       airline.name +
       "</a></td><td style='text-align: right; padding-left: 10px'>" +
-      // TODO: Use more specific locale if one exists
-      airline.count.toLocaleString("en-US") +
+      formatTop10Numbers(mode, topData["countUnit"], airline.count) +
       "</td>";
   }
   table += "</table>";
@@ -2605,8 +2615,7 @@ function showTop10(responseText) {
       "<tr><td>" +
       plane.name +
       "</td><td style='text-align: right; padding-left: 10px'>" +
-      // TODO: Use more specific locale if one exists
-      plane.count.toLocaleString("en-US") +
+      formatTop10Numbers(mode, topData["countUnit"], plane.count) +
       "</td>";
   }
   table += "</table>";

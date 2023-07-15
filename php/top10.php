@@ -103,7 +103,7 @@ foreach ($sth as $row) {
         "src_apid" => (int)$row["sapid"],
         "dst_code" => format_apcode2($row["diata"], $row["dicao"]),
         "dst_apid" => (int)$row["dapid"],
-        "count" => (int)$row["times"]
+        "count" => (int)$row["times"],
     ];
 }
 
