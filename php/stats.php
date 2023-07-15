@@ -83,8 +83,8 @@ $row = $sth->fetch();
 if ($row) {
     $array += $row;
 }
-$array["avg_distance"] .= " " . $unit;
-$array["localedist"] = round($array["distance"] * ($units == "K" ? KM_PER_MILE : 1)) . " " . $unit;
+$array["avg_distance"] = number_format($array["avg_distance"]) . " " . $unit;
+$array["localedist"] = number_format(round($array["distance"] * ($units == "K" ? KM_PER_MILE : 1))) . " " . $unit;
 print json_encode($array) . "\n";
 
 // longest and shortest

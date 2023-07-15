@@ -137,14 +137,11 @@ if ($row) {
     if ($row["count"] == "0" && $user && $user != "0") {
         die('Error;' . _("This user has no flights."));
     }
-    $distance = $row["distance"];
-    if (!$distance) {
-        $distance = "0";
-    }
+    $distance = $row["distance"] ?? "0";
     if (($_SESSION["units"] ?? null) == "K") {
-        $distance = round($distance * KM_PER_MILE) . " " . _("km");
+        $distance = number_format(round($distance * KM_PER_MILE)) . " " . _("km");
     } else {
-        $distance .= " " . _("miles");
+        $distance = number_format($distance) . " " . _("miles");
     }
     $map = sprintf(
         "%s;%s;%s;%s;%s;%s;%s;%s\n",

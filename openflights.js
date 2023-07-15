@@ -1803,7 +1803,6 @@ function updateMap(str, url) {
   var flights = master[1];
   var airports = master[2];
   var col = stats.split(";");
-  var id = 0;
   var type = "M"; // map
 
   if (url == URL_MAP) {
@@ -1812,7 +1811,6 @@ function updateMap(str, url) {
     if (!distance) {
       distance = 0;
     }
-    var duration = col[2]; // minutes
     var days = Math.floor(col[2] / (60 * 24));
     var hours = Math.floor((col[2] / 60) % 24);
     var min = Math.floor(col[2] % 60);
@@ -1821,13 +1819,15 @@ function updateMap(str, url) {
     }
 
     stats =
-      col[0] +
+      // TODO: Use more specific locale if one exists
+      col[0].toLocaleString("en-US") +
       " " +
       gt.gettext("segments") +
       "<br>" +
       distance +
       "<br>" +
-      days +
+      // TODO: Use more specific locale if one exists
+      days.toLocaleString("en-US") +
       " " +
       gt.gettext("days") +
       " " +
@@ -1842,7 +1842,6 @@ function updateMap(str, url) {
     privacy = col[3];
     if (!logged_in) {
       elite = col[4];
-      var editor = col[6];
       document.forms["login"].challenge.value = col[7];
 
       // Does the user have a PHP session open?  Log him in!
@@ -2266,25 +2265,29 @@ function showStats(str) {
       "<tr><td>" +
       gt.gettext("Airports") +
       "</td><td>" +
-      uniques["num_airports"] +
+      // TODO: Use more specific locale if one exists
+      uniques["num_airports"].toLocaleString("en-US") +
       "</td></tr>";
     table +=
       "<tr><td>" +
       gt.gettext("Carriers") +
       "</td><td>" +
-      uniques["num_airlines"] +
+      // TODO: Use more specific locale if one exists
+      uniques["num_airlines"].toLocaleString("en-US") +
       "</td></tr>";
     table +=
       "<tr><td>" +
       gt.gettext("Countries") +
       "</td><td>" +
-      uniques["num_countries"] +
+      // TODO: Use more specific locale if one exists
+      uniques["num_countries"].toLocaleString("en-US") +
       "</td></tr>";
     table +=
       "<tr><td>" +
       gt.gettext("Vehicles") +
       "</td><td>" +
-      uniques["num_planes"] +
+      // TODO: Use more specific locale if one exists
+      uniques["num_planes"].toLocaleString("en-US") +
       "</td></tr>";
     table += "<tr><td>&nbsp;</td></tr>";
 
@@ -2294,7 +2297,8 @@ function showStats(str) {
       "<tr><td>" +
       gt.gettext("Total flown") +
       "</td><td>" +
-      uniques["localedist"] +
+      // TODO: Use more specific locale if one exists
+      uniques["localedist"].toLocaleString("en-US") +
       "</td></tr>";
     table +=
       "<tr><td>" +
@@ -2338,7 +2342,8 @@ function showStats(str) {
         ');">' +
         col[5] +
         "</a>, " +
-        col[1] +
+        // TODO: Use more specific locale if one exists
+        col[1].toLocaleString("en-US") +
         ", " +
         col[2] +
         "</td></tr>";
@@ -2347,7 +2352,8 @@ function showStats(str) {
       "<tr><td>" +
       gt.gettext("Average") +
       "</td><td>" +
-      uniques["avg_distance"] +
+      // TODO: Use more specific locale if one exists
+      uniques["avg_distance"].toLocaleString("en-US") +
       ", " +
       uniques["avg_duration"] +
       "</td></tr>";
@@ -2526,6 +2532,7 @@ function showTop10(responseText) {
 
   var bigtable =
     "<table style='width: 100%; border-collapse: collapse'><td style='vertical-align: top; padding-right: 10px'><img src='/img/close.gif' onclick='JavaScript:closePane();' width=17 height=17><form id='top10form'>";
+
   var table = "<br>" + gt.gettext("Show...") + "<br>";
   table +=
     createSelectFromArray("limit", toplimits, "updateTop10()", limit) + "<br>";
@@ -2550,7 +2557,8 @@ function showTop10(responseText) {
       route.dst_code +
       "</a></td>" +
       "<td style='text-align: right; padding-left: 10px'>" +
-      route.count +
+      // TODO: Use more specific locale if one exists
+      route.count.toLocaleString("en-US") +
       "</td></tr>";
   }
   table += "</table>";
@@ -2566,7 +2574,8 @@ function showTop10(responseText) {
       ");'>" +
       desc +
       "</a></td><td style='text-align: right; padding-left: 10px'>" +
-      airport.count +
+      // TODO: Use more specific locale if one exists
+      airport.count.toLocaleString("en-US") +
       "</td>";
   }
   table += "</table>";
@@ -2582,7 +2591,8 @@ function showTop10(responseText) {
       ");refresh(false);'>" +
       airline.name +
       "</a></td><td style='text-align: right; padding-left: 10px'>" +
-      airline.count +
+      // TODO: Use more specific locale if one exists
+      airline.count.toLocaleString("en-US") +
       "</td>";
   }
   table += "</table>";
@@ -2595,7 +2605,8 @@ function showTop10(responseText) {
       "<tr><td>" +
       plane.name +
       "</td><td style='text-align: right; padding-left: 10px'>" +
-      plane.count +
+      // TODO: Use more specific locale if one exists
+      plane.count.toLocaleString("en-US") +
       "</td>";
   }
   table += "</table>";
