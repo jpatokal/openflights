@@ -10,3 +10,4 @@ vendor/*
 *.pyc
 .idea
 .DS_Store
+locale/messages.po
