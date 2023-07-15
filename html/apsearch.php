@@ -33,7 +33,7 @@ $logged_in = $uid && !empty($uid);
         <tr>
           <td><?php echo _("Airport name"); ?></td>
           <td title="<?php
-            echo _('International Air Transport Association') . _('Federal Aviation Administration');
+            echo _('International Air Transport Association') . '/' . _('Federal Aviation Administration');
             ?>">
               <?php echo _('IATA'); ?>/<?php echo _('FAA'); ?>
           </td>

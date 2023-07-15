@@ -310,7 +310,7 @@ function xmlhttpPost(strURL, offset, action) {
       }
     }
 
-    // Build new query
+    // Build a new query
     if (action != "SEARCH" || (action == "SEARCH" && offset == 0)) {
       query =
         "name=" +
@@ -361,7 +361,7 @@ function xmlhttpPost(strURL, offset, action) {
   }
   var box = getElement("miniresultbox");
   box.style.color = "#222";
-  box.innerHTML = "<p><i>" + gt.gettext(describe(action)) + "</i></p>";
+  box.innerHTML = "<p><i>" + describe(action) + "</i></p>";
   self.xmlHttpReq.send(query + "&offset=" + offset);
 }
 
@@ -369,11 +369,11 @@ function describe(action) {
   // Localised in usage above
   switch (action) {
     case "SEARCH":
-      return "Searching...";
+      return gt.gettext("Searching...");
     case "LOAD":
-      return "Loading...";
+      return gt.gettext("Loading...");
     case "RECORD":
-      return "Recording...";
+      return gt.gettext("Recording...");
   }
 }
 
@@ -384,7 +384,7 @@ function searchResult(str) {
   var json = JSON.parse(str);
   var airports = json["airports"];
   var table = "<table width=95% cellspacing=0>";
-  var offset, sql;
+  var offset = json["offset"];
   var db = document.forms["searchform"].db.value;
   var disclaimer = "";
 
@@ -396,7 +396,6 @@ function searchResult(str) {
     warning = null;
   }
 
-  offset = json["offset"];
   var max = json["max"];
   if (max == 0) {
     table +=
@@ -408,12 +407,14 @@ function searchResult(str) {
         "<li>" +
         gt.gettext(
           "Try unchecking 'Show only major airports' and search again."
-        );
+        ) +
+        "</li>";
     }
     if (document.forms["searchform"].db.value != DB_OURAIRPORTS) {
       table +=
         "<li>" +
-        gt.gettext("Switch to the OurAirports database and search again.");
+        gt.gettext("Switch to the OurAirports database and search again.") +
+        "</li>";
     }
     table += "</ul></td></tr>";
   } else {
@@ -478,6 +479,7 @@ function searchResult(str) {
             "<span>";
           break;
       }
+
       table +=
         "<tr><td style='background-color: " +
         bgcolor +
@@ -568,7 +570,6 @@ function loadAirport(data) {
   }
   var dst_select = form.dst;
   for (index = 0; index < dst_select.length; index++) {
-    //alert(dst_select[index].value + "/" + col["dst"]);
     if (dst_select[index].value == col["dst"]) {
       dst_select.selectedIndex = index;
     }
@@ -586,8 +587,8 @@ function loadAirport(data) {
 // Did we manage to record the airport?
 function recordResult(str) {
   var json = JSON.parse(str);
-  // Success
   var box = getElement("miniresultbox");
+  // Success
   if (json["status"] == "1") {
     alert(json["message"]);
     // Select newly minted airport and return to main
@@ -608,9 +609,13 @@ function recordResult(str) {
       code +
       "), " +
       country;
+    // TODO: The alert is annoying... Change the save button for select instead?
+    // https://github.com/jpatokal/openflights/issues/1352
     selectAirport(data, name);
+    // Probably should be green/blue for some sort of success
     box.style.color = "#222";
   } else {
+    // Red for error
     box.style.color = "#FF0000";
   }
   box.innerHTML = "<p>" + json["message"] + "</p>";
@@ -627,7 +632,7 @@ function setEdited() {
   }
 }
 
-// Clear form -- everything *except* database
+// Clear form -- everything *except* the database
 function clearSearch() {
   var form = document.forms["searchform"];
   form.airport.value = "";

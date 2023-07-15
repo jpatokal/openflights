@@ -52,8 +52,8 @@ class RecordAirportDuplicateTest extends WebTestCase {
         $params += array("action" => "RECORD", "unittest" => "true");
         $msg = $this->post($webroot . "php/apsearch.php", $params);
 
-        $this->assertText('Update airport AutoTest Airport (ZZZ/ZZZZ)');
-        $this->assertText('New airport edit suggestion submitted by autotest:');
+        $this->assertText('Add airport AutoTest Airport (ZZZ/ZZZZ)');
+        $this->assertText('New airport addition suggestion submitted by autotest:');
         $this->assertText("[name] => " . $airport["name"]);
     }
 }
