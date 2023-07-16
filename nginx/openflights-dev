@@ -1,0 +1,39 @@
+server {
+    root /var/www/openflights;
+
+    index index.html index.php;
+
+    location / {
+        ssi on;
+        if (-e $request_filename.php){
+            rewrite ^(.*)$ /$1.php;
+        }
+        try_files $uri $uri.html $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        fastcgi_buffers 16 32k;
+        fastcgi_buffer_size 64k;
+        fastcgi_busy_buffers_size 64k;
+    }
+
+    location /banner/ {
+        rewrite "^/banner/(.+).png$" /badge/banner.php?user=$1;
+    }
+
+    if ($uri !~ \.) {
+        rewrite "^/airline/(.+)$" /index.php?query=$1;
+        rewrite "^/airport/(.+)$" /index.php?query=$1;
+        rewrite "^/blog/(.+)$" https://blog.openflights.org/$1;
+        rewrite "^/trip/(.+)$" /index.php?trid=$1;
+        rewrite "^/user/(.+)$" /index.php?user=$1;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    listen 80 default_server;
+}
