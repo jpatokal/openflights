@@ -21,9 +21,6 @@ $GITHUB_ACCESS_TOKEN = "YOUR_TOKEN";
 // True requires PHP gettext extension, false works only if the extension is *not* installed
 $OF_USE_LOCALES = true;
 
-// Allow login via vBulletin cookies? (true/false)
-$OF_VBULLETIN_LOGIN = false;
-
 // OpenFlights UID for admin user(s), used only for special access to airport/airline DBs
 // Historically, this was an integer, but now it accepts an array of integers.
 $OF_ADMIN_UID = [ 3 ];

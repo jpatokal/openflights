@@ -5,27 +5,9 @@ include_once 'db_pdo.php';
 include_once 'helper.php';
 include_once 'filter.php';
 
-// This applies only when viewing another users flights
+// This applies only when viewing another user's flights
 $user = $_POST["user"] ?? ($_GET["user"] ?? null);
 $trid = $_POST["trid"] ?? ($_GET["trid"] ?? null);
-
-// Login via vBulletin cookies
-$bb_uid = $_COOKIE["bb_userid"] ?? null;
-if ($OF_VBULLETIN_LOGIN && ! empty($bb_uid)) {
-    $sth = $dbh->prepare("SELECT uid, name, email, editor, elite, units, locale FROM users WHERE bb_uid = ?");
-    $sth->execute([$bb_uid]);
-    $row = $sth->fetch();
-    if ($row) {
-        $uid = $_SESSION['uid'] = $row["uid"];
-        $_SESSION['name'] = $row["name"];
-        $_SESSION['email'] = $row["email"];
-        $_SESSION['editor'] = $row["editor"];
-        $_SESSION['elite'] = $row["elite"];
-        $_SESSION['units'] = $row["units"];
-    } elseif (!$trid && !$user) {
-        die("Signup;No username found for ID " . $bb_uid);
-    }
-}
 
 $uid = $_SESSION["uid"] ?? null;
 $challenge = $_SESSION["challenge"] ?? null;
