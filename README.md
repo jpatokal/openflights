@@ -37,11 +37,13 @@ couple of manual steps to get the site up and running.
    the database container host name.
 2. Run `docker-compose up` to create the containers.
 3. Install local PHP dependencies inside the container.
+
    ```
    # host shell
    user@host:openflights $ docker exec -it openflights-web-1 bash
-   
+
    # container shell
    root@ee261e8f9103:/# cd /var/www/openflights/ && php /usr/local/bin/composer install
    ```
+
 4. You should be able to access the site at `http://localhost:8007`.
