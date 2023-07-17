@@ -77,6 +77,644 @@ msgid ""
 "b> and <b>trsqr</b>."
 msgstr ""
 
+msgid ""
+"Creating and maintaining this database has required and continues to require "
+"an <i>immense amount</i> of work."
+msgstr ""
+
+msgid ""
+"Creating and maintaining this database has required and continues to require "
+"an <i>immense amount</i> of work, which is why it would cost you <i>over one "
+"thousand dollars</i> to buy it from a commercial supplier."
+msgstr ""
+
+msgid ""
+"We need your support to keep this database up-to-date: just click on the "
+"PayPal link to the right (Visa, MasterCard, American Express and Discover "
+"also accepted)."
+msgstr ""
+
+msgid ""
+"We suggest <b>US$50</b>, but any amount at all is welcome, and you may use "
+"the data for free if you feel that you are unable to pay."
+msgstr ""
+
+msgid ""
+"If you do donate, please specify in the comments if you would like a "
+"itemized receipt for business expense or tax purposes."
+msgstr ""
+
+msgid "Support OpenFlights"
+msgstr ""
+
+msgid "Small Donation"
+msgstr ""
+
+msgid "Small Donation $20.00 USD"
+msgstr ""
+
+msgid "Donation"
+msgstr ""
+
+msgid "Donation $50.00 USD"
+msgstr ""
+
+msgid "Combo Donation"
+msgstr ""
+
+msgid "Combo Donation $100.00 USD"
+msgstr ""
+
+msgid ""
+"The GitHub copy is only a sporadically updated static snapshot of the live "
+"OpenFlights database (see <a href=\"https://github.com/jpatokal/openflights/"
+"commits/master/data/airports.dat\">revision log</a>). If you would like an "
+"up-to-the-minute copy, or you would like your data filtered by any "
+"information available to us (eg. number of routes at the airport), do not "
+"hesitate to <a href=\"/about\">contact us</a>."
+msgstr ""
+
+msgid "Airport, airline and route data"
+msgstr ""
+
+msgid "Navigation: "
+msgstr ""
+
+msgid "Airport"
+msgstr ""
+
+msgid "Airline"
+msgstr "Авиакомпания"
+
+msgid "Route"
+msgstr ""
+
+msgid "Plane"
+msgstr "Самолет"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Other"
+msgstr "Другое"
+
+msgid "License"
+msgstr ""
+
+msgid "Airport database"
+msgstr ""
+
+msgid "(click to enlarge)"
+msgstr ""
+
+msgid ""
+"As of January 2017, the OpenFlights Airports Database contains <b>over "
+"10,000</b> airports, train stations and ferry terminals spanning the globe, "
+"as shown in the map above. Each entry contains the following information:"
+msgstr ""
+
+msgid "Airport ID"
+msgstr ""
+
+msgid "Unique OpenFlights identifier for this airport."
+msgstr ""
+
+# Of airline, train company etc
+msgid "Name"
+msgstr "Название"
+
+msgid "Name of airport. May or may not contain the <b>City</b> name."
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid ""
+"Main city served by airport. May be spelled differently from <b>Name</b>."
+msgstr ""
+
+msgid ""
+"Country or territory where airport is located. See <a "
+"href=\"#country\">Countries</a> to cross-reference to ISO 3166-1 codes."
+msgstr ""
+
+msgid "IATA"
+msgstr ""
+
+msgid "3-letter IATA code. Null if not assigned/unknown."
+msgstr ""
+
+msgid "ICAO"
+msgstr ""
+
+msgid ""
+"4-letter ICAO code.<br>\n"
+"                Null if not assigned."
+msgstr ""
+
+msgid "Latitude"
+msgstr "Широта"
+
+msgid ""
+"Decimal degrees, usually to six significant digits. Negative is South, "
+"positive is North."
+msgstr ""
+
+msgid "Longitude"
+msgstr "Долгота"
+
+msgid ""
+"Decimal degrees, usually to six significant digits. Negative is West, "
+"positive is East."
+msgstr ""
+
+msgid "Altitude"
+msgstr ""
+
+msgid "In feet."
+msgstr ""
+
+msgid "Timezone"
+msgstr ""
+
+msgid ""
+"Hours offset from UTC. Fractional hours are expressed as decimals, eg. India "
+"is 5.5."
+msgstr ""
+
+# Daylight Savings Time
+msgid "DST"
+msgstr "летнее время"
+
+msgid ""
+"Daylight savings time. One of E (Europe), A (US/Canada), S (South America), "
+"O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a "
+"target=\"_blank\" href=\"help/time.php\">Help: Time</a></i>"
+msgstr ""
+
+msgid "Tz database time zone"
+msgstr ""
+
+msgid ""
+"Timezone in <a href=\"https://en.wikipedia.org/wiki/"
+"Tz_database\">\"tz\" (Olson) format</a>, eg. \"America/Los_Angeles\"."
+msgstr ""
+
+# Seat type (window, aisle, middle)
+msgid "Type"
+msgstr "Расположение"
+
+msgid ""
+"Type of the airport. Value \"airport\" for air terminals, \"station\" for "
+"train stations, \"port\" for ferry terminals and \"unknown\" if not known. "
+"<i>In airports.csv, only type=airport is included.</i>"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid ""
+"Source of this data. \"OurAirports\" for data sourced from <a href=\"https://"
+"ourairports.com/data/\">OurAirports</a>, \"Legacy\" for old data not matched "
+"to OurAirports (mostly DAFIF), \"User\" for unverified user contributions. "
+"<i>In airports.csv, only source=OurAirports is included.</i>"
+msgstr ""
+
+msgid "The data is UTF-8 encoded."
+msgstr ""
+
+msgid ""
+"<i>Note</i>: Rules for daylight savings time change from year to year and "
+"from country to country. The current data is an approximation for 2009, "
+"built on a country level. Most airports in DST-less regions in countries "
+"that generally observe DST (eg. AL, HI in the USA, NT, QL in Australia, "
+"parts of Canada) are marked incorrectly."
+msgstr ""
+
+msgid "Sample entries"
+msgstr ""
+
+msgid ""
+"Try it out: <a target=\"_blank\" href=\"html/apsearch\">Airport Search</a> "
+"(new window)"
+msgstr ""
+
+msgid ""
+"<i>Note</i>: The Airport Search window above is a part of <a href=\"https://"
+"openflights.org\">OpenFlights</a>. You will not be able to add or edit "
+"airports unless you are logged in."
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid ""
+"To download the current data dump from <a href=\"https://github.com/jpatokal/"
+"openflights\">GitHub</a> as a very straightforward CSV (comma-separated "
+"value) file, suitable for use in spreadsheets etc., simply click below:"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/airports.dat\">airports.dat</a> (Airports only, high quality)"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/airports-extended.dat\">airports-extended.dat</a> (Airports, "
+"train stations and ferry terminals, including user contributions)"
+msgstr ""
+
+msgid ""
+"If you'd like an even more thorough database, with extensive coverage of "
+"airstrips, heliports and other places of less interest for commercial "
+"airline frequent flyers, do check out <a href=\"https://ourairports."
+"com\">OurAirports</a>, whose public domain database covers over 40,000 "
+"places to fly from."
+msgstr ""
+
+msgid "Airline database"
+msgstr ""
+
+msgid ""
+"As of January 2012, the OpenFlights Airlines Database contains <b>5888</b> "
+"airlines. Each entry contains the following information:"
+msgstr ""
+
+msgid "Airline ID"
+msgstr ""
+
+msgid "Unique OpenFlights identifier for this airline."
+msgstr ""
+
+msgid "Name of the airline."
+msgstr ""
+
+msgid "Alias"
+msgstr ""
+
+msgid ""
+"Alias of the airline. For example, All Nippon Airways is commonly known as "
+"\"ANA\". "
+msgstr ""
+
+msgid "2-letter IATA code, if available."
+msgstr ""
+
+msgid "3-letter ICAO code, if available."
+msgstr ""
+
+# Airline radio callsign
+msgid "Callsign"
+msgstr "Позывной"
+
+msgid "Airline callsign."
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid ""
+"\"Y\" if the airline is or has until recently been operational, \"N\" if it "
+"is defunct. This field is <i>not</i> reliable: in particular, major airlines "
+"that stopped flying long ago, but have not had their IATA code reassigned "
+"(eg. Ansett/AN), will incorrectly show as \"Y\"."
+msgstr ""
+
+msgid ""
+"The data is UTF-8 encoded. The special value <b>\\N</b> is used for \"NULL\" "
+"to indicate that no value is available, and is understood automatically by "
+"MySQL if imported."
+msgstr ""
+
+msgid ""
+"<i>Notes</i>: Airlines with null codes/callsigns/countries generally "
+"represent user-added airlines. Since the data is intended primarily for "
+"current flights, defunct IATA codes are generally not included. For example, "
+"\"Sabena\" is not listed with a SN IATA code, since \"SN\" is presently used "
+"by its successor Brussels Airlines."
+msgstr ""
+
+msgid ""
+"Try it out: <a target=\"_blank\" href=\"html/alsearch\">Airline Search</a> "
+"(new window)"
+msgstr ""
+
+msgid ""
+"<i>Note</i>: The Airline Search window above is a part of <a href=\"https://"
+"openflights.org\">OpenFlights</a>. You will not be able to view, add or edit "
+"airline details unless you are logged in."
+msgstr ""
+
+msgid ""
+"To download the current data dump from <a href=\"https://github.com/jpatokal/"
+"openflights/\">GitHub</a> as a very straightforward CSV (comma-separated "
+"value) file, suitable for use in spreadsheets etc, simply click below:"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/airlines.dat\">airlines.dat</a> (~400 KB)"
+msgstr ""
+
+msgid "Route database"
+msgstr ""
+
+msgid ""
+"Warning: The third-party that OpenFlights uses for route data ceased "
+"providing updates in June 2014. The current data is of historical value only."
+msgstr ""
+
+msgid ""
+"As of June 2014, the OpenFlights/Airline Route Mapper Route Database "
+"contains <b>67663</b> routes between <b>3321</b> airports on <b>548</b> "
+"airlines spanning the globe, as shown in the map above. Each entry contains "
+"the following information:"
+msgstr ""
+
+msgid "2-letter (IATA) or 3-letter (ICAO) code of the airline."
+msgstr ""
+
+msgid ""
+"Unique OpenFlights identifier for airline (see <a href=\"#airline\">Airline</"
+"a>)."
+msgstr ""
+
+msgid "Source airport"
+msgstr ""
+
+msgid "3-letter (IATA) or 4-letter (ICAO) code of the source airport."
+msgstr ""
+
+msgid "Source airport ID"
+msgstr ""
+
+msgid ""
+"Unique OpenFlights identifier for source airport (see <a "
+"href=\"#airport\">Airport</a>)"
+msgstr ""
+
+msgid "Destination airport"
+msgstr ""
+
+msgid "3-letter (IATA) or 4-letter (ICAO) code of the destination airport."
+msgstr ""
+
+msgid "Destination airport ID"
+msgstr ""
+
+msgid ""
+"Unique OpenFlights identifier for destination airport (see <a "
+"href=\"#airport\">Airport</a>)"
+msgstr ""
+
+msgid "Codeshare"
+msgstr ""
+
+msgid ""
+"\"Y\" if this flight is a codeshare (that is, not operated by <i>Airline</"
+"i>, but another carrier), empty otherwise."
+msgstr ""
+
+msgid "Stops"
+msgstr ""
+
+msgid "Number of stops on this flight (\"0\" for direct)"
+msgstr ""
+
+msgid "Equipment"
+msgstr ""
+
+msgid ""
+"3-letter codes for plane type(s) generally used on this flight, separated by "
+"spaces"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid ""
+"Routes are directional: if an airline operates services from A to B and from "
+"B to A, both A-B and B-A are listed separately."
+msgstr ""
+
+msgid ""
+"Route maps for airports and airlines can be viewed by <a href=\"https://"
+"openflights.org/blog/2009/07/15/airline-route-maps-launched-metric-distances-"
+"available/\">searching for their names or code in the website's Search\n"
+"        box</a>; alternatively, check out the <a href=\"/html/route-"
+"maps\">alphabetical list of all covered airports and airlines</a>."
+msgstr ""
+
+msgid ""
+"To download the current data dump from <a href=\"https://github.com/jpatokal/"
+"openflights\">GitHub</a> as a comma-delimited file, suitable for use in "
+"spreadsheets etc, simply click below:"
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/routes.dat\">routes.dat</a> (~2 MB)"
+msgstr ""
+
+msgid "Plane database"
+msgstr ""
+
+msgid ""
+"The OpenFlights plane database contains a curated selection of <b>173</b> "
+"passenger aircraft with IATA and/or ICAO codes, covering the\n"
+"        vast majority of flights operated today and commonly used in flight "
+"schedules and reservation systems. Each entry contains the following "
+"information:"
+msgstr ""
+
+msgid "Full name of the aircraft."
+msgstr ""
+
+msgid "IATA code"
+msgstr ""
+
+msgid "Unique three-letter IATA identifier for the aircraft."
+msgstr ""
+
+msgid "ICAO code"
+msgstr ""
+
+msgid "Unique four-letter ICAO identifier for the aircraft."
+msgstr ""
+
+msgid ""
+"Aircraft with IATA but without ICAO codes are generally aircraft classes: "
+"for example, IATA \"747\" can be any type of Boeing 747, whereas\n"
+"            IATA \"744\"/ICAO \"B744\" is specifically a Boeing 747-400."
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/planes.dat\">planes.dat</a> (~5 KB)"
+msgstr ""
+
+msgid "ountry database"
+msgstr ""
+
+msgid ""
+"he OpenFlights country database contains a list of <a href=\"https://en."
+"wikipedia.org/wiki/ISO_3166-1\">ISO 3166-1 country codes</a>,\n"
+"            which can be used to look up the human-readable country names "
+"for the codes used in the Airline and Airport tables. Each entry contains "
+"the following information:"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "Full name of the country or territory."
+msgstr ""
+
+msgid "iso_code"
+msgstr ""
+
+msgid "Unique two-letter ISO 3166-1 code for the country or territory."
+msgstr ""
+
+msgid "dafif_code"
+msgstr ""
+
+msgid ""
+"FIPS country codes as used in DAFIF.Obsolete and primarily of historical "
+"interested."
+msgstr ""
+
+msgid ""
+"Some entries have DAFIF codes, but not ISO codes. These are primarily "
+"uninhabited islands without airports, and can be ignored for most purposes."
+msgstr ""
+
+msgid ""
+"Download: <a href=\"https://raw.githubusercontent.com/jpatokal/openflights/"
+"master/data/countries.dat\">countries.dat</a> (~5 KB)"
+msgstr ""
+
+msgid "Schedules (Timetables)"
+msgstr ""
+
+msgid ""
+"OpenFlights is currently considering launching an airline schedule "
+"(timetable) data service. Please register your interest by <a href=\"https://"
+"docs.google.com/forms/d/1KadfmOED90LHtUEOxA2oYW9nrN9ibqkz0oRVVogxM8A/"
+"viewform\">filling out this short survey</a>."
+msgstr ""
+
+msgid ""
+"OpenFlights can, on request, create customized versions of the images you "
+"see above. Options include higher resolution (suitable for printing), "
+"different backgrounds, filtering to highlight an airport or airline, etc. "
+"Please <a href=\"/about\">contact us</a> for a quote."
+msgstr ""
+
+msgid ""
+"OpenFlights offers only airport, airline and route data; we do <em>not</em> "
+"have any other data available. We also do not have historical data older "
+"than 2009."
+msgstr ""
+
+msgid "Some alternative commercial sources of data include:"
+msgstr ""
+
+msgid ": airfares"
+msgstr ""
+
+msgid ": flight tracking"
+msgstr ""
+
+msgid ": schedules, flight tracking, historical data"
+msgstr ""
+
+msgid ""
+"If you or a website you know of offers any of these for free, please <a "
+"href=\"/about\">let us know</a>!"
+msgstr ""
+
+msgid "Licensing and disclaimer"
+msgstr ""
+
+msgid ""
+"The OpenFlights Airport, Airline, Plane and Route Databases are made "
+"available under the <a href=\"https://opendatacommons.org/licenses/odbl/1-0/"
+"\">Open Database License</a>. Any rights in individual contents of the "
+"database are licensed under the <a href=\"http://opendatacommons.org/"
+"licenses/dbcl/1.0/\">Database Contents License</a>. In short, these mean "
+"that you are welcome to use the data as you wish, if and only if you "
+"<i>both</i> acknowledge the source <i>and</i> and license any derived works "
+"made available to the public with a free license as well."
+msgstr ""
+
+msgid ""
+"Licenses for commercial use of data or derived images are available on "
+"request. Most simple cases, for example use of an image within a book or "
+"other printed publication, are granted for a flat fee of US$100. Please <a "
+"href=\"/about\">contact us</a> for details."
+msgstr ""
+
+msgid ""
+"Airport data derived <a href=\"https://ourairports.com\">OurAirports</a> and "
+"DAFIF, as well as route data from <a href=\"http://arm.64hosts.com/"
+"\">Airline Route Mapper</a>, is in the public domain. Airline and plane data "
+"derived from Wikipedia may be subject to the <a href=\"http://www.gnu.org/"
+"copyleft/fdl.html\">GNU Free Documentation License</a>. Whether these "
+"databases pass the <a href=\"https://en.wikipedia.org/wiki/"
+"Threshold_of_originality\">threshold of originality</a> and are thus "
+"copyrightable in the United States is an open question, and OpenFlights does "
+"not assert the validity or lack thereof of such a claim."
+msgstr ""
+
+msgid ""
+"<b>This data is not suitable for navigation.</b> OpenFlights does not assume "
+"any responsibility whatsoever for its accuracy, and consequently assumes no "
+"liability whatsoever for results obtained or loss or damage incurred as a "
+"result of application of the data. OpenFlights expressly disclaims all "
+"warranties, expressed or implied, including but not limited to implied "
+"warranties of merchantability and fitness for any particular purpose."
+msgstr ""
+
+msgid "Any corrections will be <a href=\"/about\">gratefully received</a>."
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid ""
+"Airport base data was generated by from DAFIF (October 2006 cycle) and <a "
+"href=\"https://ourairports.com\">OurAirports</a>, plus timezone information "
+"from <a href=\"https://web.archive.org/web/20150407192035/http://www."
+"earthtools.org/\">EarthTools</a>. All DST information added manually. "
+"Significant revisions and additions made by the users of OpenFlights."
+msgstr ""
+
+msgid ""
+"Airline data was extracted directly from Wikipedia's gargantuan <a "
+"href=\"https://en.wikipedia.org/en/List_of_airlines\">List of airlines</"
+"a>.'); ?>\n"
+"        Plane data from <a href=\"https://en.wikipedia.org/wiki/"
+"List_of_ICAO_aircraft_type_designators\">List of ICAO aircraft type "
+"designators</a>.'); ?>\n"
+"        Significant revisions and additions made by the users of OpenFlights."
+msgstr ""
+
+msgid ""
+"Route data is maintained by and imported directly from <a href=\"http://"
+"arm.64hosts.com/\">Airline Route Mapper</a>. Duplicate entry removal and "
+"cross-referencing to airport/airline IDs by OpenFlights."
+msgstr ""
+
+msgid ""
+"<i>See also: <a target=\"_blank\" href=\"help/database.php\">Help: Database</"
+"a>"
+msgstr ""
+
 msgid "OpenFlights: Donations and Elite Levels"
 msgstr ""
 
@@ -207,6 +845,424 @@ msgid ""
 "goes permanently offline."
 msgstr ""
 
+msgid "Frequently Asked Questions (FAQ)"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "What is OpenFlights?"
+msgstr ""
+
+msgid ""
+"In a nutshell, it's a tool that lets you <b>map</b> your flights around the "
+"world, <b>search and filter</b> them in all sorts of interesting ways, "
+"calculate <b>statistics</b> automatically, and <b>share</b> the resulting "
+"maps with friends and the world. You can also check <b>airport route maps</"
+"b> for nearly every airport in the world and find out <b>what airlines fly "
+"where</b>."
+msgstr ""
+
+msgid "Airport route map"
+msgstr ""
+
+msgid "Airline route map"
+msgstr ""
+
+msgid "Google Earth visualization"
+msgstr ""
+
+msgid "What can I do with OpenFlights?"
+msgstr ""
+
+msgid "Quite a few things:"
+msgstr ""
+
+msgid ""
+"Track exactly how far you've flown and how much time you've spent sitting on "
+"a plane. (Quite a few of our members have been to the Moon and back, but "
+"nobody has yet reached Mars.)"
+msgstr ""
+
+msgid "See at a glance where you've been and where you're going."
+msgstr ""
+
+msgid ""
+"Rapidly search your flight history: now when did I go to the Bahamas, and on "
+"what airline?"
+msgstr ""
+
+msgid "Share your flights and trips with friends."
+msgstr ""
+
+msgid ""
+"Check where you can fly to from any airport, or any pair of airports. (<a "
+"href=\"https://openflights.org/blog/2009/06/26/route-mapping-the-world/"
+"\">Learn more</a>)"
+msgstr ""
+
+msgid ""
+"Check where you can fly to with any airline. (<a href=\"https://openflights."
+"org/blog/2009/07/15/airline-route-maps-launched-metric-distances-available/"
+"\">Learn more</a>)"
+msgstr ""
+
+msgid ""
+"Coordinate flights for conferences and other events. (<a href=\"https://"
+"openflights.org/blog/2009/01/10/interesting-uses-of-openflights/\">Learn "
+"more</a>)"
+msgstr ""
+
+msgid ""
+"View your flights in gorgeous 3D with Google Earth and other visualization "
+"apps. (<a href=\"https://openflights.org/blog/2009/02/23/give-your-flights-a-"
+"spin-in-3d-on-google-earth/\">Learn more</a>)"
+msgstr ""
+
+msgid "Why is OpenFlights better than other similar services?"
+msgstr ""
+
+msgid ""
+"Well, as far as we know there actually isn't anything <i>quite</i> like "
+"OpenFlights out there, but here are some things that separate us from the "
+"putative competition:"
+msgstr ""
+
+msgid ""
+"OpenFlights has a <b>dynamic map</b>. You can pan, zoom, select, scroll and "
+"explore all you like!"
+msgstr ""
+
+msgid ""
+"OpenFlights has a <b>powerful filter</b>. Three clicks, and your map will "
+"show only Singapore Airlines flights in business class in 2007."
+msgstr ""
+
+msgid ""
+"OpenFlights supports <b>\"trips\"</b> (<a href=\"/help/trip.php\">read more</"
+"a>). You can join up any flights together into a trip, which you can then "
+"display on its own page and even share with friends."
+msgstr ""
+
+msgid ""
+"OpenFlights is <b>free in spirit</b>. We don't try to lock you in: it's easy "
+"to import your data <i>and</i> export copies for safekeeping."
+msgstr ""
+
+msgid ""
+"OpenFlights is <b>free software</b>. All our source code is licensed under "
+"the <a href=\"https://www.gnu.org/licenses/agpl-3.0.html\">GNU Affero "
+"General Public License</a> and can be downloaded from <a href=\"https://"
+"github.com/jpatokal/openflights/\">GitHub</a>, so you can set up your own "
+"copy or just use the bits you like. <a href=\"data.php\">Airport, airline "
+"and route data</a> is freely available as well."
+msgstr ""
+
+msgid ""
+"OpenFlights <b>can be used anywhere</b>. No need to install any programs, "
+"synchronize data or take care of backups, just point your browser to the "
+"site."
+msgstr ""
+
+msgid "What browsers do you support?"
+msgstr ""
+
+msgid ""
+"Developed on Firefox and Chrome, seems to work for most (but not all) people "
+"on Internet Explorer and Safari as well. Unfortunately the site does <i>not</"
+"i> work well on tablets due to screen size limitations. If it works or "
+"breaks on anything else, please <a href=\"/about\">let us know</a>, and "
+"please do include your exact browser version, operating system and screen "
+"size."
+msgstr ""
+
+msgid "How much does it cost?"
+msgstr ""
+
+msgid ""
+"Using the website costs you <i>absolutely nothing</i>. However, our meager "
+"advertising revenue does not currently suffice even to pay for our bandwidth "
+"bills, so if you like the site, you're warmly encouraged to <a href=\"/"
+"donate\">donate and help keep the site running</a>. Donors receive \"Elite\" "
+"status with perks like no ads, password-protected private profiles, elite-"
+"level support, previews of upcoming features and more. See <a "
+"href=\"donate\">Donate</a> for more."
+msgstr ""
+
+msgid "Are you sure this thing will scale?"
+msgstr ""
+
+msgid ""
+"Yes! The heavy lifting of drawing the maps is handled by your browser, not "
+"any central server. The database is built to scale up and already has over "
+"1,500,000 flights and routes loaded."
+msgstr ""
+
+msgid "How do I start punching in my own flights?"
+msgstr ""
+
+msgid ""
+"ust click on <a href=\"/html/settings?new=yes\">Sign up</a> and pick a "
+"username. Your account will be created instantly, no e-mail confirmation or "
+"other tiresome hassles needed."
+msgstr ""
+
+msgid "Features and bugs"
+msgstr ""
+
+msgid ""
+"Why do half the airports disappear when I scroll around from the Americas to "
+"Asia or vice versa?"
+msgstr ""
+
+msgid ""
+"This is a <a href=\"https://github.com/jpatokal/openflights/issues/2\">bug/"
+"missing feature</a> in the mapping system we're using. Sorry."
+msgstr ""
+
+msgid ""
+"Why aren't the flight paths smoothly curved, especially up near the poles"
+msgstr ""
+
+msgid ""
+"That would be hard to draw fast, so we cheat and chop them up, one segment "
+"per every 500 mi. Flights under 1000 mi are shown as straight lines."
+msgstr ""
+
+msgid ""
+"The distances for the statistics, though, are calculated correctly as <a "
+"href=\"https://en.wikipedia.org/wiki/Great-circle_distance\">great circle "
+"distances</a>."
+msgstr ""
+
+msgid "Are those flight time estimates accurate? Can I enter my own?"
+msgstr ""
+
+msgid ""
+"The site currently uses a really fancy formula to calculate them: \"30 min "
+"plus 1 hour per every 500 miles\". This seems to be a surprisingly good "
+"approximation for commercial flights (anything from 100 to 10000 mi)."
+msgstr ""
+
+msgid ""
+"And yes, you can enter your own flight times, either as arrival and "
+"departure times, in which case OpenFlights will figure out the duration "
+"taking into account time zones and DST, or directly into the duration box. "
+"See <a target=\"_blank\" href=\"/help/time.php\">Help: Time</a> for details."
+msgstr ""
+
+msgid "Why is my favorite airport/heliport/patch of grass missing?"
+msgstr ""
+
+msgid ""
+"If you can't find your airport right away, click on the <img src=\"/img/"
+"icon_plane-src.png\" height=17 width=17> or <img src=\"/img/icon_plane-dst."
+"png\" height=17 width=17> icons to launch the advanced search. If you're "
+"looking for a decommissioned airport, you may need to use the ICAO code "
+"instead of the IATA code. For example, ATH points to Athens-Eleftherios "
+"Venizelos (LGAV), but you can still find Athens-Ellinikon as LGAT. If the "
+"main OpenFlights DB doesn't have it, try a search in the OurAirports "
+"database with the airport's name or ICAO code. If you find it in "
+"OurAirports, click <input type=\"button\" value=\"Load\" align=\"middle\"> "
+"to load its data, double-check that it all looks correct, and then <input "
+"type=\"button\" value=\"Save as new\" align=\"middle\"> to copy it over."
+msgstr ""
+
+msgid ""
+"If you still can't find it, you can click on <input type=\"button\" "
+"value=\"Add new airport\" align=\"middle\"> while creating a new flight to "
+"add your own airport. You can also enter heliports, landing strips and other "
+"informal airports which do not have IATA or ICAO codes, just leave the IATA/"
+"ICAO fields blank and click \"OK\" when warned about it."
+msgstr ""
+
+msgid ""
+"Why is the route map missing the Rutungu Airlines flight from Mambo-Jambo to "
+"Bingo-Bongo?"
+msgstr ""
+
+msgid ""
+"Our route data is provided by <a href=\"http://arm.64hosts.com/\">Airline "
+"Route Mapper</a>, please let them know your suggestions and corrections."
+msgstr ""
+
+msgid "Your calendar only goes back to 1970, how do I enter an earlier flight?"
+msgstr ""
+
+msgid "Just enter the date manually instead of using the calendar widget."
+msgstr ""
+
+msgid "How do I delete an airport/airline/trip that I no longer need?"
+msgstr ""
+
+msgid ""
+"For airports and airlines, just remove all flights using it, and it will "
+"stop appearing."
+msgstr ""
+
+msgid ""
+"To delete a trip, load it in the Trip editor and select Delete. Any flights "
+"still in that trip will be kept, they will just set as tripless."
+msgstr ""
+
+msgid "How do I share my flight map with friends?"
+msgstr ""
+
+msgid ""
+"Point them to <b>https://openflights.org/user/<i>yourname</i></b>. You can "
+"also click on <input type=\"button\" value=\"Settings\" align=\"middle\"> "
+"when logged in to find your address; this is particularly useful if your "
+"name has spaces or unusual characters."
+msgstr ""
+
+msgid ""
+"Example: <a href=\"https://openflights.org/user/jpatokal\">https://"
+"openflights.org/user/jpatokal</a>"
+msgstr ""
+
+msgid ""
+"If you have a blog or other website, or post to bulletin boards/forums, you "
+"can add an OpenFlights banner like this:"
+msgstr ""
+
+msgid ""
+"<a href=\"https://openflights.org/user/jpatokal\" target=\"_blank\"><img "
+"src=\"/banner/jpatokal.png\" width=400 height=70></a>"
+msgstr ""
+
+msgid ""
+"To get pre-generated banner code for blogs (HTML format) and for bulletin "
+"boards (phpBB), just log into your account and click on <input "
+"type=\"button\" value=\"Settings\" align=\"middle\">."
+msgstr ""
+
+msgid "Can my friends also edit my flights?"
+msgstr ""
+
+msgid ""
+"Yes, <i>if</i> you give them your password. You'd better trust them though, "
+"since they can now change all your settings and even delete your flights. "
+"While the system does not <i>officially</i> support being logged in as the "
+"same user from many places at once, in practice this is <i>unlikely</i> to "
+"cause problems."
+msgstr ""
+
+msgid "Something went wrong when I imported from FlightMemory!"
+msgstr ""
+
+msgid ""
+"This most often happens with airlines, since FlightMemory and OpenFlights do "
+"not render all company names in the same way. OpenFlights also uses current "
+"airline data, not historical, so e.g. SN123 will be mapped to \"Brussels "
+"Airlines\", not \"Sabena\". To keep the old airline names exactly the way "
+"you had them on FlightMemory, check <b>Keep historical airline names?</b> "
+"when importing."
+msgstr ""
+
+msgid ""
+"The other common source of headaches is unofficial airports like heliports "
+"and landing strips, which do not have IATA/ICAO codes. These have to be "
+"entered manually into OpenFlights using \"Add new airport\" <i>before</i> "
+"you can import. Note that the matching is done based on the <i>first word of "
+"the airport name</i>, so make sure the one in your data matches the one you "
+"enter exactly."
+msgstr ""
+
+msgid ""
+"If anything else goes wrong during importing, or if a current airline is "
+"being mapped wrong, it's a bug and we'd like to know about it. <a href=\"/"
+"about\">Drop us a line</a>, tell us exactly what went wrong, and (this is "
+"important) <i>give the \"Tmpfile\" value from the top of the import page</"
+"i>, so we can replicate it."
+msgstr ""
+
+msgid ""
+"You really need to implement cool feature X, and fix terrible bug Y, and do "
+"it <i>right now</i>!"
+msgstr ""
+
+msgid ""
+"Please check the <a href=\"https://github.com/jpatokal/openflights/"
+"issues\">GitHub issue tracker</a> to see if they're already reported, and "
+"add them if not. But remember, this is open source, so the best way to get "
+"anything done is to do it yourself! Bug reports from people who have <a "
+"href=\"/donate\">donated to the site</a> also get priority."
+msgstr ""
+
+msgid ""
+"You said feature X was implemented/bug Y was fixed yesterday, but I don't "
+"see it!"
+msgstr ""
+
+msgid ""
+"Your browser probably has an old version still in memory. Please hit Control-"
+"F5 to force it to reload the entire page."
+msgstr ""
+
+msgid "Technical jibber-jabber"
+msgstr ""
+
+msgid "Did you really code that map all by yourself?"
+msgstr ""
+
+msgid ""
+"No sir, the credit goes to <a href=\"https://openlayers.org\">OpenLayers</"
+"a>. We just added the fluff on top."
+msgstr ""
+
+msgid "And the rest of it?"
+msgstr ""
+
+msgid ""
+"JavaScript frontend chock full of AJAX-y goodness served off Nginx running "
+"on Ubuntu Linux, plus PHP scripts on the backend shifting through reams of "
+"data pulled from MySQL."
+msgstr ""
+
+msgid "Can I get a copy of your airport, airline or route data?"
+msgstr ""
+
+msgid ""
+"Yes! See <a href=\"/data\">Airport, airline and route data</a> for free "
+"downloads and more information."
+msgstr ""
+
+msgid ""
+"I want to export to/import from OpenFlights format. Where is your CSV "
+"specification?"
+msgstr ""
+
+msgid ""
+"Right here: <i><a href=\"/help/csv.php\">Help: CSV</a></i>. It's pretty "
+"straightforward, but <a href=\"/about\">let us know</a> if something is not "
+"working the way you expect."
+msgstr ""
+
+msgid ""
+"One common problem: OpenFlights exports special characters in UTF-8 format, "
+"which is not automatically recognized by some versions of Excel. Use the "
+"<i>Text Import Wizard</i> and specify \"Unicode (UTF-8)\", and they will "
+"import nicely."
+msgstr ""
+
+msgid "Can I use your images in my book/magazine article/annual report?"
+msgstr ""
+
+msgid ""
+"Yes, but commercial use requires a <a href=\"about#license\">license</a>, "
+"please <a href=\"/about\">contact us</a> for details."
+msgstr ""
+
+msgid ""
+"Can I have an anonymized dump of flight data from OpenFlights or a "
+"customized installation for my airline/airport/website/other company?"
+msgstr ""
+
+msgid ""
+"We'd be delighted to work out a deal for consulting work, just <a href=\"/"
+"about\">drop us a line</a>."
+msgstr ""
+
 msgid "Flight logging, mapping, stats and sharing"
 msgstr "Логи полетов, карты и статистика"
 
@@ -315,7 +1371,7 @@ msgstr "Выход из системы"
 
 msgid ""
 "OpenFlights Map Help <small>&mdash; Didn't answer your question? Try the <a "
-"href=\"faq.html\" target=\"_blank\">FAQ</a>.</small>"
+"href=\"faq.php\" target=\"_blank\">FAQ</a>.</small>"
 msgstr ""
 
 msgid ""
@@ -399,9 +1455,6 @@ msgstr "Поиск аэропортов"
 msgid "Swap To and From airports"
 msgstr "Поменять местами вылет и прилет"
 
-msgid "Plane"
-msgstr "Самолет"
-
 msgid "Enter plane model"
 msgstr "Ввести тип самолета"
 
@@ -446,10 +1499,6 @@ msgstr "№"
 msgid "Seat"
 msgstr "Место"
 
-# Seat type (window, aisle, middle)
-msgid "Type"
-msgstr "Расположение"
-
 msgid "Window"
 msgstr "Окно"
 
@@ -467,9 +1516,6 @@ msgstr "Отдых"
 
 msgid "Crew"
 msgstr "Экипаж"
-
-msgid "Other"
-msgstr "Другое"
 
 msgid "Help: How do I enter airlines?"
 msgstr ""
@@ -533,9 +1579,6 @@ msgstr ""
 msgid "Help: How do I enter where I flew to?"
 msgstr ""
 
-msgid "Airline"
-msgstr "Авиакомпания"
-
 msgid "Help: How do I enter the airline?"
 msgstr ""
 
@@ -566,442 +1609,11 @@ msgstr "Переключиться в расширенный редактор"
 msgid "Detailed"
 msgstr "Расширенный"
 
-#, php-format
-msgid "Your session has timed out, please log in again."
-msgstr "Сессия истекла, пожалуйста, войдите в систему заново."
-
-msgid "Duplicate check failed."
-msgstr ""
-
-#, php-format
-msgid "A %s using the name or alias %s exists already."
-msgstr ""
-
-#, php-format
-msgid "An airline using the IATA code %s exists already."
-msgstr ""
-
-#, php-format
-msgid "An airline using the ICAO code %s exists already."
-msgstr ""
-
-#, php-format
-msgid "Adding new %s failed."
-msgstr ""
-
-#, php-format
-msgid "New %s successfully added."
-msgstr ""
-
-#, php-format
-msgid "Airline successfully edited."
-msgstr ""
-
-#, php-format
-msgid "Editing airline failed:"
-msgstr ""
-
-#, php-format
-msgid "Operation %s failed."
-msgstr ""
-
-msgid "Error"
-msgstr "Ошибка"
-
-#, php-format
-msgid "Query %s caused database error %s, %s"
-msgstr ""
-
-msgid "Direct"
-msgstr ""
-
-#, php-format
-msgid "% stops"
-msgstr ""
-
-msgid "Codeshare"
-msgstr ""
-
-#, php-format
-msgid "Not logged in, aborting"
-msgstr "Вы не вошли в систему, отмена "
-
-msgid "Unknown"
-msgstr "Неизвестно"
-
-# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
-msgid "was:"
-msgstr "бывш.:"
-
-msgid "No airline"
-msgstr "Без авиакомпании"
-
-msgid "Upload again"
-msgstr "Загрузите снова"
-
-msgid "Cancel this import and return to file upload page"
-msgstr "Отменить импортирование и вернуться на страницу загрузки файла"
-
-msgid "Upload"
-msgstr "Загрузить"
-
-msgid "Upload successful. Parsing..."
-msgstr "Файл загружен, идет обработка..."
-
-msgid "Results"
-msgstr "Результаты"
-
-msgid "Upload failed!"
-msgstr "Не удалось загрузить файл!"
-
-msgid "Importing..."
-msgstr "Идет импортирование..."
-
-msgid "Sorry, the filename must end in '.csv'."
-msgstr "Название файла должно заканчиваться на '.csv'."
-
-msgid "Unable to open CSV file."
-msgstr "Не удается открыть файл CSV."
-
-#, php-format
-msgid "Unknown file type %s"
-msgstr ""
-
-msgid "Miles"
-msgstr "Мили"
-
-# Flight duration
-msgid "Time"
-msgstr "Время"
-
-# Plane registration number
-msgid "Reg"
-msgstr "Бортовой номер"
-
-msgid "Comment"
-msgstr "Комментарий"
-
-msgid "Adding new plane failed."
-msgstr ""
-
-msgid "Adding new airline failed."
-msgstr ""
-
-msgid "Importing flight failed."
-msgstr ""
-
-# Explanation of colors and codes for import
-msgid "Key to results"
-msgstr "Ключ к результатам"
-
-msgid "Color"
-msgstr "Цвет"
-
-msgid "Meaning"
-msgstr "Значение"
-
-# No color
-msgid "None"
-msgstr "Нет"
-
-msgid "Exact match"
-msgstr "Точное соответствие"
-
-msgid "Info"
-msgstr "Инфо"
-
-msgid "Probable match, please verify"
-msgstr "Возможное совпадение - пожалуйста, проверьте"
-
-msgid "No matches, will be added as new"
-msgstr "Совпадений не обнаружено, будет добавлено как новый элемент"
-
-msgid "No matches, please correct and reupload"
-msgstr "Совпадений не обнаружено - пожалуйста, исправьте и загрузите снова"
-
-msgid ""
-"Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs "
-"will override the values of any manual changes made to the airport, airline "
-"and/or plane columns."
-msgstr ""
-"Внимание: колонки 15-18 файла содержат идентификаторы OpenFlights ID. Эти "
-"идентификаторы будут подставлены автоматически на место всех данных, "
-"внесенных вручную в колонках аэропортов, авиакомпаний и/или типов самолета."
-
-msgid ""
-"Note: You have selected historical airline mode. All airline names have been "
-"preserved exactly as is."
-msgstr ""
-
-msgid ""
-"Your flight data includes unrecognized airports. Please add them to the "
-"database and try again."
-msgstr ""
-"В ваших данных не удается распознать один или несколько аэропортов. "
-"Пожалуйста, добавьте их в базу данных и попробуйте заново."
-
-msgid ""
-"Your flight data includes unrecognized airlines. This usually means that the "
-"airline code in the flight number was not found, and an airline name was not "
-"specified. Please fix or remove the airline code and try again."
-msgstr ""
-"В ваших данных не удается распознать одну или несколько авиакомпаний. Обычно "
-"это означает, что содержащийся в номере рейса код компании не найден в базе "
-"данных, а название компании не было указано. Пожалуйста, исправьте или "
-"удалите код компании и попробуйте заново."
-
-msgid ""
-"Some date fields could not be parsed. Please change them to use any of these "
-"formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/"
-"YYYY is <b>not</b> accepted."
-msgstr ""
-"Некоторые поля не удалось обработать. Пожалуйста, указывайте даты в одном из "
-"следующих форматов: ГГГГ-ММ-ДД, ДД.ММ.ГГГГ, ММ/ДД/ГГГГ или только ГГГГ. "
-"Обратите внимание: система <b>не</b> распознает формат ДД/ММ/ГГГГ."
-
-msgid ""
-"Your flight data includes trip IDs which are either undefined or do not "
-"belong to you. Please check the trip IDs."
-msgstr ""
-"Использованы идентификаторы поездок, которые отсутствуют в системе или "
-"принадлежат не вам. Пожалуйста, перепроверьте."
-
-msgid ""
-"<b>Parsing completed successfully.</b> You are now ready to import these "
-"flights into your OpenFlights. (Minor issues can be corrected afterwards in "
-"the flight editor.)"
-msgstr ""
-"<b>Обработка успешно завершена. </b> Теперь эти полеты можно импортировать в "
-"OpenFlights. (Мелкие исправления можно будет внести позже в редакторе "
-"полетов.)"
-
-msgid "Add these flights to your OpenFlights"
-msgstr "Добавить эти полеты в OpenFlights"
-
-msgid "Cancel"
-msgstr "Отмена"
-
-msgid "Flights successfully imported."
-msgstr "Полеты импортированы."
-
-msgid "Close"
-msgstr "Закрыть"
-
-msgid "Session expired. Please <a href='/'>refresh</a> and try again."
-msgstr ""
-
-#, php-format
-msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
-msgstr ""
-"Не удается войти в систему. <%s>Создать учетную запись</a> или <%s>сменить "
-"пароль</a>?"
-
-msgid "No such trip."
-msgstr "Нет такой поездки."
-
-msgid "This trip is not public."
-msgstr "Поездка сохранена в приватном режиме."
-
-msgid "No such user."
-msgstr "Нет такого пользователя."
-
-msgid "This user's flights are not public."
-msgstr "Полеты этого пользователя сохранены в приватном режиме."
-
-msgid "This user's flights are password-protected."
-msgstr "Доступ к полетам этого пользователя требует пароль."
-
-msgid "This user has no flights."
-msgstr "У этого пользователя нет полетов."
-
-msgid "km"
-msgstr ""
-
-msgid "miles"
-msgstr "миль"
-
-msgid "Airport or airline ID is mandatory"
+msgid "OpenFlights logo"
 msgstr ""
 
-#, php-format
-msgid "No match found for query %s"
-msgstr ""
-
-#, php-format
-msgid "Error;No airport with ID %s found"
-msgstr ""
-
-#, php-format
-msgid "Error;No airline with ID %s found"
-msgstr ""
-
-msgid "Database error."
-msgstr ""
-
-msgid "-operated"
-msgstr ""
-
-msgid " and codeshares"
-msgstr ""
-
-msgid "Sorry, that name is already taken, please try another."
-msgstr "К сожалению, это имя уже занято. Пожалуйста, попробуйте другое."
-
-#, php-format
-msgid "Account reset, %s flights deleted."
-msgstr "Учетная запись создана заново, стерто %s полетов."
-
-msgid "Sorry, current password is not correct."
-msgstr "К сожалению, пароль неверен."
-
-#, php-format
-msgid "Unknown action %s"
-msgstr ""
-
-#, php-format
-msgid "Operation on user %s failed."
-msgstr ""
-
-#, php-format
-msgid "Successfully signed up, now logging in..."
-msgstr "Успешный вход в систему. Подождите..."
-
-#, php-format
-msgid "Settings changed successfully, returning..."
-msgstr "Настройки изменены, возвращение..."
-
-msgid "Trip not found."
-msgstr "Поездка не найдена."
-
-msgid "User not found."
-msgstr "Пользователь не найден."
-
-msgid "Added."
-msgstr "Добавлено."
-
-#, php-format
-msgid "%s flights added."
-msgstr "Добавлено %s полетов."
-
-msgid "Edited."
-msgstr "Исправлено."
-
-msgid " deleted."
-msgstr ""
-
-#, php-format
-msgid "Trip successfully created"
-msgstr "Поездка создана"
-
-#, php-format
-msgid "Trip successfully deleted"
-msgstr "Поездка удалена"
-
-#, php-format
-msgid "Trip successfully edited."
-msgstr "Поездка исправлена"
-
-msgid "Session expired. Please try re-linking after logging back in."
-msgstr ""
-
-msgid "Invalid token, giving up."
-msgstr ""
-
-msgid "Could not connect to TripIt. Please try again later."
-msgstr ""
-
-msgid "Failed to disable old TripIt links."
-msgstr ""
-
-msgid "Failed to link new TripIt account."
-msgstr ""
-
-msgid ""
-"Could not connect to TripIt. Please try again later. If you are seeing this "
-"repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your "
-"account</a>."
-msgstr ""
-
-msgid "Show"
-msgstr ""
-
-msgid "past trips"
-msgstr ""
-
-msgid "future trips"
-msgstr ""
-
-msgid "Previous Page"
-msgstr ""
-
-msgid "Page"
-msgstr ""
-
-msgid "Next Page"
-msgstr ""
-
-msgid "Import All"
-msgstr ""
-
-msgid "Passenger"
-msgstr ""
-
-msgid "days"
-msgstr "дней"
-
-msgid "day"
-msgstr ""
-
-msgid "No flight segments in this trip."
-msgstr ""
-
-msgid "TripIt"
-msgstr ""
-
-msgid "TripIt Trips"
-msgstr ""
-
-msgid "Link your TripIt Account"
-msgstr ""
-
-msgid ""
-"To import flights via TripIt, you'll need to authorize OpenFlights to access "
-"your TripIt account. OpenFlights will only be able to look at (but not "
-"modify) your TripIt data."
-msgstr ""
-
-msgid "How do you login to your TripIt account?"
-msgstr ""
-
-msgid "I use my"
-msgstr ""
-
-msgid "email and password to login."
-msgstr ""
-
-msgid "I use"
-msgstr ""
-
-msgid "to login."
-msgstr ""
-
-msgid "Logging in with a partner is a"
-msgstr ""
-
-msgid "2 step process"
-msgstr ""
-
-msgid "Click here to login to your TripIt account."
-msgstr ""
-
-msgid "You can skip this step if you're already logged in."
-msgstr ""
-
-msgid "After you've logged in, close the popup window to come back here."
-msgstr ""
-
-msgid "Click here to connect your TripIt account to OpenFlights."
-msgstr ""
+msgid "Help"
+msgstr "Помощь"
 
 msgid "Context Help: Airline"
 msgstr ""
@@ -1032,6 +1644,9 @@ msgid ""
 "or airline code, and even enter new airlines if they're missing from the "
 "database."
 msgstr ""
+
+msgid "Close"
+msgstr "Закрыть"
 
 msgid "Context Help: Airports"
 msgstr ""
@@ -1391,8 +2006,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Want a copy of this data? See <a href=\"/data.html\">OpenFlights: Airport "
-"and airline data</a>."
+"Want a copy of this data? See <a href=\"/data.php\">OpenFlights: Airport and "
+"airline data</a>."
 msgstr ""
 
 msgid "OpenFlights: Privacy policy"
@@ -1416,7 +2031,7 @@ msgstr ""
 msgid ""
 "OpenFlights may display, package, and provide for reuse your flights, as "
 "well as any airports or airlines added by you, in an anonymized format. (See "
-"<a href=\"/data.html\">Databases</a> for details.)"
+"<a href=\"/data.php\">Databases</a> for details.)"
 msgstr ""
 
 msgid ""
@@ -1511,9 +2126,6 @@ msgid "recalculates these"
 msgstr ""
 
 msgid "Arrival time"
-msgstr ""
-
-msgid "Airport"
 msgstr ""
 
 msgid "Yes"
@@ -1668,20 +2280,10 @@ msgid ""
 "transport operators."
 msgstr "Чтобы найти перевозчика, заполните одно или несколько полей."
 
-# Of airline, train company etc
-msgid "Name"
-msgstr "Название"
-
 msgid "International Air Transport Association"
 msgstr ""
 
-msgid "IATA"
-msgstr ""
-
 msgid "International Civil Aviation Organization"
-msgstr ""
-
-msgid "ICAO"
 msgstr ""
 
 msgid "Active?"
@@ -1700,15 +2302,11 @@ msgstr "Водные перевозки"
 msgid "Alternative name"
 msgstr "Другой вариант названия"
 
-msgid "Country"
-msgstr "Страна"
-
-# Airline radio callsign
-msgid "Callsign"
-msgstr "Позывной"
-
 msgid "Show only major (IATA) airlines?"
 msgstr "Показывать только крупные авиакомпании (IATA)?"
+
+msgid "Cancel"
+msgstr "Отмена"
 
 msgid "Please log in to enable editing."
 msgstr ""
@@ -1734,20 +2332,11 @@ msgstr ""
 msgid "FAA"
 msgstr ""
 
-msgid "Airport ID"
-msgstr ""
-
 msgid "City name"
 msgstr "Город"
 
 msgid "Country name"
 msgstr "Страна"
-
-msgid "Latitude"
-msgstr "Широта"
-
-msgid "Longitude"
-msgstr "Долгота"
 
 msgid "Elevation"
 msgstr "Высота над уровнем моря"
@@ -1756,9 +2345,8 @@ msgstr "Высота над уровнем моря"
 msgid "UTC"
 msgstr "UTC"
 
-# Daylight Savings Time
-msgid "DST"
-msgstr "летнее время"
+msgid "Unknown"
+msgstr "Неизвестно"
 
 msgid "European"
 msgstr "Европа"
@@ -1774,6 +2362,10 @@ msgstr "Австралия"
 
 msgid "New Zealand"
 msgstr "Новая Зеландия"
+
+# No color
+msgid "None"
+msgstr "Нет"
 
 msgid "Database"
 msgstr "База данных"
@@ -1868,6 +2460,9 @@ msgstr ""
 "импортированием данных. Чтобы создать резервную копию или стереть полеты "
 "перед импортированием см. %s."
 
+msgid "Upload"
+msgstr "Загрузить"
+
 msgid "Route maps"
 msgstr ""
 
@@ -1912,6 +2507,10 @@ msgstr ""
 "Если вы забудете пароль, на этот адрес мы вышлем вам новый. Мы <i>никогда</"
 "i> не будем слать вам других сообщений или передавать ваш адрес третьим "
 "лицам. Подробнее см. в нашей <%s>политике конфиденциальности</a>."
+
+#, php-format
+msgid "Your session has timed out, please log in again."
+msgstr "Сессия истекла, пожалуйста, войдите в систему заново."
 
 msgid "Could not load profile data"
 msgstr "Не удалось загрузить профиль"
@@ -2005,6 +2604,9 @@ msgstr ""
 msgid "Distances"
 msgstr ""
 
+msgid "Miles"
+msgstr "Мили"
+
 msgid "Kilometers"
 msgstr ""
 
@@ -2025,9 +2627,6 @@ msgstr ""
 
 msgid "Default view"
 msgstr "Вид по умолчанию"
-
-msgid "Help"
-msgstr "Помощь"
 
 msgid "Display a screen of your choice instead of banner ads."
 msgstr "Показывать вместо баннерной рекламы любой экран на ваш выбор ."
@@ -2097,6 +2696,417 @@ msgstr "Еще не присвоено"
 
 msgid "Save"
 msgstr "Сохранить"
+
+msgid "Duplicate check failed."
+msgstr ""
+
+#, php-format
+msgid "A %s using the name or alias %s exists already."
+msgstr ""
+
+#, php-format
+msgid "An airline using the IATA code %s exists already."
+msgstr ""
+
+#, php-format
+msgid "An airline using the ICAO code %s exists already."
+msgstr ""
+
+#, php-format
+msgid "Adding new %s failed."
+msgstr ""
+
+#, php-format
+msgid "New %s successfully added."
+msgstr ""
+
+#, php-format
+msgid "Airline successfully edited."
+msgstr ""
+
+#, php-format
+msgid "Editing airline failed:"
+msgstr ""
+
+#, php-format
+msgid "Operation %s failed."
+msgstr ""
+
+msgid "Error"
+msgstr "Ошибка"
+
+#, php-format
+msgid "Query %s caused database error %s, %s"
+msgstr ""
+
+msgid "Direct"
+msgstr ""
+
+#, php-format
+msgid "% stops"
+msgstr ""
+
+#, php-format
+msgid "Not logged in, aborting"
+msgstr "Вы не вошли в систему, отмена "
+
+# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
+msgid "was:"
+msgstr "бывш.:"
+
+msgid "No airline"
+msgstr "Без авиакомпании"
+
+msgid "Upload again"
+msgstr "Загрузите снова"
+
+msgid "Cancel this import and return to file upload page"
+msgstr "Отменить импортирование и вернуться на страницу загрузки файла"
+
+msgid "Upload successful. Parsing..."
+msgstr "Файл загружен, идет обработка..."
+
+msgid "Results"
+msgstr "Результаты"
+
+msgid "Upload failed!"
+msgstr "Не удалось загрузить файл!"
+
+msgid "Importing..."
+msgstr "Идет импортирование..."
+
+msgid "Sorry, the filename must end in '.csv'."
+msgstr "Название файла должно заканчиваться на '.csv'."
+
+msgid "Unable to open CSV file."
+msgstr "Не удается открыть файл CSV."
+
+#, php-format
+msgid "Unknown file type %s"
+msgstr ""
+
+# Flight duration
+msgid "Time"
+msgstr "Время"
+
+# Plane registration number
+msgid "Reg"
+msgstr "Бортовой номер"
+
+msgid "Comment"
+msgstr "Комментарий"
+
+msgid "Adding new plane failed."
+msgstr ""
+
+msgid "Adding new airline failed."
+msgstr ""
+
+msgid "Importing flight failed."
+msgstr ""
+
+# Explanation of colors and codes for import
+msgid "Key to results"
+msgstr "Ключ к результатам"
+
+msgid "Color"
+msgstr "Цвет"
+
+msgid "Meaning"
+msgstr "Значение"
+
+msgid "Exact match"
+msgstr "Точное соответствие"
+
+msgid "Info"
+msgstr "Инфо"
+
+msgid "Probable match, please verify"
+msgstr "Возможное совпадение - пожалуйста, проверьте"
+
+msgid "No matches, will be added as new"
+msgstr "Совпадений не обнаружено, будет добавлено как новый элемент"
+
+msgid "No matches, please correct and reupload"
+msgstr "Совпадений не обнаружено - пожалуйста, исправьте и загрузите снова"
+
+msgid ""
+"Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs "
+"will override the values of any manual changes made to the airport, airline "
+"and/or plane columns."
+msgstr ""
+"Внимание: колонки 15-18 файла содержат идентификаторы OpenFlights ID. Эти "
+"идентификаторы будут подставлены автоматически на место всех данных, "
+"внесенных вручную в колонках аэропортов, авиакомпаний и/или типов самолета."
+
+msgid ""
+"Note: You have selected historical airline mode. All airline names have been "
+"preserved exactly as is."
+msgstr ""
+
+msgid ""
+"Your flight data includes unrecognized airports. Please add them to the "
+"database and try again."
+msgstr ""
+"В ваших данных не удается распознать один или несколько аэропортов. "
+"Пожалуйста, добавьте их в базу данных и попробуйте заново."
+
+msgid ""
+"Your flight data includes unrecognized airlines. This usually means that the "
+"airline code in the flight number was not found, and an airline name was not "
+"specified. Please fix or remove the airline code and try again."
+msgstr ""
+"В ваших данных не удается распознать одну или несколько авиакомпаний. Обычно "
+"это означает, что содержащийся в номере рейса код компании не найден в базе "
+"данных, а название компании не было указано. Пожалуйста, исправьте или "
+"удалите код компании и попробуйте заново."
+
+msgid ""
+"Some date fields could not be parsed. Please change them to use any of these "
+"formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/"
+"YYYY is <b>not</b> accepted."
+msgstr ""
+"Некоторые поля не удалось обработать. Пожалуйста, указывайте даты в одном из "
+"следующих форматов: ГГГГ-ММ-ДД, ДД.ММ.ГГГГ, ММ/ДД/ГГГГ или только ГГГГ. "
+"Обратите внимание: система <b>не</b> распознает формат ДД/ММ/ГГГГ."
+
+msgid ""
+"Your flight data includes trip IDs which are either undefined or do not "
+"belong to you. Please check the trip IDs."
+msgstr ""
+"Использованы идентификаторы поездок, которые отсутствуют в системе или "
+"принадлежат не вам. Пожалуйста, перепроверьте."
+
+msgid ""
+"<b>Parsing completed successfully.</b> You are now ready to import these "
+"flights into your OpenFlights. (Minor issues can be corrected afterwards in "
+"the flight editor.)"
+msgstr ""
+"<b>Обработка успешно завершена. </b> Теперь эти полеты можно импортировать в "
+"OpenFlights. (Мелкие исправления можно будет внести позже в редакторе "
+"полетов.)"
+
+msgid "Add these flights to your OpenFlights"
+msgstr "Добавить эти полеты в OpenFlights"
+
+msgid "Flights successfully imported."
+msgstr "Полеты импортированы."
+
+msgid "Session expired. Please <a href='/'>refresh</a> and try again."
+msgstr ""
+
+#, php-format
+msgid "Login failed. <%s>Create account</a> or <%s>reset password</a>?"
+msgstr ""
+"Не удается войти в систему. <%s>Создать учетную запись</a> или <%s>сменить "
+"пароль</a>?"
+
+msgid "No such trip."
+msgstr "Нет такой поездки."
+
+msgid "This trip is not public."
+msgstr "Поездка сохранена в приватном режиме."
+
+msgid "No such user."
+msgstr "Нет такого пользователя."
+
+msgid "This user's flights are not public."
+msgstr "Полеты этого пользователя сохранены в приватном режиме."
+
+msgid "This user's flights are password-protected."
+msgstr "Доступ к полетам этого пользователя требует пароль."
+
+msgid "This user has no flights."
+msgstr "У этого пользователя нет полетов."
+
+msgid "km"
+msgstr ""
+
+msgid "miles"
+msgstr "миль"
+
+msgid "Airport or airline ID is mandatory"
+msgstr ""
+
+#, php-format
+msgid "No match found for query %s"
+msgstr ""
+
+#, php-format
+msgid "Error;No airport with ID %s found"
+msgstr ""
+
+#, php-format
+msgid "Error;No airline with ID %s found"
+msgstr ""
+
+msgid "Database error."
+msgstr ""
+
+msgid "-operated"
+msgstr ""
+
+msgid " and codeshares"
+msgstr ""
+
+msgid "Sorry, that name is already taken, please try another."
+msgstr "К сожалению, это имя уже занято. Пожалуйста, попробуйте другое."
+
+#, php-format
+msgid "Account reset, %s flights deleted."
+msgstr "Учетная запись создана заново, стерто %s полетов."
+
+msgid "Sorry, current password is not correct."
+msgstr "К сожалению, пароль неверен."
+
+#, php-format
+msgid "Unknown action %s"
+msgstr ""
+
+#, php-format
+msgid "Operation on user %s failed."
+msgstr ""
+
+#, php-format
+msgid "Successfully signed up, now logging in..."
+msgstr "Успешный вход в систему. Подождите..."
+
+#, php-format
+msgid "Settings changed successfully, returning..."
+msgstr "Настройки изменены, возвращение..."
+
+msgid "Trip not found."
+msgstr "Поездка не найдена."
+
+msgid "User not found."
+msgstr "Пользователь не найден."
+
+msgid "Added."
+msgstr "Добавлено."
+
+#, php-format
+msgid "%s flights added."
+msgstr "Добавлено %s полетов."
+
+msgid "Edited."
+msgstr "Исправлено."
+
+msgid " deleted."
+msgstr ""
+
+#, php-format
+msgid "Trip successfully created"
+msgstr "Поездка создана"
+
+#, php-format
+msgid "Trip successfully deleted"
+msgstr "Поездка удалена"
+
+#, php-format
+msgid "Trip successfully edited."
+msgstr "Поездка исправлена"
+
+msgid "Session expired. Please try re-linking after logging back in."
+msgstr ""
+
+msgid "Invalid token, giving up."
+msgstr ""
+
+msgid "Could not connect to TripIt. Please try again later."
+msgstr ""
+
+msgid "Failed to disable old TripIt links."
+msgstr ""
+
+msgid "Failed to link new TripIt account."
+msgstr ""
+
+msgid ""
+"Could not connect to TripIt. Please try again later. If you are seeing this "
+"repeatedly, you can try to <a href='/php/tripit_unlink.php'>relink your "
+"account</a>."
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "past trips"
+msgstr ""
+
+msgid "future trips"
+msgstr ""
+
+msgid "Previous Page"
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+msgid "Next Page"
+msgstr ""
+
+msgid "Import All"
+msgstr ""
+
+msgid "Passenger"
+msgstr ""
+
+msgid "days"
+msgstr "дней"
+
+msgid "day"
+msgstr ""
+
+msgid "No flight segments in this trip."
+msgstr ""
+
+msgid "TripIt"
+msgstr ""
+
+msgid "TripIt Trips"
+msgstr ""
+
+msgid "Link your TripIt Account"
+msgstr ""
+
+msgid ""
+"To import flights via TripIt, you'll need to authorize OpenFlights to access "
+"your TripIt account. OpenFlights will only be able to look at (but not "
+"modify) your TripIt data."
+msgstr ""
+
+msgid "How do you login to your TripIt account?"
+msgstr ""
+
+msgid "I use my"
+msgstr ""
+
+msgid "email and password to login."
+msgstr ""
+
+msgid "I use"
+msgstr ""
+
+msgid "to login."
+msgstr ""
+
+msgid "Logging in with a partner is a"
+msgstr ""
+
+msgid "2 step process"
+msgstr ""
+
+msgid "Click here to login to your TripIt account."
+msgstr ""
+
+msgid "You can skip this step if you're already logged in."
+msgstr ""
+
+msgid "After you've logged in, close the popup window to come back here."
+msgstr ""
+
+msgid "Click here to connect your TripIt account to OpenFlights."
+msgstr ""
 
 msgid "Prem.Eco"
 msgstr "Прем. эконом"
