@@ -962,6 +962,660 @@ msgstr ""
 msgid "Click here to connect your TripIt account to OpenFlights."
 msgstr ""
 
+msgid "Context Help: Airline"
+msgstr ""
+
+msgid "<b>\"Airline\"</b> is the airline you used for this flight."
+msgstr ""
+
+msgid "There are three ways to find airlines:"
+msgstr ""
+
+msgid ""
+"Enter the <b>airline name</b> or a part of it (e.g. \"Cathay Pacific\", "
+"\"Cathay\", \"Cath\") or the <b>airline code</b> (IATA \"CX\", ICAO \"CPA\") "
+"and wait for a second. A list of matching airlines will appear in the drop-"
+"down box. Alternatively, if you're sure you know the code, just immediately "
+"hit TAB or ENTER, and then OpenFlights will match it for you."
+msgstr ""
+
+msgid ""
+"Enter a <b>flight number</b> like \"CX123\" into the <b>Flight #</b> box, "
+"and OpenFlights will automatically match \"CX\" to Cathay Pacific and fill "
+"in the airline for you."
+msgstr ""
+
+msgid ""
+"Click on <img src=\"/img/icon_airline.png\" height=17 width=17> to pop up a "
+"<b>search dialog</b>, where you can find the airline by name, country name "
+"or airline code, and even enter new airlines if they're missing from the "
+"database."
+msgstr ""
+
+msgid "Context Help: Airports"
+msgstr ""
+
+msgid ""
+"<b>\"From\"</b> <img src=\"/img/icon_plane-src.png\" height=17 width=17> is "
+"the airport your flight took off from."
+msgstr ""
+
+msgid ""
+"<b>\"To\"</b> <img src=\"/img/icon_plane-dst.png\" height=17 width=17> is "
+"the airport your flight landed at."
+msgstr ""
+
+msgid "There are three ways to find airports:"
+msgstr ""
+
+msgid ""
+"If you have <b>already flown to the airport</b>, you can click on its icon "
+"<img src=\"/img/icon_plane-17x17.png\" height=17 width=17> in the map to "
+"select it."
+msgstr ""
+
+msgid ""
+"If not, enter the <b>city name</b> (e.g. \"Singapore\") or the <b>airport "
+"code</b> (IATA \"SIN\", ICAO \"WSSS\"), and a list of matching airports will "
+"appear in the drop-down box. If you're sure you know the airport code, just "
+"hit ENTER or TAB without waiting, and OpenFlights will match it for you."
+msgstr ""
+
+msgid ""
+"Click on <img src=\"/img/icon_plane-src.png\" height=17 width=17> or <img "
+"src=\"/img/icon_plane-dst.png\" height=17 width=17> to pop up a <b>search "
+"dialog</b>, where you can find the airport by airport name, city name, "
+"country name or airport code, and even enter new ones if they're missing "
+"from the database."
+msgstr ""
+
+msgid ""
+"To <b>reverse the flight direction</b>, click on the <b>Swap</b> button <img "
+"src=\"/img/swap-icon.png\" height=17 width=17>."
+msgstr ""
+
+msgid "Context Help: Comma-Separated Value (CSV) Format"
+msgstr ""
+
+msgid ""
+"This document defines <b>Revision 0.41</b> of the comma-separated value "
+"(CSV) format natively exported and imported by OpenFlights."
+msgstr ""
+
+msgid ""
+"OpenFlights CSV follows <a href=\"https://datatracker.ietf.org/doc/html/"
+"rfc4180#page-2\">RFC 4180</a>."
+msgstr ""
+
+msgid "The character set encoding is <b>UTF-8</b>."
+msgstr ""
+
+msgid ""
+"The field separator is comma (<b>,</b> 0x2C), the row separator is CRLF "
+"(<b>\\r\\n</b> 0x0D 0x0A) and the field delimiter is double quote (<b>\"</b> "
+"0x22)."
+msgstr ""
+
+msgid ""
+"The first line of any OpenFlights CSV file is considered a header and "
+"ignored. This line starts with a Unicode Byte Order Mark (U+FEFF), "
+"represented in UTF-8 as 0xEF 0xBB 0xBF. (Old OpenFlights exports incorrectly "
+"used the UTF-16 BOM 0xFE OxFF.)"
+msgstr ""
+
+msgid ""
+"All fields may be left empty <i>unless</i> listed as <font "
+"color=\"red\">Mandatory</font> below."
+msgstr ""
+
+msgid "Field definition"
+msgstr ""
+
+msgid "1. Date"
+msgstr ""
+
+msgid ""
+"Date of flight, in YYYY-MM-DD (dash-separated, <i>preferred format</i>), MM/"
+"DD/YYYY (slash-separated), DD.MM.YYYY (dot-separated) or YYYY (year-only) "
+"format. The date <i>may</i> optionally also contain the departure time of "
+"the flight in the format HH:MM[:SS], separated from the date by a space. "
+"Seconds are optional, but presently ignored. <font color=\"red\">Mandatory "
+"(date part only)</font>."
+msgstr ""
+
+msgid "2. From"
+msgstr ""
+
+msgid ""
+"IATA or ICAO code of source airport. <font color=\"red\">Mandatory unless "
+"\"From_OID\" is provided.</font><"
+msgstr ""
+
+msgid "3. To"
+msgstr ""
+
+msgid ""
+"IATA or ICAO code of destination airport. <font color=\"red\">Mandatory "
+"unless \"To_OID\" is provided.</font>"
+msgstr ""
+
+msgid "4. Flight_Number"
+msgstr ""
+
+msgid ""
+"Flight number. <font color=\"blue\">If first two characters are an airline "
+"code (two alphanumeric digits), the code is used to override \"Airline\".</"
+"font>"
+msgstr ""
+
+msgid "5. Airline"
+msgstr ""
+
+msgid ""
+"Full name of airline name. Airline codes are not recognized. <font "
+"color=\"blue\">May be overridden by \"Flight_Number\", defaults to Unknown "
+"if not available.</font>"
+msgstr ""
+
+msgid "6. Distance"
+msgstr ""
+
+msgid ""
+"Distance of flight, in miles. <font color=\"blue\">Calculated automatically "
+"if not provided."
+msgstr ""
+
+msgid "7. Duration"
+msgstr ""
+
+msgid ""
+"Duration of flight, in the format HH:MM. <font color=\"blue\">Estimated "
+"automatically if not provided."
+msgstr ""
+
+msgid "8. Seat"
+msgstr ""
+
+msgid "Seat number."
+msgstr ""
+
+msgid "9. Seat_Type"
+msgstr ""
+
+msgid ""
+"Seat type: one of \"W\" for Window, \"A\" for Aisle or \"M\" for Middle."
+msgstr ""
+
+msgid "10. Class"
+msgstr ""
+
+msgid ""
+"Class: one of \"F\" for First, \"C\" for Business, \"P\" for Premium "
+"Economy, \"Y\" for Economy."
+msgstr ""
+
+msgid "11. Reason"
+msgstr ""
+
+msgid ""
+"Reason for flight: one of \"B\" for Business, \"L\" for Personal, \"C\" for "
+"Crew or \"O\" for Other."
+msgstr ""
+
+msgid "12. Plane"
+msgstr ""
+
+msgid "Plane type."
+msgstr ""
+
+msgid "13. Registration"
+msgstr ""
+
+msgid "Plane registration number."
+msgstr ""
+
+msgid "14. Trip"
+msgstr ""
+
+msgid ""
+"Internal OpenFlights Trip ID. <font color=\"blue\">Optional, but must exist "
+"and belong to the user importing the data if specified.</font>"
+msgstr ""
+
+msgid "15. Note"
+msgstr ""
+
+msgid "User-entered note or comment about flight."
+msgstr ""
+
+msgid ""
+"The final four fields contain internal OpenFlights IDs (OID) for ensuring "
+"accurate imports. They are generated automatically when exporting, but "
+"should <i>not</i> be provided if creating or importing your own data, or "
+"altering the airline, airport or plane fields of exported data."
+msgstr ""
+
+msgid "6. From_OID"
+msgstr ""
+
+msgid ""
+"Internal OpenFlights airport ID. <font color=\"blue\">Overrides \"From\" if "
+"provided.</font>"
+msgstr ""
+
+msgid "17. To_OID"
+msgstr ""
+
+msgid "18. Airline_OID"
+msgstr ""
+
+msgid ""
+"Internal OpenFlights airline ID. <font color=\"blue\">Overrides \"Airline\" "
+"if provided.</font>"
+msgstr ""
+
+msgid "19. Plane_OID"
+msgstr ""
+
+msgid "Airline matching"
+msgstr ""
+
+msgid "Airlines are matched in the following order:"
+msgstr ""
+
+msgid "\"Airline_OID\" as internal identifier"
+msgstr ""
+
+msgid ""
+"irst two characters of \"Flight_Number\" as IATA code, if alphanumeric "
+"<i>and</i> not numeric (AB, A1, 1A are OK, but 11 is not)"
+msgstr ""
+
+msgid "\"Airline\" as name or alias"
+msgstr ""
+
+msgid ""
+"Note that the airline code (IATA/ICAO) must be supplied in "
+"\"Flight_Number\", <i>not</i> \"Airline\"."
+msgstr ""
+
+msgid ""
+"If multiple matches are found, \"Airline\" is used to determine the best fit."
+msgstr ""
+
+msgid ""
+"If \"Airline\" is defined but no matches are found, \"Airline\" is added as "
+"new."
+msgstr ""
+
+msgid "If \"Flight Number\" defines an unrecognized IATA code, import fails."
+msgstr ""
+
+msgid ""
+"If neither \"Airline\" nor \"Flight_Number\" are defined, \"Airline\" is set "
+"to Unknown."
+msgstr ""
+
+msgid "Sample"
+msgstr ""
+
+msgid ""
+"The following sample shows the maximal, recommended, and three minimal data "
+"sets for importing a flight (airline and flight number, airline only, and "
+"neither airline nor flight number)."
+msgstr ""
+
+msgid ""
+"<i>Note</i>: The first line of any CSV file is always ignored, the field key "
+"is provided only for your own reference."
+msgstr ""
+
+msgid "Revision history"
+msgstr ""
+
+msgid "0.42 &mdash; Nov 7, 2010"
+msgstr ""
+
+msgid "Fix representation of byte-order mark in UTF-8."
+msgstr ""
+
+msgid "0.41 &mdash; Jul 21, 2009"
+msgstr ""
+
+msgid "Clarified encoding."
+msgstr ""
+
+msgid "0.4 &mdash; Feb 1, 2009"
+msgstr ""
+
+msgid "Date field now allows an optional time element."
+msgstr ""
+
+msgid "0.3 &mdash; Dec 22, 2008"
+msgstr ""
+
+msgid ""
+"Corrected business class specifier to \"C\", although \"B\" is still "
+"accepted. Support for American (DD/MM/YYYY) and European (DD.MM.YYYY) dates "
+"added."
+msgstr ""
+
+msgid "0.2 &mdash; Dec 2, 2008"
+msgstr ""
+
+msgid ""
+"Specifying airline no longer mandatory. Clarified field names and airline "
+"matching logic."
+msgstr ""
+
+msgid "0.1 &mdash; Nov 30, 2008"
+msgstr ""
+
+msgid "Original release."
+msgstr ""
+
+msgid "Context Help: Databases"
+msgstr ""
+
+msgid "OpenFlights airport searches can use three databases."
+msgstr ""
+
+msgid ""
+"<b>OpenFlights</b> is the default database, created by merging GAD and DAFIF "
+"and manually correcting countless errors. <i>Only airports found in "
+"OpenFlights searches can be used to enter your flights.</i>"
+msgstr ""
+
+msgid ""
+"<b>OurAirports</b> is a public domain database from <a href=\"https://"
+"ourairports.com/data/\">OurAirports</a> project, containing some 40,000 "
+"airports, airstrips and heliports around the world. While very complete, "
+"timezones are not included, and the ICAO code field can be ambiguous. All OA "
+"airports marked as having scheduled passenger service have already been "
+"imported into OpenFlights."
+msgstr ""
+
+msgid ""
+"<b>DAFIF</b> is the October 2006 cycle of the Digital Aeronautical Flight "
+"Information File managed by the United States <a href=\"https://www.nga.mil/"
+"\">National Geospatial-Intelligence Agency</a>. The accuracy of DAFIF data "
+"is very high, but it does not include city names or IATA codes. (However, it "
+"does include FAA codes for US airports.) Unfortunately, DAFIF data after "
+"October 2006 is no longer available to the public."
+msgstr ""
+
+msgid ""
+"Data from OpenAirports and GAD can be preloaded into the search form for "
+"easy adding to the OpenFlights DB."
+msgstr ""
+
+msgid ""
+"Want a copy of this data? See <a href=\"/data.html\">OpenFlights: Airport "
+"and airline data</a>."
+msgstr ""
+
+msgid "OpenFlights: Privacy policy"
+msgstr ""
+
+msgid ""
+"This document outlines OpenFlights' respect for your personal privacy as a "
+"user of the service."
+msgstr ""
+
+msgid ""
+"Your flights will not be visible to other users, business partners or the "
+"public at large <i>unless</i> you opt to make them public."
+msgstr ""
+
+msgid ""
+"Your password or e-mail address will not be shared with other users, "
+"business partners or the public at large."
+msgstr ""
+
+msgid ""
+"OpenFlights may display, package, and provide for reuse your flights, as "
+"well as any airports or airlines added by you, in an anonymized format. (See "
+"<a href=\"/data.html\">Databases</a> for details.)"
+msgstr ""
+
+msgid ""
+"OpenFlights will comply with court orders to turn over your private "
+"information."
+msgstr ""
+
+msgid ""
+"OpenFlights uses third-party advertising companies to serve ads when you "
+"visit our website. These companies may use information (<i>not</i> including "
+"your name, address, email address, or telephone number) about your visits to "
+"this and other websites in order to provide advertisements about goods and "
+"services of interest to you. If you would like more information about this "
+"practice and to know your choices about not having this information used by "
+"these companies, <a href=\"https://policies.google.com/technologies/"
+"ads\">click here</a>."
+msgstr ""
+
+msgid "Reset password"
+msgstr ""
+
+#, php-format
+msgid ""
+"Your new password is <b>%s</b>. Please log in and change it from Settings."
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Invalid challenge."
+msgstr ""
+
+#, php-format
+msgid "A password reset link has been mailed to <b>%s</b>."
+msgstr ""
+
+msgid "Message delivery failed, please contact <a href='/about'>support</a>."
+msgstr ""
+
+msgid "Sorry, that e-mail address is not registered for any OpenFlights user."
+msgstr ""
+
+msgid ""
+"Can't log in? One tip before you panic: make sure you have entered your "
+"password <b>using the same case</b> as you did when signing up: \"Secret\" "
+"is not the same as \"secret\". If you signed up before January 15, 2009, "
+"your <b>username</b> (\"Joe\" vs \"joe\") also has to match. "
+msgstr ""
+
+msgid ""
+"If that doesn't help, enter your <b>e-mail address</b> below, and we'll send "
+"you a link you can use to reset your password."
+msgstr ""
+
+msgid ""
+"If you didn't register an e-mail address, then sorry, we don't know that "
+"you're you, so there's really nothing we can do."
+msgstr ""
+
+msgid "Return"
+msgstr ""
+
+msgid "Context Help: Time"
+msgstr ""
+
+msgid ""
+"OpenFlights tries to understand <b>local time</b>, so you can enter local "
+"departure and arrival times and have the actual flight duration computed "
+"automatically. If you enter only a departure time, OpenFlights will estimate "
+"the flight duration based on the length of the flight and suggest an arrival "
+"time."
+msgstr ""
+
+msgid ""
+"To see the time zones and DST status of current airports when adding or "
+"editing flights, hover your mouse over the <img src=\"/img/icon_clock.png\" "
+"alt=\"clock\" width=16 height=16> icon."
+msgstr ""
+
+msgid "Consistency"
+msgstr ""
+
+msgid ""
+"Internal consistency between date, time, flight duration and flight distance "
+"is enforced as follows:"
+msgstr ""
+
+msgid "Changing this...&nbsp"
+msgstr ""
+
+msgid "recalculates these"
+msgstr ""
+
+msgid "Arrival time"
+msgstr ""
+
+msgid "Airport"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Departure time"
+msgstr ""
+
+msgid "The date and departure time are never changed automatically."
+msgstr ""
+
+msgid ""
+"Arrival time is only computed if departure time is known and the user has "
+"not entered it manually before entering airports."
+msgstr ""
+
+msgid ""
+"If arrival time is blanked, it is re-estimated based on the current duration."
+msgstr ""
+
+msgid ""
+"If duration is blanked, it is re-estimated based on the current distance."
+msgstr ""
+
+msgid "ime zones"
+msgstr ""
+
+msgid ""
+"OpenFlights uses UTC offsets as time zones, so UTC+8 (Singapore) is recorded "
+"as \"+8\" and UTC-5 (New York) as \"-5\". Time zone data for OpenFlights was "
+"obtained from <a href=\"https://web.archive.org/web/20150407192111/http://"
+"www.earthtools.org/webservices.htm\">EarthTools</a>."
+msgstr ""
+
+msgid "Daylight Savings Time (DST)"
+msgstr ""
+
+msgid ""
+"When active, Daylight Savings Time (DST), or \"summer time\", adds one to "
+"the normal timezone, so e.g. New York, normally UTC-5, becomes UTC-4 while "
+"DST is active. OpenFlights currently understands the following types of DST:"
+msgstr ""
+
+msgid ""
+"<b>European</b>: Starts on the last Sunday of March, ends on the last Sunday "
+"of October. Used in all European countries (except Iceland), as well as "
+"Greenland, Lebanon, Russia and Tunisia. Jordan and Syria are <i>almost</i> "
+"the same, starting and ending on Friday instead of Sunday. European DST is "
+"also used to (crudely) approximate Iranian DST, although they actually use "
+"an entirely different calendar."
+msgstr ""
+
+msgid ""
+"<b>US/Canada</b>: Starts on the second Sunday of March, ends on the first "
+"Sunday of November. Used in the United States (except Arizona, Hawaii and "
+"island territories) and Canada (with convoluted exceptions)."
+msgstr ""
+
+msgid ""
+"<b>South American</b>: Starts on the third Sunday of October, ends on the "
+"third Sunday of March. Used, with some variance in the exact dates, in "
+"Argentina, Chile, Mexico, Paraguay, Uruguay as well as the African states of "
+"Namibia and Mauritius."
+msgstr ""
+
+msgid ""
+"<b>Australia</b>: Starts on the first Sunday of October, ends on the first "
+"Sunday of April. <i>Not</i> used in Queensland and the Northern Territory."
+msgstr ""
+
+msgid ""
+"<b>New Zealand</b>: Starts on the last Sunday of September, ends on the "
+"first Sunday of April."
+msgstr ""
+
+msgid "<b>None</b>: DST not observed."
+msgstr ""
+
+msgid "<b>Unknown</b>: DST status not known. The same as \"None\"."
+msgstr ""
+
+msgid ""
+"The rules for DST change constantly and not all airports are up-to-date or "
+"marked correctly. Please <a href=\"/contact.html\">contact</a> the "
+"OpenFlights team if you find any errors."
+msgstr ""
+
+msgid "Examples"
+msgstr ""
+
+msgid ""
+"A flight in April departs Singapore (SIN) at 20:00 and arrives in Chennai "
+"(MAA) at 21:30. Singapore is UTC+8, Chennai is UTC+5.5. Flight duration is "
+"thus (21:30-20:00) - (05:30-08:00) = 1:30 - (-2:30) = <b>4:00</b>."
+msgstr ""
+
+msgid ""
+"A flight in June departs Newark (EWR) at 23:00 and arrives in Singapore "
+"(SIN) at 07:40 + 2 days. Singapore is UTC+8, New York is UTC-4 (DST). Flight "
+"duration is thus (07:40+48:00)-23:00 - (-04:00-08:00) = -32:40 - -(12:00) = "
+"<b>20:40</b>."
+msgstr ""
+
+msgid "Context Help: Trips"
+msgstr ""
+
+msgid ""
+"<b>Trips</b> are an OpenFlights feature for grouping together multiple "
+"flights across many airlines. Trips can be filtered and viewed separately in "
+"the statistics, and you can also share trips with others. You can even link "
+"your website, blog, FlyerTalk trip report etc. to your OpenFlights trip."
+msgstr ""
+
+msgid ""
+"<i>Example</i>: You went on a trip all around Europe, and now you want to "
+"share a map that shows <i>only</i> your European flights with your friends."
+msgstr ""
+
+msgid "Select <b>New flight</b> and switch to <b>Detailed</b> mode."
+msgstr ""
+
+msgid ""
+"Enter the first flight and click on <img src=\"/img/icon_add.png\" height=17 "
+"width=17> next to <b>Trip</b> to create your new trip."
+msgstr ""
+
+msgid "Your new trip now appears in the <b>Trip</b> pull down. Add the flight."
+msgstr ""
+
+msgid ""
+"Add your other flights. As long as your new trip is selected in the pull "
+"down, they will be added to the trip."
+msgstr ""
+
+msgid ""
+"That's it! You can now choose your trip in the <b>Filter</b>, or click on "
+"<img src=\"/img/icon_edit.png\" height=17 width=17> to see the trip address "
+"for sharing with others."
+msgstr ""
+
 msgid "Language"
 msgstr ""
 
@@ -998,12 +1652,6 @@ msgid "Road transport"
 msgstr ""
 
 msgid "Shipping"
-msgstr ""
-
-msgid "Yes"
-msgstr ""
-
-msgid "No"
 msgstr ""
 
 msgid "Alternative name"
@@ -1352,50 +2000,6 @@ msgid "Not assigned yet"
 msgstr ""
 
 msgid "Save"
-msgstr ""
-
-msgid "Reset password"
-msgstr ""
-
-#, php-format
-msgid ""
-"Your new password is <b>%s</b>. Please log in and change it from Settings."
-msgstr ""
-
-msgid "Login"
-msgstr ""
-
-msgid "Invalid challenge."
-msgstr ""
-
-#, php-format
-msgid "A password reset link has been mailed to <b>%s</b>."
-msgstr ""
-
-msgid "Message delivery failed, please contact <a href='/about'>support</a>."
-msgstr ""
-
-msgid "Sorry, that e-mail address is not registered for any OpenFlights user."
-msgstr ""
-
-msgid ""
-"Can't log in? One tip before you panic: make sure you have entered your "
-"password <b>using the same case</b> as you did when signing up: \"Secret\" "
-"is not the same as \"secret\". If you signed up before January 15, 2009, "
-"your <b>username</b> (\"Joe\" vs \"joe\") also has to match. "
-msgstr ""
-
-msgid ""
-"If that doesn't help, enter your <b>e-mail address</b> below, and we'll send "
-"you a link you can use to reset your password."
-msgstr ""
-
-msgid ""
-"If you didn't register an e-mail address, then sorry, we don't know that "
-"you're you, so there's really nothing we can do."
-msgstr ""
-
-msgid "Return"
 msgstr ""
 
 msgid "Prem.Eco"
