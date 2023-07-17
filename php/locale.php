@@ -25,8 +25,15 @@ if ($OF_USE_LOCALES) {
 } else {
     $locale = "en_US.utf8";
 
-    function _($string) {
-        return $string;
+    // This probably isn't necessary, and the function should just be removed.
+    // But in modern packaged PHP (Debian and Ubuntu, at least), php-common includes
+    // getttext (though, potentially not enabled by default). Composer at install time
+    // But not run time, requires ext-gettext to be installed anyway, but of course,
+    // it could be technically ignored by `--ignore-platform-reqs`...
+    if (!function_exists('_')) {
+        function _($string) {
+            return $string;
+        }
     }
 }
 
