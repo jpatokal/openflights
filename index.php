@@ -162,8 +162,7 @@ require_once "./php/helper.php";
               <option value="note"><?php echo _("Note"); ?></option>
               <option value="reason"><?php echo _("Reason"); ?></option>
               <option value="reg"><?php echo _("Registration"); ?></option>
-            </select><
-              /span> <span id="filter_extra_span"></span>
+            </select><span id="filter_extra_span"></span>
           </td>
         </tr>
           </table>
