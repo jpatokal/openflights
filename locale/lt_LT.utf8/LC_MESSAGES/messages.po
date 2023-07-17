@@ -10,6 +10,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#, php-format
+msgid "OpenFlights: %s"
+msgstr ""
+
 msgid "About"
 msgstr ""
 
@@ -132,6 +136,9 @@ msgid ""
 "up-to-the-minute copy, or you would like your data filtered by any "
 "information available to us (eg. number of routes at the airport), do not "
 "hesitate to <a href=\"/about\">contact us</a>."
+msgstr ""
+
+msgid "Airport and airline data"
 msgstr ""
 
 msgid "Airport, airline and route data"
@@ -715,9 +722,6 @@ msgid ""
 "a>"
 msgstr ""
 
-msgid "OpenFlights: Donations and Elite Levels"
-msgstr ""
-
 msgid "Donations and Elite Levels"
 msgstr ""
 
@@ -843,6 +847,9 @@ msgid ""
 "revoke elite level privileges for any user at any time for any reason. No "
 "refunds are possible, even if OpenFlights is temporarily not accessible or "
 "goes permanently offline."
+msgstr ""
+
+msgid "FAQ"
 msgstr ""
 
 msgid "Frequently Asked Questions (FAQ)"
@@ -2006,12 +2013,11 @@ msgid ""
 "easy adding to the OpenFlights DB."
 msgstr ""
 
-msgid ""
-"Want a copy of this data? See <a href=\"/data.php\">OpenFlights: Airport and "
-"airline data</a>."
+#, php-format
+msgid "Want a copy of this data? See %s"
 msgstr ""
 
-msgid "OpenFlights: Privacy policy"
+msgid "Privacy policy"
 msgstr ""
 
 msgid ""

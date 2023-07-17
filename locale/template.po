@@ -2901,3 +2901,20 @@ msgstr ""
 
 msgid "Time zones"
 msgstr ""
+
+#, php-format
+msgid "OpenFlights: %s"
+msgstr ""
+
+msgid "Airport and airline data"
+msgstr ""
+
+msgid "FAQ"
+msgstr ""
+
+#, php-format
+msgid "Want a copy of this data? See %s"
+msgstr ""
+
+msgid "Privacy policy"
+msgstr ""
