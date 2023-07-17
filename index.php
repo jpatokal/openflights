@@ -101,9 +101,13 @@ require_once "./php/helper.php";
           <tr>
             <td></td>
             <td>
-              <input id="loginbutton" type="button" value="<?php echo _("Log in");
-                ?>" align="middle" tabindex="3" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
-                <h7><a href="/html/settings?new=yes"><?php echo _("Sign up"); ?></a></h7>
+              <input id="loginbutton" type="button" value="<?php echo _("Log in"); ?>"
+                     align="middle" tabindex="3" onclick='JavaScript:xmlhttpPost("/php/login.php")'>
+              <?php
+                if (!isset($OF_ENABLE_SIGNUP) || $OF_ENABLE_SIGNUP) {
+                  echo '<h7><a href="/html/settings?new=yes">', _("Sign up"), "</a></h7>";
+                }
+              ?>
             </td>
           </tr>
         </table>

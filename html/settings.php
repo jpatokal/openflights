@@ -1,10 +1,16 @@
 <?php
 
+require_once "../php/config.php";
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
 require_once "../php/helper.php";
 
 $type = isset($_GET["new"]) ? "signup" : "settings";
+
+if (isset($OF_ENABLE_SIGNUP) && !$OF_ENABLE_SIGNUP) {
+  http_response_code(403);
+  exit;
+}
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
