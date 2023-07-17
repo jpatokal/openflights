@@ -514,27 +514,6 @@ msgstr "Matkaa ei ole."
 msgid "User not found."
 msgstr "Käyttäjää ei ole."
 
-msgid "mi"
-msgstr "mi"
-
-msgid "Longest"
-msgstr "Pisin"
-
-msgid "Shortest"
-msgstr "Lyhyin"
-
-msgid "Northernmost"
-msgstr "Pohjoisin"
-
-msgid "Southernmost"
-msgstr "Eteläisin"
-
-msgid "Westernmost"
-msgstr "Läntisin"
-
-msgid "Easternmost"
-msgstr "Itäisin"
-
 msgid "Added."
 msgstr "Lisätty."
 
@@ -1111,6 +1090,18 @@ msgstr "tiekuljetus"
 msgid "shipping"
 msgstr "laiva"
 
+msgid "Northernmost"
+msgstr "Pohjoisin"
+
+msgid "Southernmost"
+msgstr "Eteläisin"
+
+msgid "Easternmost"
+msgstr "Itäisin"
+
+msgid "Westernmost"
+msgstr "Läntisin"
+
 msgid "Segments"
 msgstr "Matkat"
 
@@ -1273,6 +1264,9 @@ msgstr "Muokkaa tätä lentoa"
 msgid "Copy to new flight"
 msgstr "Kopioi uuden lennon pohjaksi"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Tilastot"
 
@@ -1311,6 +1305,9 @@ msgstr "Paikat"
 
 msgid "Class by distance"
 msgstr ""
+
+msgid "mi"
+msgstr "mi"
 
 msgid "Show..."
 msgstr "Näytä..."

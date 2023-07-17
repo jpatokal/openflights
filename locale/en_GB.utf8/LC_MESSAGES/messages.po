@@ -495,27 +495,6 @@ msgstr ""
 msgid "User not found."
 msgstr ""
 
-msgid "mi"
-msgstr ""
-
-msgid "Longest"
-msgstr ""
-
-msgid "Shortest"
-msgstr ""
-
-msgid "Northernmost"
-msgstr ""
-
-msgid "Southernmost"
-msgstr ""
-
-msgid "Westernmost"
-msgstr ""
-
-msgid "Easternmost"
-msgstr ""
-
 msgid "Added."
 msgstr ""
 
@@ -1050,6 +1029,18 @@ msgstr ""
 msgid "shipping"
 msgstr ""
 
+msgid "Northernmost"
+msgstr ""
+
+msgid "Southernmost"
+msgstr ""
+
+msgid "Easternmost"
+msgstr ""
+
+msgid "Westernmost"
+msgstr ""
+
 msgid "Segments"
 msgstr ""
 
@@ -1205,6 +1196,9 @@ msgstr ""
 msgid "Copy to new flight"
 msgstr ""
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr ""
 
@@ -1242,6 +1236,9 @@ msgid "Seats"
 msgstr ""
 
 msgid "Class by distance"
+msgstr ""
+
+msgid "mi"
 msgstr ""
 
 msgid "Show..."

@@ -537,29 +537,6 @@ msgstr "Viagem não encontrada."
 msgid "User not found."
 msgstr "Usuário não encontrado."
 
-msgid "mi"
-msgstr ""
-
-# Longest flight in "Analyze"
-msgid "Longest"
-msgstr "Mais longo"
-
-# Shortest flight
-msgid "Shortest"
-msgstr "Mais curto"
-
-msgid "Northernmost"
-msgstr "Mais ao norte"
-
-msgid "Southernmost"
-msgstr "Mais ao sul"
-
-msgid "Westernmost"
-msgstr "Mais ao oeste"
-
-msgid "Easternmost"
-msgstr "Mais ao leste"
-
 msgid "Added."
 msgstr "Adicionado."
 
@@ -1155,6 +1132,18 @@ msgstr "companhia de transporte rodoviário"
 msgid "shipping"
 msgstr "companhia de transporte náutico"
 
+msgid "Northernmost"
+msgstr "Mais ao norte"
+
+msgid "Southernmost"
+msgstr "Mais ao sul"
+
+msgid "Easternmost"
+msgstr "Mais ao leste"
+
+msgid "Westernmost"
+msgstr "Mais ao oeste"
+
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
 msgstr "Segmentos"
@@ -1328,6 +1317,9 @@ msgstr "Editar esse voo"
 msgid "Copy to new flight"
 msgstr "Copiar para novo voo"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Únicos"
 
@@ -1365,6 +1357,9 @@ msgid "Seats"
 msgstr "Assentos"
 
 msgid "Class by distance"
+msgstr ""
+
+msgid "mi"
 msgstr ""
 
 # Show... Top 10, 25, 50

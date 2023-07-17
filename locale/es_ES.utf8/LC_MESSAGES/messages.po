@@ -540,29 +540,6 @@ msgstr "Itinerario inexistente."
 msgid "User not found."
 msgstr "Usuario inexistente."
 
-msgid "mi"
-msgstr "mi"
-
-# Longest flight in "Analyze"
-msgid "Longest"
-msgstr "El más largo"
-
-# Shortest flight
-msgid "Shortest"
-msgstr "El más corto"
-
-msgid "Northernmost"
-msgstr "Más al norte "
-
-msgid "Southernmost"
-msgstr "Más al sur"
-
-msgid "Westernmost"
-msgstr "Más al oeste"
-
-msgid "Easternmost"
-msgstr "Más al este"
-
 msgid "Added."
 msgstr "Añadido."
 
@@ -1164,6 +1141,18 @@ msgstr "transporte por carretera"
 msgid "shipping"
 msgstr "naviera"
 
+msgid "Northernmost"
+msgstr "Más al norte "
+
+msgid "Southernmost"
+msgstr "Más al sur"
+
+msgid "Easternmost"
+msgstr "Más al este"
+
+msgid "Westernmost"
+msgstr "Más al oeste"
+
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
 msgstr "Segmentos"
@@ -1338,6 +1327,9 @@ msgstr "Editar este vuelo"
 msgid "Copy to new flight"
 msgstr "Copiar a un vuelo nuevo "
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Único"
 
@@ -1376,6 +1368,9 @@ msgstr "Asientos"
 
 msgid "Class by distance"
 msgstr ""
+
+msgid "mi"
+msgstr "mi"
 
 # Show... Top 10, 25, 50
 msgid "Show..."
