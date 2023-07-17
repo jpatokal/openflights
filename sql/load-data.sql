@@ -1,3 +1,5 @@
+SET GLOBAL local_infile = 'ON';
+
 \! echo Importing airlines...
 
 LOAD DATA LOCAL INFILE 'data/airlines.dat'
@@ -35,6 +37,7 @@ LINES TERMINATED BY '\n'
 (name, iso_code, dafif_code);
 
 \! echo Importing planes...
+
 LOAD DATA LOCAL INFILE 'data/planes.dat'
 REPLACE INTO TABLE planes
 FIELDS TERMINATED BY ','
