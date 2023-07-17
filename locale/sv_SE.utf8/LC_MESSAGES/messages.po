@@ -536,29 +536,6 @@ msgstr "Kunde inte hitta resan."
 msgid "User not found."
 msgstr "Okänd användare."
 
-msgid "mi"
-msgstr ""
-
-# Longest flight in "Analyze"
-msgid "Longest"
-msgstr "Längsta"
-
-# Shortest flight
-msgid "Shortest"
-msgstr "Kortaste"
-
-msgid "Northernmost"
-msgstr "Mest norrut"
-
-msgid "Southernmost"
-msgstr "Mest söderut"
-
-msgid "Westernmost"
-msgstr "Mest västerut"
-
-msgid "Easternmost"
-msgstr "Mest österut"
-
 msgid "Added."
 msgstr "Tillagd."
 
@@ -1151,6 +1128,18 @@ msgstr "vägtransport"
 msgid "shipping"
 msgstr "frakt"
 
+msgid "Northernmost"
+msgstr "Mest norrut"
+
+msgid "Southernmost"
+msgstr "Mest söderut"
+
+msgid "Easternmost"
+msgstr "Mest österut"
+
+msgid "Westernmost"
+msgstr "Mest västerut"
+
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
 msgstr "Antal segment"
@@ -1323,6 +1312,9 @@ msgstr "Ändra detta flyg"
 msgid "Copy to new flight"
 msgstr "Kopiera till nytt flyg"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Unik"
 
@@ -1360,6 +1352,9 @@ msgid "Seats"
 msgstr "Säten"
 
 msgid "Class by distance"
+msgstr ""
+
+msgid "mi"
 msgstr ""
 
 # Show... Top 10, 25, 50

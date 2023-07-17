@@ -510,27 +510,6 @@ msgstr "Reis niet gevonden."
 msgid "User not found."
 msgstr "Gebruiker niet gevonden."
 
-msgid "mi"
-msgstr "mi"
-
-msgid "Longest"
-msgstr "Langste"
-
-msgid "Shortest"
-msgstr "Kortste"
-
-msgid "Northernmost"
-msgstr "Noordelijkste"
-
-msgid "Southernmost"
-msgstr "Zuidelijkste"
-
-msgid "Westernmost"
-msgstr "Westelijkste"
-
-msgid "Easternmost"
-msgstr "Oostelijkste"
-
 msgid "Added."
 msgstr "Toegevoegd."
 
@@ -1115,6 +1094,18 @@ msgstr "wegtransport"
 msgid "shipping"
 msgstr "scheepvaart"
 
+msgid "Northernmost"
+msgstr "Noordelijkste"
+
+msgid "Southernmost"
+msgstr "Zuidelijkste"
+
+msgid "Easternmost"
+msgstr "Oostelijkste"
+
+msgid "Westernmost"
+msgstr "Westelijkste"
+
 msgid "Segments"
 msgstr "Segmenten"
 
@@ -1282,6 +1273,9 @@ msgstr "Pas deze vlucht aan"
 msgid "Copy to new flight"
 msgstr "Kopi�er naar nieuwe vlucht"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Uniek"
 
@@ -1320,6 +1314,9 @@ msgstr "Zitplaatsen"
 
 msgid "Class by distance"
 msgstr ""
+
+msgid "mi"
+msgstr "mi"
 
 msgid "Show..."
 msgstr "Toon..."

@@ -1473,3 +1473,6 @@ msgstr ""
 
 msgid "User ID"
 msgstr ""
+
+msgid "Statistics calculation failed!"
+msgstr ""

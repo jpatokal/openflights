@@ -536,29 +536,6 @@ msgstr "Поездка не найдена."
 msgid "User not found."
 msgstr "Пользователь не найден."
 
-msgid "mi"
-msgstr ""
-
-# Longest flight in "Analyze"
-msgid "Longest"
-msgstr "Самый длинный"
-
-# Shortest flight
-msgid "Shortest"
-msgstr "Самый короткий"
-
-msgid "Northernmost"
-msgstr "Самый северный"
-
-msgid "Southernmost"
-msgstr "Самый южный"
-
-msgid "Westernmost"
-msgstr "Самый западный"
-
-msgid "Easternmost"
-msgstr "Самый восточный"
-
 msgid "Added."
 msgstr "Добавлено."
 
@@ -1154,6 +1131,18 @@ msgstr "дорожный транспорт"
 msgid "shipping"
 msgstr "водный транспорт"
 
+msgid "Northernmost"
+msgstr "Самый северный"
+
+msgid "Southernmost"
+msgstr "Самый южный"
+
+msgid "Easternmost"
+msgstr "Самый восточный"
+
+msgid "Westernmost"
+msgstr "Самый западный"
+
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
 msgstr "Сегментам"
@@ -1325,6 +1314,9 @@ msgstr "Редактировать полет"
 msgid "Copy to new flight"
 msgstr "Скопировать в новый полет"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Уникальные"
 
@@ -1362,6 +1354,9 @@ msgid "Seats"
 msgstr "Места"
 
 msgid "Class by distance"
+msgstr ""
+
+msgid "mi"
 msgstr ""
 
 # Show... Top 10, 25, 50

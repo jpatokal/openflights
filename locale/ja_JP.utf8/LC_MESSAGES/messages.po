@@ -509,27 +509,6 @@ msgstr "一致する旅はありません。"
 msgid "User not found."
 msgstr "一致するユーザーはありません。"
 
-msgid "mi"
-msgstr ""
-
-msgid "Longest"
-msgstr "最長"
-
-msgid "Shortest"
-msgstr "最短"
-
-msgid "Northernmost"
-msgstr "最北"
-
-msgid "Southernmost"
-msgstr "最南"
-
-msgid "Westernmost"
-msgstr "最西"
-
-msgid "Easternmost"
-msgstr "最東"
-
 msgid "Added."
 msgstr "追加されました。"
 
@@ -1101,6 +1080,18 @@ msgstr "車"
 msgid "shipping"
 msgstr "船会社"
 
+msgid "Northernmost"
+msgstr "最北"
+
+msgid "Southernmost"
+msgstr "最南"
+
+msgid "Easternmost"
+msgstr "最東"
+
+msgid "Westernmost"
+msgstr "最西"
+
 msgid "Segments"
 msgstr "便"
 
@@ -1267,6 +1258,9 @@ msgstr "このフライトを編集"
 msgid "Copy to new flight"
 msgstr "新しいフライトに複製"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "統計"
 
@@ -1304,6 +1298,9 @@ msgid "Seats"
 msgstr "座席"
 
 msgid "Class by distance"
+msgstr ""
+
+msgid "mi"
 msgstr ""
 
 msgid "Show..."

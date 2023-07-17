@@ -537,29 +537,6 @@ msgstr "Kelionė nerasta."
 msgid "User not found."
 msgstr "Naudotojas nerastas"
 
-msgid "mi"
-msgstr "mi"
-
-# Longest flight in "Analyze"
-msgid "Longest"
-msgstr "Ilgiausias"
-
-# Shortest flight
-msgid "Shortest"
-msgstr "Trumpiausias"
-
-msgid "Northernmost"
-msgstr "Šiauriausias"
-
-msgid "Southernmost"
-msgstr "Piečiausias"
-
-msgid "Westernmost"
-msgstr "Vakariausias"
-
-msgid "Easternmost"
-msgstr "Ryčiausias"
-
 msgid "Added."
 msgstr "Pridėta."
 
@@ -1155,6 +1132,18 @@ msgstr "kelio transportas"
 msgid "shipping"
 msgstr "persiuntimas"
 
+msgid "Northernmost"
+msgstr "Šiauriausias"
+
+msgid "Southernmost"
+msgstr "Piečiausias"
+
+msgid "Easternmost"
+msgstr "Ryčiausias"
+
+msgid "Westernmost"
+msgstr "Vakariausias"
+
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
 msgstr "Segmentai"
@@ -1326,6 +1315,9 @@ msgstr "Redaguoti šį skrydį"
 msgid "Copy to new flight"
 msgstr "Kopijuoti į naują skrydį"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Unikalus"
 
@@ -1364,6 +1356,9 @@ msgstr "Vietų"
 
 msgid "Class by distance"
 msgstr ""
+
+msgid "mi"
+msgstr "mi"
 
 # Show... Top 10, 25, 50
 msgid "Show..."

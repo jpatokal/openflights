@@ -538,29 +538,6 @@ msgstr "Reise nicht gefunden."
 msgid "User not found."
 msgstr "Benutzer nicht gefunden."
 
-msgid "mi"
-msgstr "mi"
-
-# Longest flight in "Analyze"
-msgid "Longest"
-msgstr "Längster"
-
-# Shortest flight
-msgid "Shortest"
-msgstr "Kürzester"
-
-msgid "Northernmost"
-msgstr "Nördlichster"
-
-msgid "Southernmost"
-msgstr "Südlichster"
-
-msgid "Westernmost"
-msgstr "Westlichster"
-
-msgid "Easternmost"
-msgstr "Östlichster"
-
 msgid "Added."
 msgstr "Hinzugefügt"
 
@@ -1160,6 +1137,18 @@ msgstr "Straßentransport"
 msgid "shipping"
 msgstr "Schifffahrt"
 
+msgid "Northernmost"
+msgstr "Nördlichster"
+
+msgid "Southernmost"
+msgstr "Südlichster"
+
+msgid "Easternmost"
+msgstr "Östlichster"
+
+msgid "Westernmost"
+msgstr "Westlichster"
+
 # Rank by how many segments flown or otherwise travelled
 msgid "Segments"
 msgstr "Segmente"
@@ -1333,6 +1322,9 @@ msgstr "Diesen Flug bearbeiten"
 msgid "Copy to new flight"
 msgstr "Flug zu Neuem kopieren"
 
+msgid "Statistics calculation failed!"
+msgstr ""
+
 msgid "Unique"
 msgstr "Eindeutig"
 
@@ -1371,6 +1363,9 @@ msgstr "Sitze"
 
 msgid "Class by distance"
 msgstr ""
+
+msgid "mi"
+msgstr "mi"
 
 # Show... Top 10, 25, 50
 msgid "Show..."

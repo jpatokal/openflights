@@ -2292,10 +2292,10 @@ function showStats(str) {
   var table = '<table style="border-spacing: 10px 0px">';
   table += "<tr><th colspan=2>" + gt.gettext("Unique") + "</th></tr>";
   for (const dataPoint of [
-    ["Airports", "airports"],
-    ["Carriers", "carriers"],
-    ["Countries", "countries"],
-    ["Vehicles", "vehicles"],
+    [gt.gettext("Airports"), "airports"],
+    [gt.gettext("Carriers"), "carriers"],
+    [gt.gettext("Countries"), "countries"],
+    [gt.gettext("Vehicles"), "vehicles"],
   ]) {
     const row = document.createElement("tr");
     const label = document.createElement("td");
@@ -2540,7 +2540,9 @@ function formatTop10Numbers(mode, countUnit, value) {
   } else {
     // Must be distance
     return (
-      formattedNumber + " " + gt.gettext(countUnit == "miles" ? "mi" : "km")
+      formattedNumber +
+      " " +
+      (countUnit == "miles" ? gt.gettext("mi") : gt.gettext("km"))
     );
   }
 }
