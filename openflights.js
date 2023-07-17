@@ -2301,7 +2301,8 @@ function showStats(str) {
     const label = document.createElement("td");
     label.append(gt.gettext(dataPoint[0]));
     const value = document.createElement("td");
-    value.append(statsData.unique[dataPoint[1]]);
+    // TODO: Use more specific locale if one exists
+    value.append(statsData.unique[dataPoint[1]].toLocaleString("en-US"));
     row.append(label);
     row.append(value);
     table += row.outerHTML;
@@ -2313,7 +2314,10 @@ function showStats(str) {
   table +=
     "<tr>" +
     `<td>${gt.gettext("Total flown")}</td>` +
-    `<td>${statsData.total.distance} ${displayUnit}</td>` +
+    // TODO: Use more specific locale if one exists
+    `<td>${statsData.total.distance.toLocaleString(
+      "en-US"
+    )} ${displayUnit}</td>` +
     "</tr>";
   table +=
     "<tr>" +
@@ -2348,7 +2352,12 @@ function showStats(str) {
     valCol.append(createAirportLinkElement(flight.src_apid, flight.src_code));
     valCol.append(" ↔ ");
     valCol.append(createAirportLinkElement(flight.dst_apid, flight.dst_code));
-    valCol.append(`, ${flight.distance} ${displayUnit}, ${flight.duration}`);
+    // TODO: Use more specific locale if one exist
+    valCol.append(
+      `, ${flight.distance.toLocaleString("en-US")} ${displayUnit}, ${
+        flight.duration
+      }`
+    );
     row.append(keyCol);
     row.append(valCol);
     table += row.outerHTML;
@@ -2358,7 +2367,8 @@ function showStats(str) {
     "<tr><td>" +
     gt.gettext("Average") +
     "</td><td>" +
-    statsData.average.distance +
+    // TODO: Use more specific locale if one exists
+    statsData.average.distance.toLocaleString("en-US") +
     " " +
     displayUnit +
     ", " +
