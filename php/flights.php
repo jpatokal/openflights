@@ -151,21 +151,6 @@ if ($export == "export" || $export == "backup") {
     print "\xEF\xBB\xBFDate,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID\r\n";
 }
 
-/**
- * @param $src mixed
- * @param $dst mixed
- * @param $flip bool
- * @return array
- */
-function flip($src, $dst, $flip) {
-    // if !$flip return [ $src, $dst ]
-    // if $flip return [ $dst, $src ]
-    return [
-        $flip ? $dst : $src,
-        $flip ? $src : $dst,
-    ];
-}
-
 $rows = [];
 foreach ($sth as $row) {
     $toFlip = $row["opp"] == 'Y';

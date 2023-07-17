@@ -264,3 +264,18 @@ function condOut($arr, $key, $value, $true, $false = '') {
         ? $true
         : $false;
 }
+
+/**
+ * @param $src mixed
+ * @param $dst mixed
+ * @param $flip bool
+ * @return array
+ */
+function flip($src, $dst, $flip) {
+    // if !$flip return [ $src, $dst ]
+    // if $flip return [ $dst, $src ]
+    return [
+        $flip ? $dst : $src,
+        $flip ? $src : $dst,
+    ];
+}
