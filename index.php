@@ -228,11 +228,11 @@ require_once "./php/helper.php";
   <td><font color="blue"><?php echo _("Date"); ?></font></td>
   <td colspan=2>
     <input type="text" name="src_date" id="src_date" size="11" class="date" tabindex="11" onChange="JavaScript:calcDuration('DEPARTURE');"/>
-      <img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date'),event); calcDuration('DEPARTURE');" />
+    <img src="/img/scw.gif" height="15" width="16" onclick="scwShow(scwID('src_date'),event); calcDuration('DEPARTURE');" />
     <input type="text" name="src_time" id="src_time" tabindex="12" size="5" class="hint2TextboxMini" placeholder="HH:MM" onChange="JavaScript:calcDuration('DEPARTURE')"/> &rarr;
     <input type="text" name="dst_time" id="dst_time" size="5" class="hint2TextboxMini" placeholder="HH:MM" onChange="JavaScript:calcDuration('ARRIVAL')"/>
     <input type="text" name="dst_days" id="dst_days" size="6" value="" style="border: 0px; display: none" onChange="JavaScript:markAsChanged()"/>
-      <img src="/img/icon_clock.png" id="icon_clock" title="<?php
+    <img src="/img/icon_clock.png" id="icon_clock" title="<?php
       echo _("Departure and arrival time"); ?>" height="16" width="16" onclick='JavaScript:help("time")'/>
   </td>
 
@@ -250,7 +250,7 @@ require_once "./php/helper.php";
 <tr>
   <td>
       <font color="blue"><?php echo _("From"); ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="<?php
-      echo _('Help: How do I enter airports?'); ?> height=11 width=10></a>
+      echo _('Help: How do I enter airports?'); ?>" height=11 width=10></a>
   </td>
   <td>
       <input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onKeyDown='keyPress(event, "src_ap")' class="hint2Textbox" placeholder="<?php
