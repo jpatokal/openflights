@@ -21,6 +21,7 @@ RUN apt-get install -y \
     php7.4 php7.4-curl php7.4-fpm php7.4-gd php7.4-mbstring php7.4-mysql php7.4-xml
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN sed -i -e '/catch_workers_output =/s/.*/catch_workers_output = yes/' /etc/php/7.4/fpm/pool.d/www.conf
+RUN phpenmod gettext
 
 # nginx setup
 # note that these symlinks require the repo be mounted @ /var/www/openflights
