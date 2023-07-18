@@ -2353,8 +2353,14 @@ msgstr "Nom de la ville"
 msgid "Country name"
 msgstr "Nom du pays"
 
+msgid "(&plusmn;dd)"
+msgstr ""
+
 msgid "Elevation"
 msgstr "Altitude"
+
+msgid "(ft)"
+msgstr ""
 
 # Universal Time Coordinated (timezone)
 msgid "UTC"

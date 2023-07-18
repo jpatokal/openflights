@@ -2371,7 +2371,13 @@ msgstr ""
 msgid "Country name"
 msgstr ""
 
+msgid "(&plusmn;dd)"
+msgstr ""
+
 msgid "Elevation"
+msgstr ""
+
+msgid "(ft)"
 msgstr ""
 
 msgid "UTC"

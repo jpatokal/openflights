@@ -2321,8 +2321,14 @@ msgstr "Kaupunki"
 msgid "Country name"
 msgstr "Maa"
 
+msgid "(&plusmn;dd)"
+msgstr ""
+
 msgid "Elevation"
 msgstr "Korkeus"
+
+msgid "(ft)"
+msgstr ""
 
 msgid "UTC"
 msgstr "UTC"

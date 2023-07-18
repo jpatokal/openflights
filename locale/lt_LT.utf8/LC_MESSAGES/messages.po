@@ -2347,8 +2347,14 @@ msgstr "Miesto pavadinimas"
 msgid "Country name"
 msgstr "Šalies pavadinimas"
 
+msgid "(&plusmn;dd)"
+msgstr ""
+
 msgid "Elevation"
 msgstr "Aukštis"
+
+msgid "(ft)"
+msgstr ""
 
 # Universal Time Coordinated (timezone)
 msgid "UTC"

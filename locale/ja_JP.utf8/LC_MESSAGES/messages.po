@@ -2321,8 +2321,14 @@ msgstr "都市"
 msgid "Country name"
 msgstr "国"
 
+msgid "(&plusmn;dd)"
+msgstr ""
+
 msgid "Elevation"
 msgstr "高度"
+
+msgid "(ft)"
+msgstr ""
 
 msgid "UTC"
 msgstr "時差"

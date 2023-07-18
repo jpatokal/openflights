@@ -2877,3 +2877,9 @@ msgstr ""
 
 msgid "Valid until"
 msgstr ""
+
+msgid "(&plusmn;dd)"
+msgstr ""
+
+msgid "(ft)"
+msgstr ""

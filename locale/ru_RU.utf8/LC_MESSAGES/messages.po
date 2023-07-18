@@ -2344,8 +2344,14 @@ msgstr "Город"
 msgid "Country name"
 msgstr "Страна"
 
+msgid "(&plusmn;dd)"
+msgstr ""
+
 msgid "Elevation"
 msgstr "Высота над уровнем моря"
+
+msgid "(ft)"
+msgstr ""
 
 # Universal Time Coordinated (timezone)
 msgid "UTC"
