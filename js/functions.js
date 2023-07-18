@@ -4,6 +4,12 @@
 // Validate 24-hr time ([0]0:00-23:59)
 const RE_TIME = /(^0?[0-9]|1[0-9]|2[0-3]):?([0-5][0-9])$/;
 
+var gt;
+
+window.onload = function init() {
+  gt = new Gettext({ domain: "messages" });
+};
+
 // User has changed locale, reload this page with new lang attribute
 // (preserve any other attributes, but nuke anchors and overwrite existing lang if any)
 function changeLocale() {
@@ -12,12 +18,10 @@ function changeLocale() {
     url = location.origin + location.pathname + location.search; // omit #anchor
   if (re_lang.test(url)) {
     url = url.replace(re_lang, locale);
+  } else if (url.indexOf("?") == -1) {
+    url += "?" + locale;
   } else {
-    if (url.indexOf("?") == -1) {
-      url += "?" + locale;
-    } else {
-      url += "&" + locale;
-    }
+    url += "&" + locale;
   }
   location.href = url;
 }
@@ -75,7 +79,7 @@ function checkDST(type, date, year) {
   return false;
 }
 
-// Get Nth day of type X in a given month (eg. third Sunday in March 2009)
+// Get Nth day of type X in a given month (e.g., third Sunday in March 2009)
 // 'type' is 0 for Sun, 1 for Mon, etc
 function getNthDay(year, month, nth, type) {
   var date = new Date();
@@ -88,7 +92,7 @@ function getNthDay(year, month, nth, type) {
   return date;
 }
 
-// Get the last day of type X in a given month (e.g. last Sunday in March 2009)
+// Get the last day of type X in a given month (e.g., last Sunday in March 2009)
 function getLastDay(year, month, type) {
   var date = new Date();
   date.setFullYear(year, month, 1); // Date object months start from 0, so this is +1
@@ -153,7 +157,9 @@ function getEliteIcon(e, validity) {
         eliteicons[i][1] +
         "' height=34 width=34 /><br><b>" +
         eliteicons[i][1] +
-        "</b><br><small>Valid until<br>" +
+        "</b><br><small>" +
+        gt.gettext("Valid until") +
+        "<br>" +
         validity +
         "</small></center>"
       );
@@ -171,12 +177,12 @@ function getEliteIcon(e, validity) {
   return "";
 }
 
-// Given element "select", select option matching "value", or #0 if not found
+// Given element "select"; select option matching "value" or #0 if not found
 function selectInSelect(select, value) {
   if (!select) {
     return;
   }
-  select.selectedIndex = 0; // default to not selected
+  select.selectedIndex = 0; // default element to not be selected
   for (var index = 0; index < select.length; index++) {
     if (select[index].value == value) {
       select.selectedIndex = index;
