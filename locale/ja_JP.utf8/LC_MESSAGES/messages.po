@@ -3714,7 +3714,7 @@ msgid "Processing..."
 msgstr "処理中"
 
 msgid "Profile address: "
-msgstr ""
+msgstr "プロファイルの住所："
 
 msgid "Please enter a name for this trip."
 msgstr ""

@@ -12,9 +12,9 @@ msgstr ""
 msgid "Flight logging, mapping, stats and sharing"
 msgstr "航空记录日志, 地图, 统计与分享"
 
-# Usually in China we do not translate some words such as "JavaScript" but to directly use them (and also in the other items). But if you would like to have a Chinese name for "OpenFlights", i suggest "四海纵横" - you can ask some other Chinese people to see if they also think it is a good name :)
 msgid "Sorry, OpenFlights requires JavaScript."
 msgstr "抱歉, OpenFlights需要JavaScript."
+# Usually in China we do not translate some words such as "JavaScript" but to directly use them (and also in the other items). But if you would like to have a Chinese name for "OpenFlights", i suggest "四海纵横" - you can ask some other Chinese people to see if they also think it is a good name :)
 
 msgid "News"
 msgstr "新闻"
@@ -69,6 +69,7 @@ msgstr "年份"
 
 msgid "Trip"
 msgstr "旅程"
+#There are some different Chinese words for \"trip\", \"旅程\" is the best one i think after i reading the mean of \"trip\" in OpenFlights
 
 msgid "More..."
 msgstr "更多..."
@@ -130,9 +131,9 @@ msgstr "添加新旅程"
 msgid "Edit this trip"
 msgstr "编辑该旅程"
 
-# when as noun or "自" when as prep */
 msgid "From"
 msgstr "起点"
+# when as noun or \"自\" when as prep */"
 
 msgid "Enter city name or airport code"
 msgstr "请输入城市名称或机场代码"
@@ -149,13 +150,13 @@ msgstr "机型"
 msgid "Enter plane model"
 msgstr "请输入机型"
 
-# If any translation of abbr is too long for you, you can use the abbr still */
 msgid "Reg."
 msgstr "注册号码"
+# If any translation of abbr is too long for you, you can use the abbr still */"
 
-# when as noun or "至" when as prep */
 msgid "To"
 msgstr "终点"
+# when as noun or \"至\" when as prep */"
 
 msgid "Economy"
 msgstr "经济舱"
@@ -322,9 +323,9 @@ msgstr "未登录, 操作中止中"
 msgid "Unknown"
 msgstr "未知"
 
-# Usually it can be translated to "为:" but it will be the best that if you can show me the whole sentence where "was:" is in so that i can give more precise translation. */
 msgid "was:"
 msgstr "为:"
+# Usually it can be translated to \"为:\" but it will be the best that if you can show me the whole sentence where \"was:\" is in so that i can give more precise translation. */"
 
 msgid "No airline"
 msgstr "无航空公司"
@@ -468,13 +469,13 @@ msgstr "公里"
 msgid "miles"
 msgstr "英里"
 
-# No need "-" in the beginning in Chinese translation */
 msgid "-operated"
 msgstr "承运"
+# No need \"-\" in the beginning in Chinese translation */"
 
-# No need space in the beginning in Chinese translation */
 msgid " and codeshares"
 msgstr "以及代码共享"
+# No need space in the beginning in Chinese translation */"
 
 msgid "Sorry, that name is already taken, please try another."
 msgstr "抱歉, 该名称已使用, 请尝试其他名称."
@@ -854,9 +855,9 @@ msgstr "部分公开(地图与统计公开)"
 msgid "Open (all flight data shared)"
 msgstr "完全公开(全部航空记录数据公开)"
 
-# This has no need to translate... */
 msgid "OpenFlights URL"
 msgstr "OpenFlights URL"
+# This has no need to translate... */"
 
 msgid "Not assigned yet"
 msgstr "未分配"
@@ -870,9 +871,9 @@ msgstr "超级经济舱"
 msgid "Econ"
 msgstr "经济舱"
 
-# The same as "Prem. Eco"? */
 msgid "P.Eco"
 msgstr "超级经济舱"
+# The same as \"Prem. Eco\"? */"
 
 msgid "Biz"
 msgstr "公务舱"
@@ -1042,9 +1043,9 @@ msgstr "编辑该航空记录"
 msgid "Copy to new flight"
 msgstr "复制为新航空记录"
 
-# This is not a dictionary translation on "Unique" but based on the content of this item in the Analysis Result Page */
 msgid "Unique"
 msgstr "总计"
+# This is not a dictionary translation on \"Unique\" but based on the content of this item in the Analysis Result Page */"
 
 msgid "Airports"
 msgstr "机场"
@@ -1139,9 +1140,9 @@ msgstr "欢迎欢迎, <B>%1</B>!"
 msgid "Loading"
 msgstr "载入中"
 
-# No need to translate... */
-msgid "Hi, <B>%1</B> !"
-msgstr "你好, <B>%1</B> !"
+msgid "Hi, <b>%1</b> !"
+msgstr "你好, <b>%1</b> !"
+# No need to translate... */"
 
 msgid "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
 msgstr "<b>欢迎回来!</b> 我们非常高兴看到您如此支持OpenFlights.<br>如果您可以为我们更好的发展在<a href='/donate.html' target='_blank'>提供一些捐助那就太好了</a>!"
@@ -1248,6 +1249,7 @@ msgstr "纬度必须在90度(北)和-90度(南)范围内."
 # I suggest accepting negative number for if some a day there is an airport nearby the Dead Sea in Middle East... */
 msgid "Please enter a positive number for elevation."
 msgstr "请为海拔输入一个正数."
+# I suggest accepting negative number for if some a day there is an airport nearby the Dead Sea in Middle East... */"
 
 msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."
 msgstr "请参照UTC/GMT输入一个时区, 例如新加坡是+8而纽约是-5. 对于某些非整数时区请使用小数, 例如尼泊尔是+5.75."

@@ -3800,7 +3800,7 @@ msgid "Processing..."
 msgstr "Processando..."
 
 msgid "Profile address: "
-msgstr ""
+msgstr "Endereço do perfil: "
 
 msgid "Please enter a name for this trip."
 msgstr ""

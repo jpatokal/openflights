@@ -2767,7 +2767,7 @@ msgstr ""
 msgid "Not logged in, aborting"
 msgstr "Jūs neprisijungęs, nutraukiama"
 
-# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)
+# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
 msgid "was:"
 msgstr "buvo:"
 
