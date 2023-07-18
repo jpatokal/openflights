@@ -1612,6 +1612,13 @@ msgstr ""
 msgid "Help"
 msgstr "ヘルプ"
 
+#, php-format
+msgid "OpenFlights Help: %s"
+msgstr ""
+
+msgid "Language"
+msgstr "言語"
+
 msgid "Context Help: Airline"
 msgstr ""
 
@@ -1685,6 +1692,9 @@ msgstr ""
 msgid ""
 "To <b>reverse the flight direction</b>, click on the <b>Swap</b> button <img "
 "src=\"/img/swap-icon.png\" height=17 width=17>."
+msgstr ""
+
+msgid "CSV"
 msgstr ""
 
 msgid "Context Help: Comma-Separated Value (CSV) Format"
@@ -1977,6 +1987,9 @@ msgstr ""
 msgid "Original release."
 msgstr ""
 
+msgid "Database"
+msgstr "データベース"
+
 msgid "Context Help: Databases"
 msgstr ""
 
@@ -2099,6 +2112,9 @@ msgstr ""
 
 msgid "Return"
 msgstr ""
+
+msgid "Time"
+msgstr "時間"
 
 msgid "Context Help: Time"
 msgstr ""
@@ -2238,6 +2254,9 @@ msgid ""
 "<b>20:40</b>."
 msgstr ""
 
+msgid "Trips"
+msgstr ""
+
 msgid "Context Help: Trips"
 msgstr ""
 
@@ -2274,9 +2293,6 @@ msgid ""
 "<img src=\"/img/icon_edit.png\" height=17 width=17> to see the trip address "
 "for sharing with others."
 msgstr ""
-
-msgid "Language"
-msgstr "言語"
 
 msgid "Airline, railway, road transport and shipping search"
 msgstr "航空、鉄道、車および船会社検索"
@@ -2376,9 +2392,6 @@ msgstr "ニュージーランド"
 
 msgid "None"
 msgstr "なし"
-
-msgid "Database"
-msgstr "データベース"
 
 msgid "Show only major (IATA) airports?"
 msgstr "主要な空港（IATAコード有り）のみ"
@@ -2813,9 +2826,6 @@ msgstr "CSVファイルを開けられませんでした。"
 #, php-format
 msgid "Unknown file type %s"
 msgstr ""
-
-msgid "Time"
-msgstr "時間"
 
 msgid "Reg"
 msgstr "機体記号"

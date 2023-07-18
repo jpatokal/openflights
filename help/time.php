@@ -1,19 +1,25 @@
 <?php
 require_once "../php/locale.php";
+require_once "../php/db_pdo.php";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
-        <title>OpenFlights Help: Time</title>
+        <title><?php echo sprintf(_('OpenFlights Help: %s'), _('Time')); ?></title>
         <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
         <link rel="stylesheet" href="/openflights.css" type="text/css">
         <link rel="stylesheet" href="/css/help.css" type="text/css">
         <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
         <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
+        <script type="text/javascript" src="/js/functions.js"></script>
+        <script type="text/javascript" src="/js/Gettext.min.js"></script>
     </head>
 
     <body>
     <div id="contexthelp">
+        <span style="float: right"><?php echo _("Language"); ?><br>
+            <?php locale_pulldown($dbh, $locale); ?>
+        </span>
 
         <h1><?php echo _('Context Help: Time'); ?></h1>
 

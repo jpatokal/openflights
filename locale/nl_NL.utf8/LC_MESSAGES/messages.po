@@ -1612,6 +1612,13 @@ msgstr ""
 msgid "Help"
 msgstr "Help"
 
+#, php-format
+msgid "OpenFlights Help: %s"
+msgstr ""
+
+msgid "Language"
+msgstr "Taal"
+
 msgid "Context Help: Airline"
 msgstr ""
 
@@ -1685,6 +1692,9 @@ msgstr ""
 msgid ""
 "To <b>reverse the flight direction</b>, click on the <b>Swap</b> button <img "
 "src=\"/img/swap-icon.png\" height=17 width=17>."
+msgstr ""
+
+msgid "CSV"
 msgstr ""
 
 msgid "Context Help: Comma-Separated Value (CSV) Format"
@@ -1977,6 +1987,9 @@ msgstr ""
 msgid "Original release."
 msgstr ""
 
+msgid "Database"
+msgstr "Database"
+
 msgid "Context Help: Databases"
 msgstr ""
 
@@ -2099,6 +2112,9 @@ msgstr ""
 
 msgid "Return"
 msgstr ""
+
+msgid "Time"
+msgstr "Tijd"
 
 msgid "Context Help: Time"
 msgstr ""
@@ -2238,6 +2254,9 @@ msgid ""
 "<b>20:40</b>."
 msgstr ""
 
+msgid "Trips"
+msgstr ""
+
 msgid "Context Help: Trips"
 msgstr ""
 
@@ -2274,9 +2293,6 @@ msgid ""
 "<img src=\"/img/icon_edit.png\" height=17 width=17> to see the trip address "
 "for sharing with others."
 msgstr ""
-
-msgid "Language"
-msgstr "Taal"
 
 msgid "Airline, railway, road transport and shipping search"
 msgstr "Zoeken naar vlucht-, spoorweg-, wegtransport of scheepvaart"
@@ -2379,9 +2395,6 @@ msgstr "Nieuw Zeeland"
 
 msgid "None"
 msgstr "Meer"
-
-msgid "Database"
-msgstr "Database"
 
 msgid "Show only major (IATA) airports?"
 msgstr "Alleen grote (IATA) luchthavens tonen?"
@@ -2827,9 +2840,6 @@ msgstr "Openen CSV bestand niet mogelijk."
 #, php-format
 msgid "Unknown file type %s"
 msgstr ""
-
-msgid "Time"
-msgstr "Tijd"
 
 msgid "Reg"
 msgstr "Reg"
