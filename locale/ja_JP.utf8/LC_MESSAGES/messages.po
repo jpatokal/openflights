@@ -928,7 +928,7 @@ msgid "Why is OpenFlights better than other similar services?"
 msgstr ""
 
 msgid ""
-"Well, as far as we know there actually isn't anything <i>quite</i> like "
+"Well, as far as we know, there actually isn't anything <i>quite</i> like "
 "OpenFlights out there, but here are some things that separate us from the "
 "putative competition:"
 msgstr ""
@@ -939,8 +939,21 @@ msgid ""
 msgstr ""
 
 msgid ""
+"OpenFlights is <b>user-friendly and efficient</b>. Everything's on the same "
+"page!"
+msgstr ""
+
+msgid "OpenFlights <b>makes searching really easy</b>. Point and click!"
+msgstr ""
+
+msgid ""
 "OpenFlights has a <b>powerful filter</b>. Three clicks, and your map will "
 "show only Singapore Airlines flights in business class in 2007."
+msgstr ""
+
+msgid ""
+"OpenFlights <b>works in realtime</b>. Make any change, and you'll see it "
+"right then and there."
 msgstr ""
 
 msgid ""

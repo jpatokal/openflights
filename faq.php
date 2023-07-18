@@ -63,13 +63,13 @@ require_once "./php/locale.php";
 
         <h4><?php echo _('Why is OpenFlights better than other similar services?'); ?></h4>
 
-        <p><?php echo _("Well, as far as we know there actually isn't anything <i>quite</i> like OpenFlights out there, but here are some things that separate us from the putative competition:"); ?></p>
+        <p><?php echo _("Well, as far as we know, there actually isn't anything <i>quite</i> like OpenFlights out there, but here are some things that separate us from the putative competition:"); ?></p>
         <ul>
           <li><?php echo _('OpenFlights has a <b>dynamic map</b>. You can pan, zoom, select, scroll and explore all you like!'); ?></li>
-          <li> echo _('OpenFlights is <b>user-friendly and efficient</b>. Everything's on the same page!'); ?></li>
-          <li> echo _('OpenFlights <b>makes searching really easy</b>. Point and click!'); ?></li>
+          <li><?php  echo _("OpenFlights is <b>user-friendly and efficient</b>. Everything's on the same page!"); ?></li>
+          <li><?php  echo _('OpenFlights <b>makes searching really easy</b>. Point and click!'); ?></li>
           <li><?php echo _('OpenFlights has a <b>powerful filter</b>. Three clicks, and your map will show only Singapore Airlines flights in business class in 2007.'); ?></li>
-          <li>OpenFlights <b>works in realtime</b>. Make any change, and you'll see it right then and there.'); ?></li>
+          <li><?php echo _("OpenFlights <b>works in realtime</b>. Make any change, and you'll see it right then and there."); ?></li>
           <li><?php echo _('OpenFlights supports <b>"trips"</b> (<a href="/help/trip.php">read more</a>). You can join up any flights together into a trip, which you can then display on its own page and even share with friends.'); ?></li>
           <li><?php echo _("OpenFlights is <b>free in spirit</b>. We don't try to lock you in: it's easy to import your data <i>and</i> export copies for safekeeping."); ?></li>
           <li><?php echo _('OpenFlights is <b>free software</b>. All our source code is licensed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License</a> and can be downloaded from <a href="https://github.com/jpatokal/openflights/">GitHub</a>, so you can set up your own copy or just use the bits you like. <a href="data.php">Airport, airline and route data</a> is freely available as well.'); ?></li>
