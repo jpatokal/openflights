@@ -49,7 +49,7 @@ require_once "./php/locale.php";
 
         <h4><?php echo _('What can I do with OpenFlights?'); ?></h4>
 
-        <p><?php echo _('Quite a few things:'); ?></p>p>
+        <p><?php echo _('Quite a few things:'); ?></p>
         <ul>
           <li><?php echo _("Track exactly how far you've flown and how much time you've spent sitting on a plane. (Quite a few of our members have been to the Moon and back, but nobody has yet reached Mars.)"); ?></li>
           <li><?php echo _("See at a glance where you've been and where you're going."); ?></li>
