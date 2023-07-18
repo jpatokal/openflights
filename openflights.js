@@ -1056,7 +1056,7 @@ function xmlhttpPost(strURL, id, param) {
     } else if (strURL == URL_MAP || strURL == URL_ROUTES) {
       var str = self.xmlHttpReq.responseText;
       if (str.substring(0, 6) == "Signup") {
-        window.location = "/html/settings?new=yes&vbulletin=true";
+        window.location = "/html/settings?new=yes";
       }
       if (str.substring(0, 5) == "Error") {
         $("result").innerHTML =
