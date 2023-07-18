@@ -22,7 +22,7 @@ require_once "../php/locale.php";
             </ul>
 
             <p><?php echo _('Data from OpenAirports and GAD can be preloaded into the search form for easy adding to the OpenFlights DB.'); ?></p>
-            <p><?php echo sprinf(
+            <p><?php echo sprintf(
                 _('Want a copy of this data? See %s'),
                 sprintf('<a href="/data.php">%s</a>.', sprintf(_('OpenFlights: %s'), _('Airport and airline data')))
             ); ?></p>
