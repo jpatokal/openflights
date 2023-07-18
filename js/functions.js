@@ -6,8 +6,21 @@ const RE_TIME = /(^0?[0-9]|1[0-9]|2[0-3]):?([0-5][0-9])$/;
 
 var gt;
 
+var eliteicons;
+
 window.onload = function init() {
   gt = new Gettext({ domain: "messages" });
+
+  eliteicons = [
+    ["S", gt.gettext("Silver Elite"), "/img/silver-star.png"],
+    ["G", gt.gettext("Gold Elite"), "/img/gold-star.png"],
+    ["P", gt.gettext("Platinum Elite"), "/img/platinum-star.png"],
+    [
+      "X",
+      gt.gettext("Thank you for using OpenFlights &mdash; please donate!"),
+      "/img/icon-warning.png",
+    ],
+  ];
 };
 
 // User has changed locale, reload this page with new lang attribute
@@ -126,17 +139,6 @@ function getDST(element) {
   var dst = $(element + "id").value.split(":")[5];
   return !dst || dst == "" ? "N" : dst;
 }
-
-const eliteicons = [
-  ["S", gt.gettext("Silver Elite"), "/img/silver-star.png"],
-  ["G", gt.gettext("Gold Elite"), "/img/gold-star.png"],
-  ["P", gt.gettext("Platinum Elite"), "/img/platinum-star.png"],
-  [
-    "X",
-    gt.gettext("Thank you for using OpenFlights &mdash; please donate!"),
-    "/img/icon-warning.png",
-  ],
-];
 
 // Return HTML string representing user's elite status icon
 // If validity is not null, also return text description and validity period
