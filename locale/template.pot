@@ -2855,3 +2855,25 @@ msgstr ""
 
 msgid "Deleting trip cancelled."
 msgstr ""
+
+#, php-format
+msgid "Airport addition comment submitted for review on existing GitHub Issue: %s; %s"
+msgstr ""
+
+#, php-format
+msgid "Airport edit comment submitted for review on existing GitHub Issue: %s; %s"
+msgstr ""
+
+#, php-format
+msgid "Airport addition issue created for review on new GitHub Issue: %s; %s"
+msgstr ""
+
+#, php-format
+msgid "Airport edit issue created for review on new GitHub Issue:  %s; %s"
+msgstr ""
+
+msgid "Could not submit edit for review, please contact <a href='/about'>support</a>."
+msgstr ""
+
+msgid "Valid until"
+msgstr ""
