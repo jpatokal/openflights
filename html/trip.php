@@ -53,11 +53,11 @@ if ($trid) {
           <td><input type="text" name="url" size="40" value="<?php echo $trip["url"]; ?>"></td>
         </tr><tr>
           <td style="vertical-align: top"><?php echo _("Trip privacy"); ?></td>
-          <td><input type="radio" name="privacy" value="N"<?php condArrOut($trip, "public", "N", "CHECKED"); echo ">"
+          <td><input type="radio" name="privacy" value="N"<?php condOut($trip, "public", "N", "CHECKED"); echo ">"
                     . _("Private (visible only to you)"); ?><br>
-          <input type="radio" name="privacy" value="Y" <?php condArrOut($trip, "public", "Y", "CHECKED"); echo ">"
+          <input type="radio" name="privacy" value="Y" <?php condOut($trip, "public", "Y", "CHECKED"); echo ">"
                     . _("Public (map and stats shared)"); ?><br>
-          <input type="radio" name="privacy" value="O" <?php condArrOut($trip, "public", "0", "CHECKED"); echo ">"
+          <input type="radio" name="privacy" value="O" <?php condOut($trip, "public", "0", "CHECKED"); echo ">"
                     . _("Open (all flight data shared)"); ?></td>
         </tr>
         <tr>
