@@ -2307,7 +2307,7 @@ msgstr "Vägtransport"
 msgid "Shipping"
 msgstr "Fartyg"
 
-# Second company name if any, eg. "ANA" for "All Nippon Airways"
+# Second company name if any, eg. "ANA" for "All Nippon Airways
 msgid "Alternative name"
 msgstr "Alternativt namn"
 
@@ -2765,7 +2765,7 @@ msgstr ""
 msgid "Not logged in, aborting"
 msgstr "Inte inloggad, avbryter"
 
-# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)"
+# Used in "Import" where an airline name was changed: "Brussels Airways (was: Sabena)
 msgid "was:"
 msgstr "var:"
 
@@ -3125,11 +3125,11 @@ msgstr ""
 msgid "Prem.Eco"
 msgstr "Eko.Plus"
 
-# Abbreviation of "Economy"
+# Abbreviation of "Economy
 msgid "Econ"
 msgstr "Ekon"
 
-# Abbreviation of "Premium Economy"
+# Abbreviation of "Premium Economy
 msgid "P.Eco"
 msgstr "E.Plus"
 
@@ -3190,7 +3190,7 @@ msgstr "Antal segment"
 msgid "Mileage"
 msgstr "Antal mil"
 
-# "Magnifying glass" and "hand" controls for map
+# Magnifying glass" and "hand" controls for map
 msgid "Toggle pan and region select mode"
 msgstr "Växla förstoringsglas/markering"
 
@@ -3407,10 +3407,10 @@ msgid "Journey records"
 msgstr "Reserekord"
 
 msgid "Longest"
-msgstr ""
+msgstr "Längsta"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Kortaste"
 
 msgid "Average"
 msgstr "Genomsnittlig"

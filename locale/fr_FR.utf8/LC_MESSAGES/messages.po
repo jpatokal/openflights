@@ -3420,10 +3420,10 @@ msgid "Journey records"
 msgstr "Voyages records"
 
 msgid "Longest"
-msgstr ""
+msgstr "Le plus long"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Le plus court"
 
 msgid "Average"
 msgstr "Moyenne"

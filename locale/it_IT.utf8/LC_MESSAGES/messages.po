@@ -1305,4 +1305,3 @@ msgstr "Elaborando..."
 
 msgid "Profile address:"
 msgstr "Indirizzo del profilo:"
-

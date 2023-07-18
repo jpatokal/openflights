@@ -3421,10 +3421,10 @@ msgid "Journey records"
 msgstr "Viajes registrados"
 
 msgid "Longest"
-msgstr ""
+msgstr "El más largo"
 
 msgid "Shortest"
-msgstr ""
+msgstr "El más corto"
 
 msgid "Average"
 msgstr "Media"

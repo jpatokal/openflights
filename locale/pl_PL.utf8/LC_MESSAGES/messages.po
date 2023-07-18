@@ -3361,10 +3361,10 @@ msgid "Journey records"
 msgstr ""
 
 msgid "Longest"
-msgstr ""
+msgstr "Najdłuższy"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Najkrótszy"
 
 msgid "Average"
 msgstr "Średnio"

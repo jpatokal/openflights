@@ -3411,10 +3411,10 @@ msgid "Journey records"
 msgstr "Records de viagem"
 
 msgid "Longest"
-msgstr ""
+msgstr "Mais longo"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Mais curto"
 
 msgid "Average"
 msgstr "Média"

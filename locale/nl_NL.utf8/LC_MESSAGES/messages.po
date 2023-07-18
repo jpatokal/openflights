@@ -3368,10 +3368,10 @@ msgid "Journey records"
 msgstr "Reisgegevens"
 
 msgid "Longest"
-msgstr ""
+msgstr "Langste"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Kortste"
 
 msgid "Average"
 msgstr "Gemiddelde"

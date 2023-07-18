@@ -3352,10 +3352,10 @@ msgid "Journey records"
 msgstr "旅の記録"
 
 msgid "Longest"
-msgstr ""
+msgstr "最長"
 
 msgid "Shortest"
-msgstr ""
+msgstr "最短"
 
 msgid "Average"
 msgstr "平均"

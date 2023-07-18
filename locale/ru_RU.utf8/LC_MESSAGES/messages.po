@@ -3409,10 +3409,10 @@ msgid "Journey records"
 msgstr "Рекорды перелетов"
 
 msgid "Longest"
-msgstr ""
+msgstr "Самый длинный"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Самый короткий"
 
 msgid "Average"
 msgstr "В среднем"

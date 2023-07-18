@@ -1305,4 +1305,3 @@ msgstr "처리중..."
 
 msgid "Profile address:"
 msgstr "프로파일 주소:"
-

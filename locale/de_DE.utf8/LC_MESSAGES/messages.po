@@ -3417,10 +3417,10 @@ msgid "Journey records"
 msgstr "Reiserekorde"
 
 msgid "Longest"
-msgstr ""
+msgstr "Längster"
 
 msgid "Shortest"
-msgstr ""
+msgstr "Kürzester"
 
 msgid "Average"
 msgstr "Durchschnitt"
@@ -3495,16 +3495,16 @@ msgid "Show airline route map"
 msgstr "Airline Routen-Karte anzeigen"
 
 msgid "Logged in as <b>%1</b>"
-msgstr ""
+msgstr "Eingeloggt als <b>%1</b>"
 
 msgid "Welcome, <b>%1</b> !"
-msgstr ""
+msgstr "Willkommen, <b>%1</b> !"
 
 msgid "Loading"
 msgstr "Laden"
 
 msgid "Hi, <b>%1</b> !"
-msgstr ""
+msgstr "Hi, <b>%1</b> !"
 
 msgid ""
 "<b>Welcome back!</b> We're delighted to see that you like OpenFlights."
@@ -3813,7 +3813,7 @@ msgid "Processing..."
 msgstr "Bearbeitung..."
 
 msgid "Profile address: "
-msgstr ""
+msgstr "Profil-Adresse: "
 
 msgid "Please enter a name for this trip."
 msgstr ""
