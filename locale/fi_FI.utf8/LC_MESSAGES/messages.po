@@ -1613,6 +1613,13 @@ msgstr ""
 msgid "Help"
 msgstr "Ohje"
 
+#, php-format
+msgid "OpenFlights Help: %s"
+msgstr ""
+
+msgid "Language"
+msgstr "Kieli"
+
 msgid "Context Help: Airline"
 msgstr ""
 
@@ -1686,6 +1693,9 @@ msgstr ""
 msgid ""
 "To <b>reverse the flight direction</b>, click on the <b>Swap</b> button <img "
 "src=\"/img/swap-icon.png\" height=17 width=17>."
+msgstr ""
+
+msgid "CSV"
 msgstr ""
 
 msgid "Context Help: Comma-Separated Value (CSV) Format"
@@ -1978,6 +1988,9 @@ msgstr ""
 msgid "Original release."
 msgstr ""
 
+msgid "Database"
+msgstr "Tietokanta"
+
 msgid "Context Help: Databases"
 msgstr ""
 
@@ -2100,6 +2113,9 @@ msgstr ""
 
 msgid "Return"
 msgstr ""
+
+msgid "Time"
+msgstr "Kesto"
 
 msgid "Context Help: Time"
 msgstr ""
@@ -2239,6 +2255,9 @@ msgid ""
 "<b>20:40</b>."
 msgstr ""
 
+msgid "Trips"
+msgstr ""
+
 msgid "Context Help: Trips"
 msgstr ""
 
@@ -2275,9 +2294,6 @@ msgid ""
 "<img src=\"/img/icon_edit.png\" height=17 width=17> to see the trip address "
 "for sharing with others."
 msgstr ""
-
-msgid "Language"
-msgstr "Kieli"
 
 msgid "Airline, railway, road transport and shipping search"
 msgstr "Lento-, rautatie-, maantiekuljetus- ja laivayhtiöhaku"
@@ -2376,9 +2392,6 @@ msgstr "Uusi-Seelanti"
 
 msgid "None"
 msgstr "Ei ole"
-
-msgid "Database"
-msgstr "Tietokanta"
 
 msgid "Show only major (IATA) airports?"
 msgstr "Näytä vain isot (IATA-koodatut) kentät?"
@@ -2821,9 +2834,6 @@ msgstr "CSV-tiedostoa ei voitu avata."
 #, php-format
 msgid "Unknown file type %s"
 msgstr ""
-
-msgid "Time"
-msgstr "Kesto"
 
 msgid "Reg"
 msgstr "Rek.nro."
