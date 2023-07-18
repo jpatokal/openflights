@@ -26,7 +26,7 @@ $logged_in = $uid && !empty($uid);
     </span>
 
       <form name="searchform">
-  <h1><?php echo "OpenFlights: " . _("Airport search"); ?></h1>
+  <h1><?php echo sprintf(_('OpenFlights: %s'), _('Airport search')); ?></h1>
 
   <?php echo _("Fill one or more fields below to search for matching airports."); ?>
     <table>
@@ -53,7 +53,7 @@ $logged_in = $uid && !empty($uid);
     <tr>
           <td><input type="text" name="city" onFocus="setEdited()"></td>
           <td colspan=3>
-            <select name="country">
+            <select name="country" onFocus="setEdited()">
               <option value="">ALL</option>
 <?php
 $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
@@ -65,9 +65,9 @@ foreach ($dbh->query($sql) as $row) {
           </td>
         </tr>
         <tr>
-          <td><?php echo _("Latitude"); ?>&nbsp;(&plusmn;dd)</td>
-          <td><?php echo _("Longitude"); ?>&nbsp;(&plusmn;dd)</td>
-          <td><?php echo _("Elevation"); ?>&nbsp;(ft)</td>
+          <td><?php echo _("Latitude") . "&nbsp;" . _("(&plusmn;dd)"); ?></td>
+          <td><?php echo _("Longitude") . "&nbsp;" . _("(&plusmn;dd)"); ?>&nbsp;</td>
+          <td><?php echo _("Elevation") . "&nbsp;" . _("(ft)"); ?>&nbsp;</td>
           <td><?php echo _("UTC"); ?><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
           <td><?php echo _("DST"); ?><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
         </tr>

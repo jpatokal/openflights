@@ -366,7 +366,6 @@ function xmlhttpPost(strURL, offset, action) {
 }
 
 function describe(action) {
-  // Localised in usage above
   switch (action) {
     case "SEARCH":
       return gt.gettext("Searching...");
@@ -538,6 +537,7 @@ function searchResult(str) {
 // Load data from the search results into the form
 function loadAirport(data) {
   var json = JSON.parse(data);
+  // status != 1 is an error
   if (json["status"] != 1 || json["max"] == 0) {
     var box = getElement("miniresultbox");
     box.style.color = "#FF0000";
