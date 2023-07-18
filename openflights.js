@@ -2119,6 +2119,9 @@ function listFlights(str, desc, id) {
     desc = gt.gettext("Flights:") + " " + getMapTitle(false);
   }
 
+  // TODO: Won't be needed once the endpoint returns JSON.
+  const gcmFlightList = [];
+
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
   table.push(
@@ -2151,19 +2154,19 @@ function listFlights(str, desc, id) {
           gt.gettext("CSV") +
           "' title='" +
           gt.gettext("Comma-Separated Value, for Excel and data processing") +
-          "' align='middle' onclick='JavaScript:exportFlights(\"export\", false)'>" +
+          "' align='middle' onclick='JavaScript:exportFlights(\"export\")'>" +
           "<input type='button' value='" +
           gt.gettext("KML") +
           "' title='" +
           gt.gettext(
             "Keyhole Markup Language, for Google Earth and visualization"
           ) +
-          "' align='middle' onclick='JavaScript:exportFlights(\"KML\", false)'>" +
-          "<input type='button' value='" +
+          "' align='middle' onclick='JavaScript:exportFlights(\"KML\")'>" +
+          "<input id='gcmapbutton' type='button' value='" +
           gt.gettext("GCMap") +
           "' title='" +
           gt.gettext("Great Circle Mapper, for image export") +
-          "' align='middle' onclick='JavaScript:exportFlights(\"gcmap\", true)'>" +
+          "' align='middle'>" +
           "</span>"
       ); // place at the front of the array
     }
@@ -2220,6 +2223,8 @@ function listFlights(str, desc, id) {
       var date = col[5];
       var modeicon = MODE_ICONS[col[21]];
       var modename = modenames[col[21]];
+
+      gcmFlightList.push({ src_code: col[0], dst_code: col[2] });
 
       // Date.parse() doesn't work on YYYY/MM/DD, so we chop it up and use Date.UTC instead (sigh)
       if (
@@ -2345,14 +2350,24 @@ function listFlights(str, desc, id) {
   $("result").innerHTML = table.join("");
   // Refresh sortables code
   sortables_init();
+
+  // Great Circle Mapper button setup
+  document.getElementById("gcmapbutton").onclick = () => {
+    const gcmURL = new URL("http://www.gcmap.com/mapui");
+    gcmURL.searchParams.append(
+      "P",
+      gcmFlightList.map((f) => `${f.src_code}-${f.dst_code}`).join(",")
+    );
+    gcmURL.searchParams.append("MS", "bm"); // 'M'ap 'S'tyle: 'b'lue 'm'arble
+    window.open(gcmURL.href, "openflights_export");
+  };
 }
 
 /**
  * Dump flights to CSV
- * @param type {string} "backup" to export everything, "export" to export only current filter selection, "gcmap" to redirect to gcmap site
- * @param newWindow {boolean} true if we want target URL to open in a new window.
+ * @param type {string} "backup" to export everything, "export" to export only current filter selection
  */
-function exportFlights(type, newWindow) {
+function exportFlights(type) {
   const urlParams = new URLSearchParams(lastQuery);
   // Remove param from the query string, it's not helpful
   urlParams.delete("param");
@@ -2362,12 +2377,7 @@ function exportFlights(type, newWindow) {
   } else {
     specifics = URL_FLIGHTS + "?export=" + type + "&";
   }
-  var url = location.origin + specifics + urlParams.toString();
-  if (newWindow) {
-    window.open(url, "openflights_export");
-  } else {
-    location.href = url;
-  }
+  location.href = location.origin + specifics + urlParams.toString();
 }
 
 const createAirportLinkElement = (apid, text) => {

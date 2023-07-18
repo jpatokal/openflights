@@ -7,11 +7,12 @@ if ($export) {
     if (!$uid || empty($uid)) {
         exit("You must be logged in to export.");
     }
-    if ($export == "export" || $export == "backup") {
-        header("Content-type: text/csv; charset=utf-8");
-        header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d-Hi") . ".csv\"");
-    }
-    if ($export == "export" || $export == "gcmap") {
+
+    header("Content-type: text/csv; charset=utf-8");
+    header("Content-disposition: attachment; filename=\"openflights-$export-" . date("Y-m-d-Hi") . ".csv\"");
+
+    // apply filters to "export" but not "backup"
+    if ($export == "export") {
         $trid = $_GET["trid"];
         $alid = $_GET["alid"];
         $year = $_GET["year"];
@@ -19,7 +20,6 @@ if ($export) {
     }
     $fid = false;
 } else {
-    // export everything unfiltered
     header("Content-type: text/html; charset=utf-8");
 
     $apid = $_POST["id"] ?? ($_GET["id"] ?? "");
@@ -160,11 +160,6 @@ foreach ($sth as $row) {
         $toFlip
     );
 
-    if ($export == "gcmap") {
-        $rows[] = urlencode($src_code . '-' . $dst_code);
-        continue;
-    }
-
     [$src_apid, $dst_apid] = flip($row["src_apid"], $row["dst_apid"], $toFlip);
 
     if ($route) {
@@ -191,7 +186,7 @@ foreach ($sth as $row) {
     if ($export == "export" || $export == "backup") {
         $note = "\"$note\"";
         $src_time = $row["src_time"]
-            // Pad time with space if it's know
+            // Pad time with space if it's known
             ? " " . $row["src_time"]
             : "";
 
@@ -257,16 +252,10 @@ foreach ($sth as $row) {
     );
 }
 
-if ($export == "gcmap") {
-    // Output the redirect URL.
-    header("Location: http://www.gcmap.com/mapui?P=" . implode(',', $rows) . "&MS=bm");
-    return;
-}
-
 if (count($rows)) {
     $separator = ($export == "export" || $export == "backup")
         ? "\r\n"
-        // Not for $export == "gcmap"
+        // We still split on "\n" when processing lists of flights in openflights.js
         : "\n";
 
     echo implode($separator, $rows);
