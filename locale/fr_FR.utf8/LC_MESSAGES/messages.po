@@ -1886,6 +1886,11 @@ msgstr ""
 msgid "17. To_OID"
 msgstr ""
 
+msgid ""
+"Internal OpenFlights airport ID. <font color=\"blue\">Overrides \"To\" if "
+"provided.</font>"
+msgstr ""
+
 msgid "18. Airline_OID"
 msgstr ""
 
@@ -1895,6 +1900,11 @@ msgid ""
 msgstr ""
 
 msgid "19. Plane_OID"
+msgstr ""
+
+msgid ""
+"Internal OpenFlights plane ID. <font color=\"blue\">Overrides \"Plane\" if "
+"provided.</font>"
 msgstr ""
 
 msgid "Airline matching"

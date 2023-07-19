@@ -2895,3 +2895,9 @@ msgstr ""
 
 msgid "OpenFlights <b>works in realtime</b>. Make any change, and you'll see it right then and there."
 msgstr ""
+
+msgid "Internal OpenFlights airport ID. <font color=\"blue\">Overrides \"To\" if provided.</font>"
+msgstr ""
+
+msgid "Internal OpenFlights plane ID. <font color=\"blue\">Overrides \"Plane\" if provided.</font>"
+msgstr ""
