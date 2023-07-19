@@ -9,6 +9,7 @@ require_once "../php/locale.php";
         <link rel="stylesheet" href="/openflights.css" type="text/css">
         <link rel="stylesheet" href="/css/help.css" type="text/css">
         <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
+        <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     </head>
 
     <body>
