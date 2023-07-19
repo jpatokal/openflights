@@ -143,7 +143,7 @@ function payPalOutput($short = true) {
               <td class="data"><?php echo _('Daylight savings time. One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). <i>See also: <a target="_blank" href="help/time.php">Help: Time</a></i>'); ?></td>
             </tr>
             <tr>
-              <td class="head"><?php echo _('Tz database time zone'); ?></td>
+              <td class="head"><?php echo _('Tz database timezone'); ?></td>
               <td class="data"><?php echo _('Timezone in <a href="https://en.wikipedia.org/wiki/Tz_database">"tz" (Olson) format</a>, eg. "America/Los_Angeles".'); ?></td>
             </tr>
             <tr>

@@ -1251,7 +1251,7 @@ msgid "Please enter a positive number for elevation."
 msgstr "请为海拔输入一个正数."
 # I suggest accepting negative number for if some a day there is an airport nearby the Dead Sea in Middle East... */"
 
-msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional timezones, eg. +5.75 for Nepal."
 msgstr "请参照UTC/GMT输入一个时区, 例如新加坡是+8而纽约是-5. 对于某些非整数时区请使用小数, 例如尼泊尔是+5.75."
 
 msgid "You have not entered whether this airport follows Daylight Savings Time (DST). Leave it as Unknown?"

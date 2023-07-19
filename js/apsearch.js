@@ -228,7 +228,7 @@ function xmlhttpPost(strURL, offset, action) {
       if (tz == "" || !re_tz.test(tz) || Math.abs(tz) > 14) {
         alert(
           gt.gettext(
-            "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."
+            "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional timezones, eg. +5.75 for Nepal."
           )
         );
         form.tz.focus();

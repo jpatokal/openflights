@@ -1237,7 +1237,7 @@ msgstr "La latitudine deve essere compresa tra 90 gradi (nord) e -90 gradi (sud)
 msgid "Please enter a positive number for elevation."
 msgstr "Per favore inserisci un numero positivo per l'altitudine"
 
-msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional time zones, eg. +5.75 for Nepal."
+msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional timezones, eg. +5.75 for Nepal."
 msgstr "Per favore inserisci un fuso orario per bilanciare l'orario UTC/GMT, per esempio +8 per Singapore o -5 per New York. Usare i decimali per i fusi orari frazionari, ad esempio +5.75 per il Nepal."
 
 msgid "You have not entered whether this airport follows Daylight Savings Time (DST). Leave it as Unknown?"

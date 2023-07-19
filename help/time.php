@@ -25,7 +25,7 @@ require_once "../php/db_pdo.php";
 
         <p><?php echo _('OpenFlights tries to understand <b>local time</b>, so you can enter local departure and arrival times and have the actual flight duration computed automatically. If you enter only a departure time, OpenFlights will estimate the flight duration based on the length of the flight and suggest an arrival time.'); ?></p>
 
-        <p><?php echo _('To see the time zones and DST status of current airports when adding or editing flights, hover your mouse over the <img src="/img/icon_clock.png" alt="clock" width=16 height=16> icon.'); ?></p>
+        <p><?php echo _('To see the timezones and DST status of current airports when adding or editing flights, hover your mouse over the <img src="/img/icon_clock.png" alt="clock" width=16 height=16> icon.'); ?></p>
 
         <h2><?php echo _('Consistency'); ?></h2>
         <p><?php echo _('Internal consistency between date, time, flight duration and flight distance is enforced as follows:'); ?></p>
@@ -86,7 +86,7 @@ require_once "../php/db_pdo.php";
 
         <h2><?php echo _('Time zones'); ?></h2>
 
-        <p><?php echo _('OpenFlights uses UTC offsets as time zones, so UTC+8 (Singapore) is recorded as "+8" and UTC-5 (New York) as "-5". Time zone data for OpenFlights was obtained from <a href="https://web.archive.org/web/20150407192111/http://www.earthtools.org/webservices.htm">EarthTools</a>.'); ?></p>
+        <p><?php echo _('OpenFlights uses UTC offsets as timezones, so UTC+8 (Singapore) is recorded as "+8" and UTC-5 (New York) as "-5". Time zone data for OpenFlights was obtained from <a href="https://web.archive.org/web/20150407192111/http://www.earthtools.org/webservices.htm">EarthTools</a>.'); ?></p>
 
         <h2><?php echo _('Daylight Savings Time (DST)'); ?></h2>
 
