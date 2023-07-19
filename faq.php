@@ -1,5 +1,6 @@
 <?php
 require_once "./php/locale.php";
+require_once "./php/db_pdo.php";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -10,11 +11,18 @@ require_once "./php/locale.php";
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
+    <script type="text/javascript" src="/js/Gettext.min.js"></script>
+    <script type="text/javascript" src="/js/functions.js"></script>
     <!--#include virtual="/html/analytics.html" -->
   </head>
 
   <body>
     <div id="mainContainer">
+      <div id="contexthelp">
+          <span style="float: right"><?php echo _("Language"); ?><br>
+            <?php locale_pulldown($dbh, $locale); ?>
+          </span>
+        </div>
       <div id="sideBarContentWrapper">
 
     <div id="contentContainer">
@@ -86,7 +94,7 @@ require_once "./php/locale.php";
         <p><?php echo _('Yes! The heavy lifting of drawing the maps is handled by your browser, not any central server. The database is built to scale up and already has over 1,500,000 flights and routes loaded.'); ?></p>
 
         <h4><?php echo _('How do I start punching in my own flights?'); ?></h4>
-        <p>J<?php echo _('ust click on <a href="/html/settings?new=yes">Sign up</a> and pick a username. Your account will be created instantly, no e-mail confirmation or other tiresome hassles needed.'); ?></p>
+        <p>J<?php echo _('Just click on <a href="/html/settings?new=yes">Sign up</a> and pick a username. Your account will be created instantly, no e-mail confirmation or other tiresome hassles needed.'); ?></p>
 
         <h2><?php echo _('Features and bugs'); ?></h2>
 

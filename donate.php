@@ -2,6 +2,7 @@
 session_start();
 
 require_once "./php/locale.php";
+require_once "./php/db_pdo.php";
 
 function payPalOutput($buttonId){
     ?>
@@ -24,11 +25,19 @@ function payPalOutput($buttonId){
         <link rel="stylesheet" href="/openflights.css" type="text/css">
         <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
         <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
+        <script type="text/javascript" src="/js/Gettext.min.js"></script>
+        <script type="text/javascript" src="/js/functions.js"></script>
     </head>
 
-  <body>
+    <body>
     <div id="mainContainer">
-      <div id="sideBarContentWrapper">
+        <div id="contexthelp">
+            <span style="float: right"><?php echo _("Language"); ?><br>
+                <?php locale_pulldown($dbh, $locale); ?>
+            </span>
+        </div>
+
+    <div id="sideBarContentWrapper">
 
     <div id="contentContainer">
       <div id="nonmap">
