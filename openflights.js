@@ -133,10 +133,16 @@ const MODE_ICONS = {
 const MODE_SPEEDS = { F: 500, T: 100, R: 60, S: 40 };
 var toplimits;
 
-// Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
+/**
+ * Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
+ * @type {RegExp}
+ */
 const RE_DATE =
   /^((19|20)\d\d)[- /.]?([1-9]|0[1-9]|1[012])[- /.]?([1-9]|0[1-9]|[12][0-9]|3[01])$/;
-// Validate numeric value
+/**
+ * Validate numeric value
+ * @type {RegExp}
+ */
 const RE_NUMERIC = /^[0-9]*$/;
 
 var lasturl;
@@ -561,7 +567,10 @@ function clusterRadius(feature) {
   return radius;
 }
 
-// Extract arguments from URL (/command/value, eg. /trip/123 or /user/foo)
+/**
+ * Extract arguments from URL (/command/value, eg. /trip/123 or /user/foo)
+ * @returns {string[]|*[]}
+ */
 function parseUrl() {
   // http://foobar.com/name/xxx#blah *or* xxx?blah=blah
   // 0      1          2    3   4         3   4
@@ -585,8 +594,19 @@ function projectedLine(points) {
   return line;
 }
 
-// Draw a flight connecting (x1,y1)-(x2,y2)
-// Note: Values passed in *must already be parsed as floats* or very strange things happen
+/**
+ * Draw a flight connecting (x1,y1)-(x2,y2)
+ * Note: Values passed in *must already be parsed as floats* or very strange things happen
+ * @param x1
+ * @param y1
+ * @param x2
+ * @param y2
+ * @param count
+ * @param distance
+ * @param color
+ * @param stroke
+ * @returns {*[]}
+ */
 function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   if (!color) {
     color = COLOR_NORMAL;
@@ -635,10 +655,15 @@ function drawLine(x1, y1, x2, y2, count, distance, color, stroke) {
   return features;
 }
 
-//
-// `autocomplete.js` wrapper to encapsulate logic dealing with setting up the
-// autocomplete widgets and interacting with the autocomplete API endpoint.
-//
+/**
+ * `autocomplete.js` wrapper to encapsulate logic dealing with setting up the
+ *  autocomplete widgets and interacting with the autocomplete API endpoint.
+ * @param inputId
+ * @param searchType
+ * @param successCb
+ * @param failureCb
+ * @param preprocessCb
+ */
 function prepareAutocomplete(
   inputId,
   searchType,
@@ -704,12 +729,20 @@ function prepareAutocomplete(
   });
 }
 
-//
-// Draw airport (or just update marker if it exists already)
-// Returns true if a new marker was created, or false if it existed already
-//
-// coreid -- apid of "core" airport at the center of a map of routes
-//
+/**
+ * Draw airport (or just update marker if it exists already)
+ *
+ * @param airportLayer
+ * @param apdata
+ * @param name
+ * @param city
+ * @param country
+ * @param count
+ * @param formattedName
+ * @param opacity
+ * @param coreid apid of "core" airport at the center of a map of routes
+ * @returns {boolean} Returns true if a new marker was created, or false if it existed already
+ */
 function drawAirport(
   airportLayer,
   apdata,
@@ -749,7 +782,7 @@ function drawAirport(
     country +
     "</small>";
 
-  // Select icon based on a number of flights (0...AIRPORT_ICONS.length-1)
+  // Select icon based on the number of flights (0...AIRPORT_ICONS.length-1)
   var colorIndex =
     Math.floor((count / airportMaxFlights) * AIRPORT_ICONS.length) + 1;
 
@@ -799,7 +832,10 @@ function drawAirport(
   return feature;
 }
 
-// Run when the user clicks on an airport marker
+/**
+ * Run when the user clicks on an airport marker
+ * @param airport
+ */
 function onAirportSelect(airport) {
   function encodeURIQuote(str) {
     return encodeURI(str).replace("'", "&apos;");
@@ -1519,8 +1555,11 @@ function xmlhttpPost(strURL, id, param) {
   self.xmlHttpReq.send(query);
 }
 
-// Set up filter options from the database result
-// (also copies the list of trips into the editor)
+/**
+ * Set up filter options from the database result
+ * (also copies the list of trips into the editor)
+ * @param str {string}
+ */
 function updateFilter(str) {
   var master = str.split("\n");
   var trips = master[3];
@@ -1699,16 +1738,16 @@ function getMapTitle(closable) {
   return text;
 }
 
-/*
+/**
  * Create a <SELECT> box from row of (id;name)
  *
- * name: document name (id) of select element
- * allopts: "No filtering" option
- * id: id to match col 1 against
- * rows: Array of strings
- * length: maximum length (omit or set to <= 0 to allow any length)
- * hook: Function to call on value change, with name as argument
- * tabIndex: tabindex
+ * @param selectName document name (id) of select element
+ * @param allopts "No filtering" option
+ * @param id id to match col 1 against
+ * @param rows Array of strings
+ * @param maxlen maximum length (omit or set to <= 0 to allow any length)
+ * @param hook Function to call on value change, with name as argument
+ * @param tabIndex tabindex
  */
 function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   var select =
@@ -1774,7 +1813,14 @@ function createSelect(selectName, allopts, id, rows, maxlen, hook, tabIndex) {
   return select;
 }
 
-// If the current value is given, don't add "All" option
+/**
+ * If the current value is given, don't add "All" option
+ * @param selectName
+ * @param opts
+ * @param hook
+ * @param current
+ * @returns {string}
+ */
 function createSelectFromArray(selectName, opts, hook, current) {
   var select =
     "<select style='width: 100px' id='" +
@@ -1802,8 +1848,15 @@ function createSelectFromArray(selectName, opts, hook, current) {
   return select;
 }
 
-// Create a copy of 'select', renamed (incl. hook) as 'name'
-// Note: *not* class="filter", so width is not limited
+/**
+ * Create a copy of 'select', renamed (incl. hook) as 'name'
+ * Note: *not* class="filter", so width is not limited
+ * @param oldSelect
+ * @param name
+ * @param hook
+ * @param selected
+ * @returns {string}
+ */
 function cloneSelect(oldSelect, name, hook, selected) {
   var newSelect = '<select name="' + name + '"';
   if (hook) {
@@ -1833,7 +1886,9 @@ function radioValue(radio) {
   return "";
 }
 
-// Clear all flights, airports and popups
+/**
+ * Clear all flights, airports and popups
+ */
 function clearMap() {
   lineLayer.destroyFeatures();
   airportLayer.destroyFeatures();
@@ -1843,7 +1898,11 @@ function clearMap() {
   }
 }
 
-// Reinsert all flights, airports from the database result
+/**
+ * Reinsert all flights, airports from the database result
+ * @param str {string}
+ * @param url {string}
+ */
 function updateMap(str, url) {
   lineLayer.destroyFeatures();
   airportLayer.destroyFeatures();
@@ -2288,9 +2347,11 @@ function listFlights(str, desc, id) {
   sortables_init();
 }
 
-// Dump flights to CSV
-// type: "backup" to export everything, "export" to export only current filter selection, "gcmap" to redirect to gcmap site
-// newWindow: true if we want target URL to open in a new window.
+/**
+ * Dump flights to CSV
+ * @param type {string} "backup" to export everything, "export" to export only current filter selection, "gcmap" to redirect to gcmap site
+ * @param newWindow {boolean} true if we want target URL to open in a new window.
+ */
 function exportFlights(type, newWindow) {
   const urlParams = new URLSearchParams(lastQuery);
   // Remove param from the query string, it's not helpful
@@ -2325,7 +2386,10 @@ const formatCoordinates = ({ lat, lon }) => {
   } ${latStr}°${lat >= 0 ? directions_short["E"] : directions_short["W"]}`;
 };
 
-// The "Analyze" button (detailed stats)
+/**
+ * The "Analyze" button (detailed stats)
+ * @param str {string}
+ */
 function showStats(str) {
   openPane("result");
   const result = document.getElementById("result");
@@ -2545,7 +2609,7 @@ function showStats(str) {
 }
 
 // Chart configuration.
-var GOOGLE_CHART_OPTIONS = {
+const GOOGLE_CHART_OPTIONS = {
   fontSize: 10,
   // Google seems to be adding a 10px highlights above/below the chart when moused over.
   // The actual chart height should be in chartArea[height] and the div height will be
@@ -2557,16 +2621,19 @@ var GOOGLE_CHART_OPTIONS = {
   pieSliceText: "label",
 };
 
-var GOOGLE_CHART_TWO_COLORS = ["2A416A", "B2C3DF"];
-var GOOGLE_CHART_THREE_COLORS = ["2A416A", "688BC3", "B2C3DF"];
-var GOOGLE_CHART_FOUR_COLORS = ["2A416A", "39588E", "688BC3", "B2C3DF"];
+const GOOGLE_CHART_TWO_COLORS = ["2A416A", "B2C3DF"];
+const GOOGLE_CHART_THREE_COLORS = ["2A416A", "688BC3", "B2C3DF"];
+const GOOGLE_CHART_FOUR_COLORS = ["2A416A", "39588E", "688BC3", "B2C3DF"];
 
-// Generate a pie chart image via Google Charts API
-// targetdiv is the <div> id for where we should place the chart
-// inputdata is a list of {'key': short-name, 'value': number}
-// labeldata is a hash of short-names (Y, C, F) to localized names (Econ, Biz, 1st).
-// e.g. inputdata = F,1:C,2:F,3
-//      labeldata = {F: 'First', C: 'Biz', Y: 'Econ'}
+/**
+ * Generate a pie chart image via Google Charts API
+
+ * @param targetdiv {string} the <div> id for where we should place the chart
+ * @param inputdata {array} a list of {'key': short-name, 'value': number}
+ * @param labeldata {hash} a hash of short-names (Y, C, F) to localized names (Econ, Biz, 1st).
+ *  e.g. inputdata = F,1:C,2:F,3
+ *       labeldata = {F: 'First', C: 'Biz', Y: 'Econ'}
+ */
 function googleChart(targetdiv, inputdata, labeldata) {
   if (!inputdata) {
     return;
@@ -2762,7 +2829,11 @@ function editPointer(offset) {
   }
 }
 
-// Load up parameters of a given flight
+/**
+ * Load up parameters of a given flight
+ * @param fid
+ * @param idx
+ */
 function preEditFlight(fid, idx) {
   fidPtr = idx;
   $("b_prev").disabled = fidPtr <= 0;
@@ -2775,7 +2846,11 @@ function preCopyFlight(fid) {
   xmlhttpPost(URL_FLIGHTS, fid, "COPY");
 }
 
-// Load existing flight data into the input form
+/**
+ * Load existing flight data into the input form
+ * @param str {string}
+ * @param param {string}
+ */
 function editFlight(str, param) {
   // Oops, no matches!?
   if (str == "") {
@@ -2856,7 +2931,9 @@ function editFlight(str, param) {
   majorEdit = false;
 }
 
-// Select correct input editor
+/**
+ * Select correct input editor
+ */
 function newFlight() {
   switch (prefs_editor) {
     case "D":
@@ -2869,9 +2946,11 @@ function newFlight() {
   }
 }
 
-// User has edited a flight's contents
-// if major is true, force a redraw later
-function markAsChanged(major) {
+/**
+ * User has edited a flight's contents
+ * @param major {boolean} if true, forces a redraw later
+ */
+function markAsChanged(major = false) {
   if (major) {
     majorEdit = true;
   }
@@ -2883,17 +2962,24 @@ function markAsChanged(major) {
   }
 }
 
-// Has the user made any changes?
-// If yes, the add button will be enabled (in both ADD and EDIT modes)
+/**
+ * Has the user made any changes?
+ * @returns {boolean} If yes, the add button will be enabled (in both ADD and EDIT modes)
+ */
 function hasChanged() {
   return changed;
 }
 
-// Disable and re-enable submission while a) AJAX requests are pending, b) no changes have been made
-// state={true,false} for enabled,disabled
+/**
+ * Disable and re-enable submission while a) AJAX requests are pending, b) no changes have been made
+ * @param state {boolean} true = enabled, false = disabled
+ */
 function setCommitAllowed(state) {
   state = !state; // enabled=true -> disabled=false
-  if (state) changed = false; // if no commit allowed, then no changes have been made
+  if (state) {
+    // if no commit allowed, then no changes have been made
+    changed = false;
+  }
 
   if (getCurrentPane() == "input") {
     $("b_add").disabled = state;
@@ -2903,7 +2989,9 @@ function setCommitAllowed(state) {
   }
 }
 
-// If clear=true, then the input form is cleared after successful entry
+/**
+ * If clear=true, then the input form is cleared after successful entry
+ */
 function submitFlight() {
   xmlhttpPost(URL_SUBMIT, null, "ADD");
 }
@@ -2912,7 +3000,10 @@ function saveFlight() {
   xmlhttpPost(URL_SUBMIT, false, "EDIT");
 }
 
-// Delete current flight (fid)
+/**
+ * Delete current flight
+ * @param id
+ */
 function deleteFlight(id) {
   if (id) {
     fid = id;
@@ -2925,8 +3016,10 @@ function deleteFlight(id) {
   }
 }
 
-// Handle change of transportation mode
-// If 'mode' is supplied, force it
+/**
+ * Handle change of transportation mode
+ * @param mode {string} If 'mode' is supplied, force it
+ */
 function changeMode(mode) {
   if (!mode) {
     mode = document.forms["inputform"].mode.value;
@@ -2939,7 +3032,11 @@ function changeMode(mode) {
   markAsChanged(true);
 }
 
-// Handle the "add new airports" buttons
+/**
+ * Handle the "add new airports" buttons
+ * @param type
+ * @param apid
+ */
 function popNewAirport(type, apid) {
   if (!apid) {
     apid = 0;
@@ -2955,8 +3052,12 @@ function popNewAirport(type, apid) {
   window.open(url, "Airport", "width=580,height=580,scrollbars=yes");
 }
 
-// Read in newly added airport (from Airport Search)
-// (new for this map, that is, not necessarily DB)
+/**
+ * Read in newly added airport (from Airport Search)
+ * (new for this map, that is, not necessarily DB)
+ * @param data
+ * @param name
+ */
 function addNewAirport(data, name) {
   var element = input_toggle;
   if (input_toggle) {
@@ -2969,7 +3070,12 @@ function addNewAirport(data, name) {
   }
 }
 
-// Handle the "add new airlines" buttons
+/**
+ * Handle the "add new airlines" buttons
+ * @param type
+ * @param name
+ * @param mode
+ */
 function popNewAirline(type, name, mode) {
   if (type) {
     input_al_toggle = type;
@@ -2981,7 +3087,12 @@ function popNewAirline(type, name, mode) {
   window.open(url, "Airline", "width=580,height=580,scrollbars=yes");
 }
 
-// Read in newly added airline
+/**
+ * Read in newly added airline
+ * @param alid
+ * @param name
+ * @param mode
+ */
 function addNewAirline(alid, name, mode) {
   markAsChanged();
   changeMode(mode);
@@ -3015,9 +3126,11 @@ function addNewAirline(alid, name, mode) {
   $(input_al_toggle).style.color = "#000";
 }
 
-//
-// Inject apid into hidden src/dst_apid field after new airport is selected, and draw on map
-//
+/**
+ * Inject apid into hidden src/dst_apid field after new airport is selected, and draw on map
+ * @param inputElementId
+ * @param apid
+ */
 function getSelectedApid(inputElementId, apid) {
   $(inputElementId).style.color = "#000000";
   $(inputElementId + "id").value = apid;
@@ -3026,9 +3139,11 @@ function getSelectedApid(inputElementId, apid) {
   markAsChanged(true); // new airport, force refresh
 }
 
-//
-// Inject alid into hidden alid field after new plane type is selected
-//
+/**
+ * Inject alid into hidden alid field after the new plane type is selected
+ * @param inputElementId
+ * @param alid
+ */
 function getSelectedAlid(inputElementId, alid) {
   $(inputElementId).style.color = "#000000";
   $(inputElementId + "id").value = alid;
@@ -3041,12 +3156,12 @@ function getSelectedPlid(inputElementId, plid) {
   markAsChanged(true); // new plane, force refresh
 }
 
-//
 // Quick search
-//
 
-/// Autocompleted airport or airline
-/// item -- selected autocomplete item with data from the API {label, value}
+/**
+ * Autocompleted airport or airline
+ * @param item selected autocomplete item with data from the API {label, value}
+ */
 function getQuickSearchId(item) {
   const data = item.value.toString();
   let id;
@@ -3062,15 +3177,18 @@ function getQuickSearchId(item) {
   $("qsgo").disabled = false;
 }
 
-// Show map!
+/**
+ * Show map!
+ */
 function goQuickSearch() {
   xmlhttpPost(URL_ROUTES, $("qsid").value);
 }
 
-//
-// Handle the "add new/edit trip" buttons in input
-// thisTrip can be "ADD" (new), "EDIT" (edit selected), or a numeric trip id (edit this)
-//
+/**
+ * Handle the "add new/edit trip" buttons in input
+ * // thisTrip can be "ADD" (new), "EDIT" (edit selected), or a numeric trip id (edit this)
+ * @param thisTrip
+ */
 function editTrip(thisTrip) {
   var url = "/html/trip";
   // default (for `thisTrip == "ADD"`); we'll create a new trip
@@ -3088,7 +3206,13 @@ function editTrip(thisTrip) {
   window.open(url, "TripEditor", "width=500,height=280,scrollbars=yes");
 }
 
-// User has added, edited or deleted trip, so punch it in
+/**
+ * User has added, edited or deleted trip, so punch it in
+ * @param code
+ * @param newTrid
+ * @param name
+ * @param url
+ */
 function newTrip(code, newTrid, name, url) {
   code = parseInt(code);
 
@@ -3129,8 +3253,10 @@ function newTrip(code, newTrid, name, url) {
   markAsChanged();
 }
 
-// When user has manually entered an airport code, try to match it
-// "type" contains the element name
+/**
+ * When the user has manually entered an airport code, try to match it
+ * @param type {string} contains the element name
+ */
 function airportCodeToAirport(type) {
   input_toggle = type;
   markAsChanged(true);
@@ -3156,7 +3282,11 @@ function airportCodeToAirport(type) {
   }
 }
 
-// User has entered invalid input: clear apid, turn field red (unless empty) and remove marker
+/**
+ * User has entered invalid input: clear apid, turn field red (unless empty) and remove marker
+ * @param type
+ * @param airport
+ */
 function invalidateField(type, airport = false) {
   // TODO: Do we need this comparison against placeholder?
   if ($(type).value != "" && $(type).value != $(type).placeholder) {
@@ -3168,8 +3298,10 @@ function invalidateField(type, airport = false) {
   }
 }
 
-// When the user has entered flight number, try to match it to airline
-// type: element invoked
+/**
+ * When the user has entered flight number, try to match it to airline
+ * @param type {string} element invoked
+ */
 function flightNumberToAirline(type) {
   markAsChanged();
   if (type == "NUMBER") {
@@ -3214,12 +3346,15 @@ function flightNumberToAirline(type) {
   }
 }
 
-// Calculate duration of flight given user-entered arrival and departure time
-// param 'AIRPORT': airport changed by user, recompute duration and time at destination
-// param 'ARRIVAL': arrival time changed by user, recompute duration
-// param 'DEPARTURE': date or time at source (departure) changed, recompute time at destination
-// param 'DURATION': duration changed by user, recompute time at destination
-// param 'DISTANCE': recalculate distance *only* if blanked
+/**
+ * Calculate duration of the flight given user-entered arrival and departure time
+ * @param param {string}
+ *  'AIRPORT': airport changed by user, recompute duration and time at destination
+ *  'ARRIVAL': arrival time changed by user, recompute duration
+ *  'DEPARTURE': date or time at source (departure) changed, recompute time at destination
+ *  'DURATION': duration changed by user, recompute time at destination
+ *  'DISTANCE': recalculate distance *only* if blanked
+ */
 function calcDuration(param) {
   var days = 0,
     duration = 0;
@@ -3435,9 +3570,12 @@ function calcDuration(param) {
   markAsChanged();
 }
 
-// Add a temporary source or destination marker over currently selected airport
-// Also calculates distance and duration (unless "quick" is true)
-// type: "src_ap" or "dst_ap"
+/**
+ * Add a temporary source or destination marker over currently selected airport
+ * Also calculates distance and duration (unless "quick" is true)
+ * @param element {string}
+ * @param quick {boolean}
+ */
 function markAirport(element, quick) {
   var icon = element.startsWith("src_ap")
     ? "/img/icon_plane-src.png"
@@ -3575,7 +3713,9 @@ function markAirport(element, quick) {
   }
 }
 
-// Remove input markers and flight lines
+/**
+ * Remove input markers and flight lines
+ */
 function unmarkAirports() {
   if (input_srcmarker) {
     airportLayer.removeFeatures([input_srcmarker]);
@@ -3591,7 +3731,11 @@ function unmarkAirports() {
   }
 }
 
-// Find the highest valid (defined && non-zero apid) airport in multiinput
+/**
+ * Find the highest valid (defined && non-zero apid) airport in multiinput
+ * @param element
+ * @returns {null|string}
+ */
 function markingLimit(element) {
   if (element.startsWith("src_ap")) {
     return "src_ap1";
@@ -3612,9 +3756,12 @@ function markingLimit(element) {
   return "dst_ap" + i;
 }
 
-// Swap airports around
-// If "true" (manual), swap both
-// If "false" (automatic), swap only top to bottom and restore top to original
+/**
+ * Swap airports around
+ * @param manual {boolean}
+ *  If "true" (manual), swap both
+ *  If "false" (automatic), swap only top to bottom and restore top to original
+ */
 function swapAirports(manual) {
   var srcName, srcData;
   if (manual) {
@@ -3649,8 +3796,14 @@ function swapAirports(manual) {
   }
 }
 
-// Given apid or code, find the matching airport and either pop it up (select=false) or mark it as selected (select=true)
-// "quick" is passed to markAirport
+/**
+ * Given apid or code, find the matching airport and either pop it up (select=false) or mark it as selected (select=true)
+ * @param apid
+ * @param select {boolean}
+ * @param quick {boolean} passed to markAirport
+ * @param code
+ * @returns {boolean}
+ */
 function selectAirport(apid, select, quick, code) {
   var found = false;
   for (var ap = 0; ap < airportLayer.features.length; ap++) {
@@ -3702,7 +3855,10 @@ function selectAirport(apid, select, quick, code) {
   return false;
 }
 
-// Change number of rows displayed in multiinput
+/**
+ * Change number of rows displayed in multiinput
+ * @param type {string}
+ */
 function changeRows(type) {
   switch (type) {
     case "More":
@@ -3733,8 +3889,11 @@ function changeRows(type) {
   markAirport("dst_ap" + multiinput_rows); // redraw flight path
 }
 
-// In multiinput mode, copy entered airport/airline/date into next row (when empty)
-// Special argument "More" adds a row, "Less" removes one
+/**
+ * In multiinput mode, copy entered airport/airline/date into the next row (when empty)
+ * Special argument "More" adds a row, "Less" removes one
+ * @param source
+ */
 function replicateSelection(source) {
   if (getCurrentPane() != "multiinput") {
     return;
@@ -3779,9 +3938,12 @@ function replicateSelection(source) {
   }
 }
 
-// Given alid, find it in filter
-// if edit is true, set it in editor, else set in map (filter)
-// return true if found, false if not
+/**
+ * Given alid, find it in filter
+ * @param new_alid
+ * @param edit {boolean} if edit is true, set it in editor, else set in map (filter)
+ * @returns {boolean} true if found, false if not
+ */
 function selectAirline(new_alid, edit) {
   var al_select = document.forms["filterform"].Airlines;
   for (var index = 0; index < al_select.length; index++) {
@@ -3810,18 +3972,20 @@ function getAirlineMapIcon(alid) {
   );
 }
 
-//
-// Load route map for this alid
-// (set filter to this airline as well)
-//
+/**
+ * Load route map for this alid
+ * (set filter to this airline as well)
+ * @param alid
+ */
 function showAirlineMap(alid) {
   selectAirline(0, false);
   xmlhttpPost(URL_ROUTES, "L" + alid);
 }
 
-//
-// Context help
-//
+/**
+ * Context help
+ * @param context {string}
+ */
 function help(context) {
   window.open(
     "/help/" + context,
@@ -3830,25 +3994,28 @@ function help(context) {
   );
 }
 
-//
-// Import flights
-//
+/**
+ * Import flights
+ */
 function openImport() {
   window.open("/html/import", "Import", "width=900,height=600,scrollbars=yes");
 }
 
-//
-// Change settings
-//
+/**
+ * Change settings
+ */
 function settings() {
   location.href = "/html/settings";
 }
 
-//
-// Handle keypresses
-// 1. Let users log in by pressing ENTER
-// 2. Get codes if user hits TAB on autocompletable field
-//
+/**
+ * Handle keypresses
+ *  1. Let users log in by pressing ENTER
+ *  2. Get codes if user hits TAB on autocompletable field
+ * @param e
+ * @param element
+ * @returns {boolean}
+ */
 function keyPress(e, element) {
   var keycode;
   if (window.event) {
@@ -3900,13 +4067,14 @@ function keyPress(e, element) {
   return true;
 }
 
-//
-// Login and logout
-// param --
-// null: "Normal" login from front page
-// REFRESH: User has session open and is coming back
-// NEWUSER: User using OF for the first time (or has zero flights)
-//
+/**
+ * Login and logout
+ * @param str {string}
+ * @param param {string}
+ *  null: "Normal" login from front page
+ *  REFRESH: User has session open and is coming back
+ *  NEWUSER: User using OF for the first time (or has zero flights)
+ */
 function login(str, param) {
   var result = JSON.parse(str);
   var name = result["name"];
@@ -4038,20 +4206,27 @@ function getMode() {
 }
 
 // Functions for swapping between lower panes
-// Possible panes: 'ad', 'result', 'input', 'help'
 
+/**
+ * @returns {string} Possible panes: 'ad', 'result', 'input', 'help'
+ */
 function getCurrentPane() {
   return paneStack[paneStack.length - 1];
 }
 
-// Return true if we are in detailed or multi edit mode
+/**
+ * @returns {boolean} Return true if we are in detailed or multi edit mode
+ */
 function isEditMode() {
   var currentPane = getCurrentPane();
   return currentPane == "input" || currentPane == "multiinput";
 }
 
-// Open a new pane
-// If the pane is open already, do nothing
+/**
+ * Open a new pane
+ * If the pane is open already, do nothing
+ * @param newPane
+ */
 function openPane(newPane) {
   if (paneStack.length > 0) {
     var currentPane = getCurrentPane();
@@ -4064,7 +4239,11 @@ function openPane(newPane) {
   paneStack.push(newPane);
 }
 
-// Check if a named pane is already open, return index if yes
+/**
+ * Check if a named pane is already open, return index if yes
+ * @param pane
+ * @returns {number|null}
+ */
 function findPane(pane) {
   for (var i = 0; i < paneStack.length; i++) {
     if (paneStack[i] == pane) {
@@ -4074,8 +4253,10 @@ function findPane(pane) {
   return null;
 }
 
-// Close current pane
-// If the current pane is the last one, do nothing
+/**
+ * Close current pane
+ * If the current pane is the last one, do nothing
+ */
 function closePane() {
   if (paneStack.length == 1) {
     return;
@@ -4100,7 +4281,9 @@ function closePane() {
   }
 }
 
-// Clear all panes until the base pane (ad)
+/**
+ * Clear all panes until the base pane (ad)
+ */
 function clearStack() {
   while (paneStack.length > 1) {
     closePane();
@@ -4166,7 +4349,10 @@ function openDetailedInput(param) {
   $("input_status").innerHTML = "";
 }
 
-// Open basic (multiflight) editor
+/**
+ * Opens the basic (multiflight) editor
+ * @param param {string}
+ */
 function openBasicInput(param) {
   // Does the user already have an input pane open?
   var p = findPane("input");
@@ -4214,7 +4400,7 @@ function closeInput() {
   }
   closePane();
 
-  // Reload the flights list if we were editing flights, or
+  // Reload the flight list if we were editing flights, or
   // user had a result pane open when they opened a new flight editor
 
   if (
@@ -4226,7 +4412,9 @@ function closeInput() {
   }
 }
 
-// Clear out (restore to defaults) the time indicators in the editor
+/**
+ * Clear out (restore to defaults) the time indicators in the editor
+ */
 function clearTimes() {
   $("src_time").value = "";
   $("dst_time").value = "";
@@ -4234,7 +4422,9 @@ function clearTimes() {
   $("dst_days").style.display = "none";
 }
 
-// YYYY-MM-DD
+/**
+ * @returns {string} YYYY-MM-DD
+ */
 function todayString() {
   var today = new Date();
   var month = today.getMonth() + 1 + "";
@@ -4248,7 +4438,9 @@ function todayString() {
   return today.getFullYear() + "-" + month + "-" + day;
 }
 
-// Clear out (restore to defaults) the input box
+/**
+ * Clear out (restore to defaults) the input box
+ */
 function clearInput() {
   var form;
   if (getCurrentPane() == "input") {
@@ -4320,7 +4512,9 @@ function showLoadingAnimation(show) {
   $("ajaxstatus").style.display = show ? "inline" : "none";
 }
 
-// user has selected a new field in the extra filter
+/**
+ * user has selected a new field in the extra filter
+ */
 function setExtraFilter() {
   var key = document.forms["filterform"].Extra.value,
     span = "";
@@ -4369,7 +4563,9 @@ function setExtraFilter() {
   $("filter_extra_span").innerHTML = span;
 }
 
-// refresh_all: false = only flights, true = reload everything
+/**
+ * @param refresh_all {boolean} false = only flights, true = reload everything
+ */
 function clearFilter(refresh_all) {
   var form = document.forms["filterform"];
 
@@ -4391,10 +4587,12 @@ function clearFilter(refresh_all) {
   refresh(refresh_all);
 }
 
-// Refresh user's display after change in filter
-// init = true: reloads all user data
-// init = false: loads flight data and stats only
-// lasturl: either URL_MAP or URL_ROUTES (set in updateMap())
+/**
+ * Refresh user's display after change in filter
+ * @param init {boolean} true: reloads all user data. false: loads flight data and stats only
+ *
+ * lasturl: either URL_MAP or URL_ROUTES (set in updateMap())
+ */
 function refresh(init) {
   closePopup();
   if (typeof lasturl == "undefined") {
@@ -4406,8 +4604,9 @@ function refresh(init) {
   xmlhttpPost(lasturl, apid, init);
 }
 
-/* Refresh the Google Ad iframe
- * TODO: How to make the second ad refresh?
+/**
+ *  Refresh the Google Ad iframe
+ * @TODO: How to make the second ad refresh?
  */
 function refreshAd() {
   var d = $("ad");

@@ -1,7 +1,9 @@
 /*
  * Create new trips and modify existing ones
  */
+
 const URL_TRIP = "/php/trip.php";
+
 var trid = 0;
 var type = "NEW";
 
@@ -58,7 +60,10 @@ function xmlhttpPost(strURL, type) {
   self.xmlHttpReq.send(query);
 }
 
-// Validate form
+/**
+ * Validate form
+ * @param type
+ */
 function validate(type) {
   var form = document.forms["tripform"];
   if (form.name.value == "") {
@@ -71,7 +76,9 @@ function validate(type) {
   xmlhttpPost(URL_TRIP, type);
 }
 
-// Delete trip?
+/**
+ * Delete trip?
+ */
 function deleteTrip() {
   if (
     confirm(
@@ -87,7 +94,10 @@ function deleteTrip() {
   }
 }
 
-// Check if trip creation/editing/deletion succeeded
+/**
+ * Check if trip creation/editing/deletion succeeded
+ * @param str {string}
+ */
 function editTrip(str) {
   var code = str.split(";")[0],
     trid = str.split(";")[1],

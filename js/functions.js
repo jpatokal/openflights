@@ -1,7 +1,10 @@
 // These can't live in openflights.js, because then we also have to load OpenLayers.min.js...
 // Which is potentially unnecessary!
 
-// Validate 24-hr time ([0]0:00-23:59)
+/**
+ * Validate 24-hr time ([0]0:00-23:59)
+ * @type {RegExp}
+ */
 const RE_TIME = /(^0?[0-9]|1[0-9]|2[0-3]):?([0-5][0-9])$/;
 
 var gt;
@@ -23,8 +26,10 @@ window.onload = function init() {
   ];
 };
 
-// User has changed locale, reload this page with new lang attribute
-// (preserve any other attributes, but nuke anchors and overwrite existing lang if any)
+/**
+ * User has changed locale, reload this page with new lang attribute
+ * (preserve any other attributes, but nuke anchors and overwrite existing lang if any)
+ */
 function changeLocale() {
   var locale = "lang=" + document.getElementById("locale").value,
     re_lang = /lang=...../,
@@ -39,7 +44,13 @@ function changeLocale() {
   location.href = url;
 }
 
-// Check if DST is active
+/**
+ * Check if DST is active
+ * @param type
+ * @param date
+ * @param year
+ * @returns {boolean}
+ */
 function checkDST(type, date, year) {
   switch (type) {
     case "E":
@@ -92,8 +103,14 @@ function checkDST(type, date, year) {
   return false;
 }
 
-// Get Nth day of type X in a given month (e.g., third Sunday in March 2009)
-// 'type' is 0 for Sun, 1 for Mon, etc
+/**
+ * Get Nth day of type X in a given month (e.g., third Sunday in March 2009)
+ * @param year
+ * @param month
+ * @param nth
+ * @param type 0 for Sun, 1 for Mon, etc
+ * @returns {Date}
+ */
 function getNthDay(year, month, nth, type) {
   var date = new Date();
   date.setFullYear(year, month - 1, 1); // Date object months start from 0
@@ -105,7 +122,13 @@ function getNthDay(year, month, nth, type) {
   return date;
 }
 
-// Get the last day of type X in a given month (e.g., last Sunday in March 2009)
+/**
+ * Get the last day of type X in a given month (e.g., last Sunday in March 2009)
+ * @param year
+ * @param month
+ * @param type
+ * @returns {Date}
+ */
 function getLastDay(year, month, type) {
   var date = new Date();
   date.setFullYear(year, month, 1); // Date object months start from 0, so this is +1
@@ -114,34 +137,65 @@ function getLastDay(year, month, type) {
   return date;
 }
 
-// Parse a time string into a float
+/**
+ * Parse a time string into a float
+ * @param time_str string
+ * @returns {number}
+ */
 function parseTimeString(time_str) {
   var chunks = time_str.match(RE_TIME);
   return parseFloat(chunks[1]) + parseFloat(chunks[2] / 60);
 }
 
-// Splice and dice apdata chunks
-// code:apid:x:y:tz:dst
+/**
+ * @param element code:apid:x:y:tz:dst
+ * @returns {*}
+ */
 function getApid(element) {
   return $(element + "id").value.split(":")[1];
 }
+
+/**
+ * @param element code:apid:x:y:tz:dst
+ * @returns {*}
+ */
 function getX(element) {
   return $(element + "id").value.split(":")[2];
 }
+
+/**
+ * @param element code:apid:x:y:tz:dst
+ * @returns {*}
+ */
 function getY(element) {
   return $(element + "id").value.split(":")[3];
 }
+
+/**
+ * @param element code:apid:x:y:tz:dst
+ * @returns {*}
+ */
 function getTZ(element) {
   var tz = $(element + "id").value.split(":")[4];
   return !tz || tz == "" ? 0 : parseFloat(tz);
 }
+
+/**
+ * @param element code:apid:x:y:tz:dst
+ * @returns {*}
+ */
 function getDST(element) {
   var dst = $(element + "id").value.split(":")[5];
   return !dst || dst == "" ? "N" : dst;
 }
 
-// Return HTML string representing user's elite status icon
-// If validity is not null, also return text description and validity period
+/**
+ * Return HTML string representing user's elite status icon
+ * If validity is not null, also return text description and validity period
+ * @param e
+ * @param validity
+ * @returns {string}
+ */
 function getEliteIcon(e, validity) {
   if (!e || e == "") {
     return "";
@@ -179,7 +233,11 @@ function getEliteIcon(e, validity) {
   return "";
 }
 
-// Given element "select"; select option matching "value" or #0 if not found
+/**
+ * Given element "select"; select option matching "value" or #0 if not found
+ * @param select
+ * @param value
+ */
 function selectInSelect(select, value) {
   if (!select) {
     return;

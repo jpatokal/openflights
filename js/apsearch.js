@@ -1,6 +1,7 @@
 /*
  * Search for airport in database(s)
  */
+
 const URL_APSEARCH = "/php/apsearch.php";
 
 const DB_OPENFLIGHTS = "airports";
@@ -376,7 +377,7 @@ function describe(action) {
   }
 }
 
-/*
+/**
  * Display results of search
  */
 function searchResult(str) {
@@ -534,7 +535,10 @@ function searchResult(str) {
   box.innerHTML = table;
 }
 
-// Load data from the search results into the form
+/**
+ * Load data from the search results into the form
+ * @param data
+ */
 function loadAirport(data) {
   var json = JSON.parse(data);
   // status != 1 is an error
@@ -584,7 +588,10 @@ function loadAirport(data) {
   box.style.color = "#222";
 }
 
-// Did we manage to record the airport?
+/**
+ * Did we manage to record the airport?
+ * @param str {string}
+ */
 function recordResult(str) {
   var json = JSON.parse(str);
   var box = getElement("miniresultbox");
@@ -632,7 +639,9 @@ function setEdited() {
   }
 }
 
-// Clear form -- everything *except* the database
+/**
+ * Clear form -- everything *except* the database
+ */
 function clearSearch() {
   var form = document.forms["searchform"];
   form.airport.value = "";
@@ -668,7 +677,11 @@ function isEditMode() {
   return isLoggedIn() && parent.opener.isEditMode();
 }
 
-// Airport selected, kick it back to the main window and close this
+/**
+ * Airport selected, kick it back to the main window and close this
+ * @param data
+ * @param name
+ */
 function selectAirport(data, name) {
   parent.opener.addNewAirport(data, unescape(name));
   window.close();

@@ -31,7 +31,12 @@ function gcDistance(lat1, lon1, lat2, lon2) {
   return Math.floor(d * EARTH_RADIUS);
 }
 
-// Compute great circle bearing from point "from" towards point "to"
+/**
+ * Compute great circle bearing from point "from" towards point "to"
+ * @param from
+ * @param to
+ * @returns {number|null}
+ */
 function gcBearingTo(from, to) {
   var x = new Array(2),
     y = new Array(2),
@@ -101,7 +106,7 @@ function gcWaypoint(from, distance, bearing) {
   return wp;
 }
 
-/*
+/**
  * Return array of GC waypoints between two points
  * Flips across dateline if needed, and removes any invisible points
  */
@@ -158,13 +163,21 @@ function gcPath(startPoint, endPoint) {
   return pointList;
 }
 
-// Check if point is a point
+/**
+ * Check if point is a point
+ * @param point
+ * @returns {boolean}
+ */
 function isValid(point) {
   return point.x != null && point.y != null && point.x != NaN && point.y != NaN;
 }
 
-// Compute extent for visible data (-180 to 180)
-// Known bug: incorrectly draws the whole map if flight lines span the meridian...
+/**
+ * Compute the extent for visible data (-180 to 180)
+ * nown bug: incorrectly draws the whole map if flight lines span the meridian...
+ * @param layer
+ * @returns {*|null}
+ */
 function getVisibleDataExtent(layer) {
   var bounds = layer.getDataExtent();
   if (!bounds) {
