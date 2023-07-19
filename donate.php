@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require_once "./php/locale.php";
 require_once "./php/db_pdo.php";
@@ -10,7 +9,7 @@ function payPalOutput($buttonId){
     <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" name="hosted_button_id" value="<?php echo $buttonId; ?>">
     <input type="hidden" name="on0" value="Username">
-    <input type="hidden" name="os0" value="<?php echo $_SESSION["name"]; ?>">
+    <input type="hidden" name="os0" value="<?php echo $_SESSION["name"] ?? ''; ?>">
     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
     <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
     </form>
@@ -111,15 +110,14 @@ function payPalOutput($buttonId){
         </table>
 
 <?php
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? false;
 $logged_in = $uid && !empty($uid);
 if ($logged_in) {
     echo '<p>' . sprintf(_('You are logged in as <b>%s</b>.'), $_SESSION["name"]) . '</p>';
 } else {
-    echo '<p><b>' . _('Please <a href="/">log in</a> before donating!') . '</b>';
+    echo '<p><b>' . _('Please <a href="/">log in</a> before donating!') . '</b></p>';
 } ?>
-        <?php echo _('Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted. Please allow one business day for your elite status to be activated.'); ?>
-      </p>
+          <p><?php echo _('Our payments are processed through PayPal, but you do <i>not</i> need a PayPal account: Visa, MasterCard, American Express and Discover cards are also accepted. Please allow one business day for your elite status to be activated.'); ?></p>
 
         <h4><?php echo _('Limited time offer'); ?></h4>
 
