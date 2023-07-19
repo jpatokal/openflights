@@ -1916,7 +1916,7 @@ msgid "\"Airline_OID\" as internal identifier"
 msgstr ""
 
 msgid ""
-"irst two characters of \"Flight_Number\" as IATA code, if alphanumeric "
+"First two characters of \"Flight_Number\" as IATA code, if alphanumeric "
 "<i>and</i> not numeric (AB, A1, 1A are OK, but 11 is not)"
 msgstr ""
 

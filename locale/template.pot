@@ -2901,3 +2901,6 @@ msgstr ""
 
 msgid "Internal OpenFlights plane ID. <font color=\"blue\">Overrides \"Plane\" if provided.</font>"
 msgstr ""
+
+msgid "First two characters of \"Flight_Number\" as IATA code, if alphanumeric <i>and</i> not numeric (AB, A1, 1A are OK, but 11 is not)"
+msgstr ""

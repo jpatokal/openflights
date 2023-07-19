@@ -76,7 +76,7 @@ require_once "../php/locale.php";
         <p><?php echo _('Airlines are matched in the following order:'); ?></p>
         <ol>
             <li><?php echo _('"Airline_OID" as internal identifier'); ?></li>
-            <li>F<?php echo _('irst two characters of "Flight_Number" as IATA code, if alphanumeric <i>and</i> not numeric (AB, A1, 1A are OK, but 11 is not)'); ?></li>
+            <li><?php echo _('First two characters of "Flight_Number" as IATA code, if alphanumeric <i>and</i> not numeric (AB, A1, 1A are OK, but 11 is not)'); ?></li>
             <li><?php echo _('"Airline" as name or alias'); ?></li>
         </ol>
         <p><?php echo _('Note that the airline code (IATA/ICAO) must be supplied in "Flight_Number", <i>not</i> "Airline".'); ?></p>
