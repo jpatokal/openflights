@@ -2458,16 +2458,19 @@ function showStats(str) {
   table +=
     "<tr>" +
     `<td>${gt.gettext("Around the world")}</td>` +
+    // TODO: Better localisation of the x (for "times")
     `<td>${(distance / EARTH_CIRCUMFERENCE).toFixed(2)}x</td>` +
     "</tr>";
   table +=
     "<tr>" +
     `<td>${gt.gettext("To the Moon")}</td>` +
+    // TODO: Better localisation of the x (for "times")
     `<td>${(distance / MOON_DISTANCE).toFixed(3)}x</td>` +
     "</tr>";
   table +=
     "<tr>" +
     `<td>${gt.gettext("To Mars")}</td>` +
+    // TODO: Better localisation of the x (for "times")
     `<td>${(distance / MARS_DISTANCE).toFixed(4)}x</td>` +
     "</tr>";
   table += "</table>";
@@ -2599,7 +2602,8 @@ function showStats(str) {
       key: stat.class,
       value: stat.distance,
     })),
-    classes_short
+    classes_short,
+    ` ${displayUnit}`
   );
 
   googleChart(
@@ -2617,7 +2621,7 @@ const GOOGLE_CHART_OPTIONS = {
   fontSize: 10,
   // Google seems to be adding a 10px highlights above/below the chart when moused over.
   // The actual chart height should be in chartArea[height] and the div height will be
-  // chartHeight+20.  A margin of 10 at the top will ensure the top highlight will show up.
+  // chartHeight+20. A margin of 10 at the top will ensure the top highlight will show up.
   chartArea: { left: 0, top: 10, width: "100%", height: "100" },
   height: 120,
   width: 200,
@@ -2635,10 +2639,12 @@ const GOOGLE_CHART_FOUR_COLORS = ["2A416A", "39588E", "688BC3", "B2C3DF"];
  * @param targetdiv {string} the <div> id for where we should place the chart
  * @param inputdata {array} a list of {'key': short-name, 'value': number}
  * @param labeldata {hash} a hash of short-names (Y, C, F) to localized names (Econ, Biz, 1st).
- *  e.g. inputdata = F,1:C,2:F,3
+ * @param formatSuffix {string|null} suffix to apply to values (such as " mi")
+ *
+ * e.g. inputdata = F,1:C,2:F,3
  *       labeldata = {F: 'First', C: 'Biz', Y: 'Econ'}
  */
-function googleChart(targetdiv, inputdata, labeldata) {
+function googleChart(targetdiv, inputdata, labeldata, formatSuffix = null) {
   if (!inputdata) {
     return;
   }
@@ -2654,6 +2660,7 @@ function googleChart(targetdiv, inputdata, labeldata) {
   // Apply formatter to the "Value" column.
   const formatter = new google.visualization.NumberFormat({
     fractionDigits: 0,
+    suffix: formatSuffix ?? "",
   });
   formatter.format(dataTable, 1);
 
