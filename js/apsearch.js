@@ -395,8 +395,8 @@ function searchResult(str) {
     warning = null;
   }
 
-  var max = json["max"];
-  if (max == 0) {
+  if (json.hasOwnProperty("status") && json["status"] === 0) {
+    // TODO: We're ignoring json["message"]... Do we care?
     table +=
       "<tr><td><i>" +
       gt.gettext("No matches found in this database.") +
