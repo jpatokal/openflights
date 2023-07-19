@@ -365,7 +365,7 @@ msgstr ""
 
 msgid ""
 "Alias of the airline. For example, All Nippon Airways is commonly known as "
-"\"ANA\". "
+"\"ANA\"."
 msgstr ""
 
 msgid "2-letter IATA code, if available."

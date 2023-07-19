@@ -199,7 +199,7 @@ function payPalOutput($short = true) {
             </tr>
             <tr>
               <td class="head"><?php echo _('Alias'); ?></td>
-              <td class="data"><?php echo _('Alias of the airline. For example, All Nippon Airways is commonly known as "ANA". '); ?></td>
+              <td class="data"><?php echo _('Alias of the airline. For example, All Nippon Airways is commonly known as "ANA".'); ?></td>
             </tr>
             <tr>
               <td class="head"><?php echo _('IATA'); ?></td>
