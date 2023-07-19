@@ -3470,8 +3470,14 @@ msgstr "Export"
 msgid "Comma-Separated Value, for Excel and data processing"
 msgstr "Komma-getrennte Daten, für Excel und Datenverarbeitung"
 
+msgid "KML"
+msgstr ""
+
 msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Keyhole Markup Language, für Google Earth und Visualisierung"
+
+msgid "GCMap"
+msgstr ""
 
 msgid "Great Circle Mapper, for image export"
 msgstr ""

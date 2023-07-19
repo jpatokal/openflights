@@ -2956,3 +2956,9 @@ msgstr ""
 
 msgid "on "
 msgstr ""
+
+msgid "KML"
+msgstr ""
+
+msgid "GCMap"
+msgstr ""

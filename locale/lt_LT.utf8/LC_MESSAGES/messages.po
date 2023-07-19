@@ -3462,8 +3462,14 @@ msgstr "Eksportas"
 msgid "Comma-Separated Value, for Excel and data processing"
 msgstr "Kableliu atskirtos reikšmės CSV, eksportui į Excelį"
 
+msgid "KML"
+msgstr ""
+
 msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Keyhole Markup Language, Google Earth ir vizualizacijai"
+
+msgid "GCMap"
+msgstr ""
 
 msgid "Great Circle Mapper, for image export"
 msgstr ""

@@ -3462,8 +3462,14 @@ msgstr "Экспортировать"
 msgid "Comma-Separated Value, for Excel and data processing"
 msgstr "Формат .csv, для Excel и обработки данных"
 
+msgid "KML"
+msgstr ""
+
 msgid "Keyhole Markup Language, for Google Earth and visualization"
 msgstr "Формат KML, для визуализации и Google Earth"
+
+msgid "GCMap"
+msgstr ""
 
 msgid "Great Circle Mapper, for image export"
 msgstr ""

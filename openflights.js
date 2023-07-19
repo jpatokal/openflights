@@ -2080,15 +2080,21 @@ function listFlights(str, desc, id) {
         "<span style='float: right'>" +
           gt.gettext("Export") +
           " " +
-          "<input type='button' value='CSV' title='" +
+          "<input type='button' value='" +
+          gt.gettext("CSV") +
+          "' title='" +
           gt.gettext("Comma-Separated Value, for Excel and data processing") +
           "' align='middle' onclick='JavaScript:exportFlights(\"export\", false)'>" +
-          "<input type='button' value='KML' title='" +
+          "<input type='button' value='" +
+          gt.gettext("KML") +
+          "' title='" +
           gt.gettext(
             "Keyhole Markup Language, for Google Earth and visualization"
           ) +
           "' align='middle' onclick='JavaScript:exportFlights(\"KML\", false)'>" +
-          "<input type='button' value='GCMap' title='" +
+          "<input type='button' value='" +
+          gt.gettext("GCMap") +
+          "' title='" +
           gt.gettext("Great Circle Mapper, for image export") +
           "' align='middle' onclick='JavaScript:exportFlights(\"gcmap\", true)'>" +
           "</span>"
