@@ -3,7 +3,6 @@
  * Andrew Chen - achen.code on big-G's email service
  */
 
-// Constants used elsewhere in this file.
 var CONST = {
   DEBUG: false,
   IMPORT_URL: "/php/submit.php",

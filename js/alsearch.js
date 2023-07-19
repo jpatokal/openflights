@@ -1,6 +1,7 @@
 /*
  * Search for airline in database(s)
  */
+
 const URL_ALSEARCH = "/php/alsearch.php";
 
 var warning;
@@ -225,7 +226,7 @@ function xmlhttpPost(strURL, offset, action) {
   self.xmlHttpReq.send(query);
 }
 
-/*
+/**
  * Display results of search
  */
 function searchResult(str) {
@@ -355,7 +356,10 @@ function searchResult(str) {
   document.getElementById("miniresultbox").innerHTML = table;
 }
 
-// Load data from the search results into the form
+/**
+ * Load data from the search results into the form
+ * @param data {string}
+ */
 function loadAirline(data) {
   var col = JSON.parse(unescape(data));
 
@@ -429,7 +433,9 @@ function recordResult(str) {
   }
 }
 
-// Enable IATA,ICAO,callsign only for flights
+/**
+ * Enable IATA,ICAO,callsign only for flights
+ */
 function changeMode() {
   var form = document.forms["searchform"];
   var mode = form.mode.value;
@@ -440,7 +446,9 @@ function changeMode() {
   form.iatafilter.disabled = disabled;
 }
 
-// Clear form -- everything *except* the database
+/**
+ * Clear form -- everything *except* the database
+ */
 function clearSearch() {
   var form = document.forms["searchform"];
   form.name.value = "";
@@ -456,7 +464,12 @@ function clearSearch() {
   form.alid.value = "";
 }
 
-// Airline selected, kick it back to the main window and close this
+/**
+ * Airline selected, kick it back to the main window and close this
+ * @param data
+ * @param name
+ * @param mode
+ */
 function selectAirline(data, name, mode) {
   if (!parent.opener || !parent.opener.addNewAirline) {
     alert(

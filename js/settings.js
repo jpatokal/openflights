@@ -1,6 +1,7 @@
 /*
  * Create new user accounts and modify existing ones
  */
+
 const URL_SETTINGS = "/php/settings.php";
 
 const PRIVACY_LIST = ["N", "Y", "O"];
@@ -144,7 +145,10 @@ function xmlhttpPost(strURL, type) {
   self.xmlHttpReq.send(query);
 }
 
-// Validate form
+/**
+ * Validate form
+ * @param type
+ */
 function validate(type) {
   var form = document.forms["signupform"],
     pw1 = form.pw1.value,
@@ -220,9 +224,10 @@ function validate(type) {
   xmlhttpPost(URL_SETTINGS, type);
 }
 
-//
-// Check if user creation succeeded
-//
+/**
+ * Check if user creation succeeded
+ * @param str {string}
+ */
 function signup(str) {
   var code = str.split(";")[0],
     message = str.split(";")[1];
@@ -244,7 +249,10 @@ function changeName() {
     gt.gettext("Profile address: ") + url;
 }
 
-// Swap privacy panes
+/**
+ * Swap privacy panes
+ * @param type
+ */
 function changePrivacy(type) {
   for (var p = 0; p < PRIVACY_LIST.length; p++) {
     document.getElementById("privacy" + PRIVACY_LIST[p]).style.display =
@@ -252,7 +260,10 @@ function changePrivacy(type) {
   }
 }
 
-// Swap editor panes
+/**
+ * Swap editor panes
+ * @param type
+ */
 function changeEditor(type) {
   var isBasic = type === "B";
   document.getElementById("detaileditor").style.display = isBasic
