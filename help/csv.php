@@ -65,11 +65,11 @@ require_once "../php/locale.php";
             <dt><?php echo _('6. From_OID'); ?></dt>
             <dd><?php echo _('Internal OpenFlights airport ID. <font color="blue">Overrides "From" if provided.</font>'); ?></dd>
             <dt><?php echo _('17. To_OID'); ?></dt>
-            <dd> echo _('Internal OpenFlights airport ID. <font color="blue">Overrides "To" if provided.</font>'); ?></dd>
+            <dd><?php echo _('Internal OpenFlights airport ID. <font color="blue">Overrides "To" if provided.</font>'); ?></dd>
             <dt><?php echo _('18. Airline_OID'); ?></dt>
             <dd><?php echo _('Internal OpenFlights airline ID. <font color="blue">Overrides "Airline" if provided.</font>'); ?></dd>
             <dt><?php echo _('19. Plane_OID'); ?></dt>
-            <dd> echo _('Internal OpenFlights plane ID. <font color="blue">Overrides "Plane" if provided.</font>'); ?></dd>
+            <dd><?php echo _('Internal OpenFlights plane ID. <font color="blue">Overrides "Plane" if provided.</font>'); ?></dd>
         </dl>
 
         <h2><?php echo _('Airline matching'); ?></h2>
