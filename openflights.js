@@ -80,12 +80,12 @@ var CODE_DELETEOK = 100;
 var INPUT_MAXLEN = 50;
 var SELECT_MAXLEN = 25;
 
-var COLOR_NORMAL = "#ee9900"; //orange
-var COLOR_ROUTE = "#99ee00"; //yellow
-var COLOR_TRAIN = "#ee5555"; //dull red
-var COLOR_ROAD = "#9f6500"; //brown
-var COLOR_SHIP = "#00ccff"; //cyany blue
-var COLOR_HIGHLIGHT = "#007fff"; //deeper blue
+var COLOR_NORMAL = "#ee9900"; // orange
+var COLOR_ROUTE = "#99ee00"; // yellow
+var COLOR_TRAIN = "#ee5555"; // dull red
+var COLOR_ROAD = "#9f6500"; // brown
+var COLOR_SHIP = "#00ccff"; // cyany blue
+var COLOR_HIGHLIGHT = "#007fff"; // deeper blue
 
 var airportMaxFlights = 0;
 var airportIcons = [
@@ -108,7 +108,8 @@ var classes,
   modenames,
   modesegments,
   modeoperators,
-  topmodes;
+  topmodes,
+  directions_short;
 var modecolors = {
   F: COLOR_NORMAL,
   T: COLOR_TRAIN,
@@ -122,7 +123,7 @@ var modeicons = {
   S: "/img/icon_ship.png",
 };
 var modespeeds = { F: 500, T: 100, R: 60, S: 40 };
-var toplimits = { 10: "Top 10", 20: "Top 20", 50: "Top 50", "-1": "All" };
+var toplimits;
 
 // Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
 const re_date =
@@ -140,7 +141,7 @@ OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
 // Init Google Charts
 google.load("visualization", "1", { packages: ["corechart"] });
-// Call init after google is done initing.
+// Call init after Google JS is done initing.
 google.setOnLoadCallback(init);
 
 function init() {
@@ -210,8 +211,19 @@ function init() {
     mi: gt.gettext("miles"),
   };
   topmodes = { F: gt.gettext("Segments"), D: gt.gettext("Mileage") };
-
-  var projectionName = "EPSG:4326"; // spherical Mercator
+  toplimits = {
+    10: gt.gettext("Top 10"),
+    20: gt.gettext("Top 20"),
+    50: gt.gettext("Top 50"),
+    "-1": gt.gettext("All"),
+  };
+  directions_short = {
+    N: gt.gettext("N"),
+    E: gt.gettext("E"),
+    S: gt.gettext("S"),
+    W: gt.gettext("W"),
+  };
+  const projectionName = "EPSG:4326"; // spherical Mercator
   proj = new OpenLayers.Projection(projectionName);
 
   map = new OpenLayers.Map("map", {
@@ -241,8 +253,7 @@ function init() {
   });
 
   var poliLayer = new OpenLayers.Layer.XYZ(
-    // TODO: Localise
-    "Political",
+    gt.gettext("Political"),
     [
       "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
       "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
@@ -260,8 +271,7 @@ function init() {
   );
 
   var artLayer = new OpenLayers.Layer.XYZ(
-    // TODO: Localise
-    "Artistic",
+    gt.gettext("Artistic"),
     ["https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.jpg"],
     {
       attribution: gt.gettext(
@@ -275,8 +285,7 @@ function init() {
   artLayer.setVisibility(false);
 
   var earthLayer = new OpenLayers.Layer.XYZ(
-    // TODO: Localise
-    "Satellite",
+    gt.gettext("Satellite"),
     [
       "https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg",
     ],
@@ -384,8 +393,7 @@ function init() {
     distance: 15,
     threshold: 3,
   });
-  // TODO: Localise?
-  airportLayer = new OpenLayers.Layer.Vector("Airports", {
+  airportLayer = new OpenLayers.Layer.Vector(gt.gettext("Airports"), {
     projection: projectionName,
     styleMap: new OpenLayers.StyleMap({
       default: style,
@@ -720,7 +728,8 @@ function drawAirport(
     city +
     ", " +
     country +
-    "</small><br>Flights: " +
+    "</small><br>" +
+    gt.gettext("Flights: ") +
     count;
   var rdesc =
     name +
@@ -829,7 +838,7 @@ function onAirportSelect(airport) {
     } else {
       if (code.length == 3) {
         var idstring;
-        // Get list of airport routes
+        // Get a list of airport routes
         if (coreid.startsWith("L")) {
           idstring = coreid + "," + apid;
         } else {
@@ -1442,7 +1451,7 @@ function xmlhttpPost(strURL, id, param) {
         query = lastQuery;
         break;
       }
-    // ...else fallthru and generate new query
+    // ...else fallthru and generate a new query
 
     // URL_MAP, URL_ROUTES, URL_FLIGHTS, URL_STATS, URL_TOP10
     default:
@@ -1936,7 +1945,8 @@ function updateMap(str, url) {
       "'></a>";
     if (filter_alid != 0 && !apid.startsWith("L")) {
       maptitle +=
-        " <small>on " +
+        " <small>" +
+        gt.gettext("on ") +
         form.Airlines.value.split(";")[1] +
         "</small> " +
         getAirlineMapIcon(filter_alid);
@@ -2006,8 +2016,12 @@ function updateMap(str, url) {
 
   // Redraw selection markers if in input mode
   if (getCurrentPane() == "input") {
-    if (input_srcmarker) markAirport("src_ap", true);
-    if (input_dstmarker) markAirport("dst_ap", true);
+    if (input_srcmarker) {
+      markAirport("src_ap", true);
+    }
+    if (input_dstmarker) {
+      markAirport("dst_ap", true);
+    }
   }
 
   showLoadingAnimation(false);
@@ -2078,7 +2092,7 @@ function listFlights(str, desc, id) {
           gt.gettext("Great Circle Mapper, for image export") +
           "' align='middle' onclick='JavaScript:exportFlights(\"gcmap\", true)'>" +
           "</span>"
-      ); // place at front of array
+      ); // place at the front of the array
     }
     table.push(
       '<table width=100% class="sortable" id="apttable" cellpadding="0" cellspacing="0">'
@@ -2121,7 +2135,9 @@ function listFlights(str, desc, id) {
 
     var rows = str.split("\n");
     for (var r = 0; r < rows.length; r++) {
-      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, airline_code 19, src_time 20, mode 21
+      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8,
+      // seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18,
+      // airline_code 19, src_time 20, mode 21
       var col = rows[r].split("\t");
       var trip = col[17];
       var seat = col[8];
@@ -2140,7 +2156,7 @@ function listFlights(str, desc, id) {
           date.substring(8, 10)
         ) > today
       ) {
-        date = "<I>" + date + "</I>";
+        date = "<i>" + date + "</i>";
       }
 
       // Prepend airline code to numeric/missing flight number
@@ -2241,6 +2257,7 @@ function listFlights(str, desc, id) {
         table.push(
           "<a href='#' onclick='JavaScript:deleteFlight(" +
             fid +
+            // TODO: alt text
             ");'><img src='/img/icon_delete.png' width=16 height=16 title='" +
             gt.gettext("Delete this flight") +
             "'></a>"
@@ -2285,7 +2302,9 @@ const createAirportLinkElement = (apid, text) => {
 const formatCoordinates = ({ lat, lon }) => {
   const latStr = Math.abs(lat).toFixed(2);
   const lonStr = Math.abs(lon).toFixed(2);
-  return `${lonStr}°${lon >= 0 ? "N" : "S"} ${latStr}°${lat >= 0 ? "E" : "W"}`;
+  return `${lonStr}°${
+    lon >= 0 ? directions_short["N"] : directions_short["S"]
+  } ${latStr}°${lat >= 0 ? directions_short["E"] : directions_short["W"]}`;
 };
 
 // The "Analyze" button (detailed stats)
@@ -2298,8 +2317,9 @@ function showStats(str) {
   try {
     statsData = JSON.parse(str);
   } catch (e) {
-    result.append =
-      "<i>" + gt.gettext("Statistics calculation failed!") + "</i>";
+    result.append(
+      "<i>" + gt.gettext("Statistics calculation failed!") + "</i>"
+    );
     return;
   }
 
@@ -2865,7 +2885,7 @@ function setCommitAllowed(state) {
   }
 }
 
-// If clear=true, then input form is cleared after successful entry
+// If clear=true, then the input form is cleared after successful entry
 function submitFlight() {
   xmlhttpPost(URL_SUBMIT, null, "ADD");
 }
@@ -3060,7 +3080,7 @@ function newTrip(code, newTrid, name, url) {
     tr_select.selectedIndex = 0;
   }
 
-  // This only applies when new trip is added in flight editor
+  // This only applies when a new trip is added in the flight editor
   var trips = document.forms["inputform"].trips;
   if (!trips) {
     $("input_trip_select").innerHTML =

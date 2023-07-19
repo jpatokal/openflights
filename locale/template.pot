@@ -2923,3 +2923,36 @@ msgstr ""
 
 msgid "Please enter a timezone as an offset from UTC/GMT, eg. +8 for Singapore or -5 for New York. Use decimals for fractional timezones, eg. +5.75 for Nepal."
 msgstr ""
+
+msgid "Top 20"
+msgstr ""
+
+msgid "Top 50"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "E"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
+msgid "Political"
+msgstr ""
+
+msgid "Artistic"
+msgstr ""
+
+msgid "Satellite"
+msgstr ""
+
+msgid "Flights: "
+msgstr ""
+
+msgid "on "
+msgstr ""

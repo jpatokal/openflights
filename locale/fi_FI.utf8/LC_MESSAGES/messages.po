@@ -3217,6 +3217,27 @@ msgstr "Matkat"
 msgid "Mileage"
 msgstr "Mailit"
 
+msgid "Top 20"
+msgstr ""
+
+msgid "Top 50"
+msgstr ""
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid "N"
+msgstr ""
+
+msgid "E"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
 msgid "Toggle pan and region select mode"
 msgstr "Kartan siirto vs. alueen valinta"
 
@@ -3226,10 +3247,16 @@ msgstr ""
 msgid "Toggle overview map"
 msgstr "Overview-kartta"
 
+msgid "Political"
+msgstr ""
+
 msgid ""
 "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> "
 "(CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' "
 "target='_blank'>OSM</a> (ODbL)"
+msgstr ""
+
+msgid "Artistic"
 msgstr ""
 
 msgid ""
@@ -3238,12 +3265,21 @@ msgid ""
 "target='_blank'>OSM</a> (CC BY SA)"
 msgstr ""
 
+msgid "Satellite"
+msgstr ""
+
 msgid ""
 "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' "
 "target='_blank'>Mapbox</a>"
 msgstr ""
 
 msgid "Flights"
+msgstr ""
+
+msgid "Airports"
+msgstr "Lentokenttiä"
+
+msgid "Flights: "
 msgstr ""
 
 msgid ""
@@ -3265,9 +3301,6 @@ msgstr ""
 
 msgid "Flights:"
 msgstr "Lennot:"
-
-msgid "Airports"
-msgstr "Lentokenttiä"
 
 msgid "Home"
 msgstr "Koti"
@@ -3323,9 +3356,6 @@ msgstr "Kaikki matkat"
 msgid "All carriers"
 msgstr "Kaikki yhtiöt"
 
-msgid "All"
-msgstr "Kaikki"
-
 msgid "Unassigned flights"
 msgstr "Matkoihin kuulumattomat lennot"
 
@@ -3358,6 +3388,9 @@ msgstr "Luettelo kaikista lentoyhtiön reiteistä"
 
 msgid "List all routes from this airport"
 msgstr "Luettelo kaikista tämän lentokentän reiteistä"
+
+msgid "on "
+msgstr ""
 
 msgid "routes"
 msgstr "reittiä"

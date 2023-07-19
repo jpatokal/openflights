@@ -3270,6 +3270,27 @@ msgstr "Segmente"
 msgid "Mileage"
 msgstr "Meilen"
 
+msgid "Top 20"
+msgstr ""
+
+msgid "Top 50"
+msgstr ""
+
+msgid "All"
+msgstr "Alle"
+
+msgid "N"
+msgstr ""
+
+msgid "E"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
 # "Magnifying glass" and "hand" controls for map
 msgid "Toggle pan and region select mode"
 msgstr "Zwischen Pan und Regionsauswahl umschalten"
@@ -3280,10 +3301,16 @@ msgstr ""
 msgid "Toggle overview map"
 msgstr "Übersichtskarte umschalten"
 
+msgid "Political"
+msgstr ""
+
 msgid ""
 "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> "
 "(CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' "
 "target='_blank'>OSM</a> (ODbL)"
+msgstr ""
+
+msgid "Artistic"
 msgstr ""
 
 msgid ""
@@ -3292,12 +3319,21 @@ msgid ""
 "target='_blank'>OSM</a> (CC BY SA)"
 msgstr ""
 
+msgid "Satellite"
+msgstr ""
+
 msgid ""
 "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' "
 "target='_blank'>Mapbox</a>"
 msgstr ""
 
 msgid "Flights"
+msgstr ""
+
+msgid "Airports"
+msgstr "Flughäfen"
+
+msgid "Flights: "
 msgstr ""
 
 msgid ""
@@ -3319,9 +3355,6 @@ msgstr ""
 
 msgid "Flights:"
 msgstr "Flüge:"
-
-msgid "Airports"
-msgstr "Flughäfen"
 
 msgid "Home"
 msgstr "Startseite"
@@ -3382,9 +3415,6 @@ msgstr "Alle Reisen"
 msgid "All carriers"
 msgstr "Alle Betreiber"
 
-msgid "All"
-msgstr "Alle"
-
 msgid "Unassigned flights"
 msgstr "Nicht zugewiesene Flüge"
 
@@ -3418,6 +3448,9 @@ msgstr "Alle Routen mit dieser Airline auflisten."
 
 msgid "List all routes from this airport"
 msgstr "All Routen von diesem Flughafen auflisten."
+
+msgid "on "
+msgstr ""
 
 msgid "routes"
 msgstr "Routen"

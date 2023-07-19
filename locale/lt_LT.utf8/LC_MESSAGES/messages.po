@@ -3264,6 +3264,27 @@ msgstr "Segmentai"
 msgid "Mileage"
 msgstr "Atstumas"
 
+msgid "Top 20"
+msgstr ""
+
+msgid "Top 50"
+msgstr ""
+
+msgid "All"
+msgstr "Visi"
+
+msgid "N"
+msgstr ""
+
+msgid "E"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
 # "Magnifying glass" and "hand" controls for map
 msgid "Toggle pan and region select mode"
 msgstr "Perjungti stumdymo ir regiono pasirinkimo režimus"
@@ -3274,10 +3295,16 @@ msgstr ""
 msgid "Toggle overview map"
 msgstr "Perjungti žemėlapio peržiūrą"
 
+msgid "Political"
+msgstr ""
+
 msgid ""
 "Map tiles &copy; <a href='https://carto.com/' target='_blank'>CartoDB</a> "
 "(CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' "
 "target='_blank'>OSM</a> (ODbL)"
+msgstr ""
+
+msgid "Artistic"
 msgstr ""
 
 msgid ""
@@ -3286,12 +3313,21 @@ msgid ""
 "target='_blank'>OSM</a> (CC BY SA)"
 msgstr ""
 
+msgid "Satellite"
+msgstr ""
+
 msgid ""
 "Map tiles &copy; <a href='https://www.mapbox.com/maps/satellite' "
 "target='_blank'>Mapbox</a>"
 msgstr ""
 
 msgid "Flights"
+msgstr ""
+
+msgid "Airports"
+msgstr "Oro uostai"
+
+msgid "Flights: "
 msgstr ""
 
 msgid ""
@@ -3313,9 +3349,6 @@ msgstr ""
 
 msgid "Flights:"
 msgstr "Skrydžiai:"
-
-msgid "Airports"
-msgstr "Oro uostai"
 
 # Return to main page
 msgid "Home"
@@ -3374,9 +3407,6 @@ msgstr "Visos kelionės"
 msgid "All carriers"
 msgstr "Visi vežėjai"
 
-msgid "All"
-msgstr "Visi"
-
 msgid "Unassigned flights"
 msgstr "Nepriskirti skrydžiai"
 
@@ -3410,6 +3440,9 @@ msgstr "Atvaizduoti šios aviakompanijos visus maršrutus"
 
 msgid "List all routes from this airport"
 msgstr "Peržiūrėti visus maršrutus iš šio oro uosto"
+
+msgid "on "
+msgstr ""
 
 msgid "routes"
 msgstr "maršrutai"
