@@ -161,7 +161,7 @@ require_once "./php/db_pdo.php";
         <p><?php echo _('One common problem: OpenFlights exports special characters in UTF-8 format, which is not automatically recognized by some versions of Excel. Use the <i>Text Import Wizard</i> and specify "Unicode (UTF-8)", and they will import nicely.'); ?></p>
 
         <h4><?php echo _('Can I use your images in my book/magazine article/annual report?'); ?></h4>
-        <p><?php echo _('Yes, but commercial use requires a <a href="about#license">license</a>, please <a href="/about">contact us</a> for details.'); ?></p>
+        <p><?php echo _('Yes, but commercial use requires a <a href="/data#license">license</a>, please <a href="/about">contact us</a> for details.'); ?></p>
 
         <h4><?php echo _('Can I have an anonymized dump of flight data from OpenFlights or a customized installation for my airline/airport/website/other company?'); ?></h4>
         <p><?php echo _("We'd be delighted to work out a deal for consulting work, just <a href=\"/about\">drop us a line</a>."); ?></p>
