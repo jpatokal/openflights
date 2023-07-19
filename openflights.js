@@ -62,15 +62,16 @@ var multiinput_ids = [
 ];
 var multiinput_rows = 1;
 
-var URL_FLIGHTS = "/php/flights.php";
-var URL_GETCODE = "/php/autocomplete.php";
-var URL_LOGIN = "/php/login.php";
-var URL_LOGOUT = "/php/logout.php";
-var URL_MAP = "/php/map.php";
-var URL_ROUTES = "/php/routes.php";
-var URL_STATS = "/php/stats.php";
-var URL_SUBMIT = "/php/submit.php";
-var URL_TOP10 = "/php/top10.php";
+const URL_FLIGHTS = "/php/flights.php",
+  URL_GETCODE = "/php/autocomplete.php",
+  URL_KML = "/php/kml.php",
+  URL_LOGIN = "/php/login.php",
+  URL_LOGOUT = "/php/logout.php",
+  URL_MAP = "/php/map.php",
+  URL_ROUTES = "/php/routes.php",
+  URL_STATS = "/php/stats.php",
+  URL_SUBMIT = "/php/submit.php",
+  URL_TOP10 = "/php/top10.php";
 
 var CODE_FAIL = 0;
 var CODE_ADDOK = 1;
@@ -2284,12 +2285,16 @@ function listFlights(str, desc, id) {
 // type: "backup" to export everything, "export" to export only current filter selection, "gcmap" to redirect to gcmap site
 // newWindow: true if we want target URL to open in a new window.
 function exportFlights(type, newWindow) {
-  var url;
+  const urlParams = new URLSearchParams(lastQuery);
+  // Remove param from the query string, it's not helpful
+  urlParams.delete("param");
+  var specifics;
   if (type == "KML") {
-    url = location.origin + "/php/kml.php?" + lastQuery;
+    specifics = URL_KML + "?";
   } else {
-    url = location.origin + "/php/flights.php?" + lastQuery + "&export=" + type;
+    specifics = URL_FLIGHTS + "?export=" + type + "&";
   }
+  var url = location.origin + specifics + urlParams.toString();
   if (newWindow) {
     window.open(url, "openflights_export");
   } else {
@@ -3851,7 +3856,7 @@ function keyPress(e, element) {
     }
     if (keycode == Event.KEY_RETURN) {
       logged_in = "pending";
-      xmlhttpPost("/php/login.php");
+      xmlhttpPost(URL_LOGIN);
     }
   } else {
     if (keycode == Event.KEY_TAB) {
