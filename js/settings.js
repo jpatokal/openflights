@@ -1,9 +1,9 @@
 /*
  * Create new user accounts and modify existing ones
  */
-var URL_SETTINGS = "/php/settings.php";
+const URL_SETTINGS = "/php/settings.php";
 
-var privacyList = ["N", "Y", "O"];
+const PRIVACY_LIST = ["N", "Y", "O"];
 
 var gt;
 
@@ -246,9 +246,9 @@ function changeName() {
 
 // Swap privacy panes
 function changePrivacy(type) {
-  for (var p = 0; p < privacyList.length; p++) {
-    document.getElementById("privacy" + privacyList[p]).style.display =
-      type == privacyList[p] ? "inline" : "none";
+  for (var p = 0; p < PRIVACY_LIST.length; p++) {
+    document.getElementById("privacy" + PRIVACY_LIST[p]).style.display =
+      type == PRIVACY_LIST[p] ? "inline" : "none";
   }
 }
 

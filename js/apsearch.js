@@ -1,11 +1,11 @@
 /*
  * Search for airport in database(s)
  */
-URL_APSEARCH = "/php/apsearch.php";
+const URL_APSEARCH = "/php/apsearch.php";
 
-DB_OPENFLIGHTS = "airports";
-DB_OURAIRPORTS = "airports_oa";
-DB_DAFIF = "airports_dafif";
+const DB_OPENFLIGHTS = "airports";
+const DB_OURAIRPORTS = "airports_oa";
+const DB_DAFIF = "airports_dafif";
 
 var warning;
 var gt;

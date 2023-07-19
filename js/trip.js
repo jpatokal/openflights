@@ -1,7 +1,7 @@
 /*
  * Create new trips and modify existing ones
  */
-var URL_TRIP = "/php/trip.php";
+const URL_TRIP = "/php/trip.php";
 var trid = 0;
 var type = "NEW";
 

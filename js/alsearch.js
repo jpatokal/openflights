@@ -1,7 +1,7 @@
 /*
  * Search for airline in database(s)
  */
-URL_ALSEARCH = "/php/alsearch.php";
+const URL_ALSEARCH = "/php/alsearch.php";
 
 var warning;
 var gt;
@@ -245,7 +245,7 @@ function searchResult(str) {
   for (var a in airlines) {
     var col = airlines[a].split(";");
 
-    // First line contains header info
+    // The first line contains header info
     if (a == 0) {
       offset = parseInt(col[0]);
       var max = col[1];
@@ -440,7 +440,7 @@ function changeMode() {
   form.iatafilter.disabled = disabled;
 }
 
-// Clear form -- everything *except* database
+// Clear form -- everything *except* the database
 function clearSearch() {
   var form = document.forms["searchform"];
   form.name.value = "";

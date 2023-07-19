@@ -44,9 +44,15 @@ var input_srcmarker, input_dstmarker, input_line, input_toggle, input_al_toggle;
 var changed = false,
   majorEdit = false;
 
-// Some helpers for multiinput handling
-var multiinput_order = ["src_ap1", "dst_ap1", "dst_ap2", "dst_ap3", "dst_ap4"];
-var multiinput_ids = [
+// Some helpers for multi-input handling
+const MULTI_INPUT_ORDER = [
+  "src_ap1",
+  "dst_ap1",
+  "dst_ap2",
+  "dst_ap3",
+  "dst_ap4",
+];
+const MULTI_INPUT_IDS = [
   "src_ap1id",
   "src_ap2id",
   "src_ap3id",
@@ -73,23 +79,23 @@ const URL_FLIGHTS = "/php/flights.php",
   URL_SUBMIT = "/php/submit.php",
   URL_TOP10 = "/php/top10.php";
 
-var CODE_FAIL = 0;
-var CODE_ADDOK = 1;
-var CODE_EDITOK = 2;
-var CODE_DELETEOK = 100;
+const CODE_FAIL = 0,
+  CODE_ADDOK = 1,
+  CODE_EDITOK = 2,
+  CODE_DELETEOK = 100;
 
-var INPUT_MAXLEN = 50;
-var SELECT_MAXLEN = 25;
+const INPUT_MAXLEN = 50,
+  SELECT_MAXLEN = 25;
 
-var COLOR_NORMAL = "#ee9900"; // orange
-var COLOR_ROUTE = "#99ee00"; // yellow
-var COLOR_TRAIN = "#ee5555"; // dull red
-var COLOR_ROAD = "#9f6500"; // brown
-var COLOR_SHIP = "#00ccff"; // cyany blue
-var COLOR_HIGHLIGHT = "#007fff"; // deeper blue
+const COLOR_NORMAL = "#ee9900", // orange
+  COLOR_ROUTE = "#99ee00", // yellow
+  COLOR_TRAIN = "#ee5555", // dull red
+  COLOR_ROAD = "#9f6500", // brown
+  COLOR_SHIP = "#00ccff", // cyany blue
+  COLOR_HIGHLIGHT = "#007fff"; // deeper blue
 
 var airportMaxFlights = 0;
-var airportIcons = [
+const AIRPORT_ICONS = [
   ["/img/icon_plane-13x13.png", 13],
   ["/img/icon_plane-15x15.png", 15],
   ["/img/icon_plane-17x17.png", 17],
@@ -111,26 +117,27 @@ var classes,
   modeoperators,
   topmodes,
   directions_short;
-var modecolors = {
+
+const MODE_COLORS = {
   F: COLOR_NORMAL,
   T: COLOR_TRAIN,
   R: COLOR_ROAD,
   S: COLOR_SHIP,
 };
-var modeicons = {
+const MODE_ICONS = {
   F: "/img/icon_airline.png",
   T: "/img/icon_train.png",
   R: "/img/icon_car.png",
   S: "/img/icon_ship.png",
 };
-var modespeeds = { F: 500, T: 100, R: 60, S: 40 };
+const MODE_SPEEDS = { F: 500, T: 100, R: 60, S: 40 };
 var toplimits;
 
 // Validate YYYY*MM*DD date; contains groups, leading zeroes not required for month, date)
-const re_date =
+const RE_DATE =
   /^((19|20)\d\d)[- /.]?([1-9]|0[1-9]|1[012])[- /.]?([1-9]|0[1-9]|[12][0-9]|3[01])$/;
 // Validate numeric value
-const re_numeric = /^[0-9]*$/;
+const RE_NUMERIC = /^[0-9]*$/;
 
 var lasturl;
 
@@ -742,9 +749,9 @@ function drawAirport(
     country +
     "</small>";
 
-  // Select icon based on number of flights (0...airportIcons.length-1)
+  // Select icon based on a number of flights (0...AIRPORT_ICONS.length-1)
   var colorIndex =
-    Math.floor((count / airportMaxFlights) * airportIcons.length) + 1;
+    Math.floor((count / airportMaxFlights) * AIRPORT_ICONS.length) + 1;
 
   // When two or fewer flights: smallest dot
   if (count <= 2 || colorIndex < 0) {
@@ -756,11 +763,11 @@ function drawAirport(
   }
   // Max out at top color
   // Core airport of the route map always uses max color
-  if (colorIndex >= airportIcons.length || apid == coreid) {
-    colorIndex = airportIcons.length - 1;
+  if (colorIndex >= AIRPORT_ICONS.length || apid == coreid) {
+    colorIndex = AIRPORT_ICONS.length - 1;
   }
   // This should never happen
-  if (!airportIcons[colorIndex]) {
+  if (!AIRPORT_ICONS[colorIndex]) {
     $("news").style.display = "inline";
     $("news").innerHTML = gt.strargs(
       gt.gettext(
@@ -783,10 +790,10 @@ function drawAirport(
     desc: desc,
     rdesc: rdesc,
     opacity: opacity,
-    icon: airportIcons[colorIndex][0],
-    size: airportIcons[colorIndex][1],
+    icon: AIRPORT_ICONS[colorIndex][0],
+    size: AIRPORT_ICONS[colorIndex][1],
     index: count,
-    offset: Math.floor(-airportIcons[colorIndex][1] / 2),
+    offset: Math.floor(-AIRPORT_ICONS[colorIndex][1] / 2),
   };
 
   return feature;
@@ -1223,7 +1230,7 @@ function xmlhttpPost(strURL, id, param) {
         }
         for (i = 0; i < indexes.length; i++) {
           var src_date = $("src_date" + indexes[i]).value;
-          if (!re_date.test(src_date)) {
+          if (!RE_DATE.test(src_date)) {
             alert(
               gt.gettext(
                 "Please enter a full date in year/month/date order, eg. 2008/10/30 for 30 October 2008. Valid formats include YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD and YYYY MM DD."
@@ -1340,7 +1347,7 @@ function xmlhttpPost(strURL, id, param) {
             return;
           }
           var distance = $("distance").value;
-          if (!re_numeric.test(distance)) {
+          if (!RE_NUMERIC.test(distance)) {
             alert(
               gt.gettext(
                 "Please enter flight distance as miles, with no fractional parts. You can blank the distance to have it re-calculated automatically."
@@ -1967,7 +1974,7 @@ function updateMap(str, url) {
       if (url == URL_ROUTES) {
         color = COLOR_ROUTE;
       } else {
-        color = modecolors[rCol[9]];
+        color = MODE_COLORS[rCol[9]];
         if (!color) {
           color = COLOR_NORMAL;
         }
@@ -2047,7 +2054,7 @@ function startListFlights() {
 function listFlights(str, desc, id) {
   openPane("result");
   fidList = [];
-  var route = !re_numeric.test(id); // ids starting with R are routes
+  var route = !RE_NUMERIC.test(id); // ids starting with R are routes
   var today = new Date().getTime();
   if (desc == "MAP") {
     desc = gt.gettext("Flights:") + " " + getMapTitle(false);
@@ -2152,7 +2159,7 @@ function listFlights(str, desc, id) {
       var fid = col[12];
       var code = col[4];
       var date = col[5];
-      var modeicon = modeicons[col[21]];
+      var modeicon = MODE_ICONS[col[21]];
       var modename = modenames[col[21]];
 
       // Date.parse() doesn't work on YYYY/MM/DD, so we chop it up and use Date.UTC instead (sigh)
@@ -2167,7 +2174,7 @@ function listFlights(str, desc, id) {
       }
 
       // Prepend airline code to numeric/missing flight number
-      if (re_numeric.test(code)) {
+      if (RE_NUMERIC.test(code)) {
         code = col[19] + code;
       }
       if (col[14] != "") {
@@ -2924,7 +2931,7 @@ function changeMode(mode) {
   if (!mode) {
     mode = document.forms["inputform"].mode.value;
   }
-  $("icon_airline").src = modeicons[mode];
+  $("icon_airline").src = MODE_ICONS[mode];
   $("icon_airline").title = gt.strargs(gt.gettext("Search for %1"), [
     modeoperators[mode],
   ]);
@@ -3171,7 +3178,7 @@ function flightNumberToAirline(type) {
     document.forms["inputform"].number.value = flightNumber;
 
     // Ignore all-numeric flight numbers
-    if (re_numeric.test(flightNumber)) {
+    if (RE_NUMERIC.test(flightNumber)) {
       return;
     }
 
@@ -3237,7 +3244,7 @@ function calcDuration(param) {
         var lat2 = getY("dst_ap");
         $("distance").value = gcDistance(lat1, lon1, lat2, lon2);
         $("distance").style.color = "#000";
-      } else if (!re_numeric.test(distance)) {
+      } else if (!RE_NUMERIC.test(distance)) {
         $("distance").focus();
         $("distance").style.color = "#F00";
       } else {
@@ -3281,13 +3288,13 @@ function calcDuration(param) {
       // User has changed airport, estimate duration based on distance then (30 min plus 1 hr/500 mi) and
       // compute time at destination
       var distance = $("distance").value;
-      if (!re_numeric.test(distance)) {
+      if (!RE_NUMERIC.test(distance)) {
         $("distance").focus();
         $("distance").style.color = "#F00";
         return;
       }
       $("distance").style.color = "#000";
-      duration = $("distance").value / modespeeds[getMode()] + 0.5;
+      duration = $("distance").value / MODE_SPEEDS[getMode()] + 0.5;
       dst_time = 0;
       break;
 
@@ -3337,7 +3344,7 @@ function calcDuration(param) {
 
     // Verify if DST is active
     // 2008-01-26[0],2008[1],20[2],01[3],26[4]
-    var src_date = re_date.exec($("src_date").value);
+    var src_date = RE_DATE.exec($("src_date").value);
     if (!src_date) {
       // Nonsensical date
       return;
@@ -3471,11 +3478,11 @@ function markAirport(element, quick) {
       if (element == "src_ap") {
         input_toggle = "dst_ap"; // single input
       } else {
-        var idx = multiinput_order.indexOf(element) + 1;
-        if (idx == multiinput_order.length) {
+        var idx = MULTI_INPUT_ORDER.indexOf(element) + 1;
+        if (idx == MULTI_INPUT_ORDER.length) {
           idx = 0;
         }
-        input_toggle = multiinput_order[idx];
+        input_toggle = MULTI_INPUT_ORDER[idx];
       }
     } else {
       input_srcmarker = null;
@@ -3489,11 +3496,11 @@ function markAirport(element, quick) {
       if (element == "dst_ap") {
         input_toggle = "src_ap"; // single input
       } else {
-        var idx = multiinput_order.indexOf(element) + 1;
-        if (idx == multiinput_order.length) {
+        var idx = MULTI_INPUT_ORDER.indexOf(element) + 1;
+        if (idx == MULTI_INPUT_ORDER.length) {
           idx = 0;
         }
-        input_toggle = multiinput_order[idx];
+        input_toggle = MULTI_INPUT_ORDER[idx];
       }
     } else {
       input_dstmarker = null;
@@ -4189,7 +4196,7 @@ function openBasicInput(param) {
   $("newairport").style.display = "inline";
   $("multiinput_status").innerHTML = "";
   clearInput();
-  input_toggle = multiinput_order[0];
+  input_toggle = MULTI_INPUT_ORDER[0];
   input_al_toggle = "airline1";
 }
 
@@ -4276,8 +4283,8 @@ function clearInput() {
     }
   } else {
     form = document.forms["multiinputform"];
-    for (var i = 0; i < multiinput_ids.length; i++) {
-      $(multiinput_ids[i]).value = 0;
+    for (var i = 0; i < MULTI_INPUT_IDS.length; i++) {
+      $(MULTI_INPUT_IDS[i]).value = 0;
     }
     form.src_date1.value = todayString();
     form.src_ap1.focus();
