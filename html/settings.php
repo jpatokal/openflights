@@ -37,7 +37,7 @@ if (isset($OF_ENABLE_SIGNUP) && !$OF_ENABLE_SIGNUP) {
 
         <form name="signupform" method="POST" action="/">
         <h1>
-            <a name="top"><?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?> />
+            <a name="top"><?php echo ($type == "signup") ? _("Create new account") : _("Account settings"); ?><a/>
         </h1>
 
           <div id="miniresultbox"></div>
