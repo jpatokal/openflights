@@ -62,7 +62,15 @@ function json_success($data) {
  * @param $detail string
  */
 function json_error($msg, $detail = '') {
-    die(json_encode(["status" => 0, "message" => _($msg) . ' ' . $detail]));
+    $ret = [
+        "status" => 0,
+        "message" => _($msg),
+    ];
+    // Only append $detail to message if it's not an empty string
+    if ($detail !== '') {
+        $ret["message"] .= " {$detail}";
+    }
+    die(json_encode($ret));
 }
 
 /**
