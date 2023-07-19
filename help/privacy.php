@@ -25,7 +25,7 @@ require_once "../php/locale.php";
             </ul>
 
             <form>
-                <input type="button" value="Close'); ?>" onClick="javascript:window.close()">
+                <input type="button" value="<?php echo _('Close'); ?>" onClick="javascript:window.close()">
             </form>
 
         </div>
