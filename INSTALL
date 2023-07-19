@@ -13,7 +13,7 @@ sudo apt-get install man vim mysql-client
 # OpenFlights does not support PHP8, so we need to hack in PHP7
 sudo apt install software-properties-common apt-transport-https -y
 sudo add-apt-repository ppa:ondrej/php -y
-sudo apt-get install git nginx php7.4 php7.4-curl php7.4-fpm php7.4-gd php7.4-mbstring php7.4-mysql php7.4-xml locales unzip
+sudo apt-get install git nginx php7.4 php7.4-curl php7.4-fpm php7.4-gd php7.4-intl php7.4-mbstring php7.4-mysql php7.4-xml locales unzip
 
 # Install OpenFlights as its own user
 sudo adduser openflights
