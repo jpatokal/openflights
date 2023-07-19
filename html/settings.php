@@ -205,11 +205,11 @@ if ($type == "signup") {
             <td class="desc">
                 <span id="basiceditor" style="display: <?php
                     condOut($settings, 'editor', 'B', 'inline', 'none'); ?>"><?php
-                    echo _("The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"); ?>
+                    echo _("The <b>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"); ?>
                 </span>
                 <span id="detaileditor" style="display: <?php
                     condOut($settings, 'editor', 'D', 'inline', 'none'); ?>"><?php
-                    echo _("The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."); ?>
+                    echo _("The <b>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."); ?>
                 </span>
             </td>
           </tr>

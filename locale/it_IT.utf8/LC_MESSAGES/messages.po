@@ -759,11 +759,11 @@ msgstr "I profili <b>Aperti</b> consentono agli di vedere, ma non di modificare,
 msgid "Flight editor"
 msgstr "Editor di voli"
 
-msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
-msgstr "L'editor <B>Di base</b> è rapido e facile: da dove, a dove, la data e facoltativamente la compagnia aerea, fino a quattro voli per volta. Il modo più rapido per costruire la tua mappa!"
+msgid "The <b>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
+msgstr "L'editor <b>Di base</b> è rapido e facile: da dove, a dove, la data e facoltativamente la compagnia aerea, fino a quattro voli per volta. Il modo più rapido per costruire la tua mappa!"
 
-msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
-msgstr "L'editor <B>Dettagliato</b> ti consente di aggiungere la classe di servizio, il numero di posto, il modello di aereo"
+msgid "The <b>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
+msgstr "L'editor <b>Dettagliato</b> ti consente di aggiungere la classe di servizio, il numero di posto, il modello di aereo"
 
 msgid "Distances"
 msgstr "Distanze"
@@ -1120,23 +1120,23 @@ msgstr "Orari di partenza e arrivo del volo"
 msgid "Show airline route map"
 msgstr "Mostra la mappa delle rotte di una compagnia aerea"
 
-msgid "Logged in as <B>%1</B>"
-msgstr "Connesso come <B>%1</B>"
+msgid "Logged in as <b>%1</b>"
+msgstr "Connesso come <b>%1</b>"
 
-msgid "Welcome, <B>%1</B> !"
-msgstr "Benvenuto, <B>%1</B> !"
+msgid "Welcome, <b>%1</b> !"
+msgstr "Benvenuto, <b>%1</b> !"
 
 msgid "Loading"
 msgstr "Caricando"
 
-msgid "Hi, <B>%1</B> !"
-msgstr "Ciao, <B>%1</B> !"
+msgid "Hi, <b>%1</b> !"
+msgstr "Ciao, <b>%1</b> !"
 
 msgid "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
 msgstr "<b>Bentornato!</b> Siamo felicissimi di vedere che ti piaccia OpenFlights. <br>Prego <a href='/donate.html' target='_blank'>dona e aiuta a tenere il sito attivo</a>!"
 
-msgid "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
-msgstr "<B>Benvenuto su OpenFlights!</b> Clicca su %1 per iniziare ad aggiungere voli, o su %2 per caricare voli esistenti da siti come FlightMemory."
+msgid "<b>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr "<b>Benvenuto su OpenFlights!</b> Clicca su %1 per iniziare ad aggiungere voli, o su %2 per caricare voli esistenti da siti come FlightMemory."
 
 msgid "You have been logged out."
 msgstr "Sei stato disconnesso"

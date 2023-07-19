@@ -1849,10 +1849,10 @@ msgstr ""
 msgid "Flight editor"
 msgstr ""
 
-msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
+msgid "The <b>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
 msgstr ""
 
-msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
+msgid "The <b>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
 msgstr ""
 
 msgid "Distances"
@@ -2640,7 +2640,7 @@ msgstr ""
 msgid "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate' target='_blank'>donate and help keep the site running</a>!"
 msgstr ""
 
-msgid "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgid "<b>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
 msgstr ""
 
 msgid "You have been logged out."

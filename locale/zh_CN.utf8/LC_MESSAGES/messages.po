@@ -767,11 +767,11 @@ msgstr "<b>完全公开</b>个人记录可以使得别人查看您的航空记�
 msgid "Flight editor"
 msgstr "航空记录编辑器"
 
-msgid "The <B>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
-msgstr "<B>基本</b>编辑器便捷简单: 从哪里, 到哪里, 哪天以及还可以填上航空公司, 最多一次填四段. 出图最快! "
+msgid "The <b>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"
+msgstr "<b>基本</b>编辑器便捷简单: 从哪里, 到哪里, 哪天以及还可以填上航空公司, 最多一次填四段. 出图最快! "
 
-msgid "The <B>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
-msgstr "<B>详细</b>编辑器中您可以添加舱位, 座位号, 机型, 飞机注册号码, 任意格式的备注等等. 各种飞人的最爱."
+msgid "The <b>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."
+msgstr "<b>详细</b>编辑器中您可以添加舱位, 座位号, 机型, 飞机注册号码, 任意格式的备注等等. 各种飞人的最爱."
 
 msgid "Distances"
 msgstr "航行距离"
@@ -1131,11 +1131,11 @@ msgstr "航班出发和到达时间"
 msgid "Show airline route map"
 msgstr "显示航线图"
 
-msgid "Logged in as <B>%1</B>"
-msgstr "登录为<B>%1</B>"
+msgid "Logged in as <b>%1</b>"
+msgstr "登录为<b>%1</b>"
 
-msgid "Welcome, <B>%1</B> !"
-msgstr "欢迎欢迎, <B>%1</B>!"
+msgid "Welcome, <b>%1</b> !"
+msgstr "欢迎欢迎, <b>%1</b>!"
 
 msgid "Loading"
 msgstr "载入中"
@@ -1147,8 +1147,8 @@ msgstr "你好, <b>%1</b> !"
 msgid "<b>Welcome back!</b> We're delighted to see that you like OpenFlights.<br>Please <a href='/donate.html' target='_blank'>donate and help keep the site running</a>!"
 msgstr "<b>欢迎回来!</b> 我们非常高兴看到您如此支持OpenFlights.<br>如果您可以为我们更好的发展在<a href='/donate.html' target='_blank'>提供一些捐助那就太好了</a>!"
 
-msgid "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
-msgstr "<B>欢迎光临OpenFlights!</b> 请点击%1来添加航空记录, 或点击%2从其它地方例如FlightMemory载入已有的航空记录."
+msgid "<b>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+msgstr "<b>欢迎光临OpenFlights!</b> 请点击%1来添加航空记录, 或点击%2从其它地方例如FlightMemory载入已有的航空记录."
 
 msgid "You have been logged out."
 msgstr "您已登出."

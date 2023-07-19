@@ -288,7 +288,7 @@ function check_trip($dbh, $uid, $trid) {
 
 function die_nicely($msg) {
     print $msg . "<br><br>";
-    print "<INPUT type='button' value='" . _("Upload again")
+    print "<input type='button' value='" . _("Upload again")
         . "' title='" . _("Cancel this import and return to file upload page") . "' onClick='history.back(-1)'>";
     exit;
 }
@@ -352,7 +352,7 @@ switch ($fileType) {
             die_nicely(_("Unable to open CSV file."));
         }
 
-        // Convert whole file into a giant array
+        // Convert the whole file into a giant array
         $rows = array_map('str_getcsv', $csvFile);
 
         break;
@@ -419,7 +419,7 @@ foreach ($rows as $row) {
             list($alid, $airline, $airline_bgcolor) = check_airline($dbh, $number, $airline, $uid, $history);
 
             // Load plane model (plid)
-            // <TD class=liste>Boeing 737-600<BR>LN-RCW<BR>Yngvar Viking</TD>
+            // <TD class=liste>Boeing 737-600<br>LN-RCW<br>Yngvar Viking</td>
             $plane = nth_text($cols[7], 0);
             $reg = nth_text($cols[7], 1);
             if (text_count($cols[7]) > 2) {
@@ -711,7 +711,7 @@ if ($action == _("Upload")) {
         switch ($fatal) {
             case "airport":
                 print _("Your flight data includes unrecognized airports. Please add them to the database and try again.");
-                print "<INPUT type='button' value='" . _("Add new airport") .
+                print "<input type='button' value='" . _("Add new airport") .
                     "' onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
                 break;
 
@@ -733,23 +733,23 @@ if ($action == _("Upload")) {
             "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)"
         ) . "<br><br>";
     }
-    print "<INPUT type='hidden' name='tmpfile' value='" . basename($_FILES['userfile']['tmp_name']) . "'>";
-    print "<INPUT type='hidden' name='fileType' value='$fileType'>";
-    print "<INPUT type='hidden' name='historyMode' value='$history'>";
-    print "<INPUT type='submit' name='action' title='" . _("Add these flights to your OpenFlights") . "' value='" .
+    print "<input type='hidden' name='tmpfile' value='" . basename($_FILES['userfile']['tmp_name']) . "'>";
+    print "<input type='hidden' name='fileType' value='$fileType'>";
+    print "<input type='hidden' name='historyMode' value='$history'>";
+    print "<input type='submit' name='action' title='" . _("Add these flights to your OpenFlights") . "' value='" .
         _("Import") . "' " . $status . ">";
     ?>
 
-<INPUT type="button" value="<?php echo _("Upload again"); ?>" title="<?php
+<input type="button" value="<?php echo _("Upload again"); ?>" title="<?php
     _("Cancel this import and return to file upload page"); ?>" onClick="JavaScript:history.go(-1)">
 
-<INPUT type="button" value="<?php echo _("Cancel"); ?>" onClick="window.close()">
+<input type="button" value="<?php echo _("Cancel"); ?>" onClick="window.close()">
 
     <?php
 }
 if ($action == _("Import")) {
-    print "<BR><H4>" . _("Flights successfully imported.") . "</H4><BR>";
-    print "<INPUT type='button' value='" .
+    print "<br><h4>" . _("Flights successfully imported.") . "</h4><br>";
+    print "<input type='button' value='" .
         ("Import more flights") . "' onClick='javascript:window.location=\"/html/import\"'>";
     print "<INPUT type='button' value='" . _("Close") .
         "' onClick='javascript:parent.opener.refresh(true); window.close();'>";

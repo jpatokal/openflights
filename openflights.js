@@ -714,9 +714,9 @@ function drawAirport(
   // Description
   var desc =
     name +
-    " (<B>" +
+    " (<b>" +
     code +
-    "</B>)<br><small>" +
+    "</b>)<br><small>" +
     city +
     ", " +
     country +
@@ -724,9 +724,9 @@ function drawAirport(
     count;
   var rdesc =
     name +
-    " (<B>" +
+    " (<b>" +
     code +
-    "</B>)<br><small>" +
+    "</b>)<br><small>" +
     city +
     ", " +
     country +
@@ -1130,9 +1130,9 @@ function xmlhttpPost(strURL, id, param) {
         code = result[0],
         text = result[1];
       if (getCurrentPane() == "multiinput") {
-        $("multiinput_status").innerHTML = "<B>" + text + "</B>";
+        $("multiinput_status").innerHTML = "<b>" + text + "</b>";
       } else {
-        $("input_status").innerHTML = "<B>" + text + "</B>";
+        $("input_status").innerHTML = "<b>" + text + "</b>";
       }
       setCommitAllowed(false);
 
@@ -1400,9 +1400,9 @@ function xmlhttpPost(strURL, id, param) {
         "param=" +
         encodeURIComponent(param);
       if (getCurrentPane() == "multiinput") {
-        $("multiinput_status").innerHTML = "<B>Saving...</B>";
+        $("multiinput_status").innerHTML = "<b>Saving...</b>";
       } else {
-        $("input_status").innerHTML = "<B>Saving...</B>";
+        $("input_status").innerHTML = "<b>Saving...</b>";
       }
       break;
 
@@ -3932,7 +3932,7 @@ function login(str, param) {
           "<img src='/img/close.gif' height=17 width=17 onClick='JavaScript:closeNews()'> " +
           gt.strargs(
             gt.gettext(
-              "<B>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
+              "<b>Welcome to OpenFlights!</b> Click on %1 to start adding flights, or on %2 to load in existing flights from sites like FlightMemory."
             ),
             [
               "<input type='button' value='" +

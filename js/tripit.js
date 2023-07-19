@@ -43,7 +43,7 @@ var importFlightComplete = function (segmentId) {
     var result = data.split(";"),
       code = result[0],
       text = result[1];
-    setStatus(segmentId, "<B>" + text + "</B>");
+    setStatus(segmentId, "<b>" + text + "</b>");
 
     var showOverlay = false;
     var overlayImage;
