@@ -74,7 +74,7 @@ require_once "./php/helper.php";
     </div>
 
   <div id="sideBar">
-    <?php include "./sidebar.php"; ?>
+    <?php include_once "./sidebar.php"; ?>
     <div id="login">
       <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
         <?php locale_pulldown($dbh, $locale); ?>

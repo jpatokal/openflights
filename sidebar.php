@@ -1,7 +1,5 @@
 <?php
-require_once "./php/locale.php";
 ?>
-
 <center>
     <a href="/"><img src="/img/openflights-logo.png" alt="<?php echo _('OpenFlights logo'); ?>" width="220" height="31" style="margin: 10px 10px 0px 10px"/></a><br>
     <h6>
