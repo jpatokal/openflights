@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Merge airports by APID: data/merge-airports.sh BAD GOOD
+# Merge airports by APID: tools/merge-airports.sh BAD GOOD
 #
 source sql/mysql.sh
 bad=$1

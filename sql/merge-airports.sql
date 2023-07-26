@@ -1,5 +1,5 @@
 --
--- Executed by data/merge-airports.sh
+-- Executed by tools/merge-airports.sh
 --
 set names 'utf8';
 set sql_safe_updates=1;

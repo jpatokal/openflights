@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Delete user and all their flights: data/delete-user.sh UID
+# Delete user and all their flights: tools/delete-user.sh UID
 #
 source sql/mysql.sh
 uid=$1
