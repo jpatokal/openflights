@@ -365,6 +365,7 @@ switch ($fileType) {
 }
 
 if ($action == _("Upload")) {
+    // TODO: probably should be 3px or 3em...
     print "<table style='border-spacing: 3'><tr>";
     print "<th>ID</th><th colspan=2>" . _("Date") . "</th><th>" . _("Flight") . "</th><th>" . _("From") .
         "</th><th>" . _("To") . "</th><th>" . _("Miles") . "</th><th>" . _("Time") . "</th><th>" .
@@ -396,8 +397,11 @@ foreach ($rows as $row) {
 
             // <td class="liste"><b>Country</b><br>Town<br>Airport Blah Blah</td>
             //                                             ^^^^^^^ target
-            $src_name = reset(preg_split('/[ \/<]/', nth_text($cols[3], 2)));
-            $dst_name = reset(preg_split('/[ \/<]/', nth_text($cols[5], 2)));
+            // TODO: Are these reset() calls actually necessary?
+            $srcSplit = preg_split('/[ \/<]/', nth_text($cols[3], 2));
+            $src_name = reset($srcSplit);
+            $dstSplit = preg_split('/[ \/<]/', nth_text($cols[5], 2));
+            $dst_name = reset($dstSplit);
 
             [$src_apid, $src_iata, $src_bgcolor] = check_airport($dbh, $src_iata, $src_name);
             [$dst_apid, $dst_iata, $dst_bgcolor] = check_airport($dbh, $dst_iata, $dst_name);
