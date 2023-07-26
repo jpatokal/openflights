@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester
 $webroot = 'http://localhost:8080/';
 
 // Path to OpenFlights upload directory
-$uploaddir = '../../import/';
+$uploadDir = '../../import/';
 
 // Database configuration
 $dbhost = "localhost";
