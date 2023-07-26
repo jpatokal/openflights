@@ -266,14 +266,14 @@ function check_plane($dbh, $plane) {
 /**
  * Validate that the importing user owns this trip
  *
- * @param $dbh PDO OpenFlights DB handler
+ * @param $dbh PDO|null OpenFlights DB handler
  * @param $uid string User ID
  * @param $trid string Trip ID
  * @return array Trip ID, color
  */
-function check_trip($dbh, $uid, $trid) {
+function check_trip($dbh, $uid, $trid = "") {
     // If no trip set, return OK
-    if (!$trid || $trid == "") {
+    if (!$trid || $trid == "" || $dbh === null) {
         return [null, "#fff"];
     }
 
@@ -458,6 +458,9 @@ foreach ($rows as $row) {
             if ($comment && substr($comment, 0, 9) === "Comment: ") {
                 $comment = trim(substr($comment, 9));
             }
+
+            // FM imports don't have a trip, so use fallback values from check_trip()
+            [$trid, $trip_bgcolor] = check_trip(null, "");
             break; // case FM
 
         case "CSV":
