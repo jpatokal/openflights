@@ -31,11 +31,28 @@ const POS_MAP = ["Window" => "W", "Middle" => "M", "Aisle" => "A", "" => ""];
 const CLASS_MAP = ["Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F", "" => ""];
 const REASON_MAP = ["Business" => "B", "Personal" => "L", "Crew" => "C", "Other" => "O", "" => ""];
 
+/**
+ * @param $element
+ * @param $n int
+ * @return string
+ */
 function nth_text($element, $n) {
     $xpath = new DOMXPath($element->ownerDocument);
-    return nbsp_trim($xpath->query('.//text()', $element)->item($n)->textContent);
+    $item = $xpath->query('.//text()', $element)->item($n);
+    if ($item !== null) {
+        return nbsp_trim($item->textContent);
+    }
+
+    // Shouldn't be needed in most cases, as we should be checking for the number of pieces we text,
+    // as some are optional.
+    // If the item ($n) we were looking for isn't there, just return an empty string.
+    return '';
 }
 
+/**
+ * @param $element
+ * @return int
+ */
 function text_count($element) {
     $xpath = new DOMXPath($element->ownerDocument);
     return $xpath->query('.//text()', $element)->length;
@@ -149,7 +166,7 @@ function check_airport($dbh, $code, $name) {
 function check_airline($dbh, $number, $airline, $uid, $history) {
     $code = substr($number, 0, 2);
     $isAlpha = preg_match('/[a-zA-Z0-9]{2}/', $code) && ! preg_match('/\d{2}/', $code);
-    if ($airline == "" && ! $isAlpha) {
+    if ($airline == "" && !$isAlpha) {
         $airline = _("Unknown") . "<br><small>(" . _("was:") . " " . _("No airline") . ")</small>";
         $color = "#ddf";
         $alid = -1;
@@ -395,13 +412,28 @@ foreach ($rows as $row) {
             $src_iata = $cols[2]->textContent;
             $dst_iata = $cols[4]->textContent;
 
-            // <td class="liste"><b>Country</b><br>Town<br>Airport Blah Blah</td>
-            //                                             ^^^^^^^ target
-            // TODO: Are these reset() calls actually necessary?
-            $srcSplit = preg_split('/[ \/<]/', nth_text($cols[3], 2));
-            $src_name = reset($srcSplit);
-            $dstSplit = preg_split('/[ \/<]/', nth_text($cols[5], 2));
-            $dst_name = reset($dstSplit);
+            // Try and grab the "Airport Name" for the source and destination airports.
+            // Check if there are 3 articles of plain text in the <td>.
+            // If there are, try and grab the third; it can then be used in a LIKE search to help find the airport
+            //
+            // preg_split is looking for names with multiple (not hyphenated) words (separated by " ", "/" or "<"),
+            // or alternate names, such as:
+            //  - "National/Zaventem" -> "National"
+            //  - "Bole International" -> "Bole"
+            //  - "Berlin Brandenburg, Willy Brandt" -> "Berlin"
+            // And then taking the first "word" (element 0)
+
+            // <td class="liste"><b>City/Town</b><br>Country<br>Airport Blah Blah</td>
+            //                                                     ^^^^^^^ target
+            // <td class="liste"><b>City/Town</b><br>Country</td>
+
+            $src_name = text_count($cols[3]) === 3
+                ? preg_split('/[ \/<]/', nth_text($cols[3], 2))[0]
+                : "";
+
+            $dst_name = text_count($cols[5]) === 3
+                ? preg_split('/[ \/<]/', nth_text($cols[5], 2))[0]
+                : "";
 
             [$src_apid, $src_iata, $src_bgcolor] = check_airport($dbh, $src_iata, $src_name);
             [$dst_apid, $dst_iata, $dst_bgcolor] = check_airport($dbh, $dst_iata, $dst_name);
@@ -426,11 +458,17 @@ foreach ($rows as $row) {
             [$alid, $airline, $airline_bgcolor] = check_airline($dbh, $number, $airline, $uid, $history);
 
             // Load plane model (plid)
-            // <TD class=liste>Boeing 737-600<br>LN-RCW<br>Yngvar Viking</td>
+            // <td class="liste">Boeing 737-600<br>LN-RCW<br>Yngvar Viking</td>
+            // <td class="liste_rot">Airbus A319-100</td>
             $plane = nth_text($cols[7], 0);
-            $reg = nth_text($cols[7], 1);
-            if (text_count($cols[7]) > 2) {
-                $reg .= " " . nth_text($cols[7], 2);
+            $reg = '';
+            // See if the text has a registration, but it's optional
+            if (text_count($cols[7]) > 1) {
+                $reg = nth_text($cols[7], 1);
+                // We also have a "name"
+                if (text_count($cols[7]) > 2) {
+                    $reg .= " " . nth_text($cols[7], 2);
+                }
             }
             if ($plane != "") {
                 [$plid, $plane_bgcolor] = check_plane($dbh, $plane);
