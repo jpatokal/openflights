@@ -81,7 +81,10 @@ foreach ($dbh->query($sql) as $row) {
         <tr>
           <td><input type="text" name="callsign"></td>
           <td colspan=3>
-    <nobr><?php echo _("Show only major (IATA) airlines?"); ?></nobr><input type="checkbox" name="iatafilter" value="yes" checked>
+            <label>
+              <input type="checkbox" name="iatafilter" value="yes" checked> <?php
+                echo _("Show only major (IATA) airlines?"); ?>
+            </label>
           </td>
         </tr>
     </table><br>

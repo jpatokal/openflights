@@ -100,7 +100,10 @@ foreach ($dbh->query($sql) as $row) {
             </select>
           </td>
           <td colspan=3>
-            <?php echo _("Show only major (IATA) airports?"); ?> <input type="checkbox" name="iatafilter" value="yes" checked>
+            <label>
+              <input type="checkbox" name="iatafilter" value="yes" checked> <?php
+                echo _("Show only major (IATA) airports?"); ?>
+            </label>
           </td>
         </tr>
     </table>
