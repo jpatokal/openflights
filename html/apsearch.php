@@ -31,29 +31,30 @@ $logged_in = $uid && !empty($uid);
   <?php echo _("Fill one or more fields below to search for matching airports."); ?>
     <table>
         <tr>
-          <td><?php echo _("Airport name"); ?></td>
+          <td><label for="airport"><?php echo _("Airport name"); ?></label></td>
           <td title="<?php
             echo _('International Air Transport Association') . '/' . _('Federal Aviation Administration');
-            ?>">
-              <?php echo _('IATA'); ?>/<?php echo _('FAA'); ?>
+            ?>"><label for="iata"><?php echo _('IATA'); ?>/<?php echo _('FAA'); ?></label>
           </td>
-          <td title="<?php echo _('International Civil Aviation Organization'); ?>"><?php echo _('ICAO'); ?></td>
-          <td><?php echo _("Airport ID"); ?></td>
+          <td title="<?php echo _('International Civil Aviation Organization');
+            ?>"><label for="icao"><?php echo _('ICAO'); ?></label>
+          </td>
+          <td><label for="apid"><?php echo _("Airport ID"); ?></label></td>
         </tr>
         <tr>
-          <td><input type="text" name="airport" onFocus="setEdited()"></td>
-          <td><input type="text" name="iata" size="3" onFocus="setEdited()"></td>
-          <td><input type="text" name="icao" size="4" onFocus="setEdited()"></td>
-          <td><input type="text" name="apid" size="5" value="" style="border: 0px" READONLY></td>
+          <td><input type="text" id="airport" name="airport" onFocus="setEdited()"></td>
+          <td><input type="text" id="iata" name="iata" size="3" onFocus="setEdited()"></td>
+          <td><input type="text" id="icao" name="icao" size="4" onFocus="setEdited()"></td>
+          <td><input type="text" id="apid" name="apid" size="5" value="" style="border: 0px" READONLY></td>
         </tr>
         <tr>
-          <td><?php echo _("City name"); ?></td>
-          <td colspan=3><?php echo _("Country name"); ?></td>
+          <td><label for="city"><?php echo _("City name"); ?></label></td>
+          <td colspan=3><label for="country"><?php echo _("Country name"); ?></label></td>
         </tr>
-    <tr>
-          <td><input type="text" name="city" onFocus="setEdited()"></td>
+        <tr>
+          <td><input type="text" id="city" name="city" onFocus="setEdited()"></td>
           <td colspan=3>
-            <select name="country" onFocus="setEdited()">
+            <select id="country" name="country" onFocus="setEdited()">
               <option value="">ALL</option>
 <?php
 $sql = "SELECT iso_code AS code, name FROM countries ORDER BY name";
@@ -65,35 +66,43 @@ foreach ($dbh->query($sql) as $row) {
           </td>
         </tr>
         <tr>
-          <td><?php echo _("Latitude") . "&nbsp;" . _("(&plusmn;dd)"); ?></td>
-          <td><?php echo _("Longitude") . "&nbsp;" . _("(&plusmn;dd)"); ?>&nbsp;</td>
-          <td><?php echo _("Elevation") . "&nbsp;" . _("(ft)"); ?>&nbsp;</td>
-          <td><?php echo _("UTC"); ?><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
-          <td><?php echo _("DST"); ?><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup></td>
+          <td><label for="y"><?php echo _("Latitude") . "&nbsp;" . _("(&plusmn;dd)"); ?></td>
+          <td><label for="x"><?php echo _("Longitude") . "&nbsp;" . _("(&plusmn;dd)"); ?></label></td>
+          <td><label for="elevation"><?php echo _("Elevation") . "&nbsp;" . _("(ft)"); ?></label></td>
+          <td>
+            <label for="tz"><?php echo _("UTC");
+            ?></label><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup>
+          </td>
+          <td>
+            <label for="dst"><?php echo _("DST");
+            ?></label><sup><a href="#help" onclick='JavaScript:help("time")'>?</a></sup>
+          </td>
         </tr>
         <tr>
-          <td><input type="text" name="y" size="12" onFocus="setEdited()"></td>
-          <td><input type="text" name="x" size="12" onFocus="setEdited()"></td>
-          <td><input type="text" name="elevation" size="6" onFocus="setEdited()"></td>
-          <td><input type="text" name="tz" size="3" onFocus="setEdited()"></td>
+          <td><input type="text" id="y" name="y" size="12" onFocus="setEdited()"></td>
+          <td><input type="text" id="x" name="x" size="12" onFocus="setEdited()"></td>
+          <td><input type="text" id="elevation" name="elevation" size="6" onFocus="setEdited()"></td>
+          <td><input type="text" id="tz" name="tz" size="3" onFocus="setEdited()"></td>
           <td>
-              <select name="dst" onChange="setEdited()">
-                  <option value="U" selected><?php echo _("Unknown"); ?></option>
-                  <option value="E"><?php echo _("European"); ?></option>
-                  <option value="A"><?php echo _("US/Canada"); ?></option>
-                  <option value="S"><?php echo _("S. American"); ?></option>
-                  <option value="O"><?php echo _("Australia"); ?></option>
-                  <option value="Z"><?php echo _("New Zealand"); ?></option>
-                  <option value="N"><?php echo _("None"); ?></option>
+            <select id="dst" name="dst" onChange="setEdited()">
+              <option value="U" selected><?php echo _("Unknown"); ?></option>
+              <option value="E"><?php echo _("European"); ?></option>
+              <option value="A"><?php echo _("US/Canada"); ?></option>
+              <option value="S"><?php echo _("S. American"); ?></option>
+              <option value="O"><?php echo _("Australia"); ?></option>
+              <option value="Z"><?php echo _("New Zealand"); ?></option>
+              <option value="N"><?php echo _("None"); ?></option>
             </select>
           </td>
         </tr>
         <tr>
-          <td><?php echo _("Database"); ?><sup><a href="#help" onclick='JavaScript:help("database")'>?</a></sup></td>
+          <td><label for="db"><?php echo _("Database");
+            ?></label><sup><a href="#help" onclick='JavaScript:help("database")'>?</a></sup>
+          </td>
         </tr>
         <tr>
           <td>
-            <select name="db">
+            <select id="db" name="db">
               <option value="airports" selected>OpenFlights</option>
               <option value="airports_oa">OurAirports</option>
               <option value="airports_dafif">DAFIF (Oct 2006)</option>
@@ -101,7 +110,7 @@ foreach ($dbh->query($sql) as $row) {
           </td>
           <td colspan=3>
             <label>
-              <input type="checkbox" name="iatafilter" value="yes" checked> <?php
+              <input type="checkbox" id="iatafilter" name="iatafilter" value="yes" checked><?php
                 echo _("Show only major (IATA) airports?"); ?>
             </label>
           </td>
@@ -112,9 +121,9 @@ foreach ($dbh->query($sql) as $row) {
     <table width="95%">
         <tr>
             <td>
-                <input type="button" value='<?php echo _("Search"); ?>' onClick="doSearch(0)">
-                <input type="button" value='<?php echo _("Clear"); ?>' onClick="clearSearch()">
-                <input type="button" value='<?php echo _("Cancel"); ?>' onClick="window.close()">
+              <input type="button" value='<?php echo _("Search"); ?>' onClick="doSearch(0)">
+              <input type="button" value='<?php echo _("Clear"); ?>' onClick="clearSearch()">
+              <input type="button" value='<?php echo _("Cancel"); ?>' onClick="window.close()">
             </td>
             <td style="text-align: right">
 <?php
@@ -122,8 +131,12 @@ if (!$logged_in) {
     echo "<small>" . _("Please log in to enable editing.") . "</small><br>";
 }
 ?>
-                <input id="b_add" type="button" title='<?php echo _("Record the current data as a new airport."); ?>' value='<?php echo _("Add as new"); ?>' DISABLED onClick="doRecord()">
-                <input id="b_edit" type="button" title='<?php echo _("Record changes to this airport."); ?>' value='<?php echo _("Save changes"); ?>' DISABLED onClick="doRecord()" style="display: none">
+              <input id="b_add" type="button" title='<?php
+                echo _("Record the current data as a new airport."); ?>' value='<?php echo _("Add as new"); ?>' <?php
+                condOut(!$logged_in, "DISABLED"); ?> onClick="doRecord()"">
+              <input id="b_edit" type="button" title='<?php
+                echo _("Record changes to this airport."); ?>' value='<?php echo _("Save changes"); ?>' <?php
+                condOut(!$logged_in, "DISABLED"); ?> onClick="doRecord()" style="display: none">
             </td>
         </tr>
     </table>

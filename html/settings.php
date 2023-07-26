@@ -165,15 +165,15 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Privacy"); ?></td>
             <td class="value">
                 <input type="radio" name="privacy" value="N" onClick="JavaScript:changePrivacy('N')" <?php
-                    condOut($settings, 'public', 'N', 'CHECKED');
+                    condArrOut($settings, 'public', 'N', 'CHECKED');
                     echo ">" . _("Private");
                 ?><br>
                 <input type="radio" name="privacy" value="Y" onClick="JavaScript:changePrivacy('Y')" <?php
-                    condOut($settings, 'public', 'Y', 'CHECKED');
+                    condArrOut($settings, 'public', 'Y', 'CHECKED');
                     echo ">" . _("Public");
                 ?><br>
                 <input type="radio" name="privacy" value="O" onClick="JavaScript:changePrivacy('O')" <?php
-                    condOut($settings, 'public', '0', 'CHECKED');
+                    condArrOut($settings, 'public', '0', 'CHECKED');
                     echo ">" . _("Open");
                 ?><br>
             </td>
@@ -196,19 +196,19 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Flight editor"); ?></td>
             <td class="value">
                 <input type="radio" name="editor" value="B" onClick="JavaScript:changeEditor('B')" <?php
-                    condOut($settings, 'editor', 'B', 'CHECKED');
+                    condArrOut($settings, 'editor', 'B', 'CHECKED');
                     echo ">" . _("Basic"); ?><br>
                 <input type="radio" name="editor" value="D" onClick="JavaScript:changeEditor('D')"<?php
-                    condOut($settings, 'editor', 'D', 'CHECKED');
+                    condArrOut($settings, 'editor', 'D', 'CHECKED');
                     echo ">" . _("Detailed"); ?><br>
             </td>
             <td class="desc">
                 <span id="basiceditor" style="display: <?php
-                    condOut($settings, 'editor', 'B', 'inline', 'none'); ?>"><?php
+                    condArrOut($settings, 'editor', 'B', 'inline', 'none'); ?>"><?php
                     echo _("The <b>Basic</b> editor is quick and easy: from where, to where, the date and optionally the airline, up to four flights at a time. The fastest way to build up your map!"); ?>
                 </span>
                 <span id="detaileditor" style="display: <?php
-                    condOut($settings, 'editor', 'D', 'inline', 'none'); ?>"><?php
+                    condArrOut($settings, 'editor', 'D', 'inline', 'none'); ?>"><?php
                     echo _("The <b>Detailed</b> editor lets you add class of service, seat numbers, plane models and registrations, freeform notes and much more. Perfect for aviation fans and planespotters."); ?>
                 </span>
             </td>
@@ -217,9 +217,9 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Distances"); ?></td>
             <td class="value">
               <input type="radio" name="units" value="M" <?php
-                condOut($settings, 'units', 'M', 'CHECKED'); echo ">" . _("Miles"); ?><br>
+                condArrOut($settings, 'units', 'M', 'CHECKED'); echo ">" . _("Miles"); ?><br>
               <input type="radio" name="units" value="K" <?php
-                condOut($settings, 'units', 'K', 'CHECKED'); echo ">" . _("Kilometers"); ?><br>
+                condArrOut($settings, 'units', 'K', 'CHECKED'); echo ">" . _("Kilometers"); ?><br>
             </td>
             <td class="desc"><?php echo _("Preferred unit for flight distances"); ?></td>
           </tr>
@@ -238,13 +238,13 @@ if ($type == "signup") {
             <td class="key"><?php echo _("Default view"); ?></td>
             <td class="value">
                 <input type="radio" name="startpane" value="H" DISABLED <?php
-                    condOut($settings, 'startpane', 'H', 'CHECKED');
+                    condArrOut($settings, 'startpane', 'H', 'CHECKED');
                     echo ">" . _("Help"); ?><br>
                 <input type="radio" name="startpane" value="A" DISABLED <?php
-                    condOut($settings, 'startpane', 'A', 'CHECKED');
+                    condArrOut($settings, 'startpane', 'A', 'CHECKED');
                     echo ">" . _("Analyze"); ?><br>
                 <input type="radio" name="startpane" value="T" DISABLED <?php
-                    condOut($settings, 'startpane', 'T', 'CHECKED');
+                    condArrOut($settings, 'startpane', 'T', 'CHECKED');
                     echo ">" . _("Top 10"); ?>
             </td>
             <td class="desc" colspan=2>

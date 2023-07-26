@@ -260,6 +260,17 @@ function orderAirports($src_apid, $dst_apid) {
 }
 
 /**
+ * if $cond then echo $value
+ * @param $cond bool
+ * @param $value string
+ */
+function condOut($cond, $value) {
+    if ($cond) {
+        echo $value;
+    }
+}
+
+/**
  * if $arr[$key] == $value then echo $true else echo $false
  * @param $arr array
  * @param $key string
@@ -267,7 +278,7 @@ function orderAirports($src_apid, $dst_apid) {
  * @param $true string
  * @param $false string Default ''
  */
-function condOut($arr, $key, $value, $true, $false = '') {
+function condArrOut($arr, $key, $value, $true, $false = '') {
     echo $arr[$key] == $value
         ? $true
         : $false;
