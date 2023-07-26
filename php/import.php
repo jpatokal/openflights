@@ -433,6 +433,13 @@ if ($action == _("Upload")) {
     );
 }
 
+$fatal = [
+    'airport' => false,
+    'airline' => false,
+    'date' => false,
+    'trip' => false,
+];
+
 $count = 0;
 foreach ($rows as $row) {
     switch ($fileType) {
@@ -652,11 +659,11 @@ foreach ($rows as $row) {
     // Check if parsing succeeded and tag fatal errors if not
     if (!$src_date) {
         $status = "disabled";
-        $fatal = "date";
+        $fatal["date"] = true;
     }
     if (!$src_apid || !$dst_apid) {
         $status = "disabled";
-        $fatal = "airport";
+        $fatal["airport"] = true;
     } else {
         $duration_bgcolor = "#fff";
         $dist_bgcolor = "#fff";
@@ -677,11 +684,11 @@ foreach ($rows as $row) {
     }
     if (!$alid) {
         $status = "disabled";
-        $fatal = "airline";
+        $fatal["airline"] = true;
     }
     if ($trid && $trip_bgcolor != "#fff") {
         $status = "disabled";
-        $fatal = "trip";
+        $fatal["trip"] = true;
     }
 
     switch ($action) {
@@ -843,37 +850,37 @@ if ($action == _("Upload")) {
     if ($idNote == true) {
         print "<font color=blue>" .
             _("Note: This CSV file contains OpenFlights IDs in one or more of the columns numbered 15-18 (15 Source Airport ID, 16 Destination Airport ID, 17 Airline ID, 18 Plane ID). These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") .
-            "</font><br>";
+            "</font><br><br>";
     }
     if ($history == "yes") {
         print "<font color=blue>" .
             _("Note: You have selected historical airline mode. All airline names have been preserved exactly as is.") .
-            "</font><br>";
+            "</font><br><br>";
     }
 
-    if ($status == "disabled") {
-        // TODO: It's possible to have more than one fatal reason...
+    if ($status !== "disabled") {
         // TODO: separate : is not i18n friendly
         print "<font color=red>" . _("Error") . ": ";
-        switch ($fatal) {
-            case "airport":
-                print _("Your flight data includes unrecognized airports. Please add them to the database and try again.") .
-                    "&nbsp;<input type='button' value='" . _("Add new airport") .
-                    "'onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
-                break;
 
-            case "airline":
-                print _("Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again.");
-                break;
-
-            case "date":
-                print _("Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted.");
-                break;
-
-            case "trip":
-                print _("Your flight data includes trip IDs which are either undefined or do not belong to you. Please check the trip IDs.");
-                break;
+        $errors = [];
+        if ($fatal["airport"]) {
+            $errors[] = _("Your flight data includes unrecognized airports. Please add them to the database and try again.") .
+                "&nbsp;<input type='button' value='" . _("Add new airport") .
+                "'onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>" ;
         }
+
+        if ($fatal["airline"]) {
+            $errors[] = _("Your flight data includes unrecognized airlines. This usually means that the airline code in the flight number was not found, and an airline name was not specified. Please fix or remove the airline code and try again.");
+        }
+
+        if ($fatal["date"]) {
+            $errors[] = _("Some date fields could not be parsed. Please change them to use any of these formats: YYYY-MM-DD, DD.MM.YYYY, MM/DD/YYYY, or YYYY only. Note that DD/MM/YYYY is <b>not</b> accepted.");
+        }
+
+        if ($fatal["trip"]) {
+            $errors[] = _("Your flight data includes trip IDs which are either undefined or do not belong to you. Please check the trip IDs.");
+        }
+        print implode("\n<br><br>\n", $errors);
         print "</font><br><br>";
     } else {
         print _(
@@ -883,7 +890,7 @@ if ($action == _("Upload")) {
     print "<input type='hidden' name='tmpfile' value='" . basename($_FILES['userfile']['tmp_name']) . "'>";
     print "<input type='hidden' name='fileType' value='$fileType'>";
     print "<input type='hidden' name='historyMode' value='$history'>";
-    print "<input type='submit' name='action' title='" . _("Add these flights to your OpenFlights") . "' value='" .
+    print "<input type='submit' name='action' title='" . _("Add these flights to your OpenFlights list?") . "' value='" .
         _("Import") . "' " . $status . ">";
     ?>
 
