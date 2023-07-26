@@ -1,7 +1,5 @@
 <?php
 
-use Github\Api\Issue;
-use Github\Api\Search;
 use Github\Client;
 
 require_once '../vendor/autoload.php';
@@ -347,7 +345,7 @@ TXT;
             $issueNumber = $result['number'];
             $message = $addAirport
                 ? _("Airport addition issue created for review on new GitHub Issue: %s; %s")
-                : _("Airport edit issue created for review on new GitHub Issue:  %s; %s");
+                : _("Airport edit issue created for review on new GitHub Issue: %s; %s");
         }
 
         json_success(["apid" => $apid, "message" => sprintf($message, $issueNumber, $result['html_url'])]);
