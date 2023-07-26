@@ -14,16 +14,15 @@ var eliteicons;
 window.onload = function init() {
   gt = new Gettext({ domain: "messages" });
 
-  eliteicons = [
-    ["S", gt.gettext("Silver Elite"), "/img/silver-star.png"],
-    ["G", gt.gettext("Gold Elite"), "/img/gold-star.png"],
-    ["P", gt.gettext("Platinum Elite"), "/img/platinum-star.png"],
-    [
-      "X",
+  eliteicons = {
+    S: [gt.gettext("Silver Elite"), "/img/silver-star.png"],
+    G: [gt.gettext("Gold Elite"), "/img/gold-star.png"],
+    P: [gt.gettext("Platinum Elite"), "/img/platinum-star.png"],
+    X: [
       gt.gettext("Thank you for using OpenFlights &mdash; please donate!"),
       "/img/icon-warning.png",
     ],
-  ];
+  };
 };
 
 /**
@@ -190,47 +189,42 @@ function getDST(element) {
 }
 
 /**
- * Return HTML string representing user's elite status icon
- * If validity is not null, also return text description and validity period
- * @param e
- * @param validity
+ * Return HTML string representing user's elite status icon.
+ * If validity is not null, also return text description and validity period.
+ * @param e {string}
+ * @param validity {string|null}
  * @returns {string}
  */
-function getEliteIcon(e, validity) {
-  if (!e || e == "") {
+function getEliteIcon(e, validity = "") {
+  if (!e || e === "" || eliteicons[e] === undefined) {
     return "";
   }
-  for (var i = 0; i < eliteicons.length; i++) {
-    if (eliteicons[i][0] != e) {
-      continue;
-    }
-    if (validity) {
-      return (
-        // TODO: Add alt tags
-        "<center><img src='" +
-        eliteicons[i][2] +
-        "' title='" +
-        eliteicons[i][1] +
-        "' height=34 width=34 /><br><b>" +
-        eliteicons[i][1] +
-        "</b><br><small>" +
-        gt.gettext("Valid until") +
-        "<br>" +
-        validity +
-        "</small></center>"
-      );
-    } else {
-      return (
-        // TODO: Add alt tags
-        "<span style='float: right'><a href='/donate' target='_blank'><img src='" +
-        eliteicons[i][2] +
-        "' title='" +
-        eliteicons[i][1] +
-        "' height=34 width=34></a></span>"
-      );
-    }
+
+  const icon = eliteicons[e];
+  if (validity) {
+    return (
+      // TODO: Add alt tags
+      "<center><img src='" +
+      icon[1] +
+      "' title='" +
+      icon[0] +
+      "' height=34 width=34 /><br><b>" +
+      icon[0] +
+      "</b><br><small>" +
+      gt.gettext("Valid until") +
+      "<br>" +
+      validity +
+      "</small></center>"
+    );
   }
-  return "";
+  return (
+    // TODO: Add alt tags
+    "<span style='float: right'><a href='/donate' target='_blank'><img src='" +
+    icon[1] +
+    "' title='" +
+    icon[0] +
+    "' height=34 width=34></a></span>"
+  );
 }
 
 /**
