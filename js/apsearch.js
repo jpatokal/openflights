@@ -418,6 +418,7 @@ function searchResult(str) {
     }
     table += "</ul></td></tr>";
   } else {
+    var max = json["max"];
     table +=
       "<tr><td><b>" +
       gt.strargs(gt.gettext("Results %1 to %2 of %3"), [
