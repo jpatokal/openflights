@@ -3,6 +3,7 @@
 header("Content-type: text/html");
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
+require_once '../php/helper.php';
 
 $uid = $_SESSION["uid"] ?? null;
 $logged_in = $uid && !empty($uid);
