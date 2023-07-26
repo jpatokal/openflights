@@ -337,7 +337,9 @@ switch ($fileType) {
         $html = phpQuery::newDocumentFileHTML($uploadFile, 'ISO-8859-1');
 
         if ($html['title']->text() != "FlightMemory - FlightData") {
-            die_nicely(_(sprintf("Sorry, the file %s does not appear contain FlightMemory FlightData.", $uploadFile)));
+            die_nicely(
+                sprintf(_("Sorry, the file %s does not appear to contain FlightMemory FlightData."), $uploadFile)
+            );
         }
 
         // Table with padded cells has the data
