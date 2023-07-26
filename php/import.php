@@ -58,6 +58,12 @@ function text_count($element) {
     return $xpath->query('.//text()', $element)->length;
 }
 
+/**
+ * Trims UTF-8 NBSP.
+ *
+ * @param $string string
+ * @return string
+ */
 function nbsp_trim($string) {
     return trim($string, "\xC2\xA0"); // UTF-8 NBSP
 }
@@ -71,7 +77,7 @@ function nbsp_trim($string) {
  * @return array [ Date, color ]
  */
 function check_date($dbh, $type, $date) {
-    if (strlen($date) == 4) {
+    if (strlen($date) === 4) {
         $date = "01.01." . $date;
     }
     if (strpos($date, "-") !== false) {
@@ -157,109 +163,118 @@ function check_airport($dbh, $code, $name) {
  * Else match the first word of airline name.
  *
  * @param $dbh PDO OpenFlights DB handler
- * @param $number string Flight number
- * @param $airline string Airline name
+ * @param $flightNumber string Flight number
+ * @param $airlineName string Airline name
  * @param $uid string User ID; unused
  * @param $history string If "yes", ignore codes and ignore errors
  * @return array [ Airline ID, airline name, color ]
  */
-function check_airline($dbh, $number, $airline, $uid, $history) {
-    $code = substr($number, 0, 2);
-    $isAlpha = preg_match('/[a-zA-Z0-9]{2}/', $code) && ! preg_match('/\d{2}/', $code);
-    if ($airline == "" && !$isAlpha) {
-        $airline = _("Unknown") . "<br><small>(" . _("was:") . " " . _("No airline") . ")</small>";
-        $color = "#ddf";
-        $alid = -1;
+function check_airline($dbh, $flightNumber, $airlineName, $uid, $history) {
+    $code = substr($flightNumber, 0, 2);
+    $isAlpha = preg_match('/[a-zA-Z0-9]{2}/', $code) && !preg_match('/\d{2}/', $code);
+    if ($airlineName === "" && !$isAlpha) {
+        return [
+            -1,
+            _("Unknown") . "<br><small>(" . _("was:") . " " . _("No airline") . ")</small>",
+            "#ddf"
+        ];
+    }
+
+    // Is it alphanumeric characters, but not all numeric characters? Then it's probably an airline code.
+    if ($isAlpha && $history != "yes") {
+        $params = [$code];
+        $sql = "SELECT name, alias, alid FROM airlines WHERE iata = ? ORDER BY name";
     } else {
-        // Is it alphanumeric characters, but not all numeric characters? Then it's probably an airline code.
-        if ($isAlpha && $history != "yes") {
-            $params = [$code];
-            $sql = "SELECT name, alias, alid FROM airlines WHERE iata = ? ORDER BY name";
+        $airlinepart = explode(' ', $airlineName);
+        if ($airlinepart[0] == 'Air') {
+            $part = 'Air ' . $airlinepart[1] . '%';
         } else {
-            $airlinepart = explode(' ', $airline);
-            if ($airlinepart[0] == 'Air') {
-                $part = 'Air ' . $airlinepart[1] . '%';
-            } else {
-                $part = $airlinepart[0] . '%';
-            }
-            $params = [$part, $part, $airline];
-            $sql = <<<SQL
+            $part = $airlinepart[0] . '%';
+        }
+        $params = [$part, $part, $airlineName];
+        $sql = <<<SQL
 SELECT name, alias, alid FROM airlines
 WHERE ((name LIKE ? OR alias LIKE ?) AND (iata != '')) OR (name = ?)
 ORDER BY frequency DESC
 SQL;
-        }
-        $sth = $dbh->prepare($sql);
-        $sth->execute($params);
-
-        // validate the airline/code against the DB
-        switch ($sth->rowCount()) {
-            // No match, add as new if we have a name for it, else return error
-            case "0":
-                if ($airline != "") {
-                    $color = "#fdd";
-                    $alid = -2;
-                } else {
-                    $color = "#faa";
-                    $alid = null;
-                }
-                break;
-
-            // Solitary match
-            case "1":
-                $dbrow = $sth->fetch();
-                if ($airline != "" && (strcasecmp($dbrow['name'], $airline) == 0 || strcasecmp($dbrow['alias'], $airline) == 0)) {
-                    // Exact match
-                    $color = "#fff";
-                    $airline = $dbrow['name'];
-                    $alid = $dbrow['alid'];
-                } elseif ($history == "yes") {
-                    // Not an exact match
-                    $color = "#fdd";
-                    $alid = -2;
-                } else {
-                    $color = "#ddf";
-                    $airline = $dbrow['name'] . "<br><small>(" . _("was:") . " {$airline})</small>";
-                    $alid = $dbrow['alid'];
-                }
-                break;
-
-            // Many matches, default to first with a warning if we can't find an exact match
-            default:
-                $color = "#ddf";
-                $first = true;
-                foreach ($sth as $dbrow) {
-                    $isMatch = $airline != "" && ((strcasecmp($dbrow['name'], $airline) == 0) ||
-                        (strcasecmp($dbrow['alias'], $airline) == 0));
-                    if ($first || $isMatch) {
-                        if ($isMatch) {
-                            $color = "#fff";
-                        }
-                        if ($first) {
-                            $first = false;
-                        }
-                        $new_airline = $dbrow['name'];
-                        $alid = $dbrow['alid'];
-                    }
-                }
-                // No match and in historical mode? Add it as new
-                if ($history == "yes" && $color == "#ddf") {
-                    $color = "#fdd";
-                    $alid = -2;
-                } else {
-                    $airline = $new_airline;
-                }
-        }
     }
-    return [$alid, $airline, $color];
+    $sth = $dbh->prepare($sql);
+    $sth->execute($params);
+
+    // validate the airline/code against the DB
+    switch ($sth->rowCount()) {
+        // No match, add as new if we have a name for it, else return error
+        case 0:
+            if ($airlineName !== "") {
+                $color = "#fdd";
+                $alid = -2;
+            } else {
+                $color = "#faa";
+                $alid = null;
+            }
+            break;
+
+        // Solitary match
+        case 1:
+            $dbrow = $sth->fetch();
+            if (
+                $airlineName !== "" && (
+                    strcasecmp($dbrow['name'], $airlineName) === 0 ||
+                    strcasecmp($dbrow['alias'], $airlineName) === 0
+                )
+            ) {
+                // Exact match
+                $color = "#fff";
+                $airlineName = $dbrow['name'];
+                $alid = $dbrow['alid'];
+            } elseif ($history == "yes") {
+                // Not an exact match
+                $color = "#fdd";
+                $alid = -2;
+            } else {
+                $color = "#ddf";
+                $airlineName = $dbrow['name'] . "<br><small>(" . _("was:") . " $airlineName)</small>";
+                $alid = $dbrow['alid'];
+            }
+            break;
+
+        // Many matches, default to first with a warning if we can't find an exact match
+        default:
+            $color = "#ddf";
+            $first = true;
+            foreach ($sth as $dbrow) {
+                $isMatch = $airlineName !== "" && (
+                    (strcasecmp($dbrow['name'], $airlineName) === 0) ||
+                    (strcasecmp($dbrow['alias'], $airlineName) === 0)
+                );
+                if ($first || $isMatch) {
+                    if ($isMatch) {
+                        $color = "#fff";
+                    }
+                    if ($first) {
+                        $first = false;
+                    }
+                    $newAirline = $dbrow['name'];
+                    $alid = $dbrow['alid'];
+                }
+            }
+            // No match and in historical mode? Add it as new
+            if ($history == "yes" && $color == "#ddf") {
+                $color = "#fdd";
+                $alid = -2;
+            } else {
+                $airlineName = $newAirline;
+            }
+    }
+    return [$alid, $airlineName, $color];
 }
 
 /**
- * Validate that this plane is in DB
+ * Validate that this plane is in DB.
  *
  * @param $dbh PDO OpenFlights DB handler
  * @param $plane string Plane ID
- * @return array Plane ID, color
+ * @return array [ Plane ID, color ]
  */
 function check_plane($dbh, $plane) {
     // If no plane set, return OK
@@ -270,7 +285,7 @@ function check_plane($dbh, $plane) {
     $sql = "SELECT plid FROM planes WHERE name = ?";
     $sth = $dbh->prepare($sql);
     $sth->execute([$plane]);
-    if ($sth->rowCount() == 1) {
+    if ($sth->rowCount() === 1) {
         $plid = $sth->fetchColumn(0);
         $color = "#fff";
     } else {
@@ -281,7 +296,7 @@ function check_plane($dbh, $plane) {
 }
 
 /**
- * Validate that the importing user owns this trip
+ * Validate that the importing user owns this trip.
  *
  * @param $dbh PDO|null OpenFlights DB handler
  * @param $uid string User ID
@@ -297,7 +312,7 @@ function check_trip($dbh, $uid, $trid = "") {
     $sql = "SELECT uid FROM trips WHERE trid = ?";
     $sth = $dbh->prepare($sql);
     $sth->execute([$trid]);
-    if (($sth->rowCount() == 1) && $uid == $sth->fetchColumn(0)) {
+    if (($sth->rowCount() === 1) && $uid == $sth->fetchColumn(0)) {
         $color = "#fff";
     } else {
         $color = "#faa";
@@ -306,22 +321,22 @@ function check_trip($dbh, $uid, $trid = "") {
 }
 
 function die_nicely($msg) {
-    print $msg . "<br><br>";
-    print "<input type='button' value='" . _("Upload again")
-        . "' title='" . _("Cancel this import and return to file upload page") . "' onClick='history.back(-1)'>";
+    print $msg . "<br><br>"
+        . "<input type='button' value='" . _("Upload again") . "' title='"
+        . _("Cancel this import and return to file upload page") . "' onClick='history.back(-1)'>";
     exit;
 }
 
-$uploaddir = $_SERVER["DOCUMENT_ROOT"] . '/import/';
+$uploadDir = $_SERVER["DOCUMENT_ROOT"] . '/import/';
 
 $action = $_POST["action"];
 switch ($action) {
     case _("Upload"):
-        $uploadFile = $uploaddir . basename($_FILES['userfile']['tmp_name']);
+        $uploadFile = $uploadDir . basename($_FILES['userfile']['tmp_name']);
         if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadFile)) {
             echo "<b>" . _("Upload successful. Parsing...") . "</b><br><h4>" . _("Results") . "</h4>";
             flush();
-            print "Tmpfile " . basename($_FILES['userfile']['tmp_name']) . "<br>"; // DEBUG
+            print "Tmpfile <tt>" . basename($_FILES['userfile']['tmp_name']) . "</tt><br>"; // DEBUG
         } else {
             die_nicely("<b>" . _("Upload failed!") . "</b>");
         }
@@ -330,12 +345,12 @@ switch ($action) {
     case _("Import"):
         $remove_these = [' ','`','"','\'','\\','/'];
         $filename = $_POST["tmpfile"];
-        $uploadFile = $uploaddir . str_replace($remove_these, '', $filename);
-        if (! file_exists($uploadFile)) {
+        $uploadFile = $uploadDir . str_replace($remove_these, '', $filename);
+        if (!file_exists($uploadFile)) {
             die_nicely(sprintf(_("File %s not found"), $uploadFile));
         }
         print "<h4>" . _("Importing...") . "</h4>";
-        print "Tmpfile " . $filename . "<br>"; // DEBUG
+        print "Tmpfile <tt>" . $filename . "</tt><br>"; // DEBUG
         flush();
         break;
 
@@ -346,7 +361,7 @@ switch ($action) {
 $fileType = $_POST["fileType"];
 $history = $_POST["historyMode"] ?? null;
 $status = "";
-$id_note = false;
+$idNote = false;
 
 switch ($fileType) {
     case "FM":
@@ -383,12 +398,39 @@ switch ($fileType) {
 
 if ($action == _("Upload")) {
     // TODO: probably should be 3px or 3em...
-    print "<table style='border-spacing: 3'><tr>";
-    print "<th>ID</th><th colspan=2>" . _("Date") . "</th><th>" . _("Flight") . "</th><th>" . _("From") .
-        "</th><th>" . _("To") . "</th><th>" . _("Miles") . "</th><th>" . _("Time") . "</th><th>" .
-        _("Plane") . "</th><th>" . _("Reg") . "</th>";
-    print "<th>" . _("Seat") . "</th><th>" . _("Class") . "</th><th>" . _("Type") . "</th><th>" . _("Reason") .
-        "</th><th>" . _("Trip") . "</th><th>" . _("Comment") . "</th></tr>";
+    printf(
+"<table style='border-spacing: 3'>
+<tr>
+    <th>%s</th>
+    <th colspan='2'>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th colspan='2'>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+    <th>%s</th>
+</tr>",
+        _("Date"),
+        _("Flight"),
+        _("From"),
+        _("To"),
+        _("Miles"),
+        _("Time"),
+        _("Plane"),
+        _("Reg"),
+        _("Seat"),
+        _("Class"),
+        _("Type"),
+        _("Reason"),
+        _("Trip"),
+        _("Comment")
+    );
 }
 
 $count = 0;
@@ -401,13 +443,12 @@ foreach ($rows as $row) {
 
             // Read and validate date field
             //  <td class="liste_rot"><nobr>10-05-2009</nobr><br>06:10<br>17:35 -1</td>
-            $src_date = nth_text($cols[1], 0);
             $src_time = nth_text($cols[1], 1);
             if (strlen($src_time) < 4) {
                 // a stray -1 or +1 is not a time
                 $src_time = null;
             }
-            [$src_date, $date_bgcolor] = check_date($dbh, $fileType, $src_date);
+            [$src_date, $date_bgcolor] = check_date($dbh, $fileType, nth_text($cols[1], 0));
 
             $src_iata = $cols[2]->textContent;
             $dst_iata = $cols[4]->textContent;
@@ -443,8 +484,7 @@ foreach ($rows as $row) {
             //     <tr><td align="right">429&nbsp;</td><td>mi</td></tr>
             //     <tr><td align="right">1:27&nbsp;</td><td>h</td></tr></table></th>
             $cells = $row['table td']->elements;
-            $distance = $cells[0]->textContent;
-            $distance = str_replace(',', '', nbsp_trim($distance));
+            $distance = str_replace(',', '', nbsp_trim($cells[0]->textContent));
             $dist_unit = $cells[1]->textContent;
             if ($dist_unit == "km") {
                 // km to mi
@@ -453,129 +493,163 @@ foreach ($rows as $row) {
             $duration = nbsp_trim($cells[2]->textContent);
 
             // <td>Airline<br>number</td>
-            $airline = nth_text($cols[6], 0);
-            $number = nth_text($cols[6], 1);
-            [$alid, $airline, $airline_bgcolor] = check_airline($dbh, $number, $airline, $uid, $history);
+            $flightNumber = nth_text($cols[6], 1);
+            [$alid, $airline, $airline_bgcolor] = check_airline(
+                $dbh,
+                $flightNumber,
+                nth_text($cols[6], 0),
+                $uid,
+                $history
+            );
 
             // Load plane model (plid)
             // <td class="liste">Boeing 737-600<br>LN-RCW<br>Yngvar Viking</td>
             // <td class="liste_rot">Airbus A319-100</td>
             $plane = nth_text($cols[7], 0);
-            $reg = '';
+            $planeRegistration = '';
             // See if the text has a registration, but it's optional
             if (text_count($cols[7]) > 1) {
-                $reg = nth_text($cols[7], 1);
+                $planeRegistration = nth_text($cols[7], 1);
                 // We also have a "name"
                 if (text_count($cols[7]) > 2) {
-                    $reg .= " " . nth_text($cols[7], 2);
+                    $planeRegistration .= " " . nth_text($cols[7], 2);
                 }
             }
-            if ($plane != "") {
-                [$plid, $plane_bgcolor] = check_plane($dbh, $plane);
-            } else {
-                $plid = null;
-                $plane_bgcolor = "#fff";
-            }
+
+            // If no plane found, it'll return the defaults.
+            [$plid, $plane_bgcolor] = check_plane($dbh, $plane);
 
             // <td class="liste">12A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
             // 2nd field may be blank, so we count fields and offset 1 if it's there
             $seat = nth_text($cols[8], 0);
-            [$seatnumber, $seatpos] = explode('/', $seat);
-            if (text_count($cols[8]) == 4) {
-                $seatclass = nth_text($cols[8], 1);
+            [$seatNumber, $seatPos] = explode('/', $seat);
+            if (text_count($cols[8]) === 4) {
+                $seatClass = nth_text($cols[8], 1);
                 $offset = 1;
             } else {
-                $seatclass = "Economy";
+                $seatClass = "Economy";
                 $offset = 0;
             }
-            $seattype = nth_text($cols[8], 1 + $offset);
-            $seatreason = nth_text($cols[8], 2 + $offset);
+
+            $seatType = nth_text($cols[8], 1 + $offset);
+            $seatReason = nth_text($cols[8], 2 + $offset);
 
             // <td class="liste_rot"><span title="Comment: 2.5-hr delay due to tire puncture">Com</span><br> ...
             $comment = pq($cols[9])->find('span')->attr('title');
-            if ($comment && substr($comment, 0, 9) === "Comment: ") {
+            if ($comment && strpos($comment, "Comment: ") === 0) {
                 $comment = trim(substr($comment, 9));
             }
 
-            // FM imports don't have a trip, so use fallback values from check_trip()
+            // FM imports don't have a trip, so this will use fallback values
             [$trid, $trip_bgcolor] = check_trip(null, "");
             break; // case FM
 
         case "CSV":
             $count++;
-            if ($count == 1) {
-                // Skip header row
-                break;
+            // Skip header row
+            if ($count === 1) {
+                continue 2;
             }
-            $id = $count - 1;
-            // 0 Date Time, 1 From, 2 To,3 Flight_Number, 4 Airline_Code, 5 Distance, 6 Duration,
-            // 7 Seat, 8 Seat_Type, 9 Class, 10 Reason, 11 Plane, 12 Registration, 13 Trip, 14 Note,
-            // 15 From_Code, 16 To_Code, 17 Airline_Code, 18 Plane_Code
 
-            $datetime = explode(' ', $row[0]);
+            $id = $count - 1;
+
+            [
+                // 0 - Date Time
+                $datetime,
+                // 1 - From; Source Airport IATA code
+                $src_iata,
+                // 2 - To; Destination Airport IATA code
+                $dst_iata,
+                // 3 - Flight_Number
+                $flightNumber,
+                // 4 - Airline
+                $airline,
+                // 5 - Distance
+                $distance,
+                // 6 - Duration
+                $duration,
+                // 7 - Seat
+                $seatNumber,
+                // 8 - Seat_Type
+                $seatPos,
+                // 9 - Class
+                $seatClass,
+                // 10 - Reason (for Flight; Work/Leisure/Crew)
+                $seatReason,
+                // 11 - Plane
+                $plane,
+                // 12 - Registration
+                $planeRegistration,
+                // 13 - Trip
+                $trid,
+                // 14 - Note
+                $comment,
+                // 15 - From_OID - OpenFlights Airport ID for Source Airport
+                $src_apid,
+                // 16 - To_OID - OpenFlights Airport ID for Destination Airport
+                $dst_apid,
+                // 17 - Airline_OID - OpenFlights Airline ID
+                $alid,
+                // 18 - Plane_OID - OpenFlights Plane ID
+                $plid,
+            ] = $row;
+
+            $datetime = explode(' ', $datetime);
             [$src_date, $date_bgcolor] = check_date($dbh, $fileType, $datetime[0]);
             $src_time = $datetime[1] ?? "";
 
-            $src_iata = $row[1];
-            $src_apid = $row[15];
+            // Prefer OpenFlight ID if set for relevant rows
             if ($src_apid) {
-                $src_iata = "<small>" . sprintf(_('ID'), $src_apid) . "</small>";
+                $src_iata = "<small>" . sprintf(_('ID %'), $src_apid) . "</small>";
                 $src_bgcolor = "#fff";
-                $id_note = true;
+                $idNote = true;
             } else {
                 [$src_apid, $src_iata, $src_bgcolor] = check_airport($dbh, $src_iata, $src_iata);
             }
-            $dst_iata = $row[2];
-            $dst_apid = $row[16];
+
             if ($dst_apid) {
-                $dst_iata = "<small>" . sprintf(_('ID'), $dst_apid) . "</small>";
+                $dst_iata = "<small>" . sprintf(_('ID %'), $dst_apid) . "</small>";
                 $dst_bgcolor = "#fff";
-                $id_note = true;
+                $idNote = true;
             } else {
                 [$dst_apid, $dst_iata, $dst_bgcolor] = check_airport($dbh, $dst_iata, $dst_iata);
             }
-            $number = $row[3];
-            $airline = $row[4];
-            $alid = $row[17];
+
             if ($alid) {
-                $airline = "<small>" . sprintf(_('ID'), $alid) . "</small>";
+                $airline = "<small>" . sprintf(_('ID %'), $alid) . "</small>";
                 $airline_bgcolor = "#fff";
-                $id_note = true;
+                $idNote = true;
             } else {
-                [$alid, $airline, $airline_bgcolor] = check_airline($dbh, $number, $airline, $uid, $history);
+                [$alid, $airline, $airline_bgcolor] = check_airline($dbh, $flightNumber, $airline, $uid, $history);
             }
-            $plane = $row[11];
-            $plid = $row[18];
+
             if ($plid) {
-                $plane = "<small>" . sprintf(_('ID'), $plid) . "</small>";
+                $plane = "<small>" . sprintf(_('ID %'), $plid) . "</small>";
                 $plane_bgcolor = "#fff";
-                $id_note = true;
+                $idNote = true;
             } else {
                 [$plid, $plane_bgcolor] = check_plane($dbh, $plane);
             }
 
-            $distance = $row[5];
-            $duration = $row[6];
-            $seatnumber = $row[7];
-            $seatpos = array_search($row[8], POS_MAP);
-            $seatclass = array_search($row[9], CLASS_MAP);
-            if ($row[9] == "B") {
-                $seatclass = "Business";
-            } // fix for typo in pre-0.3 versions of spec
-            $seattype = ""; // This field is not present in CSVs
-            $seatreason = array_search($row[10], REASON_MAP);
-            $reg = $row[12];
-            [$trid, $trip_bgcolor] = check_trip($dbh, $uid, $row[13]);
-            $comment = $row[14];
+            // Get code from mapping
+            $seatPos = array_search($seatPos, POS_MAP);
+
+            // fix for typo in pre-0.3 versions of spec
+            if ($seatClass == "B") {
+                $seatClass = "Business";
+            } else {
+                // Get code from mapping
+                $seatClass = array_search($seatClass, CLASS_MAP);
+            }
+
+            $seatType = ""; // This field is not present in CSVs; Passenger
+            // Get code from mapping
+            $seatReason = array_search($seatReason, REASON_MAP);
+            [$trid, $trip_bgcolor] = check_trip($dbh, $uid, $trid);
             break;
     }
 
-    // Skip the first row for CSV
-    if ($fileType == "CSV" && $count == 1) {
-        continue;
-    }
-
-    //Check if parsing succeeded and tag fatal errors if not
+    // Check if parsing succeeded and tag fatal errors if not
     if (!$src_date) {
         $status = "disabled";
         $fatal = "date";
@@ -584,21 +658,21 @@ foreach ($rows as $row) {
         $status = "disabled";
         $fatal = "airport";
     } else {
-        if ($duration == "" || $distance == "") {
-            [$gc_distance, $gc_duration] = gcDistance($dbh, $src_apid, $dst_apid);
-        }
-
         $duration_bgcolor = "#fff";
         $dist_bgcolor = "#fff";
 
-        if ($duration == "") {
-            $duration  = $gc_duration;
-            $duration_bgcolor = "#ddf";
-        }
+        if ($duration == "" || $distance == "") {
+            [$gc_distance, $gc_duration] = gcDistance($dbh, $src_apid, $dst_apid);
 
-        if ($distance == "") {
-            $distance  = $gc_distance;
-            $dist_bgcolor = "#ddf";
+            if ($duration == "") {
+                $duration = $gc_duration;
+                $duration_bgcolor = "#ddf";
+            }
+
+            if ($distance == "") {
+                $distance = $gc_distance;
+                $dist_bgcolor = "#ddf";
+            }
         }
     }
     if (!$alid) {
@@ -624,7 +698,8 @@ foreach ($rows as $row) {
     <td style='background-color: %s'>%s</td>
     <td style='background-color: %s'>%s</td>
     <td>%s</td>
-    <td>%s %s</td>
+    <td>%s</td>
+    <td>%s</td>
     <td>%s</td>
     <td>%s</td>
     <td>%s</td>
@@ -638,7 +713,7 @@ foreach ($rows as $row) {
                 $src_time,
                 $airline_bgcolor,
                 $airline,
-                $number,
+                $flightNumber,
                 $src_bgcolor,
                 $src_iata,
                 $dst_bgcolor,
@@ -649,12 +724,12 @@ foreach ($rows as $row) {
                 $duration,
                 $plane_bgcolor,
                 $plane,
-                $reg,
-                $seatnumber,
-                $seatpos,
-                $seatclass,
-                $seattype,
-                $seatreason,
+                $planeRegistration,
+                $seatNumber,
+                $seatPos,
+                $seatClass,
+                $seatType,
+                $seatReason,
                 $trip_bgcolor,
                 $trid,
                 $comment
@@ -699,14 +774,9 @@ foreach ($rows as $row) {
             }
 
             // Hack to record X-Y and Y-X flights as same in DB
-            if ($src_apid > $dst_apid) {
-                $tmp = $src_apid;
-                $src_apid = $dst_apid;
-                $dst_apid = $tmp;
-                $opp = "Y";
-            } else {
-                $opp = "N";
-            }
+            $flip = ($src_apid > $dst_apid);
+            [$src_apid, $dst_apid] = flip($src_apid, $dst_apid, $flip);
+            $opp = $flip ? "Y" : "N";
 
             // And now the flight
             $sql = <<<SQL
@@ -722,12 +792,12 @@ SQL;
                 $dst_apid,
                 $duration,
                 $distance,
-                $reg,
-                $number,
-                $seatnumber,
-                substr($seatpos, 0, 1),
-                CLASS_MAP[$seatclass],
-                REASON_MAP[$seatreason],
+                $planeRegistration,
+                $flightNumber,
+                $seatNumber,
+                POS_MAP[$seatPos],
+                CLASS_MAP[$seatClass],
+                REASON_MAP[$seatReason],
                 $comment,
                 $plid ?: null,
                 $alid,
@@ -750,24 +820,29 @@ if ($action == _("Upload")) {
     <h4><?php echo _("Key to results"); ?></h4>
 
 <table style='border-spacing: 3'>
- <tr>
+  <tr>
     <th><?php echo _("Color"); ?></th><th><?php echo _("Meaning"); ?></th>
- </tr><tr style='background-color: #fff'>
+  </tr>
+  <tr style='background-color: #fff'>
     <td><?php echo _("None"); ?></td><td><?php echo _("Exact match"); ?></td>
- </tr><tr style='background-color: #ddf'>
-    <td><?php echo _("Info"); ?></td><td><?php echo _("Probable match, please verify"); ?></tr><tr style='background-color: #fdd'>
+  </tr>
+  <tr style='background-color: #ddf'>
+    <td><?php echo _("Info"); ?></td><td><?php echo _("Probable match, please verify"); ?>
+  </tr>
+  <tr style='background-color: #fdd'>
     <td><?php echo _("Warning"); ?></td><td><?php echo _("No matches, will be added as new"); ?></td>
- </tr><tr style='background-color: #faa'>
+  </tr>
+  <tr style='background-color: #faa'>
     <td><?php echo _("Error"); ?></td><td><?php echo _("No matches, please correct and reupload"); ?></td>
- </tr>
+  </tr>
 </table><br>
 
 <form name="importform" action="/php/import.php" method="post">
 
     <?php
-    if ($id_note == true) {
+    if ($idNote == true) {
         print "<font color=blue>" .
-            _("Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") .
+            _("Note: This CSV file contains OpenFlights IDs in one or more of the columns numbered 15-18 (15 Source Airport ID, 16 Destination Airport ID, 17 Airline ID, 18 Plane ID). These IDs will override the values of any manual changes made to the airport, airline and/or plane columns.") .
             "</font><br>";
     }
     if ($history == "yes") {
@@ -777,6 +852,7 @@ if ($action == _("Upload")) {
     }
 
     if ($status == "disabled") {
+        // TODO: It's possible to have more than one fatal reason...
         // TODO: separate : is not i18n friendly
         print "<font color=red>" . _("Error") . ": ";
         switch ($fatal) {
@@ -821,8 +897,8 @@ if ($action == _("Upload")) {
 if ($action == _("Import")) {
     print "<br><h4>" . _("Flights successfully imported.") . "</h4><br>";
     print "<input type='button' value='" .
-        ("Import more flights") . "' onClick='javascript:window.location=\"/html/import\"'>";
-    print "<INPUT type='button' value='" . _("Close") .
+        _("Import more flights") . "' onClick='javascript:window.location=\"/html/import\"'>";
+    print "<input type='button' value='" . _("Close") .
         "' onClick='javascript:parent.opener.refresh(true); window.close();'>";
 }
 

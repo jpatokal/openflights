@@ -133,15 +133,15 @@ class ImportFlightMemoryNewStyleTest extends WebTestCase {
 }
 
 function upload_fixture($context, $fixture, $filetype) {
-    global $webroot, $uploaddir;
+    global $webroot, $uploadDir;
 
-    $context->assertTrue(copy("./fixtures/" . $fixture, $uploaddir . $fixture));
+    $context->assertTrue(copy("./fixtures/" . $fixture, $uploadDir . $fixture));
     $opts = array('action' => 'Import', 'tmpfile' => $fixture, 'fileType' => $filetype);
     return $context->post($webroot . "php/import.php", $opts);
 }
 
 function export_to_csv_and_validate($context, $fixture) {
-    global $webroot, $uploaddir;
+    global $webroot, $uploadDir;
 
     $expected_csv = sort_string(file_get_contents("./fixtures/" . $fixture));
     $params = array("export" => "export");
