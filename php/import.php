@@ -740,9 +740,9 @@ if ($action == _("Upload")) {
         print "<font color=red>" . _("Error") . ": ";
         switch ($fatal) {
             case "airport":
-                print _("Your flight data includes unrecognized airports. Please add them to the database and try again.");
-                print "<input type='button' value='" . _("Add new airport") .
-                    "' onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
+                print _("Your flight data includes unrecognized airports. Please add them to the database and try again.") .
+                    "&nbsp;<input type='button' value='" . _("Add new airport") .
+                    "'onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
                 break;
 
             case "airline":
