@@ -7,7 +7,7 @@ update users LEFT JOIN (
    select uid from flights group by uid having count(*) < 100
 ) as nice_users
 on (users.uid = nice_users.uid)
-set elite = "" where elite="X" and public != 'N' and users.uid ! = 1;
+set elite = "" where elite="X" and public != 'N' and users.uid != 1;
 
 -- Set warning flag for non-elite users with >=100 flights
 update users JOIN (
