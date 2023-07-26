@@ -4,7 +4,7 @@ TRUNCATE TABLE routes;
 
 \! echo Filtering out duplicates...
 
-\! uniq -w 10 <arm/routes.dat >routes2.dat
+\! uniq -w 10 <data/routes.dat >routes2.dat
 
 \! echo Importing...
 
