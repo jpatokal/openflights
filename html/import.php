@@ -47,7 +47,7 @@ require_once "../php/locale.php";
               <p><?php
                   printf(
                       _("<i>Note</i>: The <b>FlightMemory format</b> changes from time to time. Please <%s>report</a> any bugs or oddities, and be sure to include the exact error and the 'Tmpfile' value from the top of the import page."),
-                      "a href='/contact.html'"
+                      "a href='/about'"
                   ); ?></p>
           </td>
         </tr>

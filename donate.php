@@ -121,7 +121,7 @@ if ($logged_in) {
 
         <h4><?php echo _('Limited time offer'); ?></h4>
 
-        <p><?php echo _("Submit OpenFlights to any website that sends over 1000 people our way, or any newspaper or magazine indexed on Google News, and we'll either give you a Silver status for a year or bump you up a level if you're already an elite member. Send your claim and the link as proof to us via <a href=\"/contact.html\">Contact</a>, and we'll get back to you."); ?></p>
+        <p><?php echo _("Submit OpenFlights to any website that sends over 1000 people our way, or any newspaper or magazine indexed on Google News, and we'll either give you a Silver status for a year or bump you up a level if you're already an elite member. Send your claim and the link as proof to us via <a href=\"/about\">Contact</a>, and we'll get back to you."); ?></p>
 
         <h4><?php echo _('Obligatory disclaimer'); ?></h4>
 

@@ -101,7 +101,7 @@ require_once "../php/db_pdo.php";
             <li><?php echo _('<b>Unknown</b>: DST status not known. The same as "None".'); ?></li>
         </ul>
 
-        <p><?php echo _('The rules for DST change constantly and not all airports are up-to-date or marked correctly. Please <a href="/contact.html">contact</a> the OpenFlights team if you find any errors.'); ?></p>
+        <p><?php echo _('The rules for DST change constantly and not all airports are up-to-date or marked correctly. Please <a href="/about">contact</a> the OpenFlights team if you find any errors.'); ?></p>
 
         <h2><?php echo _('Examples'); ?></h2>
 
