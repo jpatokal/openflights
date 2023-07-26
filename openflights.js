@@ -2113,14 +2113,16 @@ function startListFlights() {
 function listFlights(str, desc, id) {
   openPane("result");
   fidList = [];
-  var route = !RE_NUMERIC.test(id); // ids starting with R are routes
-  var today = new Date().getTime();
+  const route = !RE_NUMERIC.test(id); // ids starting with R are routes
+
   if (desc == "MAP") {
     desc = gt.gettext("Flights:") + " " + getMapTitle(false);
   }
 
   // TODO: Won't be needed once the endpoint returns JSON.
   const gcmFlightList = [];
+
+  var hasGCButton = false;
 
   // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
@@ -2169,17 +2171,7 @@ function listFlights(str, desc, id) {
           "' align='middle'>" +
           "</span>"
       ); // place at the front of the array
-
-      // Great Circle Mapper button setup
-      document.getElementById("gcmapbutton").onclick = () => {
-        const gcmURL = new URL("http://www.gcmap.com/mapui");
-        gcmURL.searchParams.append(
-            "P",
-            gcmFlightList.map((f) => `${f.src_code}-${f.dst_code}`).join(",")
-        );
-        gcmURL.searchParams.append("MS", "bm"); // 'M'ap 'S'tyle: 'b'lue 'm'arble
-        window.open(gcmURL.href, "openflights_export");
-      };
+      hasGCButton = true;
     }
     table.push(
       '<table width=100% class="sortable" id="apttable" cellpadding="0" cellspacing="0">'
@@ -2220,6 +2212,7 @@ function listFlights(str, desc, id) {
     }
     table.push("</tr>");
 
+    var today = new Date().getTime();
     var rows = str.split("\n");
     for (var r = 0; r < rows.length; r++) {
       // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8,
@@ -2361,6 +2354,19 @@ function listFlights(str, desc, id) {
   $("result").innerHTML = table.join("");
   // Refresh sortables code
   sortables_init();
+
+  if (hasGCButton) {
+    // Great Circle Mapper button setup
+    document.getElementById("gcmapbutton").onclick = () => {
+      const gcmURL = new URL("http://www.gcmap.com/mapui");
+      gcmURL.searchParams.append(
+        "P",
+        gcmFlightList.map((f) => `${f.src_code}-${f.dst_code}`).join(",")
+      );
+      gcmURL.searchParams.append("MS", "bm"); // 'M'ap 'S'tyle: 'b'lue 'm'arble
+      window.open(gcmURL.href, "openflights_export");
+    };
+  }
 }
 
 /**
