@@ -2169,6 +2169,17 @@ function listFlights(str, desc, id) {
           "' align='middle'>" +
           "</span>"
       ); // place at the front of the array
+
+      // Great Circle Mapper button setup
+      document.getElementById("gcmapbutton").onclick = () => {
+        const gcmURL = new URL("http://www.gcmap.com/mapui");
+        gcmURL.searchParams.append(
+            "P",
+            gcmFlightList.map((f) => `${f.src_code}-${f.dst_code}`).join(",")
+        );
+        gcmURL.searchParams.append("MS", "bm"); // 'M'ap 'S'tyle: 'b'lue 'm'arble
+        window.open(gcmURL.href, "openflights_export");
+      };
     }
     table.push(
       '<table width=100% class="sortable" id="apttable" cellpadding="0" cellspacing="0">'
@@ -2350,17 +2361,6 @@ function listFlights(str, desc, id) {
   $("result").innerHTML = table.join("");
   // Refresh sortables code
   sortables_init();
-
-  // Great Circle Mapper button setup
-  document.getElementById("gcmapbutton").onclick = () => {
-    const gcmURL = new URL("http://www.gcmap.com/mapui");
-    gcmURL.searchParams.append(
-      "P",
-      gcmFlightList.map((f) => `${f.src_code}-${f.dst_code}`).join(",")
-    );
-    gcmURL.searchParams.append("MS", "bm"); // 'M'ap 'S'tyle: 'b'lue 'm'arble
-    window.open(gcmURL.href, "openflights_export");
-  };
 }
 
 /**
