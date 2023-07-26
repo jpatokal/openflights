@@ -10,16 +10,16 @@ if [ "$STATUS" != "S" -a "$STATUS" != "G" -a "$STATUS" != "P" ]; then
   exit
 fi
 
-VERIFY=`echo "select name from users where name='$USER';" | mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2`
+VERIFY=`echo "SELECT name FROM users WHERE name = '$USER';" | mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2`
 if [ -z "$VERIFY" ]; then
   echo No user called $USER found
   exit
 fi
 
-echo "set sql_safe_updates=0; update users set elite='$STATUS', validity=date_add(now(), interval 1 year) where name='$USER';" | mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2
+echo "SET sql_safe_updates=0; UPDATE users SET elite = '$STATUS', validity = DATE_ADD(NOW(), INTERVAL 1 YEAR) WHERE name = '$USER';" | mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2
 
 if [ -z "$EMAIL" ]; then
-  EMAIL=`echo "select email from users where name='$USER';" | mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2`
+  EMAIL=`echo "SELECT email FROM users WHERE name = '$USER';" | mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2`
   if [ -z "$EMAIL" ]; then
     echo User $USER set to $STATUS, but no email found for user $USER
     exit

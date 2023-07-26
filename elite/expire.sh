@@ -10,12 +10,12 @@ HOST=104.197.15.255
 PW=`cat ../sql/db.pw`
 MYSQL="mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2"
 
-EXPIRED=$(echo "select email from users where validity is not null and validity < NOW() and elite != 'X' and elite != '' and email != '' order by validity desc;" | $MYSQL)
+EXPIRED=$(echo "SELECT email FROM users WHERE validity IS NOT null AND validity < NOW() AND elite != 'X' AND elite != '' AND email != '' ORDER BY validity DESC;" | $MYSQL)
 for EMAIL in $EXPIRED; do
   echo Expired user $EMAIL
   cat expiry-message.txt | sed "s/%EMAIL%/$EMAIL/" | sendmail $EMAIL
 done
 
-echo "set sql_safe_updates=0; update users set validity=NOW(), elite='X' where validity is not null and validity < NOW() and elite != 'X' and elite != '';" | $MYSQL
+echo "SET sql_safe_updates=0; UPDATE users SET validity = NOW(), elite = 'X' WHERE validity IS NOT null AND validity < NOW() AND elite != 'X' AND elite != '';" | $MYSQL
 
 curl https://cronitor.link/WTBCby/complete -m 10

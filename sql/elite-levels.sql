@@ -1,24 +1,24 @@
 -- Remove elite level from users who have expired
-update users set elite = "" where validity < now();
+UPDATE users SET elite = "" WHERE validity < NOW();
 
 -- Remove warning flag from users who have made their profiles public and have under 100 flights
 -- (LEFT JOIN ensures that users with 0 flights are included)
-update users LEFT JOIN (
-   select uid from flights group by uid having count(*) < 100
-) as nice_users
-on (users.uid = nice_users.uid)
-set elite = "" where elite="X" and public != 'N' and users.uid != 1;
+UPDATE users LEFT JOIN (
+  SELECT uid FROM flights GROUP BY uid HAVING COUNT(*) < 100
+) AS nice_users
+ON (users.uid = nice_users.uid)
+SET elite = "" WHERE elite = "X" AND public != 'N' AND users.uid != 1;
 
 -- Set warning flag for non-elite users with >=100 flights
-update users JOIN (
-   select uid from flights group by uid having count(*) >= 100
-) as naughty_users
+UPDATE users JOIN (
+  SELECT uid FROM flights GROUP BY uid HAVING COUNT(*) >= 100
+) AS naughty_users
 on (users.uid = naughty_users.uid)
-set elite = "X" where elite = "" and users.uid != 1;
+SET elite = "X" WHERE elite = "" AND users.uid != 1;
 
 -- Set warning flag for non-elite users with hidden profiles
-update users set elite = "X" where elite = "" and uid != 1 and public = "N";
+UPDATE users SET elite = "X" WHERE elite = "" AND uid != 1 AND public = "N";
 
 -- Summarize
-select elite, public, count(*) from users group by elite, public;
+SELECT elite, public, COUNT(*) FROM users GROUP BY elite, public;
 
