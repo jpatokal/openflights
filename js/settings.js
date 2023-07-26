@@ -1,7 +1,6 @@
 /*
  * Create new user accounts and modify existing ones
  */
-
 const URL_SETTINGS = "/php/settings.php";
 
 const PRIVACY_LIST = ["N", "Y", "O"];
@@ -34,115 +33,86 @@ window.onload = function init() {
   }
 };
 
-function xmlhttpPost(strURL, type) {
-  var self = this;
-  // Mozilla/Safari
-  if (window.XMLHttpRequest) {
-    self.xmlHttpReq = new XMLHttpRequest();
-  }
-  // IE
-  else if (window.ActiveXObject) {
-    self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  self.xmlHttpReq.open("POST", strURL, true);
-  self.xmlHttpReq.setRequestHeader(
-    "Content-Type",
-    "application/x-www-form-urlencoded"
-  );
-  self.xmlHttpReq.onreadystatechange = function () {
-    if (self.xmlHttpReq.readyState == 4 && strURL == URL_SETTINGS) {
-      signup(self.xmlHttpReq.responseText);
-    }
-  };
-  var query = "";
-  if (strURL == URL_SETTINGS) {
-    var form = document.forms["signupform"],
-      privacy,
-      editor,
-      units;
+function sendSettingsRequest(type) {
+  const params = new URLSearchParams();
+  let r = 0;
+  var form = document.forms["signupform"],
+    privacy,
+    editor,
+    units;
 
-    for (var r = 0; r < signupform.privacy.length; r++) {
-      if (signupform.privacy[r].checked) {
-        privacy = signupform.privacy[r].value;
-      }
-    }
-    for (r = 0; r < signupform.editor.length; r++) {
-      if (signupform.editor[r].checked) {
-        editor = signupform.editor[r].value;
-      }
-    }
-    for (r = 0; r < signupform.units.length; r++) {
-      if (signupform.units[r].checked) {
-        units = signupform.units[r].value;
-      }
-    }
-    query =
-      "type=" +
-      type +
-      "&" +
-      "pw=" +
-      encodeURIComponent(
-        MD5(form.pw1.value + form.username.value.toLowerCase())
-      ) +
-      "&" +
-      "email=" +
-      encodeURIComponent(form.email.value) +
-      "&" +
-      "privacy=" +
-      encodeURIComponent(privacy) +
-      "&" +
-      "editor=" +
-      encodeURIComponent(editor) +
-      "&" +
-      "units=" +
-      encodeURIComponent(units) +
-      "&" +
-      "locale=" +
-      encodeURIComponent(form.locale.value);
-    switch (type) {
-      case "NEW":
-        query += "&name=" + encodeURIComponent(form.username.value);
-        document.getElementById("miniresultbox").innerHTML =
-          "<I>" + gt.gettext("Creating account...") + "</I>";
-        break;
-
-      case "EDIT":
-        var startpane;
-        for (r = 0; r < signupform.startpane.length; r++) {
-          if (signupform.startpane[r].checked) {
-            startpane = signupform.startpane[r].value;
-          }
-        }
-        if (form.oldpw.value != "") {
-          query +=
-            "&oldpw=" +
-            encodeURIComponent(
-              MD5(form.oldpw.value + form.username.value.toLowerCase())
-            );
-          // Legacy password for case-sensitive days of yore
-          query +=
-            "&oldlpw=" +
-            encodeURIComponent(MD5(form.oldpw.value + form.username.value));
-        }
-        if (form.guestpw.value != "") {
-          query +=
-            "&guestpw=" +
-            encodeURIComponent(
-              MD5(form.guestpw.value + form.username.value.toLowerCase())
-            );
-        }
-        query += "&startpane=" + encodeURIComponent(startpane);
-        document.getElementById("miniresultbox").innerHTML =
-          "<I>" + gt.gettext("Saving changes...") + "</I>";
-        break;
-
-      case "RESET":
-      case "LOAD":
-        // do nothing
-        break;
+  for (r = 0; r < signupform.privacy.length; r++) {
+    if (signupform.privacy[r].checked) {
+      privacy = signupform.privacy[r].value;
     }
   }
-  self.xmlHttpReq.send(query);
+  for (r = 0; r < signupform.editor.length; r++) {
+    if (signupform.editor[r].checked) {
+      editor = signupform.editor[r].value;
+    }
+  }
+  for (r = 0; r < signupform.units.length; r++) {
+    if (signupform.units[r].checked) {
+      units = signupform.units[r].value;
+    }
+  }
+
+  params.set("type", type);
+  params.set("pw", MD5(form.pw1.value + form.username.value.toLowerCase()));
+  params.set("email", form.email.value);
+  params.set("privacy", privacy);
+  params.set("editor", editor);
+  params.set("units", units);
+  params.set("locale", form.locale.value);
+
+  switch (type) {
+    case "NEW":
+      params.set("name", form.username.value);
+      document.getElementById("miniresultbox").innerHTML =
+        "<I>" + gt.gettext("Creating account...") + "</I>";
+      break;
+
+    case "EDIT":
+      var startpane;
+      for (r = 0; r < signupform.startpane.length; r++) {
+        if (signupform.startpane[r].checked) {
+          startpane = signupform.startpane[r].value;
+        }
+      }
+      if (form.oldpw.value != "") {
+        params.set(
+          "oldpw",
+          MD5(form.oldpw.value + form.username.value.toLowerCase())
+        );
+        // Legacy password for case-sensitive days of yore
+        params.set("oldlpw", MD5(form.oldpw.value + form.username.value));
+      }
+      if (form.guestpw.value != "") {
+        params.set(
+          "guestpw",
+          MD5(form.guestpw.value + form.username.value.toLowerCase())
+        );
+      }
+      params.set("startpane", startpane);
+      document.getElementById("miniresultbox").innerHTML =
+        "<I>" + gt.gettext("Saving changes...") + "</I>";
+      break;
+
+    case "RESET":
+    case "LOAD":
+      // do nothing
+      break;
+  }
+
+  fetch(URL_SETTINGS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: params,
+  })
+    .then((response) => response.text())
+    .then(handleResponse);
 }
 
 /**
@@ -221,14 +191,14 @@ function validate(type) {
 
   document.getElementById("miniresultbox").innerHTML =
     "<i>" + gt.gettext("Processing...") + "</i>";
-  xmlhttpPost(URL_SETTINGS, type);
+  sendSettingsRequest(type);
 }
 
 /**
- * Check if user creation succeeded
+ * Check if server processing (user creation, edit, etc.) succeeded
  * @param str {string}
  */
-function signup(str) {
+function handleResponse(str) {
   var code = str.split(";")[0],
     message = str.split(";")[1];
 
