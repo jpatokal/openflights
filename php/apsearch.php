@@ -447,7 +447,7 @@ $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 $isAdmin = in_array($uid, (array)$OF_ADMIN_UID);
 
-foreach ($rows as &$row) {
+foreach ($rows as $row) {
     if ($tableName == "airports_dafif" || $tableName == "airports_oa") {
         $row["country"] = $row["code"];
     }
@@ -462,7 +462,6 @@ foreach ($rows as &$row) {
     }
     $row["ap_name"] = format_airport($row);
     unset($row["uid"]);
+    $response['airports'][] = $row;
 }
-unset($row);
-$response['airports'] = $rows;
 print json_encode($response);
