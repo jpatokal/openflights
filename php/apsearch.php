@@ -154,8 +154,8 @@ SQL;
         true
     );
 
-    $suffixForamt = '(%s/%s)';
-    $suffix = sprintf($suffixForamt, $iata, $icao);
+    $suffixFormat = '(%s/%s)';
+    $suffix = sprintf($suffixFormat, $iata, $icao);
     $add = sprintf(
         "Add airport %s %s",
         $airport,
@@ -192,7 +192,7 @@ $existingData
 ```
 
 TXT;
-}
+    }
 
     $body .= <<<TXT
 Cross-check this on other sites with compatible licensing:
@@ -207,7 +207,7 @@ TXT;
 - **Wikipedia:** https://www.google.com/search?q=wikipedia%20$icao%20airport&btnI
 
 TXT;
-}
+    }
 
     if ($iata != '') {
         $body .= <<<TXT
@@ -217,7 +217,7 @@ TXT;
 - **Wikipedia:** https://www.google.com/search?q=wikipedia%20$iata%20airport&btnI
 
 TXT;
-}
+    }
 
     $htmlAirport = htmlspecialchars($airport);
     $body .= <<<TXT
@@ -243,9 +243,9 @@ TXT;
         // Try the "($iata/$icao)" string in existing titles...
         $suffix,
         // Try just "($iata/)"
-        sprintf($suffixForamt, $iata, ""),
+        sprintf($suffixFormat, $iata, ""),
         // Try just "(/$icao)"
-        sprintf($suffixForamt, "", $icao),
+        sprintf($suffixFormat, "", $icao),
     ];
 
     // Disabled for now; they likely cause false positives.

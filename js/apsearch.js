@@ -473,7 +473,7 @@ function searchResult(str) {
             "<br><span style='background-color: " +
             bgcolor +
             "'>" +
-            // Or you're an admin...
+            // TODO: Or you're an admin...
             gt.gettext(
               "Airports in blue have been added by you and can be edited."
             ) +
