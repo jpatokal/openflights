@@ -1,8 +1,6 @@
 #!/bin/sh
 rm AirlineRouteMapper.zip
 wget http://arm.64hosts.com/AirlineRouteMapper.zip
-cd arm
-unzip -o ../AirlineRouteMapper.zip routes.dat
-cd ..
+mkdir -p arm
+unzip -o -j AirlineRouteMapper.zip routes.dat -d arm/
 mysql -u openflights --local-infile flightdb2 <../sql/import-arm.sql
-

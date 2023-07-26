@@ -4,6 +4,7 @@ TRUNCATE TABLE routes;
 
 \! echo Filtering out duplicates...
 
+-- Need to run tools/arm-update.sh to get arm/routes.dat
 \! uniq -w 10 <arm/routes.dat >routes2.dat
 
 \! echo Importing...
