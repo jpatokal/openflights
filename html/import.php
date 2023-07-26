@@ -62,9 +62,12 @@ require_once "../php/locale.php";
     </table>
 
 <h4><?php echo _("File to upload"); ?></h4>
-  <p><input type="file" name="userfile" size="30"><b><?php
-      echo _("Keep historical airline names?"); ?></b><input type="checkbox" name="historyMode" value="yes">
-  </p>
+  <p><input type="file" name="userfile" size="30"></p>
+
+  <label>
+      <input type="checkbox" name="historyMode" value="yes"><b><?php echo _("Keep historical airline names?"); ?></b>
+  </label>
+
 
 <p><?php
     echo _("OpenFlights normally tries to match airlines and flight numbers to known/current airlines. If you check the box above, all airline names will be preserved <i>exactly</i> as they were before, typos and all.");
