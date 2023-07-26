@@ -131,13 +131,13 @@ function format_airport($row) {
 
     // Foobar-Foobar Intl into Foobar Intl
     // Foo-bar-Foo Bar Intl into Foo Bar Intl
-    if (strncasecmp(strtr($name, "-", " "), strtr($city, "-", " "), strlen($city)) == 0) {
+    if (strncasecmp(strtr($name, "-", " "), strtr($city, "-", " "), mb_strlen($city)) == 0) {
         $city = "";
     } else {
         $city .= "-";
     }
-    if (strlen($city . $name . $country) > 40) {
-        $name = trim(substr($city . $name, 0, 39 - strlen($country))) . ".";
+    if (mb_strlen($city . $name . $country) > 40) {
+        $name = trim(mb_substr($city . $name, 0, 39 - mb_strlen($country))) . ".";
         $city = "";
     }
 
