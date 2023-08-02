@@ -164,7 +164,8 @@ print "<Folder>
 ";
 
 // Draw airports from largest to smallest
-$airportColors = ["black", "gray", "purple", "cyan", "cyan", "green"];
+const AIRPORT_COLORS = ["black", "gray", "purple", "cyan", "cyan", "green"];
+$sizeOf = sizeof(AIRPORT_COLORS);
 
 $sql = <<<SQL
     SELECT DISTINCT x, y, elevation, iata, icao, name, city, country, count(name) AS visits
@@ -183,7 +184,7 @@ foreach ($sth as $row) {
         $first = false;
     }
 
-    $colorIndex = floor(($count / $maxFlights) * sizeof($airportColors)) + 1;
+    $colorIndex = floor(($count / $maxFlights) * $sizeOf) + 1;
     if ($count <= 2 || $colorIndex < 0) {
         $colorIndex = 0;
     }
@@ -192,8 +193,8 @@ foreach ($sth as $row) {
         $colorIndex = max(1, $colorIndex);
     }
     // Max out at top color
-    if ($colorIndex >= sizeof($airportColors)) {
-        $colorIndex = sizeof($airportColors) - 1;
+    if ($colorIndex >= $sizeOf) {
+        $colorIndex = $sizeOf - 1;
     }
 
     print "<Placemark>
@@ -222,7 +223,7 @@ foreach ($sth as $row) {
     );
     print "  </Point>
 ";
-    print "  <styleUrl>#{$airportColors[$colorIndex]}-pushpin</styleUrl>
+    print "  <styleUrl>#" . AIRPORT_COLORS[$colorIndex] . "-pushpin</styleUrl>
 ";
     print "</Placemark>
 ";
