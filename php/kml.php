@@ -7,6 +7,7 @@ session_start();
 header("Content-type: application/vnd.google-earth.kml+xml");
 header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d-Hi") . ".kml\"");
 
+include_once 'locale.php';
 include_once 'helper.php';
 include_once 'filter.php';
 include_once 'db_pdo.php';
@@ -62,7 +63,8 @@ function trimZero($value, $suffix) {
         : "";
 }
 
-readfile("../kml/header.kml");
+$desc = _('Flight map from OpenFlights.org');
+printf(file_get_contents("../kml/header.kml"), $desc);
 
 print "<Folder>
 <name>Flights</name>
