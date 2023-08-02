@@ -1,78 +1,89 @@
-select now() as 'Generated on';
+SELECT NOW() AS 'Generated on';
 
-select count(*) as '<br><b>Registered users</b>' from users where uid != 1;
-select count(*) as '<b>Total flights</b>' from flights where uid != 1;
-select count(*) as '<b>Flights added yesterday</b>' from flights where uid != 1 and date_sub(now(), interval 1 day) < upd_time;
+SELECT COUNT(*) AS '<br><b>Registered users</b>'
+    FROM users
+    WHERE uid != 1;
+SELECT COUNT(*) AS '<b>Total flights</b>'
+    FROM flights
+    WHERE uid != 1;
+SELECT COUNT(*) AS '<b>Flights added yesterday</b>'
+    FROM flights
+    WHERE uid != 1 AND DATE_SUB(NOW(), INTERVAL 1 DAY) < upd_time;
 
-select lpad(count(*),8," ") as '<table width=100%><tr><td style="vertical-align: top;"><pre><b>Top 10 users by flights<br>All time</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u,flights as f where u.uid != 1 and u.uid = f.uid
-    group by f.uid order by count(*) desc limit 10;
+SELECT LPAD(COUNT(*), 8, " ") AS '<table width=100%><tr><td style="vertical-align: top;"><pre><b>Top 10 users by flights<br>All time</b>', IF(u.public = 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u, flights AS f
+    WHERE u.uid != 1 AND u.uid = f.uid
+    GROUP BY f.uid
+    ORDER BY COUNT(*) DESC
+    LIMIT 10;
 
-select lpad(count(*),8," ") as '</pre></td><td style="vertical-align: top;"><pre><b><br>Last week</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u,flights as f
-    where u.uid != 1 and u.uid = f.uid and date_sub(now(), interval 7 day) < upd_time
-    group by f.uid order by count(*) desc
-                   limit 10;
+SELECT LPAD(COUNT(*), 8, " ") AS '</pre></td><td style="vertical-align: top;"><pre><b><br>Last week</b>', IF(u.public = 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u, flights AS f
+    WHERE u.uid != 1 AND u.uid = f.uid AND DATE_SUB(NOW(), INTERVAL 7 DAY) < upd_time
+    GROUP BY f.uid
+    ORDER BY COUNT(*) DESC
+    LIMIT 10;
 
-select lpad(count(*),8," ") as '</pre></td><td style="vertical-align: top;"><pre><b><br>Yesterday</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u,flights as f
-    where u.uid != 1 and u.uid = f.uid and date_sub(now(), interval 1 day) < upd_time
-    group by f.uid order by count(*) desc
-    limit 10;
+SELECT LPAD(COUNT(*), 8, " ") AS '</pre></td><td style="vertical-align: top;"><pre><b><br>Yesterday</b>', IF(u.public= 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u, flights AS f
+    WHERE u.uid != 1 AND u.uid = f.uid AND DATE_SUB(NOW(), INTERVAL 1 DAY) < upd_time
+    GROUP BY f.uid
+    ORDER BY COUNT(*) DESC
+    LIMIT 10;
 
-select lpad(sum(distance),8," ") as '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 users by miles<br>All time</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u,flights as f
-    where u.uid != 1 and u.uid = f.uid
-    group by f.uid
-    order by sum(distance) desc
-    limit 10;
+SELECT LPAD(SUM(distance), 8, " ") AS '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 users by miles<br>All time</b>', IF(u.public = 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u, flights AS f
+    WHERE u.uid != 1 AND u.uid = f.uid
+    GROUP BY f.uid
+    ORDER BY SUM(distance) DESC
+    LIMIT 10;
 
-select lpad(sum(distance),8," ") as '</pre></td><td style="vertical-align: top;"><pre><b><br>Last week</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u,flights as f
-    where u.uid != 1 and u.uid = f.uid and date_sub(now(), interval 7 day) < upd_time
-    group by f.uid
-    order by sum(distance) desc
-    limit 10;
+SELECT LPAD(SUM(distance), 8, " ") AS '</pre></td><td style="vertical-align: top;"><pre><b><br>Last week</b>', IF(u.public = 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u, flights AS f
+    WHERE u.uid != 1 AND u.uid = f.uid AND DATE_SUB(NOW(), INTERVAL 7 DAY) < upd_time
+    GROUP BY f.uid
+    ORDER BY SUM(distance) DESC
+    LIMIT 10;
 
-select lpad(sum(distance),8," ") as '</pre></td><td style="vertical-align: top;"><pre><b><br>Yesterday</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u,flights as f
-    where u.uid != 1 and u.uid = f.uid and date_sub(now(), interval 1 day) < upd_time
-    group by f.uid
-    order by sum(distance) desc
-    limit 10;
+SELECT LPAD(SUM(distance), 8, " ") AS '</pre></td><td style="vertical-align: top;"><pre><b><br>YesterDAY</b>', IF(u.public = 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u, flights AS f
+    WHERE u.uid != 1 AND u.uid = f.uid AND DATE_SUB(NOW(), INTERVAL 1 DAY) < upd_time
+    GROUP BY f.uid
+    ORDER BY SUM(distance) DESC
+    LIMIT 10;
 
-select lpad(count,8," ") as '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 users by popularity<br>All time</b>', IF(u.public='N',u.name,concat('<a href="https://openflights.org/user/',u.name,'">',u.name,'</a>')) as ''
-    from users as u
-    where u.uid != 1
-    order by count desc
-    limit 10;
+SELECT LPAD(count, 8, " ") AS '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 users by popularity<br>All time</b>', IF(u.public = 'N', u.name, CONCAT('<a href="https://openflights.org/user/', u.name, '">', u.name, '</a>')) AS ''
+    FROM users AS u
+    WHERE u.uid != 1
+    ORDER BY count DESC
+    LIMIT 10;
 
-select distinct CONCAT(s.iata,' &harr;') as '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 routes</b>',d.iata as '',lpad(count(fid),6," ") as ''
-    from airports as s,airports as d,flights as f
-    where f.uid != 1 and s.apid = f.src_apid and d.apid = f.dst_apid
-    group by s.apid,d.apid
-    order by count(fid) desc
-    limit 10;
+SELECT distinct CONCAT(s.iata, ' &harr;') AS '</pre></td></tr><tr><td style="vertical-align: top;"><pre><b>Top 10 routes</b>', d.iata AS '', LPAD(COUNT(fid), 6, " ") AS ''
+    FROM airports AS s, airports AS d, flights AS f
+    WHERE f.uid != 1 AND s.apid = f.src_apid AND d.apid = f.dst_apid
+    GROUP BY s.apid, d.apid
+    ORDER BY COUNT(fid) DESC
+    LIMIT 10;
 
-select rpad(a.name,20,' ') as '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airlines</b>', lpad(count(*),6," ") as ''
-    from airlines as a,flights as f
-    where f.uid != 1 and a.alid > 1 and a.alid = f.alid
-    group by f.alid
-    order by count(*) desc
-    limit 10;
+SELECT rpad(a.name, 20, ' ') AS '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airlines</b>', LPAD(COUNT(*), 6, " ") AS ''
+    FROM airlines AS a, flights AS f
+    WHERE f.uid != 1 AND a.alid > 1 AND a.alid = f.alid
+    GROUP BY f.alid
+    ORDER BY COUNT(*) DESC
+    LIMIT 10;
 
-select rpad(a.name,20,' ') as '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airports</b>',a.iata as '', lpad(sum(x.ct),6," ") as '' from
-   ( select src_apid as apid, count(*) as ct
-     from flights
+SELECT rpad(a.name, 20, ' ') AS '</pre></td><td style="vertical-align: top;"><pre><b>Top 10 airports</b>', a.iata AS '', LPAD(SUM(x.ct), 6, " ") AS '' FROM
+   ( SELECT src_apid AS apid, COUNT(*) AS ct
+     FROM flights
      GROUP BY src_apid
    UNION ALL
-     select dst_apid as apid, count(*) as ct
-     from flights
+     SELECT dst_apid AS apid, COUNT(*) AS ct
+     FROM flights
      GROUP BY dst_apid
-   ) x, airports as a
-   where a.apid = x.apid
-   group by x.apid
-   order by sum(x.ct) desc
-   limit 10;
+   ) x, airports AS a
+   WHERE a.apid = x.apid
+   GROUP BY x.apid
+   ORDER BY SUM(x.ct) DESC
+   LIMIT 10;
 
-select "</pre></td></tr></table>" AS "";
+SELECT "</pre></td></tr></table>" AS "";
