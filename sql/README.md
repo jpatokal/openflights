@@ -9,5 +9,5 @@
 
 - [`elite-levels.sql`](elite-levels.sql) - Generate table of elite users
 - [`merge-airports.sql`](merge-airports.sql) - Called by tools/merge-airports.sh for manual merging for duplicate ICAO codes
-- [`top10.sql`](top10.sql) - Generate nightly Top 10 lists (>data/top10.dat)
+- [`top10.sql`](top10.sql) - Generate nightly Top 10 lists (`>data/top10.dat`)
 - [`update-demo.sql`](update-demo.sql) - Update flights for "demo" user
