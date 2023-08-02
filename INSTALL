@@ -67,6 +67,10 @@ sudo crontab -e <<FOO
 0 2 * * * /bin/bash /home/openflights/openflights/elite/expire.sh >>/var/log/cronrun 2>&1
 FOO
 
+# Set up other cron jobs for SQL related queries and updates
+# sql/top10.sql >data/top10.dat
+# sql/update-demo.sql
+
 # Copy ads, analytics
 sudo -u openflights vi html/ad.html
 sudo -u openflights vi html/analytics.html
