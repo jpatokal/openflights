@@ -2,7 +2,7 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>OpenFlights</name>
-    <description>Flight map from openflights.org</description>
+    <description>%s</description>
     <Style id="F">
       <LineStyle>
         <color>ff0099ee</color> <!-- alpha/blue/green/red -->
