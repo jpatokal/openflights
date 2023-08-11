@@ -989,18 +989,6 @@ function onAirportUnselect(airport) {
   // do nothing
 }
 
-function toggleControl(element) {
-  for (var key in drawControls) {
-    var control = drawControls[key];
-    if (element.value == key && element.checked) {
-      control.activate();
-    } else {
-      control.deactivate();
-      onPopupClose();
-    }
-  }
-}
-
 function xmlhttpPost(strURL, id, param) {
   var self = this;
   var query = "";
