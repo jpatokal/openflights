@@ -866,7 +866,7 @@ if ($action == _("Upload")) {
         if ($fatal["airport"]) {
             $errors[] = _("Your flight data includes unrecognized airports. Please add them to the database and try again.") .
                 "&nbsp;<input type='button' value='" . _("Add new airport") .
-                "'onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>" ;
+                "'onClick='javascript:window.open(\"/html/apsearch\", \"Airport\", \"width=500,height=580,scrollbars=yes\")'>";
         }
 
         if ($fatal["airline"]) {
