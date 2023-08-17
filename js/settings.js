@@ -69,7 +69,7 @@ function sendSettingsRequest(type) {
     case "NEW":
       params.set("name", form.username.value);
       document.getElementById("miniresultbox").innerHTML =
-        "<I>" + gt.gettext("Creating account...") + "</I>";
+        "<i>" + gt.gettext("Creating account...") + "</i>";
       break;
 
     case "EDIT":
@@ -95,7 +95,7 @@ function sendSettingsRequest(type) {
       }
       params.set("startpane", startpane);
       document.getElementById("miniresultbox").innerHTML =
-        "<I>" + gt.gettext("Saving changes...") + "</I>";
+        "<i>" + gt.gettext("Saving changes...") + "</i>";
       break;
 
     case "RESET":

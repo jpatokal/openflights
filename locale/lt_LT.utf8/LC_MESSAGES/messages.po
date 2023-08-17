@@ -2471,7 +2471,7 @@ msgid ""
 "<i>Warning</i>: Be sure to set your FlightMemory language to <b>English</b> "
 "before saving the pages."
 msgstr ""
-"<i>Dėmesio</I>: Įsitikinkite kad FlightMemory kalba yra <b>English</b> prieš "
+"<i>Dėmesio</i>: Įsitikinkite kad FlightMemory kalba yra <b>English</b> prieš "
 "saugant puslapį."
 
 msgid ""

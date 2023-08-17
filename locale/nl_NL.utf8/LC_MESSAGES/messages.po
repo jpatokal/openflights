@@ -2445,7 +2445,7 @@ msgid ""
 "<i>Warning</i>: Be sure to set your FlightMemory language to <b>English</b> "
 "before saving the pages."
 msgstr ""
-"<i>Let op</I>: Zorg ervoor dat us FlightMemory taal op <b>English</b> "
+"<i>Let op</i>: Zorg ervoor dat us FlightMemory taal op <b>English</b> "
 "ingesteld is voordat u de pagina's opslaat."
 
 msgid ""

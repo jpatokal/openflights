@@ -2469,7 +2469,7 @@ msgid ""
 "<i>Warning</i>: Be sure to set your FlightMemory language to <b>English</b> "
 "before saving the pages."
 msgstr ""
-"<i>Внимание</I>: Прежде, чем сохранять страницы, убедитесь, что у вас на "
+"<i>Внимание</i>: Прежде, чем сохранять страницы, убедитесь, что у вас на "
 "FlightMemory выбран <b>английский</b> язык."
 
 msgid ""

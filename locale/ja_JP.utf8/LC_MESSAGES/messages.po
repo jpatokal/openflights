@@ -2441,7 +2441,7 @@ msgstr ""
 msgid ""
 "<i>Warning</i>: Be sure to set your FlightMemory language to <b>English</b> "
 "before saving the pages."
-msgstr "<i>注意</I>: FlightMemoryの言語は<b>英語</b>を選択してください。"
+msgstr "<i>注意</i>: FlightMemoryの言語は<b>英語</b>を選択してください。"
 
 msgid ""
 "<i>Note</i>: There is <b>no duplicate detection</b> at this time. If you "

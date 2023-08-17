@@ -2471,7 +2471,7 @@ msgid ""
 "<i>Warning</i>: Be sure to set your FlightMemory language to <b>English</b> "
 "before saving the pages."
 msgstr ""
-"<i>Obs</I>: FlightMemory måste visas på <b>Engelska</b> innan du sparar "
+"<i>Obs</i>: FlightMemory måste visas på <b>Engelska</b> innan du sparar "
 "sidorna."
 
 msgid ""
