@@ -600,7 +600,7 @@ foreach ($rows as $row) {
 
             // Prefer OpenFlight ID if set for relevant rows
             if ($src_apid) {
-                $src_iata = "<small>" . sprintf(_('ID %'), $src_apid) . "</small>";
+                $src_iata = "<small>" . sprintf(_('ID %s'), $src_apid) . "</small>";
                 $src_bgcolor = "#fff";
                 $idNote = true;
             } else {
@@ -608,7 +608,7 @@ foreach ($rows as $row) {
             }
 
             if ($dst_apid) {
-                $dst_iata = "<small>" . sprintf(_('ID %'), $dst_apid) . "</small>";
+                $dst_iata = "<small>" . sprintf(_('ID %s'), $dst_apid) . "</small>";
                 $dst_bgcolor = "#fff";
                 $idNote = true;
             } else {
@@ -616,7 +616,7 @@ foreach ($rows as $row) {
             }
 
             if ($alid) {
-                $airline = "<small>" . sprintf(_('ID %'), $alid) . "</small>";
+                $airline = "<small>" . sprintf(_('ID %s'), $alid) . "</small>";
                 $airline_bgcolor = "#fff";
                 $idNote = true;
             } else {
@@ -624,7 +624,7 @@ foreach ($rows as $row) {
             }
 
             if ($plid) {
-                $plane = "<small>" . sprintf(_('ID %'), $plid) . "</small>";
+                $plane = "<small>" . sprintf(_('ID %s'), $plid) . "</small>";
                 $plane_bgcolor = "#fff";
                 $idNote = true;
             } else {

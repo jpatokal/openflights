@@ -2868,7 +2868,8 @@ msgstr "Reg"
 msgid "Comment"
 msgstr "Opmerking"
 
-msgid "ID %"
+#, php-format
+msgid "ID %s"
 msgstr ""
 
 msgid "Adding new plane failed."

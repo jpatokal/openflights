@@ -2854,7 +2854,8 @@ msgstr "機体記号"
 msgid "Comment"
 msgstr "コメント"
 
-msgid "ID %"
+#, php-format
+msgid "ID %s"
 msgstr ""
 
 msgid "Adding new plane failed."

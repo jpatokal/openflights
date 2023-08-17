@@ -2905,7 +2905,8 @@ msgstr "Matrícula"
 msgid "Comment"
 msgstr "Notas"
 
-msgid "ID %"
+#, php-format
+msgid "ID %s"
 msgstr ""
 
 msgid "Adding new plane failed."

@@ -2897,7 +2897,8 @@ msgstr "Бортовой номер"
 msgid "Comment"
 msgstr "Комментарий"
 
-msgid "ID %"
+#, php-format
+msgid "ID %s"
 msgstr ""
 
 msgid "Adding new plane failed."

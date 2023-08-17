@@ -2905,7 +2905,8 @@ msgstr "Immat."
 msgid "Comment"
 msgstr "Commentaire"
 
-msgid "ID %"
+#, php-format
+msgid "ID %s"
 msgstr ""
 
 msgid "Adding new plane failed."
