@@ -25,7 +25,7 @@ if (!$uid || empty($uid)) {
 
   <body onload="rendezvousPageInit()">
   <div id="contexthelp">
-    <h1> <?php echo _("Link your TripIt Account"); ?></h1>
+    <h1><?php echo _("Link your TripIt Account"); ?></h1>
 
     <p><?php
         echo _("To import flights via TripIt, you'll need to authorize OpenFlights to access your TripIt account. OpenFlights will only be able to look at (but not modify) your TripIt data.");

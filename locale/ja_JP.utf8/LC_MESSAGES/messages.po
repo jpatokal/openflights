@@ -2761,21 +2761,22 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Airport addition comment submitted for review on existing GitHub Issue: %s; "
+"Comment left on a GitHub Issue %s to request the addition of a new Airport; "
 "%s"
 msgstr ""
 
 #, php-format
 msgid ""
-"Airport edit comment submitted for review on existing GitHub Issue: %s; %s"
+"Comment left on a GitHub Issue %s to request an edit to an existing Airport; "
+"%s"
 msgstr ""
 
 #, php-format
-msgid "Airport addition issue created for review on new GitHub Issue: %s; %s"
+msgid "GitHub Issue %s created to request the addition of a new Airport; %s"
 msgstr ""
 
 #, php-format
-msgid "Airport edit issue created for review on new GitHub Issue: %s; %s"
+msgid "GitHub Issue %s created to request an edit to an existing Airport; %s"
 msgstr ""
 
 msgid ""

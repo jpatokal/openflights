@@ -154,6 +154,7 @@ SQL;
         true
     );
 
+    // Various messages in this block are explicitly not translatable, as are designed to be posted in English to GitHub
     $suffixFormat = '(%s/%s)';
     $suffix = sprintf($suffixFormat, $iata, $icao);
     $add = sprintf(
@@ -329,11 +330,11 @@ TXT;
                     'airport'
                 );
             }
-            // TODO: Make a hyperlink when not using the alert() box.
+
             // Potentially need to pass things through as parameters
             $message = $addAirport
-                ? _("Airport addition comment submitted for review on existing GitHub Issue: %s; %s")
-                : _("Airport edit comment submitted for review on existing GitHub Issue: %s; %s");
+                ? _("Comment left on a GitHub Issue %s to request the addition of a new Airport; %s")
+                : _("Comment left on a GitHub Issue %s to request an edit to an existing Airport; %s");
         } else {
             // New issue
             // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
@@ -344,10 +345,11 @@ TXT;
             );
             $issueNumber = $result['number'];
             $message = $addAirport
-                ? _("Airport addition issue created for review on new GitHub Issue: %s; %s")
-                : _("Airport edit issue created for review on new GitHub Issue: %s; %s");
+                ? _("GitHub Issue %s created to request the addition of a new Airport; %s")
+                : _("GitHub Issue %s created to request an edit to an existing Airport; %s");
         }
 
+        // TODO: Make a hyperlink when not using the alert() box.
         json_success(["apid" => $apid, "message" => sprintf($message, $issueNumber, $result['html_url'])]);
     } catch (GitHub\Exception\RuntimeException $ex) {
         // $ex->code === 401 is Unauthorized
