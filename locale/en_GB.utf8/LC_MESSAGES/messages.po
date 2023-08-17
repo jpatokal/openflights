@@ -867,8 +867,8 @@ msgid ""
 "Submit OpenFlights to any website that sends over 1000 people our way, or "
 "any newspaper or magazine indexed on Google News, and we'll either give you "
 "a Silver status for a year or bump you up a level if you're already an elite "
-"member. Send your claim and the link as proof to us via <a href=\"/contact."
-"html\">Contact</a>, and we'll get back to you."
+"member. Send your claim and the link as proof to us via <a href=\"/"
+"about\">Contact</a>, and we'll get back to you."
 msgstr ""
 
 msgid "Obligatory disclaimer"
@@ -1318,10 +1318,10 @@ msgid "Can I use your images in my book/magazine article/annual report?"
 msgstr ""
 
 msgid ""
-"Yes, but commercial use requires a <a href=\"about#license\">license</a>, "
+"Yes, but commercial use requires a <a href=\"/data#license\">license</a>, "
 "please <a href=\"/about\">contact us</a> for details."
 msgstr ""
-"Yes, but commercial use requires a <a href=\"about#license\">licence</a>, "
+"Yes, but commercial use requires a <a href=\"about#license\">license</a>, "
 "please <a href=\"/about\">contact us</a> for details."
 
 msgid ""
@@ -2293,8 +2293,8 @@ msgstr ""
 
 msgid ""
 "The rules for DST change constantly and not all airports are up-to-date or "
-"marked correctly. Please <a href=\"/contact.html\">contact</a> the "
-"OpenFlights team if you find any errors."
+"marked correctly. Please <a href=\"/about\">contact</a> the OpenFlights team "
+"if you find any errors."
 msgstr ""
 
 msgid "Examples"
@@ -2789,7 +2789,7 @@ msgid "Airport addition issue created for review on new GitHub Issue: %s; %s"
 msgstr ""
 
 #, php-format
-msgid "Airport edit issue created for review on new GitHub Issue:  %s; %s"
+msgid "Airport edit issue created for review on new GitHub Issue: %s; %s"
 msgstr ""
 
 msgid ""
@@ -2836,7 +2836,19 @@ msgstr ""
 msgid "Upload failed!"
 msgstr ""
 
+#, php-format
+msgid "File %s not found"
+msgstr ""
+
 msgid "Importing..."
+msgstr ""
+
+#, php-format
+msgid "Unknown action %s"
+msgstr ""
+
+#, php-format
+msgid "Sorry, the file %s does not appear to contain FlightMemory FlightData."
 msgstr ""
 
 msgid "Sorry, the filename must end in '.csv'."
@@ -2853,6 +2865,9 @@ msgid "Reg"
 msgstr ""
 
 msgid "Comment"
+msgstr ""
+
+msgid "ID %"
 msgstr ""
 
 msgid "Adding new plane failed."
@@ -2889,9 +2904,10 @@ msgid "No matches, please correct and reupload"
 msgstr ""
 
 msgid ""
-"Note: This CSV file contains OpenFlights IDs in columns 15-18. These IDs "
-"will override the values of any manual changes made to the airport, airline "
-"and/or plane columns."
+"Note: This CSV file contains OpenFlights IDs in one or more of the columns "
+"numbered 15-18 (15 Source Airport ID, 16 Destination Airport ID, 17 Airline "
+"ID, 18 Plane ID). These IDs will override the values of any manual changes "
+"made to the airport, airline and/or plane columns."
 msgstr ""
 
 msgid ""
@@ -2936,6 +2952,12 @@ msgid "Add these flights to your OpenFlights"
 msgstr ""
 
 msgid "Flights successfully imported."
+msgstr ""
+
+msgid "Import more flights"
+msgstr ""
+
+msgid "Flight map from OpenFlights.org"
 msgstr ""
 
 msgid "Session expired. Please <a href='/'>refresh</a> and try again."
@@ -3001,10 +3023,6 @@ msgid "Account reset, %s flights deleted."
 msgstr ""
 
 msgid "Sorry, current password is not correct."
-msgstr ""
-
-#, php-format
-msgid "Unknown action %s"
 msgstr ""
 
 #, php-format
