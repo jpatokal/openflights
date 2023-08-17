@@ -858,7 +858,7 @@ if ($action == _("Upload")) {
             "</font><br><br>";
     }
 
-    if ($status !== "disabled") {
+    if ($status === "disabled") {
         // TODO: separate : is not i18n friendly
         print "<font color=red>" . _("Error") . ": ";
 
