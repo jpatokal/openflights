@@ -5,9 +5,12 @@
 # virtualenv env
 # source env/bin/activate
 # curl https://bootstrap.pypa.io/get-pip.py | python
-# pip3 install mysql-connector unittest bs4 country_converter unicodecsv
+# pip3 install mysql-connector bs4 country_converter unicodecsv
 #
-# Example:
+# Run tests:
+# python3 update_airlines_test.py
+#
+# Run script:
 # python3 tools/update_airlines.py --source acuk --file data/avcodes.csv --local
 
 import argparse
@@ -65,22 +68,9 @@ class OpenFlightsAirlines(object):
     self.of_iata[row['iata']].append(row)
     self.of_icao[row['icao']].append(row)
 
-  def upsert_airline(self, alid):
-    aldb.write_cursor.execute('SELECT * FROM airlines WHERE alid = %s', [alid])
-    row = aldb.write_cursor.fetchall()[0]
-    if row['iata'] == "":
-      row['iata'] = None
-    found = False
-    for idx, val in enumerate(self.of_iata[row['iata']]):
-      if val['alid'] == alid:
-        self.of_iata[row['iata']][idx] = row
-        found = True
-    for idx, val in enumerate(self.of_icao[row['icao']]):
-      if val['alid'] == alid:
-        self.of_icao[row['icao']][idx] = row
-        found = True
-    if not found:
-      self.add_airline(row)
+  def update_airline(self, original, fields):
+    for key, value in fields.items():
+      original[key] = value
 
   def match(self, wp):
     icao, iata, callsign, country = wp['icao'], wp['iata'], wp['callsign'], wp['country']
@@ -137,10 +127,11 @@ class OpenFlightsAirlines(object):
 
     return match, dupe
 
+  # Diff existing and new entry, return hash of changed entries
   def diff(self, of, wp):
     # The order in which we trust sources (lower is better)
     reliable = True
-    source_reliability = ['IATA', 'ACUK', 'Wikipedia', 'Legacy', 'User']
+    source_reliability = ['IATA', 'ACUK', 'Wikidata', 'Legacy', 'User']
     old_source_idx = source_reliability.index(of['source'])
     new_source_idx = source_reliability.index(wp['source'])
     if old_source_idx < new_source_idx:
@@ -148,7 +139,7 @@ class OpenFlightsAirlines(object):
       print('! New source %s less reliable than %s, only adding missing values' % (wp['source'], of['source']))
 
     fields = {}
-    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code', 'start_year', 'end_year', 'duplicate']:
+    for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code', 'start_date', 'end_date', 'duplicate']:
       if field in wp and wp[field] and wp[field] != of[field]:
         if not of[field] or str(wp[field]).upper() != str(of[field]).upper():
           if field != 'name' or len(wp[field]) > 3:
@@ -161,8 +152,8 @@ class OpenFlightsAirlines(object):
     return fields
 
   def add_new(self, wp):
-    alid = AirlineDB.add_new(self.aldb, wp)
-    self.upsert_airline(alid)
+    wp['alid'] = AirlineDB.add_new(self.aldb, wp)
+    self.add_airline(wp)
 
   def update_from_src(self, of, wp, dupe):
     if dupe:
@@ -171,7 +162,7 @@ class OpenFlightsAirlines(object):
     fields = self.diff(of, wp)
     if fields:
       self.aldb.update_from_src(of['alid'], fields)
-      self.upsert_airline(of['alid'])
+      self.update_airline(of, fields)
       return 1
     else:
       return 0
@@ -245,12 +236,12 @@ class AirlineCodesUK(object):
         else:
           duplicate = 'N'
           iata = airline['IATA_Code']
-        start_year, end_year, active = None, None, airline['Status']
+        start_date, end_date, active = None, None, airline['Status']
         if airline['Start_YR']:
           # Sometimes the year actually contains a MM/DD/YYYY date
-          start_year = int(airline['Start_YR'].split('/')[-1])
+          start_date = int(airline['Start_YR'].split('/')[-1])
         if airline['End_YR']:
-          end_year = int(airline['End_YR'].split('/')[-1])
+          end_date = int(airline['End_YR'].split('/')[-1])
           active = 'N'
         self.airlines.append({
           'icao': airline['ICAO_Code'],
@@ -261,75 +252,37 @@ class AirlineCodesUK(object):
           'country': country,
           'country_code': country_code,
           'active': active,
-          'start_year': airline['Start_YR'],
-          'end_year': airline['End_YR'],
+          'start_date': airline['Start_YR'],
+          'end_date': airline['End_YR'],
           'duplicate': duplicate,
           'source': 'ACUK'})
 
-class WikipediaArticle(object):
-  def __init__(self):
-    self.cleaner = HTMLCleaner()
-
-  def load(self, letter):
+class Wikidata(object):
+  def load(self, filename):
     self.airlines = []
-    airline_url = 'https://en.wikipedia.org/w/api.php?action=query&titles=List_of_airline_codes_(%s)&prop=revisions&rvprop=content&format=php'
-    response = urllib.request.urlopen(airline_url % letter).read().decode('utf-8')
-    block = []
-    header = 2
-    for line in response.splitlines():
-      if line.startswith('|-'):
-        if header > 0:
-          header -= 1
+    with open(filename, 'rb') as csvfile:
+      reader = unicodecsv.DictReader(csvfile, delimiter=';', encoding='latin1')
+      # airline,airlineLabel,iata,icao,callsign,countryLabel,countryIso,startDate,endDate
+      for airline in reader:
+        if not airline['Country']:
+          continue
+        country, country_code = countryLabel, countryIso
+        start_date, end_date = airline['startDate'], airline['endDate']
+        if start_date and not end_date:
+          airline['active'] = 'Y'
         else:
-          airline = self.parse_airline(block)
-          if airline:
-            self.airlines.append(airline)
-        block = []
-      else:
-        block.append(line)
-
-  # |-
-  # ! IATA
-  # ! ICAO
-  # ! Name
-  # ! Call sign
-  # ! Country
-  # ! Comments
-  def parse_airline(self, block):
-    if len(block) < 6:
-      return None
-
-    # Italicized name or 'defunct' in comments means airline is not active
-    if 'defunct' in block[5].lower() or re.search("^''.*''$", block[2]):
-      active = 'N'
-    else:
-      active = 'Y'
-
-    iata, icao, name, callsign, country, comments = [self.clean(x) for x in block[0:6]]
-    country, country_code = cc_clean(country)
-    return {
-      'iata': iata,
-      'icao': icao,
-      'name': name,
-      'callsign': callsign,
-      'country': country,
-      'country_code': country_code,
-      'active': active,
-      'source': 'Wikipedia'
-    }
-
-  def clean(self, x):
-    # Remove HTML tags and entities
-    self.cleaner = HTMLCleaner()
-    self.cleaner.feed(x)
-    x = self.cleaner.get_data()
-
-    # | ''[[Foo|Bar]]'' -> Bar
-    table = str.maketrans(dict.fromkeys("[|]*?"))
-    x = x.split('|')[-1].translate(table).replace("''", "").split(',')[0].strip()
-    if x == '':
-      return None
-    return x
+          airline['active'] = 'N'
+        self.airlines.append({
+          'icao': airline['icao'],
+          'iata': airline['iata'],
+          'name': airline['airlineLabel'], # common name
+          'callsign': airline['callsign'],
+          'country': airline['countryLabel'],
+          'country_code': airline['countryIso'],
+          'active': active,
+          'start_date': start_date,
+          'end_date': end_date,
+          'source': 'Wikidata'})
 
 def pp(airline):
   alid = airline['alid'] if 'alid' in airline else 'N/A'
@@ -377,11 +330,11 @@ if __name__ == "__main__":
   stats = defaultdict(int)
   print("Source %s" % args.source)
   if args.source == 'wiki':
-    wpa = WikipediaArticle()
-    for c in range(ord('A'), ord('Z')+1):
-      wpa.load(chr(c))
-      print("### %s" % chr(c))
-      process(wpa.airlines, ofa, aldb, stats)
+    if not args.file:
+      exit("--file mandatory if source is wiki")
+    wiki = Wikidata()
+    wiki.load(args.file)
+    process(wiki.airlines, ofa, aldb, stats)
   elif args.source == 'acuk':
     if not args.file:
       exit("--file mandatory if source is acuk")
