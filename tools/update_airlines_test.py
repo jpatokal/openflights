@@ -5,6 +5,7 @@ import update_airlines
 import argparse
 import unittest
 import unittest.mock as mock
+from collections import defaultdict
 
 class UpdateAirlinesTest(unittest.TestCase):
   def setUp(self):
@@ -190,6 +191,33 @@ class UpdateAirlinesTest(unittest.TestCase):
     self.addToIndex(dupe)
     self.assertEqual(self.ofa.match(wp), (self.of, None))
     self.assertEqual(self.ofa.diff(self.of, wp), {})
+
+  #
+  # Processing tests
+  #
+
+  def testProcessAddAirlineWithIataNameAndCountry(self):
+    stats = defaultdict(int)
+    airlines = [defaultdict(iata='ZZ', name='New Airline', country_code='ZZ', source='Wikidata')]
+    update_airlines.process(airlines, self.ofa, stats)
+    self.assertEqual(stats, {'added': 1, 'total': 1})
+
+  def testProcessAddAirlineWithInferredCountryCode(self):
+    stats = defaultdict(int)
+    airlines = [defaultdict(iata='ZZ', name='New Airline', country='Japan', source='Wikidata')]
+    update_airlines.process(airlines, self.ofa, stats)
+    self.assertEqual(stats, {'added': 1, 'total': 1})
+
+  def testProcessIgnoreAirlinesMissingMinimalData(self):
+    stats = defaultdict(int)
+    airlines = [
+      defaultdict(name='New Airline', country_code='BL', source='Wikidata'), # no code
+      defaultdict(iata='ZZ', country_code='BL', source='Wikidata'),          # no name
+      defaultdict(iata='ZZ', name='New Airline', source='Wikidata'),         # no country code
+      defaultdict(iata='ZZ', name='New Airline', country_code='BL')          # no source
+    ]
+    update_airlines.process(airlines, self.ofa, stats)
+    self.assertEqual(stats, {'total': 4})
 
 if __name__ == '__main__':
     unittest.main()

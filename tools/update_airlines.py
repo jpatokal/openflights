@@ -65,15 +65,17 @@ class OpenFlightsAirlines(object):
   def add_airline(self, row):
     if row['iata'] == "":
       row['iata'] = None
-    self.of_iata[row['iata']].append(row)
-    self.of_icao[row['icao']].append(row)
+    if 'iata' in row:
+      self.of_iata[row['iata']].append(row)
+    if 'icao' in row:
+      self.of_icao[row['icao']].append(row)
 
   def update_airline(self, original, fields):
     for key, value in fields.items():
       original[key] = value
 
   def match(self, wp):
-    icao, iata, callsign, country = wp['icao'], wp['iata'], wp['callsign'], wp['country']
+    icao, iata, callsign, country = wp.get('icao'), wp.get('iata'), wp.get('callsign'), wp.get('country')
     match = None
     dupe = None
 
@@ -90,7 +92,7 @@ class OpenFlightsAirlines(object):
 
     if not match and iata and iata in self.of_iata:
       for airline in self.of_iata[iata]:
-        if airline['callsign'] == callsign or airline['country'] == country:
+        if (callsign and airline.get('callsign') == callsign) or (country and airline.get('country') == country):
           match = airline
           break
 
@@ -170,8 +172,9 @@ class OpenFlightsAirlines(object):
 class AirlineDB(database_connector.DatabaseConnector):
   def add_new(self, wp):
     return self.safe_execute(
-      'INSERT INTO airlines(name,iata,icao,callsign,country,country_code,active,source) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)',
-      (wp['name'], wp['iata'], wp['icao'], wp['callsign'], wp['country'], wp['country_code'], wp['active'], wp['source']))
+      'INSERT INTO airlines(name,iata,icao,callsign,country,country_code,start_date,end_date,active,source) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+      (wp.get('name'), wp.get('iata'), wp.get('icao'), wp.get('callsign'), wp.get('country'),
+        wp.get('country_code'), wp.get('start_date'), wp.get('end_date'), wp.get('active'), wp.get('source')))
 
   def update_from_src(self, alid, fields):
     field_string = ', '.join(["%s='%s'" % (k, fields[k].replace("'", "''")) for k in list(fields.keys())])
@@ -261,17 +264,14 @@ class Wikidata(object):
   def load(self, filename):
     self.airlines = []
     with open(filename, 'rb') as csvfile:
-      reader = unicodecsv.DictReader(csvfile, delimiter=';', encoding='latin1')
+      reader = unicodecsv.DictReader(csvfile, delimiter=',')
       # airline,airlineLabel,iata,icao,callsign,countryLabel,countryIso,startDate,endDate
       for airline in reader:
-        if not airline['Country']:
-          continue
-        country, country_code = countryLabel, countryIso
         start_date, end_date = airline['startDate'], airline['endDate']
         if start_date and not end_date:
-          airline['active'] = 'Y'
+          active = 'Y'
         else:
-          airline['active'] = 'N'
+          active = 'N'
         self.airlines.append({
           'icao': airline['icao'],
           'iata': airline['iata'],
@@ -285,10 +285,20 @@ class Wikidata(object):
           'source': 'Wikidata'})
 
 def pp(airline):
-  alid = airline['alid'] if 'alid' in airline else 'N/A'
-  return ('%s (%s/%s, %s)' % (airline['name'], airline['iata'], airline['icao'], alid))
+  alid = airline['alid'] if 'alid' in airline else airline['source']
+  return ('%s (%s/%s, %s)' % (airline.get('name'), airline.get('iata'), airline.get('icao'), alid))
 
-def process(airlines, ofa, aldb, stats):
+# Slow to initialize so we make this global
+cc = coco.CountryConverter()
+
+def cc_clean(raw_name):
+  name = cc.convert(names=[raw_name], to='name_short')
+  if name == 'not found':
+    return (raw_name, None)
+  code = cc.convert(names=[raw_name], to='ISO2')
+  return (name, code)
+
+def process(airlines, ofa, stats):
   for airline in airlines:
     (of_airline, dupe) = ofa.match(airline)
     if of_airline:
@@ -299,7 +309,9 @@ def process(airlines, ofa, aldb, stats):
         stats['deduped'] += 1
       stats['updated'] += ofa.update_from_src(of_airline, airline, dupe)
     else:
-      if airline['iata'] or airline['icao']:
+      if airline.get('country') and not 'country_code' in airline:
+        airline['country'], airline['country_code'] = cc_clean(airline['country'])
+      if (airline.get('iata') or airline.get('icao')) and airline.get('name') and airline.get('country_code') and airline.get('source'):
         print("= NEW %s" % pp(airline))
         ofa.add_new(airline)
         stats['added'] += 1
@@ -318,14 +330,6 @@ if __name__ == "__main__":
   aldb = AirlineDB(args)
   ofa = OpenFlightsAirlines(aldb)
   ofa.load_all_airlines()
-  cc = coco.CountryConverter()
-
-  def cc_clean(raw_name):
-    name = cc.convert(names=[raw_name], to='name_short')
-    if name == 'not found':
-      return (raw_name, None)
-    code = cc.convert(names=[raw_name], to='ISO2')
-    return (name, code)
 
   stats = defaultdict(int)
   print("Source %s" % args.source)
@@ -334,17 +338,17 @@ if __name__ == "__main__":
       exit("--file mandatory if source is wiki")
     wiki = Wikidata()
     wiki.load(args.file)
-    process(wiki.airlines, ofa, aldb, stats)
+    process(wiki.airlines, ofa, stats)
   elif args.source == 'acuk':
     if not args.file:
       exit("--file mandatory if source is acuk")
     acuk = AirlineCodesUK()
     acuk.load(args.file)
-    process(acuk.airlines, ofa, aldb, stats)
+    process(acuk.airlines, ofa, stats)
   else:
     iatadb = IATAAirlines()
     iatadb.load()
-    process(iatadb.airlines, ofa, aldb, stats)
+    process(iatadb.airlines, ofa, stats)
 
   print("%s matched with %s updated and %s deduped, %s added, %s total" % (
     stats['matched'], stats['updated'], stats['deduped'], stats['added'], stats['total']))

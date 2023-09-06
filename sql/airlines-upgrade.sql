@@ -10,3 +10,6 @@ ALTER TABLE airports ADD COLUMN country_code VARCHAR(2) AFTER country;
 ALTER TABLE airlines ADD COLUMN source TEXT;
 UPDATE airlines SET source='User' WHERE source IS NULL AND uid IS NOT NULL;
 UPDATE airlines SET source='Legacy' WHERE source IS NULL AND uid IS NULL;
+
+ALTER TABLE airlines ADD COLUMN start_date DATE AFTER active;
+ALTER TABLE airlines ADD COLUMN end_date DATE AFTER start_year;
