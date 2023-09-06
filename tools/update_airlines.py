@@ -142,11 +142,22 @@ class OpenFlightsAirlines(object):
 
     fields = {}
     for field in ['name', 'callsign', 'icao', 'iata', 'source', 'country', 'country_code', 'start_date', 'end_date', 'duplicate']:
+      # Do we have a new value?
       if field in wp and wp[field] and wp[field] != of[field]:
+
+        # Is the change more than just case?
         if not of[field] or str(wp[field]).upper() != str(of[field]).upper():
+
+          # Only alter main name if it's not an abbreviation
           if field != 'name' or len(wp[field]) > 3:
+
+            # Reliable sources can overwrite, unreliable ones can only append
             if reliable or not of[field]:
               fields[field] = wp[field]
+
+              # Special case: If it's a new name, retain old name as alias
+              if field == 'name':
+                fields['alias'] = of['name']
 
     # Special case: Only override activeness if new source says airline is defunct
     if of['active'] == 'Y' and wp['active'] == 'N':
@@ -266,15 +277,21 @@ class Wikidata(object):
   def load(self, filename):
     with open(filename, 'rb') as csvfile:
       reader = unicodecsv.DictReader(csvfile, delimiter=',')
-      # entity,airlineLabel,iata,icao,callsign,countryLabel,countryIso,startDate,endDate
+      # entity,airlineLabel,iata,icao,parentIata,parentIcao,callsign,countryLabel,countryIso,startDate,endDate
       self.parse(reader)
 
   def parse(self, rows):
     for airline in rows:
       # Ignore airlines where the name is just the Wikidata entity code
       if airline['entity'].rsplit('/', 1)[1] == airline['airlineLabel']:
-        print(". IGNORE[WIKIDATA] %s" % airline)
+        print(". FILTER[WIKIDATA:NONAME] %s" % airline)
         continue
+
+      # Ignore subsidiaries where the IATA code is identical to parent (commuter brands, cargo operations etc)
+      if airline['iata'] == airline.get('parentIata'):
+        print(". FILTER[WIKIDATA:SUBSIDIARY] %s" % airline)
+        continue
+
       start_date, end_date = airline['startDate'], airline['endDate']
       if start_date and not end_date:
         active = 'Y'

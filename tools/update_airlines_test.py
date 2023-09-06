@@ -66,9 +66,9 @@ class UpdateAirlinesTest(unittest.TestCase):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Lol Airlines', 'callsign': 'NEWXA', 'country': 'Åland', 'source': 'User'}
     self.assertOnlyChange(wp, diff={'callsign': 'NEWXA'})
 
-  def testNameChange(self):
+  def testNameChangeKeepingOldNameAsAlias(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Ahvenanmaa Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata'}
-    self.assertOnlyChange(wp, diff={'name': 'Ahvenanmaa Airlines'})
+    self.assertOnlyChange(wp, diff={'name': 'Ahvenanmaa Airlines', 'alias': 'Åland Airlines'})
 
   def testCountryChange(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Ahvenanmaa', 'source': 'Wikidata'}
@@ -80,12 +80,12 @@ class UpdateAirlinesTest(unittest.TestCase):
 
   def testActiveToInactiveChange(self):
     self.of['active'] = 'Y'
-    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Ahvenanmaa Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
-    self.assertOnlyChange(wp, diff={'name': 'Ahvenanmaa Airlines', 'active': 'N', 'end_date': '2019-01-01'})
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
+    self.assertOnlyChange(wp, diff={'active': 'N', 'end_date': '2019-01-01'})
 
   def testIgnoreInactiveToActiveChange(self):
-    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Ahvenanmaa Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
-    self.assertOnlyChange(wp, diff={'name': 'Ahvenanmaa Airlines', 'end_date': '2019-01-01'})
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
+    self.assertOnlyChange(wp, diff={'end_date': '2019-01-01'})
 
   def testIgnoreCaseChange(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland AIRLINES', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata'}
@@ -217,6 +217,11 @@ class UpdateAirlinesTest(unittest.TestCase):
 
   def testWikidataIgnoreIfNameEqualsEntity(self):
     wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Q3487216', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines, [])
+
+  def testWikidataIgnoreIfSameIATAAsParent(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'parentIata': 'TF', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '2023-01-01', 'endDate': ''}
     self.wd.parse([wiki])
     self.assertEqual(self.wd.airlines, [])
 

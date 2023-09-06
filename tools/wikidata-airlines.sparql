@@ -1,18 +1,20 @@
 # SPARQL query for extracting airline data from Wikidata
 # Execute at https://query.wikidata.org/ and download results as CSV
 
-SELECT (?airline as ?entity) ?airlineLabel ?iata ?icao ?callsign ?countryLabel ?countryIso
+SELECT (?airline as ?entity) ?airlineLabel ?iata ?icao ?parentIata ?parentIcao ?callsign ?countryLabel ?countryIso
   (xsd:date(?start) AS ?startDate) (xsd:date(?end) AS ?endDate) # format as ISO dates
 WHERE 
 {
   ?airline wdt:P31 wd:Q46970 .  # instance of airline
   ?airline wdt:P229 ?iata .  # IATA code not optional
   OPTIONAL{?airline wdt:P230 ?icao .}
+  OPTIONAL{?airline wdt:P749 ?parent .
+           ?parent wdt:P229 ?parentIata .
+           ?parent wdt:P230 ?parentIcao }
   OPTIONAL{?airline wdt:P571 ?start .}
   OPTIONAL{?airline wdt:P576 ?end .}
   OPTIONAL { ?airline wdt:P17 ?country .
              ?country wdt:P297 ?countryIso }
   OPTIONAL{?airline wdt:P432 ?callsign .}
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
-
