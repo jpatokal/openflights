@@ -25,6 +25,7 @@ class UpdateAirlinesTest(unittest.TestCase):
     }
     self.addToIndex(self.of)
     self.wd = update_airlines.Wikidata()
+    self.wd.airlines = []
 
   def addToIndex(self, airline):
     self.ofa.of_iata[airline['iata']].append(airline)
@@ -191,6 +192,33 @@ class UpdateAirlinesTest(unittest.TestCase):
     self.addToIndex(dupe)
     self.assertEqual(self.ofa.match(wp), (self.of, None))
     self.assertEqual(self.ofa.diff(self.of, wp), {})
+
+  #
+  # Wikidata-specific tests
+  #
+
+  def testWikidataActiveAirline(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '2023-01-01', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines,
+      [{'icao': '', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'Y', 'start_date': '2023-01-01', 'end_date': '', 'source': 'Wikidata'}])
+
+  def testWikidataInactiveAirline(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '', 'endDate': '2023-01-01'}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines,
+      [{'icao': '', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'N', 'start_date': '', 'end_date': '2023-01-01', 'source': 'Wikidata'}])
+
+  def testWikidataDefaultToInactiveAirline(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines,
+      [{'icao': '', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'N', 'start_date': '', 'end_date': '', 'source': 'Wikidata'}])
+
+  def testWikidataIgnoreIfNameEqualsEntity(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Q3487216', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines, [])
 
   #
   # Processing tests

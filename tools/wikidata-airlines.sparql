@@ -1,7 +1,7 @@
 # SPARQL query for extracting airline data from Wikidata
 # Execute at https://query.wikidata.org/ and download results as CSV
 
-SELECT ?airline ?airlineLabel ?iata ?icao ?callsign ?countryLabel ?countryIso
+SELECT (?airline as ?entity) ?airlineLabel ?iata ?icao ?callsign ?countryLabel ?countryIso
   (xsd:date(?start) AS ?startDate) (xsd:date(?end) AS ?endDate) # format as ISO dates
 WHERE 
 {
@@ -15,3 +15,4 @@ WHERE
   OPTIONAL{?airline wdt:P432 ?callsign .}
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
+

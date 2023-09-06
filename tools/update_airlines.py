@@ -261,31 +261,39 @@ class AirlineCodesUK(object):
           'source': 'ACUK'})
 
 class Wikidata(object):
+  airlines = []
+
   def load(self, filename):
-    self.airlines = []
     with open(filename, 'rb') as csvfile:
       reader = unicodecsv.DictReader(csvfile, delimiter=',')
-      # airline,airlineLabel,iata,icao,callsign,countryLabel,countryIso,startDate,endDate
-      for airline in reader:
-        start_date, end_date = airline['startDate'], airline['endDate']
-        if start_date and not end_date:
-          active = 'Y'
-        else:
-          active = 'N'
-        self.airlines.append({
-          'icao': airline['icao'],
-          'iata': airline['iata'],
-          'name': airline['airlineLabel'], # common name
-          'callsign': airline['callsign'],
-          'country': airline['countryLabel'],
-          'country_code': airline['countryIso'],
-          'active': active,
-          'start_date': start_date,
-          'end_date': end_date,
-          'source': 'Wikidata'})
+      # entity,airlineLabel,iata,icao,callsign,countryLabel,countryIso,startDate,endDate
+      self.parse(reader)
+
+  def parse(self, rows):
+    for airline in rows:
+      # Ignore airlines where the name is just the Wikidata entity code
+      if airline['entity'].rsplit('/', 1)[1] == airline['airlineLabel']:
+        print(". IGNORE[WIKIDATA] %s" % airline)
+        continue
+      start_date, end_date = airline['startDate'], airline['endDate']
+      if start_date and not end_date:
+        active = 'Y'
+      else:
+        active = 'N'
+      self.airlines.append({
+        'icao': airline['icao'],
+        'iata': airline['iata'],
+        'name': airline['airlineLabel'], # common name
+        'callsign': airline['callsign'],
+        'country': airline['countryLabel'],
+        'country_code': airline['countryIso'],
+        'active': active,
+        'start_date': start_date,
+        'end_date': end_date,
+        'source': 'Wikidata'})
 
 def pp(airline):
-  alid = airline['alid'] if 'alid' in airline else airline['source']
+  alid = airline['alid'] if 'alid' in airline else airline.get('source')
   return ('%s (%s/%s, %s)' % (airline.get('name'), airline.get('iata'), airline.get('icao'), alid))
 
 # Slow to initialize so we make this global
