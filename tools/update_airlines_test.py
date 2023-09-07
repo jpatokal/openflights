@@ -5,12 +5,16 @@ import update_airlines
 import argparse
 import unittest
 import unittest.mock as mock
+import unittest.mock as patch
 from collections import defaultdict
 
 class UpdateAirlinesTest(unittest.TestCase):
   def setUp(self):
+    args = mock.Mock()
+    args.interactive = False
     self.fake_aldb = mock.Mock(spec=update_airlines.AirlineDB)
-    self.ofa = update_airlines.OpenFlightsAirlines(self.fake_aldb)
+    self.ofa = update_airlines.OpenFlightsAirlines(self.fake_aldb, args)
+
     self.of = {
       'icao': 'ABC',
       'iata': 'AB',
@@ -197,20 +201,43 @@ class UpdateAirlinesTest(unittest.TestCase):
   # Wikidata-specific tests
   #
 
+  def testWikidataCollapseIdenticalDuplicates(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF,TF,TF', 'icao': 'ABC,ABC,ABC', 
+             'parentIata': 'XX,XX,XX', 'parentIcao': 'XXX,XXX,XXX', 'callsign': '', 'countryIso': 'SE,SE,SE', 'startDate': '', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines,
+      [{'icao': 'ABC', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'N', 'start_date': '', 'end_date': '', 'source': 'Wikidata'}])
+
+  # Choose HQ location for multinational airlines
+  def testWikidataHqCountryOverridesCountryIso(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF,TF,TF', 'icao': 'ABC,ABC,ABC', 
+             'countryIso': 'DK,NO,SE', 'hqCountryIso': 'SE', 'callsign': '', 'startDate': '', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines,
+      [{'icao': 'ABC', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'N', 'start_date': '', 'end_date': '', 'source': 'Wikidata'}])
+
+  # Prefer subnational entities like Hong Kong, Faroe Islands over their "parent" countries
+  def testWikidataHqIsoOverridesHqCountryIso(self):
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF,TF,TF', 'icao': 'ABC,ABC,ABC', 
+             'countryIso': 'DK', 'hqIso': 'HK', 'hqCountryIso': 'SE', 'callsign': '', 'startDate': '', 'endDate': ''}
+    self.wd.parse([wiki])
+    self.assertEqual(self.wd.airlines,
+      [{'icao': 'ABC', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Hong Kong', 'country_code': 'HK', 'active': 'N', 'start_date': '', 'end_date': '', 'source': 'Wikidata'}])
+
   def testWikidataActiveAirline(self):
-    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '2023-01-01', 'endDate': ''}
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryIso': 'SE', 'startDate': '2023-01-01', 'endDate': ''}
     self.wd.parse([wiki])
     self.assertEqual(self.wd.airlines,
       [{'icao': '', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'Y', 'start_date': '2023-01-01', 'end_date': '', 'source': 'Wikidata'}])
 
   def testWikidataInactiveAirline(self):
-    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '', 'endDate': '2023-01-01'}
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryIso': 'SE', 'startDate': '', 'endDate': '2023-01-01'}
     self.wd.parse([wiki])
     self.assertEqual(self.wd.airlines,
       [{'icao': '', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'N', 'start_date': '', 'end_date': '2023-01-01', 'source': 'Wikidata'}])
 
   def testWikidataDefaultToInactiveAirline(self):
-    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryLabel': 'Sweden', 'countryIso': 'SE', 'startDate': '', 'endDate': ''}
+    wiki =  {'entity': 'http://www.wikidata.org/entity/Q3487216', 'airlineLabel': 'Abba Airlines', 'iata': 'TF', 'icao': '', 'callsign': '', 'countryIso': 'SE', 'startDate': '', 'endDate': ''}
     self.wd.parse([wiki])
     self.assertEqual(self.wd.airlines,
       [{'icao': '', 'iata': 'TF', 'name': 'Abba Airlines', 'callsign': '', 'country': 'Sweden', 'country_code': 'SE', 'active': 'N', 'start_date': '', 'end_date': '', 'source': 'Wikidata'}])

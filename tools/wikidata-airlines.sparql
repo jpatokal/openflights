@@ -1,20 +1,29 @@
 # SPARQL query for extracting airline data from Wikidata
 # Execute at https://query.wikidata.org/ and download results as CSV
 
-SELECT (?airline as ?entity) ?airlineLabel ?iata ?icao ?parentIata ?parentIcao ?callsign ?countryLabel ?countryIso
-  (xsd:date(?start) AS ?startDate) (xsd:date(?end) AS ?endDate) # format as ISO dates
+SELECT (?airline as ?entity) ?airlineLabel
+  (GROUP_CONCAT(?iatas;separator=",") AS ?iata) (GROUP_CONCAT(?icaos;separator=",") AS ?icao)
+  (GROUP_CONCAT(?parentIatas;separator=",") AS ?parentIata) (GROUP_CONCAT(?parentIcaos;separator=",") AS ?parentIcao)
+  (SAMPLE(?callsign) AS ?callsign)
+  (SAMPLE(?countryIso) AS ?countryIso) (SAMPLE(?hqIso) AS ?hqIso) (SAMPLE(?hqCountryIso) AS ?hqCountryIso)
+  (MIN(xsd:date(?start)) AS ?startDate) (MAX(xsd:date(?end)) AS ?endDate) # format as ISO dates
 WHERE 
 {
   ?airline wdt:P31 wd:Q46970 .  # instance of airline
-  ?airline wdt:P229 ?iata .  # IATA code not optional
-  OPTIONAL{?airline wdt:P230 ?icao .}
+  ?airline wdt:P229 ?iatas .  # IATA code not optional
+  OPTIONAL{?airline wdt:P230 ?icaos .}
   OPTIONAL{?airline wdt:P749 ?parent .
-           ?parent wdt:P229 ?parentIata .
-           ?parent wdt:P230 ?parentIcao }
+           ?parent wdt:P229 ?parentIatas .
+           ?parent wdt:P230 ?parentIcaos}
   OPTIONAL{?airline wdt:P571 ?start .}
   OPTIONAL{?airline wdt:P576 ?end .}
-  OPTIONAL { ?airline wdt:P17 ?country .
-             ?country wdt:P297 ?countryIso }
+  OPTIONAL{?airline wdt:P17 ?country .
+           ?country wdt:P297 ?countryIso}
+  OPTIONAL { ?airline wdt:P159 ?hq .
+             ?hq wdt:P297 ?hqIso .
+             ?hq wdt:P17 ?hqCountry .
+             ?hqCountry wdt:P297 ?hqCountryIso }
   OPTIONAL{?airline wdt:P432 ?callsign .}
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
+GROUP BY ?airline ?airlineLabel

@@ -11,7 +11,7 @@
 # python3 update_airlines_test.py
 #
 # Run script:
-# python3 tools/update_airlines.py --source acuk --file data/avcodes.csv --local
+# python3 tools/update_airlines.py --source acuk --file data/avcodes.csv --local --interactive=True
 
 import argparse
 import codecs
@@ -51,10 +51,11 @@ class HTMLCleaner(HTMLParser):
     return ''.join(self.fed)
 
 class OpenFlightsAirlines(object):
-  def __init__(self, aldb):
+  def __init__(self, aldb, args=None):
     self.aldb = aldb
     self.of_iata = defaultdict(list)
     self.of_icao = defaultdict(list)
+    self.args = args
 
   def load_all_airlines(self):
     # Match preferably against active ('Y') and frequency (more flights good)
@@ -153,6 +154,18 @@ class OpenFlightsAirlines(object):
 
             # Reliable sources can overwrite, unreliable ones can only append
             if reliable or not of[field]:
+              if field not in ['country_code', 'callsign', 'start_date', 'end_date', 'source']:
+                if self.args.interactive:
+                  print("current", of)
+                  print("incoming", wp)
+                  print(">> PROPOSED UPDATE: field %s from %s to %s" % (field, of[field], wp[field]))
+                  answer = input("Allow? (y/N)")
+                  if answer != 'y':
+                    print("No change made.")
+                    continue
+                  print("Updated.")
+                else:
+                  print(">> UPDATED: field %s from %s to %s" % (field, of[field], wp[field]))
               fields[field] = wp[field]
 
               # Special case: If it's a new name, retain old name as alias
@@ -227,6 +240,7 @@ class IATAAirlines(object):
           'country_code': country_code,
           'active': 'Y',
           'source': 'IATA'})
+    return self.airlines
 
   def clean(self, x):
     if x:
@@ -279,6 +293,7 @@ class Wikidata(object):
       reader = unicodecsv.DictReader(csvfile, delimiter=',')
       # entity,airlineLabel,iata,icao,parentIata,parentIcao,callsign,countryLabel,countryIso,startDate,endDate
       self.parse(reader)
+    return self.airlines
 
   def parse(self, rows):
     for airline in rows:
@@ -286,6 +301,11 @@ class Wikidata(object):
       if airline['entity'].rsplit('/', 1)[1] == airline['airlineLabel']:
         print(". FILTER[WIKIDATA:NONAME] %s" % airline)
         continue
+
+      # Collapse GROUP_CONCAT fields that may contain comma-separated duplicates (for not, just take 1st entry)
+      for field in ['iata', 'icao', 'parentIata', 'parentIcao', 'countryIso']:
+        if field in airline:
+          airline[field] = set(airline[field].split(',')).pop()
 
       # Ignore subsidiaries where the IATA code is identical to parent (commuter brands, cargo operations etc)
       if airline['iata'] == airline.get('parentIata'):
@@ -297,13 +317,22 @@ class Wikidata(object):
         active = 'Y'
       else:
         active = 'N'
+
+      # Preference: ISO code of HQ > code of HQ's country > code of airline (there may be several)
+      # This handles multinational airlines and subnational entities like Hong Kong
+      if 'hqIso' in airline:
+        airline['countryIso'] = airline['hqIso']
+      elif 'hqCountryIso' in airline:
+        airline['countryIso'] = airline['hqCountryIso']
+      (country, country_code) = cc_clean(airline['countryIso'])
+
       self.airlines.append({
         'icao': airline['icao'],
         'iata': airline['iata'],
         'name': airline['airlineLabel'], # common name
         'callsign': airline['callsign'],
-        'country': airline['countryLabel'],
-        'country_code': airline['countryIso'],
+        'country': country,
+        'country_code': country_code,
         'active': active,
         'start_date': start_date,
         'end_date': end_date,
@@ -350,30 +379,30 @@ if __name__ == "__main__":
   parser.add_argument('--local', default=False, action='store_true')
   parser.add_argument('--source', default='wiki')
   parser.add_argument('--file', default=None)
+  parser.add_argument('--interactive', default=False, action='store_true')
   args = parser.parse_args()
 
   aldb = AirlineDB(args)
-  ofa = OpenFlightsAirlines(aldb)
+  ofa = OpenFlightsAirlines(aldb, args)
   ofa.load_all_airlines()
 
   stats = defaultdict(int)
   print("Source %s" % args.source)
+  airlines = None
   if args.source == 'wiki':
     if not args.file:
       exit("--file mandatory if source is wiki")
     wiki = Wikidata()
-    wiki.load(args.file)
-    process(wiki.airlines, ofa, stats)
+    airlines = wiki.load(args.file)
   elif args.source == 'acuk':
     if not args.file:
       exit("--file mandatory if source is acuk")
     acuk = AirlineCodesUK()
-    acuk.load(args.file)
-    process(acuk.airlines, ofa, stats)
+    airlines = acuk.load(args.file)
   else:
     iatadb = IATAAirlines()
-    iatadb.load()
-    process(iatadb.airlines, ofa, stats)
+    airlines = iatadb.load()
+  process(airlines, ofa, stats)
 
   print("%s matched with %s updated and %s deduped, %s added, %s total" % (
     stats['matched'], stats['updated'], stats['deduped'], stats['added'], stats['total']))
