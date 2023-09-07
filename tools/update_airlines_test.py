@@ -87,6 +87,15 @@ class UpdateAirlinesTest(unittest.TestCase):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
     self.assertOnlyChange(wp, diff={'active': 'N', 'end_date': '2019-01-01'})
 
+  def testInactiveSubsidiaryNoMatch(self):
+    self.of['active'] = 'Y'
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Sub-Åland Airlines', 'callsign': 'ZZZZZ', 'country': 'Åland', 'active': 'N', 'source': 'Wikidata'}
+    self.assertNoMatches(wp)
+
+  def testCargoSubsidiaryNoMatch(self):
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Cargo Airlines', 'callsign': 'ZZZZZ', 'country': 'Åland', 'active': 'Y', 'source': 'Wikidata'}
+    self.assertNoMatches(wp)
+
   def testIgnoreInactiveToActiveChange(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
     self.assertOnlyChange(wp, diff={'end_date': '2019-01-01'})
@@ -120,7 +129,7 @@ class UpdateAirlinesTest(unittest.TestCase):
   def testIcaoMatchNewCallsignEmpty(self):
     old = {'icao': 'OKA', 'iata': '', 'name': 'Okay Airways', 'callsign': 'OKAYJET', 'country': 'China', 'active': 'Y', 'source': 'Wikidata'}
     self.addToIndex(old)
-    new = {'icao': 'OKA', 'iata': 'BK', 'name': 'Okay Airways', 'callsign': '', 'country': '', 'active': 'Y', 'source': 'Wikidata'}
+    new = {'icao': 'OKA', 'iata': 'BK', 'name': 'Okay Airways', 'callsign': '', 'country': 'China', 'active': 'Y', 'source': 'Wikidata'}
     self.assertOnlyChange(new, old, diff={'iata': 'BK'})
 
   def testIcaoNeitherCallsignNorCountryMatch(self):

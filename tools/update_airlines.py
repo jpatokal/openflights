@@ -76,7 +76,7 @@ class OpenFlightsAirlines(object):
       original[key] = value
 
   def match(self, wp):
-    icao, iata, callsign, country = wp.get('icao'), wp.get('iata'), wp.get('callsign'), wp.get('country')
+    name, icao, iata, callsign, country = wp.get('name'), wp.get('icao'), wp.get('iata'), wp.get('callsign'), wp.get('country')
     match = None
     dupe = None
 
@@ -85,11 +85,6 @@ class OpenFlightsAirlines(object):
       for airline in self.of_icao[icao]:
         if (iata and airline['iata'] == iata) or airline['callsign'] == callsign or airline['country'] == country:
           match = airline
-          break
-        # Special case: IATA data, accept on basis of ICAO match
-        if not callsign and not country:
-          match = airline
-          break
 
     if not match and iata and iata in self.of_iata:
       for airline in self.of_iata[iata]:
@@ -97,7 +92,32 @@ class OpenFlightsAirlines(object):
           match = airline
           break
 
-    # Round 2: Find potential duplicates
+    # Round 2: Filter out dodgy matches
+
+    # Name does not match, might be sus
+    if match and airline['name'].upper() != name.upper():
+
+      # Do not match cargo subsidiaries against parents
+      if "Cargo" in name and "Cargo" not in airline['name']:
+        return None, None
+
+      # Do not match an inactive airline with a different name against a currently active one
+      if wp.get('active') == 'N' and airline['active'] == 'Y':
+        return None, None
+
+      if self.args.interactive:
+        print(">> PROPOSED RENAME: from %s to %s" % (airline['name'], wp['name']))
+        answer = input("Allow? (y/N)")
+        if answer != 'y':
+          print("Ignored.")
+          return None, None
+        print("Matched.")
+      else:
+        print(">> MATCH WITH RENAME: from %s to %s" % (airline['name'], wp['name']))
+
+    # Deduping is really a completely different problem, leaving this here for historical purposes
+
+    # Round 3: Find potential duplicates
     #if match and 'iata' in match and match['iata']:
     #  for airline in self.of_iata[match['iata']]:
     #    if airline == match:
@@ -346,6 +366,8 @@ def pp(airline):
 cc = coco.CountryConverter()
 
 def cc_clean(raw_name):
+  if not raw_name:
+    return (raw_name, None)
   name = cc.convert(names=[raw_name], to='name_short')
   if name == 'not found':
     return (raw_name, None)
