@@ -64,19 +64,6 @@ CREATE TABLE `airports_dafif` (
   PRIMARY KEY  (`icao`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `airports_gad`;
-CREATE TABLE `airports_gad` (
-  `name` text NOT NULL,
-  `city` text,
-  `country` text,
-  `iata` varchar(3) default NULL,
-  `icao` varchar(4) NOT NULL,
-  `x` double NOT NULL,
-  `y` double NOT NULL,
-  `elevation` int(11) default NULL,
-  PRIMARY KEY  (`icao`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `airports_oa`;
 CREATE TABLE `airports_oa` (
   `oaid` int(11) NOT NULL,
