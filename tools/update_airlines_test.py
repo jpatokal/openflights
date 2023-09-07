@@ -96,6 +96,11 @@ class UpdateAirlinesTest(unittest.TestCase):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Cargo Airlines', 'callsign': 'ZZZZZ', 'country': 'Åland', 'active': 'Y', 'source': 'Wikidata'}
     self.assertNoMatches(wp)
 
+  def testCargoParentNoMatch(self):
+    self.of['name'] = 'Åland Cargo Airlines'
+    wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ZZZZZ', 'country': 'Åland', 'active': 'Y', 'source': 'Wikidata'}
+    self.assertNoMatches(wp)
+
   def testIgnoreInactiveToActiveChange(self):
     wp = {'icao': 'ABC', 'iata': 'AB', 'name': 'Åland Airlines', 'callsign': 'ALAXA', 'country': 'Åland', 'source': 'Wikidata', 'active': 'N', 'end_date': '2019-01-01'}
     self.assertOnlyChange(wp, diff={'end_date': '2019-01-01'})

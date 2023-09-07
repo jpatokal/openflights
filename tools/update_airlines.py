@@ -93,12 +93,13 @@ class OpenFlightsAirlines(object):
           break
 
     # Round 2: Filter out dodgy matches
+    # TODO: This should be a filter inside Round 1 so it can try again after a failing match...
 
     # Name does not match, might be sus
     if match and airline['name'].upper() != name.upper():
 
-      # Do not match cargo subsidiaries against parents
-      if "Cargo" in name and "Cargo" not in airline['name']:
+      # Do not match cargo subsidiaries against parents, or vice versa
+      if ("Cargo" in name and "Cargo" not in airline['name']) or ("Cargo" not in name and "Cargo" in airline['name']):
         return None, None
 
       # Do not match an inactive airline with a different name against a currently active one
