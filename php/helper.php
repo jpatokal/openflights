@@ -2,7 +2,9 @@
 
 include_once 'greatcircle.php';
 
-// must be a string or locale may turn this into a comma!
+/**
+ * @note Must be a string or locale may turn this into a comma!
+ */
 const KM_PER_MILE = "1.609344";
 
 /**
@@ -11,9 +13,10 @@ const KM_PER_MILE = "1.609344";
 $KMPERMILE = KM_PER_MILE;
 
 /**
+ * Mapping of modes from shorthand
+ *
  * @TODO: Internationalise? differing case messages exist
  *
- * Mapping of modes from shorthand
  * @var array
  */
 const MODES = [
@@ -29,9 +32,10 @@ const MODES = [
 $modes = MODES;
 
 /**
+ * Mapping of mode operators from shorthand
+ *
  * @TODO: Internationalise?
  *
- * Mapping of mode operators from shorthand
  * @var array
  */
 const MODES_OPERATOR = [
@@ -47,7 +51,8 @@ const MODES_OPERATOR = [
 $modeOperators = MODES_OPERATOR;
 
 /**
- * End with JSON-formatted data, localized message and a successful status
+ * End with JSON-formatted data, localized message and a successful status.
+ *
  * @param $data array
  */
 function json_success($data) {
@@ -57,7 +62,8 @@ function json_success($data) {
 }
 
 /**
- * Abort with a JSON-formatted localized error message
+ * Abort with a JSON-formatted localized error message.
+ *
  * @param $msg string
  * @param $detail string
  */
@@ -74,8 +80,9 @@ function json_error($msg, $detail = '') {
 }
 
 /**
- * Standard formatting of airport data
- * @param $row array associative array containing iata, icao
+ * Standard formatting of airport data.
+ *
+ * @param $row array associative array containing IATA and ICAO codes
  * @return string " code : apid : x : y : timezone : dstrule "
  */
 function format_apdata($row) {
@@ -91,8 +98,9 @@ function format_apdata($row) {
 }
 
 /**
- * // Standard formatting of airport codes
- * @param $row array associative array containing iata, icao
+ * Standard formatting of airport codes.
+ *
+ * @param $row array associative array containing IATA and ICAO codes
  * @return string
  */
 function format_apcode($row) {
@@ -100,8 +108,8 @@ function format_apcode($row) {
 }
 
 /**
- * @param $iata string
- * @param $icao string
+ * @param $iata string IATA code
+ * @param $icao string ICAO code
  * @return string
  */
 function format_apcode2($iata, $icao) {
@@ -116,8 +124,9 @@ function format_apcode2($iata, $icao) {
 }
 
 /**
- * Standard formatting of airport names
- * @param $row array associative array containing name, city, country/code and iata/icao
+ * Standard formatting of airport names.
+ *
+ * @param $row array associative array containing name, city, country/code and IATA/ICAO codes
  * @return string
  */
 function format_airport($row) {
@@ -145,9 +154,9 @@ function format_airport($row) {
 }
 
 /**
- * Standard formatting of airline names
+ * Standard formatting of airline names.
  *
- * @param $row array associative array containing name, iata, icao and (optionally) mode
+ * @param $row array associative array containing name, IATA/ICAO codes, and optionally the mode
  * @return string
  */
 function format_airline($row) {
@@ -181,12 +190,12 @@ function format_alcode($iata, $icao, $mode) {
 }
 
 /**
- * Calculate (distance, duration) between two airport IDs
+ * Calculate (distance, duration) between two Airport IDs.
  *
  * @param $dbh PDO OpenFlights DB handler
- * @param $src_apid string Source APID
- * @param $dst_apid string Destination APID
- * @return array Distance, duration
+ * @param $src_apid string Source Airport ID
+ * @param $dst_apid string Destination Airport ID
+ * @return array [ distance, duration ]
  */
 function gcDistance($dbh, $src_apid, $dst_apid) {
     // Special case: loop flight to/from same airport
@@ -214,7 +223,7 @@ function gcDistance($dbh, $src_apid, $dst_apid) {
 }
 
 /**
- * @param $dist
+ * @param $dist float|int
  * @return string
  */
 function gcDuration($dist) {
@@ -224,8 +233,9 @@ function gcDuration($dist) {
 
 /**
  * Convert a filename (relative to the document root) to a relative URL with a date-based version string appended.
+ *
  * @param $filename string|null Relative filename (e.g. "/js/foo.js")
- * @return string Relative filename with version (e.g. "/js/foo.js?version=20120102")
+ * @return string Relative filename with a version parameter (e.g. "/js/foo.js?version=20120102")
  * @throws Exception Invalid input
  */
 function fileUrlWithDate($filename) {
@@ -246,9 +256,10 @@ function fileUrlWithDate($filename) {
 }
 
 /**
- * Hack to record X-Y and Y-X flights as same in DB
- * @param $src_apid
- * @param $dst_apid
+ * Hack to record X-Y and Y-X flights as same in DB.
+ *
+ * @param $src_apid string Source Airport ID
+ * @param $dst_apid string Destination Airport ID
  * @return array
  */
 function orderAirports($src_apid, $dst_apid) {
@@ -260,9 +271,10 @@ function orderAirports($src_apid, $dst_apid) {
 }
 
 /**
- * if $cond then echo $value
- * @param $cond bool
- * @param $value string
+ * if $cond then echo $value.
+ *
+ * @param $cond bool Whether to echo $value
+ * @param $value string Value to be echo-ed
  */
 function condOut($cond, $value) {
     if ($cond) {
@@ -271,11 +283,12 @@ function condOut($cond, $value) {
 }
 
 /**
- * if $arr[$key] == $value then echo $true else echo $false
+ * if $arr[$key] == $value then echo $true else echo $false.
+ *
  * @param $arr array
  * @param $key string
  * @param $value mixed
- * @param $true string
+ * @param $true string String to output when $arr[$key] == $value
  * @param $false string Default ''
  */
 function condArrOut($arr, $key, $value, $true, $false = '') {
@@ -287,7 +300,7 @@ function condArrOut($arr, $key, $value, $true, $false = '') {
 /**
  * @param $src mixed
  * @param $dst mixed
- * @param $flip bool
+ * @param $flip bool Whether to swap $dst and $src
  * @return array
  */
 function flip($src, $dst, $flip) {
