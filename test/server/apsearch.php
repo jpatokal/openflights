@@ -5,7 +5,9 @@ include_once dirname(__FILE__) . '/config.php';
 // Store temporary airport ID
 $new_apid = null;
 
-// Check that we can load up the country data
+/**
+ * Check that we can load up the country data
+ */
 class LoadCountriesTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -17,7 +19,9 @@ class LoadCountriesTest extends WebTestCase {
     }
 }
 
-// Try to add airport before logging in
+/**
+ * Try to add an airport before logging in
+ */
 class RecordAirportNotLoggedInTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -28,7 +32,9 @@ class RecordAirportNotLoggedInTest extends WebTestCase {
     }
 }
 
-// Add new airport
+/**
+ * Add new airport
+ */
 class RecordNewAirportTest extends WebTestCase {
     public function test() {
         global $webroot, $airport, $new_apid;
@@ -42,7 +48,9 @@ class RecordNewAirportTest extends WebTestCase {
     }
 }
 
-// Try to add it again
+/**
+ * Try to add it again
+ */
 class RecordAirportDuplicateTest extends WebTestCase {
     public function test() {
         global $webroot, $airport;
@@ -58,7 +66,9 @@ class RecordAirportDuplicateTest extends WebTestCase {
     }
 }
 
-// Try to edit an airport not belonging to us
+/**
+ * Try to edit an airport not belonging to us
+ */
 class EditWrongAirportTest extends WebTestCase {
     public function test() {
         global $webroot, $airport;
@@ -77,7 +87,9 @@ class EditWrongAirportTest extends WebTestCase {
     }
 }
 
-// Try to reuse an existing airport's code
+/**
+ * Try to reuse an existing airport's code
+ */
 class EditAirportDuplicateICAOTest extends WebTestCase {
     public function test() {
         global $webroot, $airport, $new_apid;
@@ -95,7 +107,9 @@ class EditAirportDuplicateICAOTest extends WebTestCase {
     }
 }
 
-// Try to edit to overwrite existing airport
+/**
+ * Try to edit to overwrite existing airport
+ */
 class EditAirportSuccessfulTest extends WebTestCase {
     public function test() {
         global $webroot, $airport, $new_apid;
@@ -111,7 +125,9 @@ class EditAirportSuccessfulTest extends WebTestCase {
     }
 }
 
-// Add new location with null codes
+/**
+ * Add new location with null codes
+ */
 class RecordNewNullCodePlaceTest extends WebTestCase {
     public function test() {
         global $webroot, $settings, $airport, $new_apid;
@@ -144,7 +160,9 @@ class RecordNewNullCodePlaceTest extends WebTestCase {
     }
 }
 
-// Load a single airport
+/**
+ * Load a single airport
+ */
 class LoadAirportByApidTest extends WebTestCase {
     public function test() {
         global $webroot, $airport, $new_apid;
@@ -171,7 +189,9 @@ class LoadAirportByApidTest extends WebTestCase {
     }
 }
 
-// Load a single airport
+/**
+ * Load a single airport
+ */
 class LoadAirportByInvalidApidTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -185,7 +205,9 @@ class LoadAirportByInvalidApidTest extends WebTestCase {
     }
 }
 
-// Search OpenFlights DB by IATA (of just-added airport)
+/**
+ * Search OpenFlights DB by IATA code (of just-added airport)
+ */
 class SearchAirportOFDBByIATATest extends WebTestCase {
     public function test() {
         global $webroot, $airport;

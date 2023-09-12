@@ -57,7 +57,9 @@ class ImportCSVWithCROnlyTerminators extends WebTestCase {
     }
 }
 
-// Import a normal set of FM flights
+/**
+ * Import a normal set of Flight Memory flights
+ */
 class ImportFlightMemoryStandardTest extends WebTestCase {
     public function test() {
         cleanup();
@@ -72,7 +74,9 @@ class ImportFlightMemoryStandardTest extends WebTestCase {
     }
 }
 
-// Import a set of FM flights with data in km
+/**
+ * Import a set of FM flights with data in km
+ */
 class ImportFlightMemoryKilometerTest extends WebTestCase {
     public function test() {
         cleanup();
@@ -87,7 +91,9 @@ class ImportFlightMemoryKilometerTest extends WebTestCase {
     }
 }
 
-// Import a set of FM flights with Latin1 data
+/**
+ * Import a set of FM flights with Latin1 data
+ */
 class ImportFlightMemoryLatin1Test extends WebTestCase {
     public function test() {
         cleanup();
@@ -102,7 +108,9 @@ class ImportFlightMemoryLatin1Test extends WebTestCase {
     }
 }
 
-// Import a set of FM flights with new airlines
+/**
+ * Import a set of FM flights with new airlines
+ */
 class ImportFlightMemoryNewAirlinesTest extends WebTestCase {
     public function test() {
         cleanup();
@@ -117,7 +125,9 @@ class ImportFlightMemoryNewAirlinesTest extends WebTestCase {
     }
 }
 
-// Import a set of FM flights using slightly tweaked 2015 format
+/**
+ * Import a set of FM flights using slightly tweaked 2015 format
+ */
 class ImportFlightMemoryNewStyleTest extends WebTestCase {
     public function test() {
         cleanup();

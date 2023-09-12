@@ -2,12 +2,12 @@
 
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/settings.php
 // NB: Assumes there is no existing test user (run cleanup.php first!)
-//
 
-// Create new user
+/**
+ * Create new user
+ */
 class SuccessfulNewUserTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -20,7 +20,9 @@ class SuccessfulNewUserTest extends WebTestCase {
     }
 }
 
-// Duplicate name
+/**
+ * Duplicate username
+ */
 class DuplicateUserTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -33,7 +35,9 @@ class DuplicateUserTest extends WebTestCase {
     }
 }
 
-// Try to manipulate without session
+/**
+ * Try to manipulate without a session
+ */
 class LoadEditResetWithoutSessionTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -48,7 +52,9 @@ class LoadEditResetWithoutSessionTest extends WebTestCase {
     }
 }
 
-// Try to change pw, but give wrong password
+/**
+ * Try to change pw, but give the wrong password
+ */
 class ChangePasswordWithWrongOldPasswordTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -68,7 +74,9 @@ class ChangePasswordWithWrongOldPasswordTest extends WebTestCase {
     }
 }
 
-// Change password
+/**
+ * Change password
+ */
 class ChangePasswordTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -99,7 +107,9 @@ class ChangePasswordTest extends WebTestCase {
     }
 }
 
-// Change all other settings
+/**
+ * Change all other settings
+ */
 class ChangeSettingsTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -129,7 +139,9 @@ class ChangeSettingsTest extends WebTestCase {
     }
 }
 
-// Restore original settings
+/**
+ * Restore original settings
+ */
 class RestoreSettingsTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -141,7 +153,9 @@ class RestoreSettingsTest extends WebTestCase {
     }
 }
 
-// Reset (delete) all flights
+/**
+ * Reset (delete) all flights
+ */
 class ResetFlightsTest extends WebTestCase {
     public function test() {
         global $webroot;

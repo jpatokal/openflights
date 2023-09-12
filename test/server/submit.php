@@ -2,13 +2,14 @@
 
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/submit.php and php/flights.php
 // NB: Assumes the test user exists and there are no flights entered yet (run settings.php first!)
 
-$fid = null; // global for newly-added flight
+$fid = null; // global for newly added flight
 
-// Try to add a flight when not logged in
+/**
+ * Try to add a flight when not logged in
+ */
 class AddSingleFlightWithoutLoggingInTest extends WebTestCase {
     public function test() {
         global $webroot, $flight;
@@ -18,7 +19,9 @@ class AddSingleFlightWithoutLoggingInTest extends WebTestCase {
     }
 }
 
-// Add loop flight (src==dest)
+/**
+ * Add loop flight (src==dest)
+ */
 class AddLoopFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $loopflight;
@@ -35,7 +38,9 @@ class AddLoopFlightTest extends WebTestCase {
     }
 }
 
-// Add multiple flights at once
+/**
+ * Add multiple flights at once
+ */
 class AddMultiFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $multiflight;
@@ -52,7 +57,9 @@ class AddMultiFlightTest extends WebTestCase {
     }
 }
 
-// Not an actual test, just cleaning up
+/**
+ * Not an actual test, just cleaning up
+ */
 class DeleteExtraFlightsTest extends WebTestCase {
     public function test() {
         global $settings;
@@ -64,7 +71,9 @@ class DeleteExtraFlightsTest extends WebTestCase {
     }
 }
 
-// Add a single flight
+/**
+ * Add a single flight
+ */
 class AddSingleFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $flight, $fid;
@@ -79,7 +88,7 @@ class AddSingleFlightTest extends WebTestCase {
         $cols = preg_split('/[;\n]/', $map);
         $this->assertTrue($cols[0] == "1", "One flight recorded");
 
-        // Get the ID of the newly-added flight
+        // Get the ID of the newly added flight
         $dbh = db_connect();
         $sth = $dbh->prepare("SELECT fid FROM flights WHERE note = ?");
         $sth->execute([$flight["note"]]);
@@ -89,7 +98,9 @@ class AddSingleFlightTest extends WebTestCase {
     }
 }
 
-// Fetch and validate newly-added flight
+/**
+ * Fetch and validate newly added flight
+ */
 class FetchAddSingleFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $flight, $fid;
@@ -116,7 +127,9 @@ class FetchAddSingleFlightTest extends WebTestCase {
     }
 }
 
-// Edit new flight, altering all fields into flight2
+/**
+ * Edit new flight, altering all fields into flight2
+ */
 class EditFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $flight2, $fid;
@@ -130,7 +143,9 @@ class EditFlightTest extends WebTestCase {
     }
 }
 
-// Fetch and validate newly-added flight
+/**
+ * Fetch and validate newly added flight
+ */
 class FetchEditedFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $flight2, $fid;
@@ -157,7 +172,9 @@ class FetchEditedFlightTest extends WebTestCase {
     }
 }
 
-// CSV export and validate edited flight
+/**
+ * CSV export and validate edited flight
+ */
 class CSVExportFlightTest extends WebTestCase {
     public function test() {
         global $webroot, $flight2;

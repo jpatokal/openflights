@@ -2,14 +2,15 @@
 
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/map.php
 // NB 1: Assumes the test user exists and flights.php has been run, so that $flight2[] is already in DB
 // NB 2: Trip map tests found under trip.php
 
 // ##TODO## filters
 
-// Check demo user map
+/**
+ * Check demo user map
+ */
 class CheckDemoFullUserMap extends WebTestCase {
     public function test() {
         global $webroot, $settings, $flight2;
@@ -27,7 +28,9 @@ class CheckDemoFullUserMap extends WebTestCase {
     }
 }
 
-// Check public profile for user
+/**
+ * Check public profile for user
+ */
 class CheckPublicFullUserMap extends WebTestCase {
     public function test() {
         global $webroot, $settings, $flight2;
@@ -50,10 +53,12 @@ class CheckPublicFullUserMap extends WebTestCase {
     }
 }
 
-// Attempt to view private profile for user (fails)
+/**
+ * Attempt to view private profile for user (fails)
+ */
 class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
     public function test() {
-        global $webroot, $settings, $flight2;
+        global $webroot, $settings;
 
         $dbh = db_connect();
         $sth = $dbh->prepare("UPDATE users SET public='N', guestpw = ? WHERE name = ?");
@@ -72,14 +77,18 @@ class CheckPrivateNoPasswordFullUserMap extends WebTestCase {
     }
 }
 
-// View private profile with correct password
+/**
+ * View private profile with correct password
+ */
 class CheckPrivateGuestPasswordFullUserMap extends WebTestCase {
     public function test() {
         global $webroot, $settings, $flight2;
 
-        $params = array("param" => "true",
-        "guestpw" => $settings["guestpw"],
-        "user" => $settings["name"]);
+        $params = array(
+            "param" => "true",
+            "guestpw" => $settings["guestpw"],
+            "user" => $settings["name"]
+        );
         $map = $this->post($webroot . "php/map.php", $params);
         $rows = explode("\n", $map);
 
@@ -93,7 +102,9 @@ class CheckPrivateGuestPasswordFullUserMap extends WebTestCase {
     }
 }
 
-// Check logged in user map
+/**
+ * Check logged in user map
+ */
 class CheckLoggedInFullUserMap extends WebTestCase {
     public function test() {
         global $webroot, $settings, $flight2;

@@ -2,13 +2,13 @@
 
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/trip.php
-//
 
 $trid = null;
 
-// Create new trip without logging in
+/**
+ * Create a new trip without logging in
+ */
 class NewTripNotLoggedInTest extends WebTestCase {
     public function test() {
         global $webroot, $trip;
@@ -19,7 +19,9 @@ class NewTripNotLoggedInTest extends WebTestCase {
     }
 }
 
-// Create new trip
+/**
+ * Create a new trip
+ */
 class SuccessfulNewTripTest extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;
@@ -34,7 +36,9 @@ class SuccessfulNewTripTest extends WebTestCase {
     }
 }
 
-// Try to edit when not logged in
+/**
+ * Try to edit when not logged in
+ */
 class EditTripWithoutLoggingInTest extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;
@@ -46,7 +50,9 @@ class EditTripWithoutLoggingInTest extends WebTestCase {
     }
 }
 
-// Try to manipulate wrong trip id
+/**
+ * Try to manipulate the wrong trip id
+ */
 class EditWrongTridTripTest extends WebTestCase {
     public function test() {
         global $webroot, $trip;
@@ -59,7 +65,9 @@ class EditWrongTridTripTest extends WebTestCase {
     }
 }
 
-// Check public trip
+/**
+ * Check a public trip
+ */
 class CheckPublicFullTripMap extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;
@@ -79,7 +87,9 @@ class CheckPublicFullTripMap extends WebTestCase {
     }
 }
 
-// Change trip settings
+/**
+ * Change trip settings
+ */
 class SuccessfulEditTripTest extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;
@@ -106,7 +116,7 @@ class SuccessfulEditTripTest extends WebTestCase {
     }
 }
 
-// Check private trip (should fail)
+/** Check loading a private trip; it should fail */
 class CheckPrivateFullTripMap extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;
@@ -119,7 +129,9 @@ class CheckPrivateFullTripMap extends WebTestCase {
     }
 }
 
-// Check invalid trid trip map (should fail)
+/**
+ * Check an invalid Trip ID trip map; it should fail
+ */
 class CheckNonExistentFullTripMap extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;
@@ -132,7 +144,9 @@ class CheckNonExistentFullTripMap extends WebTestCase {
     }
 }
 
-// Delete trip
+/**
+ * Delete trip
+ */
 class DeleteTripTest extends WebTestCase {
     public function test() {
         global $webroot, $trip, $trid;

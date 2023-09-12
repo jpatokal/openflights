@@ -1,10 +1,9 @@
 <?php
+
 include_once dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php';
 
-class AirportSearchTest extends OpenFlightsSeleniumTestCase
-{
-    public function testAnonAirportSearch()
-    {
+class AirportSearchTest extends OpenFlightsSeleniumTestCase {
+    public function testAnonAirportSearch() {
         global $airport;
 
         $this->open("/html/apsearch");
@@ -21,8 +20,7 @@ class AirportSearchTest extends OpenFlightsSeleniumTestCase
         $this->assertValue("airport", $airport['name']);
     }
 
-    public function testAnonAirportSearchPreload()
-    {
+    public function testAnonAirportSearchPreload() {
         global $airport;
 
         $apid = db_apid(db_connect());
@@ -42,8 +40,7 @@ class AirportSearchTest extends OpenFlightsSeleniumTestCase
         $this->assertValue("iata", "");
     }
 
-    public function testLoggedInAirportEdit()
-    {
+    public function testLoggedInAirportEdit() {
         global $settings, $airport;
 
         $this->open('/');

@@ -6,7 +6,9 @@ include_once dirname(__FILE__) . '/config.php';
 $new_alid = null;
 $new_rlid = null;
 
-// Try to add airline before logging in
+/**
+ * Try to add airline before logging in
+ */
 class RecordAirlineNotLoggedInTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -17,7 +19,9 @@ class RecordAirlineNotLoggedInTest extends WebTestCase {
     }
 }
 
-// Try to reuse an existing airline's code
+/**
+ * Try to reuse an existing airline's code
+ */
 class RecordAirlineDuplicateICAOTest extends WebTestCase {
     public function test() {
         global $webroot, $airline;
@@ -31,7 +35,9 @@ class RecordAirlineDuplicateICAOTest extends WebTestCase {
     }
 }
 
-// Add new airline
+/**
+ * Add new airline
+ */
 class RecordNewAirlineTest extends WebTestCase {
     public function test() {
         global $webroot, $airline, $new_alid;
@@ -49,7 +55,9 @@ class RecordNewAirlineTest extends WebTestCase {
     }
 }
 
-// Try to record it again
+/**
+ * Try to record it again
+ */
 class RecordAirlineDuplicateTest extends WebTestCase {
     public function test() {
         global $webroot, $airline;
@@ -62,7 +70,9 @@ class RecordAirlineDuplicateTest extends WebTestCase {
     }
 }
 
-// Add new railway
+/**
+ * Add new railway
+ */
 class RecordNewRailwayTest extends WebTestCase {
     public function test() {
         global $webroot, $railway, $new_rlid;
@@ -78,7 +88,9 @@ class RecordNewRailwayTest extends WebTestCase {
     }
 }
 
-// Try to add the railway again
+/**
+ * Try to add the railway again
+ */
 class RecordRailwayDuplicateTest extends WebTestCase {
     public function test() {
         global $webroot, $railway;
@@ -91,14 +103,16 @@ class RecordRailwayDuplicateTest extends WebTestCase {
     }
 }
 
-// Try to edit an airline not belonging to us
+/**
+ * Try to edit an airline not belonging to us
+ */
 class EditWrongAirlineTest extends WebTestCase {
     public function test() {
         global $webroot, $airline;
 
         login($this);
         $params = $airline;
-        $params["alid"] = 1; // this is presumably not owned by us
+        $params["alid"] = 1; // this airline should not be "owned" by this user
         $params["icao"] = "ZZZY";
         $params += array("action" => "RECORD");
         $msg = $this->post($webroot . "php/alsearch.php", $params);
@@ -106,7 +120,9 @@ class EditWrongAirlineTest extends WebTestCase {
     }
 }
 
-// Try to reuse an existing airline's code
+/**
+ * Try to reuse an existing airline's code
+ */
 class EditAirlineDuplicateICAOTest extends WebTestCase {
     public function test() {
         global $webroot, $airline, $new_alid;
@@ -121,7 +137,9 @@ class EditAirlineDuplicateICAOTest extends WebTestCase {
     }
 }
 
-// Try to edit to overwrite existing airline
+/**
+ * Try to edit to overwrite existing airline
+ */
 class EditAirlineSuccessfulTest extends WebTestCase {
     public function test() {
         global $webroot, $airline, $new_alid;
@@ -137,7 +155,9 @@ class EditAirlineSuccessfulTest extends WebTestCase {
 }
 
 
-// Search by IATA
+/**
+ * Search for an airline by IATA code
+ */
 class SearchAirlineByIATATest extends WebTestCase {
     public function test() {
         global $webroot, $airline;
@@ -156,7 +176,9 @@ class SearchAirlineByIATATest extends WebTestCase {
     }
 }
 
-// Search by ICAO
+/**
+ * Search for an airline by ICAO code
+ */
 class SearchAirlineByICAOTest extends WebTestCase {
     public function test() {
         global $webroot, $airline;
@@ -172,7 +194,9 @@ class SearchAirlineByICAOTest extends WebTestCase {
     }
 }
 
-// Search railway by name
+/**
+ * Search railway by name
+ */
 class SearchRailwayByNameTest extends WebTestCase {
     public function test() {
         global $webroot, $railway;

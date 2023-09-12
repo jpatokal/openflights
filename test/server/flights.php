@@ -2,10 +2,11 @@
 
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/flights.php
 
-// Check demo user map
+/**
+ * Check demo user map
+ */
 class BlockAnonExportCase extends WebTestCase {
     public function test() {
         global $webroot;

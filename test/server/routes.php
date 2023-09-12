@@ -2,7 +2,9 @@
 
 include_once dirname(__FILE__) . '/config.php';
 
-// ID missing entirely
+/**
+ * ID missing entirely
+ */
 class RouteMapNoIDTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
@@ -12,14 +14,16 @@ class RouteMapNoIDTest extends WebTestCase {
     }
 }
 
-// Fetch route map for core airport
+/**
+ * Fetch the route map for core airport
+ */
 class RouteMapCoreAirportTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid FROM routes WHERE src_ap = ?");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid, dst_apid FROM routes WHERE src_ap = ?");
         $sth->execute([$route["core_ap_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -43,14 +47,16 @@ class RouteMapCoreAirportTest extends WebTestCase {
     }
 }
 
-// Fetch route map for core airport with airline filter
+/**
+ * Fetch the route map for core airport with airline filter
+ */
 class RouteMapCoreAirportFilteredTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE src_ap = ? AND airline = ?");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid, dst_apid, alid FROM routes WHERE src_ap = ? AND airline = ?");
         $sth->execute([$route["core_ap_iata"], $route["core_ap_filter_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -78,7 +84,9 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
     }
 }
 
-// Airport with no routes -- should still display itself!
+/**
+ * Airport with no routes -- should still display itself!
+ */
 class RouteMapNoRouteAirportTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
@@ -108,7 +116,9 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
     }
 }
 
-// Invalid airport ID
+/**
+ * Invalid airport ID
+ */
 class RouteMapInvalidAirportTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
@@ -119,7 +129,9 @@ class RouteMapInvalidAirportTest extends WebTestCase {
     }
 }
 
-// Fetch route map for core airline
+/**
+ * Fetch the route map for core airline
+ */
 class RouteMapCoreAirlineTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
@@ -150,14 +162,16 @@ class RouteMapCoreAirlineTest extends WebTestCase {
     }
 }
 
-// Fetch route map for core airline
+/**
+ * Fetch route map for core airline
+ */
 class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid,dst_apid,alid FROM routes WHERE airline = ?");
+        $sth = $dbh->prepare("SELECT DISTINCT src_apid, dst_apid, alid FROM routes WHERE airline = ?");
         $sth->execute([$route["core_al_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");
@@ -184,12 +198,14 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
     }
 }
 
-// Airline with no routes
+/**
+ * Airline with no routes
+ */
 class RouteMapNoRouteAirlineTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
 
-        // First figure out the correct apid
+        // First figure out the correct airport id
         $dbh = db_connect();
         $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata = ?");
         $sth->execute([$route["noroute_al_iata"]]);
@@ -213,7 +229,9 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
     }
 }
 
-// Invalid airline ID
+/**
+ * Invalid airline ID
+ */
 class RouteMapInvalidAirlineTest extends WebTestCase {
     public function test() {
         global $webroot, $route;
