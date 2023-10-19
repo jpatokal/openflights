@@ -189,15 +189,15 @@ function format_alcode($iata, $icao, $mode) {
  * @return array Distance, duration
  */
 function gcDistance($dbh, $src_apid, $dst_apid) {
-    // Special case: loop flight to/from same airport
+    // Special case: loop flight to/from the same airport
     if ($src_apid == $dst_apid) {
         $dist = 0;
     } else {
-        $sql = "SELECT x,y FROM airports WHERE apid=$src_apid OR apid = $dst_apid";
+        $sth = $dbh->prepare(
+            "SELECT x, y FROM airports WHERE apid = ? OR apid = ?"
+        );
+        $sth->execute([$src_apid, $dst_apid]);
 
-        // Handle both OO and procedural-style database handles, depending on what type we've got.
-        $sth = $dbh->prepare($sql);
-        $sth->execute();
         if ($sth->rowCount() !== 2) {
             return [null, null];
         }
