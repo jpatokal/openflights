@@ -9,6 +9,8 @@ $webroot = 'http://localhost:8080/';
 // Path to OpenFlights upload directory
 $uploadDir = '../../import/';
 
+const UNIT_TEST_MODE = true;
+
 // Database configuration
 $dbhost = "localhost";
 $dbuser = "openflights";

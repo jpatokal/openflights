@@ -238,7 +238,7 @@ TXT;
 TXT;
 
 
-    if (isset($_POST["unittest"])) {
+    if (defined(UNIT_TEST_MODE) && UNIT_TEST_MODE && isset($_POST["unittest"])) {
         echo $title . "\n\n" . $body;
         exit;
     }

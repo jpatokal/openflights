@@ -1,4 +1,7 @@
 <?php
+
+const UNIT_TEST_MODE = false;
+
 $host = "localhost";
 $dbname = "flightdb2";
 $user = "openflights";
