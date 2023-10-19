@@ -30,6 +30,9 @@ if ($OF_USE_LOCALES) {
         // We know we can do en_US, so don't do a DB lookup
         if ($acceptLang === "en_US" || locale_exists($dbh, $acceptLang)) {
             $locale = $acceptLang;
+        } else {
+            // Fallback incase we don't have a locale at this point
+            $locale = "en_US";
         }
     }
 
