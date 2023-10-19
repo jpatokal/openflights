@@ -43,6 +43,7 @@ if (isset($_GET["challenge"])) {
             echo _("Invalid challenge.");
         }
     } else {
+        // TODO: Internationalize
         echo "No such user.";
     }
 } elseif (isset($_POST["email"])) {
@@ -56,6 +57,7 @@ if (isset($_GET["challenge"])) {
         $name = $row['name'];
         $link = "https://openflights.org/help/resetpw?user=" . $name
             . "&challenge=" . $row['challenge'];
+        // TODO: Internationalize? Ideally using users locale...
         $subject = "OpenFlights: Reset password";
         $body = "Somebody has requested a password reset for your OpenFlights.org account '$name'. To proceed, please click on the link below:
 
