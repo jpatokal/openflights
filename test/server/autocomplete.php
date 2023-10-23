@@ -4,11 +4,9 @@ include_once dirname(__FILE__) . '/config.php';
 
 // Testing the tests: curl -v http://localhost:8080/php/autocomplete.php -d qs=STRING
 
-//
-// MULTISEARCH
-//
-
-// Search for string found in both airport and airline name
+/**
+ * Search for string found in both airport and airline name
+ */
 class MultiSearchSharedLongStringTest extends WebTestCase {
     public function test() {
         global $webroot, $qs_string;
@@ -23,7 +21,9 @@ class MultiSearchSharedLongStringTest extends WebTestCase {
     }
 }
 
-// Search for string found only in airport name
+/**
+ * Search for string found only in airport name
+ */
 class MultiSearchAirportOnlyLongStringTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -36,7 +36,9 @@ class MultiSearchAirportOnlyLongStringTest extends WebTestCase {
     }
 }
 
-// Search for string found in only airline name
+/**
+ * Search for string found in only airline name
+ */
 class MultiSearchAirlineOnlyLongStringTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -49,7 +51,9 @@ class MultiSearchAirlineOnlyLongStringTest extends WebTestCase {
     }
 }
 
-// Search for airport by IATA
+/**
+ * Search for airport by IATA
+ */
 class MultiSearchAirportIATATest extends WebTestCase {
     public function test() {
         global $webroot, $airport;
@@ -62,7 +66,9 @@ class MultiSearchAirportIATATest extends WebTestCase {
     }
 }
 
-// Search for airline by IATA
+/**
+ * Search for airline by IATA
+ */
 class MultiSearchAirlineIATATest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -75,11 +81,9 @@ class MultiSearchAirlineIATATest extends WebTestCase {
     }
 }
 
-//
-// AIRPORTS
-//
-
-// Single airport search by short city name
+/**
+ * Single airport search by short city name
+ */
 class SingleAirportShortCityCompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -90,7 +94,9 @@ class SingleAirportShortCityCompleteTest extends WebTestCase {
     }
 }
 
-// Single airport search by long city name
+/**
+ * Single airport search by long city name
+ */
 class SingleAirportCityLongCompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -101,7 +107,9 @@ class SingleAirportCityLongCompleteTest extends WebTestCase {
     }
 }
 
-// Single airport search by IATA code
+/**
+ * Single airport search by IATA code
+ */
 class SingleAirportIATACompleteTest extends WebTestCase {
     public function test() {
         global $webroot, $airport;
@@ -112,7 +120,9 @@ class SingleAirportIATACompleteTest extends WebTestCase {
     }
 }
 
-// Single airport search by ICAO code
+/**
+ * Single airport search by ICAO code
+ */
 class SingleAirportICAOCompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -123,7 +133,9 @@ class SingleAirportICAOCompleteTest extends WebTestCase {
     }
 }
 
-// Ensure that autocompleted entries still match after minor edits
+/**
+ * Ensure that autocompleted entries still match after minor edits
+ */
 class SingleAirportQueryTrimTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -142,11 +154,9 @@ class SingleAirportQueryTrimTest extends WebTestCase {
     }
 }
 
-//
-// AIRLINES
-//
-
-// Single airline search by name
+/**
+ * Single airline search by name
+ */
 class SingleAirlineNameCompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -158,7 +168,9 @@ class SingleAirlineNameCompleteTest extends WebTestCase {
     }
 }
 
-// Single airline search by alias
+/**
+ * Single airline search by alias
+ */
 class SingleAirlineAliasCompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -170,7 +182,9 @@ class SingleAirlineAliasCompleteTest extends WebTestCase {
     }
 }
 
-// Single airline search by IATA code
+/**
+ * Single airline search by IATA code
+ */
 class SingleAirlineIATACompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -182,7 +196,9 @@ class SingleAirlineIATACompleteTest extends WebTestCase {
     }
 }
 
-// Single airline search by ICAO code
+/**
+ * Single airline search by ICAO code
+ */
 class SingleAirlineICAOCompleteTest extends WebTestCase {
     public function test() {
         global $webroot;
@@ -193,10 +209,6 @@ class SingleAirlineICAOCompleteTest extends WebTestCase {
         $this->assertText(";Singapore");
     }
 }
-
-//
-// PLANES
-//
 
 class SinglePlaneMajorNameCompleteTest extends WebTestCase {
     public function test() {

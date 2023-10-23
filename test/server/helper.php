@@ -4,9 +4,7 @@ include_once dirname(__FILE__) . '/config.php';
 
 // Requires: none
 
-//
 // HELPER
-//
 
 require_once dirname(__FILE__) . '/../../php/helper.php';
 
@@ -79,7 +77,9 @@ class GcDurationTest extends UnitTestCase {
     }
 }
 
-// ##TODO## Extend
+/**
+ * @todo Extend
+ */
 class GcDistanceTest extends UnitTestCase {
     public function test() {
         $dbh = db_connect();

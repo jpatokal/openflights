@@ -1,13 +1,14 @@
 <?php
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/submit.php plane related functionality
 // NB: Assumes the test user exists and there are no flights entered yet (run settings.php first!)
 
-$plid = null; // global for newly-added flight
+$plid = null; // global for newly added flight
 
-// Add a new plane
+/**
+ * Add a new plane
+ */
 class AddNewPlaneTest extends WebTestCase {
     public function test() {
         global $webroot, $settings, $flight, $plid;
@@ -45,7 +46,9 @@ class AddNewPlaneTest extends WebTestCase {
     }
 }
 
-// Not an actual test, just cleaning up
+/**
+ * Not an actual test, just cleaning up
+ */
 class DeleteExtraPlanesTest extends WebTestCase {
     public function test() {
         global $settings, $plid;

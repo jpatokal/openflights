@@ -1,10 +1,9 @@
 <?php
+
 include_once dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php';
 
-class WebMapPublicTest extends OpenFlightsSeleniumTestCase
-{
-    public function testPublicUserMapAsAnonymous()
-    {
+class WebMapPublicTest extends OpenFlightsSeleniumTestCase {
+    public function testPublicUserMapAsAnonymous() {
         global $settings;
 
         $this->open("/user/" . $settings['name']);
@@ -24,7 +23,7 @@ class WebMapPublicTest extends OpenFlightsSeleniumTestCase
         $this->click('link=Decatur Aviation');
         $this->verifyTextPresent($settings['name'] . "'s flights on Decatur Aviation");
 
-        # Back to main map
+        # Back to the main map
         $this->select('Airlines', 'label=All carriers');
         $this->verifyTextPresent($settings['name'] . "'s flights");
     }

@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/autorun.php';
 require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester.php' ;
 
-// Address of OpenFlights install
+// URL of the OpenFlights install
 $webroot = 'http://localhost:8080/';
 
 // Path to OpenFlights upload directory
@@ -180,9 +180,16 @@ $route = array(
 
 // *** END OF CONFIGURATION ***
 
-// Login
-// Use default settings unless name/password are given as arguments
-
+/**
+ * Use default settings unless name/password are given as arguments
+ *
+ * @param $case
+ * @param $name
+ * @param $password
+ * @param $challenge
+ *
+ * @return mixed
+ */
 function login($case, $name = null, $password = null, $challenge = null) {
     global $webroot, $settings;
 
@@ -215,7 +222,7 @@ function assert_login($case) {
 }
 
 /**
- * Get a connection to the database
+ * Get a connection to the database.
  *
  * @return PDO OpenFlights test suite DB handler
  */
@@ -231,7 +238,7 @@ function db_connect() {
 }
 
 /**
- * Get test user's UID
+ * Get test user's UID.
  *
  * @param $dbh PDO OpenFlights test suite DB handler
  * @return string UID of test user
@@ -245,10 +252,10 @@ function db_uid($dbh) {
 }
 
 /**
- * Get apid of test airport
+ * Get the Airport ID of a test airport
  *
  * @param $dbh PDO OpenFlights test suite DB handler
- * @return string APID of test airport
+ * @return string Airport ID of test airport
  */
 function db_apid($dbh) {
     global $airport;

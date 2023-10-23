@@ -1,10 +1,9 @@
 <?php
+
 include_once dirname(__FILE__) . '/OpenFlightsSeleniumTestCase.php';
 
-class WebLoginTest extends OpenFlightsSeleniumTestCase
-{
-    public function testFailedLogin()
-    {
+class WebLoginTest extends OpenFlightsSeleniumTestCase {
+    public function testFailedLogin() {
         global $settings;
 
         $this->open('/');
@@ -28,8 +27,7 @@ class WebLoginTest extends OpenFlightsSeleniumTestCase
         $this->click('close');
     }
 
-    public function testSuccessfulLogin()
-    {
+    public function testSuccessfulLogin() {
         global $settings;
 
         $this->open('/');
@@ -45,8 +43,7 @@ class WebLoginTest extends OpenFlightsSeleniumTestCase
         $this->verifyTextPresent("Add new flights");
     }
 
-    public function testReload()
-    {
+    public function testReload() {
         global $settings;
 
         $this->open('/');

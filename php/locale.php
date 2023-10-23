@@ -20,7 +20,7 @@ if ($OF_USE_LOCALES) {
         $locale = $_SESSION["locale"];
     }
 
-    if ($locale === null) {
+     if ($locale === null || $locale === '') {
         // https://github.com/jpatokal/openflights/issues/1322
         // If we've not already got a locale set (from $_SESSION or $_GET),
         // see if we can use the HTTP ACCEPT_LANGUAGE header value
@@ -30,6 +30,9 @@ if ($OF_USE_LOCALES) {
         // We know we can do en_US, so don't do a DB lookup
         if ($acceptLang === "en_US" || locale_exists($dbh, $acceptLang)) {
             $locale = $acceptLang;
+        } else {
+            // Fallback incase we don't have a locale at this point
+            $locale = "en_US";
         }
     }
 

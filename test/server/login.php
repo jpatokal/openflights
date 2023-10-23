@@ -1,11 +1,11 @@
 <?php
 include_once dirname(__FILE__) . '/config.php';
 
-//
 // Test cases for php/login.php
-//
 
-// Standard log in
+/**
+ * Standard log in
+ */
 class SuccessfulLoginTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -15,7 +15,9 @@ class SuccessfulLoginTest extends WebTestCase {
     }
 }
 
-// Legacy login test (where name hash was built using uppercase chars)
+/**
+ * Legacy login test (where name hash was built using uppercase chars)
+ */
 class LegacyLoginTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -38,7 +40,9 @@ class LegacyLoginTest extends WebTestCase {
     }
 }
 
-// Wrong password
+/**
+ * Wrong password
+ */
 class WrongPasswordLoginTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
@@ -47,7 +51,9 @@ class WrongPasswordLoginTest extends WebTestCase {
     }
 }
 
-// Login attempt with expired session
+/**
+ * Login attempt with expired session
+ */
 class ExpiredSessionTest extends WebTestCase {
     public function test() {
         global $webroot, $settings;
