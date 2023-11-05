@@ -68,7 +68,7 @@ require_once "../php/db_pdo.php";
         </dl>
         <?php echo _('The final four fields contain internal OpenFlights IDs (OID) for ensuring accurate imports. They are generated automatically when exporting, but should <i>not</i> be provided if creating or importing your own data, or altering the airline, airport or plane fields of exported data.'); ?>
         <dl>
-            <dt><?php echo _('6. From_OID'); ?></dt>
+            <dt><?php echo _('16. From_OID'); ?></dt>
             <dd><?php echo _('Internal OpenFlights airport ID. <font color="blue">Overrides "From" if provided.</font>'); ?></dd>
             <dt><?php echo _('17. To_OID'); ?></dt>
             <dd><?php echo _('Internal OpenFlights airport ID. <font color="blue">Overrides "To" if provided.</font>'); ?></dd>
