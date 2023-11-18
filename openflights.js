@@ -2925,9 +2925,7 @@ function editFlight(str, param) {
 
   form.registration.value = col[14];
   alid = col[15];
-  if (col[16] != "") {
-    form.note.value = col[16];
-  }
+  form.note.value = col[16];
   form.seat.value = col[8];
 
   $("src_ap").style.color = "#000000";
