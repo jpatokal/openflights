@@ -6,7 +6,6 @@
 // Core map features
 var map,
   proj,
-  drawControls,
   selectControl,
   selectedFeature,
   lineLayer,
@@ -1029,8 +1028,8 @@ function xmlhttpPost(strURL, id, param) {
 
         case "RELOAD":
           param = lastDesc;
-        // param contains previously escaped semi-random HTML title
-        // fallthru
+          // param contains previously escaped semi-random HTML title
+          // fallthru
 
         case "MAP":
         default:
@@ -1233,7 +1232,7 @@ function xmlhttpPost(strURL, id, param) {
       majorEdit = false;
     }
   };
-  // End result processing
+  // End of result processing
 
   // Start query string generation
   switch (strURL) {
