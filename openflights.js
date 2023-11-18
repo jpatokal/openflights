@@ -4,12 +4,7 @@
  */
 
 // Core map features
-var map,
-  proj,
-  selectControl,
-  selectedFeature,
-  lineLayer,
-  currentPopup;
+var map, proj, selectControl, selectedFeature, lineLayer, currentPopup;
 var paneStack = ["ad"];
 
 // User settings (defaults)
@@ -1028,8 +1023,8 @@ function xmlhttpPost(strURL, id, param) {
 
         case "RELOAD":
           param = lastDesc;
-          // param contains previously escaped semi-random HTML title
-          // fallthru
+        // param contains previously escaped semi-random HTML title
+        // fallthru
 
         case "MAP":
         default:
@@ -2826,11 +2821,14 @@ function updateTop10() {
 function editPointer(offset) {
   var newPtr = fidPtr + offset;
   if (newPtr >= 0 && newPtr < fidList.length) {
-    if (hasChanged() && !confirm(
+    if (
+      hasChanged() &&
+      !confirm(
         gt.gettext(
-            "Changes made to this flight have not been saved. OK to discard them?"
+          "Changes made to this flight have not been saved. OK to discard them?"
         )
-    ) ) {
+      )
+    ) {
       return;
     }
     // Load new flight
