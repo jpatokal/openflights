@@ -1893,7 +1893,7 @@ msgid ""
 "altering the airline, airport or plane fields of exported data."
 msgstr ""
 
-msgid "6. From_OID"
+msgid "16. From_OID"
 msgstr ""
 
 msgid ""
@@ -2998,8 +2998,8 @@ msgstr ""
 "ces vols dans votre compte OpenFlights. (Les petites erreurs peuvent être "
 "corrigées par la suite dans l'éditeur de vol.)"
 
-msgid "Add these flights to your OpenFlights"
-msgstr "Ajouter ces vols à OpenFlights"
+msgid "Add these flights to your OpenFlights list?"
+msgstr ""
 
 msgid "Flights successfully imported."
 msgstr "Vols importés avec succès."

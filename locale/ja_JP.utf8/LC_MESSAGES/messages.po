@@ -1866,7 +1866,7 @@ msgid ""
 "altering the airline, airport or plane fields of exported data."
 msgstr ""
 
-msgid "6. From_OID"
+msgid "16. From_OID"
 msgstr ""
 
 msgid ""
@@ -2943,8 +2943,8 @@ msgstr ""
 "<b>読み込み完了</b>フライトをOpenFlightsをインポートする準備が出来ました。 "
 "(後からフライトエディターで修正可能です。)"
 
-msgid "Add these flights to your OpenFlights"
-msgstr "フライトをOpenFlightsに追加"
+msgid "Add these flights to your OpenFlights list?"
+msgstr ""
 
 msgid "Flights successfully imported."
 msgstr "フライトはインポートされました。"

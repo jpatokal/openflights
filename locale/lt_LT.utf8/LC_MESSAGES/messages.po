@@ -1890,7 +1890,7 @@ msgid ""
 "altering the airline, airport or plane fields of exported data."
 msgstr ""
 
-msgid "6. From_OID"
+msgid "16. From_OID"
 msgstr ""
 
 msgid ""
@@ -2989,8 +2989,8 @@ msgstr ""
 "skrydžius į Jūsų OpenFlights. (Smulkios korekcijos gali būti atliktos vėliau "
 "skrydžių redaktoriuje.)"
 
-msgid "Add these flights to your OpenFlights"
-msgstr "Pridėti šiuos skrydžius į Jūsų OpenFlights "
+msgid "Add these flights to your OpenFlights list?"
+msgstr ""
 
 msgid "Flights successfully imported."
 msgstr "Skrydžiai sėkmingai įkelti."

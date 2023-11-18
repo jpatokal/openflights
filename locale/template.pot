@@ -1330,7 +1330,7 @@ msgstr ""
 msgid "The final four fields contain internal OpenFlights IDs (OID) for ensuring accurate imports. They are generated automatically when exporting, but should <i>not</i> be provided if creating or importing your own data, or altering the airline, airport or plane fields of exported data."
 msgstr ""
 
-msgid "6. From_OID"
+msgid "16. From_OID"
 msgstr ""
 
 msgid "Internal OpenFlights airport ID. <font color=\"blue\">Overrides \"From\" if provided.</font>"
@@ -2099,7 +2099,8 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-msgid "ID %"
+#, php-format
+msgid "ID %s"
 msgstr ""
 
 msgid "Adding new plane failed."
@@ -2156,7 +2157,7 @@ msgstr ""
 msgid "<b>Parsing completed successfully.</b> You are now ready to import these flights into your OpenFlights. (Minor issues can be corrected afterwards in the flight editor.)"
 msgstr ""
 
-msgid "Add these flights to your OpenFlights"
+msgid "Add these flights to your OpenFlights list?"
 msgstr ""
 
 msgid "Flights successfully imported."
@@ -2958,8 +2959,4 @@ msgid "Are you sure you want to delete this trip? (Flights in this trip will NOT
 msgstr ""
 
 msgid "Deleting trip cancelled."
-msgstr ""
-
-#, php-format
-msgid "ID %s"
 msgstr ""

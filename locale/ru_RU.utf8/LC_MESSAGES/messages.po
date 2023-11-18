@@ -1889,7 +1889,7 @@ msgid ""
 "altering the airline, airport or plane fields of exported data."
 msgstr ""
 
-msgid "6. From_OID"
+msgid "16. From_OID"
 msgstr ""
 
 msgid ""
@@ -2989,8 +2989,8 @@ msgstr ""
 "OpenFlights. (Мелкие исправления можно будет внести позже в редакторе "
 "полетов.)"
 
-msgid "Add these flights to your OpenFlights"
-msgstr "Добавить эти полеты в OpenFlights"
+msgid "Add these flights to your OpenFlights list?"
+msgstr ""
 
 msgid "Flights successfully imported."
 msgstr "Полеты импортированы."
