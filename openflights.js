@@ -2820,20 +2820,19 @@ function updateTop10() {
   xmlhttpPost(URL_TOP10, 0, params.toString());
 }
 
-// Move "pointer" in flight list up or down one when user clicks prev, next
+/**
+ * Move "pointer" in flight list up or down one when user clicks prev, next
+ * @param offset
+ */
 function editPointer(offset) {
   var newPtr = fidPtr + offset;
   if (newPtr >= 0 && newPtr < fidList.length) {
-    if (hasChanged()) {
-      if (
-        !confirm(
-          gt.gettext(
+    if (hasChanged() && !confirm(
+        gt.gettext(
             "Changes made to this flight have not been saved. OK to discard them?"
-          )
         )
-      ) {
-        return;
-      }
+    ) ) {
+      return;
     }
     // Load new flight
     preEditFlight(fidList[newPtr], newPtr);
