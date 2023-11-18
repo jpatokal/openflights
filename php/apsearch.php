@@ -25,10 +25,11 @@ $iatafilter = $_POST["iatafilter"];
 $offset = intval($_POST["offset"]);
 $action = $_POST["action"];
 $apid = $_POST["apid"];
+$uid = $_SESSION["uid"] ?? null;
 
 // https://github.com/jpatokal/openflights/issues/1447
 $ref = $_SERVER['HTTP_REFERER'];
-if (strpos($ref, 'com.cathaypacific.iJourneyLite') !== FALSE) {
+if (strpos($ref, 'com.cathaypacific.iJourneyLite') !== false) {
     die(
         json_encode(
             ["status" => 0, "message" => "Cathay Pacific iJourneyLite is not licensed to use this API.  Please contact info@openflights.org to resolve this."]
