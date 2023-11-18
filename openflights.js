@@ -1533,7 +1533,7 @@ function xmlhttpPost(strURL, id, param) {
         query += "&" + param;
       }
   }
-  //alert(strURL + ":" + query);
+  // alert(strURL + ":" + query);
   self.xmlHttpReq.send(query);
 }
 
@@ -2916,7 +2916,7 @@ function editFlight(str, param) {
   $("duration").value = col[7];
   $("duration").style.color = "#000";
   calcDuration("DEPARTURE"); // figure out arrival time according to previous dist/dur
-  fid = col[12]; //stored until flight is saved or deleted
+  fid = col[12]; // stored until flight is saved or deleted
 
   $("plane").value = col[13];
   $("planeid").value = col[18];
@@ -3970,7 +3970,7 @@ function getAirlineMapIcon(alid) {
   return (
     "<a href='#' onclick='JavaScript:showAirlineMap(" +
     alid +
-    //TODO: alt text
+    // TODO: alt text
     ")'><img src='/img/icon_routes.png' width=16 height=16 title='" +
     gt.gettext("Show airline route map") +
     "'></a>"
