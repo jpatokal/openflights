@@ -27,7 +27,7 @@ if (!$apid) {
         default:
             die(_('Error') . ';' .
                 sprintf(
-                    _s('Query %s not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.'),
+                    _('Query %s not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.'),
                     $param
                 ));
     }
