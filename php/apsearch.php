@@ -32,7 +32,7 @@ $ref = $_SERVER['HTTP_REFERER'];
 if (strpos($ref, 'com.cathaypacific.iJourneyLite') !== false) {
     die(
         json_encode(
-            ["status" => 0, "message" => "Cathay Pacific iJourneyLite is not licensed to use this API.  Please contact info@openflights.org to resolve this."]
+            ["status" => 0, "message" => "Cathay Pacific iJourneyLite is not licensed to use this API. Please contact info@openflights.org to resolve this."]
         )
     );
 }
