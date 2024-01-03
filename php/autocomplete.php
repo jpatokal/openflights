@@ -5,12 +5,12 @@ include_once 'db_pdo.php';
 
 // TODO: Why do we do this?
 /**
- * Trim anything after a hyphen, period or left paren
+ * Trim anything after a period or left paren
  * @param $query
  * @return string
  */
 function trim_query($query) {
-    $chunks = preg_split("/[-.(]/", $query);
+    $chunks = preg_split("/[.(]/", $query);
     return trim($chunks[0]);
 }
 
