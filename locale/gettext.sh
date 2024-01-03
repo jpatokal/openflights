@@ -14,15 +14,15 @@ buildlocale() {
   xgettext $OPTS -L C -o $PO_NEW $JS
 
   # Filter out obsoleted strings
-  PO_NEWEST=$PO_PATH/newest.po
-  PO_MESSAGES=$PO_PATH/messages.po
+  PO_NEWEST=$1/newest.po
+  PO_MESSAGES=$1/messages.po
 
   msgmerge -N $PO_MESSAGES $PO_NEW >$PO_NEWEST
   grep -v "^#~" $PO_NEWEST >$PO_MESSAGES
   rm $PO_NEW $PO_NEWEST
 
   # Make .mo files
-  MO_FILE=$PO_PATH/messages.mo
+  MO_FILE=$1/messages.mo
   msgfmt -o $MO_FILE $PO_MESSAGES
 }
 
@@ -32,8 +32,7 @@ OPTS="--omit-header --no-location --no-wrap -j"
 
 for lang in de_DE en_GB en_US es_ES fi_FI fr_FR ja_JP lt_LT nl_NL pl_PL pt_BR sv_SE ru_RU; do
   echo $lang
-  PO_PATH=locale/$lang.utf8/LC_MESSAGES
-  buildlocale $PO_PATH
+  buildlocale locale/$lang.utf8/LC_MESSAGES
 done
 
 buildlocale locale
