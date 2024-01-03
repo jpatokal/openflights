@@ -241,25 +241,26 @@ require_once "./php/helper.php";
   </td>
 
   <td>
-      <?php echo _("Trip"); ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="<?php
-          echo _('Help: What is a trip?'); ?>" height=11 width=10></a>
+    <?php echo _("Trip"); ?><a href="#help" onclick='JavaScript:help("trip")'><img src="/img/icon_help.png" title="<?php
+      echo _('Help: What is a trip?'); ?>" height=11 width=10></a>
   </td>
   <td width=""><span id="input_trip_select"></span>
-      <img id="trip_add" src="/img/icon_add.png" title="<?php
-      echo _('Add new trip'); ?>" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/><img id="trip_edit" src="/img/icon_edit.png" title="<?php
-      echo _('Edit this trip'); ?>" height=17 width=17/>
+    <img id="trip_add" src="/img/icon_add.png" title="<?php
+      echo _('Add new trip'); ?>" height=17 width=17 onclick='JavaScript:editTrip("ADD")'/>
+    <img id="trip_edit" src="/img/icon_edit.png" title="<?php
+      echo _('Edit this trip'); ?>" height=16 width=16 />
   </td>
 
 </tr>
 <tr>
   <td>
-      <font color="blue"><?php echo _("From"); ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="<?php
-      echo _('Help: How do I enter airports?'); ?>" height=11 width=10></a>
+    <label for="src_ap"><font color="blue"><?php echo _("From"); ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="<?php
+      echo _('Help: How do I enter airports?'); ?>" height=11 width=10></a></label>
   </td>
   <td>
-      <input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onKeyDown='keyPress(event, "src_ap")' class="hint2Textbox" placeholder="<?php
-          echo _('Enter city name or airport code'); ?>"/>
-      <input type="hidden" name="src_apid" id="src_apid"/>
+    <input type="text" name="src_ap" id="src_ap" size="60" tabindex="14" onKeyDown='keyPress(event, "src_ap")' class="hint2Textbox" placeholder="<?php
+      echo _('Enter city name or airport code'); ?>"/>
+    <input type="hidden" name="src_apid" id="src_apid"/>
   </td>
   <td rowspan=2 valign=middle align=left>
     <img src="/img/icon_plane-src.png" title="<?php echo _("Airport search");
@@ -269,24 +270,24 @@ require_once "./php/helper.php";
     <img src="/img/icon_plane-dst.png" title="<?php echo _("Airport search");
     ?>" height=17 width=17 onclick='JavaScript:popNewAirport("dst_ap")'/ style="margin-left: 5px"/>
   </td>
-  <td><?php echo _("Plane"); ?></td>
+  <td><label for="plane"><?php echo _("Plane"); ?></label></td>
   <td>
-        <input style="width: 180px" type="text" name="plane" id="plane" tabindex="111" onChange="JavaScript:markAsChanged();" onKeyDown='keyPress(event, "plane")' class="hint2Textbox" placeholder="<?php
-        echo _("Enter plane model"); ?>"><input type="hidden" id="planeid" name="planeid" />
-        <?php echo _("Reg.");
-        ?><input type="text" name="registration" size="8" tabindex="112" onChange="JavaScript:markAsChanged();"/>
+    <input style="width: 180px" type="text" name="plane" id="plane" tabindex="111" onChange="JavaScript:markAsChanged();" onKeyDown='keyPress(event, "plane")' class="hint2Textbox" placeholder="<?php
+    echo _("Enter plane model"); ?>"><input type="hidden" id="planeid" name="planeid" />
+    <label for="registration"><?php echo _("Reg.");
+    ?></label><input type="text" id="registration" name="registration" size="8" tabindex="112" onChange="JavaScript:markAsChanged();"/>
   </td>
 
 </tr>
 <tr>
   <td>
-      <font color="blue"><?php echo _("To"); ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="<?php
-        echo _('Help: How do I enter airports?'); ?>" height=11 width=10></a>
+    <label for="dst_ap"><font color="blue"><?php echo _("To"); ?></font><a href="#help" onclick='JavaScript:help("airport")'><img src="/img/icon_help.png" title="<?php
+      echo _('Help: How do I enter airports?'); ?>" height=11 width=10></a></label>
   </td>
   <td>
-      <input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onKeyDown='keyPress(event, "dst_ap")' class="hint2Textbox" placeholder="<?php
-        echo _("Enter city name or airport code"); ?>"/>
-      <input type="hidden" name="dst_apid" id="dst_apid"/>
+    <input type="text" name="dst_ap" id="dst_ap" size="60" tabindex="15" onKeyDown='keyPress(event, "dst_ap")' class="hint2Textbox" placeholder="<?php
+      echo _("Enter city name or airport code"); ?>"/>
+    <input type="hidden" name="dst_apid" id="dst_apid"/>
   </td>
 
   <td><?php echo _("Class"); ?></td>
@@ -311,15 +312,16 @@ require_once "./php/helper.php";
       <option value="T"><?php echo _("Train"); ?></option>
     </select>
   </td>
-  <td colspan="2">&nbsp;<?php echo _("Nr."); ?>&nbsp
-    <input type="text" name="number" size="7" value="" tabindex="17" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
-      <?php echo _("Seat");
-        ?> <input type="text" name="seat" size="4" tabindex="18" onChange="JavaScript:markAsChanged();"/>
-        <?php echo _("Type"); ?><select name="seat_type" tabindex="19" onChange="JavaScript:markAsChanged();">
-        <option value="-">-</option>
-        <option value="W"><?php echo _("Window"); ?></option>
-        <option value="A"><?php echo _("Aisle"); ?></option>
-        <option value="M"><?php echo _("Middle"); ?></option>
+  <td colspan="2"><label for="number"><?php echo _("Nr."); ?></label>&nbsp
+    <input type="text" id="number" name="number" size="7" value="" tabindex="17" onChange='JavaScript:flightNumberToAirline("NUMBER")'/>
+      <label for="seat"><?php echo _("Seat"); ?></label>
+    <input type="text" id="seat" name="seat" size="4" tabindex="18" onChange="JavaScript:markAsChanged();"/>
+    <label for="seat_type"><?php echo _("Type"); ?></label>
+    <select id="seat_type" name="seat_type" tabindex="19" onChange="JavaScript:markAsChanged();">
+      <option value="-">-</option>
+      <option value="W"><?php echo _("Window"); ?></option>
+      <option value="A"><?php echo _("Aisle"); ?></option>
+      <option value="M"><?php echo _("Middle"); ?></option>
     </select>
   </td>
 
@@ -338,26 +340,26 @@ require_once "./php/helper.php";
 </tr>
 <tr>
   <td>
-    <?php echo _("Carrier");
-    ?><a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="<?php
+    <label for="airline"><?php echo _("Carrier"); ?></label>
+    <a href="#help" onclick='JavaScript:help("airline")'><img src="/img/icon_help.png" title="<?php
       echo _('Help: How do I enter airlines?'); ?>" height=11 width=10></a>
   </td>
   <td>
-      <input type="text" name="airline" id="airline" size="60" tabindex="20" onKeyDown='keyPress(event, "airline")' class="hint2Textbox" placeholder="<?php
-        echo _("Enter airline name or code"); ?>"/>
-      <input type="hidden" name="airlineid" id="airlineid"/>
+    <input type="text" name="airline" id="airline" size="60" tabindex="20" onKeyDown='keyPress(event, "airline")' class="hint2Textbox" placeholder="<?php
+      echo _("Enter airline name or code"); ?>"/>
+    <input type="hidden" name="airlineid" id="airlineid"/>
   </td>
   <td>
-      <img id="icon_airline" src="/img/icon_airline.png" title="<?php echo _("Airline search");
-        ?>" height=17 width=17 onclick='JavaScript:popNewAirline("airline")' style="margin-left: 5px"/>
+    <img id="icon_airline" src="/img/icon_airline.png" title="<?php echo _("Airline search"); ?>"
+      height=17 width=17 onclick='JavaScript:popNewAirline("airline")' style="margin-left: 5px"/>
   </td>
 
   <td colspan=2><span id="input_status"></span></td>
 
 </tr><tr>
-  <td><?php echo _("Note"); ?></td>
+  <td><label for="note"<?php echo _("Note"); ?></label></td>
   <td colspan=2>
-      <input type="text" name="note" id="note" size="60" tabindex="21" class="hint2Textbox" placeholder="" onChange="JavaScript:markAsChanged();">
+    <input type="text" name="note" id="note" size="60" tabindex="21" class="hint2Textbox" placeholder="" onChange="JavaScript:markAsChanged();">
   </td>
   <td colspan=2 align=right>
     <span id="addflightbuttons">

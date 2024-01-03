@@ -3352,7 +3352,7 @@ function flightNumberToAirline(type) {
 }
 
 /**
- * Calculate duration of the flight given user-entered arrival and departure time
+ * Calculate the duration of the flight given user-entered arrival and departure time
  * @param param {string}
  *  'AIRPORT': airport changed by user, recompute duration and time at destination
  *  'ARRIVAL': arrival time changed by user, recompute duration
@@ -3594,7 +3594,7 @@ function markAirport(element, quick) {
   }
 
   var data = $(element + "id").value.split(":");
-  var iata = data[0];
+  // var iata = data[0];
   var apid = data[1];
   var x = data[2];
   var y = data[3];
