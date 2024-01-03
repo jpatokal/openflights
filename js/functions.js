@@ -196,7 +196,12 @@ function getDST(element) {
  * @returns {string}
  */
 function getEliteIcon(e, validity = "") {
-  if (!e || e === "" || eliteicons === undefined || eliteicons[e] === undefined) {
+  if (
+    !e ||
+    e === "" ||
+    eliteicons === undefined ||
+    eliteicons[e] === undefined
+  ) {
     return "";
   }
 
