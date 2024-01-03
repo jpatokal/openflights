@@ -1,5 +1,6 @@
 <?php
 
+include_once 'locale.php';
 include_once 'greatcircle.php';
 
 /**

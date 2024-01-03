@@ -1,11 +1,12 @@
 <?php
 
-session_start();
+include_once 'locale.php';
+
 $uid = $_SESSION["uid"];
 $export = $_GET["export"] ?? false;
 if ($export) {
     if (!$uid || empty($uid)) {
-        exit("You must be logged in to export.");
+        exit(_("You must be logged in to export."));
     }
 
     header("Content-type: text/csv; charset=utf-8");

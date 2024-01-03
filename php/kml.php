@@ -2,8 +2,6 @@
 
 // https://developers.google.com/kml/documentation/kmlreference
 
-session_start();
-
 header("Content-type: application/vnd.google-earth.kml+xml");
 header("Content-disposition: attachment; filename=\"openflights-" . date("Y-m-d-Hi") . ".kml\"");
 
