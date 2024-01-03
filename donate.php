@@ -31,7 +31,7 @@ function payPalOutput($buttonId){
     <body>
     <div id="mainContainer">
         <div id="contexthelp">
-            <span style="float: right"><?php echo _("Language"); ?><br>
+            <span style="float: right"><label for="locale"><?php echo _("Language"); ?></label><br>
                 <?php locale_pulldown($dbh, $locale); ?>
             </span>
         </div>
