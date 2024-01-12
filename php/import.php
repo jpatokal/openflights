@@ -401,8 +401,9 @@ if ($action == _("Upload")) {
     printf(
 "<table style='border-spacing: 3'>
 <tr>
-    <th>%s</th>
+    <th></th>
     <th colspan='2'>%s</th>
+    <th>%s</th>
     <th>%s</th>
     <th>%s</th>
     <th>%s</th>
