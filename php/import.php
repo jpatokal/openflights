@@ -28,7 +28,7 @@ require_once '../vendor/autoload.php';
 include_once 'helper.php';
 
 const POS_MAP = ["Window" => "W", "Middle" => "M", "Aisle" => "A", "" => ""];
-const CLASS_MAP = ["Economy" => "Y", "Prem.Eco" => "P", "Business" => "C", "First" => "F", "" => ""];
+const CLASS_MAP = ["Economy" => "Y", "Prem.Eco" => "P", "EconomyPlus" => "P", "Business" => "C", "First" => "F", "" => ""];
 const REASON_MAP = ["Business" => "B", "Personal" => "L", "Crew" => "C", "Other" => "O", "" => ""];
 
 /**
