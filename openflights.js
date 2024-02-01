@@ -3867,6 +3867,7 @@ function selectAirport(apid, select, quick, code) {
 function changeRows(type) {
   switch (type) {
     case "More":
+      // NOTE: also change the limit in submit.php to support more flights in a single request
       if (multiinput_rows >= 3) {
         $("b_more").disabled = true;
       }

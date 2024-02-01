@@ -23,7 +23,7 @@ $fid = $_POST["fid"];
 $mode = $_POST["mode"];
 $note = stripslashes($_POST["note"]);
 $param = $_POST["param"];
-$multi = $_POST["multi"] ?? false;
+$multi = intval($_POST["multi"]);
 
 if (!$mode || $mode == "") {
     $mode = "F";
@@ -83,8 +83,8 @@ if ($param == "ADD" || $param == "EDIT") {
 $num_added = 0;
 switch ($param) {
     case "ADD":
-        // Can add multiple flights or just one
-        if ($multi) {
+        // Can add multiple (at most 4) flights or just one
+        if ($multi >= 1 && $multi <= 4) {
             for ($idx = 0; $idx < $multi; $idx++) {
                 $rows[$idx] = $idx + 1;
             }
