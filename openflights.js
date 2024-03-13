@@ -2803,10 +2803,7 @@ function updateTop10() {
   const params = new URLSearchParams();
   if (form) {
     params.set("mode", form.mode[form.mode.selectedIndex].value);
-    const limit = form.limit[form.limit.selectedIndex].value;
-    if (limit !== "-1") {
-      params.set("limit", limit);
-    }
+    params.set("limit", form.limit[form.limit.selectedIndex].value);
   } else {
     params.set("mode", "F");
     params.set("limit", 10);
