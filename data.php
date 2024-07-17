@@ -103,7 +103,7 @@ function payPalOutput($short = true) {
                 <td class="data"><?php echo _('Unique OpenFlights identifier for this airport.'); ?></td>
             </tr>
             <tr>
-              <td class="head"<?php echo _('Name'); ?>'); ?></td>
+              <td class="head"><?php echo _('Name'); ?></td>
               <td class="data"><?php echo _('Name of airport. May or may not contain the <b>City</b> name.'); ?></td>
             </tr>
             <tr>
