@@ -52,7 +52,7 @@ if ($action == "RECORD") {
             sprintf(
                 _("A %s using the name or alias %s exists already."),
                 MODES_OPERATOR[$mode],
-                $name
+                htmlspecialchars($name)
             ));
         exit;
     }
@@ -77,7 +77,7 @@ if ($action == "RECORD") {
                 sprintf(
                     _("A %s using the name or alias %s exists already."),
                     MODES_OPERATOR[$mode],
-                    $alias
+                    htmlspecialchars($alias)
                 ));
             exit;
         }
