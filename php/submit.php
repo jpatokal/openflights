@@ -203,7 +203,7 @@ SQL;
         break;
 
     default:
-        die('0;Unknown operation ' . $param);
+        die('0;Unknown operation ' . htmlspecialchars($param));
 }
 
 print "$code;$msg";
