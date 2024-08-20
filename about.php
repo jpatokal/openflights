@@ -66,7 +66,7 @@ require_once "./php/db_pdo.php";
         <h2><?php echo _('Recent changes'); ?></h2>
 
         <p><?php
-            echo _('See <a href="https://github.com/jpatokal/openflights/commits/master">recent commits on Github</a>.');
+            echo _('See <a href="https://github.com/jpatokal/openflights/commits/master">recent commits on GitHub</a>.');
         ?></p>
 
         <h2><?php echo _('Credits'); ?></h2>
