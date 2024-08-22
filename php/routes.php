@@ -27,15 +27,15 @@ if (!$apid) {
         default:
             die(_('Error') . ';' .
                 sprintf(
-                    _('Query %s not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code.'),
-                    $param
+                    _("Query '%s' not understood. For airlines, please enter a 2-letter IATA code. For airports, please enter a 3-letter IATA or 4-letter ICAO code."),
+                    htmlspecialchars($param)
                 ));
     }
     $sth = $dbh->prepare($sql);
     $sth->execute([$param]);
     $row = $sth->fetch();
     if (!$row) {
-        die(_('Error') . ';' . sprintf(_('No match found for query %s'), $param));
+        die(_('Error') . ';' . sprintf(_("No match found for query '%s'"), htmlspecialchars($param)));
     }
 
     $apid = $row["apid"];
@@ -90,7 +90,7 @@ if ($type == "A") {
     $sth->execute($params);
     $row = $sth->fetch();
     if (!$row) {
-        die(_('Error') . ';' . sprintf(_('Error;No airport with ID %s found'), $apid));
+        die(_('Error') . ';' . sprintf(_("Error;No airport with ID '%s' found"), htmlspecialchars($apid)));
     }
 
     printf(
@@ -131,7 +131,7 @@ if ($type == "A") {
     $sth->execute([$apid]);
     $row = $sth->fetch();
     if (!$row) {
-        die(_('Error') . ';' . sprintf(_('Error;No airline with ID %s found'), $apid));
+        die(_('Error') . ';' . sprintf(_("Error;No airline with ID '%s' found"), htmlspecialchars($apid)));
     }
 
     printf(
@@ -224,7 +224,7 @@ $map .= implode("\t", $rows) . "\n\n";
 if ($type == "L") {
     // Special handling here: no "all" option, alid = 0 means exclude codeshares, alid != 0 means codeshares also
     $map .= sprintf("NOALL\t%s;%s\t", 0, $alname . _("-operated"));
-    $map .= sprintf("%s;%s", $apid . "C", $alname . _(" and codeshares"));
+    $map .= sprintf("%s;%s", htmlspecialchars($apid) . "C", $alname . _(" and codeshares"));
 } else {
     // Note: Existing airline filter is purposely ignored here
     $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, routes as r
