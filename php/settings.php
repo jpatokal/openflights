@@ -57,7 +57,7 @@ switch ($type) {
         break;
 
     default:
-        die("0;" . sprintf(_("Unknown action %s"), $type));
+        die("0;" . sprintf(_("Unknown action %s"), htmlspecialchars($type)));
 }
 
 // Note: Password is actually an MD5 hash of pw and username

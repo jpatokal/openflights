@@ -52,7 +52,7 @@ switch ($type) {
         break;
 
     default:
-        die('0;Unknown operation ' . $type);
+        die('0;Unknown operation ' . htmlspecialchars($type));
 }
 
 failIfFalse($success, $name);
