@@ -52,7 +52,7 @@ if ($action == "RECORD") {
             sprintf(
                 _("A %s using the name or alias %s exists already."),
                 MODES_OPERATOR[$mode],
-                $name
+                htmlspecialchars($name)
             ));
         exit;
     }
@@ -77,7 +77,7 @@ if ($action == "RECORD") {
                 sprintf(
                     _("A %s using the name or alias %s exists already."),
                     MODES_OPERATOR[$mode],
-                    $alias
+                    htmlspecialchars($alias)
                 ));
             exit;
         }
@@ -226,7 +226,7 @@ if ($active != "") {
 if ($mode == "F" && $iatafilter != "false") {
     $filters[] = "iata NOT IN ('', 'N/A')";
 }
-if (!$offset) {
+if (!$offset || !is_int($offset)) {
     $offset = 0;
 }
 
@@ -234,7 +234,7 @@ $sql = "SELECT * FROM airlines WHERE "  . implode(" AND ", $filters) . " ORDER B
 
 $sth = $dbh->prepare($sql . " LIMIT 10 OFFSET " . $offset);
 if (!$sth->execute($filterParams)) {
-    die('0;' . sprintf(_('Operation %s failed.'), $action));
+    die('0;' . sprintf(_('Operation %s failed.'), htmlspecialchars($action)));
 }
 $sth2 = $dbh->prepare(str_replace("*", "COUNT(*)", $sql));
 $sth2->execute($filterParams);
