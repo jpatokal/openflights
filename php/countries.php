@@ -1,6 +1,8 @@
 <?php
 
+session_set_cookie_params(['samesite' => 'Strict']);
 session_start();
+
 include_once 'db_pdo.php';
 
 // List of all countries
