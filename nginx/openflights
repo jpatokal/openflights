@@ -34,6 +34,10 @@ server {
         deny all;
     }
 
+    location ~ /import/ {
+        deny all;
+    }
+
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/nginx.openflights.org/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/nginx.openflights.org/privkey.pem; # managed by Certbot
