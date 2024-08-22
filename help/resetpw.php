@@ -68,7 +68,7 @@ If you do not want to change your password, simply ignore this mail and nothing 
 Cheers,
 OpenFlights.org";
 
-        if (isset($_POST["unittest"])) {
+        if (defined(UNIT_TEST_MODE) && UNIT_TEST_MODE && isset($_POST["unittest"])) {
             echo $link . "***" .  $row['challenge'];
             exit(0);
         }
