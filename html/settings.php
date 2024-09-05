@@ -98,6 +98,11 @@ if ($type == "signup") {
     if (!$settings) {
         die(_("Could not load profile data"));
     }
+
+    // https://github.com/jpatokal/openflights/issues/1279
+    if (in_array($uid, (array)$OF_ADMIN_UID)) {
+        $settings['elite'] = 'P';
+    }
     ?>
           <tr>
             <td class="key"><nobr><label for="myurl"><?php echo _("Profile address"); ?></label></nobr></td>
