@@ -355,7 +355,7 @@ switch ($action) {
         break;
 
     default:
-        die_nicely(sprintf(_("Unknown action %s"), $action));
+        die_nicely(sprintf(_("Unknown action %s"), htmlspecialchars($action)));
 }
 
 $fileType = $_POST["fileType"];
