@@ -983,6 +983,11 @@ function onAirportUnselect(airport) {
   // do nothing
 }
 
+/**
+ * @param strURL
+ * @param id
+ * @param param
+ */
 function xmlhttpPost(strURL, id, param) {
   var self = this;
   var query = "";
@@ -1611,7 +1616,9 @@ function updateFilter(str) {
   );
 }
 
-// Generate title for current map
+/**
+ * Generate title for current map
+ */
 function getMapTitle(closable) {
   var form = document.forms["filterform"];
   var text = "";
@@ -1858,7 +1865,9 @@ function cloneSelect(oldSelect, name, hook, selected) {
   return newSelect;
 }
 
-// Return value of the currently selected radio button in this group
+/**
+ * Return value of the currently selected radio button in this group
+ */
 function radioValue(radio) {
   for (var r = 0; r < radio.length; r++) {
     if (radio[r].checked) {
@@ -2092,6 +2101,11 @@ function startListFlights() {
   xmlhttpPost(URL_FLIGHTS, 0, "MAP");
 }
 
+/**
+ * @param str
+ * @param desc
+ * @param id
+ */
 function listFlights(str, desc, id) {
   openPane("result");
   fidList = [];
@@ -3858,7 +3872,7 @@ function selectAirport(apid, select, quick, code) {
 }
 
 /**
- * Change number of rows displayed in multiinput
+ * Change the number of rows displayed in multiinput
  * @param type {string}
  */
 function changeRows(type) {
@@ -4200,7 +4214,9 @@ function logout(str) {
   document.forms["login"].name.focus();
 }
 
-// Get current transport mode
+/**
+ * Get current transport mode
+ */
 function getMode() {
   if (getCurrentPane() == "input") {
     return document.forms["inputform"].mode.value;
