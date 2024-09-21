@@ -530,7 +530,7 @@ function init() {
       });
     }
 
-    // No idea why this is needed, but FF3 disables random buttons without it...
+    // No idea why this was needed originally; but FF3 disables random buttons without it...
     for (var i = 0; i < document.forms["inputform"].elements.length; i++) {
       document.forms["inputform"].elements[i].disabled = false;
     }
@@ -860,7 +860,7 @@ function onAirportSelect(airport) {
       // 2. system is in "demo mode", or
       // 3. privacy is set to (O)pen
       if (logged_in || demo_mode || privacy == "O") {
-        // Get list of user flights
+        // Get a list of user flights
         desc +=
           " <a href='#' onclick='JavaScript:xmlhttpPost(\"" +
           URL_FLIGHTS +
@@ -996,14 +996,8 @@ function xmlhttpPost(strURL, id, param) {
     closeNews();
   }
 
-  // Mozilla/Safari
-  if (window.XMLHttpRequest) {
-    self.xmlHttpReq = new XMLHttpRequest();
-  }
-  // IE
-  else if (window.ActiveXObject) {
-    self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-  }
+  // Won't support ancient IE. Chances are they can't load the site anyway...
+  self.xmlHttpReq = new XMLHttpRequest();
   self.xmlHttpReq.open("POST", strURL, true);
   self.xmlHttpReq.setRequestHeader(
     "Content-Type",
@@ -1668,7 +1662,7 @@ function getMapTitle(closable) {
         text = gt.gettext("Recently added flights");
       }
     } else {
-      // Viewing another's profile
+      // Viewing another user's profile
       if (trid != "0") {
         text = tripname + ' <a href="' + tripurl + '">\u2197</a>';
       } else {
@@ -2120,7 +2114,6 @@ function listFlights(str, desc, id) {
 
   var hasGCButton = false;
 
-  // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
   table.push(
     // TODO: alt text
@@ -4532,7 +4525,7 @@ function showLoadingAnimation(show) {
 }
 
 /**
- * user has selected a new field in the extra filter
+ * User has selected a new field in the extra filter
  */
 function setExtraFilter() {
   var key = document.forms["filterform"].Extra.value,
