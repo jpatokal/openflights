@@ -100,7 +100,7 @@ if ($action == "RECORD") {
         }
         $row = $sth->fetch();
         if ($row) {
-            printf('0;' . sprintf(_('An airline using the IATA code %s exists already.'), $iata));
+            printf('0;' . sprintf(_('An airline using the IATA code %s exists already.'), htmlspecialchars($iata)));
             exit;
         }
     }
@@ -122,7 +122,7 @@ if ($action == "RECORD") {
         }
         $row = $sth->fetch();
         if ($row) {
-            printf('0;' . sprintf(_('An airline using the ICAO code %s exists already.'), $icao));
+            printf('0;' . sprintf(_('An airline using the ICAO code %s exists already.'), htmlspecialchars($icao)));
             exit;
         }
     }

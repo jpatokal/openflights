@@ -1282,7 +1282,7 @@ function xmlhttpPost(strURL, id, param) {
                     gt.gettext(
                       "'%1' not found in %2 database. Do you want to add it as a new %2 company?"
                     ),
-                    [airline, modeoperators[mode], modeoperators[mode]]
+                    [airline, modeoperators[mode]]
                   )
                 )
               ) {

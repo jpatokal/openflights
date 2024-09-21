@@ -5,7 +5,7 @@ include_once 'db_pdo.php';
 include_once 'helper.php';
 include_once 'filter.php';
 
-// This applies only when viewing another users flights
+// This applies only when viewing another user's flights
 $user = $_POST["user"] ?? ($_GET["user"] ?? null);
 $trid = $_POST["trid"] ?? ($_GET["trid"] ?? null);
 

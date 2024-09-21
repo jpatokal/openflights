@@ -14,6 +14,6 @@ class Git {
             $head = trim(file_get_contents(".git/{$matches[1]}"));
         }
 
-        return $head ? $head : null;
+        return $head ?: null;
     }
 }

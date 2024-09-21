@@ -3,9 +3,11 @@
 include_once 'helper.php';
 include_once 'db_pdo.php';
 
-// TODO: Why do we do this?
 /**
  * Trim anything after a period or left paren
+ *
+ * TODO: Why do we do this?
+ *
  * @param $query
  * @return string
  */
