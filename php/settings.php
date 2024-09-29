@@ -88,7 +88,7 @@ if ($type == "NEW") {
     $success = $sth->execute($params);
 }
 if (!$success) {
-    die("0;" . sprintf(_("Operation on user %s failed."), $name));
+    die("0;" . sprintf(_("Operation on user %s failed."), htmlspecialchars($name)));
 }
 
 // In all cases, change locale and units to user selection

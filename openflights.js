@@ -530,7 +530,7 @@ function init() {
       });
     }
 
-    // No idea why this is needed, but FF3 disables random buttons without it...
+    // No idea why this was needed originally; but FF3 disables random buttons without it...
     for (var i = 0; i < document.forms["inputform"].elements.length; i++) {
       document.forms["inputform"].elements[i].disabled = false;
     }
@@ -860,7 +860,7 @@ function onAirportSelect(airport) {
       // 2. system is in "demo mode", or
       // 3. privacy is set to (O)pen
       if (logged_in || demo_mode || privacy == "O") {
-        // Get list of user flights
+        // Get a list of user flights
         desc +=
           " <a href='#' onclick='JavaScript:xmlhttpPost(\"" +
           URL_FLIGHTS +
@@ -983,6 +983,11 @@ function onAirportUnselect(airport) {
   // do nothing
 }
 
+/**
+ * @param strURL
+ * @param id
+ * @param param
+ */
 function xmlhttpPost(strURL, id, param) {
   var self = this;
   var query = "";
@@ -991,14 +996,8 @@ function xmlhttpPost(strURL, id, param) {
     closeNews();
   }
 
-  // Mozilla/Safari
-  if (window.XMLHttpRequest) {
-    self.xmlHttpReq = new XMLHttpRequest();
-  }
-  // IE
-  else if (window.ActiveXObject) {
-    self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-  }
+  // Won't support ancient IE. Chances are they can't load the site anyway...
+  self.xmlHttpReq = new XMLHttpRequest();
   self.xmlHttpReq.open("POST", strURL, true);
   self.xmlHttpReq.setRequestHeader(
     "Content-Type",
@@ -1283,7 +1282,7 @@ function xmlhttpPost(strURL, id, param) {
                     gt.gettext(
                       "'%1' not found in %2 database. Do you want to add it as a new %2 company?"
                     ),
-                    [airline, modeoperators[mode], modeoperators[mode]]
+                    [airline, modeoperators[mode]]
                   )
                 )
               ) {
@@ -1611,7 +1610,9 @@ function updateFilter(str) {
   );
 }
 
-// Generate title for current map
+/**
+ * Generate title for current map
+ */
 function getMapTitle(closable) {
   var form = document.forms["filterform"];
   var text = "";
@@ -1661,7 +1662,7 @@ function getMapTitle(closable) {
         text = gt.gettext("Recently added flights");
       }
     } else {
-      // Viewing another's profile
+      // Viewing another user's profile
       if (trid != "0") {
         text = tripname + ' <a href="' + tripurl + '">\u2197</a>';
       } else {
@@ -1858,7 +1859,9 @@ function cloneSelect(oldSelect, name, hook, selected) {
   return newSelect;
 }
 
-// Return value of the currently selected radio button in this group
+/**
+ * Return value of the currently selected radio button in this group
+ */
 function radioValue(radio) {
   for (var r = 0; r < radio.length; r++) {
     if (radio[r].checked) {
@@ -2092,6 +2095,11 @@ function startListFlights() {
   xmlhttpPost(URL_FLIGHTS, 0, "MAP");
 }
 
+/**
+ * @param str
+ * @param desc
+ * @param id
+ */
 function listFlights(str, desc, id) {
   openPane("result");
   fidList = [];
@@ -2106,7 +2114,6 @@ function listFlights(str, desc, id) {
 
   var hasGCButton = false;
 
-  // IE string concat is painfully slow, so we use an array and join it instead
   var table = [];
   table.push(
     // TODO: alt text
@@ -3858,7 +3865,7 @@ function selectAirport(apid, select, quick, code) {
 }
 
 /**
- * Change number of rows displayed in multiinput
+ * Change the number of rows displayed in multiinput
  * @param type {string}
  */
 function changeRows(type) {
@@ -4200,7 +4207,9 @@ function logout(str) {
   document.forms["login"].name.focus();
 }
 
-// Get current transport mode
+/**
+ * Get current transport mode
+ */
 function getMode() {
   if (getCurrentPane() == "input") {
     return document.forms["inputform"].mode.value;
@@ -4516,7 +4525,7 @@ function showLoadingAnimation(show) {
 }
 
 /**
- * user has selected a new field in the extra filter
+ * User has selected a new field in the extra filter
  */
 function setExtraFilter() {
   var key = document.forms["filterform"].Extra.value,

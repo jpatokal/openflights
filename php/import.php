@@ -43,7 +43,7 @@ function nth_text($element, $n) {
         return nbsp_trim($item->textContent);
     }
 
-    // Shouldn't be needed in most cases, as we should be checking for the number of pieces we text,
+    // Shouldn't be necessary in most cases, as we should be checking for the number of pieces we text,
     // as some are optional.
     // If the item ($n) we were looking for isn't there, just return an empty string.
     return '';
@@ -355,7 +355,7 @@ switch ($action) {
         break;
 
     default:
-        die_nicely(sprintf(_("Unknown action %s"), $action));
+        die_nicely(sprintf(_("Unknown action %s"), htmlspecialchars($action)));
 }
 
 $fileType = $_POST["fileType"];
@@ -370,7 +370,7 @@ switch ($fileType) {
 
         if ($html['title']->text() != "FlightMemory - FlightData") {
             die_nicely(
-                sprintf(_("Sorry, the file %s does not appear to contain FlightMemory FlightData."), $uploadFile)
+                sprintf(_("Sorry, the file %s does not appear to contain FlightMemory FlightData."), htmlspecialchars($uploadFile))
             );
         }
 
@@ -393,7 +393,7 @@ switch ($fileType) {
         break;
 
     default:
-        die_nicely(sprintf(_("Unknown file type %s"), $fileType));
+        die_nicely(sprintf(_("Unknown file type %s"), htmlspecialchars($fileType)));
 }
 
 if ($action == _("Upload")) {

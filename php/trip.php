@@ -7,7 +7,7 @@ $type = $_POST["type"];
 $trid = $_POST["trid"] ?? null;
 
 if ($type != "NEW" && (!$trid || $trid == 0)) {
-    die('0;Trip ID ' . $trid . ' invalid');
+    die("0;" . sprintf(_("Trip ID %s invalid."), htmlspecialchars($trid)));
 }
 
 $uid = $_SESSION["uid"];
@@ -21,7 +21,7 @@ if (!$uid || empty($uid)) {
  */
 function failIfFalse($res, $name) {
     if (!$res) {
-        die('0;Operation on trip ' . $name . ' failed.');
+        die("0;" . sprintf(_("Operation on trip %s failed."), htmlspecialchars($name)));
     }
 }
 
