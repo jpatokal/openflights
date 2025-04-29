@@ -8,6 +8,7 @@ require_once "./php/helper.php";
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>OpenFlights.org: <?php echo _("Flight logging, mapping, stats and sharing"); ?></title>
+    <base href="/">
     <meta name="description" content="Free open-source tool for logging, mapping, calculating and sharing your flights and trips.">
     <meta name="keywords" content="flight,memory,logging,mapping,statistics,sharing">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content;">
