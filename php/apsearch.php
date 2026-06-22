@@ -373,7 +373,7 @@ TXT;
     exit;
 }
 
-if ($tableName != "airports" || $tableName != "airports_dafif" || $tableName != "airports_oa") {
+if ($tableName != "airports" && $tableName != "airports_dafif" && $tableName != "airports_oa") {
     $tableName = "airports";
 }
 
