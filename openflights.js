@@ -260,13 +260,11 @@ function init() {
     }
   });
 
+  // The keys in the URLs below are domain restricted to openflights.org only, substitute your own!
   var poliLayer = new OpenLayers.Layer.XYZ(
     gt.gettext("Political"),
     [
-      "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-      "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-      "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
-      "https://cartodb-basemaps-1.global.ssl.fastly.net/light_nolabels/${z}/${x}/${y}.png",
+      "https://basemaps.cartocdn.com/rastertiles/light_nolabels/{z}/{x}/{y}.png?key=cb1_2a0y_1_fe421b625bae1ce78e571f5a",
     ],
     {
       attribution: gt.gettext(
@@ -277,20 +275,6 @@ function init() {
       wrapDateLine: true,
     }
   );
-
-  var artLayer = new OpenLayers.Layer.XYZ(
-    gt.gettext("Artistic"),
-    ["https://stamen-tiles.a.ssl.fastly.net/watercolor/${z}/${x}/${y}.jpg"],
-    {
-      attribution: gt.gettext(
-        "Map tiles &copy; <a href='http://maps.stamen.com/' target='_blank'>Stamen</a> (CC BY 3.0), data &copy; <a href='https://www.openstreetmap.org' target='_blank'>OSM</a> (CC BY SA)"
-      ),
-      sphericalMercator: true,
-      transitionEffect: "resize",
-      wrapDateLine: true,
-    }
-  );
-  artLayer.setVisibility(false);
 
   var earthLayer = new OpenLayers.Layer.XYZ(
     gt.gettext("Satellite"),
@@ -414,7 +398,7 @@ function init() {
     renderers: renderer,
     strategies: [strategy],
   });
-  map.addLayers([poliLayer, artLayer, earthLayer, lineLayer, airportLayer]);
+  map.addLayers([poliLayer, earthLayer, lineLayer, airportLayer]);
 
   selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {
     onSelect: onAirportSelect,
