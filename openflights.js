@@ -264,7 +264,7 @@ function init() {
   var poliLayer = new OpenLayers.Layer.XYZ(
     gt.gettext("Political"),
     [
-      "https://basemaps.cartocdn.com/rastertiles/light_nolabels/{z}/{x}/{y}.png?key=cb1_2a0y_1_fe421b625bae1ce78e571f5a",
+      "https://basemaps.cartocdn.com/rastertiles/light_nolabels/${z}/${x}/${y}.png?key=cb1_2a0y_1_fe421b625bae1ce78e571f5a",
     ],
     {
       attribution: gt.gettext(
