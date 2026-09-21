@@ -92,7 +92,7 @@ OpenFlights.org";
 ?>
       <form name="reset" action="/help/resetpw" enctype="multipart/form-data" method="post">
         <input type="text" name="email" align="top" size="10" tabindex="1">
-        <input type="submit" name="action" value="<?php _("Reset password"); ?>" tabindex="2">
+        <input type="submit" name="action" value="<?php echo _("Reset password"); ?>" tabindex="2">
       </form>
     <?php
     echo "<p>" .
