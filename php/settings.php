@@ -3,18 +3,18 @@
 include_once 'locale.php';
 include_once 'db_pdo.php';
 
-$type = $_POST["type"];
+$type = $_POST["type"] ?? null;
 $name = $_POST["name"] ?? null;
-$pw = $_POST["pw"];
+$pw = $_POST["pw"] ?? null;
 $oldpw = $_POST["oldpw"] ?? null;
 $oldlpw = $_POST["oldlpw"] ?? null;
-$email = $_POST["email"];
-$privacy = $_POST["privacy"];
-$editor = $_POST["editor"];
-$units = $_POST["units"];
+$email = $_POST["email"] ?? null;
+$privacy = $_POST["privacy"] ?? null;
+$editor = $_POST["editor"] ?? null;
+$units = $_POST["units"] ?? null;
 $guestpw = $_POST["guestpw"] ?? null;
 $startpane = $_POST["startpane"] ?? null;
-$locale = $_POST["locale"]; // override any value in URL/session
+$locale = $_POST["locale"] ?? null; // override any value in URL/session
 
 // 0 error
 // 1 new
@@ -24,6 +24,9 @@ $locale = $_POST["locale"]; // override any value in URL/session
 // Create new user
 switch ($type) {
     case "NEW":
+        if (!$name || $pw === null || $email === null || $privacy === null || $editor === null || $units === null || $locale === null) {
+            die("0;" . _("Missing required field, please fill in all fields and try again."));
+        }
         $sth = $dbh->prepare("SELECT * FROM users WHERE name = ?");
         $sth->execute([$name]);
         if ($sth->fetch()) {
@@ -33,6 +36,9 @@ switch ($type) {
 
     case "EDIT":
     case "RESET":
+        if ($type === null) {
+            die("0;" . _("Missing required field, please fill in all fields and try again."));
+        }
         $uid = $_SESSION["uid"];
         $name = $_SESSION["name"];
         if (!$uid || empty($uid)) {
