@@ -24,5 +24,5 @@ if [ -z "$EMAIL" ]; then
 fi
 
 echo User $USER set to $STATUS, sending mail to $EMAIL
-cat $STATUS-message.txt | sed "s/%EMAIL%/$EMAIL/" | sendmail $EMAIL
+cat $STATUS-message.txt | sed "s/%EMAIL%/$EMAIL/" | sudo -u openflights msmtp $EMAIL
 
