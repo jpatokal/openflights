@@ -30,5 +30,5 @@ mysql -u root -D flightdb2 --local-infile=1 <sql/load-data.sql
 # to completely disable API logins for good measure.
 mysql -u root -D flightdb2 <<SQL
 INSERT INTO users (name, password, uid)
-VALUES ('demo', 'not-an-md5sum'), 1)
+VALUES ('demo', 'not-an-md5sum', 1)
 SQL
