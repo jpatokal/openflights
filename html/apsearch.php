@@ -4,7 +4,7 @@ require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
 require_once '../php/helper.php';
 
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 $logged_in = $uid && !empty($uid);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

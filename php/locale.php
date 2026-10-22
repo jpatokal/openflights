@@ -1,5 +1,5 @@
 <?php
-if ($OF_SAMESITE_LAX) {
+if (!empty($OF_SAMESITE_LAX)) {
     $samesite_policy = 'Lax';
 } else {
     $samesite_policy = 'Strict';

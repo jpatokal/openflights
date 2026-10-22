@@ -2,7 +2,8 @@
 
 const UNIT_TEST_MODE = false;
 
-$host = "localhost";
+// Database credentials. By default, we connect to the MySQL container created by docker.
+$host = "172.17.0.1";
 $dbname = "flightdb2";
 $user = "openflights";
 $password = "";

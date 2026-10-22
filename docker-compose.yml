@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   db:
     container_name: openflights-db
@@ -15,8 +14,8 @@ services:
       - .:/openflights
       - ./sql/create.sql:/docker-entrypoint-initdb.d/1.sql
       - ./sql/docker-seed.sh:/docker-entrypoint-initdb.d/2.sh
-  php7:
-    container_name: openflights-php7
+  php8:
+    container_name: openflights-php8
     build:
       context: .
       dockerfile: Dockerfile

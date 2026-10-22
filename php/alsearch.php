@@ -5,25 +5,25 @@ require_once "../php/db_pdo.php";
 
 include_once 'helper.php';
 
-$name = $_POST["name"];
-$alias = $_POST["alias"];
-$mode = $_POST["mode"];
+$name = $_POST["name"] ?? null;
+$alias = $_POST["alias"] ?? null;
+$mode = $_POST["mode"] ?? null;
 if (!$mode || $mode == 'F') {
-    $iata = $_POST["iata"];
-    $icao = $_POST["icao"];
-    $callsign = $_POST["callsign"];
+    $iata = $_POST["iata"] ?? null;
+    $icao = $_POST["icao"] ?? null;
+    $callsign = $_POST["callsign"] ?? null;
     $mode = "F";
 } else {
     $iata = "";
     $icao = "";
     $callsign = "";
 }
-$country = $_POST["country"];
-$offset = $_POST["offset"];
-$active = $_POST["active"];
-$iatafilter = $_POST["iatafilter"];
-$action = $_POST["action"];
-$alid = $_POST["alid"];
+$country = $_POST["country"] ?? null;
+$offset = $_POST["offset"] ?? 0;
+$active = $_POST["active"] ?? null;
+$iatafilter = $_POST["iatafilter"] ?? null;
+$action = $_POST["action"] ?? null;
+$alid = $_POST["alid"] ?? null;
 
 $uid = $_SESSION["uid"] ?? null;
 if ($action == "RECORD") {

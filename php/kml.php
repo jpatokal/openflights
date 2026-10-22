@@ -41,7 +41,10 @@ function parseIntervalString($interval) {
     if ($interval === null) {
         return false;
     }
-    [$h, $m, $s] = explode(':', $interval);
+    $parts = explode(':', $interval);
+    $h = $parts[0] ?? "0";
+    $m = $parts[1] ?? "0";
+    $s = $parts[2] ?? "0";
 
     $intervalString = trimZero($h, 'H') . trimZero($m, 'M') . trimZero($s, 'S');
     return $intervalString !== ""

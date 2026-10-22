@@ -9,26 +9,26 @@ require_once '../php/helper.php';
 
 header("Content-type: text/html");
 
-$airport = $_POST["name"];
-$iata = $_POST["iata"];
-$icao = $_POST["icao"];
-$city = $_POST["city"];
-$country = $_POST["country"];
-$code = $_POST["code"];
-$myX = $_POST["x"];
-$myY = $_POST["y"];
-$elevation = $_POST["elevation"];
-$tz = $_POST["timezone"];
-$dst = $_POST["dst"];
-$tableName = $_POST["db"];
-$iatafilter = $_POST["iatafilter"];
-$offset = intval($_POST["offset"]);
-$action = $_POST["action"];
-$apid = $_POST["apid"];
+$airport = $_POST["name"] ?? null;
+$iata = $_POST["iata"] ?? null;
+$icao = $_POST["icao"] ?? null;
+$city = $_POST["city"] ?? null;
+$country = $_POST["country"] ?? null;
+$code = $_POST["code"] ?? null;
+$myX = $_POST["x"] ?? null;
+$myY = $_POST["y"] ?? null;
+$elevation = $_POST["elevation"] ?? null;
+$tz = $_POST["timezone"] ?? null;
+$dst = $_POST["dst"] ?? null;
+$tableName = $_POST["db"] ?? null;
+$iatafilter = $_POST["iatafilter"] ?? null;
+$offset = intval($_POST["offset"] ?? 0);
+$action = $_POST["action"] ?? null;
+$apid = $_POST["apid"] ?? null;
 $uid = $_SESSION["uid"] ?? null;
 
 // https://github.com/jpatokal/openflights/issues/1447
-$ref = $_SERVER['HTTP_REFERER'];
+$ref = $_SERVER['HTTP_REFERER'] ?? '';
 if (strpos($ref, 'com.cathaypacific.iJourneyLite') !== false) {
     die(
         json_encode(
@@ -145,7 +145,7 @@ SQL;
         json_error("Cannot submit edit request to GitHub; please check config!");
     }
 
-    $name = $_SESSION['name'];
+    $name = $_SESSION['name'] ?? '';
     $newEdit = print_r(
         [
             'apid' => $apid,

@@ -12,7 +12,7 @@
     },
     "homepage": "https://openflights.org/",
     "require": {
-        "php": "~7.4.0",
+        "php": "~8.3.0",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-dom": "*",
@@ -26,8 +26,7 @@
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.0",
-        "knplabs/github-api": "^3.0",
-        "rubobaquero/phpquery": "0.9.15"
+        "knplabs/github-api": "^3.0"
     },
     "require-dev": {
         "mediawiki/minus-x": "^1.1.1",

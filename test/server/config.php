@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/autorun.ph
 require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester.php' ;
 
 // URL of the OpenFlights install
-$webroot = 'http://localhost:8080/';
+$webroot = 'http://localhost:8007/';
 
 // Path to OpenFlights upload directory
 $uploadDir = '../../import/';
@@ -12,7 +12,7 @@ $uploadDir = '../../import/';
 const UNIT_TEST_MODE = true;
 
 // Database configuration
-$dbhost = "localhost";
+$dbhost = "172.17.0.1";
 $dbuser = "openflights";
 $dbpass = "";
 $dbname = "flightdb2";

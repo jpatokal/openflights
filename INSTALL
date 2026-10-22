@@ -1,3 +1,15 @@
+Installing and running OpenFlights via Docker
+=============================================
+This is the recommended approach for development.
+
+sudo apt-get install docker docker-compose
+docker compose up -d --build
+
+Then browse to http://localhost:8007.
+
+To access the containerized MySQL database:
+mysql -h 127.0.0.1 -P 3306 -u root -D flightdb2
+
 Installing OpenFlights/Nginx on Ubuntu 22 Minimal LTS
 =====================================================
 
@@ -75,4 +87,3 @@ FOO
 sudo -u openflights vi html/ad.html
 sudo -u openflights vi html/analytics.html
 sudo -u openflights vi html/ad-sidebar.html
-

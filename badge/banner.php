@@ -96,11 +96,12 @@ if ($units == "K") {
 }
 $flights = sprintf("%s flights", $row["count"]);
 $miles = sprintf("%s %s", number_format($distance, 0, ".", ","), $units);
+$minutes = (int) $row["duration"];
 $duration = sprintf(
     "%d days, %d:%02d hours",
-    $row["duration"] / 1440,
-    intdiv($row["duration"], 60) % 24,
-    $row["duration"] % 60
+    intdiv($minutes, 1440),
+    intdiv($minutes, 60) % 24,
+    $minutes % 60
 );
 
 renderImage(

@@ -280,7 +280,7 @@ if ($type == "signup") {
           <tr>
             <td class="key"><label for="oldpw"><?php echo _("Current password"); ?></label></td>
             <td class="value"><input type="password" id="oldpw" name="oldpw" size="20">
-            <input type="hidden" name="username" value="<?php echo $_SESSION['name']?>"></td>
+            <input type="hidden" name="username" value="<?php echo $_SESSION['name'] ?? '' ?>"></td>
             <td class="desc" colspan=2><?php echo _("You only need to enter this if changing your password."); ?></td>
           </tr>
           <tr>

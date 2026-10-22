@@ -23,7 +23,7 @@ $trid = $_GET["trid"] ?? null;
     <div id="title"><h1><?php echo $trid ? _("Edit trip") : _("Add trip"); ?></h1></div>
 
 <?php
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 if (!$uid || empty($uid)) {
     die(_("Your session has timed out, please log in again."));
 }

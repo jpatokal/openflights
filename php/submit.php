@@ -1,7 +1,7 @@
 <?php
 
 include_once 'locale.php';
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 if (!$uid || empty($uid)) {
     printf(_("Not logged in, aborting"));
     exit;
@@ -10,20 +10,20 @@ if (!$uid || empty($uid)) {
 include_once 'helper.php';
 include_once 'db_pdo.php';
 
-$duration = $_POST["duration"];
-$distance = $_POST["distance"];
-$number = $_POST["number"];
-$seat = $_POST["seat"];
-$seat_type = $_POST["type"];
-$class = $_POST["class"];
-$reason = $_POST["reason"];
-$registration = $_POST["registration"];
-$trid = $_POST["trid"];
-$fid = $_POST["fid"];
-$mode = $_POST["mode"];
-$note = stripslashes($_POST["note"]);
-$param = $_POST["param"];
-$multi = intval($_POST["multi"]);
+$duration = $_POST["duration"] ?? null;
+$distance = $_POST["distance"] ?? null;
+$number = $_POST["number"] ?? null;
+$seat = $_POST["seat"] ?? null;
+$seat_type = $_POST["type"] ?? null;
+$class = $_POST["class"] ?? null;
+$reason = $_POST["reason"] ?? null;
+$registration = $_POST["registration"] ?? null;
+$trid = $_POST["trid"] ?? null;
+$fid = $_POST["fid"] ?? null;
+$mode = $_POST["mode"] ?? null;
+$note = stripslashes($_POST["note"] ?? "");
+$param = $_POST["param"] ?? null;
+$multi = intval($_POST["multi"] ?? 0);
 
 if (!$mode || $mode == "") {
     $mode = "F";
@@ -57,7 +57,7 @@ if ($trid == "NULL") {
 // Validate user-entered information
 $plid = null;
 if ($param == "ADD" || $param == "EDIT") {
-    $plane = trim($_POST["plane"]);
+    $plane = trim($_POST["plane"] ?? "");
 
     // New planes can be created on the fly
     if (!empty($plane)) {
@@ -101,22 +101,22 @@ switch ($param) {
 SQL;
         $sth = $dbh->prepare($sql);
         foreach ($rows as $idx) {
-            $src_date = $_POST["src_date" . $idx];
-            $src_apid = $_POST["src_apid" . $idx];
-            $dst_apid = $_POST["dst_apid" . $idx];
-            $alid = trim($_POST["alid" . $idx]);
-            if ($alid == 0) {
+            $src_date = $_POST["src_date" . $idx] ?? null;
+            $src_apid = $_POST["src_apid" . $idx] ?? null;
+            $dst_apid = $_POST["dst_apid" . $idx] ?? null;
+            $alid = trim($_POST["alid" . $idx] ?? "");
+            if ($alid === "" || $alid === "0") {
                 // this should not be necessary, but just in case...
                 $alid = -1;
             }
 
             // If either the distance or duration is missing, try to calculate it by airports.
-            if (!$_POST["duration"] || !$_POST["distance"]) {
+            if (!$duration || !$distance) {
                 list($calc_distance, $calc_duration) = gcDistance($dbh, $src_apid, $dst_apid);
-                if (!$_POST["duration"]) {
+                if (!$duration) {
                     $duration = $calc_duration;
                 }
-                if (!$_POST["distance"]) {
+                if (!$distance) {
                     $distance = $calc_distance;
                 }
             }
@@ -150,11 +150,11 @@ SQL;
         break;
 
     case "EDIT":
-        $src_date = $_POST["src_date"];
-        $src_apid = $_POST["src_apid"];
-        $dst_apid = $_POST["dst_apid"];
-        $alid = trim($_POST["alid"]); // IE adds some whitespace crud to this!?
-        if ($alid == 0) {
+        $src_date = $_POST["src_date"] ?? null;
+        $src_apid = $_POST["src_apid"] ?? null;
+        $dst_apid = $_POST["dst_apid"] ?? null;
+        $alid = trim($_POST["alid"] ?? ""); // IE adds some whitespace crud to this!?
+        if ($alid === "" || $alid === "0") {
             // this should not be necessary, but just in case...
             $alid = -1;
         }

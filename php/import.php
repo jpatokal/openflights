@@ -19,12 +19,12 @@ require_once "db_pdo.php";
 
   <h1><?php echo _("Import"); ?></h1>
 <?php
-$uid = $_SESSION["uid"];
+$uid = $_SESSION["uid"] ?? null;
 if (!$uid || empty($uid)) {
     die_nicely(_("Not logged in, aborting"));
 }
 
-require_once '../vendor/autoload.php';
+require_once 'phpquery.php';
 include_once 'helper.php';
 
 const POS_MAP = ["Window" => "W", "Middle" => "M", "Aisle" => "A", "" => ""];
@@ -187,7 +187,7 @@ function check_airline($dbh, $flightNumber, $airlineName, $uid, $history) {
     } else {
         $airlinepart = explode(' ', $airlineName);
         if ($airlinepart[0] == 'Air') {
-            $part = 'Air ' . $airlinepart[1] . '%';
+            $part = 'Air ' . ($airlinepart[1] ?? '') . '%';
         } else {
             $part = $airlinepart[0] . '%';
         }
@@ -219,8 +219,8 @@ SQL;
             $dbrow = $sth->fetch();
             if (
                 $airlineName !== "" && (
-                    strcasecmp($dbrow['name'], $airlineName) === 0 ||
-                    strcasecmp($dbrow['alias'], $airlineName) === 0
+                    strcasecmp($dbrow['name'] ?? '', $airlineName) === 0 ||
+                    strcasecmp($dbrow['alias'] ?? '', $airlineName) === 0
                 )
             ) {
                 // Exact match
@@ -244,8 +244,8 @@ SQL;
             $first = true;
             foreach ($sth as $dbrow) {
                 $isMatch = $airlineName !== "" && (
-                    (strcasecmp($dbrow['name'], $airlineName) === 0) ||
-                    (strcasecmp($dbrow['alias'], $airlineName) === 0)
+                    (strcasecmp($dbrow['name'] ?? '', $airlineName) === 0) ||
+                    (strcasecmp($dbrow['alias'] ?? '', $airlineName) === 0)
                 );
                 if ($first || $isMatch) {
                     if ($isMatch) {
@@ -530,7 +530,9 @@ foreach ($rows as $row) {
             // <td class="liste">12A/Window<br><small>Economy<br>Passenger<br>Business</small></td>
             // 2nd field may be blank, so we count fields and offset 1 if it's there
             $seat = nth_text($cols[8], 0);
-            [$seatNumber, $seatPos] = explode('/', $seat);
+            $seatParts = explode('/', $seat);
+            $seatNumber = $seatParts[0];
+            $seatPos = $seatParts[1] ?? "";
             if (text_count($cols[8]) === 4) {
                 $seatClass = nth_text($cols[8], 1);
                 $offset = 1;
