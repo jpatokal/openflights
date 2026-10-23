@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -10,13 +10,11 @@ RUN apt-get update && apt-get install -y \
     locales \
     mysql-client \
     nginx \
-    software-properties-common \
     unzip \
     tzdata \
     vim
 
-# System-level PHP setup
-RUN add-apt-repository ppa:ondrej/php -y # 22.04 natively supports only up to 8.1
+# PHP 8.3 is natively available in Ubuntu 24.04
 RUN apt-get install -y \
     php8.3 php8.3-curl php8.3-fpm php8.3-gd php8.3-intl php8.3-mbstring php8.3-mysql php8.3-xml
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

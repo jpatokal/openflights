@@ -10,10 +10,10 @@ Then browse to http://localhost:8007.
 To access the containerized MySQL database:
 mysql -h 127.0.0.1 -P 3306 -u root -D flightdb2
 
-Installing OpenFlights/Nginx on Ubuntu 22 Minimal LTS
+Installing OpenFlights/Nginx on Ubuntu 24.04 Minimal LTS
 =====================================================
 
-The following assumes you have a fresh install of Ubuntu 22 Minimal and you're
+The following assumes you have a fresh install of Ubuntu 24.04 Minimal and you're
 logged in as a user with sudo rights.
 
 This is intended as a recipe to be followed by hand, not a fire-and-forget
@@ -22,10 +22,8 @@ script that can do the job automatically.
 # None of these are strictly necessary, but they make debugging easier
 sudo apt-get install man vim mysql-client
 
-# OpenFlights does not support PHP8, so we need to hack in PHP7
-sudo apt install software-properties-common apt-transport-https -y
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt-get install git nginx php7.4 php7.4-curl php7.4-fpm php7.4-gd php7.4-intl php7.4-mbstring php7.4-mysql php7.4-xml locales unzip
+# PHP 8.3 is natively available in Ubuntu 24.04
+sudo apt-get install git nginx php8.3 php8.3-curl php8.3-fpm php8.3-gd php8.3-intl php8.3-mbstring php8.3-mysql php8.3-xml locales unzip
 
 # Install OpenFlights as its own user
 sudo adduser openflights
