@@ -171,7 +171,7 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
 
         // First figure out the correct results
         $dbh = db_connect();
-        $sth = $dbh->prepare("SELECT DISTINCT src_apid, dst_apid, alid FROM routes WHERE airline = ?");
+        $sth = $dbh->prepare("SELECT DISTINCT r.src_apid, r.dst_apid, r.alid FROM routes AS r, airports AS s, airports AS d WHERE r.airline = ? AND r.src_apid = s.apid AND r.dst_apid = d.apid");
         $sth->execute([$route["core_al_iata"]]);
         $rows = $sth->rowCount();
         $this->assertTrue($rows >= 1, "No routes found");

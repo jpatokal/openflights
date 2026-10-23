@@ -15,7 +15,7 @@ class LoadCountriesTest extends WebTestCase {
         $params = array();
         $this->post($webroot . "php/countries.php", $params);
         $this->assertText('AF;Afghanistan');
-        $this->assertText('ZI;Zimbabwe');
+        $this->assertText('ZW;Zimbabwe');
     }
 }
 
@@ -61,7 +61,7 @@ class RecordAirportDuplicateTest extends WebTestCase {
         $msg = $this->post($webroot . "php/apsearch.php", $params);
 
         $this->assertText('Add airport AutoTest Airport (ZZZ/ZZZZ)');
-        $this->assertText('New airport addition suggestion submitted by autotest:');
+        $this->assertText('New airport addition suggestion submitted by `autotest`:');
         $this->assertText("[name] => " . $airport["name"]);
     }
 }
@@ -81,7 +81,7 @@ class EditWrongAirportTest extends WebTestCase {
         $msg = $this->post($webroot . "php/apsearch.php", $params);
 
         $this->assertText('Update airport AutoTest Airport (ZZZ/ZZZY)');
-        $this->assertText('New airport edit suggestion submitted by autotest:');
+        $this->assertText('New airport edit suggestion submitted by `autotest`:');
         $this->assertText("[icao] => " . $params["icao"]);
         $this->assertText("[icao] => " . $airport["icao"]);
     }
@@ -101,9 +101,9 @@ class EditAirportDuplicateICAOTest extends WebTestCase {
         $params += array("action" => "RECORD", "unittest" => "true");
         $msg = $this->post($webroot . "php/apsearch.php", $params);
         $this->assertText('Update airport AutoTest Airport (ZZZ/WSSS)');
-        $this->assertText('New airport edit suggestion submitted by autotest:');
+        $this->assertText('New airport edit suggestion submitted by `autotest`:');
         $this->assertText("[name] => " . $airport["name"]);
-        $this->assertText("[name] => Changi Intl");
+        $this->assertText("[name] => Singapore Changi Airport");
     }
 }
 
@@ -180,10 +180,10 @@ class LoadAirportByApidTest extends WebTestCase {
         $this->assertText('"country":"' . $airport["country"] . '"');
         $this->assertText('"iata":"' . $airport["iata"] . '"');
         $this->assertText('"icao":"' . $airport["icao"] . '"');
-        $this->assertText('"x":"' . $airport["x"] . '"');
-        $this->assertText('"y":"' . $airport["y"] . '"');
-        $this->assertText('"elevation":"' . $airport["elevation"] . '"');
-        $this->assertText('"timezone":"' . $airport["timezone"] . '"');
+        $this->assertText('"x":' . $airport["x"]);
+        $this->assertText('"y":' . $airport["y"]);
+        $this->assertText('"elevation":' . $airport["elevation"]);
+        $this->assertText('"timezone":' . $airport["timezone"]);
         $this->assertText('"dst":"' . $airport["dst"] . '"');
         $this->assertText('"ap_uid":"own"');
     }
@@ -221,10 +221,10 @@ class SearchAirportOFDBByIATATest extends WebTestCase {
         $this->assertText('"country":"' . $airport["country"] . '"');
         $this->assertText('"iata":"' . $airport["iata"] . '"');
         $this->assertText('"icao":"'. $airport["icao"] . '"');
-        $this->assertText('"x":"' . $airport["x"] . '"');
-        $this->assertText('"y":"' . $airport["y"] . '"');
-        $this->assertText('"elevation":"' . $airport["elevation"] . '"');
-        $this->assertText('"timezone":"' . $airport["timezone"] . '"');
+        $this->assertText('"x":' . $airport["x"]);
+        $this->assertText('"y":' . $airport["y"]);
+        $this->assertText('"elevation":' . $airport["elevation"]);
+        $this->assertText('"timezone":' . $airport["timezone"]);
         $this->assertText('"dst":"' . $airport["dst"] . '"');
         $this->assertText('"ap_uid":"own"');
     }

@@ -6,6 +6,9 @@ include_once dirname(__FILE__) . '/config.php';
  * Not an actual test, just cleaning up
  */
 class DeleteFlightsTest extends WebTestCase {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function test() {
         global $settings;
 
@@ -20,6 +23,9 @@ class DeleteFlightsTest extends WebTestCase {
  * Not an actual test, just cleaning up
  */
 class DeleteAirportTest extends WebTestCase {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function test() {
         global $settings;
 
@@ -34,6 +40,9 @@ class DeleteAirportTest extends WebTestCase {
  * Not an actual test, just cleaning up
  */
 class DeleteAirlinesTest extends WebTestCase {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function test() {
         global $settings;
 
@@ -48,6 +57,9 @@ class DeleteAirlinesTest extends WebTestCase {
  * Not an actual test, just cleaning up
  */
 class DeleteUserTest extends WebTestCase {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function test() {
         global $settings;
 

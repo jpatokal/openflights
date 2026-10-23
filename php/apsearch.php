@@ -136,15 +136,6 @@ SQL;
         exit;
     }
 
-    if (
-        // Check for empty strings, or default values as per config.php.sample
-        in_array($GITHUB_USER, [ "", "YOUR_USERNAME"]) ||
-        in_array($GITHUB_ACCESS_TOKEN, ["", "YOUR_TOKEN"]) ||
-        $GITHUB_REPO == ''
-    ) {
-        json_error("Cannot submit edit request to GitHub; please check config!");
-    }
-
     $name = $_SESSION['name'] ?? '';
     $newEdit = print_r(
         [
@@ -238,11 +229,19 @@ TXT;
 TXT;
 
 
-    if (defined(UNIT_TEST_MODE) && UNIT_TEST_MODE && isset($_POST["unittest"])) {
+    if (defined('UNIT_TEST_MODE') && UNIT_TEST_MODE && isset($_POST["unittest"])) {
         echo $title . "\n\n" . $body;
         exit;
     }
 
+    // Check for empty strings, or default values as per config.php.sample
+    if (
+        in_array($GITHUB_USER, [ "", "YOUR_USERNAME"]) ||
+        in_array($GITHUB_ACCESS_TOKEN, ["", "YOUR_TOKEN"]) ||
+        $GITHUB_REPO == ''
+    ) {
+        json_error("Cannot submit edit request to GitHub; please check config!");
+    }
 
     $searchStrings = [
         // Try the exact subject that would be used if we were to create a new issue.
