@@ -46,7 +46,7 @@ class CheckPublicFullUserMap extends WebTestCase {
         // Statistics
         $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 1, "Flight count");
-        $this->assertTrue(strstr($stats[1], $flight2["distance"]), "Distance");
+        $this->assertStringContainsString($flight2["distance"], $stats[1], "Distance");
         $this->assertTrue($stats[3] == $settings["privacy"], "Public");
         $this->assertTrue($stats[4] == $settings["elite"], "Elite");
         $this->assertTrue($stats[5] == "demo", "Username"); // we are not this user!
@@ -95,7 +95,7 @@ class CheckPrivateGuestPasswordFullUserMap extends WebTestCase {
         // Statistics
         $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 1, "Flight count");
-        $this->assertTrue(strstr($stats[1], $flight2["distance"]), "Distance");
+        $this->assertStringContainsString($flight2["distance"], $stats[1], "Distance");
         $this->assertTrue($stats[3] == "N", "Public");
         $this->assertTrue($stats[4] == $settings["elite"], "Elite");
         $this->assertTrue($stats[5] == "demo", "Username"); // we are not this user!
@@ -119,7 +119,7 @@ class CheckLoggedInFullUserMap extends WebTestCase {
         // Statistics
         $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 1, "Flight count");
-        $this->assertTrue(strstr($stats[1], $flight2["distance"]), "Distance");
+        $this->assertStringContainsString($flight2["distance"], $stats[1], "Distance");
         $this->assertTrue($stats[3] == "O", "Public"); // own flights always full access
         $this->assertTrue($stats[4] == $settings["elite"], "Elite");
         $this->assertTrue($stats[5] == $settings["name"], "Username");

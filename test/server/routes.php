@@ -95,7 +95,7 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
         $dbh = db_connect();
         $sth = $dbh->prepare("SELECT * FROM airports WHERE iata = ?");
         $sth->execute([$route["noroute_ap_iata"]]);
-        $this->assertTrue($row = $sth->fetch(), "No-route airport not found");
+        $this->assertNotFalse($row = $sth->fetch(), "No-route airport not found");
         $route["noroute_apid"] = $row["apid"];
 
         // Then test
@@ -209,7 +209,7 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
         $dbh = db_connect();
         $sth = $dbh->prepare("SELECT * FROM airlines WHERE iata = ?");
         $sth->execute([$route["noroute_al_iata"]]);
-        $this->assertTrue($row = $sth->fetch(), "No-route airline not found");
+        $this->assertNotFalse($row = $sth->fetch(), "No-route airline not found");
         $route["noroute_alid"] = $row["alid"];
 
         // Then test

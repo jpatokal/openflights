@@ -6,6 +6,7 @@ import/
 node_modules/
 php/config.php
 php/secrets.php
+test/server/.phpunit.result.cache
 vendor/*
 *.pyc
 .idea

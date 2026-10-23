@@ -1,28 +1,39 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/autorun.php';
-require_once dirname(__FILE__) . '/../../vendor/simpletest/simpletest/web_tester.php' ;
+require_once dirname(__FILE__) . '/../../vendor/autoload.php';
+require_once dirname(__FILE__) . '/OpenFlightsTestCase.php';
+
+// php/helper.php does `include_once 'locale.php'`. Point that include at the
+// test-only stub in stubs/ so the CLI runner never pulls in the real
+// php/locale.php -> php/db_pdo.php chain and opens a database connection.
+set_include_path(dirname(__FILE__) . '/stubs' . PATH_SEPARATOR . get_include_path());
+
+// The CLI runner has no DOCUMENT_ROOT, but helper tests such as
+// FileUrlWithDateTest need a real web root to create files under /import/.
+if (empty($_SERVER['DOCUMENT_ROOT'])) {
+    $_SERVER['DOCUMENT_ROOT'] = dirname(__FILE__) . '/../..';
+}
 
 // URL of the OpenFlights install
-$webroot = 'http://localhost:8007/';
+$GLOBALS['webroot'] = 'http://localhost:8007/';
 
 // Path to OpenFlights upload directory
-$uploadDir = '../../import/';
+$GLOBALS['uploadDir'] = '../../import/';
 
 const UNIT_TEST_MODE = true;
 
 // Database configuration
-$dbhost = "172.17.0.1";
-$dbuser = "openflights";
-$dbpass = "";
-$dbname = "flightdb2";
+$GLOBALS['dbhost'] = "127.0.0.1";
+$GLOBALS['dbuser'] = "openflights";
+$GLOBALS['dbpass'] = "";
+$GLOBALS['dbname'] = "flightdb2";
 
 //
 // TEST CASES
 //
 
 // Settings for automated test user
-$settings = array(
+$GLOBALS['settings'] = array(
     'name' => 'autotest',
     'password' => 'autotest',
     'guestpw' => 'guesttest',
@@ -37,9 +48,9 @@ $settings = array(
 );
 
 // Test airline, airport data
-$qs_string = 'AutoTest'; // unique string in both airport and airline names, but nowhere else
+$GLOBALS['qs_string'] = 'AutoTest'; // unique string in both airport and airline names, but nowhere else
 
-$airline = array(
+$GLOBALS['airline'] = array(
     'name' => 'AutoTest Airways',
     'alias' => 'AutoTestAir',
     'iata' => 'ZZ',
@@ -50,14 +61,14 @@ $airline = array(
     'active' => 'Y',
 );
 
-$railway = array(
+$GLOBALS['railway'] = array(
     'name' => 'AutoTest Railways',
     'alias' => 'AutoTestRail',
     'country' => 'Austria',
     'mode' => 'T',
 );
 
-$airport = array(
+$GLOBALS['airport'] = array(
     'name' => 'AutoTest Airport',
     'city' => 'Testville',
     'country' => 'Afghanistan',
@@ -70,7 +81,7 @@ $airport = array(
     'dst' => 'Z',
 );
 
-$flight = array(
+$GLOBALS['flight'] = array(
     'param' => 'ADD',
     'src_date' => '2009-02-03',
     'src_time' => '2359',
@@ -91,7 +102,7 @@ $flight = array(
     'note' => 'AddSingleFlightTest,;:\'"Chars',
 );
 
-$flight2 = array(
+$GLOBALS['flight2'] = array(
     'param' => 'EDIT',
     'src_date' => '2010-04-05',
     'src_time' => '10:02',
@@ -111,7 +122,7 @@ $flight2 = array(
     'note' => 'EditFlightTest,;:\'"Chars',
 );
 
-$multiflight = array(
+$GLOBALS['multiflight'] = array(
     'param' => 'ADD',
     'multi' => '4',
     'src_date1' => '2009-01-01',
@@ -144,7 +155,7 @@ $multiflight = array(
     'note' => 'AddMultiFlightTest,;:\'"Chars',
 );
 
-$loopflight = array(
+$GLOBALS['loopflight'] = array(
     'param' => 'ADD',
     'src_date' => '2009-02-03',
     'src_apid' => '1100',
@@ -164,13 +175,13 @@ $loopflight = array(
     'note' => 'AddLoopFlightTest,;:\'"Chars',
 );
 
-$trip = array(
+$GLOBALS['trip'] = array(
     'name' => 'AutoTest Trip',
     'url' => 'http://autotrip.example',
     'privacy' => 'Y',
 ); // should default to Y/O
 
-$route = array(
+$GLOBALS['route'] = array(
     'core_ap_iata' => 'ISG',
     'core_ap_filter_iata' => 'NH', // airline that flies to the airport above
     'noroute_ap_iata' => 'SQQ',

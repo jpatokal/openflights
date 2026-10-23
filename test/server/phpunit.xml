@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="config.php" colors="true" stopOnFailure="false" failOnWarning="false" failOnRisky="false">
+    <testsuites>
+        <testsuite name="OpenFlights Server Test Suite">
+            <file>helper.php</file>
+            <file>settings.php</file>
+            <file>login.php</file>
+            <file>submit.php</file>
+            <file>trip.php</file>
+            <file>map.php</file>
+            <file>stats.php</file>
+            <file>top10.php</file>
+            <file>apsearch.php</file>
+            <file>alsearch.php</file>
+            <file>autocomplete.php</file>
+            <file>routes.php</file>
+            <file>resetpw.php</file>
+            <file>cleanup.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

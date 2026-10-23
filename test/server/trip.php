@@ -81,7 +81,7 @@ class CheckPublicFullTripMap extends WebTestCase {
         // Statistics
         $stats = explode(";", $rows[0]);
         $this->assertTrue($stats[0] == 0, "Flight count");
-        $this->assertTrue(strstr($stats[1], "0"), "Distance");
+        $this->assertStringContainsString("0", $stats[1], "Distance");
         $this->assertTrue($stats[3] == $trip["privacy"], "Public");
         $this->assertTrue($stats[5] == "demo", "Username"); // we are not this user!
     }

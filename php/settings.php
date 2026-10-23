@@ -3,18 +3,18 @@
 include_once 'locale.php';
 include_once 'db_pdo.php';
 
-$type = $_POST["type"];
+$type = $_POST["type"] ?? null;
 $name = $_POST["name"] ?? null;
-$pw = $_POST["pw"];
+$pw = $_POST["pw"] ?? null;
 $oldpw = $_POST["oldpw"] ?? null;
 $oldlpw = $_POST["oldlpw"] ?? null;
-$email = $_POST["email"];
-$privacy = $_POST["privacy"];
-$editor = $_POST["editor"];
-$units = $_POST["units"];
+$email = $_POST["email"] ?? null;
+$privacy = $_POST["privacy"] ?? null;
+$editor = $_POST["editor"] ?? null;
+$units = $_POST["units"] ?? null;
 $guestpw = $_POST["guestpw"] ?? null;
 $startpane = $_POST["startpane"] ?? null;
-$locale = $_POST["locale"]; // override any value in URL/session
+$locale = $_POST["locale"] ?? null; // override any value in URL/session
 
 // 0 error
 // 1 new
@@ -67,9 +67,20 @@ if ($type == "NEW") {
     );
     $success = $sth->execute([$name, $pw, $email, $privacy, $editor, $locale, $units]);
 } else {
-    if (!$guestpw) {
-        $guestpw = null;
-    }
+    // Preserve existing settings for fields omitted from the request, so a
+    // partial update (e.g. changing only the password) doesn't wipe them out.
+    $sth = $dbh->prepare("SELECT email, public, editor, guestpw, startpane, locale, units FROM users WHERE uid = ?");
+    $sth->execute([$uid]);
+    $current = $sth->fetch();
+
+    $email = array_key_exists("email", $_POST) ? $email : $current["email"];
+    $privacy = array_key_exists("privacy", $_POST) ? $privacy : $current["public"];
+    $editor = array_key_exists("editor", $_POST) ? $editor : $current["editor"];
+    $guestpw = array_key_exists("guestpw", $_POST) ? ($guestpw ?: null) : $current["guestpw"];
+    $startpane = array_key_exists("startpane", $_POST) ? $startpane : $current["startpane"];
+    $locale = array_key_exists("locale", $_POST) ? $locale : $current["locale"];
+    $units = array_key_exists("units", $_POST) ? $units : $current["units"];
+
     $params = compact('email', 'privacy', 'editor', 'guestpw', 'startpane', 'locale', 'units', 'uid');
     // Only change password if old password matched and a new one was given
     if ($oldpw && $oldpw != "" && $pw && $pw != "") {
