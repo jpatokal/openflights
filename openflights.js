@@ -147,6 +147,74 @@ var airportLayer;
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 OpenLayers.Util.onImageLoadErrorColor = "transparent";
 
+// The XYZ base layers are spherical Mercator, so OpenLayers reports map
+// extents in EPSG:900913 metres: a square world roughly +/-20037508 m wide.
+// A tall viewport (portrait phone, narrow desktop window) is taller than that
+// square at low zoom levels, which makes OpenLayers request tile rows above
+// the north pole and below the south pole. Those requests 404 and render as
+// blank bands at the top and bottom of the view. Keep the viewport inside the
+// world instead, and never zoom out below level 2.
+var clampingMapView = false;
+function clampMapToWorld() {
+  if (clampingMapView || !map) {
+    return;
+  }
+
+  const size = map.getSize();
+  const worldExtent = map.getMaxExtent();
+  const baseLayer = map.baseLayer;
+  if (
+    !size ||
+    !size.h ||
+    !worldExtent ||
+    !baseLayer ||
+    !baseLayer.resolutions ||
+    !map.center
+  ) {
+    return;
+  }
+
+  clampingMapView = true;
+  try {
+    // Zoom in until the whole viewport fits vertically inside the world.
+    const minZoom = 2;
+    const maxZoom = Math.max(minZoom, (map.getNumZoomLevels() || 19) - 1);
+    const current = map.getZoom() == null ? minZoom : map.getZoom();
+    let zoom = Math.max(minZoom, Math.min(current, maxZoom));
+    for (; zoom < maxZoom; zoom++) {
+      const resolution = map.getResolutionForZoom(zoom);
+      if (resolution == null || size.h * resolution <= worldExtent.getHeight()) {
+        break;
+      }
+    }
+    if (zoom !== current) {
+      map.zoomTo(zoom);
+    }
+
+    // At that zoom the view is at most as tall as the world, so panning can
+    // still overshoot the poles; nudge the centre back inside.
+    const extent = map.getExtent();
+    const center = map.getCenter();
+    if (!extent || !center) {
+      return;
+    }
+    const halfHeight = extent.getHeight() / 2;
+    const northLimit = worldExtent.top - halfHeight;
+    const southLimit = worldExtent.bottom + halfHeight;
+    let lat = center.lat;
+    if (lat > northLimit) {
+      lat = northLimit;
+    } else if (lat < southLimit) {
+      lat = southLimit;
+    }
+    if (lat !== center.lat) {
+      map.setCenter(new OpenLayers.LonLat(center.lon, lat));
+    }
+  } finally {
+    clampingMapView = false;
+  }
+}
+
 // Init Google Charts
 google.load("visualization", "1", { packages: ["corechart"] });
 // Call init after Google JS is done initing.
@@ -253,12 +321,10 @@ function init() {
     ],
   });
 
-  // Horrible hack to stop OpenLayers 2 from showing ZL < 2
-  map.events.register("zoomend", this, function (event) {
-    if (map.getZoom() < 2) {
-      map.zoomTo(2);
-    }
-  });
+  // Stop OpenLayers 2 from showing ZL < 2, and keep the viewport inside the
+  // world so no out-of-range tiles are requested.
+  map.events.register("zoomend", this, clampMapToWorld);
+  map.events.register("moveend", this, clampMapToWorld);
 
   // The keys in the URLs below are domain restricted to openflights.org only, substitute your own!
   var poliLayer = new OpenLayers.Layer.XYZ(
