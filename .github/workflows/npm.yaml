@@ -1,8 +1,9 @@
-name: NPM Actions
+name: Formatting
 
 on:
   pull_request:
   push:
+    branches: [master]
 
 jobs:
   prettier:
@@ -10,11 +11,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          dry: True
-          only_changed: True
-          prettier_version: 2.8.8
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run lint

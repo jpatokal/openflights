@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#
+# Pre-commit formatting check: verify staged JS/CSS/JSON/Markdown files with
+# Prettier before they are committed. Enable it once per clone with:
+#
+#   git config core.hooksPath .githooks
+#
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+files=()
+while IFS= read -r -d '' file; do
+  files+=("$file")
+done < <(git diff --cached --name-only --diff-filter=ACMR -z -- '*.js' '*.css' '*.json' '*.md')
+
+if [ ${#files[@]} -eq 0 ]; then
+  exit 0
+fi
+
+if [ -x node_modules/.bin/prettier ]; then
+  prettier() { node_modules/.bin/prettier "$@"; }
+elif command -v npx >/dev/null 2>&1 && npx --no-install prettier --version >/dev/null 2>&1; then
+  prettier() { npx --no-install prettier "$@"; }
+else
+  echo "pre-commit: Prettier is not installed; run 'npm install' to enable the formatting check." >&2
+  exit 0
+fi
+
+if ! prettier --check "${files[@]}"; then
+  echo "" >&2
+  echo "pre-commit: staged files are not Prettier-formatted." >&2
+  echo "Fix with 'npm run fix' and re-stage the changed files." >&2
+  exit 1
+fi
