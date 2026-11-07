@@ -92,23 +92,33 @@ class PhpQueryObject implements ArrayAccess
     }
 
     // ---- ArrayAccess -------------------------------------------------------
+    //
+    // The parameters are deliberately untyped, and offsetGet() has no return
+    // type. The `mixed` type only exists from PHP 8.0; on PHP 7.x it is read
+    // as a class name, and the class declaration fails with a fatal
+    // "must be compatible with ArrayAccess" error the moment this file is
+    // loaded. That broke every upload to php/import.php with an HTTP 500 on a
+    // PHP 7 runtime (https://github.com/jpatokal/openflights/issues/1539).
+    // #[\ReturnTypeWillChange] silences the PHP 8.1+ deprecation notice and is
+    // an ordinary comment on PHP 7.
 
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists($offset): bool
     {
         return true;
     }
 
-    public function offsetGet(mixed $offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->find((string) $offset);
     }
 
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet($offset, $value): void
     {
         // Read-only subset; not used.
     }
 
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset($offset): void
     {
         // Read-only subset; not used.
     }
