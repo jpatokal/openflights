@@ -46,7 +46,13 @@
     F: "First",
     "": "—",
   };
-  const REASON_NAMES = { B: "Work", L: "Leisure", C: "Crew", O: "Other", "": "—" };
+  const REASON_NAMES = {
+    B: "Work",
+    L: "Leisure",
+    C: "Crew",
+    O: "Other",
+    "": "—",
+  };
   const SEAT_NAMES = { W: "Window", A: "Aisle", M: "Middle", "": "—" };
   const AIRPORT_COLOR = "#e8890c";
 
@@ -402,11 +408,15 @@
         state.mode !== "user" || mapData.stats.public === "O";
 
       const [flightsText, statsText] = await Promise.all([
-        state.canViewFlights ? post(API.FLIGHTS, buildBaseParams()) : Promise.resolve(""),
+        state.canViewFlights
+          ? post(API.FLIGHTS, buildBaseParams())
+          : Promise.resolve(""),
         post(API.STATS, buildBaseParams()),
       ]);
 
-      state.data.flights = state.canViewFlights ? parseFlights(flightsText) : [];
+      state.data.flights = state.canViewFlights
+        ? parseFlights(flightsText)
+        : [];
 
       const statsParsed = parseStats(statsText);
       if (statsParsed && statsParsed.error) {
@@ -692,7 +702,8 @@
 
   function vehicleLabel(f) {
     let v = f.plane || "";
-    if (f.registration) v = v ? v + " (" + f.registration + ")" : f.registration;
+    if (f.registration)
+      v = v ? v + " (" + f.registration + ")" : f.registration;
     return v;
   }
 
@@ -820,10 +831,15 @@
 
     const badges = [];
     if (f.class)
-      badges.push(el("span", { class: "badge", text: CLASS_NAMES[f.class] || f.class }));
+      badges.push(
+        el("span", { class: "badge", text: CLASS_NAMES[f.class] || f.class })
+      );
     if (f.seatType)
       badges.push(
-        el("span", { class: "badge", text: SEAT_NAMES[f.seatType] || f.seatType })
+        el("span", {
+          class: "badge",
+          text: SEAT_NAMES[f.seatType] || f.seatType,
+        })
       );
     if (f.seat)
       badges.push(el("span", { class: "badge", text: "Seat " + f.seat }));
@@ -834,13 +850,14 @@
     const trip = tripName(f);
     if (trip)
       badges.push(el("span", { class: "badge badge--accent", text: trip }));
-    if (future)
-      badges.push(el("span", { class: "badge", text: "Upcoming" }));
+    if (future) badges.push(el("span", { class: "badge", text: "Upcoming" }));
     if (badges.length)
       cardNode.appendChild(el("div", { class: "badges" }, badges));
 
     if (f.note)
-      cardNode.appendChild(el("div", { class: "flight-card__note", text: f.note }));
+      cardNode.appendChild(
+        el("div", { class: "flight-card__note", text: f.note })
+      );
 
     return cardNode;
   }
@@ -887,8 +904,8 @@
           text: state.airportFilter
             ? "No flights for this airport."
             : state.data.flights.length
-              ? "No flights match your search."
-              : "No flights found.",
+            ? "No flights match your search."
+            : "No flights found.",
         })
       );
       return;
@@ -914,8 +931,7 @@
   let airportPopup = null;
 
   function buildMapControls() {
-    const touch =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const touch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     const nav = touch
       ? new OpenLayers.Control.TouchNavigation()
       : new OpenLayers.Control.Navigation({ zoomWheelEnabled: true });
@@ -1331,7 +1347,8 @@
     if (state.canViewFlights) {
       const flightCount = airportFlightCount(apid);
       const countText =
-        formatNumber(flightCount) + (flightCount === 1 ? " flight" : " flights");
+        formatNumber(flightCount) +
+        (flightCount === 1 ? " flight" : " flights");
       extraHtml =
         '<button type="button" class="btn btn--primary airport-popup__btn" ' +
         'id="airport-popup-flights">' +
@@ -1671,7 +1688,8 @@
       toast("Logged in as " + state.username + ".");
       await loadAll();
     } else {
-      const msg = resp && resp.message ? stripHtml(resp.message) : "Login failed.";
+      const msg =
+        resp && resp.message ? stripHtml(resp.message) : "Login failed.";
       toast(msg);
     }
   }

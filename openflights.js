@@ -183,7 +183,10 @@ function clampMapToWorld() {
     let zoom = Math.max(minZoom, Math.min(current, maxZoom));
     for (; zoom < maxZoom; zoom++) {
       const resolution = map.getResolutionForZoom(zoom);
-      if (resolution == null || size.h * resolution <= worldExtent.getHeight()) {
+      if (
+        resolution == null ||
+        size.h * resolution <= worldExtent.getHeight()
+      ) {
         break;
       }
     }
