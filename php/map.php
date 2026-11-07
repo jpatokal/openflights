@@ -200,5 +200,5 @@ print $map . implode("\t", $rows) . "\n";
 
 // When running for the first time, load up possible filter settings for this user
 if ($init == "true") {
-    loadFilter($dbh, $uid, $trid, $logged_in);
+    loadFilter($dbh, $uid, $trid, $logged_in, $_POST["year"] ?? null);
 }

@@ -2,6 +2,7 @@ server {
     root /var/www/openflights;
 
     index index.html index.php;
+    absolute_redirect off;
 
     location / {
         ssi on;

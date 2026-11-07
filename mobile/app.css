@@ -1,0 +1,1011 @@
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --text: #17191d;
+  --text-muted: #6b7280;
+  --border: #e4e7ec;
+  --primary: #656698;
+  --primary-strong: #44456e;
+  --primary-ink: #ffffff;
+  --accent: #e8890c;
+  --danger: #d64545;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 10px 30px rgba(16, 24, 40, 0.14);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --header-h: auto;
+  --tabbar-h: 60px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Loading bar ---------- */
+.loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 100;
+  overflow: hidden;
+  background: transparent;
+}
+.loading-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: var(--primary);
+  border-radius: 3px;
+  animation: loading-slide 1s ease-in-out infinite;
+}
+.loading-bar[hidden] {
+  display: none;
+}
+@keyframes loading-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+}
+.app-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.brand__img {
+  display: block;
+  height: 30px;
+  width: auto;
+  max-width: 100%;
+}
+.chip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.chip:hover {
+  background: var(--bg);
+}
+.chip--self {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.app-header__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px 14px;
+  margin-top: 10px;
+}
+.field.field--inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.field--grow {
+  flex: 1 1 14em;
+  width: 14em;
+  min-width: 4em;
+  max-width: 100%;
+}
+.field--grow .select {
+  /* The field's explicit width, not the option text, decides the size here;
+     otherwise switching to a year with fewer carriers shrinks the select and
+     the header filters reflow. */
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ---------- Main / views ---------- */
+.app-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.view {
+  display: none;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.view.is-active {
+  display: flex;
+  flex-direction: column;
+}
+.view--scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 14px calc(var(--tabbar-h) + var(--safe-bottom) + 24px);
+}
+.view--map {
+  overflow: hidden;
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom));
+}
+.map {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #dfe6ee;
+}
+
+/* ---------- Tab bar ---------- */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.tabbar__tab {
+  flex: 1 1 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #8a8c92;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+}
+.tabbar__tab.is-active {
+  color: var(--primary-strong);
+  font-weight: 700;
+}
+.tabbar__tab span {
+  line-height: 1;
+}
+
+/* ---------- Cards / tiles ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.card__title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.hero__item {
+  text-align: center;
+  padding: 8px 4px;
+}
+.hero__value {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.hero__label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.grid-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.tile {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+.tile__value {
+  font-size: 22px;
+  font-weight: 800;
+}
+.tile__label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---------- Lists ---------- */
+.stat-list {
+  display: flex;
+  flex-direction: column;
+}
+.stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.stat-row:last-child {
+  border-bottom: 0;
+}
+.stat-row__label {
+  min-width: 0;
+}
+.stat-row__name {
+  font-weight: 600;
+}
+.stat-row__sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.stat-row__value {
+  text-align: right;
+  flex: 0 0 auto;
+}
+.stat-row__value strong {
+  font-size: 15px;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bar {
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+.bar__label {
+  color: var(--text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bar__track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--primary);
+  min-width: 2px;
+}
+.bar__value {
+  color: var(--text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.extreme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.extreme {
+  text-align: center;
+  padding: 8px 2px;
+}
+.extreme__dir {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.extreme__code {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* ---------- Flights ---------- */
+.flights-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.search {
+  flex: 1 1 auto;
+  min-width: 0;
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--text);
+}
+.search:focus,
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(101, 102, 152, 0.15);
+}
+.select {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 9px 10px;
+  font: inherit;
+  color: var(--text);
+}
+.flight-count {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.airport-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin: 0 0 10px;
+  padding: 4px 4px 4px 12px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  background: rgba(101, 102, 152, 0.08);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+.airport-filter[hidden] {
+  display: none;
+}
+.airport-filter__clear {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+.airport-filter__clear:hover {
+  background: rgba(101, 102, 152, 0.15);
+}
+.flight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.flight-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
+}
+.flight-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.flight-card__route {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.mode-icon {
+  flex: 0 0 auto;
+}
+.flight-card__date {
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+.flight-card__date.is-future {
+  color: var(--primary);
+  font-weight: 700;
+}
+.flight-card__meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.flight-card__note {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.badge--accent {
+  background: rgba(232, 137, 12, 0.12);
+  border-color: rgba(232, 137, 12, 0.4);
+  color: #b26a00;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--text-muted);
+}
+.error-card {
+  background: #fdecec;
+  border: 1px solid #f5c6c6;
+  color: #a12626;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.error-card__actions {
+  margin-top: 12px;
+}
+
+/* ---------- Sheet / dialog ---------- */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Above OpenLayers' map layers/controls (its control z-index base is 1000),
+     otherwise the sheet renders underneath the map. */
+  z-index: 2000;
+  background: rgba(16, 24, 40, 0.5);
+}
+.sheet-backdrop[hidden],
+.sheet[hidden] {
+  display: none;
+}
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2001;
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  box-shadow: var(--shadow-md);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding-bottom: calc(20px + var(--safe-bottom));
+  animation: sheet-up 0.22s ease;
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 0;
+}
+.sheet__header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.icon-btn {
+  appearance: none;
+  border: 0;
+  background: var(--surface-2);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.sheet__body {
+  padding: 8px 18px 4px;
+}
+.sheet__status {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 4px 0 12px;
+}
+.sheet__section {
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sheet__section h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.sheet__section--actions {
+  flex-direction: row;
+}
+
+/* Airport chooser (bottom sheet) */
+.chooser-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+.chooser-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.chooser-row:last-child {
+  border-bottom: 0;
+}
+.chooser-row:hover {
+  background: var(--surface-2);
+}
+.chooser-row__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.chooser-row__name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.chooser-row__sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.chooser-row__count {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+.chooser-zoom {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field__label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.input {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 11px 12px;
+  font: inherit;
+  color: var(--text);
+}
+.muted {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn:hover {
+  background: var(--bg);
+}
+.btn--primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-ink);
+}
+.btn--primary:hover {
+  background: #565781;
+}
+.btn--ghost {
+  background: transparent;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 18px);
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(23, 25, 29, 0.94);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 90%;
+  text-align: center;
+  z-index: 2100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 720px) {
+  body {
+    align-items: center;
+  }
+  .brand__img {
+    height: 34px;
+  }
+  .app-header,
+  .app-main {
+    width: 100%;
+    max-width: 960px;
+  }
+  .app-header {
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  /* Keep the navigation aligned with the app shell, with the tabs grouped in
+     the centre instead of stretching across a wide screen. */
+  .tabbar {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 960px;
+    justify-content: center;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .tabbar__tab {
+    flex: 0 1 220px;
+  }
+
+  .view--scroll {
+    padding: 20px 20px calc(var(--tabbar-h) + var(--safe-bottom) + 24px);
+  }
+
+  /* Overview: use the width for a two-column card grid, with the summary
+     card spanning the full row. */
+  #view-overview.is-active {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 14px;
+  }
+  #view-overview.is-active > * {
+    margin-bottom: 0;
+  }
+  #view-overview.is-active > .card:first-child,
+  #view-overview.is-active > .error-card,
+  #view-overview.is-active > .empty {
+    grid-column: 1 / -1;
+  }
+
+  /* Flights: two cards per row. */
+  .flight-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .flight-list > .empty {
+    grid-column: 1 / -1;
+  }
+
+  .sheet {
+    max-width: 560px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    bottom: 40px;
+  }
+  @keyframes sheet-up {
+    from {
+      transform: translateX(-50%) translateY(30px);
+      opacity: 0.6;
+    }
+    to {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+/* Laptops and desktops: put the header (brand, filters, login) on one row
+   and add a third column once there is enough width for it. */
+@media (min-width: 900px) {
+  .app-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  /* Let the brand and login button take part in the header's flex row so
+     they can sit on either side of the filters. */
+  .app-header__row {
+    display: contents;
+  }
+  .brand {
+    flex: 1 1 auto;
+  }
+  .app-header__filters {
+    flex: 0 1 auto;
+    margin-top: 0;
+    order: 1;
+  }
+  .chip {
+    flex: 0 0 auto;
+    order: 2;
+  }
+}
+
+@media (min-width: 1180px) {
+  .app-header,
+  .app-main,
+  .tabbar {
+    max-width: 1320px;
+  }
+  #view-overview.is-active,
+  .flight-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Airport popup ---------- */
+.olPopup {
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+}
+.olPopupContent {
+  /* OpenLayers measures the content div and then adds its padding on top;
+     with the app's global border-box sizing that leaves dead space to the
+     right and below the content, so padding lives on the inner element. */
+  padding: 0;
+  overflow: visible;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.airport-popup {
+  position: relative;
+  min-width: 180px;
+  padding: 10px 12px;
+}
+.airport-popup__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+.airport-popup__close:hover {
+  background: var(--border);
+}
+.airport-popup__name {
+  padding-right: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.airport-popup__meta {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.airport-popup__btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ---------- OpenLayers controls ---------- */
+/* Subset of the OpenLayers default theme (as inlined in openflights.css),
+   with absolute image paths since the map loads its assets from /img/. */
+
+div.olLayerDiv {
+  -moz-user-select: none;
+  text-align: left;
+}
+
+.olControlAttribution {
+  font-size: smaller;
+  right: 4px;
+  bottom: 4px;
+  position: absolute;
+  display: block;
+  max-width: calc(100% - 90px);
+  text-align: right;
+}
+
+.olControlScaleLine {
+  left: 10px;
+  bottom: 15px;
+  font-size: xx-small;
+}
+
+.olControlScaleLineBottom {
+  border: solid 2px black;
+  border-bottom: none;
+  margin-top: -2px;
+  text-align: center;
+}
+
+.olControlScaleLineTop {
+  border: solid 2px black;
+  border-top: none;
+  text-align: center;
+}
+
+.olControlLayerSwitcher {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20em;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: smaller;
+  color: white;
+  background-color: transparent;
+}
+
+.olControlLayerSwitcher .layersDiv {
+  padding: 5px 10px;
+  background-color: var(--primary);
+}
+
+.olControlLayerSwitcher .layersDiv .baseLbl,
+.olControlLayerSwitcher .layersDiv .dataLbl {
+  margin: 3px;
+}
+
+.olControlLayerSwitcher .layersDiv .baseLayersDiv,
+.olControlLayerSwitcher .layersDiv .dataLayersDiv {
+  padding-left: 10px;
+}
+
+.olControlLayerSwitcher .maximizeDiv,
+.olControlLayerSwitcher .minimizeDiv {
+  width: 18px;
+  height: 18px;
+  top: 5px;
+  right: 0;
+  cursor: pointer;
+}
+
+.olPopupCloseBox {
+  background: url("/img/close.gif") no-repeat;
+  cursor: pointer;
+}
+
+.olControlNoSelect {
+  -moz-user-select: none;
+}

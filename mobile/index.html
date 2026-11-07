@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#656698" />
+    <title>OpenFlights</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta
+      name="description"
+      content="A read-only, mobile-friendly viewer for your OpenFlights flight log."
+    />
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="loading-bar" class="loading-bar" hidden></div>
+
+    <header class="app-header">
+      <div class="app-header__row">
+        <h1 class="brand">
+          <img
+            class="brand__img"
+            src="img/openflights-logo.png"
+            alt="OpenFlights"
+          />
+        </h1>
+        <button id="user-chip" class="chip" type="button" aria-haspopup="dialog">
+          Login
+        </button>
+      </div>
+
+      <div class="app-header__filters">
+        <label class="field field--inline">
+          <select id="year-select" class="select" aria-label="Year">
+            <option value="0">All years</option>
+          </select>
+        </label>
+        <label class="field field--inline field--grow">
+          <select id="carrier-select" class="select" aria-label="Carrier">
+            <option value="0">All carriers</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section
+        id="view-overview"
+        class="view view--scroll"
+        aria-label="Overview"
+      ></section>
+
+      <section
+        id="view-flights"
+        class="view view--scroll"
+        aria-label="Flights"
+      >
+        <div class="flights-toolbar">
+          <input
+            id="flight-search"
+            class="search"
+            type="search"
+            placeholder="Search flights…"
+            aria-label="Search flights"
+          />
+          <select id="flight-sort" class="select" aria-label="Sort flights">
+            <option value="date-desc">Newest first</option>
+            <option value="date-asc">Oldest first</option>
+            <option value="distance-desc">Longest first</option>
+            <option value="distance-asc">Shortest first</option>
+          </select>
+        </div>
+        <div id="airport-filter" class="airport-filter" hidden>
+          <span id="airport-filter-text" class="airport-filter__text"></span>
+          <button
+            id="airport-filter-clear"
+            class="airport-filter__clear"
+            type="button"
+            aria-label="Clear airport filter"
+          >
+            ✕
+          </button>
+        </div>
+        <p id="flight-count" class="flight-count" aria-live="polite"></p>
+        <div id="flight-list" class="flight-list"></div>
+      </section>
+
+      <section id="view-map" class="view view--map is-active" aria-label="Map">
+        <div id="map" class="map"></div>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="Primary">
+      <button
+        class="tabbar__tab is-active"
+        type="button"
+        data-view="map"
+        aria-selected="true"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"
+            fill="currentColor"
+          />
+        </svg>
+        <span>Map</span>
+      </button>
+
+      <button
+        class="tabbar__tab"
+        type="button"
+        data-view="overview"
+        aria-selected="false"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M4 13h6V4H4v9zm0 7h6v-5H4v5zm10 0h6V11h-6v9zm0-16v5h6V4h-6z"
+            fill="currentColor"
+          />
+        </svg>
+        <span>Overview</span>
+      </button>
+
+      <button
+        class="tabbar__tab"
+        type="button"
+        data-view="flights"
+        aria-selected="false"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"
+            fill="currentColor"
+          />
+        </svg>
+        <span>Flights</span>
+      </button>
+    </nav>
+
+    <div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
+    <div
+      id="user-sheet"
+      class="sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="user-sheet-title"
+      hidden
+    >
+      <div class="sheet__header">
+        <h2 id="user-sheet-title">Login</h2>
+        <button
+          id="sheet-close"
+          class="icon-btn"
+          type="button"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="sheet__body">
+        <p id="sheet-status" class="sheet__status"></p>
+
+        <form id="login-form" class="sheet__section">
+          <h3>Log in</h3>
+          <label class="field">
+            <span class="field__label">Username</span>
+            <input
+              id="login-username"
+              class="input"
+              type="text"
+              name="username"
+              autocomplete="username"
+            />
+          </label>
+          <label class="field">
+            <span class="field__label">Password</span>
+            <input
+              id="login-password"
+              class="input"
+              type="password"
+              name="password"
+              autocomplete="current-password"
+            />
+          </label>
+          <button class="btn" type="submit">Log in</button>
+        </form>
+
+        <div class="sheet__section sheet__section--actions">
+          <button id="logout-btn" class="btn btn--ghost" type="button">
+            Log out
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="chooser-backdrop" class="sheet-backdrop" hidden></div>
+    <div
+      id="airport-chooser"
+      class="sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="airport-chooser-title"
+      hidden
+    >
+      <div class="sheet__header">
+        <h2 id="airport-chooser-title">Choose airport</h2>
+        <button
+          id="chooser-close"
+          class="icon-btn"
+          type="button"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="sheet__body">
+        <p id="chooser-subtitle" class="sheet__status"></p>
+        <button
+          id="chooser-zoom"
+          class="btn btn--primary chooser-zoom"
+          type="button"
+          hidden
+        >
+          Zoom in
+        </button>
+        <div id="chooser-list" class="chooser-list"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="/js/OpenLayers.min.js"></script>
+    <script src="/js/greatcircle.js"></script>
+    <script src="/js/md5.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

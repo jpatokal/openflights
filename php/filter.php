@@ -68,8 +68,9 @@ function getFilterString($dbh, $vars) {
  * @param $uid string User ID
  * @param $trid string Trip ID
  * @param $logged_in string Username if signed in
+ * @param $year string Selected year, or null/"0" for all years
  */
-function loadFilter($dbh, $uid, $trid, $logged_in) {
+function loadFilter($dbh, $uid, $trid, $logged_in, $year = null) {
     // Limit selections to a single trip?
     $filter = "";
     $params = [$uid];
@@ -96,15 +97,21 @@ function loadFilter($dbh, $uid, $trid, $logged_in) {
     }
     echo implode("\t", $rows) . "\n";
 
-    // List of all airlines
+    // List of all airlines (limited to the selected year, if any)
+    $airlineFilter = $filter;
+    $airlineParams = $params;
+    if ($year && $year != "0") {
+        $airlineFilter .= " AND YEAR(f.src_date) = ?";
+        $airlineParams[] = (int) $year;
+    }
     $sth = $dbh->prepare(<<<SQL
         SELECT DISTINCT a.alid, iata, icao, name
         FROM airlines as a, flights as f
-        WHERE f.uid = ? $filter AND a.alid = f.alid
+        WHERE f.uid = ? $airlineFilter AND a.alid = f.alid
         ORDER BY name
 SQL
     );
-    $sth->execute($params);
+    $sth->execute($airlineParams);
     $rows = [];
     foreach ($sth as $row) {
         $rows[] = sprintf("%s;%s", $row["alid"], $row["name"]);
