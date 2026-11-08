@@ -54,7 +54,32 @@
     "": "—",
   };
   const SEAT_NAMES = { W: "Window", A: "Aisle", M: "Middle", "": "—" };
+  const PIE_COLORS = [
+    "#656698",
+    "#e8890c",
+    "#458ca7",
+    "#45a679",
+    "#ba558f",
+    "#dfa41f",
+  ];
+  // Reference distances for the "Distance in perspective" card.
+  const DISTANCE_SCALES = {
+    km: { rtw: 40075, moon: 384400, mars: 225000000 },
+    mi: { rtw: 24901, moon: 238855, mars: 139800000 },
+  };
+  // Fallback colour when a cluster's busiest airport is unknown.
   const AIRPORT_COLOR = "#e8890c";
+  // Six-tier pin colour scale by visit count, least to most: orange, coral,
+  // plum, violet, blue, green. The top two keep the blue and green used by the
+  // busiest airport icons in openflights.js.
+  const AIRPORT_PIN_COLORS = [
+    "#e8890c", // 0 · orange (least visited)
+    "#dd643c", // 1 · coral
+    "#ba558f", // 2 · plum
+    "#666699", // 3 · violet
+    "#458ca7", // 4 · blue
+    "#45a679", // 5 · green (busiest)
+  ];
 
   // --------------------------------------------------------------------------
   // State
@@ -521,30 +546,151 @@
     ]);
   }
 
-  function breakdownCard(title, data, key, labels, unit) {
-    const max =
-      data.reduce(function (m, d) {
-        return Math.max(m, num(d.segments));
-      }, 0) || 1;
-    const rows = data.map(function (d) {
-      const segments = num(d.segments);
-      const distance = num(d.distance);
+  function pieChart(data, key, labels) {
+    const total = data.reduce(function (sum, d) {
+      return sum + num(d.segments);
+    }, 0);
+    const size = 120;
+    const center = size / 2;
+    const radius = size / 2 - 2;
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + size + " " + size);
+    svg.setAttribute("class", "pie");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "Share by " + key);
+
+    if (!total) {
+      const empty = document.createElementNS(SVG_NS, "circle");
+      empty.setAttribute("cx", center);
+      empty.setAttribute("cy", center);
+      empty.setAttribute("r", radius);
+      empty.setAttribute("fill", "#e4e7ec");
+      svg.appendChild(empty);
+      return svg;
+    }
+
+    let angle = -Math.PI / 2;
+    data.forEach(function (d, i) {
+      const value = num(d.segments);
+      if (value <= 0) return;
+      const color = PIE_COLORS[i % PIE_COLORS.length];
       const name = (labels && labels[d[key]]) || d[key] || "—";
-      return el("div", { class: "bar" }, [
-        el("div", { class: "bar__label", text: name }),
-        el("div", { class: "bar__track" }, [
-          el("div", {
-            class: "bar__fill",
-            style: "width:" + (100 * segments) / max + "%",
-          }),
-        ]),
-        el("div", {
-          class: "bar__value",
-          text: segments + " · " + formatNumber(distance) + " " + unit,
-        }),
-      ]);
+      const sweep = (value / total) * Math.PI * 2;
+
+      let shape;
+      if (sweep >= Math.PI * 2 - 1e-6) {
+        shape = document.createElementNS(SVG_NS, "circle");
+        shape.setAttribute("cx", center);
+        shape.setAttribute("cy", center);
+        shape.setAttribute("r", radius);
+      } else {
+        const end = angle + sweep;
+        const x1 = center + radius * Math.cos(angle);
+        const y1 = center + radius * Math.sin(angle);
+        const x2 = center + radius * Math.cos(end);
+        const y2 = center + radius * Math.sin(end);
+        const large = sweep > Math.PI ? 1 : 0;
+        shape = document.createElementNS(SVG_NS, "path");
+        shape.setAttribute(
+          "d",
+          "M" +
+            center +
+            "," +
+            center +
+            " L" +
+            x1.toFixed(2) +
+            "," +
+            y1.toFixed(2) +
+            " A" +
+            radius +
+            "," +
+            radius +
+            " 0 " +
+            large +
+            ",1 " +
+            x2.toFixed(2) +
+            "," +
+            y2.toFixed(2) +
+            " Z"
+        );
+        angle = end;
+      }
+      shape.setAttribute("fill", color);
+      shape.setAttribute("stroke", "#ffffff");
+      shape.setAttribute("stroke-width", "2");
+      const tip = document.createElementNS(SVG_NS, "title");
+      tip.textContent =
+        name + ": " + value + " (" + Math.round((value / total) * 100) + "%)";
+      shape.appendChild(tip);
+      svg.appendChild(shape);
     });
-    return card(title, el("div", { class: "bars" }, rows));
+    return svg;
+  }
+
+  function pieLegend(data, key, labels, unit) {
+    return el(
+      "div",
+      { class: "pie-legend" },
+      data.map(function (d, i) {
+        const segments = num(d.segments);
+        const distance = num(d.distance);
+        const name = (labels && labels[d[key]]) || d[key] || "—";
+        return el("div", { class: "pie-legend__row" }, [
+          el("span", {
+            class: "pie-legend__dot",
+            style: "background:" + PIE_COLORS[i % PIE_COLORS.length],
+          }),
+          el("span", { class: "pie-legend__label", text: name }),
+          el("span", {
+            class: "pie-legend__value",
+            text: segments + " · " + formatNumber(distance) + " " + unit,
+          }),
+        ]);
+      })
+    );
+  }
+
+  function breakdownCard(title, data, key, labels, unit) {
+    // Show the biggest slice first, like a conventional pie chart.
+    const ordered = data.slice().sort(function (a, b) {
+      return num(b.segments) - num(a.segments);
+    });
+    return card(
+      title,
+      el("div", { class: "pie-wrap" }, [
+        pieChart(ordered, key, labels),
+        pieLegend(ordered, key, labels, unit),
+      ])
+    );
+  }
+
+  function formatTripCount(value) {
+    if (!isFinite(value) || value <= 0) return "0";
+    if (value >= 1000) return formatNumber(Math.round(value));
+    if (value >= 100) return String(Math.round(value));
+    if (value >= 10) return String(Math.round(value * 10) / 10);
+    if (value >= 1) return String(Math.round(value * 100) / 100);
+    return String(parseFloat(value.toPrecision(2)));
+  }
+
+  function totalDistanceValue() {
+    const stats = state.data.stats;
+    if (stats && stats.total && stats.total.distance != null) {
+      return num(stats.total.distance);
+    }
+    const s = state.data.mapStats && state.data.mapStats.distanceStr;
+    if (s) return num(String(s).replace(/,/g, ""));
+    return 0;
+  }
+
+  // The extreme airport's latitude arrives in stats.php's `lon` field and its
+  // longitude in `lat` (the same swap openflights.js handles). Show only the
+  // coordinate that the direction refers to, to one decimal place.
+  function extremeCoord(dir, ex) {
+    if (!ex) return "";
+    const value = Number(dir === "N" || dir === "S" ? ex.lon : ex.lat);
+    if (!isFinite(value)) return "";
+    return Math.abs(value).toFixed(1) + "°" + dir;
   }
 
   function renderOverview() {
@@ -587,6 +733,27 @@
       ])
     );
 
+    const totalDistance = totalDistanceValue();
+    if (totalDistance > 0) {
+      const scale = DISTANCE_SCALES[unit] || DISTANCE_SCALES.mi;
+      view.appendChild(
+        card(
+          "Distance in perspective",
+          el("div", { class: "grid-tiles grid-tiles--3" }, [
+            tile(
+              formatTripCount(totalDistance / scale.rtw) + "x",
+              "Round the world"
+            ),
+            tile(
+              formatTripCount(totalDistance / scale.moon) + "x",
+              "To the Moon"
+            ),
+            tile(formatTripCount(totalDistance / scale.mars) + "x", "To Mars"),
+          ])
+        )
+      );
+    }
+
     if (!stats) {
       view.appendChild(
         el("div", {
@@ -628,9 +795,11 @@
       const labels = { N: "North", S: "South", E: "East", W: "West" };
       const items = dirs.map(function (d) {
         const ex = stats.extreme[d];
+        const coord = extremeCoord(d, ex);
         return el("div", { class: "extreme" }, [
           el("div", { class: "extreme__dir", text: labels[d] }),
           el("div", { class: "extreme__code", text: ex ? ex.code : "—" }),
+          coord ? el("div", { class: "extreme__coord", text: coord }) : null,
         ]);
       });
       view.appendChild(
@@ -1103,7 +1272,11 @@
             return feature.attributes.radius;
           },
           color: function (feature) {
-            return feature.cluster ? AIRPORT_COLOR : feature.attributes.color;
+            if (feature.cluster) {
+              const top = largestAirportFeature(feature);
+              return (top && top.attributes.color) || AIRPORT_COLOR;
+            }
+            return feature.attributes.color;
           },
           labelText: function (feature) {
             if (feature.cluster) {
@@ -1211,28 +1384,46 @@
     return 3 + Math.round((count / max) * 5);
   }
 
+  // Tier airports by visit count, mirroring the six airport icon tiers in
+  // openflights.js. Airports with two or fewer flights always take the lowest
+  // tier; the busiest airport always takes the highest.
+  function airportVisitColor(count, max) {
+    if (max <= 0) return AIRPORT_PIN_COLORS[0];
+    let tier = Math.floor((count / max) * 6) + 1;
+    if (count <= 2) tier = 0;
+    if (count > 2) tier = Math.max(1, tier);
+    if (tier >= 6) tier = 5;
+    return AIRPORT_PIN_COLORS[tier];
+  }
+
   function airportClusterRadius() {
     // Match the footprint of a selected cluster: OpenLayers' "select" style
     // uses pointRadius 6, so clusters don't grow with their member count.
     return 6;
   }
 
-  // The airport with the most flights in a cluster, for the "SIN+" label.
-  function largestAirportCode(clusterFeature) {
+  // The airport with the most flights in a cluster. Used for the "SIN+" label
+  // and to tint the cluster with its busiest airport's pin colour.
+  function largestAirportFeature(clusterFeature) {
     let best = null;
     clusterFeature.cluster.forEach(function (feature) {
       const a = feature.attributes || {};
       const aCount = parseInt(a.count, 10) || 0;
-      const bCount = best ? parseInt(best.count, 10) || 0 : -1;
+      const bCount = best ? parseInt(best.attributes.count, 10) || 0 : -1;
       if (
         !best ||
         aCount > bCount ||
-        (aCount === bCount && (a.code || "") < (best.code || ""))
+        (aCount === bCount && (a.code || "") < (best.attributes.code || ""))
       ) {
-        best = a;
+        best = feature;
       }
     });
-    return (best && best.code) || "";
+    return best;
+  }
+
+  function largestAirportCode(clusterFeature) {
+    const best = largestAirportFeature(clusterFeature);
+    return (best && best.attributes.code) || "";
   }
 
   function drawMap() {
@@ -1269,7 +1460,7 @@
     const airportFeatures = state.data.airports.map(function (a) {
       return new OpenLayers.Feature.Vector(projectedPoint(a.lon, a.lat), {
         radius: airportRadius(a.count, maxCount),
-        color: AIRPORT_COLOR,
+        color: airportVisitColor(a.count, maxCount),
         code: a.code,
         name: a.name,
         city: a.city,
