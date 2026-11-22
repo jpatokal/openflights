@@ -76,7 +76,7 @@ class CheckPublicFullTripMap extends WebTestCase {
             "trid" => $trid);
         $map = $this->post($webroot . "php/map.php", $params);
         $rows = explode("\n", $map);
-        $this->assertTrue(sizeof($rows) == 6, "Number of rows" . sizeof($rows));
+        $this->assertTrue(sizeof($rows) == 8, "Number of rows" . sizeof($rows));
 
         // Statistics
         $stats = explode(";", $rows[0]);

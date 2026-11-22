@@ -18,7 +18,7 @@ class CheckDemoFullUserMap extends WebTestCase {
         $params = array("param" => "true");
         $map = $this->post($webroot . "php/map.php", $params);
         $rows = explode("\n", $map);
-        $this->assertTrue(sizeof($rows) == 6, "Number of rows");
+        $this->assertTrue(sizeof($rows) == 8, "Number of rows");
 
         // Statistics
         $stats = explode(";", $rows[0]);
@@ -41,7 +41,7 @@ class CheckPublicFullUserMap extends WebTestCase {
         );
         $map = $this->post($webroot . "php/map.php", $params);
         $rows = explode("\n", $map);
-        $this->assertTrue(sizeof($rows) == 6, "Number of rows");
+        $this->assertTrue(sizeof($rows) == 8, "Number of rows");
 
         // Statistics
         $stats = explode(";", $rows[0]);
@@ -114,7 +114,7 @@ class CheckLoggedInFullUserMap extends WebTestCase {
         $params = array("param" => "true");
         $map = $this->post($webroot . "php/map.php", $params);
         $rows = explode("\n", $map);
-        $this->assertTrue(sizeof($rows) == 6, "Number of rows");
+        $this->assertTrue(sizeof($rows) == 8, "Number of rows");
 
         // Statistics
         $stats = explode(";", $rows[0]);

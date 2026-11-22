@@ -27,22 +27,55 @@
             alt="OpenFlights"
           />
         </h1>
-        <button id="user-chip" class="chip" type="button" aria-haspopup="dialog">
-          Login
-        </button>
+        <div class="app-header__actions">
+          <button
+            id="filter-toggle"
+            class="chip filter-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="filter-panel"
+          >
+            Filter
+          </button>
+          <button
+            id="user-chip"
+            class="chip"
+            type="button"
+            aria-haspopup="dialog"
+          >
+            Login
+          </button>
+        </div>
       </div>
 
-      <div class="app-header__filters">
+      <div id="filter-panel" class="app-header__filters" hidden style="display: none">
         <label class="field field--inline">
           <select id="year-select" class="select" aria-label="Year">
             <option value="0">All years</option>
           </select>
         </label>
-        <label class="field field--inline field--grow">
+        <label class="field field--inline">
           <select id="carrier-select" class="select" aria-label="Carrier">
             <option value="0">All carriers</option>
           </select>
         </label>
+        <label class="field field--inline">
+          <select id="mode-select" class="select" aria-label="Mode">
+            <option value="0">All modes</option>
+          </select>
+        </label>
+        <label class="field field--inline">
+          <select id="class-select" class="select" aria-label="Class">
+            <option value="0">All classes</option>
+          </select>
+        </label>
+        <button
+          id="clear-filters"
+          class="btn btn--ghost clear-filters"
+          type="button"
+        >
+          Clear filters
+        </button>
       </div>
     </header>
 

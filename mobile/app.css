@@ -90,6 +90,14 @@ body {
   justify-content: space-between;
   gap: 12px;
 }
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.app-header__actions .chip {
+  max-width: none;
+}
 .brand {
   margin: 0;
   display: flex;
@@ -125,12 +133,22 @@ body {
   border-color: var(--primary);
   color: var(--primary);
 }
+.filter-toggle.is-active {
+  border-color: var(--primary);
+  background: rgba(101, 102, 152, 0.1);
+  color: var(--primary);
+}
 .app-header__filters {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 14px;
   margin-top: 10px;
+}
+.app-header__filters[hidden] {
+  display: none;
+}
+.clear-filters {
+  grid-column: 1 / -1;
 }
 .field.field--inline {
   display: flex;
@@ -139,16 +157,7 @@ body {
   gap: 8px;
   min-width: 0;
 }
-.field--grow {
-  flex: 1 1 14em;
-  width: 14em;
-  min-width: 4em;
-  max-width: 100%;
-}
-.field--grow .select {
-  /* The field's explicit width, not the option text, decides the size here;
-     otherwise switching to a year with fewer carriers shrinks the select and
-     the header filters reflow. */
+.field.field--inline .select {
   flex: 1 1 auto;
   width: 100%;
   min-width: 0;
@@ -640,6 +649,9 @@ body {
 .sheet__section--actions {
   flex-direction: row;
 }
+.sheet__section[hidden] {
+  display: none;
+}
 
 /* Airport chooser (bottom sheet) */
 .chooser-list {
@@ -801,6 +813,11 @@ body {
     padding: 20px 20px calc(var(--tabbar-h) + var(--safe-bottom) + 24px);
   }
 
+  /* Four filters fit on a single row once the shell is wide enough. */
+  .app-header__filters {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   /* Overview: use the width for a two-column card grid, with the summary
      card spanning the full row. */
   #view-overview.is-active {
@@ -847,33 +864,7 @@ body {
   }
 }
 
-/* Laptops and desktops: put the header (brand, filters, login) on one row
-   and add a third column once there is enough width for it. */
-@media (min-width: 900px) {
-  .app-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  /* Let the brand and login button take part in the header's flex row so
-     they can sit on either side of the filters. */
-  .app-header__row {
-    display: contents;
-  }
-  .brand {
-    flex: 1 1 auto;
-  }
-  .app-header__filters {
-    flex: 0 1 auto;
-    margin-top: 0;
-    order: 1;
-  }
-  .chip {
-    flex: 0 0 auto;
-    order: 2;
-  }
-}
-
+/* Laptops and desktops: add a third column once there is enough width. */
 @media (min-width: 1180px) {
   .app-header,
   .app-main,

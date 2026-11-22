@@ -14,16 +14,18 @@ if (empty($_SERVER['DOCUMENT_ROOT'])) {
     $_SERVER['DOCUMENT_ROOT'] = dirname(__FILE__) . '/../..';
 }
 
-// URL of the OpenFlights install
-$GLOBALS['webroot'] = 'http://localhost:8007/';
+// URL of the OpenFlights install. Override with WEBROOT (e.g. the container
+// serves on http://localhost/, while the host maps the app to :8007).
+$GLOBALS['webroot'] = getenv('WEBROOT') ?: 'http://localhost:8007/';
 
 // Path to OpenFlights upload directory
 $GLOBALS['uploadDir'] = '../../import/';
 
 const UNIT_TEST_MODE = true;
 
-// Database configuration
-$GLOBALS['dbhost'] = "127.0.0.1";
+// Database configuration. DB_HOST lets the same suite target the host's MySQL
+// (127.0.0.1, the default) or a Docker service such as `db` inside a container.
+$GLOBALS['dbhost'] = getenv('DB_HOST') ?: '127.0.0.1';
 $GLOBALS['dbuser'] = "openflights";
 $GLOBALS['dbpass'] = "";
 $GLOBALS['dbname'] = "flightdb2";

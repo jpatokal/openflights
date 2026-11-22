@@ -8,23 +8,6 @@ include_once dirname(__FILE__) . '/config.php';
 $fid = null; // global for newly added flight
 
 /**
- * Return first value matching $pred or null if no matches
- *
- * @param $array
- * @param $pred
- *
- * @return mixed|null
- */
-function array_find($array, $pred) {
-    foreach ($array as $value) {
-        if ($pred($value)) {
-            return $value;
-        }
-    }
-    return null;
-}
-
-/**
  * Check default (flight count) Top 10 stats
  */
 class CheckTop10FlightCountStats extends WebTestCase {

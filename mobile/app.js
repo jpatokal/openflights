@@ -91,6 +91,8 @@
     challenge: "",
     year: "0",
     carrier: "0",
+    modeFilter: "0",
+    class: "0",
     currentView: "overview",
     flightsQuery: "",
     flightsSort: "date-desc",
@@ -107,6 +109,8 @@
       airports: [],
       airlines: [],
       years: [],
+      modes: [],
+      classes: [],
       flights: [],
       stats: null,
     },
@@ -128,10 +132,16 @@
     flightsToolbar: document.querySelector(".flights-toolbar"),
     yearSelect: document.getElementById("year-select"),
     carrierSelect: document.getElementById("carrier-select"),
+    modeSelect: document.getElementById("mode-select"),
+    classSelect: document.getElementById("class-select"),
+    clearFilters: document.getElementById("clear-filters"),
+    filterToggle: document.getElementById("filter-toggle"),
+    filterPanel: document.getElementById("filter-panel"),
     userChip: document.getElementById("user-chip"),
     sheet: document.getElementById("user-sheet"),
     sheetBackdrop: document.getElementById("sheet-backdrop"),
     sheetStatus: document.getElementById("sheet-status"),
+    sheetTitle: document.getElementById("user-sheet-title"),
     sheetClose: document.getElementById("sheet-close"),
     chooser: document.getElementById("airport-chooser"),
     chooserBackdrop: document.getElementById("chooser-backdrop"),
@@ -295,6 +305,16 @@
       return { year: c[0] || "", label: c[1] || "" };
     });
 
+    const modes = parseTabRows(lines[6]).map(function (row) {
+      const c = row.split(";");
+      return { code: c[0] || "", label: c[1] || "" };
+    });
+
+    const classes = parseTabRows(lines[7]).map(function (row) {
+      const c = row.split(";");
+      return { code: c[0] || "", label: c[1] || "" };
+    });
+
     return {
       stats: {
         segments: cols[0] || "0",
@@ -311,6 +331,8 @@
       trips: trips,
       airlines: airlines,
       years: years,
+      modes: modes,
+      classes: classes,
     };
   }
 
@@ -379,6 +401,10 @@
     p.trid = "0";
     p.alid = state.carrier || "0";
     if (state.year && state.year !== "0") p.year = state.year;
+    if (state.modeFilter && state.modeFilter !== "0") {
+      p.fmode = state.modeFilter;
+    }
+    if (state.class && state.class !== "0") p.class = state.class;
     return p;
   }
 
@@ -401,6 +427,8 @@
       state.data.airports = mapData.airports;
       state.data.airlines = mapData.airlines;
       state.data.years = mapData.years;
+      state.data.modes = mapData.modes;
+      state.data.classes = mapData.classes;
       state.challenge = mapData.stats.challenge;
 
       state.airlineNames = new Map();
@@ -423,6 +451,8 @@
         state.username = "";
         state.guestpw = "";
         state.carrier = "0";
+        state.modeFilter = "0";
+        state.class = "0";
         state.airportFilter = null;
       }
 
@@ -463,14 +493,17 @@
     setLoading(false);
 
     renderUserChip();
-    renderYearSelect();
+    const yearValid = renderYearSelect();
     const carrierValid = renderCarrierSelect();
+    const modeValid = renderModeSelect();
+    const classValid = renderClassSelect();
+    updateFilterToggle();
     renderOverview();
     renderFlightList();
     if (state.mapInitialized) drawMap();
 
-    if (!carrierValid) {
-      // Reload now that the stale carrier filter has been cleared.
+    if (!yearValid || !carrierValid || !modeValid || !classValid) {
+      // Reload now that a stale filter has been cleared.
       loadAll();
     }
   }
@@ -1780,10 +1813,84 @@
     const sel = els.yearSelect;
     sel.textContent = "";
     sel.appendChild(new Option("All years", "0"));
+    let found = !state.year || state.year === "0";
     state.data.years.forEach(function (y) {
       sel.appendChild(new Option(y.label, y.year));
+      if (y.year === state.year) found = true;
     });
+    if (!found) {
+      // The chosen year isn't in the new list (e.g. a newly selected carrier
+      // didn't fly then); clear it and reload with the stale filter removed.
+      state.year = "0";
+      sel.value = "0";
+      return false;
+    }
     sel.value = state.year || "0";
+    return true;
+  }
+
+  function renderModeSelect() {
+    const sel = els.modeSelect;
+    sel.textContent = "";
+    sel.appendChild(new Option("All modes", "0"));
+    let found = !state.modeFilter || state.modeFilter === "0";
+    state.data.modes.forEach(function (m) {
+      sel.appendChild(
+        new Option(m.label || MODE_NAMES[m.code] || m.code, m.code)
+      );
+      if (m.code === state.modeFilter) found = true;
+    });
+    if (!found) {
+      state.modeFilter = "0";
+      sel.value = "0";
+      return false;
+    }
+    sel.value = state.modeFilter || "0";
+    return true;
+  }
+
+  function renderClassSelect() {
+    const sel = els.classSelect;
+    sel.textContent = "";
+    sel.appendChild(new Option("All classes", "0"));
+    let found = !state.class || state.class === "0";
+    state.data.classes.forEach(function (c) {
+      sel.appendChild(
+        new Option(c.label || CLASS_NAMES[c.code] || c.code, c.code)
+      );
+      if (c.code === state.class) found = true;
+    });
+    if (!found) {
+      state.class = "0";
+      sel.value = "0";
+      return false;
+    }
+    sel.value = state.class || "0";
+    return true;
+  }
+
+  function activeFilterCount() {
+    let count = 0;
+    if (state.year && state.year !== "0") count++;
+    if (state.carrier && state.carrier !== "0") count++;
+    if (state.modeFilter && state.modeFilter !== "0") count++;
+    if (state.class && state.class !== "0") count++;
+    return count;
+  }
+
+  function setFilterPanelOpen(open) {
+    els.filterPanel.hidden = !open;
+    els.filterPanel.style.display = open ? "grid" : "none";
+  }
+
+  function updateFilterToggle() {
+    const count = activeFilterCount();
+    els.filterToggle.textContent = count ? "Filter (" + count + ")" : "Filter";
+    els.filterToggle.classList.toggle("is-active", count > 0);
+    els.filterToggle.setAttribute(
+      "aria-expanded",
+      els.filterPanel.hidden ? "false" : "true"
+    );
   }
 
   function renderCarrierSelect() {
@@ -1818,11 +1925,16 @@
   }
 
   function renderSheetStatus() {
-    let msg;
-    if (state.mode === "self") msg = "Logged in as " + state.username + ".";
-    else msg = "Not logged in. Showing demo data.";
-    els.sheetStatus.textContent = msg;
-    els.logoutBtn.hidden = state.mode !== "self";
+    const loggedIn = state.mode === "self";
+    els.sheetTitle.textContent = loggedIn ? "Account" : "Login";
+    els.sheetStatus.hidden = loggedIn;
+    els.sheetStatus.textContent = loggedIn
+      ? ""
+      : "Not logged in. Showing demo data.";
+    els.loginForm.hidden = loggedIn;
+    els.logoutBtn.hidden = !loggedIn;
+    const actions = els.logoutBtn.closest(".sheet__section--actions");
+    if (actions) actions.hidden = !loggedIn;
   }
 
   function toast(msg) {
@@ -1872,9 +1984,13 @@
       state.guestpw = "";
       state.year = "0";
       state.carrier = "0";
+      state.modeFilter = "0";
+      state.class = "0";
       state.airportFilter = null;
       els.yearSelect.value = "0";
       els.carrierSelect.value = "0";
+      els.modeSelect.value = "0";
+      els.classSelect.value = "0";
       closeSheet();
       toast("Logged in as " + state.username + ".");
       await loadAll();
@@ -1896,6 +2012,8 @@
     state.guestpw = "";
     state.year = "0";
     state.carrier = "0";
+    state.modeFilter = "0";
+    state.class = "0";
     state.airportFilter = null;
     els.yearSelect.value = "0";
     els.carrierSelect.value = "0";
@@ -1958,6 +2076,21 @@
     });
     els.logoutBtn.addEventListener("click", logout);
 
+    els.filterToggle.addEventListener("click", function () {
+      setFilterPanelOpen(els.filterPanel.hidden);
+      updateFilterToggle();
+    });
+
+    els.clearFilters.addEventListener("click", function () {
+      state.year = "0";
+      state.carrier = "0";
+      state.modeFilter = "0";
+      state.class = "0";
+      setFilterPanelOpen(false);
+      updateFilterToggle();
+      loadAll();
+    });
+
     els.yearSelect.addEventListener("change", function () {
       state.year = els.yearSelect.value;
       loadAll();
@@ -1965,6 +2098,16 @@
 
     els.carrierSelect.addEventListener("change", function () {
       state.carrier = els.carrierSelect.value;
+      loadAll();
+    });
+
+    els.modeSelect.addEventListener("change", function () {
+      state.modeFilter = els.modeSelect.value;
+      loadAll();
+    });
+
+    els.classSelect.addEventListener("change", function () {
+      state.class = els.classSelect.value;
       loadAll();
     });
 
