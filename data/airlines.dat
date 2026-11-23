@@ -5279,7 +5279,7 @@
 5294,"Valan International Cargo Charter",\N,"","VLA","NALAU","South Africa","N"
 5295,"Valan Limited",\N,"","VLN","VALAN","Moldova","N"
 5296,"Valfell-Verkflug",\N,"","EHR","ROTOR","Iceland","N"
-5297,"Valuair",\N,"VF","VLU","VALUAIR","Singapore","Y"
+5297,"Valuair",\N,\N,"VLU","VALUAIR","Singapore","N"
 5298,"Van Air Europe",\N,"","VAA","EUROVAN","Czech Republic","N"
 5299,"Vanguardia en Aviacion en Colima",\N,"","VGC","VANGUARDIA COLIMA","Mexico","N"
 5300,"Vanguard Airlines",\N,"","VGD","VANGUARD AIR","United States","N"
@@ -6160,3 +6160,4 @@
 21268,"Jetgo Australia","","JG",\N,"","Australia","Y"
 21270,"Air Carnival","","2S",\N,"","India","Y"
 21317,"Svyaz Rossiya","Russian Commuter ","7R","SJM","RussianConnecty","Russia","Y"
+21318,"AJet",\N,"VF","TKJ","ANATOLIA","Turkey","Y"
