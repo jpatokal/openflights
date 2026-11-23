@@ -1,0 +1,12 @@
+{
+  "name": "openflights-mobile-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Headless end-to-end tests for the OpenFlights mobile app.",
+  "scripts": {
+    "test": "node run-tests.js"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.0.0"
+  }
+}

@@ -10,3 +10,6 @@ js/utilities.js
 *.min.css
 *.min.js
 *.yaml
+# Mobile headless test artifacts
+test/mobile/package-lock.json
+test/mobile/screenshots
