@@ -6415,7 +6415,7 @@
 8961,"Sir Bani Yas Airport","Sir Bani Yas Island","United Arab Emirates","XSB","OMBY",24.283611,52.580278,25,4,"U","Asia/Dubai","airport","OurAirports"
 8963,"Bromont (Roland Desourdy) Airport","Bromont","Canada","ZBM","CZBM",45.2907981873,-72.74140167239999,375,-5,"A","America/Toronto","airport","OurAirports"
 8965,"Beccles Airport","Beccles","United Kingdom",\N,"EGSM",52.435298919699996,1.6183300018300002,80,0,"E","Europe/London","airport","OurAirports"
-8966,"Kratie Airport","Kratie","Cambodia","KTI","VDKT",12.48799991607666,106.05500030517578,0,7,"N","Asia/Phnom_Penh","airport","OurAirports"
+8966,"Kratie Airport","Kratie","Cambodia",\N,"VDKT",12.48799991607666,106.05500030517578,0,7,"N","Asia/Phnom_Penh","airport","OurAirports"
 8967,"Caldera Airport","Caldera","Chile",\N,"SCCL",-27.078100204467773,-70.79530334472656,180,-4,"U","America/Santiago","airport","OurAirports"
 8968,"San Pedro de Atacama Airport","San Pedro de Atacama","Chile",\N,"SCPE",-22.92169952392578,-68.15840148925781,7960,-4,"U","America/Santiago","airport","OurAirports"
 8969,"Copacabana Airport","Copacabana","Bolivia",\N,"SLCC",-16.191099166870117,-69.09559631347656,12591,-4,"U","America/La_Paz","airport","OurAirports"
@@ -7696,3 +7696,4 @@
 14108,"Krechevitsy Air Base","Novgorod","Russia",\N,"ULLK",58.625,31.385000228881836,85,\N,\N,\N,"airport","OurAirports"
 14109,"Desierto de Atacama Airport","Copiapo","Chile","CPO","SCAT",-27.2611999512,-70.7791976929,670,\N,\N,\N,"airport","OurAirports"
 14110,"Melitopol Air Base","Melitopol","Ukraine",\N,"UKDM",46.880001,35.305,0,\N,\N,\N,"airport","OurAirports"
+14111,"Techo International Airport","Phnom Penh","Cambodia","KTI","VDTI",11.359987,104.921272,20,7,"N","Asia/Phnom_Penh","airport","OurAirports"
