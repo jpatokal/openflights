@@ -126,6 +126,16 @@
       </section>
     </main>
 
+    <button
+      id="add-flight"
+      class="fab"
+      type="button"
+      aria-label="Add flight"
+      hidden
+    >
+      +
+    </button>
+
     <nav class="tabbar" aria-label="Primary">
       <button
         class="tabbar__tab is-active"
@@ -261,6 +271,192 @@
           Zoom in
         </button>
         <div id="chooser-list" class="chooser-list"></div>
+      </div>
+    </div>
+
+    <div id="editor-backdrop" class="sheet-backdrop" hidden></div>
+    <div
+      id="flight-editor"
+      class="sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="flight-editor-title"
+      hidden
+    >
+      <div class="sheet__header">
+        <h2 id="flight-editor-title">Add flight</h2>
+        <button
+          id="editor-close"
+          class="icon-btn"
+          type="button"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="sheet__body">
+        <p id="editor-error" class="sheet__status editor-error" hidden></p>
+        <div id="editor-route" class="editor-route"></div>
+
+        <form id="flight-editor-form" class="sheet__section">
+          <div class="editor-grid">
+            <div class="autocomplete">
+              <label class="field__label" for="editor-from">From</label>
+              <input
+                id="editor-from"
+                class="input"
+                type="text"
+                autocomplete="off"
+                placeholder="City, code or airport"
+              />
+              <div id="from-suggestions" class="autocomplete__list" hidden></div>
+            </div>
+            <div class="autocomplete">
+              <label class="field__label" for="editor-to">To</label>
+              <input
+                id="editor-to"
+                class="input"
+                type="text"
+                autocomplete="off"
+                placeholder="City, code or airport"
+              />
+              <div id="to-suggestions" class="autocomplete__list" hidden></div>
+            </div>
+          </div>
+
+          <div class="editor-grid">
+            <label class="field">
+              <span class="field__label">Date</span>
+              <input id="editor-date" class="input" type="date" />
+            </label>
+            <label class="field">
+              <span class="field__label">Time</span>
+              <input id="editor-time" class="input" type="time" />
+            </label>
+          </div>
+
+          <div class="field">
+            <span class="field__label">Mode</span>
+            <div
+              id="editor-mode"
+              class="segmented"
+              role="radiogroup"
+              aria-label="Mode"
+            ></div>
+          </div>
+
+          <div class="editor-grid">
+            <label class="field">
+              <span class="field__label">Flight number</span>
+              <input id="editor-number" class="input" type="text" />
+            </label>
+            <div class="autocomplete">
+              <label class="field__label" for="editor-airline">Airline</label>
+              <input
+                id="editor-airline"
+                class="input"
+                type="text"
+                autocomplete="off"
+                placeholder="Airline name"
+              />
+              <div
+                id="airline-suggestions"
+                class="autocomplete__list"
+                hidden
+              ></div>
+            </div>
+          </div>
+
+          <div class="editor-grid">
+            <div class="autocomplete">
+              <label class="field__label" for="editor-plane">Plane</label>
+              <input
+                id="editor-plane"
+                class="input"
+                type="text"
+                autocomplete="off"
+                placeholder="e.g. A320"
+              />
+              <div id="plane-suggestions" class="autocomplete__list" hidden></div>
+            </div>
+            <label class="field">
+              <span class="field__label">Seat</span>
+              <input id="editor-seat" class="input" type="text" />
+            </label>
+          </div>
+
+          <div class="editor-grid editor-grid--3">
+            <label class="field">
+              <span class="field__label">Seat type</span>
+              <select id="editor-seat-type" class="select">
+                <option value="">—</option>
+                <option value="W">Window</option>
+                <option value="A">Aisle</option>
+                <option value="M">Middle</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Class</span>
+              <select id="editor-class" class="select">
+                <option value="">—</option>
+                <option value="Y">Economy</option>
+                <option value="P">Prem. Eco</option>
+                <option value="C">Business</option>
+                <option value="F">First</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Reason</span>
+              <select id="editor-reason" class="select">
+                <option value="">—</option>
+                <option value="B">Work</option>
+                <option value="L">Leisure</option>
+                <option value="C">Crew</option>
+                <option value="O">Other</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="editor-grid">
+            <label class="field">
+              <span class="field__label">Distance (mi)</span>
+              <input
+                id="editor-distance"
+                class="input"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="Auto"
+              />
+            </label>
+            <label class="field">
+              <span class="field__label">Duration (HH:MM)</span>
+              <input
+                id="editor-duration"
+                class="input"
+                type="text"
+                placeholder="Auto"
+              />
+            </label>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Registration</span>
+            <input id="editor-registration" class="input" type="text" />
+          </label>
+          <label class="field">
+            <span class="field__label">Note</span>
+            <textarea id="editor-note" class="input editor-note" rows="2"></textarea>
+          </label>
+
+          <div class="editor-actions">
+            <button id="editor-cancel" class="btn btn--ghost" type="button">
+              Cancel
+            </button>
+            <button class="btn btn--primary" type="submit">Save</button>
+          </div>
+        </form>
       </div>
     </div>
 

@@ -1,10 +1,11 @@
 /**
- * OpenFlights Mobile — a read-only, mobile-first viewer for flight logs.
+ * OpenFlights Mobile — a mobile-first viewer for flight logs.
  *
  * This app is a completely independent client. It reads user data through the
- * existing PHP endpoints under /php/ and never writes to them (no submit/edit).
+ * existing PHP endpoints under /php/ and, for the signed-in user's own log,
+ * reuses submit.php/autocomplete.php to add and edit flights.
  *
- * Dependencies (loaded by index.html, all read-only existing assets):
+ * Dependencies (loaded by index.html):
  *   - /js/OpenLayers.min.js  -> OpenLayers 2 global
  *   - /js/greatcircle.js     -> gcPath() for great-circle route geometry
  *   - /js/md5.min.js         -> MD5() for login/guest-password hashing
@@ -21,7 +22,14 @@
     STATS: "/php/stats.php",
     LOGIN: "/php/login.php",
     LOGOUT: "/php/logout.php",
+    AUTOCOMPLETE: "/php/autocomplete.php",
+    SUBMIT: "/php/submit.php",
   };
+
+  const KM_PER_MILE = 1.609344;
+  // php/greatcircle.php defines its own truncated PI; match it so client-side
+  // distance estimates equal what submit.php would calculate.
+  const PHP_PI = 3.1415926;
 
   // Same palette and semantics used by openflights.js.
   const MODE_COLORS = {
@@ -114,6 +122,25 @@
       flights: [],
       stats: null,
     },
+    editor: {
+      fid: null,
+      srcApid: "",
+      srcCode: "",
+      srcLon: null,
+      srcLat: null,
+      dstApid: "",
+      dstCode: "",
+      dstLon: null,
+      dstLat: null,
+      alid: "",
+      airlineName: "",
+      airlineAuto: false,
+      mode: "F",
+      lastNumberCode: "",
+      numberTimer: null,
+      distanceAuto: false,
+      durationAuto: false,
+    },
   };
 
   // --------------------------------------------------------------------------
@@ -155,6 +182,68 @@
     logoutBtn: document.getElementById("logout-btn"),
     loadingBar: document.getElementById("loading-bar"),
     toast: document.getElementById("toast"),
+    addFlight: document.getElementById("add-flight"),
+    editor: document.getElementById("flight-editor"),
+    editorBackdrop: document.getElementById("editor-backdrop"),
+    editorTitle: document.getElementById("flight-editor-title"),
+    editorClose: document.getElementById("editor-close"),
+    editorCancel: document.getElementById("editor-cancel"),
+    editorError: document.getElementById("editor-error"),
+    editorRoute: document.getElementById("editor-route"),
+    editorForm: document.getElementById("flight-editor-form"),
+    editorFrom: document.getElementById("editor-from"),
+    editorTo: document.getElementById("editor-to"),
+    editorDate: document.getElementById("editor-date"),
+    editorTime: document.getElementById("editor-time"),
+    editorMode: document.getElementById("editor-mode"),
+    editorNumber: document.getElementById("editor-number"),
+    editorAirline: document.getElementById("editor-airline"),
+    editorPlane: document.getElementById("editor-plane"),
+    editorSeat: document.getElementById("editor-seat"),
+    editorSeatType: document.getElementById("editor-seat-type"),
+    editorClass: document.getElementById("editor-class"),
+    editorReason: document.getElementById("editor-reason"),
+    editorDistance: document.getElementById("editor-distance"),
+    editorDuration: document.getElementById("editor-duration"),
+    editorRegistration: document.getElementById("editor-registration"),
+    editorNote: document.getElementById("editor-note"),
+    fromSuggestions: document.getElementById("from-suggestions"),
+    toSuggestions: document.getElementById("to-suggestions"),
+    airlineSuggestions: document.getElementById("airline-suggestions"),
+    planeSuggestions: document.getElementById("plane-suggestions"),
+  };
+
+  // Autocomplete fields. "from"/"to" map to the same airport searchType but
+  // keep separate selections and suggestion lists.
+  const AUTO = {
+    from: {
+      type: "airport",
+      input: els.editorFrom,
+      list: els.fromSuggestions,
+      timer: null,
+      seq: 0,
+    },
+    to: {
+      type: "airport",
+      input: els.editorTo,
+      list: els.toSuggestions,
+      timer: null,
+      seq: 0,
+    },
+    airline: {
+      type: "airline",
+      input: els.editorAirline,
+      list: els.airlineSuggestions,
+      timer: null,
+      seq: 0,
+    },
+    plane: {
+      type: "plane",
+      input: els.editorPlane,
+      list: els.planeSuggestions,
+      timer: null,
+      seq: 0,
+    },
   };
 
   // --------------------------------------------------------------------------
@@ -1002,7 +1091,15 @@
 
   function flightCard(f) {
     const future = isFuture(f.date);
-    const cardNode = el("article", { class: "flight-card" });
+    const editable = state.mode === "self";
+    const cardNode = el("article", {
+      class: "flight-card" + (editable ? " is-editable" : ""),
+    });
+    if (editable) {
+      cardNode.addEventListener("click", function () {
+        openFlightEditor(f.fid);
+      });
+    }
 
     const route = el("div", { class: "flight-card__route" }, [
       modeIcon(f.mode),
@@ -1012,8 +1109,18 @@
       class: "flight-card__date" + (future ? " is-future" : ""),
       text: f.date + (f.srcTime ? " " + f.srcTime : ""),
     });
+    const right = el("div", { class: "flight-card__right" }, [date]);
+    if (editable) {
+      right.appendChild(
+        el("span", {
+          class: "flight-card__edit",
+          "aria-label": "Edit flight",
+          html: '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>',
+        })
+      );
+    }
     cardNode.appendChild(
-      el("div", { class: "flight-card__top" }, [route, date])
+      el("div", { class: "flight-card__top" }, [route, right])
     );
 
     const metaParts = [];
@@ -1754,6 +1861,469 @@
   }
 
   // --------------------------------------------------------------------------
+  // Flight editor (add / edit, signed-in users only)
+  // --------------------------------------------------------------------------
+  function todayISO() {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + m + "-" + day;
+  }
+
+  // Great-circle distance in miles, matching php/greatcircle.php gcPointDistance.
+  function greatCircleMiles(lon1, lat1, lon2, lat2) {
+    if (lon1 === lon2 && lat1 === lat2) return 0;
+    const rad = PHP_PI / 180;
+    const p1 = lat1 * rad;
+    const p2 = lat2 * rad;
+    const theta = (lon2 - lon1) * rad;
+    let d = Math.acos(
+      Math.sin(p1) * Math.sin(p2) +
+        Math.cos(p1) * Math.cos(p2) * Math.cos(theta)
+    );
+    if (d < 0) d += PHP_PI;
+    return Math.floor(d * 6371.2 * 0.621);
+  }
+
+  // Duration estimate as HH:MM, matching php/helper.php gcDuration().
+  function gcDurationString(miles) {
+    const rawtime = Math.floor(30 + (miles / 500) * 60);
+    const h = Math.floor(rawtime / 60);
+    const m = rawtime % 60;
+    return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  }
+
+  // Coordinates of a known airport from the loaded map data. The airports on a
+  // user's own flights are always present in state.data.airports.
+  function airportCoords(apid) {
+    if (!apid) return null;
+    const a = state.data.airports.find(function (x) {
+      return String(x.apid) === String(apid);
+    });
+    if (!a || isNaN(a.lon) || isNaN(a.lat)) return null;
+    return { lon: a.lon, lat: a.lat };
+  }
+
+  // Fill distance/duration once both endpoints have known coordinates, without
+  // clobbering values the user typed by hand.
+  function maybeAutoFillDistance() {
+    const e = state.editor;
+    if (
+      e.srcLon == null ||
+      e.srcLat == null ||
+      e.dstLon == null ||
+      e.dstLat == null
+    ) {
+      return;
+    }
+    const miles = greatCircleMiles(e.srcLon, e.srcLat, e.dstLon, e.dstLat);
+    if (!els.editorDistance.value.trim() || e.distanceAuto) {
+      els.editorDistance.value = String(miles);
+      e.distanceAuto = true;
+    }
+    if (!els.editorDuration.value.trim() || e.durationAuto) {
+      els.editorDuration.value = gcDurationString(miles);
+      e.durationAuto = true;
+    }
+  }
+
+  // Leading airline code of a flight number, e.g. "JQ123" -> "JQ".
+  function flightNumberAirlineCode(number) {
+    const m = /^\s*([A-Za-z]{2,3})/.exec(number || "");
+    return m ? m[1].toUpperCase() : "";
+  }
+
+  function handleFlightNumberInput() {
+    clearTimeout(state.editor.numberTimer);
+    state.editor.numberTimer = setTimeout(lookupAirlineFromNumber, 300);
+  }
+
+  // Resolve the airline from the flight-number prefix (e.g. JQ -> Jetstar) and
+  // fill the airline field, unless the user picked one by hand.
+  async function lookupAirlineFromNumber() {
+    const e = state.editor;
+    // Only flights use IATA/ICAO airline codes; other modes have no such code.
+    if (e.mode !== "F") return;
+    const code = flightNumberAirlineCode(els.editorNumber.value);
+    if (code.length < 2) return;
+    const manual = !e.airlineAuto && els.editorAirline.value.trim() !== "";
+    if (manual) return;
+    if (code === e.lastNumberCode && e.alid) return;
+
+    let items = [];
+    try {
+      items = JSON.parse(
+        await post(API.AUTOCOMPLETE, {
+          searchType: "airline",
+          searchText: code,
+          mode: e.mode,
+          quick: "true",
+        })
+      );
+    } catch (err) {
+      items = [];
+    }
+    // The number may have changed while the request was in flight.
+    if (flightNumberAirlineCode(els.editorNumber.value) !== code) return;
+
+    if (!items || !items.length) {
+      if (e.airlineAuto) {
+        e.alid = "";
+        e.airlineName = "";
+        els.editorAirline.value = "";
+        e.airlineAuto = false;
+      }
+      return;
+    }
+
+    e.alid = String(items[0].value || "");
+    e.airlineName = items[0].label || "";
+    els.editorAirline.value = items[0].label || "";
+    e.airlineAuto = true;
+    e.lastNumberCode = code;
+    clearAirlineError();
+  }
+
+  function markAirlineError() {
+    els.editorAirline.classList.add("input--invalid");
+  }
+
+  function clearAirlineError() {
+    els.editorAirline.classList.remove("input--invalid");
+  }
+
+  function showEditorError(msg) {
+    els.editorError.textContent = msg;
+    els.editorError.hidden = false;
+  }
+
+  function hideEditorError() {
+    els.editorError.hidden = true;
+    els.editorError.textContent = "";
+  }
+
+  function renderEditorRoute() {
+    const src = state.editor.srcCode;
+    const dst = state.editor.dstCode;
+    if (src && dst) {
+      els.editorRoute.textContent = "✈ " + src + " → " + dst;
+    } else if (src || dst) {
+      els.editorRoute.textContent = "✈ " + (src || "?") + " → " + (dst || "?");
+    } else {
+      els.editorRoute.textContent = "";
+    }
+  }
+
+  function setEditorMode(mode) {
+    if (state.editor.mode !== mode) {
+      // Airlines/operators are mode-scoped, so a stored selection no longer applies.
+      state.editor.alid = "";
+      state.editor.airlineName = "";
+      state.editor.airlineAuto = false;
+      state.editor.lastNumberCode = "";
+      els.editorAirline.value = "";
+      clearAirlineError();
+      hideSuggestions("airline");
+    }
+    state.editor.mode = mode;
+    document.querySelectorAll(".segmented__btn").forEach(function (b) {
+      b.classList.toggle("is-active", b.dataset.mode === mode);
+    });
+  }
+
+  function openFlightEditor(fid) {
+    const f = fid
+      ? state.data.flights.find(function (x) {
+          return String(x.fid) === String(fid);
+        })
+      : null;
+
+    state.editor.fid = f ? String(f.fid) : null;
+    state.editor.srcApid = f ? f.srcApid : "";
+    state.editor.srcCode = f ? f.srcCode : "";
+    state.editor.dstApid = f ? f.dstApid : "";
+    state.editor.dstCode = f ? f.dstCode : "";
+    state.editor.alid = f ? f.alid : "";
+    state.editor.airlineName = f ? airlineName(f) : "";
+    state.editor.airlineAuto = false;
+    state.editor.lastNumberCode = "";
+    state.editor.mode = f ? f.mode || "F" : "F";
+    state.editor.distanceAuto = false;
+    state.editor.durationAuto = false;
+    clearTimeout(state.editor.numberTimer);
+
+    // Keep coordinates for the prefilled endpoints so editing just one airport
+    // can still recompute distance/duration.
+    const srcCoords = f ? airportCoords(f.srcApid) : null;
+    const dstCoords = f ? airportCoords(f.dstApid) : null;
+    state.editor.srcLon = srcCoords ? srcCoords.lon : null;
+    state.editor.srcLat = srcCoords ? srcCoords.lat : null;
+    state.editor.dstLon = dstCoords ? dstCoords.lon : null;
+    state.editor.dstLat = dstCoords ? dstCoords.lat : null;
+
+    els.editorTitle.textContent = f ? "Edit flight" : "Add flight";
+    els.editorFrom.value = f ? f.srcCode : "";
+    els.editorTo.value = f ? f.dstCode : "";
+    els.editorDate.value = f ? f.date : todayISO();
+    els.editorTime.value = f && f.srcTime ? f.srcTime.slice(0, 5) : "";
+    els.editorNumber.value = f ? f.code || "" : "";
+    els.editorAirline.value = f ? airlineName(f) : "";
+    els.editorPlane.value = f ? f.plane || "" : "";
+    els.editorSeat.value = f ? f.seat || "" : "";
+    els.editorSeatType.value = f ? f.seatType || "" : "";
+    els.editorClass.value = f ? f.class || "" : "";
+    els.editorReason.value = f ? f.reason || "" : "";
+
+    // The API stores distance in miles; convert the read-back value if the
+    // user's profile displays kilometres.
+    const displayUnit =
+      (state.data.stats && state.data.stats.distance_unit) || "mi";
+    let distance = f ? num(f.distance) : 0;
+    if (displayUnit === "km") distance = distance / KM_PER_MILE;
+    els.editorDistance.value =
+      f && distance ? String(Math.round(distance)) : "";
+    els.editorDuration.value = f ? f.duration || "" : "";
+    // Treat prefilled estimates as auto values, so changing an endpoint in an
+    // edit recomputes them (a hand edit clears the flag again).
+    state.editor.distanceAuto = !!(f && distance);
+    state.editor.durationAuto = !!(f && f.duration);
+    els.editorRegistration.value = f ? f.registration || "" : "";
+    els.editorNote.value = f ? f.note || "" : "";
+
+    setEditorMode(state.editor.mode);
+    renderEditorRoute();
+    hideAllSuggestions();
+    clearAirlineError();
+    hideEditorError();
+
+    els.editorBackdrop.hidden = false;
+    els.editor.hidden = false;
+    setTimeout(function () {
+      els.editorFrom.focus();
+    }, 60);
+  }
+
+  function closeFlightEditor() {
+    els.editor.hidden = true;
+    els.editorBackdrop.hidden = true;
+    clearTimeout(state.editor.numberTimer);
+    hideAllSuggestions();
+  }
+
+  function hideSuggestions(field) {
+    const cfg = AUTO[field];
+    cfg.list.hidden = true;
+    cfg.list.textContent = "";
+  }
+
+  function hideAllSuggestions() {
+    Object.keys(AUTO).forEach(hideSuggestions);
+  }
+
+  function scheduleAutocomplete(field) {
+    const cfg = AUTO[field];
+    clearTimeout(cfg.timer);
+    cfg.timer = setTimeout(function () {
+      fetchAutocomplete(field);
+    }, 250);
+  }
+
+  async function fetchAutocomplete(field) {
+    const cfg = AUTO[field];
+    const text = cfg.input.value.trim();
+    if (text.length < 2) {
+      hideSuggestions(field);
+      return;
+    }
+
+    const req = ++cfg.seq;
+    const params = {
+      searchType: cfg.type,
+      searchText: text,
+      quick: "false",
+    };
+    // Airlines are scoped to the currently selected travel mode.
+    if (cfg.type === "airline") params.mode = state.editor.mode;
+
+    let items = [];
+    try {
+      items = JSON.parse(await post(API.AUTOCOMPLETE, params));
+    } catch (e) {
+      items = [];
+    }
+    if (req !== cfg.seq) return;
+    renderSuggestions(field, items || []);
+  }
+
+  function renderSuggestions(field, items) {
+    const cfg = AUTO[field];
+    const list = cfg.list;
+    list.textContent = "";
+
+    if (!items.length) {
+      list.appendChild(
+        el("div", { class: "autocomplete__empty", text: "No matches" })
+      );
+      list.hidden = false;
+      return;
+    }
+
+    items.forEach(function (item) {
+      list.appendChild(
+        el(
+          "button",
+          {
+            class: "autocomplete__item",
+            type: "button",
+            onclick: function () {
+              selectAutocomplete(field, item);
+            },
+          },
+          el("span", {
+            class: "autocomplete__item--main",
+            text: item.label || item.value || "",
+          })
+        )
+      );
+    });
+    list.hidden = false;
+  }
+
+  function selectAutocomplete(field, item) {
+    const cfg = AUTO[field];
+    if (field === "from" || field === "to") {
+      // value format: CODE:apid:x:y:timezone:dst
+      const parts = String(item.value || "").split(":");
+      const code = parts[0] || "";
+      const apid = parts[1] || "";
+      const lon = num(parts[2]);
+      const lat = num(parts[3]);
+      if (field === "from") {
+        state.editor.srcApid = apid;
+        state.editor.srcCode = code;
+        state.editor.srcLon = lon;
+        state.editor.srcLat = lat;
+      } else {
+        state.editor.dstApid = apid;
+        state.editor.dstCode = code;
+        state.editor.dstLon = lon;
+        state.editor.dstLat = lat;
+      }
+      cfg.input.value = item.label || code;
+    } else if (field === "airline") {
+      state.editor.alid = String(item.value || "");
+      state.editor.airlineName = item.label || "";
+      state.editor.airlineAuto = false;
+      cfg.input.value = item.label || "";
+      clearAirlineError();
+    } else if (field === "plane") {
+      // submit.php matches/creates planes by name, so the label is enough.
+      cfg.input.value = item.label || item.value || "";
+    }
+    hideSuggestions(field);
+    renderEditorRoute();
+    if (field === "from" || field === "to") maybeAutoFillDistance();
+  }
+
+  function handleAutocompleteInput(field) {
+    // Typing replaces any previously selected value with free text, which we
+    // only accept once the user picks a suggestion (airports/airlines).
+    if (field === "from") {
+      state.editor.srcApid = "";
+      state.editor.srcCode = "";
+      state.editor.srcLon = null;
+      state.editor.srcLat = null;
+    } else if (field === "to") {
+      state.editor.dstApid = "";
+      state.editor.dstCode = "";
+      state.editor.dstLon = null;
+      state.editor.dstLat = null;
+    } else if (field === "airline") {
+      state.editor.alid = "";
+      state.editor.airlineName = "";
+      // A hand-typed airline should no longer be overwritten from the number.
+      state.editor.airlineAuto = false;
+      clearAirlineError();
+    }
+    renderEditorRoute();
+    scheduleAutocomplete(field);
+  }
+
+  async function saveFlight() {
+    hideEditorError();
+    if (!state.editor.srcApid || !state.editor.dstApid) {
+      showEditorError("Select both From and To airports.");
+      return;
+    }
+    const date = els.editorDate.value.trim();
+    if (!date) {
+      showEditorError("Enter a date.");
+      return;
+    }
+
+    // An airline typed but not selected from the suggestions is unknown; refuse
+    // to save rather than silently logging it as "Unknown".
+    const airlineText = els.editorAirline.value.trim();
+    if (airlineText && (!state.editor.alid || state.editor.alid === "0")) {
+      markAirlineError();
+      showEditorError(
+        "Unknown airline. Pick one from the suggestions or clear the field."
+      );
+      els.editorAirline.focus();
+      return;
+    }
+    clearAirlineError();
+
+    const params = {
+      param: state.editor.fid ? "EDIT" : "ADD",
+      fid: state.editor.fid || "",
+      src_apid: state.editor.srcApid,
+      dst_apid: state.editor.dstApid,
+      src_date: date,
+      src_time: els.editorTime.value.trim(),
+      mode: state.editor.mode,
+      number: els.editorNumber.value.trim(),
+      alid: state.editor.alid || "",
+      plane: els.editorPlane.value.trim(),
+      seat: els.editorSeat.value.trim(),
+      type: els.editorSeatType.value,
+      class: els.editorClass.value,
+      reason: els.editorReason.value,
+      distance: els.editorDistance.value.trim(),
+      duration: els.editorDuration.value.trim(),
+      registration: els.editorRegistration.value.trim(),
+      note: els.editorNote.value,
+      trid: "NULL",
+    };
+
+    const submitBtn = document.querySelector(
+      "#flight-editor-form .btn--primary"
+    );
+    if (submitBtn) submitBtn.disabled = true;
+
+    let text;
+    try {
+      text = await post(API.SUBMIT, params);
+    } catch (e) {
+      if (submitBtn) submitBtn.disabled = false;
+      showEditorError("Could not save. Try again.");
+      return;
+    }
+    if (submitBtn) submitBtn.disabled = false;
+
+    // submit.php returns "1;Added." / "2;Edited." on success and "0;…" or
+    // "Error;…" on failure.
+    if (/^[12];/.test(text || "")) {
+      closeFlightEditor();
+      toast(state.editor.fid ? "Flight updated." : "Flight added.");
+      state.airportFilter = null;
+      await loadAll();
+    } else {
+      showEditorError(parseError(text) || "Could not save.");
+    }
+  }
+
+  // --------------------------------------------------------------------------
   // Navigation
   // --------------------------------------------------------------------------
   function showView(view) {
@@ -1766,6 +2336,7 @@
       t.setAttribute("aria-selected", active ? "true" : "false");
     });
     state.currentView = view;
+    updateFab();
 
     // The popup/chooser live on the map, so they make no sense once it is hidden.
     if (view !== "map") {
@@ -1807,6 +2378,15 @@
       els.userChip.textContent = "Login";
       els.userChip.classList.remove("chip--self");
     }
+    updateFab();
+  }
+
+  // The add-flight FAB is available to signed-in users on the map and flights
+  // views (not on the stats-heavy overview).
+  function updateFab() {
+    const onDataView =
+      state.currentView === "map" || state.currentView === "flights";
+    els.addFlight.hidden = !(state.mode === "self" && onDataView);
   }
 
   function renderYearSelect() {
@@ -2132,6 +2712,62 @@
     els.flightSort.addEventListener("change", function () {
       state.flightsSort = els.flightSort.value;
       renderFlightList();
+    });
+
+    // Flight editor
+    Object.keys(MODE_NAMES).forEach(function (m) {
+      els.editorMode.appendChild(
+        el("button", {
+          class: "segmented__btn",
+          type: "button",
+          "data-mode": m,
+          text: MODE_NAMES[m],
+          onclick: function () {
+            setEditorMode(m);
+          },
+        })
+      );
+    });
+
+    els.addFlight.addEventListener("click", function () {
+      openFlightEditor(null);
+    });
+    els.editorClose.addEventListener("click", closeFlightEditor);
+    els.editorCancel.addEventListener("click", closeFlightEditor);
+    els.editorBackdrop.addEventListener("click", closeFlightEditor);
+    els.editorForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      saveFlight();
+    });
+
+    Object.keys(AUTO).forEach(function (field) {
+      AUTO[field].input.addEventListener("input", function () {
+        handleAutocompleteInput(field);
+      });
+    });
+
+    // Flight number drives the airline; distance/duration stop auto-filling
+    // once the user edits them by hand.
+    els.editorNumber.addEventListener("input", handleFlightNumberInput);
+    els.editorDistance.addEventListener("input", function () {
+      state.editor.distanceAuto = false;
+    });
+    els.editorDuration.addEventListener("input", function () {
+      state.editor.durationAuto = false;
+    });
+
+    // Close any open suggestion list when tapping outside its field.
+    document.addEventListener("click", function (evt) {
+      Object.keys(AUTO).forEach(function (field) {
+        const cfg = AUTO[field];
+        if (
+          !cfg.list.hidden &&
+          !cfg.input.contains(evt.target) &&
+          !cfg.list.contains(evt.target)
+        ) {
+          cfg.list.hidden = true;
+        }
+      });
     });
   }
 
