@@ -155,6 +155,13 @@ module.exports = [
       );
       await h.waitForCardWith(page, marker);
       await h.waitForCardWith(page, "SIN → JFK");
+
+      const noteShown = await page.evaluate((note) => {
+        return Array.from(
+          document.querySelectorAll("#flight-list .flight-card__note")
+        ).some((node) => node.textContent === note);
+      }, marker);
+      h.assert(noteShown, "notes are shown on the owner's own cards");
     },
   },
   {

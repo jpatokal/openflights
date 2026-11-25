@@ -114,11 +114,24 @@ module.exports = [
         h.assert(titles.includes(title), "missing card: " + title)
       );
 
-      const hero = await page.$$eval(
-        "#view-overview .hero__item",
-        (els) => els.length
+      const heroLayout = await page.evaluate(() => {
+        const hero = document.querySelector("#view-overview .hero");
+        return {
+          direction: getComputedStyle(hero).flexDirection,
+          items: Array.from(hero.querySelectorAll(".hero__item")).map(
+            (item) => ({
+              label: item.querySelector(".hero__label").textContent.trim(),
+              value: item.querySelector(".hero__value").textContent.trim(),
+            })
+          ),
+        };
+      });
+      h.assertEqual(heroLayout.direction, "column", "hero stacks vertically");
+      h.assertEqual(heroLayout.items.length, 3, "hero stats");
+      h.assert(
+        heroLayout.items.every((item) => item.label && item.value),
+        "hero rows have a label and value"
       );
-      h.assertEqual(hero, 3, "hero stats");
 
       const perspective = await page.evaluate(() => {
         const card = Array.from(
@@ -141,9 +154,13 @@ module.exports = [
       });
       h.assert(perspective, "distance in perspective card");
       h.assertEqual(perspective.values.length, 3, "perspective values");
-      perspective.values.forEach((value) =>
-        h.assertMatch(value, /^[\d.]+x$/, "perspective value")
+      h.assertMatch(
+        perspective.values[0],
+        /^[\d.]+x$/,
+        "round-the-world multiplier"
       );
+      h.assertMatch(perspective.values[1], /^[\d.]+x$/, "moon multiplier");
+      h.assertMatch(perspective.values[2], /^[\d.]+%$/, "mars percentage");
       h.assert(
         perspective.labels.includes("Round the world"),
         "round-the-world label"
@@ -170,6 +187,63 @@ module.exports = [
         (els) => els.length
       );
       h.assert(slices >= 4, "pie slices rendered");
+
+      const classLegend = await page.evaluate(() => {
+        const card = Array.from(
+          document.querySelectorAll("#view-overview .card")
+        ).find(
+          (candidate) =>
+            candidate.querySelector(".card__title") &&
+            candidate.querySelector(".card__title").textContent.trim() ===
+              "By class"
+        );
+        if (!card) return null;
+        const label = card.querySelector(".pie-legend__label");
+        const style = label ? getComputedStyle(label) : null;
+        return {
+          rows: Array.from(card.querySelectorAll(".pie-legend__row")).map(
+            (row) => ({
+              label:
+                row.querySelector(".pie-legend__label")?.textContent.trim() ||
+                "",
+              value:
+                row.querySelector(".pie-legend__value")?.textContent.trim() ||
+                "",
+              hasHead: Boolean(row.querySelector(".pie-legend__head")),
+              valueIsSibling:
+                row.querySelector(".pie-legend__value")?.parentElement === row,
+            })
+          ),
+          whiteSpace: style ? style.whiteSpace : "",
+          textOverflow: style ? style.textOverflow : "",
+        };
+      });
+      h.assert(classLegend && classLegend.rows.length > 0, "class pie legend");
+      h.assert(
+        classLegend.rows.every(
+          (row) => row.hasHead && row.label && row.value && row.valueIsSibling
+        ),
+        "pie legend rows have a label and a separate mileage line"
+      );
+      h.assert(
+        classLegend.rows.some((row) => row.label === "Economy"),
+        "class labels are not truncated"
+      );
+      h.assert(
+        classLegend.rows.some((row) => row.label === "Premium Economy"),
+        "premium economy label is spelled out"
+      );
+      h.assert(
+        classLegend.rows.every(
+          (row) => /\d/.test(row.value) && /\b(mi|km)\b/.test(row.value)
+        ),
+        "pie legend shows mileage"
+      );
+      h.assert(
+        classLegend.whiteSpace !== "nowrap" &&
+          classLegend.textOverflow !== "ellipsis",
+        "pie legend labels should wrap instead of truncating"
+      );
     },
   },
   {
@@ -249,6 +323,24 @@ module.exports = [
         await page.$eval("#flight-editor", (el) => el.hidden),
         "editor must not open for demo data"
       );
+
+      // Notes are private: they exist in the demo data but must not be shown
+      // on public/demo cards.
+      const notes = await page.evaluate(async () => {
+        const res = await fetch("/php/flights.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: "",
+        });
+        const flights = await res.json();
+        return {
+          inData: Array.isArray(flights) && flights.some((f) => f.note),
+          rendered: document.querySelectorAll("#flight-list .flight-card__note")
+            .length,
+        };
+      });
+      h.assert(notes.inData, "demo data should contain at least one note");
+      h.assertEqual(notes.rendered, 0, "notes must be hidden in demo mode");
     },
   },
   {

@@ -153,7 +153,9 @@ module.exports = [
         };
         const attribution = document.querySelector("#map .ol-attribution");
         const list = attribution && attribution.querySelector("ul");
+        const attribButton = attribution && attribution.querySelector("button");
         const rect = attribution && attribution.getBoundingClientRect();
+        const buttonRect = attribButton && attribButton.getBoundingClientRect();
         return {
           zoomIn: readButton("#map .ol-zoom-in"),
           zoomOut: readButton("#map .ol-zoom-out"),
@@ -163,6 +165,13 @@ module.exports = [
                 text: list ? list.textContent.trim() : "",
                 width: rect.width,
                 height: rect.height,
+                button: attribButton
+                  ? {
+                      title: attribButton.title,
+                      width: buttonRect.width,
+                      height: buttonRect.height,
+                    }
+                  : null,
               }
             : null,
         };
@@ -189,8 +198,14 @@ module.exports = [
 
       h.assert(chrome.attribution, "attribution control missing");
       h.assert(
-        !chrome.attribution.collapsed,
-        "attribution should always be visible"
+        chrome.attribution.collapsed,
+        "attribution should collapse into its button"
+      );
+      h.assert(chrome.attribution.button, "attribution button missing");
+      h.assert(
+        chrome.attribution.button.width > 0 &&
+          chrome.attribution.button.height > 0,
+        "attribution button has no size"
       );
       h.assertIncludes(chrome.attribution.text, "CARTO", "attribution text");
       h.assert(

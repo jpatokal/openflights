@@ -14,15 +14,18 @@ flight editor. It does not require Selenium, PHPUnit, or a browser driver binary
 - App shell: title, logo, tabs, login chip, hidden add-flight button.
 - Demo data loads (flight count and cards).
 - Tab navigation toggles the active view and `aria-selected`.
-- Overview: hero stats, "Distance in perspective" (`x` values and labels),
-  extreme coordinates (e.g. `78.2°N`), and the four pie charts.
+- Overview: vertically stacked hero stats, "Distance in perspective"
+  (round-the-world/moon multipliers and the Mars percentage), extreme
+  coordinates (e.g. `78.2°N`), and four pie charts whose legends show the
+  full label with mileage on a second line.
 - Flights: list rendering, search filtering, and date sorting.
-- Flight cards are read-only when logged out.
+- Flight cards are read-only when logged out, and private notes are hidden
+  on public/demo cards.
 - Filters: toggle/open state, applying a year then a carrier (active-count
   badge), cross-filtering, mode/class filters, "Clear filters", and collapsing
   the pane whenever the active tab changes.
 - Map (OpenLayers 10): viewport, zoom control, layer switcher, scale line and
-  attribution.
+  collapsed attribution button.
 - Map rendering: flight lines and clustered airport pins are created, clusters
   collapse overlapping airports, airport features carry their style attributes,
   and the viewport stays inside the world.
@@ -43,7 +46,8 @@ The map assertions read the live OpenLayers objects through a read-only
 - Airport autocomplete fills the route, distance (mi) and duration (HH:MM).
 - Typing a flight number with an airline code (`JQ123`) fills in the airline.
 - An unknown airline is flagged red and blocks saving.
-- Adding a flight creates a card in the list.
+- Adding a flight creates a card in the list, including its note for the
+  owner.
 - Editing a flight prefills the form and persists changes.
 - The account sheet shows only "Log out"; logging out returns to demo mode.
 

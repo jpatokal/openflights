@@ -53,7 +53,7 @@
   const SVG_NS = "http://www.w3.org/2000/svg";
   const CLASS_NAMES = {
     Y: "Economy",
-    P: "Prem. Eco",
+    P: "Premium Economy",
     C: "Business",
     F: "First",
     "": "—",
@@ -506,8 +506,8 @@
   // --------------------------------------------------------------------------
   function heroItem(value, label) {
     return el("div", { class: "hero__item" }, [
-      el("div", { class: "hero__value", text: value }),
       el("div", { class: "hero__label", text: label }),
+      el("div", { class: "hero__value", text: value }),
     ]);
   }
 
@@ -635,12 +635,14 @@
         const distance = num(d.distance);
         const name = (labels && labels[d[key]]) || d[key] || "—";
         return el("div", { class: "pie-legend__row" }, [
-          el("span", {
-            class: "pie-legend__dot",
-            style: "background:" + PIE_COLORS[i % PIE_COLORS.length],
-          }),
-          el("span", { class: "pie-legend__label", text: name }),
-          el("span", {
+          el("div", { class: "pie-legend__head" }, [
+            el("span", {
+              class: "pie-legend__dot",
+              style: "background:" + PIE_COLORS[i % PIE_COLORS.length],
+            }),
+            el("span", { class: "pie-legend__label", text: name }),
+          ]),
+          el("div", {
             class: "pie-legend__value",
             text: segments + " · " + formatNumber(distance) + " " + unit,
           }),
@@ -747,7 +749,10 @@
               formatTripCount(totalDistance / scale.moon) + "x",
               "To the Moon"
             ),
-            tile(formatTripCount(totalDistance / scale.mars) + "x", "To Mars"),
+            tile(
+              formatTripCount((totalDistance / scale.mars) * 100) + "%",
+              "To Mars"
+            ),
           ])
         )
       );
@@ -1040,7 +1045,8 @@
     if (badges.length)
       cardNode.appendChild(el("div", { class: "badges" }, badges));
 
-    if (f.note)
+    // Notes are private annotations: only the owner sees them on cards.
+    if (f.note && state.mode === "self")
       cardNode.appendChild(
         el("div", { class: "flight-card__note", text: f.note })
       );
@@ -1117,7 +1123,7 @@
     const controls = [
       new ol.control.Zoom(),
       new ol.control.ScaleLine(),
-      new ol.control.Attribution({ collapsible: false }),
+      new ol.control.Attribution(),
     ];
     if (typeof LayerSwitcher !== "undefined") {
       controls.push(new LayerSwitcher({ activationMode: "click" }));
