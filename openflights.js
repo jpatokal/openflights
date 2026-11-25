@@ -544,7 +544,12 @@ function init() {
           getSelectedApid(airportAutoCompInputId, item.value);
         },
         failureCb: (error) => {
-          invalidateField(airportAutoCompInputId, true);
+          // No match (yet), e.g. an intermediate prefix like "KT" while typing
+          // "KTM": clear only this field's marker. Unmarking *all* airports here
+          // dropped the other endpoint, so distance, duration and arrival time
+          // were never calculated (#1449).
+          invalidateField(airportAutoCompInputId);
+          markAirport(airportAutoCompInputId);
         },
       });
     }
