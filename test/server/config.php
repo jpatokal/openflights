@@ -216,9 +216,9 @@ function login($case, $name = null, $password = null, $challenge = null) {
     }
 
     $map = $case->post($webroot . "php/map.php");
-    $cols = preg_split('/[;\n]/', $map);
     if ($challenge == null) {
-        $challenge = $cols[7];
+        $decoded = json_decode($map, true);
+        $challenge = $decoded["stats"]["challenge"] ?? null;
     }
     $hash = md5($challenge . md5($password . strtolower($name)));
     $legacyhash = md5($challenge . md5($password . $name));

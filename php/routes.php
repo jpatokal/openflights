@@ -5,6 +5,24 @@ include_once 'db_pdo.php';
 include_once 'helper.php';
 include_once 'filter.php';
 
+/**
+ * Emit the route-map JSON object shared with map.php.
+ */
+function respond_routes($stats, $flights, $airports, $airlines, $airlines_all) {
+    header("Content-Type: application/json; charset=utf-8");
+    echo json_encode([
+        "stats" => $stats,
+        "flights" => $flights,
+        "airports" => $airports,
+        "trips" => [],
+        "airlines" => $airlines,
+        "airlines_all" => $airlines_all,
+        "years" => [],
+        "modes" => [],
+        "classes" => [],
+    ]);
+}
+
 $apid = $_POST["apid"] ?? $_GET["apid"] ?? null;
 $alid = $_POST["alid"] ?? $_GET["alid"] ?? null;
 
@@ -66,7 +84,11 @@ if (substr($apid, 0, 1) == "L") {
     }
 }
 
-$map = "";
+$stats = [];
+$flights = [];
+$airports = [];
+$airlines = [];
+$airlines_all = true;
 
 // Title for this airport route data plus count of routes
 // (count = 0 when airport exists but has no routes)
@@ -93,26 +115,29 @@ if ($type == "A") {
         die(_('Error') . ';' . sprintf(_("Error;No airport with ID '%s' found"), htmlspecialchars($apid)));
     }
 
-    printf(
-        "%s;%s;%s (<b>%s</b>)<br><small>%s, %s<br>%s routes</small>\n",
-        $apid,
-        $row["count"],
-        $row["name"],
-        format_apcode($row),
-        $row["city"],
-        $row["country"],
-        $row["count"]
-    );
-    if ($row["count"] == 0) {
-        // No routes, print this airport and abort
-        printf(
-            "\n%s;%s;%s;%s;0;%s;N\n",
-            format_apdata($row),
+    $stats = [
+        "apid" => (string) $apid,
+        "count" => (int) $row["count"],
+        "description" => sprintf(
+            "%s (<b>%s</b>)<br><small>%s, %s<br>%s routes</small>",
             $row["name"],
+            format_apcode($row),
             $row["city"],
             $row["country"],
-            format_airport($row)
-        );
+            $row["count"]
+        ),
+    ];
+    if ($row["count"] == 0) {
+        // No routes, print this airport and abort
+        $airports[] = format_airport_data($row) + [
+            "name" => $row["name"],
+            "city" => $row["city"],
+            "country" => $row["country"],
+            "count" => 0,
+            "formatted" => format_airport($row),
+            "future" => "N",
+        ];
+        respond_routes($stats, $flights, $airports, $airlines, $airlines_all);
         exit;
     }
 } else {
@@ -134,18 +159,20 @@ if ($type == "A") {
         die(_('Error') . ';' . sprintf(_("Error;No airline with ID '%s' found"), htmlspecialchars($apid)));
     }
 
-    printf(
-        "%s;%s;%s (<b>%s</b>)<br><small>%s</small><br>%s routes\n",
-        "L" . $apid,
-        $row["count"],
-        $row["name"],
-        $row["iata"],
-        $row["country"],
-        $row["count"]
-    );
+    $stats = [
+        "apid" => "L" . $apid,
+        "count" => (int) $row["count"],
+        "description" => sprintf(
+            "%s (<b>%s</b>)<br><small>%s</small><br>%s routes",
+            $row["name"],
+            $row["iata"],
+            $row["country"],
+            $row["count"]
+        ),
+    ];
     if ($row["count"] == 0) {
         // No routes, abort
-        printf("\n\n\n\n\n\n");
+        respond_routes($stats, $flights, $airports, $airlines, $airlines_all);
         exit;
     }
     $alname = $row["iata"];
@@ -162,27 +189,24 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute($condParams)) {
     die(_('Error') . ';' . _('Database error.'));
 }
-$rows = [];
 foreach ($sth->fetchAll(PDO::FETCH_NUM) as $row) {
     $row[7] = gcPointDistance(
         ["x" => $row[1], "y" => $row[2]],
         ["x" => $row[4], "y" => $row[5]]
     );
-    $rows[] = sprintf(
-        "%s;%s;%s;%s;%s;%s;%s;%s;%s;%s",
-        $row[0],
-        $row[1],
-        $row[2],
-        $row[3],
-        $row[4],
-        $row[5],
-        $row[6],
-        $row[7],
-        $row[8],
-        $row[9]
-    );
+    $flights[] = [
+        "src_apid" => (int) $row[0],
+        "src_lon" => (float) $row[1],
+        "src_lat" => (float) $row[2],
+        "dst_apid" => (int) $row[3],
+        "dst_lon" => (float) $row[4],
+        "dst_lat" => (float) $row[5],
+        "count" => (int) $row[6],
+        "distance" => (int) $row[7],
+        "future" => (string) $row[8],
+        "mode" => (string) $row[9],
+    ];
 }
-$map .= implode("\t", $rows) . "\n";
 
 // List of all airports with flights FROM this airport
 if ($type == "A") {
@@ -203,28 +227,26 @@ $sth = $dbh->prepare($sql);
 if (!$sth->execute($condParams)) {
     die(_('Error') . ';' . _('Database error.'));
 }
-$rows = [];
 foreach ($sth as $row) {
-    $rows[] = sprintf(
-        "%s;%s;%s;%s;%s;%s;%s",
-        format_apdata($row),
-        $row["name"],
-        $row["city"],
-        $row["country"],
-        $row["visits"],
-        format_airport($row),
-        $row["future"]
-    );
+    $airports[] = format_airport_data($row) + [
+        "name" => $row["name"],
+        "city" => $row["city"],
+        "country" => $row["country"],
+        "count" => (int) $row["visits"],
+        "formatted" => format_airport($row),
+        "future" => $row["future"],
+    ];
 }
-
-// Trips always null
-$map .= implode("\t", $rows) . "\n\n";
 
 // List of all airlines in this route map
 if ($type == "L") {
     // Special handling here: no "all" option, alid = 0 means exclude codeshares, alid != 0 means codeshares also
-    $map .= sprintf("NOALL\t%s;%s\t", 0, $alname . _("-operated"));
-    $map .= sprintf("%s;%s", htmlspecialchars($apid) . "C", $alname . _(" and codeshares"));
+    $airlines[] = ["alid" => "0", "name" => $alname . _("-operated")];
+    $airlines[] = [
+        "alid" => htmlspecialchars($apid) . "C",
+        "name" => $alname . _(" and codeshares"),
+    ];
+    $airlines_all = false;
 } else {
     // Note: Existing airline filter is purposely ignored here
     $sql = "SELECT DISTINCT a.alid, iata, icao, name FROM airlines as a, routes as r
@@ -234,12 +256,9 @@ if ($type == "L") {
     if (!$sth->execute([$apid])) {
         die(_('Error') . ';' . _('Database error.'));
     }
-    $rows = [];
     foreach ($sth as $row) {
-        $rows[] = sprintf("%s;%s", $row["alid"], $row["name"]);
+        $airlines[] = ["alid" => (int) $row["alid"], "name" => $row["name"]];
     }
-    $map .= implode("\t", $rows);
 }
 
-// And years also null
-print $map . "\n\n";
+respond_routes($stats, $flights, $airports, $airlines, $airlines_all);

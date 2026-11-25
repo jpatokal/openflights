@@ -10,6 +10,7 @@
  *   - /js/greatcircle.js     -> gcPath() for great-circle route geometry
  *   - /js/md5.min.js         -> MD5() for login/guest-password hashing
  *   - /js/flights.js         -> OpenFlights.parseFlights() for flight JSON
+ *   - /js/map.js             -> OpenFlights.parseMap() for map JSON
  */
 (function () {
   "use strict";
@@ -335,97 +336,6 @@
   // --------------------------------------------------------------------------
   // Response parsers
   // --------------------------------------------------------------------------
-  function parseTabRows(line) {
-    if (!line) return [];
-    return line.split("\t").filter(function (s) {
-      return s.trim() !== "";
-    });
-  }
-
-  function parseMap(text) {
-    const lines = text.split("\n");
-    const statsLine = (lines[0] || "").trim();
-    const cols = statsLine ? statsLine.split(";") : [];
-
-    const flightPairs = parseTabRows(lines[1]).map(function (row) {
-      const c = row.split(";");
-      return {
-        srcApid: c[0] || "",
-        srcLon: num(c[1]),
-        srcLat: num(c[2]),
-        dstApid: c[3] || "",
-        dstLon: num(c[4]),
-        dstLat: num(c[5]),
-        count: parseInt(c[6], 10) || 0,
-        distance: c[7] || "",
-        future: c[8] || "",
-        mode: c[9] || "F",
-      };
-    });
-
-    const airports = parseTabRows(lines[2]).map(function (row) {
-      const c = row.split(";");
-      const apdata = (c[0] || "").split(":");
-      return {
-        code: apdata[0] || "",
-        apid: apdata[1] || "",
-        lon: num(apdata[2]),
-        lat: num(apdata[3]),
-        name: c[1] || "",
-        city: c[2] || "",
-        country: c[3] || "",
-        count: parseInt(c[4], 10) || 0,
-        formatted: c[5] || "",
-        future: c[6] || "",
-      };
-    });
-
-    const trips = parseTabRows(lines[3]).map(function (row) {
-      const c = row.split(";");
-      return { trid: c[0] || "", name: c[1] || "", url: c[2] || "" };
-    });
-
-    const airlines = parseTabRows(lines[4]).map(function (row) {
-      const c = row.split(";");
-      return { alid: c[0] || "", name: c[1] || "" };
-    });
-
-    const years = parseTabRows(lines[5]).map(function (row) {
-      const c = row.split(";");
-      return { year: c[0] || "", label: c[1] || "" };
-    });
-
-    const modes = parseTabRows(lines[6]).map(function (row) {
-      const c = row.split(";");
-      return { code: c[0] || "", label: c[1] || "" };
-    });
-
-    const classes = parseTabRows(lines[7]).map(function (row) {
-      const c = row.split(";");
-      return { code: c[0] || "", label: c[1] || "" };
-    });
-
-    return {
-      stats: {
-        segments: cols[0] || "0",
-        distanceStr: cols[1] || "",
-        durationMin: cols[2] || "0",
-        public: cols[3] || "",
-        elite: cols[4] || "",
-        loggedIn: cols[5] || "demo",
-        editor: cols[6] || "",
-        challenge: cols[7] || "",
-      },
-      flightPairs: flightPairs,
-      airports: airports,
-      trips: trips,
-      airlines: airlines,
-      years: years,
-      modes: modes,
-      classes: classes,
-    };
-  }
-
   function parseStats(text) {
     try {
       return JSON.parse(text);
@@ -475,7 +385,7 @@
         throw new Error(parseError(mapText));
       }
 
-      const mapData = parseMap(mapText);
+      const mapData = OpenFlights.parseMap(mapText);
       state.data.mapStats = mapData.stats;
       state.data.flightPairs = mapData.flightPairs;
       state.data.airports = mapData.airports;

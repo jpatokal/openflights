@@ -27,6 +27,7 @@ require_once "./php/helper.php";
     <script type="text/javascript" src="/js/scw.min.js"></script>
     <script type="text/javascript" src="/js/autocomplete.min.js"></script>
     <script type="text/javascript" src="/js/flights.js"></script>
+    <script type="text/javascript" src="/js/map.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js"); ?>"></script>
     <?php include "./html/analytics.html"; ?>
   </head>

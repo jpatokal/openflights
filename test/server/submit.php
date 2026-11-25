@@ -33,8 +33,8 @@ class AddLoopFlightTest extends WebTestCase {
 
         // Check that one flight was added
         $map = $this->post($webroot . "php/map.php");
-        $cols = preg_split('/[;\n]/', $map);
-        $this->assertTrue($cols[0] == "1", "Flight count should be 1");
+        $data = json_decode($map, true);
+        $this->assertSame(1, $data["stats"]["count"], "Flight count should be 1");
     }
 }
 
@@ -52,8 +52,12 @@ class AddMultiFlightTest extends WebTestCase {
 
         // Check that flights were added
         $map = $this->post($webroot . "php/map.php");
-        $cols = preg_split('/[;\n]/', $map);
-        $this->assertTrue($cols[0] == 1 + $multiflight["multi"], "Flight count should be " . $multiflight["multi"] + 1);
+        $data = json_decode($map, true);
+        $this->assertSame(
+            1 + $multiflight["multi"],
+            $data["stats"]["count"],
+            "Flight count should be " . ($multiflight["multi"] + 1)
+        );
     }
 }
 
@@ -85,8 +89,8 @@ class AddSingleFlightTest extends WebTestCase {
 
         // Check that one flight was added
         $map = $this->post($webroot . "php/map.php");
-        $cols = preg_split('/[;\n]/', $map);
-        $this->assertTrue($cols[0] == "1", "One flight recorded");
+        $data = json_decode($map, true);
+        $this->assertSame(1, $data["stats"]["count"], "One flight recorded");
 
         // Get the ID of the newly added flight
         $dbh = db_connect();

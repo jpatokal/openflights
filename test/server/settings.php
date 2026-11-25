@@ -167,7 +167,7 @@ class ResetFlightsTest extends WebTestCase {
 
         // Validate reset
         $map = $this->post($webroot . "php/map.php");
-        $cols = preg_split('/[;\n]/', $map);
-        $this->assertTrue($cols[0] == "0", "No flights recorded");
+        $data = json_decode($map, true);
+        $this->assertSame(0, $data["stats"]["count"], "No flights recorded");
     }
 }
