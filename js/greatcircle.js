@@ -83,8 +83,6 @@ function gcBearingTo(from, to) {
  * Compute great circle waypoint "distance" miles away from "from" in direction "bearing"
  */
 function gcWaypoint(from, distance, bearing) {
-  var wp = new OpenLayers.Geometry.Point(0, 0);
-
   // Math.* trig functions require angles to be in radians
   var x = from.x * DEG2RAD,
     y = from.y * DEG2RAD,
@@ -101,9 +99,7 @@ function gcWaypoint(from, distance, bearing) {
     Math.sin(radBearing) * Math.sin(d) * Math.cos(y),
     Math.cos(d) - Math.sin(y) * Math.sin(lat)
   );
-  wp.x = (x + lon) * RAD2DEG;
-  wp.y = lat * RAD2DEG;
-  return wp;
+  return { x: (x + lon) * RAD2DEG, y: lat * RAD2DEG };
 }
 
 /**
@@ -111,6 +107,10 @@ function gcWaypoint(from, distance, bearing) {
  * Flips across dateline if needed, and removes any invisible points
  */
 function gcPath(startPoint, endPoint) {
+  // Work on copies so callers can keep reusing their own point objects.
+  startPoint = { x: startPoint.x, y: startPoint.y };
+  endPoint = { x: endPoint.x, y: endPoint.y };
+
   // Do we cross the dateline?  If yes, then flip endPoint across it
   if (Math.abs(startPoint.x - endPoint.x) > 180) {
     if (startPoint.x < endPoint.x) {
@@ -170,33 +170,4 @@ function gcPath(startPoint, endPoint) {
  */
 function isValid(point) {
   return point.x != null && point.y != null && point.x != NaN && point.y != NaN;
-}
-
-/**
- * Compute the extent for visible data (-180 to 180)
- * nown bug: incorrectly draws the whole map if flight lines span the meridian...
- * @param layer
- * @returns {*|null}
- */
-function getVisibleDataExtent(layer) {
-  var bounds = layer.getDataExtent();
-  if (!bounds) {
-    return null;
-  }
-  if (
-    !(
-      bounds.left < -180 &&
-      bounds.left > -360 &&
-      bounds.right > 180 &&
-      bounds.right < 360
-    )
-  ) {
-    if (bounds.left < -180) {
-      bounds.left += 360;
-    }
-    if (bounds.right > 180) {
-      bounds.right -= 360;
-    }
-  }
-  return bounds;
 }

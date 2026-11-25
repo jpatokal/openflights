@@ -636,7 +636,10 @@ function projectedPoint(x, y) {
 }
 
 function projectedLine(points) {
-  var line = new OpenLayers.Geometry.LineString(points);
+  var geometryPoints = points.map(function (point) {
+    return new OpenLayers.Geometry.Point(point.x, point.y);
+  });
+  var line = new OpenLayers.Geometry.LineString(geometryPoints);
   line.transform(proj, map.getProjectionObject());
   return line;
 }

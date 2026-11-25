@@ -21,8 +21,20 @@ flight editor. It does not require Selenium, PHPUnit, or a browser driver binary
 - Filters: toggle/open state, applying a year then a carrier (active-count
   badge), cross-filtering, mode/class filters, "Clear filters", and collapsing
   the pane whenever the active tab changes.
-- Map: OpenLayers initialises with the pan/zoom, layer switcher and scale
-  controls.
+- Map (OpenLayers 10): viewport, zoom control, layer switcher, scale line and
+  attribution.
+- Map rendering: flight lines and clustered airport pins are created, clusters
+  collapse overlapping airports, airport features carry their style attributes,
+  and the viewport stays inside the world.
+- Map interaction: clicking an airport opens its popup, clicking a cluster opens
+  the airport chooser with one row per member, and closing either clears the
+  selection.
+- Map layer switcher: toggling between the political and satellite base maps
+  updates layer visibility.
+
+The map assertions read the live OpenLayers objects through a read-only
+`window.__openflightsMap` handle. The runner enables it by loading the app with
+`?mapdebug=1`; it is not exposed in normal use.
 
 **Signed-in mode** — runs when a test account can be created/logged into:
 

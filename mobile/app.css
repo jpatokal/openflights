@@ -1040,19 +1040,15 @@ body {
 }
 
 /* ---------- Airport popup ---------- */
-.olPopup {
+.airport-popup-shell {
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   box-shadow: var(--shadow-md);
-}
-.olPopupContent {
-  /* OpenLayers measures the content div and then adds its padding on top;
-     with the app's global border-box sizing that leaves dead space to the
-     right and below the content, so padding lives on the inner element. */
-  padding: 0;
-  overflow: visible;
   color: var(--text);
   font-size: 13px;
   line-height: 1.35;
+  max-width: min(300px, calc(100vw - 32px));
 }
 .airport-popup {
   position: relative;
@@ -1095,85 +1091,67 @@ body {
   margin-top: 8px;
 }
 
-/* ---------- OpenLayers controls ---------- */
-/* Subset of the OpenLayers default theme (as inlined in openflights.css),
-   with absolute image paths since the map loads its assets from /img/. */
-
-div.olLayerDiv {
-  -moz-user-select: none;
-  text-align: left;
+/* ---------- OpenLayers 10 controls ---------- */
+.ol-control button {
+  background-color: var(--primary);
+  color: var(--primary-ink);
+}
+.ol-control button:hover,
+.ol-control button:focus {
+  background-color: var(--primary-strong);
+  color: var(--primary-ink);
 }
 
-.olControlAttribution {
-  font-size: smaller;
-  right: 4px;
-  bottom: 4px;
-  position: absolute;
-  display: block;
+.ol-attribution {
   max-width: calc(100% - 90px);
+  font-size: 10px;
   text-align: right;
 }
+.ol-attribution ul {
+  margin: 0;
+  padding: 0;
+  color: var(--text-muted);
+}
+.ol-attribution a {
+  color: var(--primary-strong);
+}
 
-.olControlScaleLine {
+.ol-scale-line {
   left: 10px;
   bottom: 15px;
-  font-size: xx-small;
+  background: rgba(101, 102, 152, 0.55);
+}
+.ol-scale-line-inner {
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
-.olControlScaleLineBottom {
-  border: solid 2px black;
-  border-bottom: none;
-  margin-top: -2px;
-  text-align: center;
+.layer-switcher {
+  top: 0.5em;
+  right: 0.5em;
+}
+.layer-switcher .panel {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+}
+.layer-switcher .panel ul {
+  padding-left: 12px;
 }
 
-.olControlScaleLineTop {
-  border: solid 2px black;
-  border-top: none;
-  text-align: center;
-}
-
-.olControlLayerSwitcher {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 20em;
-  font-family: sans-serif;
-  font-weight: bold;
-  font-size: smaller;
-  color: white;
-  background-color: transparent;
-}
-
-.olControlLayerSwitcher .layersDiv {
-  padding: 5px 10px;
+/* In click mode the vendor CSS blanks the toggle button once the panel is
+   open. Restore a visible collapse chevron instead of an empty square. */
+.layer-switcher.shown.layer-switcher-activation-mode-click > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--primary);
+  color: var(--primary-ink);
+  font-size: 22px;
+  line-height: 1;
+  border-radius: 6px;
 }
-
-.olControlLayerSwitcher .layersDiv .baseLbl,
-.olControlLayerSwitcher .layersDiv .dataLbl {
-  margin: 3px;
-}
-
-.olControlLayerSwitcher .layersDiv .baseLayersDiv,
-.olControlLayerSwitcher .layersDiv .dataLayersDiv {
-  padding-left: 10px;
-}
-
-.olControlLayerSwitcher .maximizeDiv,
-.olControlLayerSwitcher .minimizeDiv {
-  width: 18px;
-  height: 18px;
-  top: 5px;
-  right: 0;
-  cursor: pointer;
-}
-
-.olPopupCloseBox {
-  background: url("/img/close.gif") no-repeat;
-  cursor: pointer;
-}
-
-.olControlNoSelect {
-  -moz-user-select: none;
+.layer-switcher.shown.layer-switcher-activation-mode-click > button::before {
+  content: "‹";
 }

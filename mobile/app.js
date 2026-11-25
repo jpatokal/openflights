@@ -6,11 +6,13 @@
  * reuses submit.php/autocomplete.php to add and edit flights.
  *
  * Dependencies (loaded by index.html):
- *   - /js/OpenLayers.min.js  -> OpenLayers 2 global
- *   - /js/greatcircle.js     -> gcPath() for great-circle route geometry
- *   - /js/md5.min.js         -> MD5() for login/guest-password hashing
- *   - /js/flights.js         -> OpenFlights.parseFlights() for flight JSON
- *   - /js/map.js             -> OpenFlights.parseMap() for map JSON
+ *   - /js/ol.min.js              -> OpenLayers 10 global
+ *   - /js/ol-layerswitcher.min.js -> LayerSwitcher control
+ *   - /js/greatcircle.js         -> gcPath() for great-circle route geometry
+ *   - /js/md5.min.js             -> MD5() for login/guest-password hashing
+ *   - /js/flights.js             -> OpenFlights.parseFlights() for flight JSON
+ *   - /js/map.js                 -> OpenFlights.parseMap() for map JSON
+ *   - /js/mapview.js             -> OpenFlights.Maps map/layer/overlay helpers
  */
 (function () {
   "use strict";
@@ -1103,295 +1105,140 @@
   }
 
   // --------------------------------------------------------------------------
-  // Map rendering (OpenLayers 2, same base layers as openflights.js)
+  // Map rendering (OpenLayers 10 via OpenFlights.Maps)
   // --------------------------------------------------------------------------
   let map = null;
-  let proj = null;
-  let lineLayer = null;
-  let airportLayer = null;
-  let airportStyle = null;
-  let satelliteLayer = null;
-  let selectControl = null;
-  let airportPopup = null;
+  let mapCtx = null;
+  let airportOverlay = null;
+  let airportPopupElement = null;
+  let airportPopupVisible = false;
 
   function buildMapControls() {
-    const touch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    const nav = touch
-      ? new OpenLayers.Control.TouchNavigation()
-      : new OpenLayers.Control.Navigation({ zoomWheelEnabled: true });
-    return [
-      new OpenLayers.Control.PanZoom(),
-      nav,
-      new OpenLayers.Control.LayerSwitcher(),
-      new OpenLayers.Control.ScaleLine(),
-      new OpenLayers.Control.Attribution(),
+    const controls = [
+      new ol.control.Zoom(),
+      new ol.control.ScaleLine(),
+      new ol.control.Attribution({ collapsible: false }),
     ];
+    if (typeof LayerSwitcher !== "undefined") {
+      controls.push(new LayerSwitcher({ activationMode: "click" }));
+    }
+    return controls;
   }
 
-  // The XYZ base layers are spherical Mercator, so OpenLayers reports map
-  // extents in EPSG:900913 metres: a square world roughly +/-20037508 m wide.
-  // A portrait phone is taller than that square at low zoom levels, which
-  // makes OpenLayers request tile rows above the north pole and below the
-  // south pole. Those requests 404 and render as blank bands at the top and
-  // bottom of the view. This keeps the viewport inside the world instead.
-  let clampingMapView = false;
-  function clampMapToWorld() {
-    if (clampingMapView || !map || !state.mapInitialized) return;
-
-    const size = map.getSize();
-    const worldExtent = map.getMaxExtent();
-    const baseLayer = map.baseLayer;
+  function initMap() {
     if (
-      !size ||
-      !size.h ||
-      !worldExtent ||
-      !baseLayer ||
-      !baseLayer.resolutions ||
-      !map.center
+      state.mapInitialized ||
+      typeof ol === "undefined" ||
+      typeof OpenFlights.Maps === "undefined"
     ) {
       return;
     }
 
-    clampingMapView = true;
-    try {
-      // Zoom in until the whole viewport fits vertically inside the world.
-      const minZoom = 2; // as in openflights.js
-      const maxZoom = Math.max(minZoom, (map.getNumZoomLevels() || 19) - 1);
-      const current = map.getZoom() == null ? minZoom : map.getZoom();
-      let zoom = Math.max(minZoom, Math.min(current, maxZoom));
-      for (; zoom < maxZoom; zoom++) {
-        const resolution = map.getResolutionForZoom(zoom);
-        if (
-          resolution == null ||
-          size.h * resolution <= worldExtent.getHeight()
-        ) {
-          break;
-        }
-      }
-      if (zoom !== current) {
-        map.zoomTo(zoom);
-      }
-
-      // At that zoom the view is at most as tall as the world, so panning can
-      // still overshoot the poles; nudge the centre back inside.
-      const extent = map.getExtent();
-      const center = map.getCenter();
-      if (!extent || !center) return;
-      const halfHeight = extent.getHeight() / 2;
-      const northLimit = worldExtent.top - halfHeight;
-      const southLimit = worldExtent.bottom + halfHeight;
-      let lat = center.lat;
-      if (lat > northLimit) lat = northLimit;
-      else if (lat < southLimit) lat = southLimit;
-      if (lat !== center.lat) {
-        map.setCenter(new OpenLayers.LonLat(center.lon, lat));
-      }
-    } finally {
-      clampingMapView = false;
-    }
-  }
-
-  function initMap() {
-    if (state.mapInitialized || typeof OpenLayers === "undefined") return;
-
-    // OpenLayers looks for its control images in /js/img by default; this app
-    // ships violet-tinted copies of the ones it uses in mobile/img so the
-    // zoom/pan controls match the OpenFlights accent colour. Also stop
-    // OpenLayers from painting broken tiles for areas outside the world.
-    OpenLayers.ImgPath = "img/";
-    OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
-    OpenLayers.Util.onImageLoadErrorColor = "transparent";
-
-    proj = new OpenLayers.Projection("EPSG:4326");
-
-    map = new OpenLayers.Map("map", {
-      controls: buildMapControls(),
-      // The app ships its own control styling; don't fetch the OL theme CSS.
-      theme: null,
-    });
-
-    // Don't let the map zoom out past a world view, and keep it inside the
-    // world vertically so no out-of-range tiles are requested.
-    map.events.register("zoomend", map, clampMapToWorld);
-    map.events.register("moveend", map, clampMapToWorld);
-
     // The keys below are domain-restricted to openflights.org (copied from
     // openflights.js); substitute your own if hosting elsewhere.
-    const political = new OpenLayers.Layer.XYZ(
-      "Political",
-      [
-        "https://basemaps.cartocdn.com/rastertiles/light_nolabels/${z}/${x}/${y}.png?key=cb1_2a0y_1_fe421b625bae1ce78e571f5a",
-      ],
+    mapCtx = OpenFlights.Maps.createMap("map", {
+      politicalUrl:
+        "https://basemaps.cartocdn.com/rastertiles/light_nolabels/{z}/{x}/{y}.png?key=cb1_2a0y_1_fe421b625bae1ce78e571f5a",
+      politicalAttribution:
+        "Map tiles © <a href='https://carto.com/' target='_blank' rel='noopener'>CARTO</a> (CC BY 3.0), data © <a href='https://www.openstreetmap.org' target='_blank' rel='noopener'>OSM</a> (ODbL)",
+      satelliteUrl:
+        "https://api.tiles.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg",
+      satelliteAttribution:
+        "Map tiles © <a href='https://www.mapbox.com/maps/satellite' target='_blank' rel='noopener'>Mapbox</a>",
+      minZoom: 2,
+      maxZoom: 19,
+      clusterDistance: 16,
+      controls: buildMapControls(),
+    });
+    map = mapCtx.map;
+
+    mapCtx.flightLayer.setStyle(flightStyle);
+    mapCtx.airportLayer.setStyle(airportStyle);
+
+    OpenFlights.Maps.createSelection(
+      mapCtx,
+      onAirportSelect,
+      onAirportUnselect
+    );
+
+    airportPopupElement = document.createElement("div");
+    airportPopupElement.className = "airport-popup-shell";
+    airportOverlay = OpenFlights.Maps.createOverlay(
+      mapCtx,
+      airportPopupElement,
       {
-        attribution:
-          "Map tiles © <a href='https://carto.com/' target='_blank' rel='noopener'>CARTO</a> (CC BY 3.0), data © <a href='https://www.openstreetmap.org' target='_blank' rel='noopener'>OSM</a> (ODbL)",
-        sphericalMercator: true,
-        transitionEffect: "resize",
-        wrapDateLine: true,
+        positioning: "bottom-center",
+        offset: [0, -10],
       }
     );
 
-    satelliteLayer = new OpenLayers.Layer.XYZ(
-      "Satellite",
-      [
-        "https://api.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoianBhdG9rYWwiLCJhIjoiY2lyNmFyZThqMDBiNWcybTFlOWdkZGk1MiJ9.6_VWU3skRwM68ASapMLIQg",
-      ],
-      {
-        attribution:
-          "Map tiles © <a href='https://www.mapbox.com/maps/satellite' target='_blank' rel='noopener'>Mapbox</a>",
-        sphericalMercator: true,
-        transitionEffect: "resize",
-        wrapDateLine: true,
-      }
-    );
-    satelliteLayer.setVisibility(false);
-
-    lineLayer = new OpenLayers.Layer.Vector("Flights", {
-      projection: "EPSG:4326",
-      styleMap: new OpenLayers.StyleMap({
-        strokeColor: "${color}",
-        strokeOpacity: 0.9,
-        strokeWidth: "${width}",
-        strokeDashstyle: "${dash}",
-      }),
-    });
-
-    airportStyle = new OpenLayers.Style(
-      {
-        graphicName: "circle",
-        pointRadius: "${radius}",
-        fillColor: "${color}",
-        fillOpacity: 0.85,
-        strokeColor: "#ffffff",
-        strokeWidth: 1.5,
-        label: "${labelText}",
-        // Make airport codes and cluster labels clickable/tappable.
-        labelSelect: true,
-        fontColor: "${labelColor}",
-        fontSize: "10px",
-        fontWeight: "bold",
-        fontFamily:
-          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        labelAlign: "lb",
-        labelXOffset: 5,
-        labelYOffset: -2,
-        labelOutlineColor: "${labelOutlineColor}",
-        labelOutlineWidth: 2,
-      },
-      {
-        context: {
-          radius: function (feature) {
-            if (feature.cluster) {
-              return airportClusterRadius();
-            }
-            return feature.attributes.radius;
+    // Keep clicks inside the popup away from the map, otherwise they would
+    // deselect the airport and immediately close the popup again.
+    ["mousedown", "click", "dblclick", "touchstart", "touchend"].forEach(
+      function (type) {
+        airportPopupElement.addEventListener(
+          type,
+          function (evt) {
+            evt.stopPropagation();
           },
-          color: function (feature) {
-            if (feature.cluster) {
-              const top = largestAirportFeature(feature);
-              return (top && top.attributes.color) || AIRPORT_COLOR;
-            }
-            return feature.attributes.color;
-          },
-          labelText: function (feature) {
-            if (feature.cluster) {
-              const code = largestAirportCode(feature);
-              return code ? code + "+" : "";
-            }
-            return feature.attributes.code;
-          },
-          labelColor: function () {
-            return satelliteLayer && satelliteLayer.visibility
-              ? "#ffffff"
-              : "#1a1c1e";
-          },
-          labelOutlineColor: function () {
-            return satelliteLayer && satelliteLayer.visibility
-              ? "#000000"
-              : "#ffffff";
-          },
-        },
+          false
+        );
       }
     );
 
-    airportLayer = new OpenLayers.Layer.Vector("Airports", {
-      projection: "EPSG:4326",
-      strategies: [
-        new OpenLayers.Strategy.Cluster({ distance: 16, threshold: 2 }),
-      ],
-      styleMap: new OpenLayers.StyleMap({ default: airportStyle }),
-    });
-
-    map.addLayers([political, satelliteLayer, lineLayer, airportLayer]);
-
-    selectControl = new OpenLayers.Control.SelectFeature(airportLayer, {
-      onSelect: onAirportSelect,
-      onUnselect: onAirportUnselect,
-    });
-    map.addControl(selectControl);
-    selectControl.activate();
-
-    // Label colours adapt to the (dark) satellite basemap via the style context.
-    map.events.on({
-      changelayer: function () {
-        airportLayer.redraw();
-      },
+    // Label colours adapt to the (dark) satellite basemap.
+    mapCtx.satellite.on("change:visible", function () {
+      styleCache.clear();
+      mapCtx.airportLayer.changed();
     });
 
     state.mapInitialized = true;
-  }
 
-  function projectedPoint(x, y) {
-    const p = new OpenLayers.Geometry.Point(x, y);
-    p.transform(proj, map.getProjectionObject());
-    return p;
-  }
-
-  function projectedLine(points) {
-    const line = new OpenLayers.Geometry.LineString(points);
-    line.transform(proj, map.getProjectionObject());
-    return line;
+    // Read-only handle for the headless test suite (test/mobile). Only exposed
+    // when the app is loaded with ?mapdebug=1.
+    if (/[?&]mapdebug=1\b/.test(window.location.search)) {
+      window.__openflightsMap = mapCtx;
+    }
   }
 
   function makeLineFeatures(x1, y1, x2, y2, count, color, future) {
     const width = Math.floor(Math.sqrt(count) + 0.5);
-    const dash = future === "Y" ? "dash" : "solid";
+    const dash = future === "Y";
 
-    const paths = [
-      gcPath(
-        new OpenLayers.Geometry.Point(x1, y1),
-        new OpenLayers.Geometry.Point(x2, y2)
-      ),
-    ];
+    const paths = [gcPath({ x: x1, y: y1 }, { x: x2, y: y2 })];
     // Wrap copies so routes crossing the date line render correctly.
     if (x1 > 0 || x2 > 0) {
-      paths.push(
-        gcPath(
-          new OpenLayers.Geometry.Point(x1 - 360, y1),
-          new OpenLayers.Geometry.Point(x2 - 360, y2)
-        )
-      );
+      paths.push(gcPath({ x: x1 - 360, y: y1 }, { x: x2 - 360, y: y2 }));
     }
     if (x1 < 0 || x2 < 0) {
-      paths.push(
-        gcPath(
-          new OpenLayers.Geometry.Point(x1 + 360, y1),
-          new OpenLayers.Geometry.Point(x2 + 360, y2)
-        )
-      );
+      paths.push(gcPath({ x: x1 + 360, y: y1 }, { x: x2 + 360, y: y2 }));
     }
 
-    const features = [];
-    paths.forEach(function (pts) {
-      features.push(
-        new OpenLayers.Feature.Vector(projectedLine(pts), {
+    return paths
+      .filter(function (points) {
+        return points.length > 1;
+      })
+      .map(function (points) {
+        const coordinates = points.map(function (point) {
+          return ol.proj.fromLonLat([point.x, point.y]);
+        });
+        return new ol.Feature({
+          geometry: new ol.geom.LineString(coordinates),
           color: color,
           width: width,
           dash: dash,
-        })
-      );
+        });
+      });
+  }
+
+  function flightStyle(feature) {
+    return new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: hexToRgba(feature.get("color"), 0.9),
+        width: feature.get("width"),
+        lineDash: feature.get("dash") ? [6, 4] : undefined,
+      }),
     });
-    return features;
   }
 
   function airportRadius(count, max) {
@@ -1412,23 +1259,23 @@
   }
 
   function airportClusterRadius() {
-    // Match the footprint of a selected cluster: OpenLayers' "select" style
-    // uses pointRadius 6, so clusters don't grow with their member count.
+    // Match the footprint of a selected cluster: OL10 clusters don't grow with
+    // their member count.
     return 6;
   }
 
   // The airport with the most flights in a cluster. Used for the "SIN+" label
   // and to tint the cluster with its busiest airport's pin colour.
-  function largestAirportFeature(clusterFeature) {
+  function largestAirportFeature(members) {
     let best = null;
-    clusterFeature.cluster.forEach(function (feature) {
-      const a = feature.attributes || {};
-      const aCount = parseInt(a.count, 10) || 0;
-      const bCount = best ? parseInt(best.attributes.count, 10) || 0 : -1;
+    members.forEach(function (feature) {
+      const aCount = parseInt(feature.get("count"), 10) || 0;
+      const bCount = best ? parseInt(best.get("count"), 10) || 0 : -1;
       if (
         !best ||
         aCount > bCount ||
-        (aCount === bCount && (a.code || "") < (best.attributes.code || ""))
+        (aCount === bCount &&
+          (feature.get("code") || "") < (best.get("code") || ""))
       ) {
         best = feature;
       }
@@ -1436,18 +1283,76 @@
     return best;
   }
 
-  function largestAirportCode(clusterFeature) {
-    const best = largestAirportFeature(clusterFeature);
-    return (best && best.attributes.code) || "";
+  function hexToRgba(color, alpha) {
+    if (
+      typeof color !== "string" ||
+      color.charAt(0) !== "#" ||
+      color.length !== 7
+    ) {
+      return color;
+    }
+    const r = parseInt(color.slice(1, 3), 16);
+    const g = parseInt(color.slice(3, 5), 16);
+    const b = parseInt(color.slice(5, 7), 16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  const styleCache = new Map();
+
+  function airportStyle(feature) {
+    const members = OpenFlights.Maps.clusterMembers(feature);
+    const clustered = members.length > 1;
+    const top = clustered ? largestAirportFeature(members) : members[0];
+    if (!top) return null;
+
+    const dark = Boolean(mapCtx && mapCtx.satellite.getVisible());
+    const radius = clustered ? airportClusterRadius() : top.get("radius");
+    const color = top.get("color") || AIRPORT_COLOR;
+    const code = top.get("code") || "";
+    const label = clustered ? (code ? code + "+" : "") : code;
+    const key = [clustered ? 1 : 0, radius, color, label, dark ? 1 : 0].join(
+      "|"
+    );
+
+    let style = styleCache.get(key);
+    if (!style) {
+      style = new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: radius,
+          fill: new ol.style.Fill({ color: hexToRgba(color, 0.85) }),
+          stroke: new ol.style.Stroke({ color: "#ffffff", width: 1.5 }),
+        }),
+        text: label
+          ? new ol.style.Text({
+              text: label,
+              font: "bold 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              textAlign: "left",
+              textBaseline: "bottom",
+              offsetX: 5,
+              offsetY: -2,
+              fill: new ol.style.Fill({
+                color: dark ? "#ffffff" : "#1a1c1e",
+              }),
+              stroke: new ol.style.Stroke({
+                color: dark ? "#000000" : "#ffffff",
+                width: 2,
+              }),
+              overflow: true,
+            })
+          : undefined,
+      });
+      styleCache.set(key, style);
+    }
+    return style;
   }
 
   function drawMap() {
-    if (!state.mapInitialized) return;
+    if (!state.mapInitialized || !mapCtx) return;
     // The features are about to be rebuilt; any popup anchored to them is stale.
     closeAirportPopup(true);
     closeAirportChooser(false);
-    lineLayer.destroyFeatures();
-    airportLayer.destroyFeatures();
+    mapCtx.flightSource.clear();
+    mapCtx.airportSource.clear();
 
     const lineFeatures = [];
     state.data.flightPairs.forEach(function (p) {
@@ -1465,7 +1370,7 @@
         )
       );
     });
-    lineLayer.addFeatures(lineFeatures);
+    mapCtx.flightSource.addFeatures(lineFeatures);
 
     const maxCount =
       state.data.airports.reduce(function (m, a) {
@@ -1473,7 +1378,8 @@
       }, 0) || 1;
 
     const airportFeatures = state.data.airports.map(function (a) {
-      return new OpenLayers.Feature.Vector(projectedPoint(a.lon, a.lat), {
+      return new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([a.lon, a.lat])),
         radius: airportRadius(a.count, maxCount),
         color: airportVisitColor(a.count, maxCount),
         code: a.code,
@@ -1486,18 +1392,14 @@
         lat: a.lat,
       });
     });
-    airportLayer.addFeatures(airportFeatures);
-
+    mapCtx.airportSource.addFeatures(airportFeatures);
+    styleCache.clear();
     fitMap();
   }
 
   function fitMap() {
-    const extent = airportLayer.getDataExtent();
-    if (extent && state.data.airports.length > 0) {
-      map.zoomToExtent(extent);
-    } else {
-      map.zoomTo(2);
-    }
+    if (!mapCtx) return;
+    OpenFlights.Maps.fitToSource(mapCtx, mapCtx.airportSource);
   }
 
   // --------------------------------------------------------------------------
@@ -1514,20 +1416,18 @@
   }
 
   function closeAirportPopup(unselect) {
-    if (airportPopup) {
-      airportPopup.destroy();
-      airportPopup = null;
-    }
-    if (unselect && selectControl) {
-      selectControl.unselectAll();
-    }
+    airportPopupVisible = false;
+    if (airportOverlay) airportOverlay.setPosition(undefined);
+    if (airportPopupElement) airportPopupElement.innerHTML = "";
+    if (unselect) OpenFlights.Maps.clearSelection(mapCtx);
   }
 
   function onAirportSelect(feature) {
-    if (feature.cluster && feature.cluster.length > 1) {
-      openAirportChooser(feature);
+    const members = OpenFlights.Maps.clusterMembers(feature);
+    if (members.length > 1) {
+      openAirportChooser(feature, members);
     } else {
-      showAirportPopup(feature.cluster ? feature.cluster[0] : feature);
+      showAirportPopup(members[0] || feature);
     }
   }
 
@@ -1537,13 +1437,19 @@
   }
 
   function showAirportPopup(feature) {
-    if (!map) return;
+    if (!mapCtx || !airportOverlay || !airportPopupElement) return;
     closeAirportPopup(false);
 
-    const attrs = feature.attributes || {};
-    const apid = attrs.apid || "";
-    const code = attrs.code || "";
-    const name = attrs.name || code || "Airport";
+    const attrs = {
+      apid: feature.get("apid") || "",
+      code: feature.get("code") || "",
+      name: feature.get("name") || feature.get("code") || "Airport",
+      city: feature.get("city") || "",
+      country: feature.get("country") || "",
+    };
+    const apid = attrs.apid;
+    const code = attrs.code;
+    const name = attrs.name;
     const place = [attrs.city, attrs.country].filter(Boolean).join(", ");
     const meta = [code, place].filter(Boolean).join(" · ");
 
@@ -1562,7 +1468,7 @@
         "</button>";
     }
 
-    const html =
+    airportPopupElement.innerHTML =
       '<div class="airport-popup">' +
       '<button type="button" class="airport-popup__close" ' +
       'id="airport-popup-close" aria-label="Close">✕</button>' +
@@ -1575,46 +1481,18 @@
       extraHtml +
       "</div>";
 
-    // Plain anchored popup: no frame images, and autoSize makes it grow to fit.
-    const popup = new OpenLayers.Popup.Anchored(
-      "airport-popup",
-      feature.geometry.getBounds().getCenterLonLat(),
-      new OpenLayers.Size(200, 100),
-      html,
-      null,
-      false,
-      null
-    );
-    popup.autoSize = true;
-    popup.keepInMap = true;
-    popup.panMapIfOutOfView = true;
-    popup.minSize = new OpenLayers.Size(180, 60);
-    popup.maxSize = new OpenLayers.Size(300, 240);
+    airportOverlay.setPosition(feature.getGeometry().getCoordinates());
+    airportPopupVisible = true;
 
-    map.addPopup(popup);
-    airportPopup = popup;
-
-    // Keep clicks inside the popup away from the map, otherwise they would
-    // deselect the airport and immediately close the popup again.
-    ["mousedown", "click", "dblclick", "touchstart", "touchend"].forEach(
-      function (type) {
-        popup.div.addEventListener(
-          type,
-          function (evt) {
-            evt.stopPropagation();
-          },
-          false
-        );
-      }
-    );
-
-    const closeBtn = document.getElementById("airport-popup-close");
+    const closeBtn = airportPopupElement.querySelector("#airport-popup-close");
     if (closeBtn) {
       closeBtn.addEventListener("click", function () {
         closeAirportPopup(true);
       });
     }
-    const flightsBtn = document.getElementById("airport-popup-flights");
+    const flightsBtn = airportPopupElement.querySelector(
+      "#airport-popup-flights"
+    );
     if (flightsBtn) {
       flightsBtn.addEventListener("click", function () {
         applyAirportFilter(attrs);
@@ -1638,23 +1516,29 @@
     return counts;
   }
 
-  function openAirportChooser(clusterFeature) {
+  function openAirportChooser(clusterFeature, clusterMembers) {
     closeAirportPopup(false);
     closeAirportChooser(false);
     chooserCluster = clusterFeature;
 
     const counts = airportFlightCounts();
-    const members = clusterFeature.cluster.slice().sort(function (a, b) {
-      const ca = counts.get(a.attributes.apid) || 0;
-      const cb = counts.get(b.attributes.apid) || 0;
+    const members = clusterMembers.slice().sort(function (a, b) {
+      const ca = counts.get(a.get("apid")) || 0;
+      const cb = counts.get(b.get("apid")) || 0;
       if (cb !== ca) return cb - ca;
-      return (a.attributes.code || "").localeCompare(b.attributes.code || "");
+      return (a.get("code") || "").localeCompare(b.get("code") || "");
     });
 
     els.chooserList.textContent = "";
     members.forEach(function (feature) {
-      const a = feature.attributes || {};
-      const code = a.code || "";
+      const a = {
+        apid: feature.get("apid") || "",
+        code: feature.get("code") || "",
+        name: feature.get("name") || feature.get("code") || "Airport",
+        city: feature.get("city") || "",
+        country: feature.get("country") || "",
+      };
+      const code = a.code;
       const name = a.name || code || "Airport";
       const place = [a.city, a.country].filter(Boolean).join(", ");
       els.chooserList.appendChild(
@@ -1700,9 +1584,7 @@
       els.chooserList.textContent = "";
     }
     chooserCluster = null;
-    if (unselect && selectControl) {
-      selectControl.unselectAll();
-    }
+    if (unselect) OpenFlights.Maps.clearSelection(mapCtx);
   }
 
   function chooseAirport(feature) {
@@ -1712,12 +1594,15 @@
   }
 
   function zoomToCluster() {
-    if (!chooserCluster || !map) return;
-    const center = chooserCluster.geometry.getBounds().getCenterLonLat();
-    const maxZoom = (map.getNumZoomLevels() || 19) - 1;
-    const nextZoom = Math.min((map.getZoom() || 0) + 1, maxZoom);
+    if (!chooserCluster || !mapCtx) return;
+    const center = ol.extent.getCenter(
+      chooserCluster.getGeometry().getExtent()
+    );
+    const view = mapCtx.view;
+    const nextZoom = Math.min((view.getZoom() || 0) + 1, view.getMaxZoom());
     closeAirportChooser(true);
-    map.setCenter(center, nextZoom);
+    view.setCenter(center);
+    view.setZoom(nextZoom);
   }
 
   function applyAirportFilter(attrs) {
@@ -2224,11 +2109,18 @@
     }
 
     if (view === "map") {
-      if (!state.mapInitialized && typeof OpenLayers !== "undefined") {
+      if (
+        !state.mapInitialized &&
+        typeof ol !== "undefined" &&
+        typeof OpenFlights.Maps !== "undefined"
+      ) {
         initMap();
         map.updateSize();
         drawMap();
-      } else if (typeof OpenLayers === "undefined") {
+      } else if (
+        typeof ol === "undefined" ||
+        typeof OpenFlights.Maps === "undefined"
+      ) {
         const container = document.getElementById("map");
         if (container) {
           container.innerHTML = "";
@@ -2491,8 +2383,8 @@
       });
     });
 
-    // OpenLayers 2 doesn't watch the window: keep the map sized correctly when
-    // the browser is resized or a tablet is rotated.
+    // Keep the map sized correctly when the browser is resized, a tablet is
+    // rotated, or a hidden tab becomes visible again.
     let resizePending = false;
     window.addEventListener("resize", function () {
       if (resizePending) return;
@@ -2577,8 +2469,8 @@
 
     // Tapping outside the map or popup also dismisses the airport popup.
     document.addEventListener("click", function (evt) {
-      if (!airportPopup) return;
-      if (airportPopup.div.contains(evt.target)) return;
+      if (!airportPopupVisible || !airportPopupElement) return;
+      if (airportPopupElement.contains(evt.target)) return;
       const mapEl = document.getElementById("map");
       if (mapEl && mapEl.contains(evt.target)) return;
       closeAirportPopup(true);

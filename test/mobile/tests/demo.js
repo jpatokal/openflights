@@ -428,21 +428,4 @@ module.exports = [
       );
     },
   },
-  {
-    name: "map: OpenLayers initialises with controls",
-    async run({ page }) {
-      await h.click(page, '.tabbar__tab[data-view="map"]');
-      await page.waitForSelector("#view-map.is-active");
-      await page.waitForSelector("#map .olMapViewport", { timeout: 15000 });
-
-      for (const control of [
-        ".olControlPanZoom",
-        ".olControlLayerSwitcher",
-        ".olControlScaleLine",
-      ]) {
-        const found = await page.$$(`#map ${control}`);
-        h.assert(found.length > 0, "missing map control " + control);
-      }
-    },
-  },
 ];
