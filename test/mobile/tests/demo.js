@@ -378,6 +378,57 @@ module.exports = [
     },
   },
   {
+    name: "filters: switching tabs collapses the filter pane",
+    async run({ page }) {
+      const assertClosed = async (view) => {
+        await page.waitForSelector(`#view-${view}.is-active`);
+        await page.waitForFunction(
+          () => document.getElementById("filter-panel").hidden
+        );
+        h.assert(
+          await page.$eval("#filter-panel", (el) => el.hidden),
+          `filter pane hidden after switching to ${view}`
+        );
+        h.assertEqual(
+          await page.$eval("#filter-toggle", (el) =>
+            el.getAttribute("aria-expanded")
+          ),
+          "false",
+          `filter toggle collapsed after switching to ${view}`
+        );
+      };
+
+      const reopen = async () => {
+        await h.click(page, "#filter-toggle");
+        await page.waitForSelector("#filter-panel:not([hidden])");
+        h.assertEqual(
+          await page.$eval("#filter-toggle", (el) =>
+            el.getAttribute("aria-expanded")
+          ),
+          "true",
+          "filter toggle expanded"
+        );
+      };
+
+      // Open on Flights, then every tab change must close the pane.
+      await h.click(page, '.tabbar__tab[data-view="flights"]');
+      await page.waitForSelector("#view-flights.is-active");
+      await reopen();
+
+      for (const view of ["map", "overview", "flights"]) {
+        await h.click(page, `.tabbar__tab[data-view="${view}"]`);
+        await assertClosed(view);
+        await reopen();
+      }
+
+      // Leave the panel closed for subsequent tests.
+      await h.click(page, "#clear-filters");
+      await page.waitForFunction(
+        () => document.getElementById("filter-panel").hidden
+      );
+    },
+  },
+  {
     name: "map: OpenLayers initialises with controls",
     async run({ page }) {
       await h.click(page, '.tabbar__tab[data-view="map"]');

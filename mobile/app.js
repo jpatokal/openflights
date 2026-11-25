@@ -2338,6 +2338,10 @@
     state.currentView = view;
     updateFab();
 
+    // Switching tabs always collapses the filter pane.
+    setFilterPanelOpen(false);
+    updateFilterToggle();
+
     // The popup/chooser live on the map, so they make no sense once it is hidden.
     if (view !== "map") {
       closeAirportPopup(true);

@@ -19,7 +19,8 @@ flight editor. It does not require Selenium, PHPUnit, or a browser driver binary
 - Flights: list rendering, search filtering, and date sorting.
 - Flight cards are read-only when logged out.
 - Filters: toggle/open state, applying a year then a carrier (active-count
-  badge), cross-filtering, mode/class filters, and "Clear filters".
+  badge), cross-filtering, mode/class filters, "Clear filters", and collapsing
+  the pane whenever the active tab changes.
 - Map: OpenLayers initialises with the pan/zoom, layer switcher and scale
   controls.
 
