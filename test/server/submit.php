@@ -108,22 +108,36 @@ class FetchAddSingleFlightTest extends WebTestCase {
         assert_login($this);
 
         $params = array("fid" => $fid);
-        $msg = $this->post($webroot . "php/flights.php", $params);
-        $this->assertText($flight["src_date"]);
-        $this->assertText($flight["src_apid"]);
-        $this->assertText($flight["dst_apid"]);
-        $this->assertText($flight["alid"]);
-        $this->assertText($flight["duration"]);
-        $this->assertText($flight["distance"]);
-        $this->assertText($flight["number"]);
-        $this->assertText($flight["plane"]);
-        $this->assertText($flight["seat"]);
-        $this->assertText($flight["type"]);
-        $this->assertText($flight["class"]);
-        $this->assertText($flight["reason"]);
-        $this->assertText($flight["registration"]);
-        $this->assertText($flight["note"]);
-        $this->assertText($flight["src_time_formatted"]);
+        $json = $this->post($webroot . "php/flights.php", $params);
+        $this->assertStringStartsWith(
+            "application/json",
+            (string) $this->lastHeader("Content-Type")
+        );
+
+        $flights = json_decode($json, true);
+        $this->assertIsArray($flights, "Flights response is a JSON array");
+        $this->assertCount(1, $flights);
+        $row = $flights[0];
+
+        $apids = [$row["src_apid"], $row["dst_apid"]];
+        sort($apids);
+        $this->assertSame(
+            [(int) $flight["src_apid"], (int) $flight["dst_apid"]],
+            $apids
+        );
+        $this->assertSame($flight["src_date"], $row["date"]);
+        $this->assertSame((int) $flight["alid"], $row["alid"]);
+        $this->assertSame("01:00", $row["duration"]);
+        $this->assertSame((int) $flight["distance"], $row["distance"]);
+        $this->assertSame($flight["number"], $row["code"]);
+        $this->assertSame($flight["plane"], $row["plane"]);
+        $this->assertSame($flight["seat"], $row["seat"]);
+        $this->assertSame($flight["type"], $row["seat_type"]);
+        $this->assertSame($flight["class"], $row["class"]);
+        $this->assertSame($flight["reason"], $row["reason"]);
+        $this->assertSame($flight["registration"], $row["registration"]);
+        $this->assertSame($flight["note"], $row["note"]);
+        $this->assertSame($flight["src_time_formatted"], $row["src_time"]);
     }
 }
 
@@ -153,22 +167,31 @@ class FetchEditedFlightTest extends WebTestCase {
         assert_login($this);
 
         $params = array("fid" => $fid);
-        $msg = $this->post($webroot . "php/flights.php", $params);
-        $this->assertText($flight2["src_date"]);
-        $this->assertText($flight2["src_apid"]);
-        $this->assertText($flight2["dst_apid"]);
-        $this->assertText($flight2["alid"]);
-        $this->assertText($flight2["duration"]);
-        $this->assertText($flight2["distance"]);
-        $this->assertText($flight2["number"]);
-        $this->assertText($flight2["plane"]);
-        $this->assertText($flight2["seat"]);
-        $this->assertText($flight2["type"]);
-        $this->assertText($flight2["class"]);
-        $this->assertText($flight2["reason"]);
-        $this->assertText($flight2["registration"]);
-        $this->assertText($flight2["note"]);
-        $this->assertText($flight2["src_time"]);
+        $json = $this->post($webroot . "php/flights.php", $params);
+        $flights = json_decode($json, true);
+        $this->assertIsArray($flights, "Flights response is a JSON array");
+        $this->assertCount(1, $flights);
+        $row = $flights[0];
+
+        $apids = [$row["src_apid"], $row["dst_apid"]];
+        sort($apids);
+        $this->assertSame(
+            [(int) $flight2["src_apid"], (int) $flight2["dst_apid"]],
+            $apids
+        );
+        $this->assertSame($flight2["src_date"], $row["date"]);
+        $this->assertSame((int) $flight2["alid"], $row["alid"]);
+        $this->assertSame("02:00", $row["duration"]);
+        $this->assertSame((int) $flight2["distance"], $row["distance"]);
+        $this->assertSame($flight2["number"], $row["code"]);
+        $this->assertSame($flight2["plane"], $row["plane"]);
+        $this->assertSame($flight2["seat"], $row["seat"]);
+        $this->assertSame($flight2["type"], $row["seat_type"]);
+        $this->assertSame($flight2["class"], $row["class"]);
+        $this->assertSame($flight2["reason"], $row["reason"]);
+        $this->assertSame($flight2["registration"], $row["registration"]);
+        $this->assertSame($flight2["note"], $row["note"]);
+        $this->assertSame("10:02:00", $row["src_time"]);
     }
 }
 

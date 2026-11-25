@@ -21,7 +21,7 @@ if ($export) {
     }
     $fid = false;
 } else {
-    header("Content-type: text/html; charset=utf-8");
+    header("Content-type: application/json; charset=utf-8");
 
     $apid = $_POST["id"] ?? ($_GET["id"] ?? "");
     $trid = $_POST["trid"] ?? null;
@@ -226,38 +226,40 @@ foreach ($sth as $row) {
         $row["distance"] = round($row["distance"] * KM_PER_MILE);
     }
 
-    $rows[] = sprintf(
-        "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
-        $src_code,
-        $src_apid,
-        $dst_code,
-        $dst_apid,
-        $row["code"],
-        $row["src_date"],
-        $row["distance"],
-        $row["duration"],
-        $row["seat"],
-        $row["seat_type"],
-        $row["class"],
-        $row["reason"],
-        $row["fid"],
-        $row["name"],
-        $row["registration"],
-        $row["alid"],
-        $note,
-        $row["trid"],
-        $row["plid"],
-        $al_code,
-        $row["src_time"],
-        $row["mode"]
-    );
+    $rows[] = [
+        "src_code" => $src_code,
+        "src_apid" => (int) $src_apid,
+        "dst_code" => $dst_code,
+        "dst_apid" => (int) $dst_apid,
+        "code" => $row["code"],
+        "date" => $row["src_date"],
+        "distance" => (int) $row["distance"],
+        "duration" => $row["duration"],
+        "seat" => $row["seat"],
+        "seat_type" => $row["seat_type"],
+        "class" => $row["class"],
+        "reason" => $row["reason"],
+        "fid" => (int) $row["fid"],
+        "plane" => $row["name"],
+        "registration" => $row["registration"],
+        "alid" => (int) $row["alid"],
+        "note" => $note,
+        "trid" => ($row["trid"] === null || $row["trid"] === "")
+            ? null
+            : (int) $row["trid"],
+        "plid" => ($row["plid"] === null || $row["plid"] === "")
+            ? null
+            : (int) $row["plid"],
+        "al_code" => $al_code,
+        "src_time" => $row["src_time"],
+        "mode" => $row["mode"],
+    ];
 }
 
-if (count($rows)) {
-    $separator = ($export == "export" || $export == "backup")
-        ? "\r\n"
-        // We still split on "\n" when processing lists of flights in openflights.js
-        : "\n";
-
-    echo implode($separator, $rows);
+if ($export == "export" || $export == "backup") {
+    if (count($rows)) {
+        echo implode("\r\n", $rows);
+    }
+} else {
+    echo json_encode($rows);
 }

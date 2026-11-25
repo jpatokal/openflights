@@ -15,7 +15,7 @@ runs the files in a fixed order (`phpunit.xml`), so run the full suite rather
 than individual files. `settings.php` runs first (creating the test user);
 `cleanup.php` runs last.
 
-Additional, standalone test files (`planes.php`, `flights.php`, `import.php`)
+Additional, standalone test files (`planes.php`, `import.php`)
 are not part of the main suite. They can be run individually, e.g.:
 
     vendor/bin/phpunit --configuration test/server/phpunit.xml test/server/planes.php

@@ -2162,8 +2162,10 @@ function listFlights(str, desc, id) {
     desc = gt.gettext("Flights:") + " " + getMapTitle(false);
   }
 
-  // TODO: Won't be needed once the endpoint returns JSON.
+  // Flight pairs for the Great Circle Mapper export button.
   const gcmFlightList = [];
+
+  const flights = OpenFlights.parseFlights(str);
 
   var hasGCButton = false;
 
@@ -2172,7 +2174,7 @@ function listFlights(str, desc, id) {
     // TODO: alt text
     '<img src="/img/close.gif" onclick="JavaScript:closePane();" width=17 height=17> '
   );
-  if (str == "") {
+  if (flights.length === 0) {
     var msg;
     if (!route && id > 0) {
       msg = gt.gettext("No flights found at this airport.");
@@ -2255,22 +2257,21 @@ function listFlights(str, desc, id) {
     table.push("</tr>");
 
     var today = new Date().getTime();
-    var rows = str.split("\n");
-    for (var r = 0; r < rows.length; r++) {
-      // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8,
-      // seat_type 9, class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18,
-      // airline_code 19, src_time 20, mode 21
-      var col = rows[r].split("\t");
-      var trip = col[17];
-      var seat = col[8];
-      var plane = col[13];
-      var fid = col[12];
-      var code = col[4];
-      var date = col[5];
-      var modeicon = MODE_ICONS[col[21]];
-      var modename = modenames[col[21]];
+    for (var r = 0; r < flights.length; r++) {
+      var flight = flights[r];
+      var trip = flight.trid;
+      var seat = flight.seat;
+      var plane = flight.plane;
+      var fid = flight.fid;
+      var code = flight.code;
+      var date = flight.date;
+      var modeicon = MODE_ICONS[flight.mode];
+      var modename = modenames[flight.mode];
 
-      gcmFlightList.push({ src_code: col[0], dst_code: col[2] });
+      gcmFlightList.push({
+        src_code: flight.srcCode,
+        dst_code: flight.dstCode,
+      });
 
       // Date.parse() doesn't work on YYYY/MM/DD, so we chop it up and use Date.UTC instead (sigh)
       if (
@@ -2285,10 +2286,10 @@ function listFlights(str, desc, id) {
 
       // Prepend airline code to numeric/missing flight number
       if (RE_NUMERIC.test(code)) {
-        code = col[19] + code;
+        code = flight.alCode + code;
       }
-      if (col[14] != "") {
-        plane += " (" + col[14] + ")";
+      if (flight.registration != "") {
+        plane += " (" + flight.registration + ")";
       }
       if (logged_in && trip != "") {
         trip =
@@ -2306,21 +2307,21 @@ function listFlights(str, desc, id) {
           modename +
           "' width=17 height=17></td>" +
           '<td><a href="#" onclick="JavaScript:selectAirport(' +
-          col[1] +
+          flight.srcApid +
           ');">' +
-          col[0] +
+          flight.srcCode +
           "</a></td>" +
           '<td><a href="#" onclick="JavaScript:selectAirport(' +
-          col[3] +
+          flight.dstApid +
           ');">' +
-          col[2] +
+          flight.dstCode +
           "</a></td>" +
           "<td>"
       );
       if (route) {
         table.push(
           '<a href="#" onclick="JavaScript:showAirlineMap(' +
-            col[15] +
+            flight.alid +
             ');">' +
             code +
             "</a>"
@@ -2332,9 +2333,9 @@ function listFlights(str, desc, id) {
         "</td><td>" +
           date +
           "</td><td>" +
-          col[6] +
+          flight.distance +
           "</td><td>" +
-          col[7] +
+          flight.duration +
           "</td><td>" +
           plane +
           "</td>"
@@ -2344,16 +2345,16 @@ function listFlights(str, desc, id) {
           "<td>" +
             seat +
             "</td><td>" +
-            classes[col[10]] +
+            classes[flight.class] +
             "</td><td>" +
-            reasons[col[11]] +
+            reasons[flight.reason] +
             "</td><td>" +
             trip +
             "</td>"
         );
       }
       // Add an ellipsis to the note if we truncate it.
-      var note = col[16];
+      var note = flight.note;
       if (note.length > 15) {
         note = note.substring(0, 15) + "&hellip;";
       }
@@ -2916,8 +2917,9 @@ function preCopyFlight(fid) {
  * @param param {string}
  */
 function editFlight(str, param) {
+  var flights = OpenFlights.parseFlights(str);
   // Oops, no matches!?
-  if (str == "") {
+  if (flights.length === 0) {
     closeInput();
     return;
   }
@@ -2927,31 +2929,28 @@ function editFlight(str, param) {
     openDetailedInput(param);
   }
 
-  // src_iata 0, src_apid 1, dst_iata 2, dst_apid 3, flight code 4, date 5, distance 6, duration 7, seat 8, seat_type 9,
-  // class 10, reason 11, fid 12, plane 13, registration 14, alid 15, note 16, trid 17, plid 18, alcode 19, src_time 20,
-  // mode 21
-  var col = str.split("\t");
+  var flight = flights[0];
   var form = document.forms["inputform"];
-  form.number.value = col[4];
-  form.src_date.value = col[5];
-  if (col[20] != "") {
+  form.number.value = flight.code;
+  form.src_date.value = flight.date;
+  if (flight.srcTime != "") {
     $("src_time").style.color = "#000";
-    form.src_time.value = col[20].substring(0, 5); // HH:MM, drop seconds
+    form.src_time.value = flight.srcTime.substring(0, 5); // HH:MM, drop seconds
     // dst_time calculated automatically
   } else {
     clearTimes();
   }
-  form.seat.value = col[8];
+  form.seat.value = flight.seat;
 
   // Don't recalc distance/duration yet
-  selectAirport(col[1], true, true); // sets src_ap, src_apid
-  selectAirport(col[3], true, true); // sets dst_ap, dst_apid
-  selectAirline(col[15], true); // sets airline, airlineid
+  selectAirport(flight.srcApid, true, true); // sets src_ap, src_apid
+  selectAirport(flight.dstApid, true, true); // sets dst_ap, dst_apid
+  selectAirline(flight.alid, true); // sets airline, airlineid
 
-  selectInSelect(inputform.seat_type, col[9]);
-  selectInSelect(inputform.trips, col[17]);
-  selectInSelect(inputform.mode, col[21]);
-  changeMode(col[21]);
+  selectInSelect(inputform.seat_type, flight.seatType);
+  selectInSelect(inputform.trips, flight.trid);
+  selectInSelect(inputform.mode, flight.mode);
+  changeMode(flight.mode);
 
   $("editflighttitle").innerHTML = gt.strargs(
     gt.gettext("Edit segment %1 of %2"),
@@ -2960,28 +2959,28 @@ function editFlight(str, param) {
 
   var myClass = inputform.myClass;
   for (var index = 0; index < myClass.length; index++) {
-    myClass[index].checked = myClass[index].value == col[10];
+    myClass[index].checked = myClass[index].value == flight.class;
   }
   var reason = inputform.reason;
   for (index = 0; index < reason.length; index++) {
-    reason[index].checked = reason[index].value == col[11];
+    reason[index].checked = reason[index].value == flight.reason;
   }
 
   // Read these after selectAirport mucks up the dist/duration
-  $("distance").value = col[6];
+  $("distance").value = flight.distance;
   $("distance").style.color = "#000";
-  $("duration").value = col[7];
+  $("duration").value = flight.duration;
   $("duration").style.color = "#000";
   calcDuration("DEPARTURE"); // figure out arrival time according to previous dist/dur
-  fid = col[12]; // stored until flight is saved or deleted
+  fid = flight.fid; // stored until flight is saved or deleted
 
-  $("plane").value = col[13];
-  $("planeid").value = col[18];
+  $("plane").value = flight.plane;
+  $("planeid").value = flight.plid;
 
-  form.registration.value = col[14];
-  alid = col[15];
-  form.note.value = col[16];
-  form.seat.value = col[8];
+  form.registration.value = flight.registration;
+  alid = flight.alid;
+  form.note.value = flight.note;
+  form.seat.value = flight.seat;
 
   $("src_ap").style.color = "#000000";
   $("dst_ap").style.color = "#000000";

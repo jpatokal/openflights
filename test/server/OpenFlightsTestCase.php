@@ -18,11 +18,15 @@ abstract class OpenFlightsTestCase extends TestCase
     /** @var array<string,string> Cookie name => value. */
     protected $cookies = [];
 
+    /** @var array<int,string> Response headers from the last request. */
+    protected $lastHeaders = [];
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->lastResponse = '';
         $this->cookies = [];
+        $this->lastHeaders = [];
     }
 
     /**
@@ -64,9 +68,24 @@ abstract class OpenFlightsTestCase extends TestCase
 
         $body = @file_get_contents($url . $query, false, $context);
         $this->lastResponse = $body === false ? '' : $body;
+        $this->lastHeaders = $http_response_header ?? [];
         $this->storeCookies($http_response_header ?? []);
 
         return $this->lastResponse;
+    }
+
+    /**
+     * Return the value of a response header from the last request, or null.
+     */
+    public function lastHeader(string $name): ?string
+    {
+        foreach ($this->lastHeaders as $header) {
+            if (stripos($header, $name . ':') === 0) {
+                return trim(substr($header, strlen($name) + 1));
+            }
+        }
+
+        return null;
     }
 
     public function post(string $url, array $params = []): string

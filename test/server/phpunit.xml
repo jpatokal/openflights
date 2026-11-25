@@ -6,6 +6,7 @@
             <file>settings.php</file>
             <file>login.php</file>
             <file>submit.php</file>
+            <file>flights.php</file>
             <file>trip.php</file>
             <file>map.php</file>
             <file>stats.php</file>

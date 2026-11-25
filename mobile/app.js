@@ -9,6 +9,7 @@
  *   - /js/OpenLayers.min.js  -> OpenLayers 2 global
  *   - /js/greatcircle.js     -> gcPath() for great-circle route geometry
  *   - /js/md5.min.js         -> MD5() for login/guest-password hashing
+ *   - /js/flights.js         -> OpenFlights.parseFlights() for flight JSON
  */
 (function () {
   "use strict";
@@ -425,42 +426,6 @@
     };
   }
 
-  function parseFlights(text) {
-    if (!text) return [];
-    return text
-      .split("\n")
-      .filter(function (l) {
-        return l.trim() !== "";
-      })
-      .map(function (line) {
-        const c = line.split("\t");
-        return {
-          srcCode: c[0] || "",
-          srcApid: c[1] || "",
-          dstCode: c[2] || "",
-          dstApid: c[3] || "",
-          code: c[4] || "",
-          date: c[5] || "",
-          distance: c[6] || "0",
-          duration: c[7] || "",
-          seat: c[8] || "",
-          seatType: c[9] || "",
-          class: c[10] || "",
-          reason: c[11] || "",
-          fid: c[12] || "",
-          plane: c[13] || "",
-          registration: c[14] || "",
-          alid: c[15] || "",
-          note: c[16] || "",
-          trid: c[17] || "",
-          plid: c[18] || "",
-          alCode: c[19] || "",
-          srcTime: c[20] || "",
-          mode: c[21] || "F",
-        };
-      });
-  }
-
   function parseStats(text) {
     try {
       return JSON.parse(text);
@@ -559,7 +524,7 @@
       ]);
 
       state.data.flights = state.canViewFlights
-        ? parseFlights(flightsText)
+        ? OpenFlights.parseFlights(flightsText)
         : [];
 
       const statsParsed = parseStats(statsText);
