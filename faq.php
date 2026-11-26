@@ -8,8 +8,10 @@ require_once "./php/site.php";
 <html>
   <head>
     <title><?php echo sprintf(_('OpenFlights: %s'), _('FAQ')); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="stylesheet" href="/css/public.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
@@ -17,13 +19,8 @@ require_once "./php/site.php";
     <?php site_partial(__DIR__ . "/html/analytics.html"); ?>
   </head>
 
-  <body>
+  <body class="public-page">
     <div id="mainContainer">
-      <div id="contexthelp">
-          <span style="float: right"><label for="locale"><?php echo _("Language"); ?></label><br>
-            <?php locale_pulldown($dbh, $locale); ?>
-          </span>
-        </div>
       <div id="sideBarContentWrapper">
 
     <div id="contentContainer">
@@ -37,7 +34,7 @@ require_once "./php/site.php";
 
         <p><?php echo _("In a nutshell, it's a tool that lets you <b>map</b> your flights around the world, <b>search and filter</b> them in all sorts of interesting ways, calculate <b>statistics</b> automatically, and <b>share</b> the resulting maps with friends and the world. You can also check <b>airport route maps</b> for nearly every airport in the world and find out <b>what airlines fly where</b>."); ?></p>
 
-        <table>
+        <table class="gallery">
             <tr>
                 <td style="padding: 10px">
                     <a href="https://openflights.org/blog/2009/06/26/route-mapping-the-world/">

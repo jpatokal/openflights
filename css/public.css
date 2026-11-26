@@ -1,0 +1,458 @@
+/* ---------------------------------------------------------------------------
+   Public content pages: About, Data, Donate and FAQ.
+
+   Loaded after style_reset.min.css and openflights.css, and scoped to
+   body.public-page so the map/app pages keep their existing layout. The colour
+   tokens, type scale and control styling mirror mobile/app.css so the public
+   site and the mobile client share one visual language.
+   --------------------------------------------------------------------------- */
+
+body.public-page {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --text: #17191d;
+  --text-muted: #6b7280;
+  --border: #e4e7ec;
+  --primary: #656698;
+  --primary-strong: #44456e;
+  --primary-ink: #ffffff;
+  --accent: #e8890c;
+  --danger: #d64545;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+}
+
+body.public-page *,
+body.public-page *::before,
+body.public-page *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Layout ---------- */
+body.public-page #mainContainer {
+  min-width: 0;
+  max-width: 1040px;
+  height: auto;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+}
+
+body.public-page #sideBarContentWrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  height: auto;
+  background: none;
+}
+
+body.public-page #contentContainer {
+  float: none;
+  width: auto;
+  height: auto;
+  min-width: 0;
+}
+
+body.public-page #nonmap {
+  height: auto;
+  margin: 0;
+  padding: 20px 18px 24px;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow-wrap: break-word;
+}
+
+/* The sidebar follows the content in the DOM; put it on top on small screens
+   so the site navigation is the first thing you see. */
+body.public-page #sideBar {
+  float: none;
+  order: -1;
+  width: auto;
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+body.public-page #sideBar p,
+body.public-page #sideBarContentWrapper > #sideBar p {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 900px) {
+  body.public-page #mainContainer {
+    padding: 28px 24px 64px;
+  }
+
+  body.public-page #sideBarContentWrapper {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  body.public-page #nonmap {
+    padding: 28px 32px 32px;
+  }
+
+  body.public-page #sideBar {
+    order: 0;
+    position: sticky;
+    top: 16px;
+  }
+}
+
+/* ---------- Typography ---------- */
+body.public-page h1 {
+  margin: 0 0 18px;
+  padding: 0 0 10px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  border-bottom: 2px solid var(--primary);
+}
+
+body.public-page h2 {
+  margin: 30px 0 10px;
+  padding: 0;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--primary-strong);
+  border: 0;
+}
+
+body.public-page h3 {
+  margin: 22px 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+body.public-page h4 {
+  margin: 22px 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+body.public-page p {
+  margin: 0 0 12px;
+}
+
+body.public-page small {
+  font-size: 14px;
+}
+
+body.public-page strong,
+body.public-page b {
+  font-weight: 700;
+}
+
+body.public-page em,
+body.public-page i {
+  font-style: italic;
+}
+
+body.public-page a[href] {
+  color: var(--primary-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+body.public-page a[href]:hover {
+  color: var(--primary);
+}
+
+body.public-page ul,
+body.public-page ol {
+  margin: 0 0 14px;
+  padding-left: 22px;
+}
+
+body.public-page li {
+  margin-bottom: 6px;
+}
+
+body.public-page li:last-child {
+  margin-bottom: 0;
+}
+
+body.public-page img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- Tables ---------- */
+body.public-page table {
+  border-collapse: collapse;
+}
+
+/* Documentation tables: two-column name/description tables on the Data page. */
+body.public-page
+  #nonmap
+  > table:not(.elite-levels):not(.donate-support):not(.gallery) {
+  width: 100%;
+  margin: 0 0 18px;
+}
+
+body.public-page
+  #nonmap
+  > table:not(.elite-levels):not(.donate-support):not(.gallery)
+  td {
+  padding: 9px 10px;
+  vertical-align: top;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+body.public-page
+  #nonmap
+  > table:not(.elite-levels):not(.donate-support):not(.gallery)
+  tr:last-child
+  td {
+  border-bottom: 0;
+}
+
+body.public-page td.head {
+  width: 30%;
+  font-weight: 600;
+  color: var(--primary-strong);
+}
+
+body.public-page td.data {
+  color: var(--text);
+}
+
+/* Screenshot gallery (FAQ). */
+body.public-page .gallery {
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+}
+
+body.public-page .gallery tbody,
+body.public-page .gallery tr {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+body.public-page .gallery td {
+  flex: 1 1 220px;
+}
+
+/* Elite level table (Donate). */
+body.public-page .elite-levels {
+  width: 100%;
+  margin: 0 0 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+body.public-page .elite-levels td {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+body.public-page .elite-levels tr:last-child td {
+  border-bottom: 0;
+}
+
+body.public-page .elite-levels td.donate {
+  text-align: center;
+  white-space: nowrap;
+}
+
+body.public-page .elite-levels td.donate2 ul {
+  margin: 6px 0 0;
+}
+
+body.public-page .elite-levels input[type="image"] {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 700px) {
+  body.public-page .elite-levels,
+  body.public-page .elite-levels tbody,
+  body.public-page .elite-levels tr,
+  body.public-page .elite-levels td {
+    display: block;
+    width: auto;
+  }
+
+  body.public-page .elite-levels {
+    border: 0;
+    border-radius: 0;
+  }
+
+  body.public-page .elite-levels tr {
+    margin: 0 0 12px;
+    padding: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  body.public-page .elite-levels td {
+    padding: 4px 0;
+    border: 0;
+  }
+
+  body.public-page .elite-levels td.donate {
+    text-align: left;
+    white-space: normal;
+  }
+
+  body.public-page .elite-levels td.donate img {
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+}
+
+/* Data page support/donation table: text beside the PayPal form. */
+body.public-page .donate-support {
+  width: 100%;
+  margin: 0 0 18px;
+}
+
+body.public-page .donate-support > tbody > tr {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+body.public-page .donate-support td {
+  padding: 0;
+  border: 0;
+  text-align: left;
+}
+
+@media (min-width: 700px) {
+  body.public-page .donate-support > tbody > tr {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+  }
+}
+
+/* ---------- Code and preformatted stats ---------- */
+body.public-page pre,
+body.public-page code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+}
+
+body.public-page pre {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+body.public-page code {
+  padding: 1px 4px;
+  font-size: 0.92em;
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+
+body.public-page pre code {
+  padding: 0;
+  background: none;
+}
+
+/* ---------- Forms and controls ---------- */
+body.public-page select {
+  padding: 8px 10px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+body.public-page select:focus,
+body.public-page input:focus,
+body.public-page textarea:focus {
+  outline: none;
+  background-color: var(--surface);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(101, 102, 152, 0.15);
+}
+
+body.public-page input[type="image"] {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- Sidebar navigation ---------- */
+body.public-page .site-nav {
+  display: block;
+  text-align: center;
+}
+
+body.public-page .site-nav__logo {
+  max-width: 190px;
+  height: auto;
+}
+
+body.public-page .site-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 6px;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+body.public-page .site-nav__links a[href] {
+  display: inline-block;
+  padding: 6px 10px;
+  color: var(--primary-strong);
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+body.public-page .site-nav__links a[href]:hover {
+  color: var(--primary);
+  background: var(--surface-2);
+}
+
+body.public-page .site-nav__sep {
+  display: none;
+}
+
+body.public-page #sideBar img {
+  max-width: 100%;
+  height: auto;
+}

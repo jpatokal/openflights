@@ -21,21 +21,18 @@ function payPalOutput($buttonId){
 <html>
     <head>
         <title><?php echo sprintf(_('OpenFlights: %s'), _('Donations and Elite Levels')); ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
         <link rel="stylesheet" href="/openflights.css" type="text/css">
+        <link rel="stylesheet" href="/css/public.css" type="text/css">
         <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
         <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
         <script type="text/javascript" src="/js/Gettext.min.js"></script>
         <script type="text/javascript" src="/js/functions.js"></script>
     </head>
 
-    <body>
+    <body class="public-page">
     <div id="mainContainer">
-        <div id="contexthelp">
-            <span style="float: right"><label for="locale"><?php echo _("Language"); ?></label><br>
-                <?php locale_pulldown($dbh, $locale); ?>
-            </span>
-        </div>
 
     <div id="sideBarContentWrapper">
 
@@ -48,7 +45,7 @@ function payPalOutput($buttonId){
 
         <h4><?php echo _('OpenFlights Elite levels'); ?></h4>
 
-        <table>
+        <table class="elite-levels">
           <tr class="donate">
           <td class="donate"><b><?php echo _('Cyan'); ?></b><br>
             <img src="/img/icon-warning.png" alt="<?php echo _('Warning'); ?>" width=34 height=34>

@@ -10,13 +10,12 @@ include_once dirname(__FILE__) . '/config.php';
  * silently disappeared and the raw include directives leaked into the HTML.
  */
 class CheckContentPageSidebars extends WebTestCase {
-    /** Pages that render the sidebar without requiring a login. */
+    /** Responsive public content pages. */
     private const PAGES = [
         "about.php",
         "faq.php",
         "data.php",
         "donate.php",
-        "html/route-maps.php",
     ];
 
     public function testSidebarRenders(): void {
@@ -40,7 +39,49 @@ class CheckContentPageSidebars extends WebTestCase {
                 $html,
                 "$page: sidebar navigation"
             );
+            $this->assertStringContainsString(
+                'class="public-page"',
+                $html,
+                "$page: public page body class"
+            );
+            $this->assertStringContainsString(
+                "/css/public.css",
+                $html,
+                "$page: responsive stylesheet"
+            );
+            $this->assertStringContainsString(
+                'name="viewport"',
+                $html,
+                "$page: mobile viewport meta"
+            );
+            $this->assertStringNotContainsString(
+                "id='locale'",
+                $html,
+                "$page: language picker removed"
+            );
         }
+    }
+
+    public function testRouteMapsRendersSidebar(): void {
+        global $webroot;
+
+        $html = $this->get($webroot . "html/route-maps.php");
+
+        $this->assertStringNotContainsString(
+            "include virtual",
+            $html,
+            "route-maps: raw SSI directive leaked into the response"
+        );
+        $this->assertStringContainsString(
+            'id="sideBar"',
+            $html,
+            "route-maps: sidebar container"
+        );
+        $this->assertStringContainsString(
+            "/img/openflights-logo.png",
+            $html,
+            "route-maps: sidebar navigation"
+        );
     }
 
     public function testMissingPartialsAreSilent(): void {

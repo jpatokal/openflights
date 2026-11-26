@@ -5,7 +5,7 @@ require_once "./php/site.php";
 
 function payPalOutput($short = true) {
 ?>
-    <table>
+    <table class="donate-support">
         <tr>
             <td><p>
             <?php
@@ -63,11 +63,13 @@ function payPalOutput($short = true) {
 <html>
   <head>
     <title><?php echo sprintf(_('OpenFlights: %s'), _('Airport and airline data')); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Free airport and airline data with IATA, ICAO, latitude, longitude, elevation, timezone, DST information">
     <meta name="keywords" content="airport,airline,data,database,iata,icao,latitude,longitude,elevation,coordinates,timezone,dafif,free">
     <link rel="stylesheet" href="/css/style_reset.min.css" type="text/css">
     <link rel="stylesheet" href="/css/help.css" type="text/css">
     <link rel="stylesheet" href="/openflights.css" type="text/css">
+    <link rel="stylesheet" href="/css/public.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
@@ -75,13 +77,8 @@ function payPalOutput($short = true) {
     <?php site_partial(__DIR__ . "/html/analytics.html"); ?>
   </head>
 
-  <body>
+  <body class="public-page">
     <div id="mainContainer">
-      <div id="contexthelp">
-        <span style="float: right"><label for="locale"><?php echo _("Language"); ?></label><br>
-          <?php locale_pulldown($dbh, $locale); ?>
-        </span>
-      </div>
       <div id="sideBarContentWrapper">
 
     <div id="contentContainer">
