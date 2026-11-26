@@ -38,6 +38,10 @@ module.exports = [
     name: "editor: opens and requires airports",
     async run({ page }) {
       await h.openAddEditor(page);
+      h.assert(
+        await page.$eval("#editor-delete", (el) => el.hidden),
+        "delete is hidden when adding"
+      );
       await h.click(page, "#flight-editor-form button[type=submit]");
       await page.waitForFunction(
         () => {
@@ -226,6 +230,81 @@ module.exports = [
         { timeout: 20000 },
         state.marker
       );
+    },
+  },
+  {
+    name: "delete flight: arms, then removes the flight",
+    async run({ page, state }) {
+      h.assert(state.marker, "the add-flight test must run first");
+
+      const opened = await page.evaluate((marker) => {
+        const card = Array.from(
+          document.querySelectorAll("#flight-list .flight-card")
+        ).find((candidate) => candidate.textContent.includes(marker));
+        if (!card) return false;
+        card.click();
+        return true;
+      }, state.marker);
+      h.assert(opened, "flight card found");
+
+      await page.waitForSelector("#flight-editor:not([hidden])", {
+        timeout: 10000,
+      });
+      await page.waitForFunction(
+        () =>
+          document.getElementById("flight-editor-title").textContent ===
+          "Edit flight",
+        { timeout: 10000 }
+      );
+
+      h.assert(
+        !(await page.$eval("#editor-delete", (el) => el.hidden)),
+        "delete is offered when editing"
+      );
+
+      const before = await page.$$eval(
+        "#flight-list .flight-card",
+        (els) => els.length
+      );
+
+      // First tap only arms the action.
+      await h.click(page, "#editor-delete");
+      h.assertEqual(
+        await page.$eval("#editor-delete", (el) => el.textContent.trim()),
+        "Confirm delete",
+        "first tap asks for confirmation"
+      );
+      h.assert(
+        await page.evaluate(
+          (marker) =>
+            Array.from(
+              document.querySelectorAll("#flight-list .flight-card")
+            ).some((card) => card.textContent.includes(marker)),
+          state.marker
+        ),
+        "flight is still present after the first tap"
+      );
+
+      // Second tap deletes and closes the editor.
+      await h.click(page, "#editor-delete");
+      await page.waitForFunction(
+        () => document.getElementById("flight-editor").hidden,
+        { timeout: 20000 }
+      );
+      await page.waitForFunction(
+        (marker) =>
+          !Array.from(
+            document.querySelectorAll("#flight-list .flight-card")
+          ).some((card) => card.textContent.includes(marker)),
+        { timeout: 20000 },
+        state.marker
+      );
+
+      const after = await page.$$eval(
+        "#flight-list .flight-card",
+        (els) => els.length
+      );
+      h.assertEqual(after, before - 1, "flight count drops by one");
     },
   },
   {

@@ -846,6 +846,23 @@ body {
 .btn--ghost {
   background: transparent;
 }
+.btn--danger {
+  background: transparent;
+  border-color: rgba(214, 69, 69, 0.45);
+  color: var(--danger);
+}
+.btn--danger:hover {
+  background: rgba(214, 69, 69, 0.08);
+}
+.btn--danger.is-armed,
+.btn--danger.is-armed:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.btn[hidden] {
+  display: none;
+}
 
 /* ---------- Flight add/edit ---------- */
 .fab {
@@ -897,6 +914,10 @@ body {
 }
 .editor-actions .btn {
   flex: 1 1 auto;
+}
+.editor-actions .btn--danger {
+  flex: 0 0 auto;
+  margin-right: auto;
 }
 .editor-note {
   resize: vertical;

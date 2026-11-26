@@ -144,6 +144,8 @@
       numberTimer: null,
       distanceAuto: false,
       durationAuto: false,
+      deleteArmed: false,
+      deleteTimer: null,
     },
   };
 
@@ -192,6 +194,7 @@
     editorTitle: document.getElementById("flight-editor-title"),
     editorClose: document.getElementById("editor-close"),
     editorCancel: document.getElementById("editor-cancel"),
+    editorDelete: document.getElementById("editor-delete"),
     editorError: document.getElementById("editor-error"),
     editorRoute: document.getElementById("editor-route"),
     editorForm: document.getElementById("flight-editor-form"),
@@ -1862,6 +1865,11 @@
     clearAirlineError();
     hideEditorError();
 
+    // Delete is only meaningful for an existing entry.
+    els.editorDelete.hidden = !f;
+    els.editorDelete.disabled = false;
+    setDeleteArmed(false);
+
     els.editorBackdrop.hidden = false;
     els.editor.hidden = false;
     setTimeout(function () {
@@ -1873,6 +1881,7 @@
     els.editor.hidden = true;
     els.editorBackdrop.hidden = true;
     clearTimeout(state.editor.numberTimer);
+    setDeleteArmed(false);
     hideAllSuggestions();
   }
 
@@ -2086,6 +2095,63 @@
       await loadAll();
     } else {
       showEditorError(parseError(text) || "Could not save.");
+    }
+  }
+
+  // Deleting is a two-step action: the first tap arms it so a stray tap in the
+  // editor footer cannot remove a flight, the second tap deletes.
+  function setDeleteArmed(armed) {
+    clearTimeout(state.editor.deleteTimer);
+    state.editor.deleteArmed = armed;
+    state.editor.deleteTimer = null;
+    els.editorDelete.classList.toggle("is-armed", armed);
+    els.editorDelete.textContent = armed ? "Confirm delete" : "Delete";
+    if (armed) {
+      state.editor.deleteTimer = setTimeout(function () {
+        setDeleteArmed(false);
+      }, 4000);
+    }
+  }
+
+  async function deleteFlight() {
+    if (!state.editor.fid) return;
+    if (!state.editor.deleteArmed) {
+      setDeleteArmed(true);
+      return;
+    }
+
+    clearTimeout(state.editor.deleteTimer);
+    state.editor.deleteTimer = null;
+    state.editor.deleteArmed = false;
+    els.editorDelete.disabled = true;
+    hideEditorError();
+
+    let text;
+    try {
+      text = await post(API.SUBMIT, {
+        param: "DELETE",
+        fid: state.editor.fid,
+        mode: state.editor.mode,
+      });
+    } catch (e) {
+      els.editorDelete.disabled = false;
+      setDeleteArmed(false);
+      showEditorError("Could not delete. Try again.");
+      return;
+    }
+    els.editorDelete.disabled = false;
+
+    // submit.php returns "100;…" for a successful delete, "0;…" or "Error;…"
+    // otherwise.
+    if (/^100;/.test(text || "")) {
+      const label = MODE_NAMES[state.editor.mode] || "Entry";
+      closeFlightEditor();
+      toast(label + " deleted.");
+      state.airportFilter = null;
+      await loadAll();
+    } else {
+      setDeleteArmed(false);
+      showEditorError(parseError(text) || "Could not delete.");
     }
   }
 
@@ -2508,6 +2574,7 @@
     });
     els.editorClose.addEventListener("click", closeFlightEditor);
     els.editorCancel.addEventListener("click", closeFlightEditor);
+    els.editorDelete.addEventListener("click", deleteFlight);
     els.editorBackdrop.addEventListener("click", closeFlightEditor);
     els.editorForm.addEventListener("submit", function (e) {
       e.preventDefault();
