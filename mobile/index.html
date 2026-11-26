@@ -13,6 +13,8 @@
       name="description"
       content="A read-only, mobile-friendly viewer for your OpenFlights flight log."
     />
+    <link rel="stylesheet" href="/css/ol.min.css" />
+    <link rel="stylesheet" href="/css/ol-layerswitcher.min.css" />
     <link rel="stylesheet" href="app.css" />
   </head>
   <body>
@@ -401,7 +403,7 @@
               <select id="editor-class" class="select">
                 <option value="">—</option>
                 <option value="Y">Economy</option>
-                <option value="P">Prem. Eco</option>
+                <option value="P">Premium Economy</option>
                 <option value="C">Business</option>
                 <option value="F">First</option>
               </select>
@@ -462,9 +464,13 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="/js/OpenLayers.min.js"></script>
+    <script src="/js/ol.min.js"></script>
+    <script src="/js/ol-layerswitcher.min.js"></script>
     <script src="/js/greatcircle.js"></script>
     <script src="/js/md5.min.js"></script>
+    <script src="/js/flights.js"></script>
+    <script src="/js/map.js"></script>
+    <script src="/js/mapview.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

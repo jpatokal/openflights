@@ -36,14 +36,16 @@ class RouteMapCoreAirportTest extends WebTestCase {
         // Then test
         $params = array("apid" => $route["core_apid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = explode("\n", $map);
+        $data = json_decode($map, true);
+        $this->assertIsArray($data, "Route response is JSON");
 
-        // N;Airport name...
-        $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
-
-        // Routes (N)
-        $rts = explode("\t", $rows[1]);
-        $this->assertTrue(sizeof($rts) == $route["routes"], "Route count" . sizeof($rts) . " vs " . $route["routes"]);
+        // Route rows can exceed distinct destinations (one per airline pair).
+        $this->assertGreaterThan(0, $data["stats"]["count"], "Route count");
+        $this->assertCount(
+            (int) $route["routes"],
+            $data["flights"],
+            "Flight count"
+        );
     }
 }
 
@@ -73,14 +75,19 @@ class RouteMapCoreAirportFilteredTest extends WebTestCase {
             "alid" => $route["filter_alid"]
         );
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = explode("\n", $map);
+        $data = json_decode($map, true);
+        $this->assertIsArray($data, "Route response is JSON");
 
-        // N;Airport name...
-        $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
-
-        // Routes (N)
-        $rts = explode("\t", $rows[1]);
-        $this->assertTrue(sizeof($rts) == $route["routes"], "Route count" . sizeof($rts) . " vs " . $route["routes"]);
+        $this->assertSame(
+            (int) $route["routes"],
+            $data["stats"]["count"],
+            "Route count"
+        );
+        $this->assertCount(
+            (int) $route["routes"],
+            $data["flights"],
+            "Flight count"
+        );
     }
 }
 
@@ -101,18 +108,20 @@ class RouteMapNoRouteAirportTest extends WebTestCase {
         // Then test
         $params = array("apid" => $route["noroute_apid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = explode("\n", $map);
+        $data = json_decode($map, true);
+        $this->assertIsArray($data, "Route response is JSON");
 
-        // N;Airport name...
-        $this->assertPattern("/0;/", $rows[0]);
-
-        // No routes
-        $this->assertTrue($rows[1] == "", "Route count");
+        $this->assertSame(0, $data["stats"]["count"], "Route count");
+        $this->assertCount(0, $data["flights"], "No routes");
 
         // One airport, with details
-        $aps = explode("\t", $rows[2]);
-        $this->assertTrue(sizeof($aps) == 1, "Airport count");
-        $this->assertText(":" . $row["apid"] . ":" . $row["x"] . ":" . $row["y"]);
+        $this->assertCount(1, $data["airports"], "Airport count");
+        $airport = $data["airports"][0];
+        $this->assertSame((int) $row["apid"], $airport["apid"]);
+        $this->assertEqualsWithDelta((float) $row["x"], $airport["lon"], 0.0001);
+        $this->assertEqualsWithDelta((float) $row["y"], $airport["lat"], 0.0001);
+        $this->assertNotEmpty($airport["code"], "Airport code");
+        $this->assertArrayNotHasKey("apdata", $airport, "No legacy apdata string");
     }
 }
 
@@ -151,14 +160,23 @@ class RouteMapCoreAirlineTest extends WebTestCase {
         // Then test
         $params = array("apid" => "L" . $route["core_alid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = explode("\n", $map);
+        $data = json_decode($map, true);
+        $this->assertIsArray($data, "Route response is JSON");
 
-        // N;Airline name...
-        $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
-
-        // Routes (N)
-        $rts = explode("\t", $rows[1]);
-        $this->assertTrue(sizeof($rts) == $route["routes"], "Route count");
+        $this->assertSame(
+            (int) $route["routes"],
+            $data["stats"]["count"],
+            "Route count"
+        );
+        $this->assertCount(
+            (int) $route["routes"],
+            $data["flights"],
+            "Flight count"
+        );
+        $this->assertFalse(
+            $data["airlines_all"],
+            "Airline maps have no 'All' option"
+        );
     }
 }
 
@@ -187,14 +205,19 @@ class RouteMapCoreAirlineWithCodesharesTest extends WebTestCase {
             "alid" => "1"
         ); // any non-zero alid triggers codeshares
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = explode("\n", $map);
+        $data = json_decode($map, true);
+        $this->assertIsArray($data, "Route response is JSON");
 
-        // N;Airline name...
-        $this->assertPattern("/" . $route["routes"] . ';/', $rows[0]);
-
-        // Routes (N)
-        $rts = explode("\t", $rows[1]);
-        $this->assertTrue(sizeof($rts) == $route["routes"], "Route count");
+        $this->assertSame(
+            (int) $route["routes"],
+            $data["stats"]["count"],
+            "Route count"
+        );
+        $this->assertCount(
+            (int) $route["routes"],
+            $data["flights"],
+            "Flight count"
+        );
     }
 }
 
@@ -215,17 +238,12 @@ class RouteMapNoRouteAirlineTest extends WebTestCase {
         // Then test
         $params = array("apid" => "L" . $route["noroute_apid"]);
         $map = $this->post($webroot . "php/routes.php", $params);
-        $rows = explode("\n", $map);
+        $data = json_decode($map, true);
+        $this->assertIsArray($data, "Route response is JSON");
 
-        // N;Airport name...
-        $this->assertPattern("/0;/", $rows[0]);
-
-        // Routes (N)
-        $this->assertTrue($rows[1] == "", "Route count");
-
-        // Airports (N+1)
-        $aps = explode("\t", $rows[2]);
-        $this->assertTrue(sizeof($aps) == 1, "Airport count");
+        $this->assertSame(0, $data["stats"]["count"], "Route count");
+        $this->assertCount(0, $data["flights"], "No routes");
+        $this->assertCount(0, $data["airports"], "No airports");
     }
 }
 

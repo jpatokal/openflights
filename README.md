@@ -18,11 +18,10 @@ Basically, though, it's your classic [LNMP](https://en.wikipedia.org/wiki/LAMP_%
 
 ## Tests
 
-Test coverage is woefully incomplete, but comes in three flavors:
+Test coverage is woefully incomplete, but comes in two flavors:
 
-- [`client`](test/client/): Client-side full-stack integration tests, require live DB & server
+- [`mobile`](test/mobile/): Headless end-to-end tests for the mobile app, require a running server (see its [README](test/mobile/README.md))
 - [`server`](test/server/): Server-side (PHP) integration tests, require a live database
-- [`unit`](test/unit/): Client-side JavaScript unit tests
 
 ## Installation
 

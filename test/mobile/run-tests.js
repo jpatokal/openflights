@@ -15,17 +15,26 @@ const path = require("path");
 
 const h = require("./lib/harness");
 const demoTests = require("./tests/demo");
+const mapTests = require("./tests/map");
 const authTests = require("./tests/auth");
 
 const APP_URL = (
   process.env.OPENFLIGHTS_URL || "http://localhost:8007/"
 ).replace(/\/?$/, "/");
 const MOBILE_URL = process.env.MOBILE_URL || APP_URL + "mobile/";
+const TEST_URL = withMapDebug(MOBILE_URL);
 const USER = process.env.MOBILE_TEST_USER || "mobiletest";
 const PASS = process.env.MOBILE_TEST_PASS || "mobiletest";
 const AUTH = process.env.MOBILE_AUTH !== "0";
 const RESET = canReset();
 const SCREENSHOT_DIR = path.join(__dirname, "screenshots");
+
+// The map tests inspect OpenLayers through a handle the app only exposes in
+// debug mode. Adding the flag to every run keeps the suite on one page load.
+function withMapDebug(url) {
+  if (url.indexOf("mapdebug=1") !== -1) return url;
+  return url + (url.indexOf("?") === -1 ? "?" : "&") + "mapdebug=1";
+}
 
 function canReset() {
   if (process.env.MOBILE_TEST_RESET === "1") return true;
@@ -84,7 +93,7 @@ async function main() {
 
   let status = 0;
   try {
-    const res = await fetch(MOBILE_URL);
+    const res = await fetch(TEST_URL);
     status = res.status;
   } catch (err) {
     status = 0;
@@ -108,7 +117,7 @@ async function main() {
     const pageErrors = [];
     page.on("pageerror", (err) => pageErrors.push(err.message));
 
-    await page.goto(MOBILE_URL, {
+    await page.goto(TEST_URL, {
       waitUntil: "domcontentloaded",
       timeout: 30000,
     });
@@ -128,6 +137,11 @@ async function main() {
 
     console.log("\nDemo mode");
     for (const test of demoTests) {
+      await runTest(test, ctx, summary);
+    }
+
+    console.log("\nMap");
+    for (const test of mapTests) {
       await runTest(test, ctx, summary);
     }
 

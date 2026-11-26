@@ -61,8 +61,11 @@ function getFilterString($dbh, $vars) {
                 break;
 
             case "note":
+                $filter .= " AND f.note LIKE " . $dbh->quote("%$xvalue%");
+                break;
+
             case "reg":
-                $filter .= " AND f.{$xkey} LIKE " . $dbh->quote("%$xvalue%");
+                $filter .= " AND f.registration LIKE " . $dbh->quote("%$xvalue%");
                 break;
         }
     }
@@ -119,11 +122,14 @@ function loadFilter($dbh, $uid, $trid, $logged_in, $year = null, $alid = null, $
 
     $sth = $dbh->prepare("SELECT * FROM trips WHERE uid = ? $privacy ORDER BY name");
     $sth->execute([$uid]);
-    $rows = [];
+    $trips = [];
     foreach ($sth as $row) {
-        $rows[] = sprintf("%s;%s;%s", $row["trid"], $row["name"], $row["url"]);
+        $trips[] = [
+            "trid" => (int) $row["trid"],
+            "name" => $row["name"],
+            "url" => $row["url"],
+        ];
     }
-    echo implode("\t", $rows) . "\n";
 
     // Airlines: constrained by year, mode, and class (not by the airline itself).
     $airlineFilter = $filter;
@@ -139,11 +145,13 @@ function loadFilter($dbh, $uid, $trid, $logged_in, $year = null, $alid = null, $
 SQL
     );
     $sth->execute($airlineParams);
-    $rows = [];
+    $airlines = [];
     foreach ($sth as $row) {
-        $rows[] = sprintf("%s;%s", $row["alid"], $row["name"]);
+        $airlines[] = [
+            "alid" => (int) $row["alid"],
+            "name" => $row["name"],
+        ];
     }
-    echo implode("\t", $rows) . "\n";
 
     // Years: constrained by airline, mode, and class (not by the year itself).
     $yearFilter = $filter;
@@ -158,11 +166,13 @@ SQL
 SQL
     );
     $sth->execute($yearParams);
-    $rows = [];
+    $years = [];
     foreach ($sth as $row) {
-        $rows[] = sprintf("%s;%s", $row["year"], $row["year"]);
+        $years[] = [
+            "year" => (int) $row["year"],
+            "label" => (string) $row["year"],
+        ];
     }
-    echo implode("\t", $rows) . "\n";
 
     // Modes: constrained by year, airline, and class.
     $modeFilter = $filter;
@@ -177,12 +187,11 @@ SQL
 SQL
     );
     $sth->execute($modeParams);
-    $rows = [];
+    $modes = [];
     foreach ($sth as $row) {
         $m = $row["mode"];
-        $rows[] = sprintf("%s;%s", $m, $mode_labels[$m] ?? $m);
+        $modes[] = ["code" => $m, "label" => $mode_labels[$m] ?? $m];
     }
-    echo implode("\t", $rows) . "\n";
 
     // Classes: constrained by year, airline, and mode.
     $classFilter = $filter;
@@ -197,10 +206,17 @@ SQL
 SQL
     );
     $sth->execute($classParams);
-    $rows = [];
+    $classes = [];
     foreach ($sth as $row) {
         $c = $row["class"];
-        $rows[] = sprintf("%s;%s", $c, $class_labels[$c] ?? $c);
+        $classes[] = ["code" => $c, "label" => $class_labels[$c] ?? $c];
     }
-    echo implode("\t", $rows);
+
+    return [
+        "trips" => $trips,
+        "airlines" => $airlines,
+        "years" => $years,
+        "modes" => $modes,
+        "classes" => $classes,
+    ];
 }

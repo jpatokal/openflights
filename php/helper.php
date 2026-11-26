@@ -99,6 +99,26 @@ function format_apdata($row) {
 }
 
 /**
+ * Structured airport data for JSON map and route responses.
+ *
+ * Replaces the legacy colon-delimited format_apdata() string so that clients
+ * receive plain fields instead of having to split a string themselves.
+ *
+ * @param $row array associative array containing apid, x, y, timezone, dst and codes
+ * @return array
+ */
+function format_airport_data($row) {
+    return [
+        "code" => format_apcode($row),
+        "apid" => (int) $row["apid"],
+        "lon" => (float) $row["x"],
+        "lat" => (float) $row["y"],
+        "timezone" => (string) ($row["timezone"] ?? ""),
+        "dst" => (string) ($row["dst"] ?? ""),
+    ];
+}
+
+/**
  * Standard formatting of airport codes.
  *
  * @param $row array associative array containing IATA and ICAO codes

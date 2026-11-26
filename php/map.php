@@ -114,7 +114,16 @@ if (!$sth->execute([$uid])) {
     die('Error;Database error. ' . $filter . ' ' . $sql);
 }
 $row = $sth->fetch();
-$map = "";
+$stats = [
+    "count" => 0,
+    "distance" => "0",
+    "duration" => 0,
+    "public" => $public,
+    "elite" => $elite ?? "",
+    "logged_in" => $logged_in,
+    "editor" => $editor ?? "",
+    "challenge" => $challenge,
+];
 if ($row) {
     if ($row["count"] == "0" && $user && $user != "0") {
         die('Error;' . _("This user has no flights."));
@@ -125,17 +134,16 @@ if ($row) {
     } else {
         $distance = number_format($distance) . " " . _("miles");
     }
-    $map = sprintf(
-        "%s;%s;%s;%s;%s;%s;%s;%s\n",
-        $row["count"],
-        $distance,
-        $row["duration"],
-        $public,
-        $elite,
-        $logged_in,
-        $editor,
-        $challenge
-    );
+    $stats = [
+        "count" => (int) $row["count"],
+        "distance" => $distance,
+        "duration" => $row["duration"] === null ? 0 : (float) $row["duration"],
+        "public" => $public,
+        "elite" => $elite ?? "",
+        "logged_in" => $logged_in,
+        "editor" => $editor ?? "",
+        "challenge" => $challenge,
+    ];
 }
 
 // List of all flights (unique by airport pair)
@@ -150,23 +158,21 @@ if (!$sth->execute([$uid])) {
     die('Error;Database error.');
 }
 
-$rows = [];
+$flights = [];
 foreach ($sth as $row) {
-    $rows[] = sprintf(
-        "%s;%s;%s;%s;%s;%s;%s;%s;%s;%s",
-        $row[0],
-        $row[1],
-        $row[2],
-        $row[3],
-        $row[4],
-        $row[5],
-        $row[6],
-        $row[7],
-        $row[8],
-        $row[9]
-    );
+    $flights[] = [
+        "src_apid" => (int) $row[0],
+        "src_lon" => (float) $row[1],
+        "src_lat" => (float) $row[2],
+        "dst_apid" => (int) $row[3],
+        "dst_lon" => (float) $row[4],
+        "dst_lat" => (float) $row[5],
+        "count" => (int) $row[6],
+        "distance" => $row[7] === null ? 0 : (int) round($row[7]),
+        "future" => $row[8],
+        "mode" => $row[9],
+    ];
 }
-$map .= implode("\t", $rows) . "\n";
 
 // List of all airports
 $sql = "SELECT DISTINCT a.apid, x, y, name, iata, icao, city, country, timezone, dst, count(name) AS visits, IF(MIN(src_date) > NOW(), 'Y', 'N') AS future
@@ -182,23 +188,44 @@ if (!$sth->execute([$uid])) {
     die('Error;Database error.');
 }
 
-$rows = [];
+$airports = [];
 foreach ($sth as $row) {
-    $rows[] = sprintf(
-        "%s;%s;%s;%s;%s;%s;%s",
-        format_apdata($row),
-        $row["name"],
-        $row["city"],
-        $row["country"],
-        $row["visits"],
-        format_airport($row),
-        $row["future"]
-    );
+    $airports[] = format_airport_data($row) + [
+        "name" => $row["name"],
+        "city" => $row["city"],
+        "country" => $row["country"],
+        "count" => (int) $row["visits"],
+        "formatted" => format_airport($row),
+        "future" => $row["future"],
+    ];
 }
 
-print $map . implode("\t", $rows) . "\n";
+$result = [
+    "stats" => $stats,
+    "flights" => $flights,
+    "airports" => $airports,
+    "trips" => [],
+    "airlines" => [],
+    "airlines_all" => true,
+    "years" => [],
+    "modes" => [],
+    "classes" => [],
+];
 
 // When running for the first time, load up possible filter settings for this user
 if ($init == "true") {
-    loadFilter($dbh, $uid, $trid, $logged_in, $_POST["year"] ?? null, $_POST["alid"] ?? null, $_POST["fmode"] ?? null, $_POST["class"] ?? null);
+    $lists = loadFilter(
+        $dbh,
+        $uid,
+        $trid,
+        $logged_in,
+        $_POST["year"] ?? null,
+        $_POST["alid"] ?? null,
+        $_POST["fmode"] ?? null,
+        $_POST["class"] ?? null
+    );
+    $result = array_merge($result, $lists);
 }
+
+header("Content-Type: application/json; charset=utf-8");
+echo json_encode($result);
