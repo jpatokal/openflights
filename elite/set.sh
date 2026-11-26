@@ -1,7 +1,7 @@
 #!/bin/bash
 STATUS=$1
 SEARCH=$2
-HOST=104.197.15.255
+HOST=`cat ../sql/db.host`
 PW=`cat ../sql/db.pw`
 
 if [ "$STATUS" != "S" -a "$STATUS" != "G" -a "$STATUS" != "P" ]; then

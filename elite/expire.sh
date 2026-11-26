@@ -6,7 +6,7 @@ set -e
 
 # Set directory and set up MySQL (must be in $PATH)
 cd "$(dirname "${BASH_SOURCE[0]}")"
-HOST=104.197.15.255
+HOST=`cat ../sql/db.host`
 PW=`cat ../sql/db.pw`
 MYSQL="mysql -h $HOST -u openflights --password=$PW --skip-column-names flightdb2"
 
