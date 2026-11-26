@@ -2148,13 +2148,10 @@
   // User context (demo / login)
   // --------------------------------------------------------------------------
   function renderUserChip() {
-    if (state.mode === "self") {
-      els.userChip.textContent = state.username || "Me";
-      els.userChip.classList.add("chip--self");
-    } else {
-      els.userChip.textContent = "Login";
-      els.userChip.classList.remove("chip--self");
-    }
+    const self = state.mode === "self";
+    els.userChip.textContent = self ? state.username || "Me" : "Login";
+    els.userChip.classList.toggle("chip--self", self);
+    els.userChip.classList.toggle("chip--login", !self);
     updateFab();
   }
 

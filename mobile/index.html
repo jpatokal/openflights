@@ -22,13 +22,22 @@
 
     <header class="app-header">
       <div class="app-header__row">
-        <h1 class="brand">
-          <img
-            class="brand__img"
-            src="img/openflights-logo.png"
-            alt="OpenFlights"
-          />
-        </h1>
+        <div class="app-header__leading">
+          <h1 class="brand">
+            <img
+              class="brand__img"
+              src="img/openflights-logo.png"
+              alt="OpenFlights"
+            />
+          </h1>
+          <a
+            id="about-link"
+            class="chip chip--ghost"
+            href="/about"
+            target="_blank"
+            rel="noopener"
+          >About</a>
+        </div>
         <div class="app-header__actions">
           <button
             id="filter-toggle"
@@ -41,7 +50,7 @@
           </button>
           <button
             id="user-chip"
-            class="chip"
+            class="chip chip--login"
             type="button"
             aria-haspopup="dialog"
           >

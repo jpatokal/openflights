@@ -249,6 +249,12 @@ module.exports = [
         !(await page.$eval("#logout-btn", (el) => el.hidden)),
         "logout button visible when signed in"
       );
+      const chipState = await page.$eval("#user-chip", (el) => ({
+        self: el.classList.contains("chip--self"),
+        login: el.classList.contains("chip--login"),
+      }));
+      h.assert(chipState.self, "signed-in chip is marked as self");
+      h.assert(!chipState.login, "signed-in chip drops the login styling");
       await h.click(page, "#sheet-close");
     },
   },
@@ -260,6 +266,12 @@ module.exports = [
         await page.$eval("#user-chip", (el) => el.textContent.trim()),
         "Login",
         "user chip after logout"
+      );
+      h.assert(
+        await page.$eval("#user-chip", (el) =>
+          el.classList.contains("chip--login")
+        ),
+        "login chip regains primary styling after logout"
       );
       h.assert(
         await page.$eval("#add-flight", (el) => el.hidden),

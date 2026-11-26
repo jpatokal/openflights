@@ -95,7 +95,16 @@ body {
   align-items: center;
   gap: 8px;
 }
+.app-header__leading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
 .app-header__actions .chip {
+  max-width: none;
+}
+.app-header__leading .chip {
   max-width: none;
 }
 .brand {
@@ -106,7 +115,8 @@ body {
 }
 .brand__img {
   display: block;
-  height: 30px;
+  height: auto;
+  max-height: 30px;
   width: auto;
   max-width: 100%;
 }
@@ -132,6 +142,53 @@ body {
 .chip--self {
   border-color: var(--primary);
   color: var(--primary);
+}
+/* Primary header action: log in. Solid OpenFlights purple so it reads as the
+   one thing to tap when signed out. */
+.chip--login {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-ink);
+}
+.chip--login:hover {
+  background: #565781;
+  border-color: #565781;
+}
+.chip--login:active {
+  background: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+/* Quiet secondary action, e.g. the About link beside the brand. */
+.chip--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+  padding: 7px 10px;
+  text-decoration: none;
+}
+.chip--ghost:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+@media (max-width: 374px) {
+  .app-header__row {
+    gap: 6px;
+  }
+  .app-header__leading,
+  .app-header__actions {
+    gap: 6px;
+  }
+  .chip {
+    padding: 6px 10px;
+  }
+  .chip--ghost {
+    padding: 6px 6px;
+  }
+}
+@media (max-width: 339px) {
+  .brand__img {
+    max-height: 26px;
+  }
 }
 .filter-toggle.is-active {
   border-color: var(--primary);

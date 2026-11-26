@@ -18,13 +18,50 @@ module.exports = [
       );
       h.assertIncludes(logo, "img/openflights-logo.png", "brand logo");
 
+      const about = await page.$eval("#about-link", (el) => ({
+        href: el.getAttribute("href"),
+        target: el.getAttribute("target"),
+        text: el.textContent.trim(),
+        parent: el.parentElement.className,
+        previous: el.previousElementSibling
+          ? el.previousElementSibling.className
+          : "",
+      }));
+      h.assertEqual(about.text, "About", "about link label");
+      h.assertEqual(about.href, "/about", "about link destination");
+      h.assertEqual(about.target, "_blank", "about opens outside the app");
+      h.assertEqual(
+        about.parent,
+        "app-header__leading",
+        "about sits in the header"
+      );
+      h.assertIncludes(
+        about.previous,
+        "brand",
+        "about sits next to the brand logo"
+      );
+
       const tabs = await page.$$eval(".tabbar__tab", (els) => els.length);
       h.assertEqual(tabs, 3, "tab count");
 
-      const chip = await page.$eval("#user-chip", (el) =>
-        el.textContent.trim()
+      const loginStyle = await page.$eval("#user-chip", (el) => ({
+        text: el.textContent.trim(),
+        background: getComputedStyle(el).backgroundColor,
+        color: getComputedStyle(el).color,
+        primary: el.classList.contains("chip--login"),
+      }));
+      h.assertEqual(loginStyle.text, "Login", "user chip");
+      h.assertEqual(
+        loginStyle.background,
+        "rgb(101, 102, 152)",
+        "login chip uses OpenFlights purple"
       );
-      h.assertEqual(chip, "Login", "user chip");
+      h.assertEqual(
+        loginStyle.color,
+        "rgb(255, 255, 255)",
+        "login chip label is white"
+      );
+      h.assert(loginStyle.primary, "login chip has primary styling");
 
       h.assert(
         await page.$eval("#add-flight", (el) => el.hidden),
