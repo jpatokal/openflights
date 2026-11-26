@@ -1,0 +1,20 @@
+<!--
+  Banner ad slot shown next to the map on the main page.
+
+  Copy this file to html/ad.html and replace the body below with your
+  deployment's advertising markup. The slot renders only when html/ad.html
+  exists (see php/site.php), so leaving it out is safe.
+-->
+<div
+  style="
+    margin: 10px auto;
+    width: 468px;
+    max-width: 100%;
+    padding: 24px 0;
+    border: 1px dashed #e4e7ec;
+    color: #6b7280;
+    text-align: center;
+  "
+>
+  Banner ad slot
+</div>

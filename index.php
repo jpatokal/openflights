@@ -3,6 +3,7 @@
 require_once "./php/locale.php";
 require_once "./php/db_pdo.php";
 require_once "./php/helper.php";
+require_once "./php/site.php";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,7 +30,7 @@ require_once "./php/helper.php";
     <script type="text/javascript" src="/js/flights.js"></script>
     <script type="text/javascript" src="/js/map.js"></script>
     <script type="text/javascript" src="<?php echo fileUrlWithDate("/openflights.js"); ?>"></script>
-    <?php include "./html/analytics.html"; ?>
+    <?php site_partial(__DIR__ . "/html/analytics.html"); ?>
   </head>
 
   <body>
@@ -77,7 +78,7 @@ require_once "./php/helper.php";
     </div>
 
   <div id="sideBar">
-    <?php include_once "./sidebar.php"; ?>
+    <?php site_sidebar(__DIR__); ?>
     <div id="login">
       <div id="langselect" style="display: block; text-align: right; margin-bottom: 10px">
         <?php locale_pulldown($dbh, $locale); ?>
@@ -198,7 +199,7 @@ require_once "./php/helper.php";
 
     <div id="resultbox">
       <div id="ad" style="display: inline;">
-        <?php include "./html/ad.html"; ?>
+        <?php site_partial(__DIR__ . "/html/ad.html"); ?>
       </div>
 
       <div id="help" style="display: none;">

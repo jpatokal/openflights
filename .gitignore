@@ -1,7 +1,10 @@
 badge/cache/
 composer.phar
 html/ad*
+!html/ad.html.example
+!html/ad-sidebar.html.example
 html/analytics*
+!html/analytics.html.example
 import/
 node_modules/
 php/config.php
@@ -14,3 +17,4 @@ vendor/*
 .idea
 .DS_Store
 locale/messages.po
+mobile/ROADMAP.md

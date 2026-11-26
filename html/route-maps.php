@@ -1,5 +1,6 @@
 <?php
 require_once "../php/locale.php";
+require_once "../php/site.php";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -10,7 +11,7 @@ require_once "../php/locale.php";
     <link rel="stylesheet" href="/openflights.css" type="text/css">
     <link rel="gettext" type="application/x-po" href="/locale/<?php echo $locale; ?>/LC_MESSAGES/messages.po" />
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
-    <?php include"./html/analytics.html"; ?>
+    <?php site_partial(dirname(__DIR__) . "/html/analytics.html"); ?>
   </head>
 
   <body>
@@ -66,8 +67,7 @@ foreach ($dbh->query($sql) as $row) {
     </div>
     <div id="sideBar">
 <?php
-include_once "../sidebar.php" ;
-include_once "ad-sidebar.html" ;
+site_sidebar(dirname(__DIR__));
 ?>
     </div>
 

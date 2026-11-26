@@ -1,6 +1,7 @@
 <?php
 require_once "./php/locale.php";
 require_once "./php/db_pdo.php";
+require_once "./php/site.php";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -13,7 +14,7 @@ require_once "./php/db_pdo.php";
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/functions.js"></script>
-    <!--#include virtual="/html/analytics.html" -->
+    <?php site_partial(__DIR__ . "/html/analytics.html"); ?>
   </head>
 
   <body>
@@ -171,8 +172,7 @@ require_once "./php/db_pdo.php";
     </div>
 
     <div id="sideBar">
-        <!--#include virtual="/sidebar.php" -->
-        <!--#include virtual="/html/ad-sidebar.html" -->
+        <?php site_sidebar(__DIR__); ?>
     </div>
 
       </div> <!-- end sidebarwrapper -->

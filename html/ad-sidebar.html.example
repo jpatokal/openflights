@@ -1,0 +1,20 @@
+<!--
+  Sidebar ad slot.
+
+  Copy this file to html/ad-sidebar.html and replace the body below with your
+  deployment's advertising markup. The page renders this slot only when
+  html/ad-sidebar.html exists (see php/site.php), so leaving it out is safe:
+  the sidebar navigation still renders and no warnings are logged.
+-->
+<div
+  style="
+    margin: 10px auto;
+    width: 220px;
+    padding: 24px 0;
+    border: 1px dashed #e4e7ec;
+    color: #6b7280;
+    text-align: center;
+  "
+>
+  Sidebar ad slot
+</div>

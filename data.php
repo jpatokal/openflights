@@ -1,6 +1,7 @@
 <?php
 require_once "./php/locale.php";
 require_once "./php/db_pdo.php";
+require_once "./php/site.php";
 
 function payPalOutput($short = true) {
 ?>
@@ -71,7 +72,7 @@ function payPalOutput($short = true) {
     <link rel="icon" type="image/png" href="/img/icon_favicon.png"/>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/functions.js"></script>
-    <!--#include virtual="/html/analytics.html" -->
+    <?php site_partial(__DIR__ . "/html/analytics.html"); ?>
   </head>
 
   <body>
@@ -441,8 +442,7 @@ TOM,5013,ACE,1055,BFS,465,,0,320
       </div>
     </div>
     <div id="sideBar">
-        <!--#include virtual="/sidebar.php" -->
-        <!--#include virtual="/html/ad-sidebar.html" -->
+        <?php site_sidebar(__DIR__); ?>
     </div>
       </div> <!-- end sidebarwrapper -->
     </div> <!-- end mainContainer -->

@@ -1,0 +1,10 @@
+Generated on	(example data — run sql/top10.sql to create data/top10.dat)
+
+<b>Registered users</b>	3
+<b>Total flights</b>	42
+<b>Flights added yesterday</b>	0
+
+Top 10 users by flights (all time)
+      42 demo
+      12 mobiletest
+       3 autotest

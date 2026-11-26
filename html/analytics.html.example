@@ -1,0 +1,7 @@
+<!--
+  Analytics snippet.
+
+  Copy this file to html/analytics.html and paste your analytics <script> tags
+  here. It is included in the <head> of the public pages only when the file
+  exists (see php/site.php), so leaving it out is safe.
+-->

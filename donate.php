@@ -2,6 +2,7 @@
 
 require_once "./php/locale.php";
 require_once "./php/db_pdo.php";
+require_once "./php/site.php";
 
 function payPalOutput($buttonId){
     ?>
@@ -130,8 +131,7 @@ if ($logged_in) {
     </div>
 
     <div id="sideBar">
-        <!--#include virtual="/sidebar.php" -->
-        <!--#include virtual="/html/ad-sidebar.html" -->
+        <?php site_sidebar(__DIR__); ?>
     </div>
 
       </div> <!-- end sidebarwrapper -->

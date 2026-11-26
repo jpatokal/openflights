@@ -7,6 +7,7 @@ composer.json
 composer.lock
 js/utilities.js
 *.html
+*.example
 *.min.css
 *.min.js
 *.yaml

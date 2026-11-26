@@ -81,7 +81,10 @@ FOO
 # sql/top10.sql >data/top10.dat
 # sql/update-demo.sql
 
-# Copy ads, analytics
-sudo -u openflights vi html/ad.html
-sudo -u openflights vi html/analytics.html
-sudo -u openflights vi html/ad-sidebar.html
+# Copy ads, analytics (committed samples are named *.example)
+sudo -u openflights cp html/ad.html.example html/ad.html
+sudo -u openflights cp html/analytics.html.example html/analytics.html
+sudo -u openflights cp html/ad-sidebar.html.example html/ad-sidebar.html
+
+# Optional: seed the About page's Top 10 block until the cron job runs
+# sudo -u openflights cp data/top10.dat.example data/top10.dat

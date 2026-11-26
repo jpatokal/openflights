@@ -4,6 +4,7 @@ require_once "../php/config.php";
 require_once "../php/locale.php";
 require_once "../php/db_pdo.php";
 require_once "../php/helper.php";
+require_once "../php/site.php";
 
 $type = isset($_GET["new"]) ? "signup" : "settings";
 
@@ -26,7 +27,7 @@ if (isset($OF_ENABLE_SIGNUP) && !$OF_ENABLE_SIGNUP) {
     <script type="text/javascript" src="/js/functions.js"></script>
     <script type="text/javascript" src="/js/Gettext.min.js"></script>
     <script type="text/javascript" src="/js/settings.js"></script>
-    <?php include "../html/analytics.html"; ?>
+    <?php site_partial(dirname(__DIR__) . "/html/analytics.html"); ?>
   </head>
 
   <body>
@@ -314,8 +315,7 @@ if ($type == "signup") {
 
     <div id="sideBar">
 <?php
-include_once '../sidebar.php';
-include_once 'ad-sidebar.html';
+site_sidebar(dirname(__DIR__));
 ?>
     </div>
 
