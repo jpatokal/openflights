@@ -95,44 +95,339 @@
         id="view-overview"
         class="view view--scroll"
         aria-label="Overview"
-      ></section>
+      >
+        <div class="pane-bar">
+          <span class="pane-bar__title">Overview</span>
+          <span class="pane-bar__actions">
+            <button
+              class="pane-bar__icon pane-bar__size"
+              type="button"
+              data-pane-size="overview"
+              data-state="split"
+              aria-label="Open the overview pane in split view"
+            >
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="split"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <rect
+                  x="4"
+                  y="4"
+                  width="16"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <rect
+                  x="4"
+                  y="13"
+                  width="16"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="maximize"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9 4H4v5M15 4h5v5M4 15v5h5M20 15v5h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="restore"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              class="pane-bar__icon"
+              type="button"
+              data-pane-hide="overview"
+              aria-label="Hide the overview pane"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12h14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </span>
+        </div>
+        <div id="overview-body" class="view__scroll-body"></div>
+      </section>
 
       <section
         id="view-flights"
         class="view view--scroll"
         aria-label="Flights"
       >
-        <div class="flights-toolbar">
-          <input
-            id="flight-search"
-            class="search"
-            type="search"
-            placeholder="Search flights…"
-            aria-label="Search flights"
-          />
-          <select id="flight-sort" class="select" aria-label="Sort flights">
-            <option value="date-desc">Newest first</option>
-            <option value="date-asc">Oldest first</option>
-            <option value="distance-desc">Longest first</option>
-            <option value="distance-asc">Shortest first</option>
-          </select>
+        <div class="pane-bar">
+          <span class="pane-bar__title">Flights</span>
+          <span class="pane-bar__actions">
+            <button
+              class="pane-bar__icon pane-bar__size"
+              type="button"
+              data-pane-size="flights"
+              data-state="split"
+              aria-label="Open the flights pane in split view"
+            >
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="split"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <rect
+                  x="4"
+                  y="4"
+                  width="16"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <rect
+                  x="4"
+                  y="13"
+                  width="16"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="maximize"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9 4H4v5M15 4h5v5M4 15v5h5M20 15v5h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="restore"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              class="pane-bar__icon"
+              type="button"
+              data-pane-hide="flights"
+              aria-label="Hide the flights pane"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12h14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </span>
         </div>
-        <div id="airport-filter" class="airport-filter" hidden>
-          <span id="airport-filter-text" class="airport-filter__text"></span>
-          <button
-            id="airport-filter-clear"
-            class="airport-filter__clear"
-            type="button"
-            aria-label="Clear airport filter"
-          >
-            ✕
-          </button>
+        <div id="flights-body" class="view__scroll-body">
+          <div class="flights-toolbar">
+            <input
+              id="flight-search"
+              class="search"
+              type="search"
+              placeholder="Search flights…"
+              aria-label="Search flights"
+            />
+            <select id="flight-sort" class="select" aria-label="Sort flights">
+              <option value="date-desc">Newest first</option>
+              <option value="date-asc">Oldest first</option>
+              <option value="distance-desc">Longest first</option>
+              <option value="distance-asc">Shortest first</option>
+            </select>
+          </div>
+          <div id="airport-filter" class="airport-filter" hidden>
+            <span id="airport-filter-text" class="airport-filter__text"></span>
+            <button
+              id="airport-filter-clear"
+              class="airport-filter__clear"
+              type="button"
+              aria-label="Clear airport filter"
+            >
+              ✕
+            </button>
+          </div>
+          <p id="flight-count" class="flight-count" aria-live="polite"></p>
+          <div id="flight-list" class="flight-list"></div>
         </div>
-        <p id="flight-count" class="flight-count" aria-live="polite"></p>
-        <div id="flight-list" class="flight-list"></div>
       </section>
 
       <section id="view-map" class="view view--map is-active" aria-label="Map">
+        <div class="pane-bar">
+          <span class="pane-bar__title">Map</span>
+          <span class="pane-bar__actions">
+            <button
+              class="pane-bar__icon pane-bar__size"
+              type="button"
+              data-pane-size="map"
+              data-state="split"
+              aria-label="Open the map pane in split view"
+            >
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="split"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <rect
+                  x="4"
+                  y="4"
+                  width="16"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <rect
+                  x="4"
+                  y="13"
+                  width="16"
+                  height="7"
+                  rx="1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="maximize"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9 4H4v5M15 4h5v5M4 15v5h5M20 15v5h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <svg
+                class="pane-bar__glyph"
+                data-glyph="restore"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              class="pane-bar__icon"
+              type="button"
+              data-pane-hide="map"
+              aria-label="Hide the map pane"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12h14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </span>
+        </div>
         <div id="map" class="map"></div>
       </section>
     </main>

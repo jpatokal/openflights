@@ -16,6 +16,7 @@ const path = require("path");
 const h = require("./lib/harness");
 const demoTests = require("./tests/demo");
 const mapTests = require("./tests/map");
+const layoutTests = require("./tests/layout");
 const authTests = require("./tests/auth");
 
 const APP_URL = (
@@ -142,6 +143,11 @@ async function main() {
 
     console.log("\nMap");
     for (const test of mapTests) {
+      await runTest(test, ctx, summary);
+    }
+
+    console.log("\nLayout");
+    for (const test of layoutTests) {
       await runTest(test, ctx, summary);
     }
 

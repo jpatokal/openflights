@@ -246,6 +246,11 @@ body {
   overflow: hidden;
   padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom));
 }
+/* Wrapper so the flights pane can scroll independently in split view. Outside
+   split view it is transparent to layout. */
+.view__scroll-body {
+  display: contents;
+}
 .map {
   flex: 1 1 auto;
   width: 100%;
@@ -1082,12 +1087,12 @@ body {
     align-content: start;
     gap: 14px;
   }
-  #view-overview.is-active > * {
+  #view-overview.is-active .view__scroll-body > * {
     margin-bottom: 0;
   }
-  #view-overview.is-active > .card:first-child,
-  #view-overview.is-active > .error-card,
-  #view-overview.is-active > .empty {
+  #view-overview.is-active .view__scroll-body > .card:first-child,
+  #view-overview.is-active .view__scroll-body > .error-card,
+  #view-overview.is-active .view__scroll-body > .empty {
     grid-column: 1 / -1;
   }
 
@@ -1129,6 +1134,168 @@ body {
   }
   #view-overview.is-active,
   .flight-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Stacked panes (large screens) ---------- */
+.pane-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 10px 4px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.pane-bar__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.pane-bar__actions {
+  display: flex;
+  gap: 2px;
+}
+.pane-bar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.pane-bar__icon:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+.pane-bar__icon[disabled] {
+  opacity: 0.35;
+  cursor: default;
+}
+.pane-bar__glyph {
+  display: none;
+}
+.pane-bar__size[data-state="split"] [data-glyph="split"],
+.pane-bar__size[data-state="maximize"] [data-glyph="maximize"],
+.pane-bar__size[data-state="restore"] [data-glyph="restore"] {
+  display: block;
+}
+
+@media (min-width: 1024px) and (min-height: 700px) {
+  /* The tab bar is replaced by the three stacked panes. */
+  body.pane-layout .tabbar {
+    display: none;
+  }
+  body.pane-layout .app-main {
+    padding-bottom: 0;
+  }
+
+  /* All three panes render; a closed pane keeps only its bar. */
+  body.pane-layout .view {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+  body.pane-layout #view-map {
+    order: 1;
+    border-bottom: 1px solid var(--border);
+  }
+  body.pane-layout #view-flights {
+    order: 2;
+  }
+  body.pane-layout #view-overview {
+    order: 3;
+  }
+  body.pane-layout .view.is-open {
+    flex: 1 1 0;
+  }
+  body.pane-layout .view.is-closed {
+    flex: 0 0 auto;
+  }
+  body.pane-layout .view.is-closed > .view__scroll-body,
+  body.pane-layout #view-map.is-closed > .map {
+    display: none;
+  }
+  body.pane-layout .pane-bar {
+    display: flex;
+  }
+  body.pane-layout #view-map .map {
+    flex: 1 1 0;
+    height: auto;
+    min-height: 0;
+  }
+
+  /* Pane bodies scroll internally so their bars stay pinned. */
+  body.pane-layout .view__scroll-body {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 20px 20px 24px;
+  }
+
+  /* Overview keeps its card grid inside the pane body. */
+  body.pane-layout #view-overview.is-open .view__scroll-body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 14px;
+  }
+  body.pane-layout #view-overview.is-open .view__scroll-body > * {
+    margin-bottom: 0;
+  }
+  body.pane-layout
+    #view-overview.is-open
+    .view__scroll-body
+    > .card:first-child,
+  body.pane-layout #view-overview.is-open .view__scroll-body > .error-card,
+  body.pane-layout #view-overview.is-open .view__scroll-body > .empty {
+    grid-column: 1 / -1;
+  }
+
+  /* Without the tab bar, the floating controls sit on the viewport bottom. */
+  body.pane-layout .fab,
+  body.pane-layout .toast {
+    bottom: calc(18px + var(--safe-bottom));
+  }
+
+  /* The airport chooser is a popover anchored to the cluster on large screens. */
+  body.pane-layout #chooser-backdrop {
+    display: none;
+  }
+  body.pane-layout #airport-chooser {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 320px;
+    max-width: min(340px, 80vw);
+    max-height: none;
+    padding-bottom: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    animation: none;
+  }
+  body.pane-layout #airport-chooser .sheet__body {
+    max-height: min(360px, 50vh);
+    overflow-y: auto;
+    padding-bottom: 12px;
+  }
+}
+
+@media (min-width: 1180px) {
+  body.pane-layout #view-overview.is-open .view__scroll-body {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

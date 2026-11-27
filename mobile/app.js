@@ -92,6 +92,16 @@
     "#458ca7", // 4 · blue
     "#45a679", // 5 · green (busiest)
   ];
+  // Airport labels sit to the upper right of their pin. The view fit pads by
+  // the widest possible label (a three-letter IATA code, plus "+" on a
+  // cluster) so labels are not clipped when an airport sits on the fitted
+  // extent's edge. Keep these in sync with airportStyle().
+  const AIRPORT_LABEL_FONT =
+    "bold 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+  const AIRPORT_LABEL_MAX_TEXT = "AAA+";
+  const AIRPORT_LABEL_OFFSET_X = 5;
+  const AIRPORT_LABEL_OFFSET_Y = -2;
+  const AIRPORT_PIN_MAX_RADIUS = 8;
 
   // --------------------------------------------------------------------------
   // State
@@ -106,6 +116,10 @@
     modeFilter: "0",
     class: "0",
     currentView: "overview",
+    // Large-screen pane layout: which panes are open, and any maximised one.
+    panes: { map: true, flights: false, overview: false },
+    paneMaximized: null,
+    paneSnapshot: null,
     flightsQuery: "",
     flightsSort: "date-desc",
     airportFilter: null, // { apid, code, name }
@@ -149,12 +163,36 @@
     },
   };
 
+  // Large screens show the map and flight list together; keep this breakpoint
+  // in sync with the split rules in app.css.
+  const splitQuery = window.matchMedia(
+    "(min-width: 1024px) and (min-height: 700px)"
+  );
+
   // --------------------------------------------------------------------------
   // DOM references
   // --------------------------------------------------------------------------
   const els = {
     overview: document.getElementById("view-overview"),
+    overviewBody: document.getElementById("overview-body"),
     flights: document.getElementById("view-flights"),
+    flightsBody: document.getElementById("flights-body"),
+    mapView: document.getElementById("view-map"),
+    paneViews: {
+      map: document.getElementById("view-map"),
+      flights: document.getElementById("view-flights"),
+      overview: document.getElementById("view-overview"),
+    },
+    paneSizes: {
+      map: document.querySelector('[data-pane-size="map"]'),
+      flights: document.querySelector('[data-pane-size="flights"]'),
+      overview: document.querySelector('[data-pane-size="overview"]'),
+    },
+    paneHides: {
+      map: document.querySelector('[data-pane-hide="map"]'),
+      flights: document.querySelector('[data-pane-hide="flights"]'),
+      overview: document.querySelector('[data-pane-hide="overview"]'),
+    },
     flightList: document.getElementById("flight-list"),
     flightCount: document.getElementById("flight-count"),
     flightSearch: document.getElementById("flight-search"),
@@ -484,8 +522,8 @@
   function showError(msg) {
     const clean = stripHtml(msg || "Something went wrong.");
     toast(clean);
-    els.overview.textContent = "";
-    els.overview.appendChild(
+    els.overviewBody.textContent = "";
+    els.overviewBody.appendChild(
       el("div", { class: "error-card" }, [
         el("div", { text: clean }),
         el("div", { class: "error-card__actions" }, [
@@ -698,7 +736,7 @@
   }
 
   function renderOverview() {
-    const view = els.overview;
+    const view = els.overviewBody;
     view.textContent = "";
 
     const mapStats = state.data.mapStats;
@@ -1334,11 +1372,11 @@
         text: label
           ? new ol.style.Text({
               text: label,
-              font: "bold 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              font: AIRPORT_LABEL_FONT,
               textAlign: "left",
               textBaseline: "bottom",
-              offsetX: 5,
-              offsetY: -2,
+              offsetX: AIRPORT_LABEL_OFFSET_X,
+              offsetY: AIRPORT_LABEL_OFFSET_Y,
               fill: new ol.style.Fill({
                 color: dark ? "#ffffff" : "#1a1c1e",
               }),
@@ -1406,9 +1444,63 @@
     fitMap();
   }
 
+  // Width and height (CSS px) of the widest airport label, measured with the
+  // same font the map renders it in. Cached: it only depends on the font.
+  let labelMetrics = null;
+  function airportLabelMetrics() {
+    if (!labelMetrics) {
+      let width = 0;
+      let height = 10;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.font = AIRPORT_LABEL_FONT;
+        const measured = ctx.measureText(AIRPORT_LABEL_MAX_TEXT);
+        width = measured.width;
+        if (measured.fontBoundingBoxAscent != null) {
+          height =
+            measured.fontBoundingBoxAscent +
+            (measured.fontBoundingBoxDescent || 0);
+        }
+      }
+      labelMetrics = { width: width, height: height };
+    }
+    return labelMetrics;
+  }
+
+  // Padding (top, right, bottom, left in CSS px) for the view fit: room for a
+  // pin's footprint on every side, and for the label above and to its right.
+  function mapFitPadding() {
+    const label = airportLabelMetrics();
+    const margin = 4;
+    return [
+      Math.ceil(
+        Math.max(
+          AIRPORT_PIN_MAX_RADIUS,
+          -AIRPORT_LABEL_OFFSET_Y + label.height
+        ) + margin
+      ),
+      Math.ceil(AIRPORT_LABEL_OFFSET_X + label.width + margin),
+      Math.ceil(AIRPORT_PIN_MAX_RADIUS + margin),
+      Math.ceil(AIRPORT_PIN_MAX_RADIUS + margin),
+    ];
+  }
+
   function fitMap() {
     if (!mapCtx) return;
-    OpenFlights.Maps.fitToSource(mapCtx, mapCtx.airportSource);
+    const size = mapCtx.map.getSize();
+    // A hidden map reports a zero size. Fitting then has no visible result and
+    // a padding larger than the (empty) box would leave the view at max zoom.
+    // Leave the view alone; it keeps the last fit made while visible.
+    if (!size || !size[0] || !size[1]) return;
+    let padding = mapFitPadding();
+    if (
+      size[0] <= padding[1] + padding[3] ||
+      size[1] <= padding[0] + padding[2]
+    ) {
+      padding = [0, 0, 0, 0];
+    }
+    OpenFlights.Maps.fitToSource(mapCtx, mapCtx.airportSource, { padding });
   }
 
   // --------------------------------------------------------------------------
@@ -1513,6 +1605,7 @@
   // Airport chooser (for overlapping airports)
   // --------------------------------------------------------------------------
   let chooserCluster = null;
+  let chooserOverlay = null;
 
   function airportFlightCounts() {
     const counts = new Map();
@@ -1582,8 +1675,47 @@
     els.chooserSubtitle.textContent =
       formatNumber(members.length) + " airports in this area";
     els.chooserZoom.hidden = members.length <= 8;
-    els.chooserBackdrop.hidden = false;
+
+    if (splitAvailable()) {
+      // Anchor the chooser to the cluster instead of using a bottom sheet.
+      placeChooserOverlay(clusterFeature);
+      els.chooserBackdrop.hidden = true;
+    } else {
+      ensureChooserInBody();
+      els.chooserBackdrop.hidden = false;
+      els.chooser.hidden = false;
+    }
+  }
+
+  // Large screens anchor the chooser to the clicked cluster; small screens use
+  // the bottom sheet.
+  function placeChooserOverlay(feature) {
+    if (!mapCtx || !mapCtx.map) return;
+    if (!chooserOverlay) {
+      chooserOverlay = OpenFlights.Maps.createOverlay(mapCtx, els.chooser, {
+        positioning: "top-center",
+        offset: [0, 12],
+      });
+    } else {
+      chooserOverlay.setElement(els.chooser);
+    }
+
+    // Unhide before positioning so the overlay can measure and auto-pan.
     els.chooser.hidden = false;
+
+    const coordinate = feature.getGeometry().getCoordinates();
+    const size = mapCtx.map.getSize();
+    const pixel = mapCtx.map.getPixelFromCoordinate(coordinate);
+    const openAbove = !!(size && pixel && pixel[1] > size[1] / 2);
+    chooserOverlay.setPositioning(openAbove ? "bottom-center" : "top-center");
+    chooserOverlay.setOffset(openAbove ? [0, -12] : [0, 12]);
+    chooserOverlay.setPosition(coordinate);
+  }
+
+  function ensureChooserInBody() {
+    if (els.chooser && els.chooser.parentElement !== document.body) {
+      document.body.appendChild(els.chooser);
+    }
   }
 
   function closeAirportChooser(unselect) {
@@ -1592,6 +1724,7 @@
       els.chooserBackdrop.hidden = true;
       els.chooserList.textContent = "";
     }
+    if (chooserOverlay) chooserOverlay.setPosition(undefined);
     chooserCluster = null;
     if (unselect) OpenFlights.Maps.clearSelection(mapCtx);
   }
@@ -1625,7 +1758,8 @@
     // Show the airport's flights, not whatever search was previously typed.
     state.flightsQuery = "";
     els.flightSearch.value = "";
-    els.flights.scrollTop = 0;
+    const scroller = splitAvailable() ? els.flightsBody : els.flights;
+    scroller.scrollTop = 0;
     renderFlightList();
   }
 
@@ -1806,6 +1940,9 @@
           return String(x.fid) === String(fid);
         })
       : null;
+
+    // Adding a flight reveals the list (at half height) behind the sheet.
+    if (!f && splitAvailable()) revealFlightsAtHalf();
 
     state.editor.fid = f ? String(f.fid) : null;
     state.editor.srcApid = f ? f.srcApid : "";
@@ -2158,7 +2295,223 @@
   // --------------------------------------------------------------------------
   // Navigation
   // --------------------------------------------------------------------------
+  const PANE_NAMES = ["map", "flights", "overview"];
+
+  function splitAvailable() {
+    return splitQuery.matches;
+  }
+
+  function isPaneName(name) {
+    return PANE_NAMES.indexOf(name) !== -1;
+  }
+
+  function openPaneCount() {
+    return PANE_NAMES.filter(function (pane) {
+      return state.panes[pane];
+    }).length;
+  }
+
+  function ensureMapReady() {
+    if (state.mapInitialized) return true;
+    if (typeof ol === "undefined" || typeof OpenFlights.Maps === "undefined") {
+      return false;
+    }
+    initMap();
+    return true;
+  }
+
+  // Open a pane, keeping at most two visible. The map outranks flights, which
+  // outranks overview, so the least important pane makes way.
+  function openPane(pane) {
+    if (state.panes[pane]) return;
+    state.panes[pane] = true;
+    state.paneMaximized = null;
+    state.paneSnapshot = null;
+    if (openPaneCount() > 2) {
+      const drop = ["overview", "flights", "map"].find(function (candidate) {
+        return candidate !== pane && state.panes[candidate];
+      });
+      if (drop) state.panes[drop] = false;
+    }
+  }
+
+  function closePane(pane) {
+    if (!state.panes[pane] || openPaneCount() === 1) return;
+    state.panes[pane] = false;
+    if (state.paneMaximized === pane) {
+      state.paneMaximized = null;
+      state.paneSnapshot = null;
+    }
+  }
+
+  // Contextual actions (airport popup "Flights", adding a flight) show the
+  // flight list at half height rather than taking over the screen.
+  function revealFlightsAtHalf() {
+    state.paneMaximized = null;
+    state.paneSnapshot = null;
+    if (!state.panes.flights) {
+      state.panes.flights = true;
+      if (openPaneCount() > 2) {
+        state.panes[state.panes.overview ? "overview" : "map"] = false;
+      }
+    }
+    if (openPaneCount() === 1) state.panes.map = true;
+    state.currentView = "flights";
+    applyPaneLayout();
+  }
+
+  // Size button: closed opens at half, half maximises, full restores.
+  function cyclePaneSize(pane) {
+    if (!splitAvailable()) return;
+    if (!state.panes[pane]) {
+      openPane(pane);
+    } else if (state.paneMaximized === pane) {
+      maximizePane(pane);
+      return;
+    } else if (openPaneCount() === 2) {
+      maximizePane(pane);
+      return;
+    } else {
+      // A sole open pane already fills the height.
+      return;
+    }
+    state.currentView = pane;
+    applyPaneLayout();
+  }
+
+  // Hide button: only one of two open panes can be hidden.
+  function hidePane(pane) {
+    if (!splitAvailable()) return;
+    if (!state.panes[pane] || openPaneCount() !== 2) return;
+    closePane(pane);
+    state.currentView = pane;
+    applyPaneLayout();
+  }
+
+  // Full screen keeps the other panes' bars visible so they remain reachable.
+  function maximizePane(pane) {
+    if (!splitAvailable()) return;
+    if (state.paneMaximized === pane) {
+      state.panes = state.paneSnapshot || {
+        map: true,
+        flights: false,
+        overview: false,
+      };
+      state.paneMaximized = null;
+      state.paneSnapshot = null;
+    } else {
+      state.paneSnapshot = {
+        map: state.panes.map,
+        flights: state.panes.flights,
+        overview: state.panes.overview,
+      };
+      state.panes = { map: false, flights: false, overview: false };
+      state.panes[pane] = true;
+      state.paneMaximized = pane;
+    }
+    state.currentView = pane;
+    applyPaneLayout();
+  }
+
+  function renderPanes() {
+    const large = splitAvailable();
+    document.body.classList.toggle("pane-layout", large);
+
+    if (!large) {
+      PANE_NAMES.forEach(function (pane) {
+        els.paneViews[pane].classList.remove("is-open", "is-closed");
+      });
+      return;
+    }
+
+    const openCount = openPaneCount();
+    PANE_NAMES.forEach(function (pane) {
+      const view = els.paneViews[pane];
+      const open = state.panes[pane];
+      const maximized = state.paneMaximized === pane;
+
+      view.classList.remove("is-active");
+      view.classList.toggle("is-open", open);
+      view.classList.toggle("is-closed", !open);
+
+      // Size button: closed opens at half, half maximises, full restores.
+      const size = els.paneSizes[pane];
+      let sizeState;
+      let sizeLabel;
+      if (maximized) {
+        sizeState = "restore";
+        sizeLabel = "Restore the previous pane layout";
+      } else if (!open) {
+        sizeState = "split";
+        sizeLabel = "Open the " + pane + " pane in split view";
+      } else if (openCount === 2) {
+        sizeState = "maximize";
+        sizeLabel = "Expand the " + pane + " pane to full height";
+      } else {
+        // A sole open pane already fills the height.
+        sizeState = "restore";
+        sizeLabel = "The " + pane + " pane is already full height";
+      }
+      size.dataset.state = sizeState;
+      size.disabled = sizeState === "restore" && !maximized;
+      size.setAttribute("aria-label", sizeLabel);
+      size.title = sizeLabel;
+
+      // Hide button: only one of two open panes can be hidden.
+      const hide = els.paneHides[pane];
+      const canHide = open && openCount === 2;
+      hide.disabled = !canHide;
+      hide.setAttribute(
+        "aria-label",
+        canHide
+          ? "Hide the " + pane + " pane"
+          : "The " + pane + " pane cannot be hidden"
+      );
+      hide.title = canHide
+        ? "Hide the " + pane + " pane"
+        : "The " + pane + " pane cannot be hidden";
+    });
+  }
+
+  function applyPaneLayout() {
+    if (!splitAvailable()) return;
+    renderPanes();
+    updateFab();
+    if (state.panes.map) {
+      const wasInitialized = state.mapInitialized;
+      if (ensureMapReady() && !wasInitialized) {
+        map.updateSize();
+        drawMap();
+      }
+      requestAnimationFrame(function () {
+        if (map) map.updateSize();
+      });
+    } else {
+      closeAirportPopup(true);
+      closeAirportChooser(false);
+    }
+  }
+
+  function showPane(pane) {
+    if (!isPaneName(pane)) pane = "map";
+    if (pane === "flights") {
+      revealFlightsAtHalf();
+      return;
+    }
+    openPane(pane);
+    state.currentView = pane;
+    applyPaneLayout();
+  }
+
   function showView(view) {
+    if (splitAvailable()) {
+      showPane(view);
+      return;
+    }
+
+    // Small screens keep the tabbed, single-view layout.
+    renderPanes();
+
     document.querySelectorAll(".view").forEach(function (v) {
       v.classList.toggle("is-active", v.id === "view-" + view);
     });
@@ -2181,18 +2534,13 @@
     }
 
     if (view === "map") {
-      if (
-        !state.mapInitialized &&
-        typeof ol !== "undefined" &&
-        typeof OpenFlights.Maps !== "undefined"
-      ) {
-        initMap();
-        map.updateSize();
-        drawMap();
-      } else if (
-        typeof ol === "undefined" ||
-        typeof OpenFlights.Maps === "undefined"
-      ) {
+      const wasInitialized = state.mapInitialized;
+      if (ensureMapReady()) {
+        if (!wasInitialized) {
+          map.updateSize();
+          drawMap();
+        }
+      } else {
         const container = document.getElementById("map");
         if (container) {
           container.innerHTML = "";
@@ -2221,12 +2569,45 @@
     updateFab();
   }
 
-  // The add-flight FAB is available to signed-in users on the map and flights
-  // views (not on the stats-heavy overview).
+  // The add-flight FAB follows the open panes on large screens: flights first,
+  // then map; hidden when only the overview is open. On small screens it
+  // follows the selected tab as before.
   function updateFab() {
-    const onDataView =
-      state.currentView === "map" || state.currentView === "flights";
-    els.addFlight.hidden = !(state.mode === "self" && onDataView);
+    const large = splitAvailable();
+    const visible = large
+      ? state.panes.flights || state.panes.map
+      : state.currentView === "map" || state.currentView === "flights";
+    els.addFlight.hidden = !(state.mode === "self" && visible);
+    if (large) positionFab();
+    else resetFabPosition();
+  }
+
+  // Anchor the fixed-position FAB to the bottom-right corner of the chosen
+  // pane. The panes themselves never scroll, so this survives list scrolling;
+  // it is recomputed on layout and window resize.
+  function positionFab() {
+    const pane = state.panes.flights
+      ? els.flights
+      : state.panes.map
+      ? els.mapView
+      : null;
+    if (!pane) return;
+    const rect = pane.getBoundingClientRect();
+    // Keep clear of the map's attribution line in the bottom-right corner.
+    const inset = pane === els.flights ? 18 : 30;
+    els.addFlight.style.right =
+      Math.max(8, Math.round(window.innerWidth - rect.right) + inset) + "px";
+    els.addFlight.style.bottom =
+      Math.max(8, Math.round(window.innerHeight - rect.bottom) + inset) + "px";
+    els.addFlight.style.left = "auto";
+    els.addFlight.style.top = "auto";
+  }
+
+  function resetFabPosition() {
+    els.addFlight.style.right = "";
+    els.addFlight.style.bottom = "";
+    els.addFlight.style.left = "";
+    els.addFlight.style.top = "";
   }
 
   function renderYearSelect() {
@@ -2452,6 +2833,49 @@
       });
     });
 
+    // Pane bars: the size button cycles split/maximised, the other hides.
+    document.querySelectorAll("[data-pane-size]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        cyclePaneSize(btn.dataset.paneSize);
+      });
+    });
+    document.querySelectorAll("[data-pane-hide]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        hidePane(btn.dataset.paneHide);
+      });
+    });
+
+    // Re-layout when the window crosses the split breakpoint.
+    function handleSplitChange() {
+      state.paneMaximized = null;
+      state.paneSnapshot = null;
+      closeAirportPopup(true);
+      closeAirportChooser(true);
+      ensureChooserInBody();
+      if (splitAvailable()) {
+        const view = isPaneName(state.currentView) ? state.currentView : "map";
+        state.panes = { map: false, flights: false, overview: false };
+        state.panes[view] = true;
+        state.currentView = view;
+        applyPaneLayout();
+      } else {
+        const open = PANE_NAMES.filter(function (pane) {
+          return state.panes[pane];
+        });
+        const chosen =
+          isPaneName(state.currentView) && state.panes[state.currentView]
+            ? state.currentView
+            : open[0] || "map";
+        state.currentView = chosen;
+        showView(chosen);
+      }
+    }
+    if (typeof splitQuery.addEventListener === "function") {
+      splitQuery.addEventListener("change", handleSplitChange);
+    } else if (typeof splitQuery.addListener === "function") {
+      splitQuery.addListener(handleSplitChange);
+    }
+
     // Keep the map sized correctly when the browser is resized, a tablet is
     // rotated, or a hidden tab becomes visible again.
     let resizePending = false;
@@ -2463,6 +2887,7 @@
         if (map && state.mapInitialized) {
           map.updateSize();
         }
+        updateFab();
       });
     });
 

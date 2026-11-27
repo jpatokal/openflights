@@ -308,6 +308,148 @@ module.exports = [
     },
   },
   {
+    name: "layout: adding a flight reveals the list on large screens",
+    async run({ page }) {
+      await page.setViewport({ width: 1280, height: 900 });
+      try {
+        await page.waitForFunction(
+          () => document.body.classList.contains("pane-layout"),
+          { timeout: 10000 }
+        );
+        await h.sleep(200);
+
+        await h.click(page, "#add-flight");
+        await page.waitForSelector("#flight-editor:not([hidden])", {
+          timeout: 10000,
+        });
+        await page.waitForFunction(
+          () =>
+            document
+              .getElementById("view-flights")
+              .classList.contains("is-open") &&
+            document.getElementById("view-map").classList.contains("is-open"),
+          { timeout: 10000 }
+        );
+        const heights = await page.evaluate(() => {
+          const map = document
+            .getElementById("view-map")
+            .getBoundingClientRect();
+          const flights = document
+            .getElementById("view-flights")
+            .getBoundingClientRect();
+          return {
+            map: Math.round(map.height),
+            flights: Math.round(flights.height),
+          };
+        });
+        h.assert(
+          Math.abs(heights.map - heights.flights) <= 2,
+          "the flights pane opens at half height"
+        );
+
+        await h.click(page, "#editor-cancel");
+        await page.waitForFunction(
+          () => document.getElementById("flight-editor").hidden
+        );
+      } finally {
+        await page.setViewport({ width: 390, height: 844 });
+      }
+    },
+  },
+  {
+    name: "layout: the add button follows the open panes",
+    async run({ page }) {
+      await page.setViewport({ width: 1280, height: 900 });
+      try {
+        // Reload for the default pane state; the session keeps us signed in.
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await h.waitForAppReady(page);
+        await page.waitForFunction(
+          () =>
+            document.body.classList.contains("pane-layout") &&
+            document.getElementById("view-map").classList.contains("is-open"),
+          { timeout: 20000 }
+        );
+        await h.sleep(250);
+
+        h.assert(
+          !(await page.$eval("#add-flight", (el) => el.hidden)),
+          "the add button is visible"
+        );
+
+        // Flights open: the button belongs to the flights pane corner.
+        await h.click(page, '[data-pane-size="flights"]');
+        await page.waitForFunction(() =>
+          document.getElementById("view-flights").classList.contains("is-open")
+        );
+        await h.sleep(250);
+        const withFlights = await page.evaluate(() => {
+          const el = document
+            .getElementById("add-flight")
+            .getBoundingClientRect();
+          const pane = document
+            .getElementById("view-flights")
+            .getBoundingClientRect();
+          return {
+            elRight: Math.round(el.right),
+            elBottom: Math.round(el.bottom),
+            paneRight: Math.round(pane.right),
+            paneBottom: Math.round(pane.bottom),
+          };
+        });
+        h.assert(
+          Math.abs(withFlights.paneRight - withFlights.elRight) < 40 &&
+            Math.abs(withFlights.paneBottom - withFlights.elBottom) < 50,
+          "the add button sits in the flights pane corner"
+        );
+
+        // Flights closed: the map pane corner.
+        await h.click(page, '[data-pane-hide="flights"]');
+        await page.waitForFunction(() =>
+          document
+            .getElementById("view-flights")
+            .classList.contains("is-closed")
+        );
+        await h.sleep(250);
+        const withMap = await page.evaluate(() => {
+          const el = document
+            .getElementById("add-flight")
+            .getBoundingClientRect();
+          const pane = document
+            .getElementById("view-map")
+            .getBoundingClientRect();
+          return {
+            elRight: Math.round(el.right),
+            elBottom: Math.round(el.bottom),
+            paneRight: Math.round(pane.right),
+            paneBottom: Math.round(pane.bottom),
+          };
+        });
+        h.assert(
+          Math.abs(withMap.paneRight - withMap.elRight) < 40 &&
+            Math.abs(withMap.paneBottom - withMap.elBottom) < 60,
+          "the add button sits in the map pane corner"
+        );
+
+        // Only the overview open: the button is hidden.
+        await h.click(page, '[data-pane-size="overview"]');
+        await page.waitForFunction(() =>
+          document.getElementById("view-overview").classList.contains("is-open")
+        );
+        await h.click(page, '[data-pane-hide="map"]');
+        await page.waitForFunction(() =>
+          document.getElementById("view-map").classList.contains("is-closed")
+        );
+        h.assert(
+          await page.$eval("#add-flight", (el) => el.hidden),
+          "the add button is hidden when only the overview is open"
+        );
+      } finally {
+        await page.setViewport({ width: 390, height: 844 });
+      }
+    },
+  },
+  {
     name: "cleanup: resets the disposable test account",
     skip: (ctx) => !ctx.canReset,
     async run({ page }) {
