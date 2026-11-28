@@ -131,7 +131,11 @@ CREATE TABLE `flights` (
   KEY `plid` (`plid`),
   KEY `alid` (`alid`),
   KEY `trid` (`trid`),
-  KEY `uid` (`uid`)
+  KEY `uid` (`uid`),
+  KEY `uid_distance_upd` (`uid`, `distance`, `upd_time`),
+  KEY `src_dst_uid` (`src_apid`, `dst_apid`, `uid`),
+  KEY `alid_uid` (`alid`, `uid`),
+  KEY `upd_time` (`upd_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `locales`;
