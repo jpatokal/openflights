@@ -35,8 +35,12 @@ trap 'RC=$?; if [ -n "$TMP" ]; then rm -f "$TMP"; fi; if [ "$RC" -ne 0 ]; then p
 ping run
 
 for FILE in sql/db.host sql/db.pw; do
-  if [ ! -r "$ROOT/$FILE" ]; then
+  if [ ! -e "$ROOT/$FILE" ]; then
     echo "Missing $FILE; copy $FILE.example and fill it in (see INSTALL)." >&2
+    exit 1
+  fi
+  if [ ! -r "$ROOT/$FILE" ]; then
+    echo "Cannot read $FILE; check its owner and mode (see INSTALL)." >&2
     exit 1
   fi
 done
