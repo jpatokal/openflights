@@ -62,6 +62,13 @@ sudo -u openflights mkdir badge/cache
 # Set up local config for database, locals, Github etc.
 sudo -u openflights cp php/config.php.sample php/config.php
 
+# Database host and password for the shell/cron scripts (sql/*.sh, elite/*.sh).
+# Both files are gitignored; start from the templates and fill in real values.
+sudo -u openflights cp sql/db.host.example sql/db.host
+sudo -u openflights cp sql/db.pw.example sql/db.pw
+sudo -u openflights chmod 600 sql/db.pw
+sudo -u openflights vi sql/db.host sql/db.pw
+
 # Set up TripIt (if you need it)
 sudo -u openflights vi php/secrets.php
 <<<
