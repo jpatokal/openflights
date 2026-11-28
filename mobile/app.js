@@ -2388,6 +2388,17 @@
     applyPaneLayout();
   }
 
+  // Clicking the bar itself toggles it: a collapsed pane opens at half, a
+  // half-height pane hides. Other states have no bar action.
+  function paneBarAction(pane) {
+    if (!splitAvailable()) return "";
+    if (!state.panes[pane]) return "expand";
+    if (state.paneMaximized !== pane && openPaneCount() === 2) {
+      return "collapse";
+    }
+    return "";
+  }
+
   // Full screen keeps the other panes' bars visible so they remain reachable.
   function maximizePane(pane) {
     if (!splitAvailable()) return;
@@ -2433,6 +2444,13 @@
       view.classList.remove("is-active");
       view.classList.toggle("is-open", open);
       view.classList.toggle("is-closed", !open);
+
+      const bar = view.querySelector(".pane-bar");
+      const action = paneBarAction(pane);
+      if (bar) {
+        if (action) bar.dataset.action = action;
+        else delete bar.dataset.action;
+      }
 
       // Size button: closed opens at half, half maximises, full restores.
       const size = els.paneSizes[pane];
@@ -2842,6 +2860,20 @@
     document.querySelectorAll("[data-pane-hide]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         hidePane(btn.dataset.paneHide);
+      });
+    });
+
+    // Clicking a bar itself toggles its pane; its buttons keep their own actions.
+    document.querySelectorAll("[data-pane-bar]").forEach(function (bar) {
+      const pane = bar.dataset.paneBar;
+      bar.addEventListener("click", function (event) {
+        if (event.target.closest(".pane-bar__icon")) return;
+        const action = paneBarAction(pane);
+        if (action === "expand") {
+          cyclePaneSize(pane);
+        } else if (action === "collapse") {
+          hidePane(pane);
+        }
       });
     });
 

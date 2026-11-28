@@ -329,6 +329,59 @@ module.exports = [
     },
   },
   {
+    name: "layout: clicking a pane bar expands or collapses it",
+    async run({ page }) {
+      try {
+        await enterLarge(page);
+
+        // Collapsed -> half, alongside the map.
+        await h.click(page, "#view-flights .pane-bar__title");
+        await page.waitForFunction(() =>
+          document.getElementById("view-flights").classList.contains("is-open")
+        );
+        await h.sleep(200);
+        let p = await panes(page);
+        h.assert(p.map.open && p.flights.open, "the bar click expands flights");
+        h.assert(
+          Math.abs(p.map.height - p.flights.height) <= 2,
+          "the bar click opens flights at half height"
+        );
+
+        // Half -> collapsed.
+        await h.click(page, "#view-flights .pane-bar__title");
+        await page.waitForFunction(() =>
+          document
+            .getElementById("view-flights")
+            .classList.contains("is-closed")
+        );
+        p = await panes(page);
+        h.assert(p.map.open && !p.flights.open, "the bar click hides flights");
+
+        // A sole open pane ignores bar clicks.
+        await h.click(page, "#view-map .pane-bar__title");
+        await h.sleep(150);
+        p = await panes(page);
+        h.assert(p.map.open && !p.flights.open, "the sole pane stays put");
+
+        // Buttons are excluded: hiding must not be undone by the bar handler.
+        await h.click(page, '[data-pane-size="flights"]');
+        await page.waitForFunction(() =>
+          document.getElementById("view-flights").classList.contains("is-open")
+        );
+        await h.click(page, '[data-pane-hide="flights"]');
+        await page.waitForFunction(() =>
+          document
+            .getElementById("view-flights")
+            .classList.contains("is-closed")
+        );
+        p = await panes(page);
+        h.assert(!p.flights.open, "the hide button does not trigger the bar");
+      } finally {
+        await page.setViewport(NARROW);
+      }
+    },
+  },
+  {
     name: "layout: at most two panes are open, newest wins",
     async run({ page }) {
       try {

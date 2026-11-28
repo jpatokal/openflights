@@ -1153,6 +1153,10 @@ body {
   font-weight: 600;
   color: var(--text-muted);
 }
+.pane-bar[data-action="expand"],
+.pane-bar[data-action="collapse"] {
+  cursor: pointer;
+}
 .pane-bar__actions {
   display: flex;
   gap: 2px;
