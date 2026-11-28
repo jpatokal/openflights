@@ -1,0 +1,17 @@
+# OpenFlights nightly maintenance - sample crontab.
+#
+# Install as root:
+#   sudo crontab -e
+# or copy to /etc/cron.d/openflights. Entries in /etc/cron.d need a user column
+# before the command (e.g. `openflights`), and the file must be owned by root.
+#
+# Adjust OPENFLIGHTS_HOME and the log path for your install.
+# Optional Cronitor telemetry reads the base URL in sql/cronitor.key (see
+# INSTALL); without it, the wrapper skips the pings.
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+OPENFLIGHTS_HOME=/home/openflights/openflights
+
+# Expiry notices, then data/top10.dat, then the demo user's flights.
+0 2 * * * /bin/bash $OPENFLIGHTS_HOME/tools/nightly.sh >>/var/log/openflights-cron.log 2>&1

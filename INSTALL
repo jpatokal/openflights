@@ -77,16 +77,23 @@ $tripit_app_id = "[YOUR-ID]";
 $tripit_app_secret = "[YOUR-APP-SECRET]";
 >>>
 
-# Set up email and cron for account expiry
+# Set up email for account expiry notices
 # Remember to set up Mailgun integration: https://cloud.google.com/compute/docs/tutorials/sending-mail/using-mailgun
-sudo apt-get install crontab postfix mailutils
-sudo crontab -e <<FOO
-0 2 * * * /bin/bash /home/openflights/openflights/elite/expire.sh >>/var/log/cronrun 2>&1
-FOO
+sudo apt-get install crontab postfix mailutils curl
 
-# Set up other cron jobs for SQL related queries and updates
-# sql/top10.sql >data/top10.dat
-# sql/update-demo.sql
+# Optional: Cronitor telemetry for the nightly job. Skip this to disable pings;
+# the wrapper ignores a missing sql/cronitor.key. Paste the monitor's telemetry
+# URL (https://cronitor.link/p/...) into the file and leave off ?state=.
+sudo -u openflights cp sql/cronitor.key.example sql/cronitor.key
+sudo -u openflights chmod 600 sql/cronitor.key
+sudo -u openflights vi sql/cronitor.key
+
+# Set up the nightly maintenance job: expiry notices, data/top10.dat and the
+# demo flights. tools/crontab.example has the same entry with comments and the
+# /etc/cron.d variant.
+sudo crontab -e <<FOO
+0 2 * * * /bin/bash /home/openflights/openflights/tools/nightly.sh >>/var/log/openflights-cron.log 2>&1
+FOO
 
 # Copy ads, analytics (committed samples are named *.example)
 sudo -u openflights cp html/ad.html.example html/ad.html

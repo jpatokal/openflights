@@ -11,6 +11,7 @@ php/config.php
 php/secrets.php
 sql/db.host
 sql/db.pw
+sql/cronitor.key
 test/server/.phpunit.result.cache
 test/mobile/screenshots/
 test/mobile/node_modules/
